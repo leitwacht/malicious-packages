@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5551",
+  "aliases": [
+    "MAL-2026-5905"
+  ],
+  "modified": "2026-06-16T10:15:30Z",
+  "published": "2026-06-16T10:14:27Z",
+  "summary": "Malicious code in chai-plugin-helper (npm)",
+  "details": "Combosquat of the real chai assertion library. On require(), spawns a detached background node process that beacons to senpad[.]bounceme[.]net:6285 via HTTPS GET to /api/x-handler?key=\u003cunique_beacon_token\u003e. The response body is compiled via new Function('require',...) and immediately executed — a remote code loader that pulls and runs arbitrary second-stage payloads at runtime. The package has no lifecycle hooks; execution triggers on require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-plugin-helper",
+        "purl": "pkg:npm/chai-plugin-helper@1.7.3"
+      },
+      "versions": [
+        "1.7.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-plugin-helper/v/1.7.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5551"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T10:14:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "senpad[.]bounceme[.]net"
+        ],
+        "url_observed": [
+          "hxxps://senpad[.]bounceme[.]net:6285/api/x-handler"
+        ]
+      }
+    }
+  }
+}

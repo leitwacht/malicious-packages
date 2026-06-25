@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5959",
+  "modified": "2026-06-25T07:33:24Z",
+  "published": "2026-06-25T07:32:46Z",
+  "summary": "Malicious code in ref-slot (npm)",
+  "details": "Ref-slot@1.0.9 is a data-stealing trojan with SSH backdoor. On install, it: (1) contacts datasecure-service[.]vercel[.]app to fetch an SSH public key, scan patterns, and block patterns; (2) on Linux, installs the SSH key into ~/.ssh/authorized_keys and runs 'sudo ufw enable; sudo ufw allow 22/tcp' to open port 22 for persistent remote access; (3) scans the home directory (or entire C:\\ drive on Windows) for files matching patterns from the C2 — targeting.env, config.json, id.json,.doc,.xlsx,.pdf, readme files; (4) uploads all matching files via multipart POST to datasecure-service[.]vercel[.]app/api/v1 tagged with the victim's username and platform.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ref-slot",
+        "purl": "pkg:npm/ref-slot@1.0.9"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ref-slot/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5959"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T07:32:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://datasecure-service[.]vercel[.]app/api/block-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/scan-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/ssh-key",
+          "hxxps://datasecure-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

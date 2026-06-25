@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5202",
+  "modified": "2026-06-14T08:34:55Z",
+  "published": "2026-06-14T08:33:55Z",
+  "summary": "Malicious code in strmagic-kit (npm)",
+  "details": "The npm package strmagic-kit@1.0.0 is a supply-chain malware package. Its postinstall hook (bin/setup.js) silently spawns a 9.8MB Windows PE executable (assets/setup-helper.exe) as a background process with hidden window and detached lifecycle, so it continues running after the installation completes. The executable is a PyInstaller bundle containing Python libraries for network communication, file extraction, and subprocess management — a fully self-contained payload. The dist/index.js entry point is a trivial decoy string-manipulation library that bears no relation to the bundled executable. Only affects Windows systems; the executable runs invisibly on npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "strmagic-kit",
+        "purl": "pkg:npm/strmagic-kit@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/strmagic-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5202"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T08:33:55Z",
+      "indicators_observed": {}
+    }
+  }
+}

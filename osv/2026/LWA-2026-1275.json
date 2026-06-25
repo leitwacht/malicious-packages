@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1275",
+  "modified": "2026-05-30T00:02:43Z",
+  "published": "2026-05-29T23:58:16Z",
+  "summary": "Malicious code in alya-baileys (npm)",
+  "details": "Trojanized WhatsApp bot library fork: alya-baileys@1.8.39 carries a live remote-config vector. newsletter.js decrypts a hardcoded AES-256-CBC blob (key derived from 'socket-1.7.0'+'ibrahimasli_bukanpalsu' via SHA512-\u003eSHA256-\u003eMD5) to reveal a raw[.]githubusercontent[.]com URL, then fetches config via axios on connection, controlling which newsletters to auto-follow and auto-react to. No credential theft and no eval/exec of fetched content. The preinstall hook is a benign Node.js version check. Multiple non-existent modules (ibra-decode.js, ibranihbossenggoldong.js) are required across many files. The attacker controls the GitHub raw content, making the encrypted remote-config fetch a C2 reconfiguration vector.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alya-baileys",
+        "purl": "pkg:npm/alya-baileys@1.8.39"
+      },
+      "versions": [
+        "1.8.39"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alya-baileys/v/1.8.39"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1275"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T23:58:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ]
+      }
+    }
+  }
+}

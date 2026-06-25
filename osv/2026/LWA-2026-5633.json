@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5633",
+  "aliases": [
+    "MAL-2026-5979"
+  ],
+  "modified": "2026-06-17T06:28:51Z",
+  "published": "2026-06-17T06:27:03Z",
+  "summary": "Malicious code in easy-day-js (npm)",
+  "details": "Counterfeit copy of the dayjs date library whose package manifest reuses the real dayjs metadata (description, author, homepage, repository) to appear legitimate. It declares a postinstall hook that runs a bundled, heavily obfuscated setup.cjs script at install time. When decoded, the script disables TLS certificate validation, then downloads a second-stage payload over HTTPS from a hardcoded raw-IP server (23[.]254[.]164[.]92 on port 8000, path /update/49890878). It writes marker files (.pkg_history containing the install directory and.pkg_logs) into the system temp directory, saves the downloaded code to a randomly named.cjs file in the temp directory, and executes it with the local Node.js runtime as a detached background process. Finally it deletes its own installer script to hide the activity. This grants the attacker arbitrary remote code execution on any machine that installs the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "easy-day-js",
+        "purl": "pkg:npm/easy-day-js@1.11.22"
+      },
+      "versions": [
+        "1.11.22"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/easy-day-js/v/1.11.22"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5633"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T06:27:03Z",
+      "indicators_observed": {
+        "file_observed": [
+          ".pkg_history",
+          ".pkg_logs"
+        ],
+        "ip_observed": [
+          "23[.]254[.]164[.]92"
+        ],
+        "url_observed": [
+          "hxxps://23[.]254[.]164[.]92:8000/update/49890878"
+        ]
+      }
+    }
+  }
+}

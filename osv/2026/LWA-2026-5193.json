@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5193",
+  "modified": "2026-06-14T07:49:19Z",
+  "published": "2026-06-14T07:48:04Z",
+  "summary": "Malicious code in streamvault (npm)",
+  "details": "Streamvault@1.0.1 is a trojan logging library that depends on byteboxlab, which contains an RCE downloader. Upon loading the module, it fetches a second-stage payload from hxxps://axioshealthcheck[.]vercel[.]app/debugCheck?id=\u003cDEBUG_value\u003e via HTTPS POST. The response contains a base64-encoded JavaScript payload that is decoded and executed via new Function(code)(require), giving the attacker arbitrary code execution on the installed system. The downloader retries up to 10 times within a 60-second window. The package impersonates a real developer to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streamvault",
+        "purl": "pkg:npm/streamvault@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streamvault/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5193"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T07:48:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "axioshealthcheck[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://axioshealthcheck[.]vercel[.]app/debugCheck"
+        ]
+      }
+    }
+  }
+}

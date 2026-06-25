@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5644",
+  "modified": "2026-06-17T14:01:03Z",
+  "published": "2026-06-17T13:57:34Z",
+  "summary": "Malicious code in @public-for-cdao/providers (npm)",
+  "details": "This package has no real functionality (its main module exports an empty object) and exists solely to run a credential-harvesting script at install time. A postinstall hook executes a bundled recon script that: collects host details (hostname, OS platform/arch/release, username, working directory, HOME); scans environment variables for names matching secret patterns (TOKEN, SECRET, KEY, PASS, PRIVATE, CREDENTIAL, SIGNER, RPC, WALLET, MNEMONIC, SEED, PK, AUTH, API) and captures their values; reads.env files from the current directory, parent directories, the home directory and the filesystem root; and shells out to read shell history (~/.bash_history, ~/.zsh_history), the git config, the first line of the SSH private key (~/.ssh/id_rsa), and the npm credentials file (~/.npmrc). The harvested data is JSON-encoded and sent via an HTTPS POST to a remote attacker-controlled endpoint, with TLS certificate validation explicitly disabled. The install hook swallows all errors so the theft is silent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@public-for-cdao/providers",
+        "purl": "pkg:npm/%40public-for-cdao/providers@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@public-for-cdao/providers/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5644"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T13:57:34Z",
+      "indicators_observed": {
+        "file_read": [
+          ".env",
+          "~/.bash_history",
+          "~/.gitconfig",
+          "~/.npmrc",
+          "~/.ssh/id_rsa",
+          "~/.zsh_history"
+        ]
+      }
+    }
+  }
+}

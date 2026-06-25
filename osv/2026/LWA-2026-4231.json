@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4231",
+  "modified": "2026-06-11T11:45:40Z",
+  "published": "2026-06-11T11:44:32Z",
+  "summary": "Malicious code in node-converter (npm)",
+  "details": "Node-converter@1.0.0 is a remote dropper. Its converter() function hex-decodes the URL 'hxxps://api[.]etherjs[.]pro/socket' (spoofed ethers.js domain), fetches a base64-decoded second-stage payload from that endpoint, writes it to a temp directory, npm-installs data-harvesting packages (active-win for active-window capture, clipboardy for clipboard theft, node-key for keylogging, archiver for archiving stolen data, ws for WebSocket exfil), then spawns the second stage as a detached+hidden background process (windowsHide:true, stdio:'ignore', child.unref()). No NPM_TOKEN/GITHUB_TOKEN markers found, but the dropper+data-harvesting dependency chain is a clear supply-chain attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-converter",
+        "purl": "pkg:npm/node-converter@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-converter/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4231"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:44:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]etherjs[.]pro"
+        ],
+        "url_observed": [
+          "hxxps://api[.]etherjs[.]pro/socket"
+        ]
+      }
+    }
+  }
+}

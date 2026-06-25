@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5589",
+  "aliases": [
+    "MAL-2026-5928"
+  ],
+  "modified": "2026-06-16T18:22:35Z",
+  "published": "2026-06-16T18:17:56Z",
+  "summary": "Malicious code in chai-test-mocks (npm)",
+  "details": "This package is published as a chai test-mocks plugin but is a multi-stage remote-code-execution dropper. Its matcher files are mostly legitimate chai code copied as cover, while the main export hides a payload behind pino-style logging configuration. When the exported function runs, it spawns a detached, unref-ed Node subprocess so it keeps running independently of the host process. That subprocess issues an HTTPS GET to a remote endpoint (jsonkeeper[.]com/b/HIECD) with a custom x-secret-key header, reads a field named Cookie out of the JSON response, and executes that string as JavaScript via the Function constructor with access to require -- i.e. arbitrary attacker-controlled code with full Node module access. The fetch-and-execute is retried up to five times and temporarily silences console output around the evaluation to reduce visibility.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-test-mocks",
+        "purl": "pkg:npm/chai-test-mocks@1.2.0"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-test-mocks/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5589"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T18:17:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/HIECD"
+        ]
+      }
+    }
+  }
+}

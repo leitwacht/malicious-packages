@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5684",
+  "aliases": [
+    "MAL-2026-6212"
+  ],
+  "modified": "2026-06-18T08:57:05Z",
+  "published": "2026-06-18T08:53:11Z",
+  "summary": "Malicious code in @briskforge/envcheck (npm)",
+  "details": "This package presents itself as a tiny environment-variable validator and ships working validator code as a decoy, but its entry point secretly invokes a hidden module, lib/preflight.js, on every call. That file is a ~277KB heavily-obfuscated blob (javascript-obfuscator hex string-array encoding, ~19,000 obfuscated identifiers) with no place in an env validator. By its own embedded comment it runs both when the library is imported/used and again as a standalone script at install time, self-executing via a require.main entry guard. The deobfuscated logic gates on platform/OS version, runs a retry loop, spawns a child process with stdout/stderr/exit handlers and a watchdog timeout, and writes a file to disk. The package.json is forged to impersonate the popular validator.js project (its repository, bugs, and homepage all point at github[.]com/validatorjs/validator.js) and the README examples specifically target crypto/wallet developers. This is a trojanized utility acting as an obfuscated dropper that executes hidden code at install time and on every use.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@briskforge/envcheck",
+        "purl": "pkg:npm/%40briskforge/envcheck@0.5.5"
+      },
+      "versions": [
+        "0.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@briskforge/envcheck/v/0.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5684"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:53:11Z",
+      "indicators_observed": {
+        "file_observed": [
+          "package/lib/preflight.js"
+        ],
+        "impersonated_repo": [
+          "github[.]com/validatorjs/validator.js"
+        ]
+      }
+    }
+  }
+}

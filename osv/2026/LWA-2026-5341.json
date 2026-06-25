@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5341",
+  "aliases": [
+    "MAL-2026-5994"
+  ],
+  "modified": "2026-06-15T08:26:10Z",
+  "published": "2026-06-15T08:23:43Z",
+  "summary": "Malicious code in ts-webplug (npm)",
+  "details": "Ts-webplug is a malicious npm package that disguises itself as a logging middleware. When the exported middleware function is called (e.g. via app.use()), it spawns a detached Node.js child process running lib/caller.js. This child process silently fetches a JavaScript payload from hxxps://jsonkeeper[.]com/b/U2BTS over HTTP (with a custom header x-secret-key: _) and evaluates the response's cookie field as executable code using the Function constructor with require available, giving the attacker arbitrary remote code execution on the victim's system. The payload will retry up to 5 times if the fetch fails. The C2 staging host is jsonkeeper[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-webplug",
+        "purl": "pkg:npm/ts-webplug@3.0.5"
+      },
+      "versions": [
+        "3.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-webplug/v/3.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5341"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T08:23:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/U2BTS"
+        ]
+      }
+    }
+  }
+}

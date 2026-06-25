@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5679",
+  "aliases": [
+    "MAL-2026-5973"
+  ],
+  "modified": "2026-06-18T06:22:50Z",
+  "published": "2026-06-18T06:10:00Z",
+  "summary": "Malicious code in classbreeze-utils (npm)",
+  "details": "This package masquerades as a Tailwind CSS typography plugin (its README, manifest description and most source are copied verbatim from the legitimate plugin), but its main entry file (src/index.js) has a heavily obfuscated payload appended after the genuine module export. The payload executes automatically when the module is loaded. It uses an RC4/base64 string-decoder to hide all of its strings, detects the host OS (Windows/macOS/Linux), and locates the local npx and node executables by probing several candidate paths. It then copies the current environment, injects an API token and a hidden marker variable, and spawns detached background child processes that invoke npx to download and run a second-stage package from a remote endpoint. On Windows it additionally drops a.vbs script and runs it through wscript with the window hidden, giving stealthy execution. The net effect is a loader/dropper that pulls and runs attacker-controlled code on the victim machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "classbreeze-utils",
+        "purl": "pkg:npm/classbreeze-utils@0.7.9"
+      },
+      "versions": [
+        "0.7.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/classbreeze-utils/v/0.7.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5679"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T06:10:00Z",
+      "indicators_observed": {}
+    }
+  }
+}

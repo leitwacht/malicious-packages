@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5835",
+  "aliases": [
+    "MAL-2026-6365"
+  ],
+  "modified": "2026-06-22T11:41:23Z",
+  "published": "2026-06-22T11:40:00Z",
+  "summary": "Malicious code in assertcore (npm)",
+  "details": "Assertcore@3.1.7 is a trojanized clone of the chai assertion library (combosquat name). On require(), it spawns a detached Node.js child process that beacons to a remote C2 server at coolblast[.]zapto[.]org:8888. The child executes an obfuscated payload from addAssertion.js which fetches a second-stage script from coolblast[.]zapto[.]org:8888/api/x-handler?key=zR!7mQ2vLp@8XcN4$Kt via HTTPS GET, then evaluates the response with full require access using new Function('require', body). The package contains heavily-obfuscated JavaScript (javascript-obfuscator) with ~178 _0x-prefixed identifiers. The legitimate chai library is included only as a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "assertcore",
+        "purl": "pkg:npm/assertcore@3.1.7"
+      },
+      "versions": [
+        "3.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/assertcore/v/3.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5835"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T11:40:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coolblast[.]zapto[.]org"
+        ],
+        "url_observed": [
+          "coolblast[.]zapto[.]org:8888/api/x-handler?key=zR!7mQ2vLp@8XcN4$Kt"
+        ]
+      }
+    }
+  }
+}

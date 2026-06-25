@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5811",
+  "aliases": [
+    "MAL-2026-6336"
+  ],
+  "modified": "2026-06-21T14:03:36Z",
+  "published": "2026-06-21T14:02:15Z",
+  "summary": "Malicious code in sync-external (npm)",
+  "details": "Sync-external is a combosquat of the legitimate use-sync-external-store React shim. The package ships an obfuscated payload in shim/index.js that activates when imported in a Node.js context. On execution it collects extensive host information: OS type, hostname, public IP (via api[.]ipify[.]org), geolocation (country/city), running processes, environment variables, admin-privilege status, and VM-detection indicators (VMware, VirtualBox, Parallels, QEMU). The collected data is encrypted with AES-256-CBC using a bundled shared.key and exfiltrated via HTTPS POST to testtesttestload[.]store/api/data with HMAC-SHA256 authentication. The payload also includes functions to execute arbitrary shell and PowerShell commands, and spawn detached child processes. The package description and README are copied unchanged from the real React use-sync-external-store project.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sync-external",
+        "purl": "pkg:npm/sync-external@1.6.0"
+      },
+      "versions": [
+        "1.6.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sync-external/v/1.6.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5811"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T14:02:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "testtesttestload[.]store"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://testtesttestload[.]store/api/data"
+        ]
+      }
+    }
+  }
+}

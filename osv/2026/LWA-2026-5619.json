@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5619",
+  "modified": "2026-06-17T04:23:00Z",
+  "published": "2026-06-17T04:12:32Z",
+  "summary": "Malicious code in @public-for-cdao/core (npm)",
+  "details": "This package is a dependency-confusion attack. It publishes a public scoped name with a synthetic high version number (99.99.99) so that a package manager prefers it over the intended internal package of a similar name. Its package.json registers a postinstall lifecycle hook that runs a bundled recon script as soon as the package is installed. The script performs broad secret reconnaissance: it collects host details (hostname, platform, architecture, username, working directory); reads a large list of CI/CD and cloud secret environment variables including registry/deploy credentials, source-control access tokens, SSH private keys, AWS access keys and session tokens, database and Redis connection strings/passwords, crypto private keys/mnemonics/seed phrases, RPC and node-provider API keys, and container/registry/messaging tokens; scans for and reads.env files in many common locations (application directories, CI runner home, /root), extracting lines that look like keys, secrets, tokens, passwords, or mnemonics; and enumerates CI build directories. It then exfiltrates the harvested data as JSON over HTTPS to two external collection endpoints (a webhook[.]site URL and a pipedream endpoint), disabling TLS certificate validation, and also writes a copy of the stolen data to a temp file. The companion index.js module is an inert stub used only to make the package look legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@public-for-cdao/core",
+        "purl": "pkg:npm/%40public-for-cdao/core@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@public-for-cdao/core/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5619"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-17T04:12:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "enqoojbegdvxj[.]x[.]pipedream[.]net",
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://enqoojbegdvxj[.]x[.]pipedream[.]net/",
+          "hxxps://webhook[.]site/d6d18927-e513-4df7-b019-58bfc64fe0dd"
+        ]
+      }
+    }
+  }
+}

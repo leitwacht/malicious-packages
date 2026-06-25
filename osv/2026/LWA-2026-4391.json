@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4391",
+  "modified": "2026-06-11T18:45:13Z",
+  "published": "2026-06-11T18:43:20Z",
+  "summary": "Malicious code in oc-navbar-module-client (npm)",
+  "details": "Oc-navbar-module-client@9.9.10 is a malicious typosquat/proxy package using a high version number (9.9.10) to appear mature. Its install hook (node index.js) loads an obfuscated three-stage payload: (1) a config module holding the exfil domain oob[.]sl4x0[.]xyz; (2) a module using module.constructor._load to import os/dns while bypassing require hooks; and (3) a payload that collects OS username, hostname, and cwd, then exfiltrates them by crafting a DNS resolve4 query of the form ocnavbar.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]sl4x0[.]xyz.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "oc-navbar-module-client",
+        "purl": "pkg:npm/oc-navbar-module-client@9.9.10"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/oc-navbar-module-client/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4391"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T18:43:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]sl4x0[.]xyz"
+        ]
+      }
+    }
+  }
+}

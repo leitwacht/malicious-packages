@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5682",
+  "aliases": [
+    "MAL-2026-6210"
+  ],
+  "modified": "2026-06-18T08:53:51Z",
+  "published": "2026-06-18T08:49:45Z",
+  "summary": "Malicious code in @apexcraft/nano-key (npm)",
+  "details": "This package is published as a small, dependency-free ID generator, and its main module is a verbatim copy of a legitimate xid-style library to look benign. Hidden alongside it is a ~290KB file (seed.cjs, with an ESM twin seed.mjs) that is heavily obfuscated (obfuscator[.]io-style: a base64+RC4 string-array decoder, control-flow flattening, and dynamic execution of decoded identifiers) and has nothing to do with ID generation. The package wires up two triggers for this hidden code: a postinstall script (node./dist/cjs/seed.cjs) that executes the payload as soon as the package is installed, and a call in the main module (newState -\u003e runPrepare, run during module initialization) so that merely importing the package also runs it. A one-shot guard flag ensures it executes once. The deobfuscated payload sets up multiple event-stream handlers consistent with a dropper/exfiltration routine. A legitimate ID-generation library has no reason to ship a large obfuscated blob and run it both on install and on import; this is the behaviour of install-time malware disguised as a utility package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@apexcraft/nano-key",
+        "purl": "pkg:npm/%40apexcraft/nano-key@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@apexcraft/nano-key/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5682"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:49:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "obfuscator[.]io"
+        ],
+        "file_observed": [
+          "package/dist/cjs/seed.cjs",
+          "package/dist/esm/seed.mjs"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5304",
+  "modified": "2026-06-15T16:55:00Z",
+  "published": "2026-06-15T05:18:36Z",
+  "summary": "Malicious code in totally-safe-util (npm)",
+  "details": "The postinstall hook (node setup.js) downloads and executes shell scripts from two remote hosts. The script runs cp.exec() to pipe shell from hxxp://example[.]com/payload[.]sh and hxxp://185[.]44[.]32[.]1/payload[.]sh directly into bash. It also reads the GITHUB_TOKEN environment variable. Despite comments claiming the code is simulated and safe, the exec calls are uncommented and executed at install time. The package description claims it is a security-testing demo but has no verifiable repository. Postinstall hook runs 'node setup.js' which executes two curl|bash commands to download and run remote payloads from example[.]com/payload.sh and 185[.]44[.]32[.]1/payload.sh. The setup.js script also reads the GITHUB_TOKEN environment variable and probes ~/.ssh/id_rsa (likely for exfiltration to the second-stage payload). The package is a two-stage downloader that fetches an external shell script upon installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "totally-safe-util",
+        "purl": "pkg:npm/totally-safe-util@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/totally-safe-util/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5304"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T05:18:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "example[.]com"
+        ],
+        "ip_observed": [
+          "185[.]44[.]32[.]1",
+          "185[.]44[.]32[.]1:80"
+        ],
+        "url_observed": [
+          "hxxp://185[.]44[.]32[.]1/payload[.]sh",
+          "hxxp://example[.]com/payload[.]sh"
+        ]
+      }
+    }
+  }
+}

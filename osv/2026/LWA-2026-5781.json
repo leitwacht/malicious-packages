@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5781",
+  "modified": "2026-06-20T03:31:12Z",
+  "published": "2026-06-20T03:30:16Z",
+  "summary": "Malicious code in kisama-js (npm)",
+  "details": "Kisama-js@0.1.8 is a Node.js Remote Access Trojan (RAT) that opens an encrypted command-and-control HTTP+WebSocket server on port 8000. When run, it profiles the host (CPU, memory, disk, OS, kernel version, public IPv4/IPv6 via api[.]ipify[.]org, icanhazip[.]com, checkip[.]amazonaws[.]com, ifconfig[.]me/ip, ipecho[.]net/plain, ipinfo[.]io/ip, myexternalip[.]com/raw, api6[.]ipify[.]org, v6[.]ident[.]me; detects Docker/LXC/Kubernetes/QEMU via cgroup and /proc reads), then exposes remote shell execution (POST /api/exec), full file system access (read/write/upload/download/delete under FILE_ROOT via /api/file/* endpoints), interactive PTY terminal via WebSocket (/api/ws/*), and cron-based task scheduling. C2 traffic is encrypted with ECDSA-signed authentication, ECIES asymmetric encryption, AES-256-GCM session keys, and the Noise Protocol (X25519 key exchange). Default listen address 0[.]0[.]0[.]0:8000; operator configuration via ECDSA_PUBKEY and ECIES_PUBKEY environment variables.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "kisama-js",
+        "purl": "pkg:npm/kisama-js@0.1.8"
+      },
+      "versions": [
+        "0.1.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/kisama-js/v/0.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5781"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T03:30:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "api6[.]ipify[.]org",
+          "checkip[.]amazonaws[.]com",
+          "icanhazip[.]com",
+          "ifconfig[.]me",
+          "ipecho[.]net",
+          "ipinfo[.]io",
+          "myexternalip[.]com",
+          "v6[.]ident[.]me"
+        ]
+      }
+    }
+  }
+}

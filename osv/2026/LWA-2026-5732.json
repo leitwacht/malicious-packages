@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5732",
+  "aliases": [
+    "MAL-2026-6335"
+  ],
+  "modified": "2026-06-18T17:43:50Z",
+  "published": "2026-06-18T17:41:46Z",
+  "summary": "Malicious code in server-parket (npm)",
+  "details": "Server-parket@3.8.1 is an information-stealer trojan. On install, the postinstall hook runs a payload that: (1) performs a full recursive filesystem scan (Linux /home, Windows C:-J: drives, macOS /Users) looking for.env files, Solana wallet keys (id.json), and documents containing crypto-wallet keywords (metamask, phantom, keystore, mnemonic, seed, trezor, ledger); (2) collects shell history files (.bash_history,.zsh_history,.fish_history, PowerShell PSReadLine history); (3) on Windows and macOS, locates and archives the Telegram Desktop tdata directory (containing session cookies and authentication data). All harvested data is uploaded via HTTP POST to hxxps://backend-helper-service[.]vercel[.]app/api/v1 using multipart/form-data, batched in 4MB chunks. The C2 endpoint is a Vercel-hosted backend service.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "server-parket",
+        "purl": "pkg:npm/server-parket@3.8.1"
+      },
+      "versions": [
+        "3.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/server-parket/v/3.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5732"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T17:41:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "backend-helper-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://backend-helper-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

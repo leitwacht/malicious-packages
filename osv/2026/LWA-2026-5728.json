@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5728",
+  "aliases": [
+    "MAL-2026-6133"
+  ],
+  "modified": "2026-06-18T14:39:45Z",
+  "published": "2026-06-18T14:38:54Z",
+  "summary": "Malicious code in panrouter (npm)",
+  "details": "Panrouter@5.0.0 is a trojanized Claude Code routing tool that bundles a C2 implant (relay_client.cjs). When executed, it registers the machine as a botnet node on wss://jiuling[.]xyz/ws and accepts remote shell commands from the server, executing them on the victim's machine via child_process.execSync. The implant collects the hostname, platform, and Node.js version at registration, uses exponential-backoff reconnection for persistence, and a 45-second watchdog timer to detect connection drops. The server can also forward AI inference requests through the node. C2 endpoint: wss://jiuling[.]xyz/ws.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "panrouter",
+        "purl": "pkg:npm/panrouter@5.0.0"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/panrouter/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5728"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T14:38:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jiuling[.]xyz"
+        ],
+        "url_observed": [
+          "wss://jiuling[.]xyz/ws"
+        ]
+      }
+    }
+  }
+}

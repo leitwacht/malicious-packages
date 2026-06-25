@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5089",
+  "modified": "2026-06-13T17:05:08Z",
+  "published": "2026-06-13T17:03:00Z",
+  "summary": "Malicious code in seed-to-private (npm)",
+  "details": "Solana wallet clipboard-theft trojan. The install hook (node install.js) executes index.js which spawns a background process that continuously monitors the clipboard for BIP39 seed phrases (12/24 words) and private keys (hex/base58). Detected credentials are encrypted with AES-256-GCM and exfiltrated to a Telegram bot (hardcoded bot token and chat ID in lib/transport.js and lib/core.js) and optionally via HTTP POST to a configurable cloud endpoint. The payload installs persistence via Windows scheduled task (schtasks /Create /TN system_service /SC ONLOGON) and a Linux systemd unit. Activation is delayed 24-48 hours post-install to evade detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "seed-to-private",
+        "purl": "pkg:npm/seed-to-private@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/seed-to-private/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5089"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T17:03:00Z",
+      "indicators_observed": {}
+    }
+  }
+}

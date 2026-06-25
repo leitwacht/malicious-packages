@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5549",
+  "aliases": [
+    "MAL-2026-4737"
+  ],
+  "modified": "2026-06-16T09:44:00Z",
+  "published": "2026-06-16T09:42:14Z",
+  "summary": "Malicious code in your-unique-package-name1 (npm)",
+  "details": "The package injects a hidden iframe pointing to www[.]pendo[.]io/?builder.frameEditing=true and uses postMessage to inject JavaScript into the iframe's context. The injected payload fetches novus-api[.]pendo[.]io/pendo/app with the victim's Pendo session credentials, base64-encodes the API response, and exfiltrates it in 2000-byte chunks to webhook[.]site/ea1a1f2d-46e2-463a-a1c1-48c53846dff4 via Image beacon requests. This enables theft of Pendo application data and customer content from any browser that loads the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "your-unique-package-name1",
+        "purl": "pkg:npm/your-unique-package-name1@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/your-unique-package-name1/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5549"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T09:42:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "novus-api[.]pendo[.]io",
+          "webhook[.]site",
+          "www[.]pendo[.]io"
+        ],
+        "url_observed": [
+          "hxxps://novus-api[.]pendo[.]io/pendo/app",
+          "hxxps://webhook[.]site/ea1a1f2d-46e2-463a-a1c1-48c53846dff4",
+          "hxxps://webhook[.]site/ea1a1f2d-46e2-463a-a1c1-48c53846dff4?chunk=",
+          "hxxps://www[.]pendo[.]io/?builder[.]frameEditing=true"
+        ]
+      }
+    }
+  }
+}

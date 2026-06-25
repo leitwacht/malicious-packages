@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5249",
+  "modified": "2026-06-14T14:05:48Z",
+  "published": "2026-06-14T14:03:11Z",
+  "summary": "Malicious code in tailwindcss-animate-builder (npm)",
+  "details": "The package index.js fetches a second-stage payload from hxxps://bet[.]slotgambit[.]com/icons/104 over HTTPS and executes the response's 'credits' property via new Function() with full Node.js runtime access (require, process, Buffer, module), enabling arbitrary remote code execution on the installer's machine. The package is disguised as a Tailwind CSS forms builder but ships an unrelated dependency set including hardware fingerprinting (node-machine-id), local database access (better-sqlite3, sqlite3), Windows credential API access (@primno/dpapi), WebSocket support (socket[.]io-client), and an HTTP server (express) — providing a complete implant toolkit for the C2-delivered second stage.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-animate-builder",
+        "purl": "pkg:npm/tailwindcss-animate-builder@2.1.0"
+      },
+      "versions": [
+        "2.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-animate-builder/v/2.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5249"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T14:03:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bet[.]slotgambit[.]com"
+        ],
+        "url_observed": [
+          "hxxps://bet[.]slotgambit[.]com/icons/104"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5756",
+  "aliases": [
+    "MAL-2026-6216"
+  ],
+  "modified": "2026-06-19T08:59:14Z",
+  "published": "2026-06-19T08:22:17Z",
+  "summary": "Malicious code in aikaf668897 (npm)",
+  "details": "Package aikaf668897@1.0.3 poses as a string utility library but runs a reverse shell on install. The postinstall hook spawns a detached Node.js process executing scripts/shell.js, which opens a TCP reverse shell to 114[.]67[.]90[.]67:3333. On Linux it spawns /bin/sh -i and on Windows it spawns a hidden powershell.exe process. The shell automatically reconnects every 10 seconds on error or disconnect. The bundled index.js contains decoy string-manipulation functions (capitalize, truncate, camelCase, etc.) to conceal the payload. Package aikaf668897@1.0.3 is a string-utility library trojanized with a reverse shell. It exports legitimate string functions (capitalize, truncate, camelCase) from index.js as camouflage. However, its postinstall hook (scripts/postinstall.js) launches a detached child process running scripts/shell.js. shell.js opens a persistent TCP reverse shell to 114[.]67[.]90[.]67:3333 — on Unix it spawns /bin/sh -i; on Windows it spawns hidden powershell.exe. The shell's stdin/stdout/stderr are piped over the socket, giving the remote attacker interactive shell access. It auto-reconnects every 10 seconds on disconnect. Runtime testing confirmed outbound connections to 114[.]67[.]90[.]67:3333 with HTTP capture data exchanged.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "aikaf668897",
+        "purl": "pkg:npm/aikaf668897@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/aikaf668897/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5756"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T08:22:17Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "114[.]67[.]90[.]67:3333"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5230",
+  "modified": "2026-06-14T10:19:03Z",
+  "published": "2026-06-14T10:18:14Z",
+  "summary": "Malicious code in super-test-json (npm)",
+  "details": "Super-test-json@1.2.0 is a trojan disguised as a utility. Its README claims it outputs environment variables as base64-encoded JSON, but the binary entrypoint (bin/cli.js) also recursively renames every.py file found under the current working directory to.py-hacked (rendering them unusable) and executes 'killall python3' to terminate running Python processes. Additionally, the package harvests all environment variables (process.env) and dumps them as base64-encoded output, which can contain API keys, tokens, and credentials. No network exfiltration was observed — the sabotage and credential harvesting are local to the machine where the binary is executed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "super-test-json",
+        "purl": "pkg:npm/super-test-json@1.2.0"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/super-test-json/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5230"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T10:18:14Z",
+      "indicators_observed": {}
+    }
+  }
+}

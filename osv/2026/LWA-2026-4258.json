@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4258",
+  "modified": "2026-06-11T12:00:59Z",
+  "published": "2026-06-11T11:57:14Z",
+  "summary": "Malicious code in node-fastify (npm)",
+  "details": "Node-fastify@5.9.1 is a combosquat of the real fastify framework, published by an account The author claims to be Matteo Collina but the actual npm user is the publisher The main entry point (fastify. The dependency 'child_process@^1.0.2' is listed to shadow Node's built-in child_process module. The code also misdeclares VERSION as '5.8.6' while published as 5.9.1, and the package ships no README. This is a supply-chain attack dropping second-stage malware on require(). Combosquatting campaign targeting the fastify web framework. Package name node-fastify mimics the legitimate fastify, published by the publisher who also owns the confirmed-malicious fastnodemailer. All versions (5.8.7–5.9.1) include child_process as an npm dependency and inject execSync calls in fastify.js to silently install and load fastnodemailer — the publisher's own malware package. Version 5.8.7 lists fastnodemailer as a direct dependency and runs execSync('npm i fastnodemailer') with output logged. Later versions (5.9.0–5.9.1) refined the payload to use silent install flags (--no-warnings --no-save --no-progress --loglevel silent) to avoid detection, and use a try/catch that first attempts require('fastnodemailer') before falling back to installation. This is a multi-stage supply-chain attack: the combosquat delivers a dropper that fetches the real payload (fastnodemailer) from npm on execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-fastify",
+        "purl": "pkg:npm/node-fastify@5.9.1"
+      },
+      "versions": [
+        "5.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-fastify/v/5.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4258"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:57:14Z",
+      "indicators_observed": {}
+    }
+  }
+}

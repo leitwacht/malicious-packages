@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5758",
+  "modified": "2026-06-19T08:29:28Z",
+  "published": "2026-06-19T08:28:15Z",
+  "summary": "Malicious code in ts-big-ecro (npm)",
+  "details": "Ts-big-ecro@3.8.1 is a combosquat of the legitimate big.js library, published under the impersonating handle the publisher. It contains no malicious code itself but declares a hard dependency on server-parket@^3.8.1, a credential-stealing package. Upon npm install, server-parket's postinstall hook executes and performs broad system scanning: it enumerates home directories on Linux (/home/*, $HOME), drives C-J on Windows, and /Users/* on macOS, recursively searching for cryptocurrency wallet files (keywords: sol, eth, btc, metamask, phantom, mnemonic, seed, trezor, keystore, private_key),.env files containing API keys and tokens, and configuration files (id.json, config.toml). It also reads shell history from.bash_history,.zsh_history, fish_history, and PowerShell ConsoleHost_history.txt. On Windows and macOS it packs and exfiltrates Telegram Desktop's tdata directory containing session credentials. All harvested data is uploaded as multipart/form-data to backend-helper-service[.]vercel[.]app/api/v1. The package was published and rapidly unpublished to evade detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-big-ecro",
+        "purl": "pkg:npm/ts-big-ecro@3.8.1"
+      },
+      "versions": [
+        "3.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-big-ecro/v/3.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5758"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T08:28:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "backend-helper-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://backend-helper-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

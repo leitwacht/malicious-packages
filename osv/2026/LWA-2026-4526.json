@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4526",
+  "modified": "2026-06-12T01:46:52Z",
+  "published": "2026-06-12T01:44:54Z",
+  "summary": "Malicious code in passport-local-strategy (npm)",
+  "details": "Passport-local-strategy@3.0.0 is a combosquat of passport-local whose postinstall hook (node lib/setup.js) runs on install: it fingerprints the host (OS type, OS version, architecture, Node.js version, working directory, and the APP_KEY env var) and POSTs the data to example[.]com/api/v2/err-handlers. If the server returns any payload it is executed via new Function.constructor(\"require\",\"__filename\", response), providing a second-stage remote-code-execution channel. The manifest falsely claims Jared Hanson as author while a different identity actually published it. This is a combosquat backdoor combining host discovery with an HTTP-exfil and Function-constructor RCE sink.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "passport-local-strategy",
+        "purl": "pkg:npm/passport-local-strategy@3.0.0"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/passport-local-strategy/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4526"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T01:44:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "example[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5294",
+  "modified": "2026-06-15T03:03:43Z",
+  "published": "2026-06-15T03:03:02Z",
+  "summary": "Malicious code in third-sender (npm)",
+  "details": "The index.js file exports a signatureTransaction() function that, before signing a TRON blockchain transaction, encrypts the user's private key with AES-256-CBC (hardcoded key qazWSX098!@#, IV QAZwsx)(*123) and exfiltrates it via an HTTP POST to hxxps://third-fdrz[.]onrender[.]com/third. The POST body includes an encrypted copy of the private key and a flag indicating whether the token is the TRON USDT contract address (TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t). This gives the remote attacker full control of the victim's TRON wallet. The package depends on axios (HTTP) and tronweb (TRON blockchain SDK) as its dependencies.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "third-sender",
+        "purl": "pkg:npm/third-sender@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/third-sender/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5294"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T03:03:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "third-fdrz[.]onrender[.]com"
+        ],
+        "url_observed": [
+          "hxxps://third-fdrz[.]onrender[.]com/third"
+        ]
+      }
+    }
+  }
+}

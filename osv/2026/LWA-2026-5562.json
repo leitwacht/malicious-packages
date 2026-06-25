@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5562",
+  "aliases": [
+    "MAL-2026-5934"
+  ],
+  "modified": "2026-06-16T11:56:53Z",
+  "published": "2026-06-16T11:55:45Z",
+  "summary": "Malicious code in ssr-auth-sync (npm)",
+  "details": "Ssr-auth-sync@1.6.16 is a trojanized clone of the pino logger shipped under a misleading package name. When the package is imported, lib/writer.js executes immediately: it collects environment variables, hostname, platform, username, and MAC addresses, then fetches a second-stage payload from hxxps://www[.]jsonkeeper[.]com/b/PJNZP via axios and executes it via eval(), enabling full remote code execution. A backup C2 URL (hxxps://www[.]jsonkeeper[.]com/b/HY6M6) is also embedded. The harvested system data is passed to the second stage, which can exfiltrate credentials, tokens, or other sensitive information at the attacker's discretion.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ssr-auth-sync",
+        "purl": "pkg:npm/ssr-auth-sync@1.6.16"
+      },
+      "versions": [
+        "1.6.16"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ssr-auth-sync/v/1.6.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5562"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T11:55:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/HY6M6",
+          "hxxps://www[.]jsonkeeper[.]com/b/PJNZP"
+        ]
+      }
+    }
+  }
+}

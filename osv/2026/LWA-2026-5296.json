@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5296",
+  "aliases": [
+    "MAL-2026-5779"
+  ],
+  "modified": "2026-06-15T03:18:24Z",
+  "published": "2026-06-15T03:17:49Z",
+  "summary": "Malicious code in hemi-supply-cron (npm)",
+  "details": "The package hemi-supply-cron@999.0.0 runs a preinstall script (postinstall.js) on npm install. The script collects the hostname, current username, working directory, and environment variables matching secret-related keywords (key, secret, token, password, private, ssh, deploy, auth, api, rpc, wallet, sentry, docker, graph, slack, host) — including npm tokens, cloud API keys, and wallet credentials. The harvested data is exfiltrated via HTTPS POST to 185[.]130[.]46[.]35:8443/collect. Errors are silently suppressed. This is a dependency-confusion / version-squat package with a 1017-byte payload designed to steal installer credentials and secrets from CI and local environments.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hemi-supply-cron",
+        "purl": "pkg:npm/hemi-supply-cron@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hemi-supply-cron/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5296"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T03:17:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]130[.]46[.]35:8443"
+        ]
+      }
+    }
+  }
+}

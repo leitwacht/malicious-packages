@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4023",
+  "modified": "2026-06-10T22:13:07Z",
+  "published": "2026-06-10T22:12:05Z",
+  "summary": "Security-research / proof-of-concept package: mw-filesystem-events-nodream (npm)",
+  "details": "Mw-filesystem-events-nodream masquerades as a filesystem-events library but runs index.js via preinstall/install/postinstall hooks to exfiltrate system data through three channels to oastify[.]com: (1) a curl POST of /etc/passwd keyed by hostname, (2) an nslookup DNS exfil of base64-encoded package|hostname|user|platform, and (3) an HTTPS POST of a full system fingerprint (hostname, platform, release, arch, cwd, pid, node version, HOME, PWD, PATH) plus /etc/passwd contents. DNS hits and HTTP captures on 1ikh1ub9ug8oc3qubaud2d6zrqxhl79w[.]oastify[.]com carried the full payload including passwd file contents. The /etc/passwd theft goes well beyond a hostname-only beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mw-filesystem-events-nodream",
+        "purl": "pkg:npm/mw-filesystem-events-nodream@0.0.32"
+      },
+      "versions": [
+        "0.0.32"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mw-filesystem-events-nodream/v/0.0.32"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4023"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-10T22:12:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1ikh1ub9ug8oc3qubaud2d6zrqxhl79w[.]oastify[.]com",
+          "oastify[.]com"
+        ]
+      }
+    }
+  }
+}

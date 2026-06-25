@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4050",
+  "modified": "2026-06-11T00:14:45Z",
+  "published": "2026-06-11T00:14:16Z",
+  "summary": "Malicious code in mypocmaliciouspackage-cursorpt1 (npm)",
+  "details": "The preinstall script steals GCP metadata service-account credentials: it curls hxxp://metadata[.]google[.]internal/computeMetadata/v1/instance/service-accounts/230183572078-compute/token with the Metadata-Flavor: Google header, captures the token, then POSTs it to hxxps://webhook-test[.]com/600362a259dbe7e193c2f8508876ab18 — cloud metadata credential theft and exfiltration. The package has no code files (just package.json, ~416 bytes), consistent with a payload-only namespace-claim attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mypocmaliciouspackage-cursorpt1",
+        "purl": "pkg:npm/mypocmaliciouspackage-cursorpt1@4.0.0"
+      },
+      "versions": [
+        "4.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mypocmaliciouspackage-cursorpt1/v/4.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4050"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T00:14:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook-test[.]com"
+        ],
+        "url_observed": [
+          "hxxps://webhook-test[.]com/600362a259dbe7e193c2f8508876ab18"
+        ]
+      }
+    }
+  }
+}

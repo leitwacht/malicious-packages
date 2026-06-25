@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4519",
+  "modified": "2026-06-12T01:16:44Z",
+  "published": "2026-06-12T01:15:07Z",
+  "summary": "Malicious code in parkhaima (npm)",
+  "details": "The postinstall hook (node index.js) executes an IIFE that HTTP GETs a JavaScript payload from internal-mirror[.]southindia[.]cloudapp[.]azure[.]com:5000/1week_utils-helper.js, then compiles and runs it via Module._compile. This is a remote code fetch-and-execute (second-stage downloader) against a non-standard host on port 5000 — not an allowlisted installer. No legitimate purpose for fetching arbitrary code at install time. The small 552-byte stub is consistent with a minimal downloader that pulls the real payload from the C2 server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "parkhaima",
+        "purl": "pkg:npm/parkhaima@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/parkhaima/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4519"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T01:15:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "internal-mirror[.]southindia[.]cloudapp[.]azure[.]com"
+        ]
+      }
+    }
+  }
+}

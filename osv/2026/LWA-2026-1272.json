@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1272",
+  "modified": "2026-05-29T23:58:06Z",
+  "published": "2026-05-29T23:56:47Z",
+  "summary": "Malicious code in alya-baileys (npm)",
+  "details": "Trojanized WhatsApp (Baileys) fork: alya-baileys@1.8.35. (1) alya-decode.js exports AES-256-CBC decryption that derives keys from \"socket-1.7.0\" via a SHA-512-\u003eSHA-256-\u003eMD5 chain, used to decrypt URLs pointing to raw[.]githubusercontent[.]com. (2) newsletter.js:92-101 decrypts an encrypted URL at runtime via axios.get and fetches a remote config controlling WhatsApp auto-follow/auto-react botnet behaviour. (3) generics.js:280 fetches hxxps://raw[.]githubusercontent[.]com/ibradecode/socketon/master/lib/Defaults/baileys-version[.]json, an ibradecode/socketon C2 repo unrelated to the claimed diszx-creator/Baileys-alya origin. (4) Evasion: every core file imports the decryption module under 4-5 aliases (ibra_decode_21, ibraDecodePalsuMungkin, _ibra_decode_v21, ibra_decode_asli_nih). Remote code execution via a decrypted C2 URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alya-baileys",
+        "purl": "pkg:npm/alya-baileys@1.8.35"
+      },
+      "versions": [
+        "1.8.35"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alya-baileys/v/1.8.35"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1272"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T23:56:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/ibradecode/socketon/master/lib/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

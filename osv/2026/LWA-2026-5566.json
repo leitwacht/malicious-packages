@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5566",
+  "aliases": [
+    "MAL-2026-5906"
+  ],
+  "modified": "2026-06-16T12:47:01Z",
+  "published": "2026-06-16T12:46:14Z",
+  "summary": "Malicious code in chai-plugin-kit (npm)",
+  "details": "Chai-plugin-kit is a combosquat of the real chai assertion library. Its index.js loads a cloned copy of chai but also spawns a detached background process that executes an obfuscated second-stage loader (lib/chai/utils/addAssertion.js). At require-time, the loader makes an HTTPS GET request to senpad[.]bounceme[.]net:6285/api/x-handler with a key parameter (P$4vNc8!Xy2^Lg7@Tr9), fetches arbitrary code from the C2 server, and executes it via new Function() with the full require() scope. The real chai source code is shipped verbatim as a camouflage layer; the malicious payload is in index.js and lib/chai/utils/addAssertion.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-plugin-kit",
+        "purl": "pkg:npm/chai-plugin-kit@5.8.1"
+      },
+      "versions": [
+        "5.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-plugin-kit/v/5.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5566"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T12:46:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "senpad[.]bounceme[.]net"
+        ],
+        "url_observed": [
+          "hxxps://senpad[.]bounceme[.]net:6285/api/x-handler"
+        ]
+      }
+    }
+  }
+}

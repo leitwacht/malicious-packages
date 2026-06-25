@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1315",
+  "modified": "2026-05-30T06:42:51Z",
+  "published": "2026-05-30T06:41:05Z",
+  "summary": "Malicious code in apache-httpclient4 (npm)",
+  "details": "A postinstall hook (node src/postinstall.js) spawns src/main.js detached. main.js performs broad host reconnaissance (OS type/release/version, arch, hostname, uptime, username/homedir/shell, total/free memory, CPU count/model, screen resolution via xrandr/wmic/system_profiler, locale, a 'ps aux'/'tasklist' process inventory with browser/office detection, and TTY status) and writes it as JSON to a raw TCP socket at 8[.]152[.]163[.]60:8058. C2/IOC: 8[.]152[.]163[.]60:8058 (raw TCP). The postinstall path string is garbled, so the detached launch may fail, but the exfil payload is intact.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "apache-httpclient4",
+        "purl": "pkg:npm/apache-httpclient4@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/apache-httpclient4/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1315"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-30T06:41:05Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "8[.]152[.]163[.]60:8058"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5470",
+  "aliases": [
+    "MAL-2026-4723"
+  ],
+  "modified": "2026-06-16T00:21:50Z",
+  "published": "2026-06-16T00:19:07Z",
+  "summary": "Malicious code in weavedb-sdk (npm)",
+  "details": "Package weavedb-sdk@0.45.3 is a trojanized clone of the legitimate WeaveDB SDK. It ships a 976KB UPX-packed ELF binary at `./tools/setup` executed via the `preinstall` lifecycle hook. The binary is a Mini Shai-Hulud worm variant: upon install it harvests environment variables including NPM_TOKEN from the victim's system and uses them to self-propagate by republishing malicious versions to other packages the victim maintains. The binary communicated with Cloudflare-protected endpoints (104.16.x.x range) during execution. The package was officially deprecated by npm with the message 'COMPROMISED via Mini Shai-Hulud worm (TeamPCP).' The package also pulls in known compromised dependencies (weavedb-base, weavedb-contracts) as secondary payload delivery mechanisms.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "weavedb-sdk",
+        "purl": "pkg:npm/weavedb-sdk@0.45.3"
+      },
+      "versions": [
+        "0.45.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/weavedb-sdk/v/0.45.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5470"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T00:19:07Z",
+      "indicators_observed": {}
+    }
+  }
+}

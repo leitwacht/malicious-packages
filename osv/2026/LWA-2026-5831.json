@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5831",
+  "modified": "2026-06-22T09:28:06Z",
+  "published": "2026-06-22T09:26:20Z",
+  "summary": "Malicious code in @lexborn/viem (npm)",
+  "details": "@lexborn/viem is a trojanized clone of the legitimate viem Ethereum library. The package replicates the real viem's source code and metadata (pointing to the official wevm/viem repository) but is published by an unrelated attacker. The package substitutes the 'isows' WebSocket dependency with the attacker-controlled @lexborn/isows package. When a developer uses this package's WebSocket transport (createPublicClient or createWalletClient with webSocket() transport), all Ethereum RPC WebSocket connections are routed through the attacker's package, which can intercept, modify, or exfiltrate transaction data, wallet interactions, and private keys. No install script is used — the attack activates at runtime when the WebSocket transport is imported. Affected dependency: @lexborn/isows@1.0.7 replaces the legitimate isows package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@lexborn/viem",
+        "purl": "pkg:npm/%40lexborn/viem@2.53.2"
+      },
+      "versions": [
+        "2.53.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@lexborn/viem/v/2.53.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5831"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T09:26:20Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5636",
+  "aliases": [
+    "MAL-2026-5983"
+  ],
+  "modified": "2026-06-17T07:36:01Z",
+  "published": "2026-06-17T03:47:00Z",
+  "summary": "Malicious code in metrics-probe-dc85 (npm)",
+  "details": "This npm package executes an embedded script (run.js) at both preinstall and postinstall, so merely installing it triggers the payload. It is a cross-platform credential and secret stealer that beacons to a hardcoded Cloudflare tunnel command-and-control host over HTTPS. On Linux/CI it harvests environment variables and CI/CD secrets (GITHUB_TOKEN, NPM_TOKEN, GitHub Actions OIDC and runtime tokens), AWS credentials from the environment, and ECS task-role IAM credentials retrieved from the container credentials endpoint (169[.]254[.]170[.]2); it stats SSH private keys and authorized_keys, gathers host/network/container fingerprints, and performs container-escape reconnaissance (mounts, capabilities, docker socket, entrypoint script). It then abuses the stolen ECS role via boto3 to enumerate DynamoDB tables and write a new item. On Windows it attempts a fodhelper UAC bypass to run a scheduled task as SYSTEM and exfiltrate the elevated identity, and overwrites a security-finding XML file to tamper with analysis verdicts. All collected data is sent to the external C2 endpoint. Despite description text claiming to be an authorized security-research probe, the behaviour is indistinguishable from live malware and runs automatically on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "metrics-probe-dc85",
+        "purl": "pkg:npm/metrics-probe-dc85@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/metrics-probe-dc85/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5636"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T03:47:00Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5547",
+  "modified": "2026-06-16T09:28:49Z",
+  "published": "2026-06-16T09:27:09Z",
+  "summary": "Malicious code in yellow-discord-lookup-v1 (npm)",
+  "details": "The package index.js is heavily obfuscated with a custom eval/decodeURI/XOR decoding scheme and anti-tamper protection that hides its actual behaviour. The publisher previously published a malicious version of this same package name. At runtime the obfuscated code decodes and evaluates a hidden payload, which is consistent with C2 beaconing, data exfiltration, or Discord token harvesting — the package claims to be a Discord user/application/guild info lookup tool but its code is fully obfuscated to prevent inspection of what it actually does with the network calls it makes (via axios dependency). No install hook required — execution happens on require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "yellow-discord-lookup-v1",
+        "purl": "pkg:npm/yellow-discord-lookup-v1@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/yellow-discord-lookup-v1/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5547"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T09:27:09Z",
+      "indicators_observed": {}
+    }
+  }
+}

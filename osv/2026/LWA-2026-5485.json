@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5485",
+  "aliases": [
+    "MAL-2026-5877"
+  ],
+  "modified": "2026-06-16T02:35:20Z",
+  "published": "2026-06-16T02:33:43Z",
+  "summary": "Malicious code in check-ulid (npm)",
+  "details": "Check-ulid@3.0.2 is a trojanized clone of the legitimate ulid ULID-generation package. On install, a postinstall hook runs dist/node/utils.js, which spawns a hidden background process, copies the 962KB implant payload.js to a persistent directory named MirosoftSystem64/ under the user's local data folder, and installs OS-level persistence: a systemd user service on Linux, a.desktop autostart file on desktop Linux, a detached launch on macOS, and a scheduled task plus HKCU\\Run registry key on Windows. The installer evades sandboxes by checking that the system has more than 4 CPU cores. The persistent payload scans for credentials across browsers (Chrome, Edge, Brave, Firefox, Opera, Vivaldi, Yandex, CentBrowser, CocCoc, Chromium),.env files, SSH private keys, Telegram Desktop session data, FileZilla configuration, Docker config, and AWS credentials. It installs a keylogger that POSTs captured keystrokes to the C2 at /api/validate/keyboard-events. The C2 server URLs are XOR-obfuscated (key bytes 90,60,126,18,159,75,109,138) and stored in the payload's embedded config. Exfiltrated data is sent via WebSocket and HTTP POST to the decoded C2 endpoints in batches of credential files, JSON files, document files, and browser credential databases.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "check-ulid",
+        "purl": "pkg:npm/check-ulid@3.0.2"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/check-ulid/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5485"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T02:33:43Z",
+      "indicators_observed": {
+        "url_observed": [
+          "/api/screenshot/hf-error",
+          "/api/validate/keyboard-events",
+          "/api/validate/system-info",
+          "/api/validate/tdata/upload"
+        ]
+      }
+    }
+  }
+}

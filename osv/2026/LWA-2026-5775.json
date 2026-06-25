@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5775",
+  "aliases": [
+    "MAL-2026-6367"
+  ],
+  "modified": "2026-06-19T16:19:58Z",
+  "published": "2026-06-19T16:19:17Z",
+  "summary": "Malicious code in dbt-language-server (npm)",
+  "details": "Dbt-language-server@1.0.1 is a combosquat (the legitimate dbt-language-server is an LSP tool for the dbt ecosystem). The package's preinstall script runs index.js automatically on npm install, which collects system reconnaissance data — hostname, home directory, username, DNS server list, the full package.json, /etc/passwd and /etc/hosts contents — and exfiltrates it via HTTPS POST to p9z268f2xv8co3wtlpujplris9y2msah[.]oastify[.]com (a Burp Collaborator / OAST blind exfiltration endpoint). The package contains no actual language-server functionality; it exists only to harvest system data on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dbt-language-server",
+        "purl": "pkg:npm/dbt-language-server@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dbt-language-server/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5775"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T16:19:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "p9z268f2xv8co3wtlpujplris9y2msah[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxps://p9z268f2xv8co3wtlpujplris9y2msah[.]oastify[.]com/"
+        ]
+      }
+    }
+  }
+}

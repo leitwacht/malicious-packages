@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4685",
+  "modified": "2026-06-12T12:01:05Z",
+  "published": "2026-06-12T11:59:15Z",
+  "summary": "Malicious code in poxios-chain (npm)",
+  "details": "A remote code execution dropper. The exported middleware spawns a detached child Node.js process (detached:true, stdio:ignore, child.unref()) that runs lib/caller.js, an IIFE which fetches a second-stage payload from jsonkeeper[.]com/b/OIQ1E via axios and executes it using new Function.constructor(\"require\", response.data.cookie)(require), giving the attacker full Node.js require() access. The package is padded with Pino logger source code and documentation as camouflage, and the name typosquats axios-related naming.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "poxios-chain",
+        "purl": "pkg:npm/poxios-chain@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/poxios-chain/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4685"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T11:59:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

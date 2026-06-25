@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5943",
+  "aliases": [
+    "MAL-2026-6357"
+  ],
+  "modified": "2026-06-23T20:19:58Z",
+  "published": "2026-06-23T20:19:16Z",
+  "summary": "Malicious code in theme-color-picker (npm)",
+  "details": "Combosquat package \"theme-color-picker\" (masquerading as a legitimate chart-analysis library) deploys a trojan via its install hook. On installation, lib/chart-loader.js runs and downloads an encrypted payload from hxxps://github[.]com/Analysis-Chart/analysis-chart/releases/download/v1/payload[.]bin[.]enc. The payload is XOR-decrypted (single-byte key 0x51) and base64-decoded into a DLL (PE file, MZ header validated). The DLL is written to %USERPROFILE%/AppData/Roaming/Microsoft/Windows/ under a random hex filename (crypto.randomBytes(8).hex + '.dll'), then executed via rundll32.exe (detached, hidden window). Persistence is achieved through a scheduled task named \"WindowsUpdateService\" created via schtasks with /sc onlogon /delay 0005:00 /ru %USERNAME% /rl HIGHEST. The installer then self-destructs: it spawns a detached Node process that deletes the package folder and removes the dependency entry from the parent project's package.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "theme-color-picker",
+        "purl": "pkg:npm/theme-color-picker@2.0.28"
+      },
+      "versions": [
+        "2.0.28"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/theme-color-picker/v/2.0.28"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5943"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T20:19:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/Analysis-Chart/analysis-chart/releases/download/v1/payload[.]bin[.]enc"
+        ]
+      }
+    }
+  }
+}

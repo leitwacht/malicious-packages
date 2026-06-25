@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5766",
+  "aliases": [
+    "MAL-2026-6341"
+  ],
+  "modified": "2026-06-19T13:11:52Z",
+  "published": "2026-06-19T13:11:01Z",
+  "summary": "Malicious code in react-check-error (npm)",
+  "details": "React-check-error@2.1.6 is a typosquat of the legitimate check-error utility by the chai.js project. On require(), it decrypts a hardcoded AES-256-CBC ciphertext using a derived key and IV, revealing hxxps://jsonkeeper[.]com/b/JOCBY. It then fetches that URL over HTTPS, extracts the \"cookie\" field from the JSON response, and passes it to new Function('require', …)(require) to execute arbitrary remote code. DNS queries and HTTPS connections to jsonkeeper[.]com were confirmed at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-check-error",
+        "purl": "pkg:npm/react-check-error@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-check-error/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5766"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T13:11:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/JOCBY"
+        ]
+      }
+    }
+  }
+}

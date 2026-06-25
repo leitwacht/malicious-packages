@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5511",
+  "modified": "2026-06-16T04:29:21Z",
+  "published": "2026-06-16T04:28:29Z",
+  "summary": "Malicious code in winutils-fetch (npm)",
+  "details": "Package winutils-fetch@2.0.0 is a trojanized combosquat impersonating a Windows-utilities naming pattern. Its index.js exports a harmless figlet ASCII-art function (decoy). The real payload is in the postinstall hook and dependency chain: on install, the script runs \"npm i win-utils-helper\" which pulls in a known-malware package. The package also declares a self-dependency (winutils-fetch@^1.0.0) as a confusion marker. Installing this package will automatically download and install the win-utils-helper malware via the npm lifecycle.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "winutils-fetch",
+        "purl": "pkg:npm/winutils-fetch@2.0.0"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/winutils-fetch/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5511"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T04:28:29Z",
+      "indicators_observed": {}
+    }
+  }
+}

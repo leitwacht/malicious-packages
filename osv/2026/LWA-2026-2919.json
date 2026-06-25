@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2919",
+  "aliases": [
+    "MAL-2026-5860"
+  ],
+  "modified": "2026-06-08T05:58:47Z",
+  "published": "2026-06-07T23:03:40Z",
+  "summary": "Malicious code in solana-js-client (npm)",
+  "details": "CRITICAL: solana-js-client@1.0.0 is a combosquat containing a full-featured Telegram C2 RAT injected at the bottom of the built bundles (lib/index.cjs.js:11317-11351, lib/index.esm.js:11212-11246). The payload: (1) steals Solana wallet keys ~/.config/solana/id.json, SSH keys, AWS credentials,.env files; (2) filters environment variables for KEY/SECRET/MNEMONIC/TOKEN/SOLANA/GITHUB/NPM/AWS and exfils; (3) rewrites Solana CLI config.yml to redirect all RPC traffic to attacker server 104[.]239[.]66[.]223:8899; (4) exfils via Telegram bot [redacted-credential] to chat 8346336575; (5) enables full remote shell via Telegram commands (/keys, /ssh, /env, /wallet, /sh, /die); (6) installs cron persistence @reboot via /tmp/.csf6; (7) has anti-analysis: skips if public IP equals 104[.]239[.]66[.]223 (attacker's own) and avoids VPS/server hostnames. Singleton guard (global.___SF___) prevents re-execution. src/ directory contains clean TypeScript — malicious code only in built bundles, indicating build-time injection. Token-theft markers present (Solana wallet keys, AWS creds, SSH keys,.env, env vars with KEY/SECRET/TOKEN patterns, NPM/GITHUB/AWS). This is supply-chain credential theft malware with Telegram C2 backdoor. Cannot be dismissed under any criteria.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solana-js-client",
+        "purl": "pkg:npm/solana-js-client@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solana-js-client/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2919"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T23:03:40Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "104[.]239[.]66[.]223",
+          "104[.]239[.]66[.]223:8899"
+        ]
+      }
+    }
+  }
+}

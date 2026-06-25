@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5200",
+  "modified": "2026-06-14T08:33:57Z",
+  "published": "2026-06-14T08:32:58Z",
+  "summary": "Malicious code in string-utils-kit (npm)",
+  "details": "Package string-utils-kit@1.0.0 masquerades as a string utility library but executes a hidden binary on install. The postinstall hook (bin/setup.js) spawns assets/setup-helper.exe (a 9.84MB Windows PE executable) with detached:true, windowsHide:true, and child.unref() — launching it silently in the background without the installer's knowledge. The library code in dist/index.js is a decoy; the real payload is the bundled executable.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "string-utils-kit",
+        "purl": "pkg:npm/string-utils-kit@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/string-utils-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5200"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T08:32:58Z",
+      "indicators_observed": {}
+    }
+  }
+}

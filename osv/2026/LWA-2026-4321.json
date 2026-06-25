@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4321",
+  "aliases": [
+    "MAL-2026-5689"
+  ],
+  "modified": "2026-06-11T14:46:35Z",
+  "published": "2026-06-11T14:46:05Z",
+  "summary": "Malicious code in ecto-rust-read-f3a9c1 (npm)",
+  "details": "Postinstall.js deploys a multi-stage implant on the victim's system. The package ships only a stub index.js (module.exports={}); its entire purpose is the postinstall hook. The hook first runs isRealTarget() to evade sandboxes — it exits immediately if cwd contains /tmp/ (common analysis sandboxes) or hostname contains hetzner/nijin/ec2.internal — and only proceeds on CI/CD-like hosts (hex hostname in /app/ or registry pointing to nexus.local/verdaccio). Once the guard passes, it: (1) writes a reverse-shell script to /usr/local/bin/.spectral-shell that connects back to snnkj-159-153-180-200[.]run[.]pinggy-free[.]link:38493 via bash /dev/tcp; (2) installs a root cron job to /etc/cron.d/spectral-shell (with user-crontab fallback) so the shell reconnects every minute; (3) starts the cron daemon if not running; (4) spawns the reverse shell immediately as a detached background process; (5) sends an HTTP PUT beacon to /api/modules/ECT-472839 at multiple C2 endpoints including 154[.]57[.]164[.]71:31289, registering the infection with the operator.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ecto-rust-read-f3a9c1",
+        "purl": "pkg:npm/ecto-rust-read-f3a9c1@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ecto-rust-read-f3a9c1/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4321"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T14:46:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "snnkj-159-153-180-200[.]run[.]pinggy-free[.]link"
+        ],
+        "ip_observed": [
+          "154[.]57[.]164[.]71:31289"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4947",
+  "modified": "2026-06-13T00:25:09Z",
+  "published": "2026-06-13T00:23:26Z",
+  "summary": "Malicious code in react-next-dom (npm)",
+  "details": "React-next-dom@1.1.7 is a remote-code-execution trojan. It spawns a detached child process (index.js spawns caller.js with detached:true) that fetches arbitrary JavaScript from jsonkeeper[.]com/b/XRGF3 via axios, then executes it with full Node require access through new Function.constructor('require', payload). The target URL and request headers are base64-obfuscated in a fake process.env block. A 5-attempt retry loop ensures payload delivery survives transient network issues. The package name combosquats React/Next.js branding; publisher uses a temp-mail domain (ellbit[.]com); description is generic copy-paste unrelated to the code. The package depends on axios (the C2 transport) and sqlite3 (whose native build failure caused the install to fail before the payload could run — the malicious code in caller.js is otherwise fully wired).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-next-dom",
+        "purl": "pkg:npm/react-next-dom@1.1.7"
+      },
+      "versions": [
+        "1.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-next-dom/v/1.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4947"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T00:23:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ellbit[.]com",
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4957",
+  "modified": "2026-06-13T01:39:25Z",
+  "published": "2026-06-13T01:38:15Z",
+  "summary": "Malicious code in react-svg-chunk (npm)",
+  "details": "Package \"react-svg-chunk\" pretends to be a React SVG helper but is a C2-controlled remote code execution loader. Its `getPlugin()` function (exported as a public API) fetches JavaScript payloads from `bet[.]slotgambit[.]com/icons/101` and executes them via `new Function(...)` with full Node.js capability (`require`, `process`, `Buffer`, etc.) — making it a remote-access trojan controlled by the attacker's server. The dependency list directly supports credential theft and exfiltration: `@primno/dpapi` (Windows DPAPI credential decryption), `node-machine-id` (machine fingerprinting), `better-sqlite3` (local data store), `axios` + `socket[.]io-client` + `request` (multiple exfiltration channels). The package additionally ships a real OpenSSH ED25519 private key (`package/gitlab` with matching `package/gitlab.pub`) belonging to `testm@DESKTOP-PO28IS1`, suggesting the attacker leaked their own SSH credential. No lifecycle hook is needed — the malware activates when a victim imports the package and calls any function that triggers the C2 fetch-and-eval chain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-svg-chunk",
+        "purl": "pkg:npm/react-svg-chunk@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-svg-chunk/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4957"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T01:38:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bet[.]slotgambit[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5714",
+  "modified": "2026-06-18T11:22:46Z",
+  "published": "2026-06-18T11:22:01Z",
+  "summary": "Malicious code in @dxcl/customer-js (npm)",
+  "details": "@dxcl/customer-js@99.99.99 is a version-squatting dependency-confusion package with a malicious lifecycle hook. The package ships an empty stub (module.exports = {}) with a fake README, but both its `preinstall` and `install` scripts execute system reconnaissance and exfiltration at install time: they collect the installer's username, hostname, current working directory, and package name, base64-encode the assembled string, and send it as an HTTPS request path to hxxps://\u003cpackage-name\u003e.callback[.]m0chan[.]co[.]uk/\u003cbase64-data\u003e, and also perform a DNS lookup (nslookup) to the same host as a secondary exfiltration channel. The version 99.99.99 is set high to win automatic resolution over legitimate packages in semver ranges.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dxcl/customer-js",
+        "purl": "pkg:npm/%40dxcl/customer-js@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dxcl/customer-js/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5714"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-18T11:22:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "callback[.]m0chan[.]co[.]uk"
+        ]
+      }
+    }
+  }
+}

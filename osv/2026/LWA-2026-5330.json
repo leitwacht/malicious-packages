@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5330",
+  "modified": "2026-06-15T07:36:47Z",
+  "published": "2026-06-15T07:35:42Z",
+  "summary": "Malicious code in txs-data (npm)",
+  "details": "Package txs-data@1.0.1 masquerades as an e-commerce transaction-data generator but contains a hidden second-stage dropper. The index.js exports a function that reads a companion file (test_address_list.js), removes a 0x prefix from each line, base64-decodes the result, and evals the decoded JavaScript. The decoded payload decodes a base64-embedded C2 URL pointing to dct0per[.]com/app/aws=, appends /bag.php, downloads the remote script via axios into the system temp directory (tmp_20260202), and executes it as a detached Python process using python3/python. The payload runs automatically whenever the exported getTransactions() function is called.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "txs-data",
+        "purl": "pkg:npm/txs-data@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/txs-data/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5330"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T07:35:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dct0per[.]com"
+        ],
+        "url_observed": [
+          "hxxps://dct0per[.]com/app/aws=/bag[.]php"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5155",
+  "modified": "2026-06-13T23:49:30Z",
+  "published": "2026-06-13T23:45:42Z",
+  "summary": "Malicious code in codyx-ai (npm)",
+  "details": "Package codyx-ai@1.14.42 is a bootstrap for the \"Codyx\" coding-agent CLI. Its postinstall script resolves a platform-specific native binary from optionalDependencies (packages named codyx-ai-{platform}-{arch} covering 12 variants across linux, darwin, and windows on x64 and arm64) and writes it to a hardlinked location under bin/. On every CLI invocation via the codyx or cody commands, a launcher script spawns that binary, forwarding the user's command-line arguments. The JavaScript bootstrap code does not itself exfiltrate data or make network calls; the threat is in the platform-specific binary packages that are installed alongside it and executed on each run. When invoked, the native binary executes on the user's system with the full privileges of the calling user, inheriting stdin/stdout/stderr.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "codyx-ai",
+        "purl": "pkg:npm/codyx-ai@1.14.42"
+      },
+      "versions": [
+        "1.14.42"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/codyx-ai/v/1.14.42"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5155"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T23:45:42Z",
+      "indicators_observed": {}
+    }
+  }
+}

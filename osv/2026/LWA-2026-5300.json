@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5300",
+  "modified": "2026-06-15T04:35:04Z",
+  "published": "2026-06-15T04:32:52Z",
+  "summary": "Malicious code in toast-react-slider (npm)",
+  "details": "Toast-react-slider@1.0.0 is a combosquat of the rc-slider React component. Its preinstall script runs an obfuscated JavaScript downloader (package/comin.js) that targets Windows systems. The downloader checks if os.type() returns 'Windows_NT', then uses curl to download a payload from a remote URL (constructed as hxxp://127[.]0[.]{address}/download[.]asp?token=2810) via exec(). After downloading, it verifies the file size against the server's reported size, executes the downloaded payload, and deletes it. The package also bundles a native Windows PE DLL at source/StartUpNode.dll (194560 bytes, internally named StartUpDll.dll) which imports CreateProcessW, SHGetFolderPathW, WriteFile, and CreateThread — capabilities consistent with file deployment and process execution. The legitimate rc-slider and rc-util source code is included as camouflage.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "toast-react-slider",
+        "purl": "pkg:npm/toast-react-slider@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/toast-react-slider/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5300"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T04:32:52Z",
+      "indicators_observed": {}
+    }
+  }
+}

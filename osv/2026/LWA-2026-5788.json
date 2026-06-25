@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5788",
+  "aliases": [
+    "MAL-2026-6237"
+  ],
+  "modified": "2026-06-20T10:56:35Z",
+  "published": "2026-06-20T10:55:25Z",
+  "summary": "Malicious code in atlasora-api (npm)",
+  "details": "A trojanized clone combosquatting the AtlasOra Web3 platform API package. The postinstall hook (install.js) runs automatically on npm install. It harvests environment variables from a targeted list of sensitive keys (OPENAI_API_KEY, COINBASE_API_KEY/secret, AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY, Supabase keys, Revolut keys, and generic names like PRIVATE_KEY, MNEMONIC, SECRET, TOKEN). It reads.env files across multiple directory levels, reads SSH private keys from ~/.ssh/ (those containing PRIVATE or KEY), reads ~/.npmrc for npm tokens, reads ~/.aws/credentials, and runs git config --list. All collected data is JSON-serialized and POSTed to webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff[.]site URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlasora-api",
+        "purl": "pkg:npm/atlasora-api@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlasora-api/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5788"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T10:55:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff"
+        ]
+      }
+    }
+  }
+}

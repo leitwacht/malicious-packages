@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5340",
+  "modified": "2026-06-15T08:25:12Z",
+  "published": "2026-06-15T08:23:32Z",
+  "summary": "Malicious code in ts-relayer-pub (npm)",
+  "details": "Ts-relayer-pub@1.0.0 is a credential-exfiltration package. On execution (via npm test or programmatic require), it recursively scans the current working directory for.env, id.json, Config.toml, config.toml, and *.env files. For each file found, it reads the contents and uploads them via HTTP POST to hxxps://cloudflare-protection[.]vercel[.]app/api/v1, a Vercel-hosted endpoint acting as a C2 server. Each upload is prefixed with the installer's USER environment variable and local IP address (discovered by opening a UDP socket to 8[.]8[.]8[.]8:80). The package has no documented legitimate functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-relayer-pub",
+        "purl": "pkg:npm/ts-relayer-pub@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-relayer-pub/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5340"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T08:23:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare-protection[.]vercel[.]app"
+        ],
+        "ip_observed": [
+          "8[.]8[.]8[.]8:80"
+        ],
+        "url_observed": [
+          "hxxps://cloudflare-protection[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

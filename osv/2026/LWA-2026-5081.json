@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5081",
+  "modified": "2026-06-13T14:48:00Z",
+  "published": "2026-06-13T14:46:02Z",
+  "summary": "Malicious code in scraping-master (npm)",
+  "details": "Scraping-master is a trojanized web-scraping npm package containing a remote-access backdoor. When the library's init() function is called, it fingerprints the infected machine by fetching the public IP via api[.]ipify[.]org and collecting hostname and platform via Node.js os module, then exfiltrates this data to a Supabase project at yjxmnjjhvoekriysugor[.]supabase[.]co. It spawns a persistent bash (or powershell on Windows) shell via child_process.spawn() and subscribes to the Supabase Realtime channel 'licenses:changes'. An attacker can broadcast arbitrary shell commands as 'message' events on this channel, which are piped to the spawned shell's stdin for execution. Command output is exfiltrated back to the attacker through 'response' broadcast events on the same channel. The backdoor also supports 'ping'/'pong' keepalive and 'close' events. The malicious code lives in package/license.js; the main entry point at dist/browser.js is heavily obfuscated (webpack-obfuscator). Available across versions 0.1.4 through 0.1.11.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "scraping-master",
+        "purl": "pkg:npm/scraping-master@0.1.11"
+      },
+      "versions": [
+        "0.1.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/scraping-master/v/0.1.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5081"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T14:46:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "yjxmnjjhvoekriysugor[.]supabase[.]co"
+        ]
+      }
+    }
+  }
+}

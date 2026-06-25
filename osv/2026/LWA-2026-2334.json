@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2334",
+  "modified": "2026-06-01T15:28:00Z",
+  "published": "2026-06-01T15:22:45Z",
+  "summary": "Malicious code in @gbrlxvi/ts-form-utils (npm)",
+  "details": "The main entry index.js masquerades as a form-validation utility but contains an environment-gated payload loader. It checks os.hostname() against analysis-environment names (devbox, ubuntu-fc-uvm, substrings devbox/fc-uvm), the presence of /app/.git, or the JULES_SESSION_ID env var; only when one matches does it activate. It then reads an encrypted blob at lib/.perf.dat, decrypts it with AES-256-CBC using a hardcoded key (e7ddf30bc2fb3dfda4685e3d78b6c0799c81e7d4171e7a933f9ffbadf0dc811d) and the first 16 bytes of the file as IV, and executes the decrypted JavaScript via new Function(\"require\", code)(require), setting process.env._PERF_PKG_DIR to the package directory. require strings are split-concatenated (e.g. fs, crypto, path) to evade static detection. No plaintext network IOC is present in the loader; the executed payload is the encrypted lib/.perf.dat blob.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@gbrlxvi/ts-form-utils",
+        "purl": "pkg:npm/%40gbrlxvi/ts-form-utils@2.1.1"
+      },
+      "versions": [
+        "2.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@gbrlxvi/ts-form-utils/v/2.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2334"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T15:22:45Z",
+      "indicators_observed": {
+        "sha256_observed": [
+          "e7ddf30bc2fb3dfda4685e3d78b6c0799c81e7d4171e7a933f9ffbadf0dc811d"
+        ]
+      }
+    }
+  }
+}

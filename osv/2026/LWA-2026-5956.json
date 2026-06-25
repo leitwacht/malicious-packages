@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5956",
+  "aliases": [
+    "MAL-2026-6445"
+  ],
+  "modified": "2026-06-25T01:57:44Z",
+  "published": "2026-06-25T01:55:46Z",
+  "summary": "Malicious code in base58-core (npm)",
+  "details": "Base58-core@1.0.1 is a trojanized Base58 encoding library that acts as a cryptocurrency clipboard hijacker. On module load, it starts a 2.5-second clipboard monitor (after a 72-hour delay to evade detection) that scans for Bitcoin (bc1, 1, 3 prefix), Ethereum (0x…), and Solana addresses plus private keys and seed phrases. Detected addresses are exfiltrated via HTTP POST to the C2 at 2[.]27[.]62[.]51:8080/api/health (fallback 2[.]27[.]62[.]51:8081/api/health) along with the hostname, platform, and working directory. The matched addresses are then replaced in the clipboard with attacker-controlled addresses: bc1qjft978uykglsh0adcyx6xhkes56vqzs3fual3l (BTC), 0xd63eD44065eDb1e2ad2519B011c06412dA7B7c5B (ETH), A7ajd7W5WYdrnkeaiBRjVoK6uBEDvgnuZcpzQXqo18Ph (SOL). Persistence is established by appending a node require statement to ~/.bashrc, ~/.zshrc, or ~/.profile (or writing a startup script on Windows). base58-core@1.0.1 is a trojanized Base58 encoding library that acts as a cryptocurrency clipboard hijacker. It ships hardcoded IP addresses (2[.]27[.]62[.]51) on ports 8080/8081 used as C2 endpoints for exfiltrating detected wallet addresses. On module load, it starts a 2.5-second clipboard monitor (after a 72-hour delay to evade detection) that scans for Bitcoin (bc1, 1, 3 prefix), Ethereum (0x…), and Solana addresses plus private keys and seed phrases. Detected addresses are exfiltrated via HTTP POST to hxxp://2[.]27[.]62[.]51:8080/api/health (fallback hxxp://2[.]27[.]62[.]51:8081/api/health) along with the hostname, platform, and working directory. The matched addresses are then replaced in the clipboard with attacker-controlled addresses: bc1qjft978uykglsh0adcyx6xhkes56vqzs3fual3l (BTC), 0xd63eD44065eDb1e2ad2519B011c06412dA7B7c5B (ETH), A7ajd7W5WYdrnkeaiBRjVoK6uBEDvgnuZcpzQXqo18Ph (SOL). Persistence is established by appending a node require statement to ~/.bashrc, ~/.zshrc, or ~/.profile (or writing a startup script on Windows).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "base58-core",
+        "purl": "pkg:npm/base58-core@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/base58-core/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5956"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T01:55:46Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]27[.]62[.]51",
+          "2[.]27[.]62[.]51:8080",
+          "2[.]27[.]62[.]51:8081"
+        ],
+        "url_observed": [
+          "hxxp://2[.]27[.]62[.]51",
+          "hxxp://2[.]27[.]62[.]51:8080/api/health",
+          "hxxp://2[.]27[.]62[.]51:8081/api/health"
+        ],
+        "wallet_observed": [
+          "0xd63eD44065eDb1e2ad2519B011c06412dA7B7c5B",
+          "A7ajd7W5WYdrnkeaiBRjVoK6uBEDvgnuZcpzQXqo18Ph",
+          "bc1qjft978uykglsh0adcyx6xhkes56vqzs3fual3l"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5317",
+  "modified": "2026-06-15T06:08:19Z",
+  "published": "2026-06-15T05:32:55Z",
+  "summary": "Malicious code in tracing-str (npm)",
+  "details": "On use, this package establishes SSH backdoor persistence and exfiltrates secrets. It fetches an attacker SSH public key from hxxps://hsdf22-tracing-ethers[.]vercel[.]app/api/tracing/string/ and appends it to ~/.ssh/authorized_keys. It also loads the parent project.env (../.env), collects every process.env variable, serialises them, and POSTs them to hxxps://hsdf22-tracing-ethers[.]vercel[.]app/api/tracing/ethers. It additionally runs curl hxxps://api[.]ipify[.]org to capture the host public IP and sends it to the same endpoint. IOCs: C2 hsdf22-tracing-ethers[.]vercel[.]app (/api/tracing/ethers, /api/tracing/string/); modifies ~/.ssh/authorized_keys; reads../.env and all environment variables.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tracing-str",
+        "purl": "pkg:npm/tracing-str@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tracing-str/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5317"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T05:32:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "hsdf22-tracing-ethers[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://hsdf22-tracing-ethers[.]vercel[.]app/api/tracing/ethers",
+          "hxxps://hsdf22-tracing-ethers[.]vercel[.]app/api/tracing/string/"
+        ]
+      }
+    }
+  }
+}

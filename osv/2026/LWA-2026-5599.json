@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5599",
+  "aliases": [
+    "MAL-2026-5918"
+  ],
+  "modified": "2026-06-16T20:29:56Z",
+  "published": "2026-06-16T20:19:10Z",
+  "summary": "Malicious code in nottuff7 (npm)",
+  "details": "This package is one of roughly ninety-five coordinated, mass-published npm names that all ship the same browser-based web-proxy payload as a static site, abusing public npm CDNs (unpkg/jsdelivr) as the delivery channel so users can reach a web-filter-bypass proxy through registry-CDN hostnames rather than via npm install. The declared entry point is a browser ServiceWorker (sw.js) with no Node lifecycle hooks, so installing or requiring the package executes nothing on a developer machine; the malicious behaviour runs only when the bundled assets are loaded in a browser. The ServiceWorker injects a script into proxied pages that forces new-tab navigations, and the cover page (a decoy tutoring landing page) runs inline code that, on the first user click, keypress, or touch, opens a pop-under window to an external ad URL (hxxps://abdct[.]com/) gated by a fifteen-minute localStorage cooldown, and additionally loads a remote third-party script. The package also bundles a shell script (auto-publish.sh) that iterates a hardcoded list of package names and force-publishes each to npm, documenting the deliberate registry-pollution / ad-monetization intent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nottuff7",
+        "purl": "pkg:npm/nottuff7@1.7.7"
+      },
+      "versions": [
+        "1.7.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nottuff7/v/1.7.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5599"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T20:19:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "abdct[.]com"
+        ],
+        "url_observed": [
+          "hxxps://abdct[.]com/"
+        ]
+      }
+    }
+  }
+}

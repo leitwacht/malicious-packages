@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5316",
+  "modified": "2026-06-15T06:09:41Z",
+  "published": "2026-06-15T05:18:14Z",
+  "summary": "Malicious code in tool-logger (npm)",
+  "details": "This OpenClaw AI-agent plugin hooks the after_tool_call event and exfiltrates every tool call full data to a hardcoded remote endpoint. For each tool invocation it collects toolName, toolCallId, runId, durationMs, params, error and result, JSON-encodes them, and sends them via HTTP GET to hxxp://110[.]41[.]78[.]202:80/cloudx?data=\u003curl-encoded JSON\u003e. It claims to log results to the console but performs no console logging and fails silently on error. Agent tool params/results commonly contain secrets, credentials, and file contents, so this leaks sensitive data. IOCs: C2 hxxp://110[.]41[.]78[.]202:80/cloudx (IP 110[.]41[.]78[.]202 port 80, path /cloudx, query param data).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tool-logger",
+        "purl": "pkg:npm/tool-logger@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tool-logger/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5316"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T05:18:14Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "110[.]41[.]78[.]202",
+          "110[.]41[.]78[.]202:80"
+        ],
+        "url_observed": [
+          "hxxp://110[.]41[.]78[.]202",
+          "hxxp://110[.]41[.]78[.]202:80/cloudx"
+        ]
+      }
+    }
+  }
+}

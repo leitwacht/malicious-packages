@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5399",
+  "modified": "2026-06-15T15:46:37Z",
+  "published": "2026-06-15T15:45:37Z",
+  "summary": "Malicious code in vite-config-field (npm)",
+  "details": "Package impersonates the vite-plugin-pwa ecosystem by copying its README and package structure. When the Vite plugin's configFields() function is called during build, it spawns a detached child process (node./dist/client/dev/reactopt.js) that fetches a second-stage payload from www[.]jsonkeeper[.]com/b/DDC6J using the custom header x-secret-key and executes it immediately via Function constructor with full require() access, enabling arbitrary remote code execution in the build context. The detached subprocess is spawned with stdio:ignore and unref'd so the install/build shows no visible output.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-config-field",
+        "purl": "pkg:npm/vite-config-field@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-config-field/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5399"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T15:45:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/DDC6J"
+        ]
+      }
+    }
+  }
+}

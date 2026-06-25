@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5000",
+  "modified": "2026-06-13T05:25:07Z",
+  "published": "2026-06-13T05:23:37Z",
+  "summary": "Malicious code in renovate-config-doctolib (npm)",
+  "details": "Version-squatting package impersonating renovate-config-doctolib (a Renovate shared config). Its preinstall hook (scripts/audit.js) reads ~/.npmrc to extract registry URLs and tokens, collects the installer's hostname, username, platform, git remote URLs, and Windows AD domain environment variables. All stolen data is base64-encoded into a single query string and sent via HTTPS GET to baoreqygjveumkkxydcd[.]supabase[.]co/functions/v1/Webhook_OOB, a Supabase Edge Function acting as the C2 collector. The C2 hostname is obfuscated via base64 decoding at runtime to bypass static analysis. The package exfiltrates its installer's npm registry credentials, git metadata, and host identity — enabling downstream token theft, package hijacking, and lateral movement into the victim's CI/CD supply chain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "renovate-config-doctolib",
+        "purl": "pkg:npm/renovate-config-doctolib@9.9.16"
+      },
+      "versions": [
+        "9.9.16"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/renovate-config-doctolib/v/9.9.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5000"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T05:23:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "baoreqygjveumkkxydcd[.]supabase[.]co"
+        ]
+      }
+    }
+  }
+}

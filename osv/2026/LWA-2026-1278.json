@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1278",
+  "modified": "2026-05-30T00:06:06Z",
+  "published": "2026-05-29T23:59:22Z",
+  "summary": "Malicious code in alya-baileys (npm)",
+  "details": "WhatsApp bot wrapper (Baileys fork) containing an embedded C2 backdoor. newsletter.js constructs hxxps://raw[.]githubcontent-content[.]com (a typosquat of raw[.]githubusercontent[.]com) from hex bytes, derives an AES key from it, decrypts an embedded ciphertext to a C2 URL, and fetches remote config via axios at runtime to control newsletter auto-follow/auto-react behavior (engagement farming/spam). alya-decode.js implements custom AES-256-CBC with obfuscated Indonesian variable names. The typosquat domain plus encrypted C2 URL and runtime remote-config fetch form a C2 pattern.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alya-baileys",
+        "purl": "pkg:npm/alya-baileys@1.8.42"
+      },
+      "versions": [
+        "1.8.42"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alya-baileys/v/1.8.42"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1278"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T23:59:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubcontent-content[.]com",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubcontent-content[.]com"
+        ]
+      }
+    }
+  }
+}

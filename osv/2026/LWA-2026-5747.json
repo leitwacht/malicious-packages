@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5747",
+  "modified": "2026-06-19T04:40:01Z",
+  "published": "2026-06-19T04:39:17Z",
+  "summary": "Malicious code in @xyroorynzz/ocrk (npm)",
+  "details": "@xyroorynzz/ocrk is a trojanized package disguised as an OCR library that intercepts WhatsApp Web pairing credentials. On require(), the package monkey-patches the @whiskeysockets/baileys library's makeWASocket function, replacing requestPairingCode to intercept phone numbers. Each intercepted phone number is hashed (SHA-256 of MD5) and validated against a remote registry fetched from pastebin[.]com/raw/wh34RDBe (token) and api[.]github[.]com/repos/xyroorynzz/Alice/contents/Alicesv2.json (registry data). Phone numbers not matching the registry trigger process.exit(1), blocking the WhatsApp connection. The package imports OCR modules (tesseract.js, pdf-lib, sharp) that are not declared as dependencies — the OCR functionality is a decoy. IOCs: pastebin[.]com/raw/wh34RDBe, api[.]github[.]com/repos/xyroorynzz/Alice/contents/Alicesv2.json",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xyroorynzz/ocrk",
+        "purl": "pkg:npm/%40xyroorynzz/ocrk@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xyroorynzz/ocrk/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5747"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T04:39:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "pastebin[.]com"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/repos/xyroorynzz/Alice/contents/Alicesv2[.]json",
+          "hxxps://pastebin[.]com/raw/wh34RDBe"
+        ]
+      }
+    }
+  }
+}

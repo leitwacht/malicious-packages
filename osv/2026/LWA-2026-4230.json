@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4230",
+  "aliases": [
+    "MAL-2026-5645"
+  ],
+  "modified": "2026-06-11T11:32:36Z",
+  "published": "2026-06-11T11:32:03Z",
+  "summary": "Malicious code in sn-internal-test (npm)",
+  "details": "Package sn-internal-test@1.9.9 has a preinstall script that curls hxxps://poc[.]amanrawat[.]com/hehe[.]js and executes it with node — remote code execution on install. The host poc[.]amanrawat[.]com is not on the allowlist of legitimate installer hosts (deno.land, bun.sh, rustup.rs, etc.). The package is a single-version (1.9.9) empty tarball with a vaguely impersonating description (\"our internal app for testing\") published by the publisher theamanrawat — a classic publish-and-burn supply-chain attack shape. No token-theft markers were found in the package, but the preinstall download-and-execute pattern with a non-allowlisted C2 host is unambiguous malware intent: the remote payload can be swapped at any time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sn-internal-test",
+        "purl": "pkg:npm/sn-internal-test@1.9.9"
+      },
+      "versions": [
+        "1.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sn-internal-test/v/1.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4230"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:32:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "poc[.]amanrawat[.]com"
+        ],
+        "url_observed": [
+          "hxxps://poc[.]amanrawat[.]com/hehe[.]js"
+        ]
+      }
+    }
+  }
+}

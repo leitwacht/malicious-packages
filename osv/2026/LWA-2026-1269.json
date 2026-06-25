@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1269",
+  "modified": "2026-05-29T22:59:25Z",
+  "published": "2026-05-29T22:56:58Z",
+  "summary": "Malicious code in alice-baileys (npm)",
+  "details": "Trojanized fork of the @whiskeysockets/baileys WhatsApp library: alice-baileys@2.0.2. lib/Utils/generics.js holds hardcoded base64-encoded URLs (pastebin[.]com/raw/wh34RDBe and api[.]github[.]com/repos/xyroorynzz/Alice/contents/Alicev2.json) decoded at runtime. getGithubToken() fetches a GitHub PAT from the attacker-controlled Pastebin endpoint, then getFileData() uses that token to authenticate to the GitHub API and download a phone-number allowlist. valid() hashes the user's phone number with md5+sha256 and checks it against the allowlist; the gate is enforced in lib/Socket/socket.js line 389 in requestPairingCodes, silently aborting pairing for non-allowlisted numbers. Base64-obfuscated attacker-controlled remote endpoints plus runtime phone-home gating of WhatsApp functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alice-baileys",
+        "purl": "pkg:npm/alice-baileys@2.0.2"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alice-baileys/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1269"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T22:56:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pastebin[.]com"
+        ]
+      }
+    }
+  }
+}

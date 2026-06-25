@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5952",
+  "aliases": [
+    "MAL-2026-6401"
+  ],
+  "modified": "2026-06-24T14:56:47Z",
+  "published": "2026-06-24T14:55:36Z",
+  "summary": "Malicious code in zenith-utils (npm)",
+  "details": "The postinstall hook executes a detached Node.js child process that fetches a remote payload from jsonkeeper[.]com (endpoint /b/WDH3V) and evaluates it using the Function constructor with full module access via require. This enables arbitrary remote code execution. The package also ships a 262KB obfuscated/encrypted data blob disguised as a LICENSE file. The package is a trojanized clone: its description, author, and main entry point impersonate unrelated open-source projects (React Training and Nodemailer) while the actual behaviour is a remote code loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zenith-utils",
+        "purl": "pkg:npm/zenith-utils@12.0.14"
+      },
+      "versions": [
+        "12.0.14"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zenith-utils/v/12.0.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5952"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-24T14:55:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/WDH3V"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1224",
+  "aliases": [
+    "MAL-2026-5410"
+  ],
+  "modified": "2026-05-29T21:44:35Z",
+  "published": "2026-05-29T15:31:07Z",
+  "summary": "Security-research / proof-of-concept package: @easy-entry/routes (npm)",
+  "details": "A dependency-confusion stub in the @easy-entry scope (version 99.9.5, 588-byte tarball, no real code) with a two-stage postinstall exfiltration payload: scripts/scream3gg.js collects os.hostname(), os.homedir(), and os.userInfo().username, hex-encodes them, and beacons via fetch to nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com; then curl --data '@/etc/passwd' exfiltrates /etc/passwd to $(hostname).200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com. A @easy-entry-scoped data-theft dropper (version 99.9.5, two files, 588-byte tarball, no real functionality). Its postinstall runs scream3gg.js, which exfiltrates hex-encoded hostname/homedir/username via fetch to an oastify[.]com subdomain, then curls /etc/passwd to a separate oastify[.]com subdomain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@easy-entry/routes",
+        "purl": "pkg:npm/%40easy-entry/routes@99.9.5"
+      },
+      "versions": [
+        "99.9.5"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@easy-entry/routes/v/99.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1224"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-05-29T15:31:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com",
+          "nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com",
+          "oastify[.]com"
+        ]
+      }
+    }
+  }
+}

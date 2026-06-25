@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5253",
+  "modified": "2026-06-14T15:18:47Z",
+  "published": "2026-06-14T15:17:57Z",
+  "summary": "Malicious code in tailwindcss-svg-helper (npm)",
+  "details": "Tailwindcss-svg-helper@1.17.9 exports a getPlugin() function that fetches JSON from hxxps://rest-icon-moduler[.]vercel[.]app/icons/102 and executes arbitrary JavaScript from the response's \"credits\" field via eval(). This is a remote code execution loader — a second-stage payload is fetched from the attacker-controlled Vercel endpoint and executed without integrity verification. The dependency list includes @primno/dpapi (Windows DPAPI credential decryption), better-sqlite3 (browser database access), node-machine-id (device fingerprinting), and socket[.]io-client (websocket transport), indicating the intended post-exploitation payload targets credential theft. The package combosquats the legitimate Tailwind CSS ecosystem with an unrelated name. C2 host: rest-icon-moduler[.]vercel[.]app (HTTPS).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-svg-helper",
+        "purl": "pkg:npm/tailwindcss-svg-helper@1.17.9"
+      },
+      "versions": [
+        "1.17.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-svg-helper/v/1.17.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5253"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T15:17:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rest-icon-moduler[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://rest-icon-moduler[.]vercel[.]app/icons/102"
+        ]
+      }
+    }
+  }
+}

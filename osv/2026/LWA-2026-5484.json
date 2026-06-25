@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5484",
+  "modified": "2026-06-16T02:30:15Z",
+  "published": "2026-06-16T02:28:31Z",
+  "summary": "Malicious code in webpack-cdn-fetcher (npm)",
+  "details": "Webpack-cdn-fetcher@1.0.1 is a trojanized package that performs remote code execution when imported. The exported function fetches a second-stage payload from bet[.]slotgambit[.]com/icons/110 and executes the response's 'credits' field as arbitrary JavaScript via new Function() with full Node.js API access (including require, process, Buffer, child_process). It bundles dependencies for credential theft and exfiltration: @primno/dpapi (Windows DPAPI credential decryption), better-sqlite3 and sqlite3 (local database extraction), node-machine-id (system fingerprinting), socket[.]io-client (realtime C2 channel), and express/axios/request (HTTP exfiltration). IOC: bet[.]slotgambit[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "webpack-cdn-fetcher",
+        "purl": "pkg:npm/webpack-cdn-fetcher@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/webpack-cdn-fetcher/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5484"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T02:28:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bet[.]slotgambit[.]com"
+        ],
+        "url_observed": [
+          "hxxps://bet[.]slotgambit[.]com/icons/110"
+        ]
+      }
+    }
+  }
+}

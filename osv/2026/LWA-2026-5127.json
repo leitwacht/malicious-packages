@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5127",
+  "aliases": [
+    "MAL-2026-5750"
+  ],
+  "modified": "2026-06-13T18:19:18Z",
+  "published": "2026-06-13T18:18:13Z",
+  "summary": "Malicious code in mailconfirmer (npm)",
+  "details": "The postinstall script (install-hook.js) spawns a hidden PowerShell process that decodes an embedded base64 payload. The payload downloads a second-stage binary from hxxps://github[.]com/Dimitrijenco/Sticky_note/releases/download/v2/launcher[.]bin, XOR-decrypts it with key 0x42, writes it to %TEMP%\\tmp.exe, executes it with -WindowStyle Hidden, then deletes the temporary file. A second hidden PowerShell process removes the entire mailconfirmer package directory 30 seconds later as self-destruction. The package's index.js exports are stub functions that only log placeholder text — the real payload is entirely in the install hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mailconfirmer",
+        "purl": "pkg:npm/mailconfirmer@3.3.12"
+      },
+      "versions": [
+        "3.3.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mailconfirmer/v/3.3.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5127"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T18:18:13Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5791",
+  "aliases": [
+    "MAL-2026-6240"
+  ],
+  "modified": "2026-06-20T10:56:39Z",
+  "published": "2026-06-20T10:55:47Z",
+  "summary": "Malicious code in atlasora-sdk (npm)",
+  "details": "At install time, the package's postinstall hook (install.js) collects host metadata, reads over 40 environment variables targeting crypto wallet credentials (COINBASE_API_KEY, MNEMONIC, PRIVATE_KEY), cloud API keys (OPENAI_API_KEY, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY), database URLs, and authentication tokens. It also reads.env files from the project and parent directories, ~/.ssh/ private keys, ~/.npmrc authentication tokens, ~/.aws/credentials, and git config. All collected data is exfiltrated via HTTPS POST to webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff. Errors are silently suppressed and a fake success message is printed to avoid detection during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlasora-sdk",
+        "purl": "pkg:npm/atlasora-sdk@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlasora-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5791"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T10:55:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff"
+        ]
+      }
+    }
+  }
+}

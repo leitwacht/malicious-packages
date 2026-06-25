@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5375",
+  "modified": "2026-06-15T12:13:53Z",
+  "published": "2026-06-15T12:13:09Z",
+  "summary": "Malicious code in vitest-pro (npm)",
+  "details": "Vitest-pro combosquats the popular vitest testing framework. The postinstall hook spawns a detached background process that connects to a hardcoded C2 server on port 4556 with a heartbeat every 30 seconds. The implant downloads, extracts, and executes remote binary payloads (HTTP GET from the C2), establishes persistence via Windows scheduled tasks and Startup folder.vbs scripts, macOS launchd plists, and Linux autostart.desktop entries, and checks whether it is running with administrative/elevated privileges (schtasks, sc query). The malicious code is heavily obfuscated with javascript-obfuscator and disguised within a legitimate Nodemailer codebase under lib/utils/smtp-connection/index.js. 0.4 to appear established.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vitest-pro",
+        "purl": "pkg:npm/vitest-pro@7.0.4"
+      },
+      "versions": [
+        "7.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vitest-pro/v/7.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5375"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T12:13:09Z",
+      "indicators_observed": {}
+    }
+  }
+}

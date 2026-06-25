@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2920",
+  "modified": "2026-06-08T06:02:19Z",
+  "published": "2026-06-07T23:03:40Z",
+  "summary": "Malicious code in solana-rpc-client (npm)",
+  "details": "Solana-rpc-client@1.0.0 is a combosquat of @solana/web3.js with a credential-stealer payload injected into its main entry points (lib/index.cjs.js, lib/index.esm.js). The code reads Solana wallet keys (~/.config/solana/id.json, ~/.solana/id.json), SSH keys (~/.ssh/id_rsa), AWS credentials and.env files; scans environment variables for tokens (SOLANA, NPM, GITHUB, AWS, ALCHEMY, INFURA and others); overwrites the Solana CLI config to redirect RPC traffic to 104[.]239[.]66[.]223:8899; exfiltrates to a hardcoded Telegram bot; installs @reboot cron persistence; and runs a Telegram-based C2 supporting /keys, /ssh, /env, /wallet, /sh and /die commands. It skips execution when the host's public IP matches 104[.]239[.]66[.]223.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solana-rpc-client",
+        "purl": "pkg:npm/solana-rpc-client@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solana-rpc-client/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2920"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T23:03:40Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "104[.]239[.]66[.]223",
+          "104[.]239[.]66[.]223:8899"
+        ]
+      }
+    }
+  }
+}

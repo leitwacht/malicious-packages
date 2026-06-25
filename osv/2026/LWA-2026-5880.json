@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5880",
+  "aliases": [
+    "MAL-2026-6300"
+  ],
+  "modified": "2026-06-23T11:34:51Z",
+  "published": "2026-06-23T07:33:18Z",
+  "summary": "Malicious code in chalk-ultra (npm)",
+  "details": "The package chalk-ultra@12.0.14 is a combosquat of the legitimate \"chalk\" library that executes remote code via a postinstall hook. On npm install, the postinstall script (lib/utils/index.js) spawns a detached background Node.js process running lib/utils/smtp-connection/index.js. This payload fetches attacker-controlled code from hxxps://jsonkeeper[.]com/b/IYUCS and executes it via new Function(\"require\",...)(require), giving the remote code full access to Node.js require. The package also ships a 262KB hex-encoded blob as a LICENSE file, likely an encrypted second-stage payload. The package masquerades as the nodemailer library (author \"Andris Reinman\", main entry lib/nodemailer.js) despite the chalk-ultra name being a combosquat of \"chalk\".",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chalk-ultra",
+        "purl": "pkg:npm/chalk-ultra@12.0.14"
+      },
+      "versions": [
+        "12.0.14"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chalk-ultra/v/12.0.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5880"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T07:33:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/IYUCS"
+        ]
+      }
+    }
+  }
+}

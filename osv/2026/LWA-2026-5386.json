@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5386",
+  "aliases": [
+    "MAL-2026-5801"
+  ],
+  "modified": "2026-06-15T14:58:22Z",
+  "published": "2026-06-15T14:57:45Z",
+  "summary": "Malicious code in bodega-sdk (npm)",
+  "details": "Bodega-sdk@9.9.9 is a dependency-confusion package that exfiltrates environment variables at install time. The preinstall hook (node index.js || true) runs a script that collects the hostname, username, current working directory, and all environment variables whose names match secret/key/token/mnemonic/password patterns, then POSTs them to 2[.]25[.]140[.]71:8443/surflending/npm-confusion. Errors are silently caught so the install does not fail and alert the user.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bodega-sdk",
+        "purl": "pkg:npm/bodega-sdk@9.9.9"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bodega-sdk/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5386"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T14:57:45Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]25[.]140[.]71:8443"
+        ],
+        "url_observed": [
+          "hxxps://2[.]25[.]140[.]71:8443/surflending/npm-confusion"
+        ]
+      }
+    }
+  }
+}

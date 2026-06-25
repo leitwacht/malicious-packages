@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5465",
+  "modified": "2026-06-15T23:29:23Z",
+  "published": "2026-06-15T23:28:26Z",
+  "summary": "Malicious code in walletconnectionjs (npm)",
+  "details": "Combosquat package mimicking the legitimate walletconnect Web3 protocol. The single entry point index.js is heavily obfuscated with javascript-obfuscator (RC4-encoded string array, dictionary header, hex-escaped identifiers) to conceal a remote API endpoint. When required, the package exports a connect() function that takes a wallet address argument and exfiltrates it via HTTP GET (using the axios dependency) to the attacker-controlled API_BASE_URL. The payload is wallet-address harvesting — any application that imports this package and calls connect(walletAddress) will send the wallet address to a remote C2 server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "walletconnectionjs",
+        "purl": "pkg:npm/walletconnectionjs@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/walletconnectionjs/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5465"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T23:28:26Z",
+      "indicators_observed": {}
+    }
+  }
+}

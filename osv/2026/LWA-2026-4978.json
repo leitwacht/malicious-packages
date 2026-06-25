@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4978",
+  "aliases": [
+    "MAL-2026-6378"
+  ],
+  "modified": "2026-06-13T04:18:33Z",
+  "published": "2026-06-13T04:17:23Z",
+  "summary": "Malicious code in macos-ci-utils (npm)",
+  "details": "On require(), macos-ci-utils@1.0.1 base64-decodes a URL pointing to api[.]ingress-hub[.]com/cdn/assets/update.pkg, downloads that file to a hidden directory (~/Library/Application Support/.node_cache/.runtime), makes it executable, and spawns it as a detached background process (detached:true, child.unref()). All of this is gated on os.platform() === 'darwin' — the payload is inactive on non-macOS systems. This is a remote binary downloader that delivers and executes an unknown payload from a non-standard host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "macos-ci-utils",
+        "purl": "pkg:npm/macos-ci-utils@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/macos-ci-utils/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4978"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T04:17:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ingress-hub[.]com"
+        ]
+      }
+    }
+  }
+}

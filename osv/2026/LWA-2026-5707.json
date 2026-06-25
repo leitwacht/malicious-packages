@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5707",
+  "aliases": [
+    "MAL-2026-6351"
+  ],
+  "modified": "2026-06-18T10:29:47Z",
+  "published": "2026-06-18T03:54:03Z",
+  "summary": "Malicious code in delta-time-32bb (npm)",
+  "details": "The package runs a preinstall and postinstall hook (node run.js) that collects the full environment of the install target and sends it to a remote server. On Linux it reads all environment variables including GITHUB_TOKEN, NPM_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, SSH key paths, container metadata (/proc/1/cgroup, /proc/1/cmdline), network interfaces, Docker socket presence, and the ECS IAM credentials endpoint (169[.]254[.]170[.]2) — then POSTs the data to screw-daisy-powder-pirates[.]trycloudflare[.]com/beacon. It additionally attempts DynamoDB operations using the captured AWS task role. On Windows it locates and overwrites detection-verdict findings, then escalates to SYSTEM via fodhelper.exe and a scheduled task, exfiltrating system-context data to the same C2 host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "delta-time-32bb",
+        "purl": "pkg:npm/delta-time-32bb@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/delta-time-32bb/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5707"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T03:54:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "screw-daisy-powder-pirates[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://screw-daisy-powder-pirates[.]trycloudflare[.]com/beacon"
+        ]
+      }
+    }
+  }
+}

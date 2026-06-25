@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5279",
+  "modified": "2026-06-14T22:49:31Z",
+  "published": "2026-06-14T22:47:55Z",
+  "summary": "Malicious code in textify-kit (npm)",
+  "details": "The package textify-kit@1.0.0 poses as a string-manipulation utility but executes a bundled Windows executable (assets/setup-helper.exe, ~9.8 MB) during postinstall via bin/setup.js. The JavaScript launcher spawns the binary as a detached, hidden background process (detached:true, windowsHide:true, stdio:'ignore', child.unref()). The executable is a PyInstaller-compiled Python payload containing modules for network requests (requests, urllib3, socket, ssl), shell command execution (subprocess), file system access (shutil, tempfile, os), and credential access (secrets, token, threading) — enabling remote command-and-control, data exfiltration, and further compromise of the Windows host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "textify-kit",
+        "purl": "pkg:npm/textify-kit@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/textify-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5279"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T22:47:55Z",
+      "indicators_observed": {}
+    }
+  }
+}

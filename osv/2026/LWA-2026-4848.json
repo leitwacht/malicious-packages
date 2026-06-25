@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4848",
+  "aliases": [
+    "MAL-2026-5711"
+  ],
+  "modified": "2026-06-12T19:56:06Z",
+  "published": "2026-06-12T19:55:05Z",
+  "summary": "Malicious code in chalk-pro (npm)",
+  "details": "Combosquat package \"chalk-pro\" mimicking the popular chalk terminal library. On postinstall, it spawns a detached background Node.js process (outlives the npm install) that fetches second-stage code from hxxps://www[.]jsonkeeper[.]com/b/TOAAK and executes it via new Function(\"require\", r.data.cookie)(require) — full remote code execution with the Node.js require() scope available. A 262KB hex-encoded file is bundled as \"LICENSE\" alongside, providing additional payload material for the remote stage. the author and copyright fields are spoofed from other projects (nodemailer, chalk).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chalk-pro",
+        "purl": "pkg:npm/chalk-pro@7.0.4"
+      },
+      "versions": [
+        "7.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chalk-pro/v/7.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4848"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T19:55:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/TOAAK"
+        ]
+      }
+    }
+  }
+}

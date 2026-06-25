@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3914",
+  "aliases": [
+    "MAL-2026-5604"
+  ],
+  "modified": "2026-06-10T12:52:49Z",
+  "published": "2026-06-10T12:51:20Z",
+  "summary": "Malicious code in cache-section-helper (npm)",
+  "details": "Cache-section-helper@1.0.7 is a two-stage downloader disguised as a webpack caching plugin. Its postinstall hook runs loader.js, which writes a dropper to a temp file and spawns it as a detached background process (detached:true,.unref()) so it survives npm exit. The dropper hex-decodes hxxps://jsonkeeper[.]com/b/L435A, fetches that URL over HTTPS, parses the response as JSON, and require()s the content as code — a remote-code-execution payload dropper rather than a caching utility.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cache-section-helper",
+        "purl": "pkg:npm/cache-section-helper@1.0.7"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cache-section-helper/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3914"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T12:51:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/L435A"
+        ]
+      }
+    }
+  }
+}

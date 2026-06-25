@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5179",
+  "aliases": [
+    "MAL-2026-6063"
+  ],
+  "modified": "2026-06-14T08:37:18Z",
+  "published": "2026-06-14T04:03:57Z",
+  "summary": "Malicious code in sort-btree (npm)",
+  "details": "Sort-btree@2.1.5 is a backdoored npm package that drops and executes a crypto-wallet infostealer. Malicious code is injected into the library's BTree.set() method; when bt.set(100, value) is called, it spawns a hidden, detached Node.js child process from extended/b+tree.min.js. The payload collects system information (hostname, platform, CPU count, memory, running process list) and exfiltrates it via hardcoded Slack bot token (POST to slack[.]com/api/chat.postMessage) and Telegram bot token (POST to api[.]telegram[.]org/bot.../sendMessage). It connects to an Ethereum Sepolia smart contract via Infura (sepolia[.]infura[.]io, fallback eth-sepolia[.]g[.]alchemy[.]com) to retrieve and decrypt stolen crypto wallet private keys using AES-GCM with PBKDF2 key derivation. It generates an X25519 key pair, publishes the public key to the contract, and performs Diffie-Hellman key exchange. It listens for TData1Updated/TData2Updated contract events to download, decrypt, and execute a second-stage payload written to a hidden directory (~/.config/update-notifier/Updates/AppUpdates), then self-deletes its source files and cleans up the injection from b+tree.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sort-btree",
+        "purl": "pkg:npm/sort-btree@2.1.5"
+      },
+      "versions": [
+        "2.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sort-btree/v/2.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5179"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T04:03:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ]
+      }
+    }
+  }
+}

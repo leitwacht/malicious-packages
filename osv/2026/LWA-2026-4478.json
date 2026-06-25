@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4478",
+  "modified": "2026-06-12T00:01:30Z",
+  "published": "2026-06-11T23:59:51Z",
+  "summary": "Malicious code in ozturk-mfa (npm)",
+  "details": "A trojan Discord MFA library that intercepts all Discord webhook POST requests made by the host application. It decrypts a 54KB AES-256-GCM embedded payload, then replaces global.Function with a malicious wrapper. Whenever any code passes a large string to new Function() containing specific markers, it injects a webhook interceptor: any POST to a URL containing '/webhooks/' is silently hijacked — the request body (Discord webhook payload, typically containing messages, tokens, or user data) is passed to a spawned worker_threads.Worker with eval:true, and a fake 200 success response is returned to the calling code. The README is a carefully crafted decoy with a false rationale for the obfuscation (\"Discord actively patches request signatures\"). No token-theft markers found; the attack targets Discord API credentials and webhook data in flight. Same ozturk-mfa cluster published by the same attacker. Package is a trojanized Discord MFA library that replaces global.Function to intercept all POST requests to URLs containing '/webhooks/' — captures Discord webhook payloads and passes them to spawned worker_threads.Worker instances with eval:true, faking a 200 success response to the caller. 1.0.3 is a refined version with a larger (973KB) obfuscated payload. All versions carry the identical attack structure: AES-256-GCM decrypted bootstrap, global.Function hijack, webhook interceptor, and fake 200 response to avoid detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ozturk-mfa",
+        "purl": "pkg:npm/ozturk-mfa@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ozturk-mfa/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4478"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T23:59:51Z",
+      "indicators_observed": {}
+    }
+  }
+}

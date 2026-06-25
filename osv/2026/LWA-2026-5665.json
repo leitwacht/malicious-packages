@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5665",
+  "modified": "2026-06-17T21:55:19Z",
+  "published": "2026-06-17T19:13:41Z",
+  "summary": "Malicious code in @schemats/json-schema-to-typescript (npm)",
+  "details": "This package masquerades as the popular json-schema-to-typescript library, copying its metadata and legitimate code, but its CLI entrypoint (the json2ts bin, dist/src/cli.js) contains an injected, string-obfuscated routine that runs on every invocation. On macOS, and only when the current username contains a specific substring, it reads the local iMessage/SMS database at ~/Library/Messages/chat.db and uploads it as a multipart form POST to a remote server (json2ts[.]dylib[.]io, port 3000) using a hardcoded Basic auth credential. Failures are disguised as a benign Full Disk Access prompt. This is targeted theft of private message history.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@schemats/json-schema-to-typescript",
+        "purl": "pkg:npm/%40schemats/json-schema-to-typescript@15.0.4"
+      },
+      "versions": [
+        "15.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@schemats/json-schema-to-typescript/v/15.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5665"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T19:13:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "json2ts[.]dylib[.]io",
+          "json2ts.dylib[.]io"
+        ],
+        "file_read": [
+          "~/Library/Messages/chat.db"
+        ],
+        "url_observed": [
+          "hxxp://json2ts.dylib[.]io:3000/stats"
+        ]
+      }
+    }
+  }
+}

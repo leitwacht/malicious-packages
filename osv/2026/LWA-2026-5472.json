@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5472",
+  "modified": "2026-06-16T00:29:42Z",
+  "published": "2026-06-16T00:28:31Z",
+  "summary": "Malicious code in web3-core-utils (npm)",
+  "details": "A trojanized clone of the legitimate web3-core-utils package that acts as an information stealer. When the package is imported (require'd), it runs a heavily obfuscated payload that: (1) decrypts saved browser passwords from Chrome, Edge, and Brave using Windows DPAPI via the `@primno/dpapi` library by reading browser login data from the LOCALAPPDATA directory; (2) enumerates the extension storage of over 50 crypto-wallet browser extensions including Metamask, Coinbase Wallet, Phantom, Trust Wallet, BinanceChain, Keplr, Exodus, TronLink, Ronin, and OKX Wallet by reading their leveldb directories; (3) collects Slack local storage data (sensitive workspace tokens); (4) system-fingerprints the host via `wmic csproduct get uuid` and `os.hostname()`; and (5) exfiltrates all stolen data by zipping it with `powershell Compress-Archive` and uploading it to a Dropbox account via the `hxxps://content[.]dropboxapi[.]com/2/files/upload` API endpoint using hardcoded Dropbox OAuth credentials (APP_KEY, APP_SECRET, REFRESH_TOKEN). The exfil target is the Dropbox cloud storage API — no external C2 hostname beyond api[.]dropboxapi[.]com / content[.]dropboxapi[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "web3-core-utils",
+        "purl": "pkg:npm/web3-core-utils@4.3.5"
+      },
+      "versions": [
+        "4.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/web3-core-utils/v/4.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5472"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T00:28:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]dropboxapi[.]com",
+          "content[.]dropboxapi[.]com"
+        ],
+        "url_observed": [
+          "hxxps://content[.]dropboxapi[.]com/2/files/upload"
+        ]
+      }
+    }
+  }
+}

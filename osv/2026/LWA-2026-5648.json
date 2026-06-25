@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5648",
+  "aliases": [
+    "MAL-2026-6065"
+  ],
+  "modified": "2026-06-17T16:21:36Z",
+  "published": "2026-06-17T16:13:05Z",
+  "summary": "Malicious code in lab-services (npm)",
+  "details": "This package is a dependency-confusion squat (published at version 99.0.0 to outrank an internal package of the same name). Its package.json declares a preinstall hook that executes a bundled script on install. The script fetches the machine public IP from an external IP-echo service, then gathers host reconnaissance (hostname, public IP, current working directory, OS platform, CPU architecture and a timestamp) and POSTs that data as a JSON message to a hardcoded Discord webhook before exiting. Installing the package silently leaks identifying environment details to an attacker-controlled endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lab-services",
+        "purl": "pkg:npm/lab-services@99.0.0"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lab-services/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5648"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-17T16:13:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ],
+        "url_observed": [
+          "hxxps://discord[.]com/api/webhooks/1516798168304586833/OqfteyxjlBFvGTtDLoH6aFpBNC6ddN3qLj84m1_WnIaWzIOH-xz3RRgx8rap2PlqVkoh"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5685",
+  "aliases": [
+    "MAL-2026-6310"
+  ],
+  "modified": "2026-06-18T08:58:00Z",
+  "published": "2026-06-18T08:53:16Z",
+  "summary": "Malicious code in @petitcode/eb-retry (npm)",
+  "details": "This package presents itself as a simple async retry utility with exponential backoff, copying the metadata of the well-known node-retry project to appear legitimate. In reality it ships a postinstall hook (node lib/warmup.js) that runs automatically when the package is installed. lib/warmup.js is heavily obfuscated (~270KB): identifiers are mangled to hex, and every meaningful string is hidden behind an RC4-style decoder that rebuilds strings character-by-character at runtime over a custom base64 alphabet, so the code reveals nothing under static inspection. At install time the payload checks a sentinel environment variable and, when not already set, clones the current environment, marks the sentinel, and launches a detached child process re-running the Node.js executable with custom working directory and stdio, then unref()s it so the spawned process keeps running after the installer exits. This self-re-execution / detached background-persistence pattern, the runtime string decryption hiding its real network and module targets, and the postinstall trigger in a package that pretends to be a one-line retry helper are characteristic of a malware dropper, not of any legitimate retry library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@petitcode/eb-retry",
+        "purl": "pkg:npm/%40petitcode/eb-retry@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@petitcode/eb-retry/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5685"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:53:16Z",
+      "indicators_observed": {
+        "file_observed": [
+          "lib/warmup.js"
+        ]
+      }
+    }
+  }
+}

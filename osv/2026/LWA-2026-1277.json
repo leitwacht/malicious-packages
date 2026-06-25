@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1277",
+  "modified": "2026-05-30T00:05:05Z",
+  "published": "2026-05-29T23:59:01Z",
+  "summary": "Malicious code in alya-baileys (npm)",
+  "details": "WhatsApp engagement-farming bot with remote-control capability (Baileys fork). Ships alya-decode.js implementing AES-256-CBC with multi-layer key derivation (SHA512→SHA256→MD5, seed \"socket-1.7.0_ibrahimasli_bukanpalsu\") to decrypt hardcoded encrypted hex blobs into URLs. getTargetNewsletterFromExternal() decrypts an encrypted hex string ('632dfe2f...') to fetch remote config from raw[.]githubusercontent[.]com that controls which WhatsApp newsletters to auto-follow, what emoji reactions to auto-post, and poll-vote strategy. It subscribes to the messages.upsert event to auto-react and auto-vote on polls from attacker-controlled newsletters without user consent, and forces a newsletter follow of 120363407696889754@newsletter. Variable names use Indonesian slang and several files import a nonexistent ibra-decode module under aliases to hinder review. The preinstall hook (engine-requirements.js) is a benign Node version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alya-baileys",
+        "purl": "pkg:npm/alya-baileys@1.8.41"
+      },
+      "versions": [
+        "1.8.41"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alya-baileys/v/1.8.41"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1277"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T23:59:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ]
+      }
+    }
+  }
+}

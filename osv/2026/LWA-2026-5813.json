@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5813",
+  "aliases": [
+    "MAL-2026-6253"
+  ],
+  "modified": "2026-06-21T15:45:12Z",
+  "published": "2026-06-21T15:44:20Z",
+  "summary": "Malicious code in zomato-server (npm)",
+  "details": "Zomato-server@1.0.0 is a combosquat package that exfiltrates system information and environment variables at install time. The preinstall hook runs curl to POST the victim's hostname, username, current working directory, and all environment variables (base64-encoded) to the attacker-controlled callback host d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site at path /install/\u003cbase64-package-name\u003e. The preuninstall hook similarly sends the hostname to /uninstall/zomato-server. Environment variable exfiltration captures credentials such as NPM_TOKEN, GITHUB_TOKEN, AWS keys, and CI/CD secrets. The package contains only a stub index.js with no real functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zomato-server",
+        "purl": "pkg:npm/zomato-server@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zomato-server/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5813"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T15:44:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site"
+        ],
+        "url_observed": [
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/em9tYXRvLXNlcnZlcg==",
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/uninstall/zomato-server"
+        ]
+      }
+    }
+  }
+}

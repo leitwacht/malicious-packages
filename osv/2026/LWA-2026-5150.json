@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5150",
+  "aliases": [
+    "MAL-2026-2905"
+  ],
+  "modified": "2026-06-13T23:18:51Z",
+  "published": "2026-06-13T23:17:56Z",
+  "summary": "Malicious code in simple-auth-basic (npm)",
+  "details": "Combosquat of the basic-auth package. When imported, the module executes two eval(atob(...)) calls at runtime that fetch remote JavaScript from hxxps://coingecko-liard[.]vercel[.]app/api/content and hxxps://coingecko-liard[.]vercel[.]app/api/old, then eval the response. This gives the attacker full remote code execution in the context of the importing application. The package ships no detection of the C2 host in its listed dependencies (it requires axios at runtime but does not declare it in package.json).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-auth-basic",
+        "purl": "pkg:npm/simple-auth-basic@2.0.2"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-auth-basic/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5150"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T23:17:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coingecko-liard[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://coingecko-liard[.]vercel[.]app/api/content",
+          "hxxps://coingecko-liard[.]vercel[.]app/api/old"
+        ]
+      }
+    }
+  }
+}

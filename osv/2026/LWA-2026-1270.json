@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1270",
+  "modified": "2026-05-29T23:00:17Z",
+  "published": "2026-05-29T22:57:18Z",
+  "summary": "Malicious code in alice-baileys (npm)",
+  "details": "Trojanized WhatsApp API fork: alice-baileys@2.0.3 (by the publisher) carries a runtime phone-home validation system. generics.js holds hardcoded base64 URLs decoding to pastebin[.]com/raw/wh34RDEe (which serves a GitHub PAT from a public paste) and api[.]github[.]com/repos/xyroorynzz/Alice/contents/Alicev2.json (an allowlist fetched with that token). socket.js line 389 calls valid(phoneNumber) inside requestPairingCodes(), sending the user's WhatsApp phone number through this chain on every pairing attempt. The PAT in a public paste is also a credential leak. The base64 decode is custom (Buffer.from(b64,'base64').toString()).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alice-baileys",
+        "purl": "pkg:npm/alice-baileys@2.0.3"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alice-baileys/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1270"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T22:57:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pastebin[.]com"
+        ]
+      }
+    }
+  }
+}

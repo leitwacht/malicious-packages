@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5789",
+  "aliases": [
+    "MAL-2026-6238"
+  ],
+  "modified": "2026-06-20T10:57:29Z",
+  "published": "2026-06-20T10:55:39Z",
+  "summary": "Malicious code in atlasora-client (npm)",
+  "details": "A credential-harvesting package distributed as a trojanized npm module. The postinstall hook (install.js) runs automatically on installation and collects: environment variables (Coinbase API keys/secrets, Supabase service-role keys, OpenAI API keys, AWS credentials, Revolut API secrets, JWT secrets, mnemonic phrases, database URLs, and any env containing PRIVATE_KEY/SECRET/TOKEN);.env files from the package directory and two parent levels; SSH private keys from ~/.ssh/; the full ~/.npmrc file; ~/.aws/credentials; and git config output. All stolen data is exfiltrated via HTTPS POST to webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff. Errors are silently suppressed so the install appears to succeed normally.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlasora-client",
+        "purl": "pkg:npm/atlasora-client@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlasora-client/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5789"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T10:55:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff"
+        ]
+      }
+    }
+  }
+}

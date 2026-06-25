@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5958",
+  "aliases": [
+    "MAL-2026-6458"
+  ],
+  "modified": "2026-06-25T07:00:37Z",
+  "published": "2026-06-25T06:59:48Z",
+  "summary": "Malicious code in wp-codebox-workspace (npm)",
+  "details": "Packaged as a version-squat (version 9999.99.99) with a postinstall hook that runs postinstall.js. The hook fingerprints the install environment — host OS, Node.js version, CI/CD provider, GitHub repository/owner/workflow — and exfiltrates this metadata to ddactic-lab[.]online/sc/beacon via HTTPS POST. A DNS-based fallback channel encodes package and CI data into subdomain queries against *.b[.]ddactic-lab[.]online to bypass HTTP-only proxies. index.js is a stub with no real functionality; the entire package exists only to install and beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wp-codebox-workspace",
+        "purl": "pkg:npm/wp-codebox-workspace@9999.99.99"
+      },
+      "versions": [
+        "9999.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wp-codebox-workspace/v/9999.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5958"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T06:59:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "b[.]ddactic-lab[.]online",
+          "ddactic-lab[.]online"
+        ],
+        "url_observed": [
+          "hxxps://ddactic-lab[.]online/sc/beacon"
+        ]
+      }
+    }
+  }
+}

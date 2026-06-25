@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5690",
+  "aliases": [
+    "MAL-2026-6214"
+  ],
+  "modified": "2026-06-18T08:57:30Z",
+  "published": "2026-06-18T08:53:43Z",
+  "summary": "Malicious code in @chunklab/hexparse (npm)",
+  "details": "This package presents itself as a small hex/base64/base64url codec, and its library entry points are a clean copy of a legitimate encoding library used as cover. The actual payload is an unrelated, heavily obfuscated script (prelude.cjs / prelude.mjs, ~277KB of obfuscator[.]io-style string-array code) that the package.json postinstall hook (node./script/prelude.cjs) auto-executes the moment the package is installed; the file also self-invokes when run directly. None of the codec functions reference this script. When run, the deobfuscated code checks the Node.js version, dynamically builds and spawns a child process, installs process error/exit handlers and a retry/timeout loop, and opens a writable file stream to drop content to disk. All network destinations and commands are concealed inside the obfuscated string array and decoded only at runtime, so no readable URLs or commands appear in the source. A genuine encoding library has no reason to ship an obfuscated install-time script that spawns processes and writes files; this is an install-time dropper hidden behind a benign codec facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@chunklab/hexparse",
+        "purl": "pkg:npm/%40chunklab/hexparse@1.1.6"
+      },
+      "versions": [
+        "1.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@chunklab/hexparse/v/1.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5690"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:53:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "obfuscator[.]io"
+        ],
+        "file_observed": [
+          "package/esm/prelude.mjs",
+          "package/script/prelude.cjs",
+          "package/script/prelude.mjs"
+        ],
+        "npm_package": [
+          "@chunklab/hexparse@1.1.6"
+        ]
+      }
+    }
+  }
+}

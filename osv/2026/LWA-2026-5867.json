@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5867",
+  "aliases": [
+    "MAL-2026-6301"
+  ],
+  "modified": "2026-06-23T10:12:58Z",
+  "published": "2026-06-23T10:12:02Z",
+  "summary": "Malicious code in date-format-helper2 (npm)",
+  "details": "Combosquat package dated-format-helper2 (typosquatting a date-formatting utility) runs a cloud metadata credential scraper in its postinstall.js lifecycle hook. On npm install, the script probes metadata endpoints for all major cloud providers: AWS (169[.]254[.]169[.]254/latest/meta-data/), GCP (metadata.google.internal/computeMetadata/v1/), Alibaba Cloud (100[.]100[.]100[.]200/latest/meta-data/), Tencent Cloud (metadata[.]tencentyun[.]com/latest/meta-data/), ByteDance/Volcengine (100[.]96[.]0[.]2/latest/meta-data/, metadata[.]bytedance[.]com, metadata[.]volcengine[.]com, metadata[.]volces[.]com), and Kata Containers (169[.]254[.]112[.]1/, /dev/vsock*). All responses — including IAM credential metadata — are exfiltrated as JSON via POST to C2 host 5l8e0e95[.]requestrepo[.]com at endpoints /meta-probe, /meta-detail-keys, /meta-detail-values, /meta-aws-keys, /meta-kata-host, and /meta-vsock. The package index.js is a trivial date formatter serving as a decoy facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "date-format-helper2",
+        "purl": "pkg:npm/date-format-helper2@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/date-format-helper2/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5867"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T10:12:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "5l8e0e95[.]requestrepo[.]com",
+          "metadata[.]bytedance[.]com",
+          "metadata[.]tencentyun[.]com",
+          "metadata[.]volcengine[.]com",
+          "metadata[.]volces[.]com"
+        ],
+        "url_observed": [
+          "hxxp://5l8e0e95[.]requestrepo[.]com/meta-aws-keys",
+          "hxxp://5l8e0e95[.]requestrepo[.]com/meta-detail-keys",
+          "hxxp://5l8e0e95[.]requestrepo[.]com/meta-detail-values",
+          "hxxp://5l8e0e95[.]requestrepo[.]com/meta-kata-host",
+          "hxxp://5l8e0e95[.]requestrepo[.]com/meta-probe",
+          "hxxp://5l8e0e95[.]requestrepo[.]com/meta-vsock"
+        ]
+      }
+    }
+  }
+}

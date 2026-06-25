@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3393",
+  "aliases": [
+    "MAL-2026-5348"
+  ],
+  "modified": "2026-06-09T03:35:52Z",
+  "published": "2026-06-09T03:34:48Z",
+  "summary": "Malicious code in os-ulid-void (npm)",
+  "details": "Os-ulid-void@3.0.2 is a combosquat of the legitimate ulid package. Published by the publisher impersonating author Alizain Feerasta. Postinstall (dist/utils.mjs) contains: anti-VM CPU-count check, detached background fork, copies 949KB payload.js to persistent directory, and sets up OS persistence across Win (schtasks/reg Run key/VBS), Linux (systemd user service/XDG autostart), and macOS (launchd). Payload.js is a full infostealer: exfiltrates.env/credentials/wallet files, captures keystrokes and clipboard, steals browser profiles and environment variables, and POSTs to XOR-obfuscated C2 at /api/validate/{files,project-env,tdata/upload,ps-history,wallets,keyboard-events}. No [redacted-credential] marker found.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "os-ulid-void",
+        "purl": "pkg:npm/os-ulid-void@3.0.2"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/os-ulid-void/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3393"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-09T03:34:48Z",
+      "indicators_observed": {}
+    }
+  }
+}

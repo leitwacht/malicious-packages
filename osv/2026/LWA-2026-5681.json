@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5681",
+  "aliases": [
+    "MAL-2026-6221"
+  ],
+  "modified": "2026-06-18T08:11:47Z",
+  "published": "2026-06-18T07:33:18Z",
+  "summary": "Malicious code in chai-assert-kit (npm)",
+  "details": "This package is a typosquat clone of the popular chai assertion library: it copies the real library files, description, and contributor list, but trojanizes the package entrypoint. When the package is imported, its index.js immediately spawns a hidden, detached background Node process (stdio ignored and unref()d so it survives after the parent exits) running a bundled, heavily obfuscated script. That script (obfuscated with an obfuscator[.]io string-array and a custom base64/percent-decode routine) makes an outbound HTTP GET to a dynamic-DNS command-and-control endpoint at senpad[.]bounceme[.]net on port 6285 (path /api/x-handler), passing a static key and URL-encoded arguments. It reads the HTTP response body and executes it as live JavaScript via new Function(...), invoking it with Node’s require so the downloaded code gains full module access on the victim machine. This is a second-stage remote-code dropper that lets the operator run arbitrary code on any host that installs or imports the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-assert-kit",
+        "purl": "pkg:npm/chai-assert-kit@3.8.1"
+      },
+      "versions": [
+        "3.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-assert-kit/v/3.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5681"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T07:33:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "obfuscator[.]io",
+          "senpad[.]bounceme[.]net"
+        ],
+        "url_observed": [
+          "hxxp://senpad[.]bounceme[.]net:6285/api/x-handler?data="
+        ]
+      }
+    }
+  }
+}

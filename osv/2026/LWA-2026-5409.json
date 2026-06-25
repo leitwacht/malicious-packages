@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5409",
+  "aliases": [
+    "MAL-2026-6139"
+  ],
+  "modified": "2026-06-15T18:29:23Z",
+  "published": "2026-06-15T18:28:16Z",
+  "summary": "Malicious code in @httpactions/encode-url (npm)",
+  "details": "At module load time, @httpactions/encode-url@1.0.0 immediately executes an obfuscated JavaScript payload that: collects the host's hostname, operating system platform, CPU architecture, and user information via Node.js built-in modules; dynamically XOR-decodes C2 server URLs at runtime using multiple byte-key arrays (keys include [0x70,0xa0,0x89,0x48], [0x5e,0xd6,0xfa,0x2b,0x1f,0xc4,0xec]); beacons to these runtime-decoded endpoints via GET requests to download second-stage payloads; decrypts received payloads with runtime XOR operations; writes them to disk using fs.writeFile under computed paths; and executes them via child_process.execFile or child_process.spawn with the windowsHide option enabled. On non-Windows hosts, execution uses a detached child process with stdout/stderr piped to persistent log files. After establishing the initial beacon, the implant sends POST requests back to the C2 server containing a JSON body with the host identifier (platform concatenated with hostname), a timestamp, and command-line arguments — achieving both system discovery and data exfiltration over the C2 channel. Failed connections are retried approximately every 10 minutes (615,488 ms interval). The C2 addresses are constructed at runtime from base64-encoded prefixes combined with XOR-decoded path segments and are not present as plaintext in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@httpactions/encode-url",
+        "purl": "pkg:npm/%40httpactions/encode-url@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@httpactions/encode-url/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5409"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T18:28:16Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4053",
+  "modified": "2026-06-11T00:30:46Z",
+  "published": "2026-06-11T00:27:23Z",
+  "summary": "Malicious code in myria-core-sdk (npm)",
+  "details": "Myria-core-sdk@0.0.248 contains a three-stage malware dropper disguised as a blockchain SDK. The entry point dist/cjs/src/clients/MyriaClient.js requires dist/umd/umd.min.js, passing the USDT contract address as a gate key. umd.min.js reads sibling index.min.js and spawns it as a detached node process. index.min.js verifies the base64-encoded argument then downloads a second-stage payload from moonchain[.]cloud (decoded from base64 URL) to a platform-dependent path (~/Library/Application Support/Code/Scripts/NpmLibrary on macOS, equivalent on Linux/Windows), patches the shebang, and executes it as a detached process with up to 3 retries. The package has no install hook but the payload activates whenever the SDK class is instantiated. moonchain[.]cloud is not an allowlisted installer host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "myria-core-sdk",
+        "purl": "pkg:npm/myria-core-sdk@0.0.248"
+      },
+      "versions": [
+        "0.0.248"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/myria-core-sdk/v/0.0.248"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4053"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T00:27:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "moonchain[.]cloud"
+        ]
+      }
+    }
+  }
+}

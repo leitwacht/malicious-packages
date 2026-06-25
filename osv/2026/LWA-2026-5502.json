@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5502",
+  "modified": "2026-06-16T03:46:22Z",
+  "published": "2026-06-16T03:43:30Z",
+  "summary": "Malicious code in wind_css (npm)",
+  "details": "Package wind_css (a combosquat of Tailwind CSS) runs a preinstall script (dist/util.js) that performs extensive anti-analysis checks — detecting virtual machines by MAC address prefixes (00:05:69, 00:50:56, 00:0c:29, 08:00:27, 00:03:ff, and others), checking CPU core count, system memory, uptime, and hostname against blocklisted prefixes. If the checks pass and the environment is deemed a real machine, the script connects to a remote server over HTTPS and eval()'s the response, enabling arbitrary remote code execution[.]sb (an IP geolocation service) for environment fingerprinting prior to C2 connection. The package's repository URL is spoofed (pointing to an unrelated project).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wind_css",
+        "purl": "pkg:npm/wind_css@4.0.13"
+      },
+      "versions": [
+        "4.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wind_css/v/4.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5502"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T03:43:30Z",
+      "indicators_observed": {}
+    }
+  }
+}

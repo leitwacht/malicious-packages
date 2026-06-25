@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5852",
+  "modified": "2026-06-22T22:14:14Z",
+  "published": "2026-06-22T22:12:53Z",
+  "summary": "Malicious code in pino-zod (npm)",
+  "details": "Pino-zod@1.0.121 is a combosquat-trojanized Remote Access Trojan (RAT) deployed as an npm package. On npm install, a chain of five postinstall scripts runs: it patches clipboard-event for stealth, builds the package, copies itself to a hidden directory under ~/.local/share/CfgMgr/.forge-jsxy/runtime/, registers OS autostart for persistence across reboots, and spawns a detached background agent process. The agent connects to a remote WebSocket relay (C2) at an AES-256-GCM encrypted embedded URL (the decryption key is split into XOR'd halves in deploymentCipherData.js). Once connected, the agent provides the C2 operator with: full remote filesystem access, clipboard monitoring, screen captures at configurable intervals (uploaded via Discord webhooks to discord[.]com/discordapp[.]com), Chromium extension IndexedDB database harvesting across Chrome, Edge, Brave, Vivaldi, Opera, Yandex, and dozens of other Chromium-family browsers, host secret/credential filename scanning, desktop input sync (remote control), and host reconnaissance (hostname, local IP, OS version, user, platform, machine architecture). The C2 WebSocket protocol communicates over ws://\u003chost\u003e:\u003crelay-port\u003e with session-based authentication. All child processes use windowsHide:true for stealth. The package exits early on CI=true to avoid sandbox detection. The relay URL and API URL are derived from an encrypted deployment bundle; the default relay port is 9877 and API port is 8765. Stolen data is exfiltrated via the C2 WebSocket channel, Discord webhooks, and HuggingFace repository uploads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pino-zod",
+        "purl": "pkg:npm/pino-zod@1.0.121"
+      },
+      "versions": [
+        "1.0.121"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pino-zod/v/1.0.121"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5852"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T22:12:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com",
+          "discordapp[.]com"
+        ]
+      }
+    }
+  }
+}

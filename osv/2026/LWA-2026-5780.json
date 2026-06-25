@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5780",
+  "modified": "2026-06-19T21:16:01Z",
+  "published": "2026-06-19T21:15:15Z",
+  "summary": "Malicious code in log-taker1 (npm)",
+  "details": "Log-taker1@0.1.0 is a credential and data stealer distributed via npm. The package's postinstall hook runs code that performs four exfiltration stages: (1) scans the current working directory for wallet files,.env files, and credential-related documents (targeting keys matching metamask, phantom, trezor, seed, mnemonic, keystore, and related terms); (2) performs a full recursive scan of the entire filesystem (Linux /home, macOS /Users, all Windows drives C: through J:) for the same sensitive file patterns; (3) collects and uploads shell command history from.bash_history,.zsh_history, fish_history, and PowerShell PSReadLine history files, with fallback to running 'bash -c history' and 'zsh -c fc -l -1000'; (4) steals Telegram Desktop session data by locating and compressing the tdata directory (Windows: AppData/Roaming/Telegram Desktop/tdata, macOS: ~/Library/Application Support/Telegram Desktop/tdata) and uploading it. All stolen data is exfiltrated via HTTP multipart POST requests to log-taker[.]store/api/v1 (configurable via the BACKUP_API_URL environment variable). The publisher account the publisher a random-string username and throwaway email.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "log-taker1",
+        "purl": "pkg:npm/log-taker1@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/log-taker1/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5780"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T21:15:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "log-taker[.]store"
+        ],
+        "url_observed": [
+          "hxxps://log-taker[.]store/api/v1"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2173",
+  "aliases": [
+    "MAL-2026-5140"
+  ],
+  "modified": "2026-06-01T11:35:52Z",
+  "published": "2026-06-01T10:54:37Z",
+  "summary": "Malicious code in @redhat-cloud-services/hcc-pf-mcp (npm)",
+  "details": "@redhat-cloud-services/hcc-pf-mcp@0.6.1 is a supply-chain compromise of a previously clean package. The prior version had no preinstall script; v0.6.1 adds preinstall:'node index.js' plus a 4.3MB Caesar-cipher-obfuscated index.js using an eval(function(s,n){...}) pattern to decode and execute a hidden payload at install time. The injected, fully layered eval-decoder payload has no legitimate purpose and is consistent with a CI-publish compromise. Supply-chain compromise: @redhat-cloud-services/hcc-pf-mcp@0.6.1 has preinstall: node index.js, but root index.js is a 4.3MB Caesar-cipher-obfuscated eval payload executed at install time. Legitimate MCP-server code is in dist/ (clean, unobfuscated, 8-line module). No legitimate preinstall needed for a PatternFly documentation MCP server. 4.3MB obfuscated preinstall = textbook supply-chain attack. Published via Red Hat's GitHub Actions trusted publisher (compromised CI/CD pipeline). Investigate scope of compromise across other versions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@redhat-cloud-services/hcc-pf-mcp",
+        "purl": "pkg:npm/%40redhat-cloud-services/hcc-pf-mcp@0.6.1"
+      },
+      "versions": [
+        "0.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@redhat-cloud-services/hcc-pf-mcp/v/0.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2173"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T10:54:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

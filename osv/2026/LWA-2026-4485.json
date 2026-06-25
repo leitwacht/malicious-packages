@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4485",
+  "modified": "2026-06-12T00:15:25Z",
+  "published": "2026-06-12T00:14:44Z",
+  "summary": "Malicious code in paasprint-sdk (npm)",
+  "details": "The package poses as a no-dependency terminal snake game but its preinstall hook runs node check-environment.js, which (with an isDev=true flag) calls initSystem() in utils.js instead of showing the game banner. initSystem is hex-string obfuscated: it gathers host reconnaissance — os.userInfo().username, os.hostname(), the machine public IP (fetched via https from api[.]ipify[.]org, api[.]myip[.]com, or ifconfig[.]me/ip), the installed package name and version, and the host DNS servers from dns.getServers() — joins them with *, hex-encodes the result, and splits it into four DNS labels. It appends the suffix.s[.]3271df58[.]gfde[.]site and performs a dns.resolve4() lookup on the assembled hostname, exfiltrating the collected recon to the attacker-controlled domain gfde[.]site (subdomain 3271df58[.]gfde[.]site) via DNS queries. It steals no credentials, but it is an automatic install-time recon beacon that exfiltrates host/network identifiers to a remote domain. IOCs: DNS exfil domain *.s[.]3271df58[.]gfde[.]site; IP-discovery callbacks api[.]ipify[.]org, api[.]myip[.]com, ifconfig[.]me/ip.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "paasprint-sdk",
+        "purl": "pkg:npm/paasprint-sdk@9.9.9"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/paasprint-sdk/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4485"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T00:14:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "3271df58[.]gfde[.]site",
+          "api[.]myip[.]com",
+          "gfde[.]site",
+          "ifconfig[.]me",
+          "s[.]3271df58[.]gfde[.]site"
+        ]
+      }
+    }
+  }
+}

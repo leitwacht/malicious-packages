@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5637",
+  "aliases": [
+    "MAL-2026-6114"
+  ],
+  "modified": "2026-06-17T07:39:43Z",
+  "published": "2026-06-17T03:55:00Z",
+  "summary": "Malicious code in metrics-probe-88ad (npm)",
+  "details": "This npm package executes a bundled run.js via both preinstall and postinstall lifecycle hooks, so the payload runs automatically on installation, with no import required. On Linux/CI hosts it harvests a broad set of secrets and metadata: AWS ECS task-role IAM credentials (AccessKeyId, SecretAccessKey, session Token) retrieved from the container credentials endpoint at 169[.]254[.]170[.]2, env-injected AWS access keys, CI/CD tokens (GITHUB_TOKEN, NPM_TOKEN, GitHub Actions OIDC and runtime tokens/URLs), SSH key file metadata under /root/.ssh and /home/runner/.ssh, ECS task metadata (cluster and task ARN), and container-escape reconnaissance (/proc/mounts, process capabilities, docker socket presence, entrypoint scripts). Using the stolen ECS role it then makes live AWS DynamoDB calls (list/describe tables and a put_item that writes a marker row), and exfiltrates the full collected payload via an HTTPS POST to an attacker-controlled Cloudflare quick-tunnel endpoint on port 443. On Windows it overwrites a findings XML file with tampered content and performs a fodhelper-based UAC bypass that registers a SYSTEM-level scheduled task to run reconnaissance commands, exfiltrating the output to the same remote endpoint. The package presents itself as authorized security research, but it auto-executes on install, steals real credentials, mutates a live database table, and sends everything to an anonymous external tunnel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "metrics-probe-88ad",
+        "purl": "pkg:npm/metrics-probe-88ad@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/metrics-probe-88ad/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5637"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T03:55:00Z",
+      "indicators_observed": {}
+    }
+  }
+}

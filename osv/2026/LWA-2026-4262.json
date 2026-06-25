@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4262",
+  "modified": "2026-06-11T11:58:36Z",
+  "published": "2026-06-11T11:57:30Z",
+  "summary": "Malicious code in node-fetch-lite (npm)",
+  "details": "Node-fetch-lite@1.0.2 is a combosquat of node-fetch that installs a persistent SSH backdoor via postinstall (package/setup.js) in four stages: (1) fetchKey.js downloads an attacker SSH public key from a Supabase Storage bucket at hxxps://ndfcioahsbgsjmulpjgt[.]supabase[.]co (bucket user_bucket, path public_keys/main.pem.pub); (2) injectKey.js writes that key into ~/.ssh/authorized_keys; (3) utils.js collects external IP, username, and hostname; (4) uploadMeta.js uploads the metadata to the same Supabase bucket at logs/{ip}_{hostname}.txt. package/index.js repeats the routine every 60 seconds. This is an SSH backdoor implant with host enumeration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-fetch-lite",
+        "purl": "pkg:npm/node-fetch-lite@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-fetch-lite/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4262"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:57:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ndfcioahsbgsjmulpjgt[.]supabase[.]co"
+        ],
+        "url_observed": [
+          "hxxps://ndfcioahsbgsjmulpjgt[.]supabase[.]co"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5757",
+  "aliases": [
+    "MAL-2026-6215"
+  ],
+  "modified": "2026-06-19T08:28:51Z",
+  "published": "2026-06-19T08:28:16Z",
+  "summary": "Malicious code in aikaf6688812 (npm)",
+  "details": "Package aikaf6688812 (advertised as a string utility library) executes a TCP reverse shell upon `npm install`. The postinstall hook spawns a detached Node.js process running scripts/shell.js, which opens a raw TCP socket to 114[.]67[.]90[.]67:3334, connects it to /bin/sh -i (or powershell.exe -NoLogo -NonInteractive -NoProfile -ExecutionPolicy Bypass -WindowStyle hidden on Windows), and pipes stdin/stdout/stderr bidirectionally. The shell automatically reconnects every 10 seconds on disconnect or error. The installer's shell is fully exposed to the remote attacker while the package pretends to export harmless string functions (capitalize, truncate, camelCase, etc.).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "aikaf6688812",
+        "purl": "pkg:npm/aikaf6688812@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/aikaf6688812/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5757"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T08:28:16Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "114[.]67[.]90[.]67:3334"
+        ]
+      }
+    }
+  }
+}

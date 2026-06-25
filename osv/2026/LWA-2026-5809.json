@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5809",
+  "modified": "2026-06-21T07:41:47Z",
+  "published": "2026-06-21T07:40:38Z",
+  "summary": "Malicious code in @npmresearch3/metrics-probe-dfda (npm)",
+  "details": "The package preinstall/postinstall hooks execute run.js, which beacons the hostname and username to bug-until-lending-boulevard[.]trycloudflare[.]com:443 via HTTPS. On Windows systems: it exploits a UAC bypass (fodhelper.exe via the HKCU\\Software\\Classes\\ms-settings\\Shell\\Open\\command registry key) to create a scheduled task running as NT AUTHORITY\\SYSTEM. The SYSTEM-level PowerShell payload extracts Windows Credential Manager entries (via cmdkey/vaultcmd), LSA secrets from HKLM\\SECURITY\\Policy\\Secrets, Azure CLI caches and MSAL tokens from all user profiles, machine-level environment variables, PowerShell console history, NuGet/dotnet credential stores, and ProgramData config files containing password/token/secret patterns. All harvested credentials are exfiltrated to bug-until-lending-boulevard[.]trycloudflare[.]com:443 via HTTPS GET and POST requests to /beacon path. Temporary scripts are dropped as bb_*.ps1 and bb_*.txt under the system TEMP directory. On Linux systems: a simple GET beacon confirms code execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@npmresearch3/metrics-probe-dfda",
+        "purl": "pkg:npm/%40npmresearch3/metrics-probe-dfda@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@npmresearch3/metrics-probe-dfda/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5809"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T07:40:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bug-until-lending-boulevard[.]trycloudflare[.]com"
+        ]
+      }
+    }
+  }
+}

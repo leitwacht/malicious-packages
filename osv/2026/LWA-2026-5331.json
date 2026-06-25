@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5331",
+  "modified": "2026-06-15T07:39:43Z",
+  "published": "2026-06-15T07:38:33Z",
+  "summary": "Malicious code in ts-enum-helper (npm)",
+  "details": "Postinstall hook runs a shell script that harvests GCP OAuth tokens from the instance metadata server (metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token) and exfiltrates them to aaronstack[.]com/jules-collect. It then uses the stolen token to probe the Kubernetes API server (kubernetes.default.svc) — listing clusterrolebindings, nodes, secrets (in kube-system, apps, default, kube-public, kube-node-lease, and malysis namespaces), configmaps, deployments, daemonsets, statefulsets, persistentvolumes, jobs, and ingresses — and runs SelfSubjectAccessReviews to map the token's RBAC permissions. It also enumerates ~25 hardcoded GCS buckets (including \"npm-analysis\", \"sd-malysis\", \"malysis-packages\", \"rare-signer-437603-p9-*\"). All reconnaissance results are exfiltrated to the same endpoint (aaronstack[.]com/jules-collect) with distinct x-source headers (malysis-sysauth-token, malysis-sysauth-results, malysis-sysauth). The script gates on the MALYSIS_ANALYSIS_ID environment variable. The rest of the package is a 21-byte stub (module.exports = {};).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-enum-helper",
+        "purl": "pkg:npm/ts-enum-helper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-enum-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5331"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T07:38:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "aaronstack[.]com",
+          "kubernetes[.]default[.]svc",
+          "metadata[.]google[.]internal"
+        ],
+        "url_observed": [
+          "hxxps://aaronstack[.]com/jules-collect"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5442",
+  "modified": "2026-06-15T21:30:43Z",
+  "published": "2026-06-15T21:28:22Z",
+  "summary": "Malicious code in vourfly-tele (npm)",
+  "details": "Vourfly-tele is a trojanized clone of the Baileys WhatsApp Web library containing a destructive wiper payload. The package ships a hardcoded GitHub personal access token in a dependency URL (node-pkg-cache pointing to github[.]com/navaLinh/sysframe) used to fetch malicious code from a private repository. In package/lib/Socket/socket.js, the requestPairingCode function decodes a base64 URL (raw[.]githubusercontent[.]com/navaLinh/database/main/seska.json), fetches a phone-number allowlist, and if the user's phone number is not on that list, executes 'rm -rf *' to wipe the current working directory. Additional injected dependencies include axios, child_process.exec, and node-fetch.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vourfly-tele",
+        "purl": "pkg:npm/vourfly-tele@4.7.6"
+      },
+      "versions": [
+        "4.7.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vourfly-tele/v/4.7.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5442"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T21:28:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "url_observed": [
+          "git+hxxps://github[.]com/navaLinh/sysframe[.]git",
+          "hxxps://raw[.]githubusercontent[.]com/navaLinh/database/main/seska[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4015",
+  "modified": "2026-06-10T20:23:26Z",
+  "published": "2026-06-10T20:22:31Z",
+  "summary": "Malicious code in postcss-processor-utils (npm)",
+  "details": "Package postcss-processor-utils@1.0.3 is a trojanized npm package impersonating a Tailwind CSS typography plugin. The publisher an account The package contains no lifecycle hooks, so execution occurs when the module is required as a Tailwind plugin. The src/token-loader.js file implements a XOR-based decryption routine (deriveKey from package name+version) that reads encrypted base64 payload chunks from data/design-tokens.json under _encrypted.chunks (18 chunks totalling ~25KB), writes the decoded JS to os.tmpdir()/postcss-processor-cache/compat-{platform}-{arch}.js, and require()'s it — a classic obfuscated payload delivery chain. The src/styles.js also includes a suspicious _cssColorProbe IIFE that fingerprints the system (arch, platform, execPath) into the temp directory. No network exfiltration was observed at the static level, but the encrypted payload is opaque and could execute arbitrary code at runtime. Investigation showed no canary tokens, no NPM_TOKEN/GITHUB_TOKEN strings, and no.npmrc references — the threat is the payload delivery mechanism itself, not credential theft at the static layer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss-processor-utils",
+        "purl": "pkg:npm/postcss-processor-utils@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/postcss-processor-utils/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4015"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T20:22:31Z",
+      "indicators_observed": {}
+    }
+  }
+}

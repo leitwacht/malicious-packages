@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5847",
+  "aliases": [
+    "MAL-2026-6273"
+  ],
+  "modified": "2026-06-22T18:59:42Z",
+  "published": "2026-06-22T18:58:32Z",
+  "summary": "Malicious code in zod-pino (npm)",
+  "details": "Combosquat package `zod-pino` masquerades as a legitimate library but installs a persistent remote access agent (RAT) via a 5-step postinstall chain. On `npm install`, the package: (1) patches clipboard-monitoring dependencies for silent operation, (2) copies itself to a hidden directory under the user's data home (~/.local/share/cfgmgr/.forge-jsxy/runtime/ on Linux, Application Support on macOS, AppData on Windows), (3) registers OS-level autostart so the agent survives package removal and reboots, and (4) spawns a detached background process that connects to a remote control server over WebSocket. The C2 address is hidden via AES-256-GCM encryption with an XOR-obfuscated embedded key — deliberately not exposed in process listings. The agent synchronizes clipboard contents and keyboard input to the remote server, harvests Discord bot tokens, takes screenshots, scans the filesystem for credentials and secrets, reads Chromium browser extension databases, and exfiltrates collected data to the C2 via relay features including HuggingFace Hub uploads. The agent listens for remote-control commands for file access and data forwarding. Default C2 ports: 9877 (WebSocket relay), 8765 (sync API). The agent starts silently with no UI prompts or console windows.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zod-pino",
+        "purl": "pkg:npm/zod-pino@1.0.122"
+      },
+      "versions": [
+        "1.0.122"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zod-pino/v/1.0.122"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5847"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T18:58:32Z",
+      "indicators_observed": {}
+    }
+  }
+}

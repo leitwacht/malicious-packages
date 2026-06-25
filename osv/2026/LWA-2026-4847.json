@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4847",
+  "aliases": [
+    "MAL-2026-5705"
+  ],
+  "modified": "2026-06-12T19:56:57Z",
+  "published": "2026-06-12T19:54:26Z",
+  "summary": "Potentially-unwanted package (riskware): theta-connector (npm)",
+  "details": "Theta-connector@1.0.0 poses as a MySQL database connector but contains a planted method (queryDBConnect) that base64-decodes a jsonkeeper[.]com URL to hxxps://jsonkeeper[.]com/b/2P5FA, fetches content from it via axios, spawns a detached node child process with piped stdin, writes the fetched content into stdin, and unrefs the child so it runs hidden in the background. This is a remote-code-execution stager: the attacker controls the paste content and can deliver arbitrary second-stage payloads (token exfil, worm propagation, cryptominer). The publisher email does not match the claimed author, and axios is used but not declared as a dependency — the method fails gracefully without axios but executes when the environment provides it. No lifecycle hooks, so the stager is dormant until the method is called by the consuming application. Pattern matches the clsx-js campaign's stdin-piped RCE stager shape.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "theta-connector",
+        "purl": "pkg:npm/theta-connector@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/theta-connector/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4847"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-06-12T19:54:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/2P5FA"
+        ]
+      }
+    }
+  }
+}

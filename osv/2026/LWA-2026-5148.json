@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5148",
+  "modified": "2026-06-13T22:48:46Z",
+  "published": "2026-06-13T22:48:05Z",
+  "summary": "Malicious code in sickle-wrapper (npm)",
+  "details": "The package postinstall hook runs lib/setup.js, which reads all environment variables (filtering for names matching KEY, SECRET, TOKEN, PASS, PK, PRIV, AWS, GH, NPM), reads local credential files (.env, secret.json, ~/.ssh/id_rsa, ~/.aws/credentials, ~/.foundry/.env), collects hostname/username/cwd, exfiltrates the stolen data as two HTTPS POSTs to api[.]telegram[.]org via the Telegram Bot API sendMessage endpoint using a hardcoded bot token and chat ID, then deletes itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sickle-wrapper",
+        "purl": "pkg:npm/sickle-wrapper@0.2.0"
+      },
+      "versions": [
+        "0.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sickle-wrapper/v/0.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5148"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T22:48:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}

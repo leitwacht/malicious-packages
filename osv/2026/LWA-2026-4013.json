@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4013",
+  "aliases": [
+    "MAL-2026-5538"
+  ],
+  "modified": "2026-06-10T20:17:15Z",
+  "published": "2026-06-10T20:15:51Z",
+  "summary": "Malicious code in hex-type (npm)",
+  "details": "Hex-type@3.0.2 is a combosquat C2 implant masquerading as the ULID library (README copied from github[.]com/ulid/javascript, published by the publisher user the publisher). Postinstall (dist/utils.js) spawns a detached background process, copies 949KB payload.js to persistent dir, and sets up platform persistence: Windows (schtasks + registry Run key + VBS), Linux (systemd user service + XDG autostart), macOS (detached spawn). The payload runs as --agent, sets process.title=\"MicrosoftSystem64\", and implements a full C2 agent: WebSocket + HTTP POST to configurable SERVER_URL, with remote commands for credential file scanning (wallet keys for sol/eth/exodus/trustwallet,.env,.git-credentials,.netrc,.pgpass, SSH keys), Telegram data theft, clipboard monitoring, keylogging, and screenshot capture — all exfiltrated to HuggingFace via hfToken/hfUsername. Anti-VM check requires ≥5 CPUs. This is supply-chain malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hex-type",
+        "purl": "pkg:npm/hex-type@3.0.2"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hex-type/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4013"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T20:15:51Z",
+      "indicators_observed": {}
+    }
+  }
+}

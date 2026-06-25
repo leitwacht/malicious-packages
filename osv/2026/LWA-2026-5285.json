@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5285",
+  "aliases": [
+    "MAL-2026-5781"
+  ],
+  "modified": "2026-06-15T02:55:30Z",
+  "published": "2026-06-15T02:54:48Z",
+  "summary": "Malicious code in portal-backend (npm)",
+  "details": "Portal-backend@999.0.0 is a dependency-confusion package impersonating an internal service. The preinstall hook runs postinstall.js which collects the following from the installation environment: hostname, username, current working directory, npm registry/prefix configuration, and every environment variable whose name matches key|secret|token|pass|private|ssh|deploy|auth|api|rpc|wallet|sentry|docker|graph|slack|host (harvesting API keys, tokens, passwords, and other secrets). This collected data is serialized as JSON and POSTed over HTTPS to 185[.]130[.]46[.]35:8443/collect. Errors from both the data collection and the network request are silently swallowed (the preinstall script uses `|| true` and an empty catch block), making the attack invisible during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "portal-backend",
+        "purl": "pkg:npm/portal-backend@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/portal-backend/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5285"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T02:54:48Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]130[.]46[.]35:8443"
+        ]
+      }
+    }
+  }
+}

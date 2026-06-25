@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5244",
+  "modified": "2026-06-14T13:04:35Z",
+  "published": "2026-06-14T13:03:11Z",
+  "summary": "Malicious code in system-driver (npm)",
+  "details": "On npm install, the postinstall hook (setup.js) silently downloads an SSH public key from a remote Supabase storage bucket (project ndfcioahsbgsjmulpjgt[.]supabase[.]co, bucket 'system_bucket', path 'public_keys/main.pem.pub'), then injects it into ~/.ssh/authorized_keys — creating the.ssh directory and authorized_keys file if they do not exist. This grants the attacker persistent SSH access to the machine. It then collects the victim's external IP address, username, and hostname (via utils.js) and uploads that data to the same Supabase project under bucket 'project_bucket' at path 'logs/\u003cIP\u003e_\u003chostname\u003e.txt'. The start script (index.js) repeats the same backdoor injection and exfiltration every 60 seconds.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "system-driver",
+        "purl": "pkg:npm/system-driver@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/system-driver/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5244"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T13:03:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ndfcioahsbgsjmulpjgt[.]supabase[.]co"
+        ]
+      }
+    }
+  }
+}

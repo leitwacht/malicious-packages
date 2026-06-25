@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5790",
+  "aliases": [
+    "MAL-2026-6239"
+  ],
+  "modified": "2026-06-20T10:56:38Z",
+  "published": "2026-06-20T10:55:46Z",
+  "summary": "Malicious code in atlasora-config (npm)",
+  "details": "Atlasora-config@1.0.0 is a trojanized package that steals credentials at install time via a postinstall hook. The file install.js is executed automatically after npm install. It harvests environment variables (including COINBASE_API_KEY, COINBASE_API_SECRET, OPENAI_API_KEY, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SUPABASE_SERVICE_ROLE_KEY, REVOLUT_API_SECRET_KEY, PRIVATE_KEY, MNEMONIC, DATABASE_URL, JWT_SECRET, and others). It reads.env files from the current and parent directories, SSH private keys from ~/.ssh/, AWS credentials from ~/.aws/credentials, NPM tokens from ~/.npmrc, and git configuration. All harvested data is exfiltrated via HTTPS POST to webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff. Errors are silently caught so the npm install appears to succeed without alerting the user. The package name is a combosquat of the legitimate AtlasOra platform names.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlasora-config",
+        "purl": "pkg:npm/atlasora-config@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlasora-config/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5790"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T10:55:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff"
+        ]
+      }
+    }
+  }
+}

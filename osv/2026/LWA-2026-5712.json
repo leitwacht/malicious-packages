@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5712",
+  "aliases": [
+    "MAL-2026-6119"
+  ],
+  "modified": "2026-06-18T11:06:27Z",
+  "published": "2026-06-18T11:05:46Z",
+  "summary": "Malicious code in parket-helper (npm)",
+  "details": "Parket-helper@0.0.1 poses as a decimal-arithmetic library but is a credential and data-stealer. On npm install (postinstall hook), it: (1) scans the entire filesystem (Linux /home, macOS /Users, Windows C:\\ drives) for wallet files (.env, keystore, seed-phrase files, private keys, mnemonic phrases, Metamask/Phantom credentials) and uploads them; (2) collects shell history from bash, zsh, fish, and PowerShell and uploads it; (3) on Windows and macOS, reads the Telegram Desktop tdata/ folder (containing session cookies and 2FA state) and uploads it as a gzip archive. All data is exfiltrated via multipart POST to parket-server-help[.]vercel[.]app/api/v1. Artifacts: index.js (18.6KB) contains the full stealer logic; test.js (509B) invokes it via postinstall.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "parket-helper",
+        "purl": "pkg:npm/parket-helper@0.0.1"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/parket-helper/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5712"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T11:05:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "parket-server-help[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://parket-server-help[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

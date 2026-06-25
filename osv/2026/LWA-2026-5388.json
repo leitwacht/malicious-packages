@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5388",
+  "aliases": [
+    "MAL-2026-5808"
+  ],
+  "modified": "2026-06-15T14:58:21Z",
+  "published": "2026-06-15T14:56:47Z",
+  "summary": "Malicious code in surf-lending (npm)",
+  "details": "Preinstall hook runs index.js which collects the installer's hostname, username, and environment variables matching sensitive patterns (key, seed, secret, token, mnemonic, password, blockfrost, redis, telegram, batcher). The data is JSON-serialised and exfiltrated via HTTPS POST to 2[.]25[.]140[.]71:8443/surflending/npm-confusion. All errors are silently swallowed to avoid detection. The package is a version-squat (9.9.9) designed for dependency confusion.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "surf-lending",
+        "purl": "pkg:npm/surf-lending@9.9.9"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/surf-lending/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5388"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T14:56:47Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]25[.]140[.]71:8443"
+        ],
+        "url_observed": [
+          "hxxps://2[.]25[.]140[.]71:8443/surflending/npm-confusion"
+        ]
+      }
+    }
+  }
+}

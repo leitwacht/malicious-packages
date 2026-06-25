@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5469",
+  "aliases": [
+    "MAL-2026-4721"
+  ],
+  "modified": "2026-06-16T00:18:16Z",
+  "published": "2026-06-16T00:16:43Z",
+  "summary": "Malicious code in weavedb-node-client (npm)",
+  "details": "Weavedb-node-client@0.45.3 is a trojanized clone of the legitimate WeaveDB gRPC client. It ships a 977KB ELF binary at tools/setup that executes during npm install via the preinstall lifecycle hook. This binary is the Mini Shai-Hulud worm (TeamPCP campaign) — a native dropper that downloads second-stage payloads and harvests NPM tokens and other credentials from the victim environment. The package also depends on weavedb-base (another compromised component in the same worm campaign). The preinstall hook runs:./tools/setup. The legitimate index.js and weavedb.proto files serve as camouflage for the malicious binary payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "weavedb-node-client",
+        "purl": "pkg:npm/weavedb-node-client@0.45.3"
+      },
+      "versions": [
+        "0.45.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/weavedb-node-client/v/0.45.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5469"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T00:16:43Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4204",
+  "aliases": [
+    "MAL-2026-5643"
+  ],
+  "modified": "2026-06-11T07:30:00Z",
+  "published": "2026-06-11T07:29:31Z",
+  "summary": "Malicious code in parket-slot (npm)",
+  "details": "Parket-slot@0.0.6 is a supply-chain malware package that depends on npm typosquats `child_process` and `os` (shadowing Node built-ins) to fly under radar. Its postinstall hook runs a credential-theft + persistence implant: (1) scans the working directory for.env, config.json, id.json, config.toml and uploads them to datasecure-service[.]vercel[.]app/api/v1 via multipart POST with the victim's username; (2) fetches an SSH public key, scan patterns, and block patterns from the same C2, installs the SSH key into ~/.ssh/authorized_keys (persistent backdoor on Linux), then recursively scans the home directory / all non-C Windows drives for files matching server-controlled patterns, exfiltrating them in 4MB-batched multipart uploads. The C2 endpoint is a Vercel-hosted service, and the server controls what files to target dynamically.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "parket-slot",
+        "purl": "pkg:npm/parket-slot@0.0.6"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/parket-slot/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4204"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T07:29:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}

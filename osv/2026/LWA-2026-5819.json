@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5819",
+  "aliases": [
+    "MAL-2026-6251"
+  ],
+  "modified": "2026-06-21T15:46:42Z",
+  "published": "2026-06-21T15:45:15Z",
+  "summary": "Malicious code in zomato-config (npm)",
+  "details": "Zomato-config@1.0.0 is a trojanized clone impersonating Zomato, containing no real configuration management functionality. The preinstall hook exfiltrates the installer's hostname, username, current working directory, and ALL environment variables (base64-encoded) to an interactsh callback server via curl: d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/\u003cbase64\u003e. A preuninstall hook also phones home with the hostname. The env capture steals any credentials, API tokens, or secrets present in environment variables (NPM_TOKEN, GITHUB_TOKEN, AWS_* etc.) at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zomato-config",
+        "purl": "pkg:npm/zomato-config@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zomato-config/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5819"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T15:45:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site"
+        ]
+      }
+    }
+  }
+}

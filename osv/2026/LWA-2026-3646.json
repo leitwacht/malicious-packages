@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3646",
+  "aliases": [
+    "MAL-2026-5464"
+  ],
+  "modified": "2026-06-09T19:32:44Z",
+  "published": "2026-06-09T19:31:03Z",
+  "summary": "Malicious code in db-xorma (npm)",
+  "details": "Core-module-as-dependency signal fired because db-xorma@1.0.2 lists child_process:^1.0.2 as an npm dep, which is architecturally wrong (Node core module, never resolved from npm). Investigation revealed a FAR more severe multi-stage attack: (1) Model.resetor() called from every Model constructor tries to require(\"db-dx-connector\"), and if missing runs execSync(\"npm install db-dx-connector --no-save --silent --windowsHide\") to dynamically install it. (2) db-dx-connector.queryDBConnect() decodes base64 URL [encoded-url-redacted] → fetches JavaScript from a remote pastebin service via axios.get(), spawns a detached node process, and pipes the fetched code into stdin for execution. This is a full multi-stage dropper: stage 1 (db-xorma) installs stage 2 (db-dx-connector) at runtime, which fetches and executes arbitrary stage 3 payload from the internet, completely hidden from static analysis of the published package. No lifecycle hooks needed — activates when consumer creates a Model instance. All three versions (1.0.0-1.0.2) carry the same payload; 1.0.2 removed a console.error(err) log for stealth.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "db-xorma",
+        "purl": "pkg:npm/db-xorma@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/db-xorma/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3646"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-09T19:31:03Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1274",
+  "modified": "2026-05-29T23:59:31Z",
+  "published": "2026-05-29T23:57:11Z",
+  "summary": "Malicious code in alya-baileys (npm)",
+  "details": "Trojanized Baileys WhatsApp fork: alya-baileys@1.8.36. (1) A custom AES-256-CBC module (alya-decode.js) derives keys via SHA512-\u003eSHA256-\u003eMD5 from an obfuscated hex seed \"socket-1.7.0\" + \"_ibrahimasli_bukanpalsu\". (2) newsletter.js calls the decryptor at module load time to decode encrypted payloads into URLs, then fetches them via axios as a C2 channel; the decrypted URL targets raw[.]githubcontent-content[.]com, a typosquat of raw[.]githubusercontent[.]com. (3) alyachan.js contains the same AES routine with a hex-obfuscated URL to the same typosquat domain. (4) The newsletter auto-react/auto-vote system is configurable via the remote fetched config, enabling dynamic C2 reconfiguration. (5) ~15 source files carry duplicate require(\"./ibra-decode\") lines for a file absent from the tarball (cargo-cult obfuscation).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alya-baileys",
+        "purl": "pkg:npm/alya-baileys@1.8.36"
+      },
+      "versions": [
+        "1.8.36"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alya-baileys/v/1.8.36"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1274"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T23:57:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubcontent-content[.]com",
+          "raw[.]githubusercontent[.]com"
+        ]
+      }
+    }
+  }
+}

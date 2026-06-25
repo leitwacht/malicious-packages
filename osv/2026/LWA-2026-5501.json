@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5501",
+  "modified": "2026-06-16T03:44:42Z",
+  "published": "2026-06-16T03:43:27Z",
+  "summary": "Malicious code in wime-zle (npm)",
+  "details": "Wime-zle@1.1.4 ships J2TEAM-obfuscated JavaScript in package/index.js that searches the installer's working directory for sensitive files —.env, id.json, Config.toml, and config.toml — and exfiltrates them via HTTP POST to hxxps://chalk-logger[.]vercel[.]app/api/validate. Each file is prefixed with the victim's $USER environment variable and local IP address as metadata before exfiltration. The package uses axios as the HTTP transport and a udp4 socket to 8[.]8[.]8[.]8:80 to determine the local IP. There are no lifecycle hooks; exfiltration triggers when the test script runs (npm test) or when the from_str() function is called.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wime-zle",
+        "purl": "pkg:npm/wime-zle@1.1.4"
+      },
+      "versions": [
+        "1.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wime-zle/v/1.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5501"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T03:43:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chalk-logger[.]vercel[.]app"
+        ],
+        "ip_observed": [
+          "8[.]8[.]8[.]8:80"
+        ],
+        "url_observed": [
+          "hxxps://chalk-logger[.]vercel[.]app/api/validate"
+        ]
+      }
+    }
+  }
+}

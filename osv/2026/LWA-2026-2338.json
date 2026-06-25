@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2338",
+  "modified": "2026-06-01T15:53:06Z",
+  "published": "2026-06-01T15:44:18Z",
+  "summary": "Malicious code in @keeneye/uikit (npm)",
+  "details": "A multi-stage dropper masquerading as a corporate internal UI/logger toolkit (the keeneye[.]io domains are fabricated). Its postinstall (scripts/postinstall.js, heavily obfuscated) fingerprints the OS via platform(), builds a platform-specific remote URL, HTTP-fetches a payload, writes it to a temp file under the home directory, and spawns it as a child Node process with custom env vars. dist/index.js is a stub requiring a non-existent../src/index.js, so the package ships no real library code; the README's claim of telemetry to telemetry[.]keeneye[.]io is cover. An install-time download-and-execute implant. The obfuscated postinstall.js (javascript-obfuscator output) downloads a platform-specific payload from a remote URL and spawns process.execPath to execute it. The package is a stub: dist/index.js (76B) re-exports a non-existent../src/index.js, and the README version history is fabricated. Ships a multi-stage downloader in scripts/postinstall.js (heavily obfuscated). It determines the OS platform via os.platform(), fetches a platform-specific payload from a remote URL over http/https, writes it to ~/.keeneye-uikit, then spawns process.execPath to execute it. The main entry dist/index.js (76 bytes) requires a non-existent../src/index.js so there is no real logger functionality, and the README contains a fake changelog.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@keeneye/uikit",
+        "purl": "pkg:npm/%40keeneye/uikit@5.0.1"
+      },
+      "versions": [
+        "5.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@keeneye/uikit/v/5.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2338"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T15:44:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "keeneye[.]io",
+          "telemetry[.]keeneye[.]io"
+        ]
+      }
+    }
+  }
+}

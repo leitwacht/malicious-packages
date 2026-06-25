@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4234",
+  "modified": "2026-06-11T11:46:56Z",
+  "published": "2026-06-11T11:45:24Z",
+  "summary": "Malicious code in node-env-resolve (npm)",
+  "details": "Node-env-resolve@1.0.0 is a full-featured remote-access trojan published under a benign \"environment resolver\" description. The postinstall.js copies the package source to a hidden directory (~/.node-gyp-cache or AppData\\Roaming\\node-gyp-cache), installs dependencies, registers OS-level persistence (Windows HKCU\\Run + VBS launcher, macOS LaunchAgent, Linux ~/.config/autostart), and spawns src/index.js as a detached hidden process. The agent connects over a socket[.]io WebSocket to a configurable C2 (default localhost:8471, overridable via SERVER_URL) and supports remote screen capture, microphone audio capture, filesystem browsing and file reads (including.env), browser-history theft from Chrome/Edge/Firefox SQLite stores, remote mouse/keyboard injection (robotjs), and host fingerprinting. Its dependency set (robotjs, screenshot-desktop, socket[.]io-client, node-machine-id, sharp, better-sqlite3) is consistent with a surveillance agent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-env-resolve",
+        "purl": "pkg:npm/node-env-resolve@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-env-resolve/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4234"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:45:24Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4909",
+  "modified": "2026-06-12T20:56:04Z",
+  "published": "2026-06-12T20:53:16Z",
+  "summary": "Malicious code in react-copy-lite (npm)",
+  "details": "Same package react-copy-lite@1.0.1 — trojanized React clipboard hook. The postinstall hook spawns a detached Node.js process that opens a TCP reverse shell to 54[.]234[.]216[.]79:4444, piping the socket to /bin/bash for remote command execution. The shell loops forever with 10s retry. The exported useCopy hook is benign decoy code hiding the payload. Trojanized npm package posing as a React clipboard hook. The exported useCopy API (dist/index.cjs) is benign decoy code. The postinstall hook (scripts/detach-run.cjs) spawns a detached background Node.js process running scripts/connect-loop.cjs. That script opens a TCP socket to 54[.]234[.]216[.]79:4444 and pipes it to /bin/bash (stdin/stdout/stderr), giving a remote attacker a full interactive shell on any machine that installs this package. It retries the connection every 10 seconds in an infinite loop, so the operator regains access if the victim machine restarts or the connection drops. Package has no legitimate purpose for this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-copy-lite",
+        "purl": "pkg:npm/react-copy-lite@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-copy-lite/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4909"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T20:53:16Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "54[.]234[.]216[.]79:4444"
+        ]
+      }
+    }
+  }
+}

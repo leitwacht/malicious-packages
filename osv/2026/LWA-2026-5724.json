@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5724",
+  "aliases": [
+    "MAL-2026-6218"
+  ],
+  "modified": "2026-06-18T13:38:47Z",
+  "published": "2026-06-18T13:38:06Z",
+  "summary": "Malicious code in chai-as-attested (npm)",
+  "details": "Chai-as-attested is a combosquat package impersonating the chai assertion library. When required, it spawns a detached background child process that fetches and executes remote code from a C2 endpoint. The file lib/initializeCaller.js decodes a base64-embedded URL (hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json) and HTTP header (x-secret-key), makes a GET request to that endpoint, and passes the response body into the Function constructor for arbitrary code execution. The package retries the fetch up to 5 times on failure. The parent process exits independently while the malicious payload runs in the background.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-attested",
+        "purl": "pkg:npm/chai-as-attested@6.0.3"
+      },
+      "versions": [
+        "6.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-attested/v/6.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5724"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T13:38:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

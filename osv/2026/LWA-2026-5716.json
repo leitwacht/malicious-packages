@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5716",
+  "modified": "2026-06-18T11:23:42Z",
+  "published": "2026-06-18T11:22:09Z",
+  "summary": "Malicious code in @dxcl/transaction-js (npm)",
+  "details": "Dependency-confusion package with malicious preinstall and install lifecycle hooks. On installation, both hooks collect the victim's username, hostname, current working directory, and package name, base64-encode the combined string, and exfiltrate it over HTTPS to the C2 host callback[.]m0chan[.]co[.]uk via HTTP GET with the encoded data in the URL path. A parallel DNS exfiltration channel uses nslookup with a base64-encoded package-name subdomain to the same host. The package index.js is an empty stub (module.exports = {}), providing no real functionality. The version 99.99.99 and description \"Internal automation library.\" are designed to exploit dependency-confusion attacks (installers pulling from the public registry at a higher version than a private/internal package).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dxcl/transaction-js",
+        "purl": "pkg:npm/%40dxcl/transaction-js@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dxcl/transaction-js/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5716"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-18T11:22:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "callback[.]m0chan[.]co[.]uk"
+        ]
+      }
+    }
+  }
+}

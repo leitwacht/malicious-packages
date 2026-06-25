@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5639",
+  "aliases": [
+    "MAL-2026-6330"
+  ],
+  "modified": "2026-06-17T11:23:56Z",
+  "published": "2026-06-17T10:57:30Z",
+  "summary": "Malicious code in @ravespaceio/rave-engine (npm)",
+  "details": "Dependency-confusion stub published with an inflated version number to outrank a private package of the same scoped name and win install resolution. The package.json preinstall lifecycle script executes curl against a hardcoded remote IP on port 1337, sending an install-time beacon before the package is ever used. index.js repeats the same outbound request via child_process execSync so it also fires when the module is required. The package ships no real functionality (empty exports); its only purpose is to phone home to attacker infrastructure when installed inside a targeted environment.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ravespaceio/rave-engine",
+        "purl": "pkg:npm/%40ravespaceio/rave-engine@99.0.1"
+      },
+      "versions": [
+        "99.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ravespaceio/rave-engine/v/99.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5639"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-17T10:57:30Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "173[.]249[.]29[.]170"
+        ],
+        "url_observed": [
+          "hxxp://173[.]249[.]29[.]170:1337/npmpackage"
+        ]
+      }
+    }
+  }
+}

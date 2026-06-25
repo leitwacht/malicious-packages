@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5667",
+  "modified": "2026-06-17T21:54:08Z",
+  "published": "2026-06-17T19:57:25Z",
+  "summary": "Malicious code in @thales-dis-dr/drmcl-ts-shared (npm)",
+  "details": "This package contains no real functionality (index.js is an empty stub). Its sole purpose is install-time host reconnaissance and exfiltration. Both the preinstall and install lifecycle scripts collect the current username, hostname, working directory, and package name, base64-encode them, and exfiltrate the data two ways: an HTTPS GET request carrying the encoded data in the URL path to an attacker-controlled callback host, and a DNS lookup of a hostname whose labels encode the same data (DNS-based exfiltration). The package uses a private-looking scoped name and an absurdly high synthetic version number (99.99.99), the hallmark of a dependency-confusion attack designed to be resolved in place of a legitimate internal package and beacon the victim host on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@thales-dis-dr/drmcl-ts-shared",
+        "purl": "pkg:npm/%40thales-dis-dr/drmcl-ts-shared@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@thales-dis-dr/drmcl-ts-shared/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5667"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-17T19:57:25Z",
+      "indicators_observed": {}
+    }
+  }
+}

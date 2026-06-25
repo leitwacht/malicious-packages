@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3918",
+  "modified": "2026-06-10T13:14:46Z",
+  "published": "2026-06-10T13:14:10Z",
+  "summary": "Malicious code in maninos (npm)",
+  "details": "A decoy TypeScript demo package ('A demo package for Total TypeScript') with a malicious postinstall script. The postinstall reads /proc/self/environ (all process environment variables), greps for 'ingehack', and passes the result as a query parameter via wget to s450r1[.]alwaysdata[.]net/inge/logger.php — targeted environment-variable exfiltration aimed at specific CI/deployment secrets. The actual package code is trivial (an 'add(a,b)=\u003ea+b' function with stubs). ATT\u0026CK: T1552.001 (env var harvest), T1059.007 (postinstall execution), T1071.001 (HTTP exfil to alwaysdata[.]net), T1041 (exfiltration).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "maninos",
+        "purl": "pkg:npm/maninos@1.2.0"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/maninos/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3918"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T13:14:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "alwaysdata[.]net",
+          "s450r1[.]alwaysdata[.]net"
+        ]
+      }
+    }
+  }
+}

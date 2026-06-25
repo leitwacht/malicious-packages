@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5598",
+  "aliases": [
+    "MAL-2026-5914"
+  ],
+  "modified": "2026-06-16T20:24:29Z",
+  "published": "2026-06-16T20:11:23Z",
+  "summary": "Malicious code in nottuff15 (npm)",
+  "details": "A package published under a meaningless name with an empty author and the description \"package\". Its main entry is a service worker (sw.js) that pulls in a heavily minified bundle of a web-proxy framework, including a base64-embedded WebAssembly blob decoded at runtime. The service worker intercepts every HTML response it proxies and injects an inline script into the page head. That injected script overrides window.open and installs document-level capturing handlers for click, middle-click/modifier-click, and form submission events; whenever the page would open a new tab or navigate to a new target, the handler cancels the original action and instead funnels the destination URL through a postMessage channel back to the service worker, which re-broadcasts it to all controlled windows. URLs are encoded/decoded through a nested /x2zvu/ marker scheme used as the proxy redirect channel. The result is silent hijacking and rerouting of user navigations through an attacker-controlled proxy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nottuff15",
+        "purl": "pkg:npm/nottuff15@1.7.7"
+      },
+      "versions": [
+        "1.7.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nottuff15/v/1.7.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5598"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T20:11:23Z",
+      "indicators_observed": {
+        "marker_observed": [
+          "/x2zvu/"
+        ],
+        "path_observed": [
+          "package/8cfc2/hgshm.js",
+          "package/sw.js"
+        ]
+      }
+    }
+  }
+}

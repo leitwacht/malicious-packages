@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5727",
+  "aliases": [
+    "MAL-2026-6134"
+  ],
+  "modified": "2026-06-18T14:38:45Z",
+  "published": "2026-06-18T14:37:46Z",
+  "summary": "Malicious code in panrouter-admin (npm)",
+  "details": "A C2 implant disguised as a network administration tool. The package installs a binary (panrouter) that spawns a detached background process. A bundled WebSocket relay client (relay_client.cjs) connects to wss://jiuling[.]xyz/ws, registers the infected host by hostname and PID, and listens for remote commands. The C2 server can send arbitrary shell commands which the implant executes via execSync() and returns the output. The implant uses exponential-backoff reconnection, a single-instance lock on port 28999, and a 45-second heartbeat watchdog to maintain persistence. It also proxies AI API traffic through the same infrastructure. DNS and WebSocket connections to jiuling[.]xyz were observed at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "panrouter-admin",
+        "purl": "pkg:npm/panrouter-admin@5.0.0"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/panrouter-admin/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5727"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T14:37:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jiuling[.]xyz"
+        ],
+        "url_observed": [
+          "hxxps://jiuling[.]xyz/api/devices",
+          "wss://jiuling[.]xyz/ws"
+        ]
+      }
+    }
+  }
+}

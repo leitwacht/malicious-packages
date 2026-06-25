@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5346",
+  "modified": "2026-06-15T08:55:12Z",
+  "published": "2026-06-15T08:53:57Z",
+  "summary": "Malicious code in twcompose-utils (npm)",
+  "details": "Twcompose-utils is a combosquat impersonating the @tailwindcss/typography plugin for Tailwind CSS. Its src/index.js exports the legitimate plugin code normally, but appends an obfuscated payload (javascript-obfuscator) that runs 100ms after the module is required. The payload detects the operating system (Windows/macOS/Linux) and CPU architecture (amd64/arm64), decrypts a C2 download URL from an embedded encrypted string table, fetches a platform-specific binary via HTTPS (fetch), writes it to a hidden path under the user's home directory, and executes it as a detached, hidden-window process with the full environment inherited. The binary runner has access to all environment variables including any credentials/tokens the user has set.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twcompose-utils",
+        "purl": "pkg:npm/twcompose-utils@0.7.6"
+      },
+      "versions": [
+        "0.7.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twcompose-utils/v/0.7.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5346"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T08:53:57Z",
+      "indicators_observed": {}
+    }
+  }
+}

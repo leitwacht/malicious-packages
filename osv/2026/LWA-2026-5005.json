@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5005",
+  "modified": "2026-06-13T05:39:58Z",
+  "published": "2026-06-13T05:38:45Z",
+  "summary": "Malicious code in request-js-validator (npm)",
+  "details": "Combosquat package request-js-validator impersonates the deprecated request package (same README, false bugs URL pointing to github[.]com/request/request). When imported, index.js spawns a detached background Node process that runs lib/callers.js. That script makes an HTTPS GET to jsonkeeper[.]com/b/XB9WY and passes the fetched content to new Function.constructor('require', responseBody) — evaluating arbitrary remote code with full Node.js require() access, making it a remote code execution dropper. The C2 host is www[.]jsonkeeper[.]com, path /b/XB9WY. No lifecycle hooks needed; triggers silently on require(). The remote second stage has complete access to the victim environment including files, credentials, and tokens.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "request-js-validator",
+        "purl": "pkg:npm/request-js-validator@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/request-js-validator/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5005"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T05:38:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

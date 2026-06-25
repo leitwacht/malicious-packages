@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3736",
+  "aliases": [
+    "MAL-2026-5526"
+  ],
+  "modified": "2026-06-09T22:49:03Z",
+  "published": "2026-06-09T22:48:35Z",
+  "summary": "Malicious code in chai-check-error (npm)",
+  "details": "Chai-check-error@2.1.3 is a supply-chain attack on the well-known chaijs/check-error package. Published by the publisher (not original author Jake Luer). postinstall runs node index.js which, alongside stolen utility functions, calls resolveConfig() at module top-level: decodes base64 'jsonkeeper[.]com/b/JOCBY', fetches JSON, extracts.cookie field, and executes it via new Function('require',...)(require) — classic second-stage RCE payload dropper. No token-theft markers found, but the remote code execution via jsonkeeper[.]com on install is unambiguous malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-check-error",
+        "purl": "pkg:npm/chai-check-error@2.1.3"
+      },
+      "versions": [
+        "2.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-check-error/v/2.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3736"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-09T22:48:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

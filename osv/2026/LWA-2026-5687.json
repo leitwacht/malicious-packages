@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5687",
+  "aliases": [
+    "MAL-2026-6308"
+  ],
+  "modified": "2026-06-18T08:56:52Z",
+  "published": "2026-06-18T08:53:26Z",
+  "summary": "Malicious code in @lazyutil/dater (npm)",
+  "details": "This package masquerades as the popular timezonecomplete date/timezone library (it bundles timezonecomplete's real source and its repository/homepage metadata point at the genuine project), but adds a malicious install-time payload. package.json registers a postinstall hook that runs a bundled, heavily obfuscated script (dist/lib/tzinit.cjs, ~260KB, obfuscator[.]io-style). On installation that script: sets an environment-variable flag and re-launches the Node interpreter as a hidden detached child process (spawned with output redirected to ignore so nothing is shown); guards itself with that env flag so it runs once per environment; dynamically imports/requires modules whose names are hidden in an encoded string table; and assembles a remote host and port to connect back to an external server. Before contacting that server it copies the entire process environment (Object.assign({}, process.env)) into the payload, exfiltrating environment variables such as access tokens, CI secrets and npm credentials. In short, it is a typosquatting trojan: a clone of timezonecomplete carrying an obfuscated install-time backdoor/dropper that exfiltrates environment variables and runs attacker-controlled code on the install host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@lazyutil/dater",
+        "purl": "pkg:npm/%40lazyutil/dater@0.9.4"
+      },
+      "versions": [
+        "0.9.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@lazyutil/dater/v/0.9.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5687"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:53:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "obfuscator[.]io"
+        ],
+        "malicious_file": [
+          "dist/lib/tzinit.cjs",
+          "dist/lib/tzinit.mjs"
+        ],
+        "package_typosquat_of": [
+          "timezonecomplete"
+        ]
+      }
+    }
+  }
+}

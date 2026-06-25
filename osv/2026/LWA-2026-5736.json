@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5736",
+  "aliases": [
+    "MAL-2026-6143"
+  ],
+  "modified": "2026-06-18T18:08:42Z",
+  "published": "2026-06-18T18:08:05Z",
+  "summary": "Malicious code in node-vfs-polyfill (npm)",
+  "details": "Node-vfs-polyfill is a dependency-confusion supply-chain attack. On npm install, its postinstall.js hook: (1) queries ip-api[.]com/json/ for the victim's public IP and full geolocation (country, city, ISP, ASN, lat/lon, proxy/hosting status); (2) runs ps aux to collect the full process list; (3) reads system info (hostname, platform, CPU cores, memory, network interfaces, disk); (4) harvests ALL environment variables from the CI/build environment, targeting over 50 sensitive-key patterns including NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, TWILIO_AUTH_TOKEN, SENDGRID_API_KEY, and DOCKER_PASSWORD; (5) POSTs the entire payload (hostname, geo, process list, all env vars, disk info, network config, uptime) as JSON to rni4z9qkil62r9dcwosokhtgo7u9i76w[.]oastify[.]com port 80. The HTTP request carries X-Poc-Type: dependency-confusion, X-Poc-Package: node-vfs-polyfill, and X-Poc-Version: 2.0.5 headers. The C2 endpoint is an oastify[.]com (Burp Collaborator) URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-vfs-polyfill",
+        "purl": "pkg:npm/node-vfs-polyfill@2.0.5"
+      },
+      "versions": [
+        "2.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-vfs-polyfill/v/2.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5736"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T18:08:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ip-api[.]com",
+          "oastify[.]com",
+          "rni4z9qkil62r9dcwosokhtgo7u9i76w[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxp://ip-api[.]com/json/?fields=query,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,asname,reverse,mobile,proxy,hosting",
+          "hxxp://rni4z9qkil62r9dcwosokhtgo7u9i76w[.]oastify[.]com/"
+        ]
+      }
+    }
+  }
+}

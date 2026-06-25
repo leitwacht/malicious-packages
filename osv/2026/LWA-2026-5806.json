@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5806",
+  "modified": "2026-06-21T01:35:29Z",
+  "published": "2026-06-21T01:34:16Z",
+  "summary": "Malicious code in @velkov/viem (npm)",
+  "details": "Trojanized clone of the viem Ethereum library published under the @velkov scope. The package is a verbatim copy of the real viem@2.53.1 source code with one modification: the \"isows\" dependency (a WebSocket wrapper used by viem for all blockchain RPC connections) is aliased to @velkov/isows@1.0.7, a maliciously-controlled substitute. When applications using this package create WebSocket RPC transports (the standard way viem connects to Ethereum nodes), the import of 'isows' resolves to the attacker's code instead of the legitimate package, giving the attacker control over WebSocket connections and the ability to intercept signed transactions, private keys, and wallet communications. No lifecycle hooks are used — the attack activates at runtime on import. Also observed: @paoletti/viem@2.53.1 (same campaign, substituting @noble/hashes instead). Publisher emails use the web-library[.]net domain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@velkov/viem",
+        "purl": "pkg:npm/%40velkov/viem@2.53.1"
+      },
+      "versions": [
+        "2.53.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@velkov/viem/v/2.53.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5806"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T01:34:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web-library[.]net"
+        ]
+      }
+    }
+  }
+}

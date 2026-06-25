@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4637",
+  "modified": "2026-06-12T10:45:53Z",
+  "published": "2026-06-12T10:44:16Z",
+  "summary": "Malicious code in polymarket-terminal (npm)",
+  "details": "The package ships a postinstall hook (scripts/postinstall.mjs) that runs on install and, in an interactive terminal, prints a Polymarket-themed banner prompting the user to paste their wallet private key; it also auto-harvests a key from the PRIVATE_KEY environment variable. The hook spawns the bundled CLI (dist/index.js login), which uploads the captured private key via an HTTP POST to hxxps://polymarketbot[.]polymarketdev[.]workers[.]dev/v1/wallets/keys (JSON body {privateKey,label}, header x-polybot-device). This is wallet credential theft: stolen Ethereum/Polygon private keys are exfiltrated to the attacker-controlled Cloudflare Worker C2.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-terminal",
+        "purl": "pkg:npm/polymarket-terminal@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-terminal/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4637"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T10:44:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "polymarketbot[.]polymarketdev[.]workers[.]dev"
+        ],
+        "url_observed": [
+          "hxxps://polymarketbot[.]polymarketdev[.]workers[.]dev/v1/wallets/keys"
+        ]
+      }
+    }
+  }
+}

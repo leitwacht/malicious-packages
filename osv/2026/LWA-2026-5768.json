@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5768",
+  "aliases": [
+    "MAL-2026-6256"
+  ],
+  "modified": "2026-06-19T13:26:59Z",
+  "published": "2026-06-19T13:26:10Z",
+  "summary": "Malicious code in @withgoogle/stitch-sdk (npm)",
+  "details": "@withgoogle/stitch-sdk@0.1.1 is a combosquat package whose name implies Google affiliation. Its preinstall hook (runs automatically on npm install) and its CLI entry point both read sensitive local files — ~/.gitconfig, ~/.git-credentials, ~/.ssh/*.pub, ~/.npmrc, ~/.docker/config.json — and run git, gh (GitHub CLI), claude (Anthropic CLI), and npm commands to harvest email addresses. All collected email addresses are exfiltrated via HTTPS GET to stitch-production[.]org/api/v1 with TLS certificate validation disabled. The README boilerplate falsely claims the preinstall hook is benign.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@withgoogle/stitch-sdk",
+        "purl": "pkg:npm/%40withgoogle/stitch-sdk@0.1.1"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@withgoogle/stitch-sdk/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5768"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T13:26:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "stitch-production[.]org"
+        ],
+        "url_observed": [
+          "hxxps://stitch-production[.]org/api/v1"
+        ]
+      }
+    }
+  }
+}

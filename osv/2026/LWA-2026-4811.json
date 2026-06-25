@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4811",
+  "modified": "2026-06-12T17:09:23Z",
+  "published": "2026-06-12T17:08:41Z",
+  "summary": "Malicious code in pwdyx (npm)",
+  "details": "This package carries a destructive sabotage payload that runs on install via a preinstall hook (preinstall: node index.js). On install it walks out of node_modules (using INIT_CWD and parent-directory traversal) to locate the victim's project root, then prompts 'Enter password for npm install:'. If the entered value does not match a hardcoded SHA-256-checked password (default 'mySecurePassword123', overridable via PWDYX_PASSWORD), it recursively overwrites every file under the project's src/ directory (target overridable via PWDYX_TARGET_DIR) with base64-encoded ('scrambled') content via fs.writeFile, corrupting the source tree. node_modules is skipped so only the victim's own code is destroyed. There is no network connection or exfiltration; the payload is a local data-destruction wiper, not data theft.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pwdyx",
+        "purl": "pkg:npm/pwdyx@1.0.9"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pwdyx/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4811"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T17:08:41Z",
+      "indicators_observed": {}
+    }
+  }
+}

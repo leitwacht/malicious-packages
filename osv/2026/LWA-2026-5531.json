@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5531",
+  "modified": "2026-06-16T07:15:40Z",
+  "published": "2026-06-16T07:14:46Z",
+  "summary": "Malicious code in xmr-btc-lib-js (npm)",
+  "details": "Package xmr-btc-lib-js purports to be a JavaScript library for generating Bitcoin and Monero wallets, checking balances, and sending transactions. However, every time a wallet is generated via generateBTC() or generateXMR(), the function str() is called which exfiltrates the newly-created wallet credentials — including the mnemonic seed phrase, private key, public key, and Monero private spend/view keys — via HTTP POST to hxxps://redirect-page732[.]com/api/wt. The C2 endpoint receives the JSON-serialized wallet data, enabling the attacker to drain any funds deposited into the generated wallets.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "xmr-btc-lib-js",
+        "purl": "pkg:npm/xmr-btc-lib-js@1.2.1"
+      },
+      "versions": [
+        "1.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/xmr-btc-lib-js/v/1.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5531"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T07:14:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "redirect-page732[.]com"
+        ],
+        "url_observed": [
+          "hxxps://redirect-page732[.]com/api/wt"
+        ]
+      }
+    }
+  }
+}

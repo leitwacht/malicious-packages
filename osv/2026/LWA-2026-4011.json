@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4011",
+  "aliases": [
+    "MAL-2026-5569"
+  ],
+  "modified": "2026-06-10T20:13:19Z",
+  "published": "2026-06-10T20:12:01Z",
+  "summary": "Malicious code in js-crypto-promise (npm)",
+  "details": "Js-crypto-promise is a combosquat of the legitimate crypto-promise package. Its postinstall hook (prepinstall.js) base64-decodes a URL to hxxps://jsonkeeper[.]com/b/DWNFF, fetches its content via axios, then spawns a detached node process and pipes the fetched data into stdin — a staged-payload delivery pattern. DNS queries to jsonkeeper[.]com and an axios GET to the endpoint were observed; the install only crashed because the endpoint returned no data. index.js also imports prepinstall.js to trigger the same behaviour on require. js-crypto-promise is a combosquat of crypto-promise whose postinstall hook fetches a staged payload from hxxps://jsonkeeper[.]com/b/DWNFF and pipes it into a detached node process. The install attempted to resolve jsonkeeper[.]com (4 DNS queries) and made an HTTPS GET to /b/DWNFF with axios — matching the pattern in prepinstall.js; the fetch failed only because the endpoint returned no data.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "js-crypto-promise",
+        "purl": "pkg:npm/js-crypto-promise@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/js-crypto-promise/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4011"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T20:12:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/DWNFF"
+        ]
+      }
+    }
+  }
+}

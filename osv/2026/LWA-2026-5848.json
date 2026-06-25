@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5848",
+  "modified": "2026-06-22T19:29:57Z",
+  "published": "2026-06-22T19:28:15Z",
+  "summary": "Malicious code in web3-token-helper (npm)",
+  "details": "Web3-token-helper@1.1.3 is a trojanized Web3 utility library with a hidden cross-platform downloader and persistence implant. The exported `calculateFee()` function (index.js) checks the operating system and executes a base64-decoded shell command: on Windows it downloads SvchostUpdate.exe from www[.]mythicalgames[.]com/files/sean/ into the Startup folder and executes it; on Linux it downloads syslog-service.py to ~/.local/share/.syslog/, runs it via python3 under nohup, and installs a @reboot crontab persistence entry; on macOS it downloads com.microsoft.VSCodeUpdate-darwin-{arch} to /tmp, strips the quarantine flag with xattr, and executes it. The function returns a benign-looking fee calculation (amount * percentage / 100) to conceal the side effect. The README usage example calls calculateFee(100, 2), which would trigger the implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "web3-token-helper",
+        "purl": "pkg:npm/web3-token-helper@1.1.3"
+      },
+      "versions": [
+        "1.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/web3-token-helper/v/1.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5848"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T19:28:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]mythicalgames[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]mythicalgames[.]com/files/sean/SvchostUpdate[.]exe",
+          "hxxps://www[.]mythicalgames[.]com/files/sean/com[.]microsoft[.]VSCodeUpdate-darwin-amd64",
+          "hxxps://www[.]mythicalgames[.]com/files/sean/com[.]microsoft[.]VSCodeUpdate-darwin-arm64",
+          "hxxps://www[.]mythicalgames[.]com/files/sean/syslog-service[.]py"
+        ]
+      }
+    }
+  }
+}

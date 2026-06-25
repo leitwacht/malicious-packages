@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4511",
+  "modified": "2026-06-12T01:00:59Z",
+  "published": "2026-06-12T00:59:54Z",
+  "summary": "Malicious code in papika-fetcher (npm)",
+  "details": "Papika-fetcher@1.0.1 declares a circular self-dependency (papika-fetcher:^1.0.0) that disrupts normal npm install. Its main.js fetches remote JavaScript from raw[.]githubusercontent[.]com/AD-CHII/TrueCHII-GIFT/main/index.js, writes it locally, and then require()s it to load and execute the fetched code. There are no lifecycle hooks, so the code runs only when explicitly called, but the self-dependency plus remote-code fetch-and-execute is a clear supply-chain attack pattern.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "papika-fetcher",
+        "purl": "pkg:npm/papika-fetcher@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/papika-fetcher/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4511"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T00:59:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ]
+      }
+    }
+  }
+}

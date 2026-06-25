@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5192",
+  "modified": "2026-06-14T07:18:45Z",
+  "published": "2026-06-14T07:18:03Z",
+  "summary": "Malicious code in st-pathhelper (npm)",
+  "details": "A malicious npm package posing as a path-join helper (st-pathhelper@1.0.0). When imported and initialized, it POSTs the victim's operating system platform to a remote server at hxxps://gifpngstore[.]com/test/data[.]php via HTTPS, receives an RC4-encrypted payload (key: \"the publisher\"), decrypts it, and executes the decrypted arbitrary JavaScript code via eval(). The C2 server at gifpngstore[.]com serves the encrypted second-stage payload. The package also ships unrelated wallet-address generator stubs (BTC/ERC/TRC) and a Budibase API client as camouflage for its malicious purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "st-pathhelper",
+        "purl": "pkg:npm/st-pathhelper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/st-pathhelper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5192"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T07:18:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gifpngstore[.]com"
+        ],
+        "url_observed": [
+          "hxxps://gifpngstore[.]com/test/data[.]php"
+        ]
+      }
+    }
+  }
+}

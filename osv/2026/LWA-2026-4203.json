@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4203",
+  "aliases": [
+    "MAL-2026-5619"
+  ],
+  "modified": "2026-06-11T07:06:01Z",
+  "published": "2026-06-11T07:04:33Z",
+  "summary": "Malicious code in tailwind-typography-plus (npm)",
+  "details": "Tailwind-typography-plus@2.1.0 masquerades as a Tailwind typography plugin and steganographically encodes a payload inside font-metrics.json as font-metric ratio arrays. On require, index.js decodes the ratios back to bytes and executes them via new Function('require','process','Buffer','console', source), granting full Node.js API access to the decoded code with no lifecycle hook needed. The decoded payload issues a GET request to hxxp://194[.]11[.]226[.]41:4000/d/zRlY7_JxvFY8_Zhhu8ih24iW_dT5Rb_9/agent-linux-amd64 to fetch a second-stage binary. A commented \"STEALTH PAYLOAD AREA\" marker is left in styles.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-typography-plus",
+        "purl": "pkg:npm/tailwind-typography-plus@2.1.0"
+      },
+      "versions": [
+        "2.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-typography-plus/v/2.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4203"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T07:04:33Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "194[.]11[.]226[.]41:4000"
+        ],
+        "url_observed": [
+          "hxxp://194[.]11[.]226[.]41"
+        ]
+      }
+    }
+  }
+}

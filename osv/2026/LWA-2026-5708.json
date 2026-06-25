@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5708",
+  "aliases": [
+    "MAL-2026-6348"
+  ],
+  "modified": "2026-06-18T10:26:34Z",
+  "published": "2026-06-18T06:20:21Z",
+  "summary": "Malicious code in buffer-wrap-67d7 (npm)",
+  "details": "Trojanized package published under the nonsense name 'buffer-wrap-67d7' that exfiltrates environment variables, CI/CD credentials, and cloud provider secrets during npm install. In its preinstall and postinstall hooks, the package collects NPM_TOKEN, GITHUB_TOKEN, AWS access keys, SSH key paths, host/network metadata, container escape indicators (cgroup, mounts, capabilities), and ECS task IAM credentials from the AWS container metadata endpoint (169[.]254[.]170[.]2). All data is POSTed as JSON via HTTPS to coaches-participants-pound-feeds[.]trycloudflare[.]com:443/beacon. On Linux it also writes to ~/.ssh/authorized_keys for persistence. On Windows the payload uses the Fodhelper UAC-bypass technique to escalate to SYSTEM, then creates a scheduled task that exfiltrates files from D:\\TRANSFER directories and product-config data. The package claims to be an authorized bug-bounty probe, but the code steals the installer's credentials, which exceeds any legitimate security research scope.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "buffer-wrap-67d7",
+        "purl": "pkg:npm/buffer-wrap-67d7@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/buffer-wrap-67d7/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5708"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T06:20:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coaches-participants-pound-feeds[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://coaches-participants-pound-feeds[.]trycloudflare[.]com/beacon"
+        ]
+      }
+    }
+  }
+}

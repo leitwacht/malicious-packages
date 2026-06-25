@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5257",
+  "modified": "2026-06-14T17:18:26Z",
+  "published": "2026-06-14T17:17:56Z",
+  "summary": "Malicious code in tecken (npm)",
+  "details": "The package ships no functional code (the tarball contains only package.json at 290 bytes). The preinstall script executes /usr/bin/curl to POST the victim machine's hostname (via $(hostname)) as POST data to the attacker-controlled OAST callback domain d7uvguuc7dusboo3grlgogkiu9qfmcndh[.]oast[.]live. The oast[.]live domain is a public OAST/interactsh callback service used for exfiltration. The package description reads \"takeover by dilosec\", indicating the package name was hijacked. There is no other functionality — the preinstall hook is the entire payload, performing host reconnaissance and beaconing to the attacker's endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tecken",
+        "purl": "pkg:npm/tecken@0.1.10"
+      },
+      "versions": [
+        "0.1.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tecken/v/0.1.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5257"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T17:17:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d7uvguuc7dusboo3grlgogkiu9qfmcndh[.]oast[.]live",
+          "oast[.]live"
+        ]
+      }
+    }
+  }
+}

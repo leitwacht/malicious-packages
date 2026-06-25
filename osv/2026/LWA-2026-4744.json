@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4744",
+  "modified": "2026-06-12T13:04:56Z",
+  "published": "2026-06-12T13:03:40Z",
+  "summary": "Malicious code in pretty-fancy (npm)",
+  "details": "The package masquerades as a logger utility; dist/index.js requires dist/logger.js, a javascript-obfuscator-packed module that runs malicious code when imported. On execution it reads host details via os.networkInterfaces()/homedir and POSTs them to hxxps://logger[.]clob[.]health/api/validate/system-info, then harvests project secrets by reading.env,.json and SvelteKit (svelte-kit) project files and exfiltrating them to hxxps://logger[.]clob[.]health/api/validate/project-env and hxxps://logger[.]clob[.]health/api/validate/files (HTTP POST, content-type application/json; a socket[.]io channel is also used). For persistence it appends a hardcoded attacker SSH public key (ssh-rsa AAAAB3...== user@DESKTOP-4TO2VRJ) to the user's ~/.ssh/authorized_keys (writeFileSync + chmodSync), installing an SSH backdoor. C2 host: logger.clob.health.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pretty-fancy",
+        "purl": "pkg:npm/pretty-fancy@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pretty-fancy/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4744"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T13:03:40Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxps://logger[.]clob[.]health/api/validate/files",
+          "hxxps://logger[.]clob[.]health/api/validate/project-env",
+          "hxxps://logger[.]clob[.]health/api/validate/system-info"
+        ]
+      }
+    }
+  }
+}

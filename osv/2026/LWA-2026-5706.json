@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5706",
+  "aliases": [
+    "MAL-2026-6099"
+  ],
+  "modified": "2026-06-18T10:29:31Z",
+  "published": "2026-06-18T03:45:59Z",
+  "summary": "Malicious code in stream-read-35cf (npm)",
+  "details": "The npm package stream-read-35cf@1.0.0 is a trojanized credential-theft implant. During npm install, the preinstall and postinstall lifecycle hooks execute run.js, which collects and exfiltrates CI/CD credentials and environment variables to a remote host. The payload captures GITHUB_TOKEN, NPM_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, and environment variable names for over 60 provider services (Anthropic, OpenAI, GitHub, GitLab, Slack, Stripe, Twilio, Vercel, Netlify, DigitalOcean, npm, Hugging Face, SendGrid, Cloudflare, Docker, PyPI, Cargo) from the build environment. It also queries the ECS metadata endpoint (169[.]254[.]170[.]2) to steal AWS IAM role credentials and reads SSH private keys from common paths. All collected data is POSTed as JSON over HTTPS to issue-clothing-medicine-archive[.]trycloudflare[.]com:443/beacon across three phases (preinstall, postinstall, and require). On Windows, the payload additionally executes a UAC bypass via the fodhelper registry key (HKCU\\Software\\Classes\\ms-settings\\Shell\\Open\\command) to run a PowerShell script as SYSTEM via a scheduled task, which exfiltrates and tampers with Microsoft Defender ATP findings and workflow logs from D:\\TRANSFER.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "stream-read-35cf",
+        "purl": "pkg:npm/stream-read-35cf@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/stream-read-35cf/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5706"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T03:45:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "issue-clothing-medicine-archive[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://issue-clothing-medicine-archive[.]trycloudflare[.]com/beacon"
+        ]
+      }
+    }
+  }
+}

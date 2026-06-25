@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3963",
+  "aliases": [
+    "MAL-2026-4609"
+  ],
+  "modified": "2026-06-10T16:46:43Z",
+  "published": "2026-06-10T16:44:43Z",
+  "summary": "Malicious code in mev-shield (npm)",
+  "details": "An RPC-hijacking supply-chain attack disguised as an MEV-protection tool. A postinstall hook base64-decodes hxxp://165[.]22[.]200[.]211:8545, reads the victim's.env file, scans for RPC variables (RPC_URL, ETH_RPC, etc.), and overwrites them to route all Ethereum traffic through the attacker-controlled node (plain HTTP, no TLS, giving full intercept capability); it also modifies config.json. Fake benchmark output prints randomized latency numbers to appear legitimate. A preuninstall hook (keepalive.js) deliberately preserves the malicious RPC config after removal, with code comments stating the victim's bot keeps using the attacker's RPC even without the package — enabling transaction interception and front-running.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mev-shield",
+        "purl": "pkg:npm/mev-shield@1.4.2"
+      },
+      "versions": [
+        "1.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mev-shield/v/1.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3963"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T16:44:43Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "165[.]22[.]200[.]211:8545"
+        ],
+        "url_observed": [
+          "hxxp://165[.]22[.]200[.]211"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1268",
+  "modified": "2026-05-29T22:58:48Z",
+  "published": "2026-05-29T22:56:39Z",
+  "summary": "Malicious code in alice-baileys (npm)",
+  "details": "Trojanized WhatsApp Baileys fork: alice-baileys@2.0.1 carries a remote phone-home gate. Base64-obfuscated URLs decode at runtime to fetch a GitHub token from pastebin[.]com/raw/wh34RDBe, which is then used to read an allowlist JSON from api[.]github[.]com/repos/xyroorynzz/Alice/contents/Alicev2.json. The user's WhatsApp phone number is hashed (sha256 of md5) and checked against the remote allowlist in requestPairingCodes (socket.js:389). The preinstall script only performs a Node \u003e=20 check. The Pastebin-sourced token is attacker-controlled, making the fetched value a dynamic remote-code surface.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alice-baileys",
+        "purl": "pkg:npm/alice-baileys@2.0.1"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alice-baileys/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1268"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T22:56:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pastebin[.]com"
+        ]
+      }
+    }
+  }
+}

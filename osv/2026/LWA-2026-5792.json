@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5792",
+  "aliases": [
+    "MAL-2026-6241"
+  ],
+  "modified": "2026-06-20T10:56:36Z",
+  "published": "2026-06-20T10:56:01Z",
+  "summary": "Malicious code in atlasora-shared (npm)",
+  "details": "A trojanized combosquat package impersonating the AtlasOra platform shared utilities. The postinstall hook (install.js) automatically executes on npm install and performs broad credential theft: it harvests environment variables (including OPENAI_API_KEY, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, Coinbase API keys, Supabase credentials, Revolut secrets, database URLs, JWT secrets, wallet mnemonics and private keys), reads.env files from the project and parent directories (upward traversal), and steals SSH private keys, git config, npm config (.npmrc), and AWS credentials (~/.aws/credentials). All collected data is exfiltrated via HTTPS POST to webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff. The malware silently swallows all errors to avoid breaking npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlasora-shared",
+        "purl": "pkg:npm/atlasora-shared@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlasora-shared/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5792"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T10:56:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff"
+        ]
+      }
+    }
+  }
+}

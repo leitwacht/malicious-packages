@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5838",
+  "modified": "2026-06-22T16:12:17Z",
+  "published": "2026-06-22T16:11:02Z",
+  "summary": "Malicious code in tailwindcss-effector (npm)",
+  "details": "Tailwindcss-effector@1.7.0 is a trojanized TailwindCSS animation plugin containing an obfuscated multi-stage downloader. The file src/index.js exports a legitimate plugin interface but immediately appends obfuscated code that implements a custom string decoder, an HTTP GET function, and Ethereum JSON-RPC client functions for communicating with blockchain-based command-and-control endpoints. When the module is required, the payload fetches encrypted data from remote endpoints via HTTP and JSON-RPC (eth_call-style), XOR-decrypts it, and executes the result via eval(). It also spawns a hidden, detached child Node.js process (using child_process spawn with detached:true, stdio:'ignore', and windowsHide:true) running the same decrypted payload. This setup enables the attacker to serve arbitrary stage-2 malware from blockchain-hosted payloads that are censorship-resistant and difficult to takedown.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-effector",
+        "purl": "pkg:npm/tailwindcss-effector@1.7.0"
+      },
+      "versions": [
+        "1.7.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-effector/v/1.7.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5838"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T16:11:02Z",
+      "indicators_observed": {}
+    }
+  }
+}

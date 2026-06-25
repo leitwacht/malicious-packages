@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5348",
+  "modified": "2026-06-15T09:39:40Z",
+  "published": "2026-06-15T09:38:45Z",
+  "summary": "Malicious code in typescript-util-core (npm)",
+  "details": "This package runs a credential-stealing and SSH backdoor payload via the postinstall hook (node test.js). On install, it contacts two C2 endpoints at 170[.]205[.]31[.]203:3000 and 170[.]205[.]31[.]203:3001 to retrieve an SSH public key and dynamic file-search patterns. On Linux/macOS systems it writes the attacker's SSH key into ~/.ssh/authorized_keys, enables ufw, and opens port 22/tcp for remote access. It then recursively searches the filesystem for credential files (.env, id.json, config.toml) and uploads them to hxxp://170[.]205[.]31[.]203:3000/api/v1. On Windows it enumerates all drives via wmic/PowerShell and runs the same file-harvest + upload routine against C2-specified patterns via hxxp://170[.]205[.]31[.]203:3001/api/v1. Exfiltrated data includes the OS username, platform, and all matched file contents.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typescript-util-core",
+        "purl": "pkg:npm/typescript-util-core@3.5.0"
+      },
+      "versions": [
+        "3.5.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typescript-util-core/v/3.5.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5348"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T09:38:45Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3000",
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203",
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}

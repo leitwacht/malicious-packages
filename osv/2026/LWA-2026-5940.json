@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5940",
+  "aliases": [
+    "MAL-2026-6353"
+  ],
+  "modified": "2026-06-23T18:21:08Z",
+  "published": "2026-06-23T18:20:17Z",
+  "summary": "Malicious code in markdownlint-cli2-fix (npm)",
+  "details": "A package named markdownlint-cli2-fix (a combosquat of the well-known markdownlint-cli2) ran a postinstall script on npm install that collected the victim's public IP, geolocation, hostname, username, OS platform/arch/kernel, process listing, network interfaces, and all environment variables. It specifically harvested credential tokens including NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, and STRIPE_SECRET_KEY. The full reconnaissance payload was then POSTed as JSON (3387 bytes) to the Burp Collaborator URL i0jvc03bvcjt40q39f5fx8671y72vxjm[.]oastify[.]com via HTTP. The request included the headers X-Poc-Type: dependency-confusion and X-Poc-Package: markdownlint-cli2-fix. The package also queried ip-api[.]com for geolocation data. The credential theft pattern targeting NPM_TOKEN and GITHUB_TOKEN indicates this was aimed at enabling self-propagation into downstream packages the victim maintains.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "markdownlint-cli2-fix",
+        "purl": "pkg:npm/markdownlint-cli2-fix@99.0.6"
+      },
+      "versions": [
+        "99.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/markdownlint-cli2-fix/v/99.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5940"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T18:20:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "i0jvc03bvcjt40q39f5fx8671y72vxjm[.]oastify[.]com",
+          "ip-api[.]com"
+        ],
+        "url_observed": [
+          "hxxp://i0jvc03bvcjt40q39f5fx8671y72vxjm[.]oastify[.]com/",
+          "hxxp://ip-api[.]com/json/"
+        ]
+      }
+    }
+  }
+}

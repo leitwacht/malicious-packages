@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5770",
+  "aliases": [
+    "MAL-2026-6334"
+  ],
+  "modified": "2026-06-19T14:03:13Z",
+  "published": "2026-06-19T14:02:22Z",
+  "summary": "Malicious code in parket-flow (npm)",
+  "details": "Parket-flow@3.0.1 is a trojanized package masquerading as a decimal-arithmetic library. Its postinstall hook (node test.js) executes a credential and information stealer that: (1) scans the full filesystem for cryptocurrency wallet files (metamask, phantom, keystore, seed/mnemonic/recovery phrases),.env files, config.toml, and document files containing credential keywords; (2) collects shell history from bash, zsh, fish, and PowerShell; and (3) on Windows and macOS, exfiltrates the Telegram Desktop tdata directory (allowing session hijack). All stolen data is uploaded via HTTP multipart POST to hxxps://vercel-backend-green-five[.]vercel[.]app/api/v1. The attack runs silently on install with error suppression.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "parket-flow",
+        "purl": "pkg:npm/parket-flow@3.0.1"
+      },
+      "versions": [
+        "3.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/parket-flow/v/3.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5770"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T14:02:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vercel-backend-green-five[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://vercel-backend-green-five[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

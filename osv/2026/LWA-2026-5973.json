@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5973",
+  "modified": "2026-06-25T13:29:27Z",
+  "published": "2026-06-25T13:28:47Z",
+  "summary": "Malicious code in data-parser-utils (npm)",
+  "details": "Data-parser-utils@3.0.2 is a trojanized package that fraudulently presents itself as a decimal arithmetic library but contains a credential and data theft payload executed via postinstall hook (node test.js). On npm install, the package scans the victim's filesystem for sensitive files:.env files, cryptocurrency wallet keystores (phantom, metamask, mnemonic, privatekey, seed, trezor, ledger), and documents containing wallet/crypto keywords across home directories and all drive letters (Linux /home/*, Windows C:-J:\\, macOS /Users/*). It harvests bash, zsh, fish, and PowerShell shell histories. On Windows and macOS, it locates and archives the Telegram Desktop \"tdata\" session directory, containing authentication credentials. All stolen data is exfiltrated via multipart POST to hxxps://vercel-backend-green-five[.]vercel[.]app/api/v1. The package also ships a.npmrc file containing a live npm authentication token harvested from a prior victim.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "data-parser-utils",
+        "purl": "pkg:npm/data-parser-utils@3.0.2"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/data-parser-utils/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5973"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T13:28:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vercel-backend-green-five[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://vercel-backend-green-five[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

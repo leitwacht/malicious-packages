@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5649",
+  "aliases": [
+    "MAL-2026-6067"
+  ],
+  "modified": "2026-06-17T16:21:44Z",
+  "published": "2026-06-17T16:10:55Z",
+  "summary": "Malicious code in scan-only (npm)",
+  "details": "Despite being published as a Sentry diagnostic/scanner tool, the package bin (scan-only.js, invoked via npx scan-only --diagnose) is a credential stealer and remote-command-execution backdoor. On run it fetches a decoy web page from an attacker server, decodes a hidden shell command embedded steganographically (first letter of each word, terminated by an endofpayload marker, with a token-based character unescape table) and executes it via /bin/bash on Unix or powershell.exe on Windows, giving the operator arbitrary remote command execution on the victim host. It then harvests secrets and host recon: the full environment variables, user and network info, and the contents of ~/.gitconfig, ~/.ssh, ~/.npmrc (npm auth token), ~/.aws/credentials, ~/.docker/config.json, and the tail of bash and zsh history. The collected data, including the executed command output, is exfiltrated via an HTTPS POST with a hardcoded API key to the attacker collector endpoint, after which the tool prints fake passing diagnostic checks to disguise its activity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "scan-only",
+        "purl": "pkg:npm/scan-only@0.3.0"
+      },
+      "versions": [
+        "0.3.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/scan-only/v/0.3.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5649"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T16:10:55Z",
+      "indicators_observed": {
+        "api_key_observed": [
+          "6a403d68dbd796e6812e53f9e58a65c3589fe11b18e2dc0f21812c0fcb1b1a3f"
+        ],
+        "file_read": [
+          "~/.aws/credentials",
+          "~/.bash_history",
+          "~/.docker/config.json",
+          "~/.gitconfig",
+          "~/.npmrc",
+          "~/.ssh",
+          "~/.zsh_history"
+        ],
+        "user_agent_observed": [
+          "citadel-diagnose/0.2.0"
+        ]
+      }
+    }
+  }
+}

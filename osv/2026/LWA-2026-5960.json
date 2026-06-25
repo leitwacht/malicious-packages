@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5960",
+  "aliases": [
+    "MAL-2026-6459"
+  ],
+  "modified": "2026-06-25T08:36:02Z",
+  "published": "2026-06-25T08:34:55Z",
+  "summary": "Malicious code in easy-string-kit (npm)",
+  "details": "Package easy-string-kit@1.0.1 misrepresents itself as a string utility library but runs a recon beacon on npm install. The postinstall hook executes: curl to hxxp://v405xonelk29rwduta7eqn2w8nee2cq1[.]oastify[.]com/pre sending the victim's hostname ($(hostname)) and current username ($(whoami)) as query parameters to an external OAST callback service. This collects system-identifying information on every install. The library code (camelToKebab, slugify, etc.) is a benign facade; the real payload runs automatically via the lifecycle hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "easy-string-kit",
+        "purl": "pkg:npm/easy-string-kit@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/easy-string-kit/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5960"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T08:34:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "v405xonelk29rwduta7eqn2w8nee2cq1[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxp://v405xonelk29rwduta7eqn2w8nee2cq1[.]oastify[.]com/pre"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5581",
+  "modified": "2026-06-16T16:55:50Z",
+  "published": "2026-06-16T04:43:32Z",
+  "summary": "Malicious code in wm-pause-lib-after-storage (npm)",
+  "details": "This package contains no legitimate functionality. On load, index.js shells out to read the local /etc/passwd file into a temporary file, then uploads that file via an HTTP POST to a hardcoded remote IP address on a non-standard port. The current username and hostname are embedded in the request URL path, leaking system identity alongside the password-file contents to an attacker-controlled server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wm-pause-lib-after-storage",
+        "purl": "pkg:npm/wm-pause-lib-after-storage@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wm-pause-lib-after-storage/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5581"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T04:43:32Z",
+      "indicators_observed": {
+        "file_read": [
+          "/etc/passwd"
+        ],
+        "ip_observed": [
+          "144[.]126[.]158[.]177"
+        ],
+        "url_observed": [
+          "hxxp://144[.]126[.]158[.]177:4325/"
+        ]
+      }
+    }
+  }
+}

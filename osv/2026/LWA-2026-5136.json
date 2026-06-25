@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5136",
+  "modified": "2026-06-13T20:48:43Z",
+  "published": "2026-06-13T20:47:58Z",
+  "summary": "Malicious code in sftc-advance-components (npm)",
+  "details": "A terminal snake game that exfiltrates system information during npm install and at runtime. The preinstall script (check-environment.js) and the game constructor both call a hex-obfuscated function (initSystem in utils.js) that collects the victim's username (os.userInfo().username), hostname (os.hostname()), external IP address (fetched from ipify[.]org, myip[.]com, or ifconfig[.]me), configured DNS servers, and the package name/version. This data is hex-encoded, split into subdomain labels, and exfiltrated by performing a DNS resolution against the attacker-controlled domain s[.]3271df58[.]gfde[.]site — the DNS server at that domain receives the encoded system fingerprint, effectively tunneling the stolen data over DNS queries. The package presents a fully playable snake game as cover while the exfiltration runs in the background.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sftc-advance-components",
+        "purl": "pkg:npm/sftc-advance-components@0.9.9"
+      },
+      "versions": [
+        "0.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sftc-advance-components/v/0.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5136"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T20:47:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ifconfig[.]me",
+          "myip[.]com",
+          "s[.]3271df58[.]gfde[.]site"
+        ]
+      }
+    }
+  }
+}

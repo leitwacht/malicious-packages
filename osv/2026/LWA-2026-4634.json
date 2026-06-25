@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4634",
+  "modified": "2026-06-12T10:40:31Z",
+  "published": "2026-06-12T10:38:24Z",
+  "summary": "Malicious code in polymarket-onchain-plugin (npm)",
+  "details": "A supply-chain implant masked as a Polymarket on-chain utility for USDC and CTF allowances. When installed and required, it exfiltrates system information (OS, IP, username) and.env file contents (database URLs, Stripe secret keys, JWT secrets) to hxxps://api.fivefingerz[.]dev via POST requests to /api/validate/system-info and /api/validate/files. The approveUSDCAllowance function contains an eval(atob(...)) payload that sends the user's Ethereum private key to a Telegram bot as a second exfiltration channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-onchain-plugin",
+        "purl": "pkg:npm/polymarket-onchain-plugin@2.1.3"
+      },
+      "versions": [
+        "2.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-onchain-plugin/v/2.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4634"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T10:38:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fivefingerz[.]dev"
+        ],
+        "url_observed": [
+          "hxxps://api[.]fivefingerz[.]dev"
+        ]
+      }
+    }
+  }
+}

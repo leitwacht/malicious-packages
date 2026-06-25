@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2910",
+  "aliases": [
+    "MAL-2026-5560"
+  ],
+  "modified": "2026-06-08T05:50:45Z",
+  "published": "2026-06-07T22:18:01Z",
+  "summary": "Malicious code in solana-web3-community (npm)",
+  "details": "Solana-web3-community@1.0.1 is a combosquat of @solana/web3.js carrying a credential-stealer and remote-access trojan. A repeated malicious IIFE in index.cjs.js and index.esm.js harvests.env,.npmrc, SSH keys, Solana keypairs, AWS credentials and Docker configs; scans environment variables for KEY/SECRET/TOKEN/MNEMONIC/NPM/GITHUB/SOLANA; rewrites ~/.config/solana/cli/config.yml to redirect RPC traffic to hxxp://104[.]239[.]66[.]223:8899; exfiltrates the loot to a hardcoded Telegram bot (chat id 8870595195); installs an @reboot cron job for persistence; and runs a C2 polling loop supporting /keys, /ssh, /env, /wallet, /sh and /die commands. It skips execution if the host's public IP matches 104[.]239[.]66[.]223 (its own infrastructure) and embeds a taunt comment claiming no XOR, base64 or pattern detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solana-web3-community",
+        "purl": "pkg:npm/solana-web3-community@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solana-web3-community/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2910"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T22:18:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "104[.]239[.]66[.]223",
+          "104[.]239[.]66[.]223:8899"
+        ],
+        "url_observed": [
+          "hxxp://104[.]239[.]66[.]223"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5837",
+  "aliases": [
+    "MAL-2026-6337"
+  ],
+  "modified": "2026-06-22T16:09:12Z",
+  "published": "2026-06-22T16:08:18Z",
+  "summary": "Malicious code in hunsterx-package (npm)",
+  "details": "Hunsterx-package@7.0.1 contains a credential-harvesting implant in its preinstall.js hook. On install, the script decodes nine base64-encoded payloads via eval() that: (1) collect hostname, username, homedir, platform, and architecture; (2) enumerate network interfaces and exfiltrate private IPs; (3) exfiltrate all environment variables (including NPM_TOKEN, GITHUB_TOKEN, and other secrets); (4) read ~/.npmrc and exfiltrate NPM publish tokens; (5) query the AWS EC2 metadata service (169[.]254[.]169[.]254) for account ID and region; (6) scan the filesystem for.config,.env,.yaml,.yml,.conf,.toml files and exfiltrate their contents; (7) exfiltrate package.json; (8) use DNS resolution lookups to exfiltrate hostname, IP, and username via subdomains; and (9) send a completion ping. The postinstall.js hook also fires a DNS beacon. All data is exfiltrated to d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun via HTTPS GET requests (paths: /info, /ip, /env, /npmrc, /aws, /configfiles, /file, /pkg, /done) and DNS subdomain queries.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hunsterx-package",
+        "purl": "pkg:npm/hunsterx-package@7.0.1"
+      },
+      "versions": [
+        "7.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hunsterx-package/v/7.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5837"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T16:08:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun"
+        ],
+        "url_observed": [
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/aws",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/configfiles",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/done",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/env",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/file",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/info",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/ip",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/npmrc",
+          "hxxps://d8rqs6ri6i9md1fcfdpgirhdcr17idqdh[.]oast[.]fun/pkg"
+        ]
+      }
+    }
+  }
+}

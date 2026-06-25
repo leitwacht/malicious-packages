@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5738",
+  "aliases": [
+    "MAL-2026-6191"
+  ],
+  "modified": "2026-06-18T18:28:00Z",
+  "published": "2026-06-18T18:26:57Z",
+  "summary": "Malicious code in node-slot (npm)",
+  "details": "Node-slot@1.0.7 is an SSH backdoor and file-exfiltration trojan. On execution (via npm test or require), the package contacts datasecure-service[.]vercel[.]app to fetch an SSH public key, which it appends to ~/.ssh/authorized_keys, then enables UFW firewall and opens port 22/tcp for remote SSH access. It also fetches scan patterns from the same server and recursively scans the user's home directory for files matching extensions including.env,.json,.txt,.toml,.doc,.docx,.xlsx, and.pdf, uploading matching files via batched multipart POST to datasecure-service[.]vercel[.]app/api/v1. It additionally scans the working directory for specific filenames (id.json, config.toml, config.json,.env) and exfiltrates those individually. There is no lifecycle hook — the payload requires manual invocation via npm test or programmatic require.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-slot",
+        "purl": "pkg:npm/node-slot@1.0.7"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-slot/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5738"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T18:26:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://datasecure-service[.]vercel[.]app/api/block-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/scan-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/ssh-key",
+          "hxxps://datasecure-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

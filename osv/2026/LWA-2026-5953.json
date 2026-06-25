@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5953",
+  "aliases": [
+    "MAL-2026-6399"
+  ],
+  "modified": "2026-06-24T15:14:31Z",
+  "published": "2026-06-24T15:13:46Z",
+  "summary": "Malicious code in normalize-plus (npm)",
+  "details": "Normalize-plus@3.6.6 is a trojanized clone of the normalize.css library. Its main entry point (index.js) contains no CSS normalization code — instead it immediately makes an HTTP GET request to hxxps://jsonkeeper[.]com/b/CI3HT, parses the response body as JSON, extracts the \"cookie\" field, and executes it via the JavaScript Function constructor with Node's require module passed in. This gives the remote payload full access to the filesystem, network, and process environment. The fetch includes retry logic (1 retry on failure). The package does not declare any dependencies despite relying on the 'request' npm module at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "normalize-plus",
+        "purl": "pkg:npm/normalize-plus@3.6.6"
+      },
+      "versions": [
+        "3.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/normalize-plus/v/3.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5953"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-24T15:13:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/CI3HT"
+        ]
+      }
+    }
+  }
+}

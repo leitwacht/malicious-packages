@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3936",
+  "modified": "2026-06-10T14:25:56Z",
+  "published": "2026-06-10T14:25:17Z",
+  "summary": "Malicious code in win-build-utils (npm)",
+  "details": "Win-build-utils@1.0.0 is a malware package. Its postinstall script (scripts/postinstall.js) and require-time entry point (index.js) both contain identical download-and-execute logic: a base64-obfuscated URL (api[.]ingress-hub[.]com/cdn/assets/update.pkg — NOT an allowlisted installer host) is decoded to fetch a binary, saved to %LOCALAPPDATA%\\Microsoft\\MSBuild\\NativeTools\\NativeBuildHelper.exe, and spawned as a detached hidden process (detached:true, windowsHide:true, stdio:ignore). A lock file ensures the payload runs on every install and every require(). The publisher is an account with a single version; the only declared dependency is chalk, inconsistent with a \"Windows build utilities\" package. No token-theft markers found, but the remote code execution via arbitrary binary download is the primary threat.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "win-build-utils",
+        "purl": "pkg:npm/win-build-utils@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/win-build-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3936"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T14:25:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ingress-hub[.]com"
+        ]
+      }
+    }
+  }
+}

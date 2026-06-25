@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5371",
+  "aliases": [
+    "MAL-2026-5831"
+  ],
+  "modified": "2026-06-15T11:21:18Z",
+  "published": "2026-06-15T11:20:47Z",
+  "summary": "Malicious code in unicocheck-ios (npm)",
+  "details": "On npm install, the preinstall hook executes a curl command that sends host system fingerprinting data to a remote webhook endpoint. The payload collects hostname, current username, working directory, OS kernel details (uname -a), and the HOME directory path, transmitting them as HTTP GET parameters to webhook[.]site/fe1246c2-ac04-4493-b223-fe34ba26b79f. The package is a stub — unpacked size 365 bytes — with no actual SDK code despite claiming to be an iOS biometric SDK, and is published at version 9.9.9 to induce dependency resolution over the legitimate package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "unicocheck-ios",
+        "purl": "pkg:npm/unicocheck-ios@9.9.9"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/unicocheck-ios/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5371"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T11:20:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/fe1246c2-ac04-4493-b223-fe34ba26b79f"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5892",
+  "modified": "2026-06-23T13:48:18Z",
+  "published": "2026-06-23T13:47:27Z",
+  "summary": "Malicious code in ollama-helpers (npm)",
+  "details": "Ollama-helpers is a combosquat package impersonating the legitimate Ollama LLM SDK. On install, its postinstall script collects developer identity — hostname, username, git email (from ~/.gitconfig and ~/.config/git/config), GitHub login and email (from ~/.config/gh/hosts.yml), current working directory path, CI provider environment variables, GIT_AUTHOR_EMAIL/GIT_COMMITTER_EMAIL env vars, and runtime platform info — and POSTs it to npm-package-logger-228835561205[.]europe-west1[.]run[.]app over HTTPS. The package ships a publish script that deliberately creates a fake version history to appear maintained. The source utility files (health-check, cache, connection-pool, etc.) are benign stubs; the entire malicious behaviour is in scripts/postinstall.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ollama-helpers",
+        "purl": "pkg:npm/ollama-helpers@0.2.1"
+      },
+      "versions": [
+        "0.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ollama-helpers/v/0.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5892"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T13:47:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npm-package-logger-228835561205[.]europe-west1[.]run[.]app"
+        ],
+        "url_observed": [
+          "hxxps://npm-package-logger-228835561205[.]europe-west1[.]run[.]app/"
+        ]
+      }
+    }
+  }
+}

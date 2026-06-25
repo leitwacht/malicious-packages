@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4927",
+  "modified": "2026-06-12T21:40:57Z",
+  "published": "2026-06-12T21:40:22Z",
+  "summary": "Malicious code in react-emits (npm)",
+  "details": "React-emits@1.0.5 is a combosquat package masquerading as a Node.js path utility. Its postinstall hook runs path.js, which bundles Node's path module as cover but embeds two base64-encoded URLs (decoding to hxxp://173[.]211[.]46[.]220/lverla[.]js and /lverl). Two IIFEs at the bottom of the file fetch these URLs, parse the response as JSON, and eval() the.content field — a classic second-stage remote code execution loader. The package also depends on axios, a known-malware marked dependency. While no static token-theft markers were found in this version, the runtime payload fetched from the remote IP can execute arbitrary code on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-emits",
+        "purl": "pkg:npm/react-emits@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-emits/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4927"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T21:40:22Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "173[.]211[.]46[.]220"
+        ],
+        "url_observed": [
+          "hxxp://173[.]211[.]46[.]220/lverla[.]js"
+        ]
+      }
+    }
+  }
+}

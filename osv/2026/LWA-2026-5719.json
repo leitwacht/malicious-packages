@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5719",
+  "modified": "2026-06-18T11:37:54Z",
+  "published": "2026-06-18T11:37:08Z",
+  "summary": "Malicious code in @dxcl/http-common-js (npm)",
+  "details": "Package @dxcl/http-common-js@99.99.99 contains identical malicious preinstall and install lifecycle hooks. On installation, both hooks collect the installer's username, hostname, current working directory, and the package name itself — all base64-encoded and exfiltrated via HTTPS GET to callback[.]m0chan[.]co[.]uk using curl. A secondary DNS lookup (nslookup) against the same domain is also performed, serving as a DNS-based beacon/exfiltration channel. The package's index.js is an empty stub (module.exports = {}), and its description is a generic decoy ('Internal automation library.'). The package has no legitimate functionality — its sole purpose is host reconnaissance and outbound beaconing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dxcl/http-common-js",
+        "purl": "pkg:npm/%40dxcl/http-common-js@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dxcl/http-common-js/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5719"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T11:37:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "callback[.]m0chan[.]co[.]uk"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4380",
+  "aliases": [
+    "MAL-2026-5881"
+  ],
+  "modified": "2026-06-11T18:42:05Z",
+  "published": "2026-06-11T18:39:57Z",
+  "summary": "Malicious code in obfus-jsxy (npm)",
+  "details": "Obfus-jsxy@3.2.0 masquerades as a \"Terminal logger utilities\" package but its postinstall hook deploys a fully cross-platform persistence implant. On install, utils.mjs forks a detached background process (windowsHide:true, child.unref()) that survives the parent. The background process copies a 861KB javascript-obfuscator-encoded payload (bundling the ws WebSocket library as C2 transport) to a hidden directory under the user's app data folder, masquerading as \"MicrosoftSystem64\". It then establishes OS-specific persistence: on Windows creates a scheduled task (ONLOGON) via schtasks with VBScript launcher and falls back to HKCU\\Run registry key; on Linux creates a systemd user service with network-online.target and enables linger, falling back to.desktop autostart; on macOS spawns a detached process. The implant includes anti-VM CPU-count gating (enforces ≥5 cores/≥4 cores), singleton enforcement via pgrep/wmic, and cross-platform file staging with a package.json to make the payload a valid module. The dist/index.js entry point is a decoy logger class with no relation to the actual behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "obfus-jsxy",
+        "purl": "pkg:npm/obfus-jsxy@3.2.0"
+      },
+      "versions": [
+        "3.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/obfus-jsxy/v/3.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4380"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T18:39:57Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5553",
+  "modified": "2026-06-16T10:46:34Z",
+  "published": "2026-06-16T10:43:35Z",
+  "summary": "Malicious code in zgmiai-claude-code (npm)",
+  "details": "Zgmiai-claude-code@1.0.56 is a trojanized clone of Anthropic's Claude Code CLI. When installed, the binary entry point (start.js, heavily obfuscated) spawns a child process (_start2.js, also obfuscated) that runs a reverse-proxy/relay server. It sets the environment variables ANTHROPIC_BASE_URL, HTTP_PROXY, HTTPS_PROXY, and CLAUDE_CODE_HOST to 47[.]236[.]18[.]43:8070, and loads a bundled CA certificate (ca.pem) via NODE_EXTRA_CA_CERTS — enabling man-in-the-middle interception of all Claude API traffic. The _start2.js payload reads the user's ANTHROPIC_API_KEY from its config, forwards all API calls through the attacker's relay at 47[.]236[.]18[.]43:8070, and includes a login system (email/password, auth-code) that sends credentials to the same C2. Hardcoded OAuth client credentials (CLIENT_ID=c35a52681f1fa87a6a11f69d26990326, CLIENT_SECRET=2935467f5e0e1d383a51a467c9680091dc29015291245dbb6b440adcaf9e1011) authenticate to the attacker's backend. The package bundles the legitimate Anthropic SDK (sdk.mjs v1.0.53) as camouflage. Preinstall hook (scripts/preinstall.js) is benign (prints a platform message). All API keys, credentials, and Claude Code session data are exfiltrated to the attacker-controlled C2 host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zgmiai-claude-code",
+        "purl": "pkg:npm/zgmiai-claude-code@1.0.56"
+      },
+      "versions": [
+        "1.0.56"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zgmiai-claude-code/v/1.0.56"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5553"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T10:43:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "47[.]236[.]18[.]43:8070"
+        ],
+        "sha256_observed": [
+          "2935467f5e0e1d383a51a467c9680091dc29015291245dbb6b440adcaf9e1011"
+        ],
+        "url_observed": [
+          "hxxp://47[.]236[.]18[.]43:8070/api/announcements",
+          "hxxp://47[.]236[.]18[.]43:8070/api/claude",
+          "hxxp://47[.]236[.]18[.]43:8070/api/keys",
+          "hxxp://47[.]236[.]18[.]43:8070/login",
+          "hxxp://47[.]236[.]18[.]43:8070/logout",
+          "hxxp://47[.]236[.]18[.]43:8070/user/point/packages/one",
+          "hxxp://47[.]236[.]18[.]43:8070/user/points/account"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5825",
+  "modified": "2026-06-22T02:11:52Z",
+  "published": "2026-06-22T01:56:27Z",
+  "summary": "Malicious code in indexed-btree (npm)",
+  "details": "Trojanized B+ tree library that at install time fingerprints the host (platform, release, arch, hostname, CPU count, total/free memory, uptime) and exfiltrates this system report to both a Slack workspace channel and a Telegram chat via hardcoded bot tokens. It also establishes a persistent command-and-control channel by polling Slack conversation history every 10 seconds for AES-256-GCM-encrypted commands, and interacts with an Ethereum smart contract on Sepolia testnet (contract 0xE390863Dac96a7118C71227c2b099b50cf602d31) via Infura and Alchemy RPC endpoints to derive X25519 ECDH shared secrets and decrypt second-stage payloads using PBKDF2 + AES-256-GCM. The implant can receive, decrypt, and execute arbitrary files delivered through the Slack C2 channel, saving them to disk with execute permissions and spawning them as detached background processes. It self-deletes its payload files (sharedLoad.d.min.js, subtractLoad.min.d.js) after execution and modifies its own source to hide traces. C2 infrastructure: slack[.]com (API), api[.]telegram[.]org (Telegram Bot API), sepolia[.]infura[.]io (Ethereum Sepolia RPC), eth-sepolia[.]g[.]alchemy[.]com (Ethereum Sepolia RPC). indexed-btree@2.1.2 is a trojanized clone of a B+ tree library. The legitimate B+ tree code in b+tree.js is used as camouflage while the malicious payload in extended/sharedLoad.min.js and extended/sharedLoad.d.min.js (584KB) runs at require() time. The payload collects system information (hostname, platform, CPU count, memory, uptime) and exfiltrates it via multiple C2 channels: (1) Telegram — posts system report to a Telegram chat via a hardcoded bot token; (2) Slack — posts system report to a Slack channel via two different hardcoded bot tokens; (3) Ethereum blockchain — connects to Sepolia testnet via Infura and Alchemy with hardcoded API keys, making eth_call to a specific contract address for on-chain operations. The payload also contains ECDH key exchange and AES-GCM encrypted communication capabilities, a full embedded ethers.js-style Ethereum provider, and self-modifies the installation files at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "indexed-btree",
+        "purl": "pkg:npm/indexed-btree@2.1.2"
+      },
+      "versions": [
+        "2.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/indexed-btree/v/2.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5825"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T01:56:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot8961878831:AAG4WTbRUcbXI5UCaN4VXK8k57ghqqkg_qI/sendMessage",
+          "hxxps://eth-sepolia[.]g[.]alchemy[.]com/v2/D2-TbkB2m05WXSnSDOCDI",
+          "hxxps://sepolia[.]infura[.]io/v3/dc7257d09fab42eca2c354c32fec1938",
+          "hxxps://slack[.]com/api/auth[.]test",
+          "hxxps://slack[.]com/api/chat[.]postMessage"
+        ],
+        "wallet_observed": [
+          "0xE390863Dac96a7118C71227c2b099b50cf602d31"
+        ]
+      }
+    }
+  }
+}

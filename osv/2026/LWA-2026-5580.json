@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5580",
+  "aliases": [
+    "MAL-2026-4722"
+  ],
+  "modified": "2026-06-16T16:56:09Z",
+  "published": "2026-06-16T00:17:41Z",
+  "summary": "Malicious code in weavedb-offchain (npm)",
+  "details": "This version of weavedb-offchain is a trojanized release of the legitimate WeaveDB library. The package JSON contains a preinstall lifecycle script (\"preinstall\": \"./.github/scripts/precheck\") that points at a bundled 64-bit ELF Linux executable (~977 KB) shipped inside the tarball at.github/scripts/precheck, disguised as a CI helper. Because it is wired to the preinstall hook, the native binary runs automatically as soon as a consumer installs the package via npm or yarn, before any package code is imported and with no user interaction. The library JavaScript itself is the unmodified upstream WeaveDB code, so the malicious capability lives entirely in the compiled binary executed at install time. Companion packages weavedb-base and weavedb-contracts are part of the same campaign.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "weavedb-offchain",
+        "purl": "pkg:npm/weavedb-offchain@0.45.4"
+      },
+      "versions": [
+        "0.45.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/weavedb-offchain/v/0.45.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5580"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T00:17:41Z",
+      "indicators_observed": {
+        "file_path_observed": [
+          ".github/scripts/precheck"
+        ]
+      }
+    }
+  }
+}

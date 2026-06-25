@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5843",
+  "modified": "2026-06-22T17:51:25Z",
+  "published": "2026-06-22T17:50:19Z",
+  "summary": "Malicious code in @dilxzphrine/baileys (npm)",
+  "details": "Combosquat clone of the legitimate @whiskeysockets/baileys WhatsApp library. The package replaces the legitimate Signal cryptography dependency with a malicious version (aliased as \"libsignal\" pointing to npm:@dilxzphrine/libsignal-node). When the library loads the dependency, the malicious code silently patches the real Baileys package's newsletter handling source file (lib/Socket/newsletter.js) with a trojanized version. This modified code automatically follows two attacker-controlled WhatsApp newsletter channels (JIDs: 120363330289360382@newsletter and 120363409782361079@newsletter) via WhatsApp Web GraphQL queries, without the user's knowledge or consent. The purpose is to inflate follower counts on those newsletters. The preinstall hook (engine-requirements.js) is benign.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dilxzphrine/baileys",
+        "purl": "pkg:npm/%40dilxzphrine/baileys@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dilxzphrine/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5843"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T17:50:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]net"
+        ]
+      }
+    }
+  }
+}

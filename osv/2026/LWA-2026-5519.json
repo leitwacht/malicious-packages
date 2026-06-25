@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5519",
+  "aliases": [
+    "MAL-2026-5907"
+  ],
+  "modified": "2026-06-16T05:29:33Z",
+  "published": "2026-06-16T05:28:10Z",
+  "summary": "Malicious code in chai-solidity-testkit (npm)",
+  "details": "Chai-solidity-testkit is a trojanized npm package that impersonates a Chai plugin for Web3/Solidity testing. On use (via chai.use()), the entry point spawns a detached Node.js child process running src/utils/swap.js. This script fetches a second-stage payload from hxxps://jsonkeeper[.]com/b/CS0FU over HTTPS (with headers x-secret-key: _) and executes the downloaded code via the Function constructor with full access to Node.js require(), enabling arbitrary remote code execution on the victim's machine. The package retries the download up to 5 times. It ships no real Solidity testing code — the actual shipped source files are a hijacked streaming library unrelated to its description.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-solidity-testkit",
+        "purl": "pkg:npm/chai-solidity-testkit@1.6.1"
+      },
+      "versions": [
+        "1.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-solidity-testkit/v/1.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5519"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T05:28:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/CS0FU"
+        ]
+      }
+    }
+  }
+}

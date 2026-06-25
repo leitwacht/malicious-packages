@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4217",
+  "aliases": [
+    "MAL-2026-5847"
+  ],
+  "modified": "2026-06-11T09:16:09Z",
+  "published": "2026-06-11T09:15:00Z",
+  "summary": "Malicious code in reading-cookies (npm)",
+  "details": "Reading-cookies@6.13.2 is a second-stage RCE loader disguised as a pino-logger-like package. Its index.js exports a middleware function that spawns lib/caller.js as a detached background node subprocess (detached:true, stdio:ignore, child.unref()). caller.js contains a base64-obfuscated C2 URL pointing to api[.]jsonstorage[.]net/v1/json/... — it fetches the remote endpoint via axios, extracts.data.cookie from the response, and executes the downloaded content as arbitrary code via new Function.constructor(\"require\", s), passing the real require so the payload can import any module. The package name \"reading-cookies\" is a decoy; the description is a copy-pasted vulnerability-management text unrelated to the code; ; and the package bundles legitimate pino source files as camouflage while jumping directly to version 6.13.2 to appear established.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "reading-cookies",
+        "purl": "pkg:npm/reading-cookies@6.13.2"
+      },
+      "versions": [
+        "6.13.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/reading-cookies/v/6.13.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4217"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T09:15:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]net"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5366",
+  "modified": "2026-06-15T10:44:38Z",
+  "published": "2026-06-15T10:42:44Z",
+  "summary": "Malicious code in umi-preset-rce-jytest (npm)",
+  "details": "An Umi.js build plugin that harvests system and environment information during the build phase. When a project using this dependency is built, the plugin executes shell commands to collect: hostname, username, current working directory, Node/npm versions, the full environment variable listing (capturing any CI/CD tokens such as NPM_TOKEN, GITHUB_TOKEN, or AWS credentials present in the environment), network configuration, process list, disk usage, network connections, /etc/passwd (first 20 lines), and /etc/hosts. All collected data is written to a file named rce-debug.log in the build output directories (dist, build, out, output, public). Additionally, the data is base64-encoded and injected as an HTML comment (prefixed JYRCE::) into every.html file in those directories. No outbound network traffic was observed from this package itself; the stolen data is exfiltrated through contaminated build artifacts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "umi-preset-rce-jytest",
+        "purl": "pkg:npm/umi-preset-rce-jytest@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/umi-preset-rce-jytest/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5366"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T10:42:44Z",
+      "indicators_observed": {}
+    }
+  }
+}

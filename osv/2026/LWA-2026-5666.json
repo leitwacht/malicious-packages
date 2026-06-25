@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5666",
+  "modified": "2026-06-17T21:55:04Z",
+  "published": "2026-06-17T19:28:56Z",
+  "summary": "Malicious code in nano-perf (npm)",
+  "details": "Disguised as a Node.js performance profiler, this package is a command-and-control bot implant. Its postinstall script (node postinstall.js) launches a detached, unref'd background daemon (daemon.js) that keeps running after installation finishes, and also fires an immediate beacon inline. The daemon assigns each infected host a persistent id (cached under the system temp dir as.np-cache) and beacons every ~5 minutes (with jitter) to a hardcoded, base64-obfuscated backend endpoint, authenticating with an embedded service-role API token. Each beacon exfiltrates a host fingerprint (CPU core count, total/used memory, OS platform, timestamp). After a successful beacon it polls a remote task table for pending commands targeted at that host id, executes the returned task, and reports the result back — giving the operator a live, persistent task-execution channel into every machine that installed the package. Table names and request paths are deliberately labelled stealth_heartbeats / stealth_tasks, and the endpoint host and token are obfuscated by splitting and base64-encoding them across arrays.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nano-perf",
+        "purl": "pkg:npm/nano-perf@2.2.0"
+      },
+      "versions": [
+        "2.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nano-perf/v/2.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5666"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T19:28:56Z",
+      "indicators_observed": {
+        "file_observed": [
+          "/tmp/.np-cache",
+          "daemon.js",
+          "postinstall.js"
+        ]
+      }
+    }
+  }
+}

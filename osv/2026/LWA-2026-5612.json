@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5612",
+  "aliases": [
+    "MAL-2026-5970"
+  ],
+  "modified": "2026-06-17T03:52:49Z",
+  "published": "2026-06-17T03:25:54Z",
+  "summary": "Malicious code in cryptodao-types (npm)",
+  "details": "A dependency-confusion package using an internal-sounding name and an absurdly high version (99.99.99) to win resolution. Its package.json sets a postinstall hook that runs a bundled recon.js at install time. The script collects host/OS information and the current user, then harvests a broad list of CI/CD and cloud secrets from the environment (e.g. GitLab CI job/API tokens, SSH/deploy keys, AWS access keys and session tokens, database and Redis credentials, wallet private keys/mnemonics/seed phrases, Infura/Alchemy keys, npm/Docker/registry credentials, RPC URLs). It additionally searches common.env file locations and CI build directories, extracting any lines containing key/secret/token/password/private/mnemonic material. The collected data is serialized to JSON and exfiltrated over HTTPS (with TLS certificate verification disabled) to two external collection endpoints, and a copy is written to a temp file. The published module code is an empty stub providing no real functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cryptodao-types",
+        "purl": "pkg:npm/cryptodao-types@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cryptodao-types/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5612"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-17T03:25:54Z",
+      "indicators_observed": {}
+    }
+  }
+}

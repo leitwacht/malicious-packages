@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5779",
+  "aliases": [
+    "MAL-2026-6317"
+  ],
+  "modified": "2026-06-19T20:26:37Z",
+  "published": "2026-06-19T20:25:46Z",
+  "summary": "Malicious code in ts-bn-lint (npm)",
+  "details": "Package index.js contains an info-stealer that walks the current working directory searching for Solana wallet key files (id.json), config.toml, Config.toml, config.json,.env, and env files. It also harvests shell history from ~/.bash_history, ~/.zsh_history, ~/.fish_history, ~/.sh_history, and PowerShell PSReadLine ConsoleHost_history.txt. All discovered files are exfiltrated via HTTP POST to hxxps://data-stream[.]space/api/v1 with a Content-Type: application/octet-stream header and Content-Disposition: attachment; filename=\"\u003cfilename\u003e\". Each exfiltrated payload is prefixed with the machine's USER environment variable and local IP address in the format USER@IP. When require()'d, the package automatically starts the search-and-exfil routine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-bn-lint",
+        "purl": "pkg:npm/ts-bn-lint@3.1.19"
+      },
+      "versions": [
+        "3.1.19"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-bn-lint/v/3.1.19"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5779"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T20:25:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "data-stream[.]space"
+        ],
+        "url_observed": [
+          "hxxps://data-stream[.]space/api/v1"
+        ]
+      }
+    }
+  }
+}

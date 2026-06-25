@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1317",
+  "modified": "2026-05-30T06:43:34Z",
+  "published": "2026-05-30T06:41:08Z",
+  "summary": "Malicious code in apache-httpclient6 (npm)",
+  "details": "On install the postinstall hook runs src/postinstall.js, which spawns a detached background node process executing src/main.js (detached:true, stdio ignored, child.unref). main.js performs host reconnaissance: OS type/release/version, architecture, hostname, uptime, username/homedir/shell, total/free memory, CPU model and count, locale, screen resolution (via xrandr/system_profiler/wmic), and a running-process inventory (ps aux / tasklist) flagged for browser and office apps. The collected JSON (tagged flag:myflag_v2) is exfiltrated over a raw TCP socket to 8[.]152[.]163[.]60 on port 8058.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "apache-httpclient6",
+        "purl": "pkg:npm/apache-httpclient6@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/apache-httpclient6/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1317"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-30T06:41:08Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "8[.]152[.]163[.]60"
+        ]
+      }
+    }
+  }
+}

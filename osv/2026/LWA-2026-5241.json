@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5241",
+  "aliases": [
+    "MAL-2026-2906"
+  ],
+  "modified": "2026-06-14T12:19:56Z",
+  "published": "2026-06-14T12:18:03Z",
+  "summary": "Malicious code in swplayer-react-sl (npm)",
+  "details": "The package scripts/install.js postinstall hook executes two fetch+eval chains: it base64-decodes and fetches remote JavaScript from hxxps://coingecko-liard[.]vercel[.]app/api/content and hxxps://coingecko-liard[.]vercel[.]app/api/old, then evaluates the response with eval(), executing arbitrary attacker-controlled code in the installer's context. At runtime the package attempted DNS resolution and HTTPS GET requests to these endpoints. The package masquerades as a React video player wrapper to deceive developers into installing it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "swplayer-react-sl",
+        "purl": "pkg:npm/swplayer-react-sl@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/swplayer-react-sl/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5241"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T12:18:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coingecko-liard[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://coingecko-liard[.]vercel[.]app/api/content",
+          "hxxps://coingecko-liard[.]vercel[.]app/api/old"
+        ]
+      }
+    }
+  }
+}

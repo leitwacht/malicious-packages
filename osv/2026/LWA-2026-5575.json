@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5575",
+  "aliases": [
+    "MAL-2026-5909"
+  ],
+  "modified": "2026-06-16T15:52:09Z",
+  "published": "2026-06-16T15:47:54Z",
+  "summary": "Malicious code in react-hook-use-debounce-throttle-12 (npm)",
+  "details": "This package ships a postinstall lifecycle script that executes automatically when the package is installed. The script spawns node -e and issues an outbound HTTPS GET request to a hardcoded raw IP address (8[.]140[.]205[.]78) on port 80, with a short timeout and all errors silently suppressed. This is an install-time beacon: it phones home to an external host on every install to confirm code execution and leak the installing host to the operator. There is no legitimate reason for a React debounce/throttle hook library to contact a hardcoded IP at install time. The package name imitates a generic React hook utility and the publishing account does not match the declared author.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-hook-use-debounce-throttle-12",
+        "purl": "pkg:npm/react-hook-use-debounce-throttle-12@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-hook-use-debounce-throttle-12/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5575"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T15:47:54Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "8[.]140[.]205[.]78"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5749",
+  "aliases": [
+    "MAL-2026-6319"
+  ],
+  "modified": "2026-06-19T06:27:21Z",
+  "published": "2026-06-19T06:25:20Z",
+  "summary": "Malicious code in ts-escro (npm)",
+  "details": "Ts-escro@0.0.6 is a trojanized clone of the legitimate big.js library. The package ships the full big.js v7.0.1 source code from a different publisher under a different name, with injected malicious code. In both big.js and big.mjs (line 606), the package silently loads an external module \"parket-slot\" via `require(\"parket-slot\")` and calls `doc.from_str()` on it, with errors swallowed in an empty catch block. This means importing or requiring ts-escro triggers execution of code from the parket-slot package at runtime. Additionally, the package.json declares a non-registry dependency `\"log-taker\": \"file:../log-taker\"` which could resolve to attacker-controlled code. The package falsely attributes authorship to the real big.js maintainer Michael Mclaughlin. The README is an exact copy of the big.js README and still instructs users to install \"big.js\" from npm, not ts-escro.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-escro",
+        "purl": "pkg:npm/ts-escro@0.0.6"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-escro/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5749"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T06:25:20Z",
+      "indicators_observed": {}
+    }
+  }
+}

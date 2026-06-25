@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5730",
+  "modified": "2026-06-18T15:42:35Z",
+  "published": "2026-06-18T15:41:48Z",
+  "summary": "Malicious code in env-config-f281 (npm)",
+  "details": "The package env-config-f281@1.0.0 executes a credential-theft payload during npm install via both preinstall and postinstall scripts (node run.js). On Windows, it: (1) beacons the hostname and username to the C2 server at cpu-beaches-hay-marketplace[.]trycloudflare[.]com:443; (2) uses the fodhelper.exe UAC bypass (registry key HKCU\\Software\\Classes\\ms-settings\\Shell\\Open\\command) to escalate from user-integrity to SYSTEM; (3) creates a scheduled task running as NT AUTHORITY\\SYSTEM that executes a PowerShell payload to dump Windows Credential Manager entries (via cmdkey /list and vaultcmd), LSA secrets from HKLM\\SECURITY\\Policy\\Secrets, Azure CLI / MSAL authentication caches from all user profiles under C:\\Users, PowerShell readline history, NuGet credential stores, and all.json/.config/.xml files under C:\\ProgramData containing the strings secret, password, token, key, credential, or connectionstring; (4) exfiltrates collected credentials over HTTPS to cpu-beaches-hay-marketplace[.]trycloudflare[.]com via a GET beacon for summaries and a POST beacon for full credential dumps. On non-Windows systems, the payload simply confirms code execution to the same C2. C2 IOC: cpu-beaches-hay-marketplace[.]trycloudflare[.]com:443.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "env-config-f281",
+        "purl": "pkg:npm/env-config-f281@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/env-config-f281/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5730"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T15:41:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cpu-beaches-hay-marketplace[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://cpu-beaches-hay-marketplace[.]trycloudflare[.]com/beacon"
+        ]
+      }
+    }
+  }
+}

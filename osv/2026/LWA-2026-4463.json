@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4463",
+  "aliases": [
+    "MAL-2026-5791"
+  ],
+  "modified": "2026-06-11T22:02:07Z",
+  "published": "2026-06-11T22:01:08Z",
+  "summary": "Malicious code in mddriver (npm)",
+  "details": "Mddriver@1.8.6 is a combosquat posing as a MongoDB driver (its README documents a mongo-driver API). The actual index.js is Node's path module with a malicious block injected: it base64-decodes a URL to jsonkeeper[.]com/b/C4H0M, fetches it via fetch() at require-time, and evaluates the response with the Function constructor. The module re-exports the path API to mask the payload, so the malicious fetch is invisible to a consumer who only uses the exported functions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mddriver",
+        "purl": "pkg:npm/mddriver@1.8.6"
+      },
+      "versions": [
+        "1.8.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mddriver/v/1.8.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4463"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T22:01:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

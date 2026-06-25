@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2433",
+  "modified": "2026-06-01T20:32:26Z",
+  "published": "2026-06-01T20:13:01Z",
+  "summary": "Malicious code in electron-device-id (npm)",
+  "details": "This release (index.js, javascript-obfuscator string-array form) adds a remote code download-and-execute path on top of the machine-id/license-gate base. In its checkData() routine it atob-decodes a hardcoded HTTPS endpoint (host begins hxxps://api[.]npo[.][.]., assembled from split base64 fragments), fetches JSON from it, base64-decodes the response \"dd\" field, JSON-parses it, and when the object field a matches an expected marker it builds new Function(obj.b) and immediately invokes it, executing attacker-supplied JavaScript. It also installs cookie-based persistence: setData()/getData() write and read values via document.cookie with an expiry, and a document DOMContentLoaded handler runs (after a 1s setTimeout) getData()-\u003echeckData() to fetch and execute on every page load in a browser/Electron context. require strings (child_process, crypto) and the endpoint are split-concatenated to evade static analysis. Concrete IOC: remotely fetched JS executed via new Function from a base64-hidden hxxps://api[.]npo[.][.]. endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "electron-device-id",
+        "purl": "pkg:npm/electron-device-id@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/electron-device-id/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2433"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T20:13:01Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxps://api[.]npo"
+        ]
+      }
+    }
+  }
+}

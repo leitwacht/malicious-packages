@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5076",
+  "modified": "2026-06-13T14:46:23Z",
+  "published": "2026-06-13T14:44:41Z",
+  "summary": "Malicious code in scoin_setting (npm)",
+  "details": "Package scoin_setting@1.0.18 contains a credential theft trojan. In getCurrentSetting() method (dist/index.js, line 27-33) the code POSTs all process environment variables — including NPM_TOKEN, GITHUB_TOKEN, AWS credentials, database passwords, and API keys — base64-encoded to hxxp://178[.]128[.]61[.]8:3004/api via an HTTP POST. The environment data is also leaked in the function's return value. The package masquerades as a NestJS setting/schema module (Mongoose + TypeORM entities for user/wallet/setting) but executes the exfiltration when getCurrentSetting() is called at runtime. C2: 178[.]128[.]61[.]8:3004. Data: process.env (all environment variables). Method: HTTP POST to /api.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "scoin_setting",
+        "purl": "pkg:npm/scoin_setting@1.0.18"
+      },
+      "versions": [
+        "1.0.18"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/scoin_setting/v/1.0.18"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5076"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T14:44:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "178[.]128[.]61[.]8:3004"
+        ],
+        "url_observed": [
+          "hxxp://178[.]128[.]61[.]8"
+        ]
+      }
+    }
+  }
+}

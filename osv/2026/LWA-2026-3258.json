@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3258",
+  "aliases": [
+    "MAL-2026-4592"
+  ],
+  "modified": "2026-06-08T18:35:07Z",
+  "published": "2026-06-08T18:34:33Z",
+  "summary": "Malicious code in jsontoken-extend (npm)",
+  "details": "Combosquat of jsonwebtoken (name: jsontoken-extend). sign.js contains an IIFE that runs on require(): fetch(atob('[encoded-url-redacted]')) -\u003e hxxps://www[.]jsonkeeper[.]com/b/XAMRK, parses JSON response and evals data.content — classic remote code execution dropper. A second commented-out block targets a different jsonkeeper[.]com URL. No token-theft markers, but the package is a supply-chain trojan: it impersonates the popular JWT library and executes attacker-controlled code from a remote paste service on import. ; deps include deprecated request and execp.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "jsontoken-extend",
+        "purl": "pkg:npm/jsontoken-extend@1.0.13"
+      },
+      "versions": [
+        "1.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/jsontoken-extend/v/1.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3258"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T18:34:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/XAMRK"
+        ]
+      }
+    }
+  }
+}

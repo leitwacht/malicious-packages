@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5146",
+  "aliases": [
+    "MAL-2026-5743"
+  ],
+  "modified": "2026-06-13T21:18:27Z",
+  "published": "2026-06-13T21:16:59Z",
+  "summary": "Malicious code in environment-gate (npm)",
+  "details": "Package environment-gate exports a gate() function that fetches JavaScript code from hxxps://www[.]jsonkeeper[.]com/b/VKUNI and executes it via eval(). The remote URL is base64-encoded using atob() inside the function body. When called at runtime, gate() downloads and runs attacker-controlled content from the jsonkeeper[.]com host, enabling arbitrary remote code execution. The prior version (7.3.5) carried a commented-out copy of the same payload, which was activated in 7.3.6.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "environment-gate",
+        "purl": "pkg:npm/environment-gate@7.3.6"
+      },
+      "versions": [
+        "7.3.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/environment-gate/v/7.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5146"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T21:16:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/VKUNI"
+        ]
+      }
+    }
+  }
+}

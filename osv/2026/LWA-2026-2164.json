@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2164",
+  "modified": "2026-06-01T11:24:23Z",
+  "published": "2026-06-01T10:51:36Z",
+  "summary": "Malicious code in @catamania/front-components (npm)",
+  "details": "@catamania/front-components@1.0.2 poses as a UI component library but its postinstall.js collects host reconnaissance data (hostname, username, and current working directory via os.hostname()/os.userInfo()/process.cwd()) and POSTs the beacon to hxxps://webhook[.]site/9bbf9333-af82-4597-90d8-7da9162ed500. Environment-variable names are gathered with values masked. A single trivial Vue component is window-dressing; the postinstall's sole purpose is silent host-metadata exfiltration, consistent with first-stage triage ahead of a later payload. @catamania/front-components@1.0.2 is disguised as a UI components library with a trivial decoy Vue component. Its postinstall hook collects hostname, username, current working directory and environment-variable keys and POSTs them to hxxps://webhook[.]site/9bbf9333-af82-4597-90d8-7da9162ed500. There is no README or repository URL. This is a host-metadata reconnaissance beacon aimed at identifying high-value targets.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@catamania/front-components",
+        "purl": "pkg:npm/%40catamania/front-components@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@catamania/front-components/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2164"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T10:51:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/9bbf9333-af82-4597-90d8-7da9162ed500"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5948",
+  "aliases": [
+    "MAL-2026-6369"
+  ],
+  "modified": "2026-06-24T00:01:15Z",
+  "published": "2026-06-24T00:00:15Z",
+  "summary": "Malicious code in hardhat-test-log (npm)",
+  "details": "When loaded as a Mocha reporter, this package spawns a hidden detached Node.js child process (lib/syncResolve.js) that fetches a second-stage payload from `hxxps://www[.]jsonkeeper[.]com/b/NB36A` and executes it via the Function constructor with full access to the Node.js require system. The package is a trojanized clone of the legitimate eth-gas-reporter: its main entry point contains a dead-code guard (`var opt = 1`) that bypasses the real reporter logic and triggers the downloader instead. The attacker-controlled JSONkeeper URL delivers arbitrary remote code. IOCs: C2 URL `hxxps://www[.]jsonkeeper[.]com/b/NB36A`, HTTP header `x-secret-key: _`, max 5 retries on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-test-log",
+        "purl": "pkg:npm/hardhat-test-log@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-test-log/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5948"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-24T00:00:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/NB36A"
+        ]
+      }
+    }
+  }
+}

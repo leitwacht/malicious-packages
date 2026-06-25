@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4479",
+  "modified": "2026-06-12T00:01:30Z",
+  "published": "2026-06-12T00:00:01Z",
+  "summary": "Malicious code in ozturk-mfa (npm)",
+  "details": "The package masquerades as a zero-dependency Discord MFA/TOTP authentication library (keywords discord, mfa, totp, 2fa, vanity) but its main entry index.js is a ~974KB heavily obfuscated, self-decrypting payload that runs when the module is imported (no install hook). At load it uses Node crypto to AES-decrypt a large embedded ciphertext blob with a hardcoded key assembled from hex chunks (fce4c51797bf88de61f2f19563d57204e97b153acf138d181a21de2b7ef3425d) and IV 9f7895b16ac2c70baee2ea42, then executes the decrypted code; the source is additionally escape-encoded (method names wrapped in \\x escapes) to evade literal-string detection. The Discord-auth disguise plus packed/encrypted runtime-executed payload is consistent with a Discord token grabber. The final C2/webhook is contained inside the encrypted blob and is not recoverable in plaintext, so only the decryption key and IV are provided as IOCs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ozturk-mfa",
+        "purl": "pkg:npm/ozturk-mfa@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ozturk-mfa/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4479"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T00:00:01Z",
+      "indicators_observed": {
+        "sha256_observed": [
+          "fce4c51797bf88de61f2f19563d57204e97b153acf138d181a21de2b7ef3425d"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5677",
+  "aliases": [
+    "MAL-2026-6090"
+  ],
+  "modified": "2026-06-18T03:52:11Z",
+  "published": "2026-06-18T03:36:00Z",
+  "summary": "Malicious code in data-utils-bcf2 (npm)",
+  "details": "This package contains a single run.js executed automatically via both the preinstall and postinstall npm lifecycle hooks. On Linux it fingerprints the host/container and harvests cloud and CI/CD credentials: it requests AWS ECS task-role IAM credentials from the container credential endpoint (169[.]254[.]170[.]2), collects environment-injected AWS keys and session tokens, and grabs CI secrets such as GitHub Actions OIDC/runtime tokens and npm tokens. It enumerates SSH key files and reads ECS task metadata and container-escape indicators (mounts, capabilities, docker socket). It then uses the stolen task role to call AWS DynamoDB (list/describe tables and write an item). On Windows it performs a fodhelper-based UAC bypass through an ms-settings registry hijack, registers a SYSTEM-level scheduled task, overwrites a security-tool findings.xml with a falsified verdict, and steals workflow logs and tool configuration. All collected data is exfiltrated via HTTPS POST to a Cloudflare-tunnel command-and-control endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "data-utils-bcf2",
+        "purl": "pkg:npm/data-utils-bcf2@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/data-utils-bcf2/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5677"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T03:36:00Z",
+      "indicators_observed": {}
+    }
+  }
+}

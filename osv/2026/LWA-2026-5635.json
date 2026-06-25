@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5635",
+  "aliases": [
+    "MAL-2026-6055"
+  ],
+  "modified": "2026-06-17T02:59:51Z",
+  "published": "2026-06-17T02:29:54Z",
+  "summary": "Malicious code in @mastra/node-speaker (npm)",
+  "details": "This version is a hijacked re-publish of a previously-dormant native audio package (the prior release was clean; this one was pushed under a newly-changed, anonymous publisher account the publisher ~15 months of inactivity). The only change from the last good version is an injected dependency on a date-library typosquat (easy-day-js). That dependency ships a postinstall hook that runs an obfuscated dropper: it disables TLS certificate verification, drops marker files in the user home directory, downloads a second-stage payload over HTTPS from a hardcoded raw-IP command-and-control server (23[.]254[.]164[.]92 on port 8000), writes it to a randomly-named.cjs file in the home directory, launches it as a detached background Node process, and then deletes its own installer script to hide evidence. Installing this package therefore results in remote code execution at install time via the transitive dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@mastra/node-speaker",
+        "purl": "pkg:npm/%40mastra/node-speaker@0.1.1"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@mastra/node-speaker/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5635"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T02:29:54Z",
+      "indicators_observed": {
+        "file_observed": [
+          ".pkg_history",
+          ".pkg_logs",
+          "setup.cjs"
+        ],
+        "ip_observed": [
+          "23[.]254[.]164[.]92"
+        ],
+        "npm_dependency_observed": [
+          "easy-day-js@1.11.22",
+          "easy-day-js@^1.11.21"
+        ],
+        "url_observed": [
+          "hxxps://23[.]254[.]164[.]92:8000/update/49890878"
+        ]
+      }
+    }
+  }
+}

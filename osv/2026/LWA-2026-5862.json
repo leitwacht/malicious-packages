@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5862",
+  "modified": "2026-06-23T06:44:07Z",
+  "published": "2026-06-23T06:42:04Z",
+  "summary": "Malicious code in set-cookie-ease (npm)",
+  "details": "Package \"set-cookie-ease\" is a trojanized clone of the legitimate js-cookie library. The CJS build (dist/cookie.ease.js) contains an injected remote code execution payload in the Cookies.set() function. When called in a Node.js environment (where document is undefined), it base64-decodes a URL pointing to jsonkeeper[.]com, fetches the content from that URL using the axios dependency, and executes it via eval() — enabling arbitrary code execution controlled by the remote server. The ESM and minified builds are clean, so the payload only triggers when using Node.js require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "set-cookie-ease",
+        "purl": "pkg:npm/set-cookie-ease@1.1.5"
+      },
+      "versions": [
+        "1.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/set-cookie-ease/v/1.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5862"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T06:42:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

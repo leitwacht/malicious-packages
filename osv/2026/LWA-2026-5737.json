@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5737",
+  "modified": "2026-06-18T18:09:56Z",
+  "published": "2026-06-18T18:08:10Z",
+  "summary": "Malicious code in @sgtestuj/ssscreen (npm)",
+  "details": "This package bundles a copy of the html2canvas library and exposes a side-effect module (referenced via the exports map) that captures a full-page screenshot of whichever webpage it is loaded on and exfiltrates it. When the secondary export is imported, it dynamically creates a script tag loading html2canvas from cdnjs[.]cloudflare[.]com, then on load calls html2canvas(document.body) to capture the page, converts it to a base64 PNG via canvas.toDataURL(\"image/png\"), and POSTs the base64-encoded screenshot data to the remote endpoint hxxps://c171[.]testarmy[.]com[.]pl/screen[.]php. IOCs: exfiltration target c171[.]testarmy[.]com[.]pl, path /screen.php.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sgtestuj/ssscreen",
+        "purl": "pkg:npm/%40sgtestuj/ssscreen@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sgtestuj/ssscreen/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5737"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T18:08:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c171[.]testarmy[.]com[.]pl",
+          "cdnjs[.]cloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://c171[.]testarmy[.]com[.]pl/screen[.]php"
+        ]
+      }
+    }
+  }
+}

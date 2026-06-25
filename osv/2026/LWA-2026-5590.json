@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5590",
+  "modified": "2026-06-16T18:52:05Z",
+  "published": "2026-06-16T18:28:39Z",
+  "summary": "Malicious code in procwire (npm)",
+  "details": "Disguised as a Node.js process-lifecycle/IPC utility, this package is a Windows-only multi-stage dropper. Its package.json registers a preinstall script that runs lib/setup.js, which exits silently on non-Windows hosts. On Windows it reconstructs a remote download URL by XOR-decoding values embedded in one of its own dependencies and hands it to a heavily obfuscated worker module. The worker builds every API call, module name, environment-variable key and Windows binary name at runtime from character-code arrays to evade static inspection. It selects a deceptive executable filename mimicking common updaters (e.g. msedge_update, chrome_installer, onedrive_setup, teams_update), writes it to a writable temp directory, and downloads a second-stage executable using a three-method fallback chain: Node https (with a spoofed Microsoft Delivery Optimization User-Agent, TLS verification disabled, and resumable range/backoff retries), then curl.exe, then bitsadmin. After download it writes a Zone.Identifier alternate data stream marking the file as locally trusted (ZoneId=0) to bypass Mark-of-the-Web and SmartScreen warnings, then launches the payload through three hidden, detached execution methods (direct spawn, cmd start /min, and PowerShell Start-Process -WindowStyle Hidden). The packages main module is a functional-looking process manager included only to make the package appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "procwire",
+        "purl": "pkg:npm/procwire@1.3.0"
+      },
+      "versions": [
+        "1.3.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/procwire/v/1.3.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5590"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T18:28:39Z",
+      "indicators_observed": {
+        "decoy_filename_prefix_observed": [
+          "chrome_installer",
+          "dotnet_host",
+          "msedge_update",
+          "onedrive_setup",
+          "teams_update"
+        ],
+        "lolbin_observed": [
+          "bitsadmin",
+          "curl.exe"
+        ]
+      }
+    }
+  }
+}

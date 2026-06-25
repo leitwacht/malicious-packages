@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4558",
+  "modified": "2026-06-12T06:01:32Z",
+  "published": "2026-06-12T06:00:04Z",
+  "summary": "Malicious code in peptideenv (npm)",
+  "details": "Peptideenv@16.6.6 is a combosquat of the popular dotenv package (same description, same repo URL fraudulently claimed, version 16.6.6 matching dotenv's version series). The publisher (the publisher) previously published the confirmed-malicious js-unimode. The main entry point is heavily obfuscated with javascript-obfuscator and contains a multi-stage C2 backdoor that fires immediately on require(): it contacts a C2 server on port 1244 (reconstructed from obfuscated base64), transmits a system fingerprint (hostname, platform, username, node version) via POST with fields ts/type/hid/ss/cc, then downloads and executes secondary JS payloads saved to ~/.vscode/*.fjs, followed by downloading npm packages and running them via detached node/nohup processes. The attack retries up to 3 times at ~10-minute intervals. The package also contains a copy of dotenv's legitimate parse() function at the bottom of the file to disguise its behavior.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "peptideenv",
+        "purl": "pkg:npm/peptideenv@16.6.6"
+      },
+      "versions": [
+        "16.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/peptideenv/v/16.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4558"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T06:00:04Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5380",
+  "modified": "2026-06-15T13:48:37Z",
+  "published": "2026-06-15T13:45:58Z",
+  "summary": "Malicious code in util-free-ports (npm)",
+  "details": "During npm install, a preinstall hook (node./dist/util.js) executes obfuscated JavaScript that performs anti-analysis checks — verifying CPU core count, memory, system uptime, MAC-address prefixes (matching VMware, VirtualBox, Xen, Docker, Hyper-V, KVM), and hostname blacklists — to evade sandboxes and CI environments. It first probes internet connectivity via a DNS query to ip[.]sb (an IP-address lookup service). If all checks pass, it fetches and eval()s a second-stage payload from a remote HTTPS server (address encoded in the obfuscated payload). The package bundles the legitimate LayUI frontend library (v2.9.21) and assets as camouflage; the malicious code resides entirely in dist/util.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "util-free-ports",
+        "purl": "pkg:npm/util-free-ports@3.1.2"
+      },
+      "versions": [
+        "3.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/util-free-ports/v/3.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5380"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T13:45:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ip[.]sb"
+        ]
+      }
+    }
+  }
+}

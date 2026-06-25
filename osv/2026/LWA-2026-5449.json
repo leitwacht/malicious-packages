@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5449",
+  "modified": "2026-06-15T22:44:13Z",
+  "published": "2026-06-15T22:43:28Z",
+  "summary": "Malicious code in vue-plugin-bomb (npm)",
+  "details": "Vue-plugin-bomb@1.0.1 is a destructive wiper. Its index.js imports the npm package 'child_process' (typosquatting the Node.js core module) and uses process.execSync on a timed schedule. During specific date windows (June through September 2023), the code repeatedly executes 'shutdown -s -t 5' to force a system shutdown with 5-second delay. Additionally, on a broader schedule it recursively deletes the following directories and files from the project's node_modules: vue/dist, vue-router/dist, vue-router/index.js, vant/lib, vant/es (Jul-Aug); and pinia/dist, pinia/index.js, vite-plugin-vue-setup-extend/dist, axios/dist, axios/index.js, vite/dist, vite/bin, vite/types, vite/index.js (Sep onward). The package has no legitimate functionality — it is solely a time-bomb wiper targeting Vue/Vite/Axios-based Node.js projects, with no exfiltration or C2.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vue-plugin-bomb",
+        "purl": "pkg:npm/vue-plugin-bomb@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vue-plugin-bomb/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5449"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T22:43:28Z",
+      "indicators_observed": {}
+    }
+  }
+}

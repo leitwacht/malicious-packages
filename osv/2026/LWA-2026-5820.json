@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5820",
+  "aliases": [
+    "MAL-2026-6254"
+  ],
+  "modified": "2026-06-21T15:46:40Z",
+  "published": "2026-06-21T15:45:15Z",
+  "summary": "Security-research / proof-of-concept package: zomato-sushi (npm)",
+  "details": "The package zomato-sushi is a combosquat impersonating the Zomato brand with no real functionality — its only code is a 61-byte stub. On npm preinstall, it runs a shell script that collects the hostname, username, current working directory, and full environment variables (base64-encoded) and POSTs them to d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/…. The environment dump captures any API tokens and secrets present (NPM_TOKEN, GITHUB_TOKEN, AWS credentials, etc.). On preuninstall it also beacons the hostname to the same oast[.]site endpoint. The C2 server is hosted on an oast[.]site (Burp Collaborator-style) domain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zomato-sushi",
+        "purl": "pkg:npm/zomato-sushi@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zomato-sushi/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5820"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-21T15:45:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site",
+          "oast[.]site"
+        ],
+        "url_observed": [
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/",
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/uninstall/zomato-sushi"
+        ]
+      }
+    }
+  }
+}

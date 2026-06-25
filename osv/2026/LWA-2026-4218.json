@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4218",
+  "modified": "2026-06-11T09:18:24Z",
+  "published": "2026-06-11T09:15:02Z",
+  "summary": "Malicious code in ts-eslint-helper (npm)",
+  "details": "Ts-eslint-helper@4.0.1 is a credential stealer disguised as a helper tool. index.js uses base64-obfuscated string constants and recursively scans the current working directory for sensitive files (id.json Solana/Phantom wallets; config.toml/Config.toml; config.json;.env/env; and Solana seed-phrase markers), prepends USER@localIP to each, and POSTs the contents via axios to hxxps://cloudflare-prevention[.]vercel[.]app/api/v1 with attachment headers. test.js (run via `npm test`) auto-triggers full exfiltration. There is no lifecycle hook, so execution requires explicit require/run, but the code is unambiguously built to harvest crypto wallet keys, config secrets, and environment credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-eslint-helper",
+        "purl": "pkg:npm/ts-eslint-helper@4.0.1"
+      },
+      "versions": [
+        "4.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-eslint-helper/v/4.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4218"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T09:15:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare-prevention[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://cloudflare-prevention[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

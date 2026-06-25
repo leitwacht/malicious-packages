@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5824",
+  "aliases": [
+    "MAL-2026-6271"
+  ],
+  "modified": "2026-06-21T22:14:20Z",
+  "published": "2026-06-21T22:13:15Z",
+  "summary": "Malicious code in node-fetch-utils (npm)",
+  "details": "Node-fetch-utils@1.2.1 is a trojanized combosquat package impersonating a fetch-utility library. The package's publishable code (index.js, retry.js, cache.js) is legitimate, but the tarball includes a hidden C2 implant at scripts/postinstall.js that activates on Windows targets. The implant XOR-decodes a C2 server address (node22[.]lunes[.]host:3258) and uses HMAC-SHA256-based rolling auth tokens. It downloads XOR-keystream-encrypted Python bytecode from the C2 via HTTP GET, writes a self-cleaning Python launcher to %TEMP%, and executes the payload via VBScript/wscript.exe in a hidden detached process that escapes the npm job object. The package also depends on node-fetch-core (a known malware package) fetched via an unpinned GitHub master-branch tarball URL, allowing the attacker to swap its contents at any time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-fetch-utils",
+        "purl": "pkg:npm/node-fetch-utils@1.2.1"
+      },
+      "versions": [
+        "1.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-fetch-utils/v/1.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5824"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T22:13:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "node22[.]lunes[.]host"
+        ],
+        "ip_observed": [
+          "node22[.]lunes[.]host:3258"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/Hexa-devy/node-fetch-core/archive/refs/heads/master[.]tar[.]gz"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5288",
+  "aliases": [
+    "MAL-2026-5782"
+  ],
+  "modified": "2026-06-15T02:56:47Z",
+  "published": "2026-06-15T02:55:49Z",
+  "summary": "Malicious code in token-prices-cron (npm)",
+  "details": "Package token-prices-cron@999.0.0 is a dependency-confusion/supply-chain attack. The preinstall hook (postinstall.js) contains a credential harvester: it collects the installer's hostname, username, current working directory, and ALL environment variables matching key/secret/token/pass/private/ssh/deploy/auth/api/rpc/wallet/sentry/docker/graph/slack/host, then POSTs them as JSON to hxxps://185[.]130[.]46[.]35:8443/collect. The package's main entry (index.js) is an empty stub — it has no legitimate functionality. The preinstall silently swallows errors with \"|| true\", so failures won't be noticed. File: postinstall.js (preinstall hook). C2 endpoint: 185[.]130[.]46[.]35:8443/collect. Data exfiltrated: CI/CD environment variables (API keys, tokens, secrets, wallet keys, deploy keys, Docker credentials).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "token-prices-cron",
+        "purl": "pkg:npm/token-prices-cron@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/token-prices-cron/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5288"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T02:55:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]130[.]46[.]35:8443"
+        ],
+        "url_observed": [
+          "hxxps://185[.]130[.]46[.]35"
+        ]
+      }
+    }
+  }
+}

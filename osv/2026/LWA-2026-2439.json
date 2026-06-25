@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2439",
+  "modified": "2026-06-01T20:45:06Z",
+  "published": "2026-06-01T20:42:52Z",
+  "summary": "Malicious code in chai-chain-test (npm)",
+  "details": "Chai-chain-test@1.3.5 is a remote-code-execution dropper. index.js spawns a detached background process (detached:true, unref'd) running lib/caller.js, which fetches code from hxxps://jsonkeeper[.]com/b/EXSIF via axios and executes it via new Function.constructor(\"require\", body) — giving the attacker full access to Node modules. The jsonkeeper endpoint is attacker-controlled and can serve any payload; the description mismatches the content and the declared deps (axios, sqlite3) enable the fetched payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-chain-test",
+        "purl": "pkg:npm/chai-chain-test@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-chain-test/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2439"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T20:42:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/EXSIF"
+        ]
+      }
+    }
+  }
+}

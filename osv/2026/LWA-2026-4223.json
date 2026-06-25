@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4223",
+  "modified": "2026-06-11T09:49:40Z",
+  "published": "2026-06-11T09:46:46Z",
+  "summary": "Malicious code in node-bs58.js (npm)",
+  "details": "Combosquat of the legitimate `bs58` Base58 encoding library. The `decode()` function wraps `bs58.decode()` with a `sendMessage()` call that POSTs the user-supplied input to Telegram via hardcoded bot token ([redacted-credential]) and chat ID (7631491367) at api[.]telegram[.]org. Any private key, wallet seed, or sensitive data a user passes to decode() is silently exfiltrated to the attacker's Telegram C2 channel (group t[.]me/+IDl6XgFBZdI1ZjZh). Publisher an account Package also ships `!bs58-private-key[.]zip` containing a bundled npm project.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-bs58.js",
+        "purl": "pkg:npm/node-bs58.js@4.0.4"
+      },
+      "versions": [
+        "4.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-bs58.js/v/4.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4223"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T09:46:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "t[.]me"
+        ]
+      }
+    }
+  }
+}

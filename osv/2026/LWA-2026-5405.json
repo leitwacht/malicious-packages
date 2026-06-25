@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5405",
+  "aliases": [
+    "MAL-2026-5799"
+  ],
+  "modified": "2026-06-15T17:12:36Z",
+  "published": "2026-06-15T17:11:44Z",
+  "summary": "Malicious code in boardflow (npm)",
+  "details": "Boardflow@1.1.4 is a trojanized npm package that misrepresents itself as a kanban board CLI tool. The preinstall script (install.js) is heavily obfuscated with javascript-obfuscator. When run during npm install, it downloads a remote binary from hxxps://www[.]pooron[.]org/ice[.]exe to /tmp/tester_\u003crandom_hex\u003e.exe, makes it executable, and spawns it as a detached background process with output suppressed. On Windows it delegates to cmd.exe to launch the binary. After launching the payload it prints a fake \"[boardstep] Optional dependencies initialized.\" message and exits cleanly, hiding the malicious activity from the installer. The downloaded binary (ice.exe) is the actual second-stage payload and its functionality is unknown but runs with the user's privileges.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "boardflow",
+        "purl": "pkg:npm/boardflow@1.1.4"
+      },
+      "versions": [
+        "1.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/boardflow/v/1.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5405"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T17:11:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]pooron[.]org"
+        ],
+        "url_observed": [
+          "hxxps://www[.]pooron[.]org/ice[.]exe"
+        ]
+      }
+    }
+  }
+}

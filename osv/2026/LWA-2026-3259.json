@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3259",
+  "aliases": [
+    "MAL-2026-2930"
+  ],
+  "modified": "2026-06-08T18:40:09Z",
+  "published": "2026-06-08T18:39:29Z",
+  "summary": "Malicious code in path-internal (npm)",
+  "details": "Path-internal@1.0.15 is a combosquat of Node's core 'path' module. The main file path.js is a copy of Node's path module with two malicious insertions: (1) two base64-encoded URLs stored as variables randomStringRe and tokenStringRe, both decoding to jsonkeeper[.]com URLs; (2) a live IIFE at line ~489 that calls fetch(atob(tokenStringRe)), fetches JSON from hxxps://www[.]jsonkeeper[.]com/b/TPQHE, and evals data.content — remote code execution on require(). A second (commented-out) IIFE with the other URL shows iterative development of the same technique. Dependencies include execp, request, axios — none needed for a path utility — and the publisher account is a throwaway. No token-theft markers found; the payload is a RCE dropper that can fetch and eval any JS from the remote host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "path-internal",
+        "purl": "pkg:npm/path-internal@1.0.15"
+      },
+      "versions": [
+        "1.0.15"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/path-internal/v/1.0.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3259"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T18:39:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/TPQHE"
+        ]
+      }
+    }
+  }
+}

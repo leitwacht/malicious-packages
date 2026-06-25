@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5592",
+  "aliases": [
+    "MAL-2026-5931"
+  ],
+  "modified": "2026-06-16T16:34:14Z",
+  "published": "2026-06-16T16:12:05Z",
+  "summary": "Malicious code in mci-sdk (npm)",
+  "details": "This package presents itself as a multi-chain streaming/pipeline SDK, but it includes an install-time remote code execution stager. Its package.json runs a postinstall script that imports and immediately invokes a function named multiChainInterface. That function reads a base64-encoded value from a bundled config file, decodes it to a hidden remote URL (hxxps://jsonkeeper[.]com/b/2P5FA), and issues an HTTP GET to it. It extracts a JavaScript payload from the cookie field of the response, spawns a detached background node process with a piped stdin, writes the fetched payload into that node process for execution, then unrefs/detaches it so it keeps running silently and independently of the installer. The remainder of the package is benign stream-pipeline code copied to make the library look like a legitimate SDK. Net effect: installing the package fetches and executes attacker-controlled code on the victim host at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mci-sdk",
+        "purl": "pkg:npm/mci-sdk@1.2.8"
+      },
+      "versions": [
+        "1.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mci-sdk/v/1.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5592"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T16:12:05Z",
+      "indicators_observed": {
+        "base64_observed": [
+          "aHR0cHM6Ly9qc29ua2VlcGVyLmNvbS9iLzJQNUZB"
+        ],
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/2P5FA"
+        ]
+      }
+    }
+  }
+}

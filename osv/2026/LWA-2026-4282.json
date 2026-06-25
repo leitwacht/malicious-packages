@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4282",
+  "aliases": [
+    "MAL-2026-5688"
+  ],
+  "modified": "2026-06-11T12:12:14Z",
+  "published": "2026-06-11T12:09:46Z",
+  "summary": "Malicious code in ecto-nightly-spirit (npm)",
+  "details": "The package's postinstall.js lifecycle hook runs on installation and harvests a broad range of credentials and secrets from the host. It reads SSH private keys (~/.ssh/id_rsa, id_ed25519, id_ecdsa, config, authorized_keys), cloud-provider credentials (~/.aws/credentials, ~/.azure/accessTokens.json, GCP application_default_credentials.json and credentials.db, ~/.kube/config, /etc/rancher/k3s/k3s.yaml, ~/.docker/config.json, ~/.terraform.d/credentials.tfrc.json, ~/.vault-token), git credentials (~/.git-credentials), browser login/cookie stores (Chrome Login Data and Cookies, Firefox logins.json and key4.db), and cryptocurrency wallets (~/.bitcoin/wallet.dat, ~/.electrum/wallets/default_wallet, ~/.config/solana/id.json). The harvested data is sent to a hardcoded outbound endpoint at IP 154[.]57[.]164[.]70.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ecto-nightly-spirit",
+        "purl": "pkg:npm/ecto-nightly-spirit@1.0.6"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ecto-nightly-spirit/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4282"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T12:09:46Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "154[.]57[.]164[.]70"
+        ]
+      }
+    }
+  }
+}

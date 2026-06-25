@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5578",
+  "modified": "2026-06-16T16:57:18Z",
+  "published": "2026-06-15T06:53:36Z",
+  "summary": "Malicious code in tronweb-crypto (npm)",
+  "details": "This package masquerades as the legitimate TRON web3 library (it even pulls the real tronweb in as a dependency) and ships a single heavily obfuscated module. The code is produced by javascript-obfuscator: identifiers are renamed to _0x-style names, method names are hidden behind hex escapes, and the meaningful strings are hidden in an array decoded at runtime by a base64/RC4 routine. The package exports a Signature function that wraps the normal signing flow, then exfiltrates the captured key/signature material by building a request with fetch and POSTing it (method/headers/Content-Type/body) to a Telegram bot, using the Telegram sendMessage fields chat_id and text. The destination URL and bot token are kept encrypted in the string array and only decoded at runtime to evade static detection. Anyone importing this package to sign TRON transactions would leak their private key/signing data to the attacker.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tronweb-crypto",
+        "purl": "pkg:npm/tronweb-crypto@6.3.1"
+      },
+      "versions": [
+        "6.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tronweb-crypto/v/6.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5578"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T06:53:36Z",
+      "indicators_observed": {
+        "telegram_api_field_observed": [
+          "chat_id",
+          "text"
+        ]
+      }
+    }
+  }
+}

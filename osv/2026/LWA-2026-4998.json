@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4998",
+  "aliases": [
+    "MAL-2026-4662"
+  ],
+  "modified": "2026-06-13T05:24:18Z",
+  "published": "2026-06-13T05:23:19Z",
+  "summary": "Malicious code in rendezvous-js (npm)",
+  "details": "During npm install, the lifecycle hook runs node index.js which loads an obfuscated DNS beacon (lib/core.js, lib/6ad264.js, lib/b02e30.js). The beacon collects os.userInfo().username, os.hostname(), and process.cwd(), sanitizes each to 15 alphanumeric characters, joins them with a dot-separator prefix (lwrendezvous) and an attacker-controlled domain (oob[.]sl4x0[.]xyz), then sends the assembled subdomain as a DNS resolve4 look-up: lwrendezvous.{username}.{hostname}.{cwd}.{timestamp}.oob[.]sl4x0[.]xyz. This exfiltrates identifying host metadata from every install to the OOB domain sl4x0[.]xyz. The code uses char-code-array obfuscation (javascript-obfuscator pattern) to hide the imports of os, dns, and process modules. No token theft was observed; this is a standalone host-surveillance DNS beacon activated on package install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rendezvous-js",
+        "purl": "pkg:npm/rendezvous-js@9.9.11"
+      },
+      "versions": [
+        "9.9.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rendezvous-js/v/9.9.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4998"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T05:23:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]sl4x0[.]xyz",
+          "sl4x0[.]xyz"
+        ]
+      }
+    }
+  }
+}

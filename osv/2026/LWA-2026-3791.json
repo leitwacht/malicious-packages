@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3791",
+  "aliases": [
+    "MAL-2026-5855"
+  ],
+  "modified": "2026-06-10T02:38:51Z",
+  "published": "2026-06-10T02:37:45Z",
+  "summary": "Malicious code in vemos-sdk (npm)",
+  "details": "Vemos-sdk@1.0.0 is a second-stage dropper. Its postinstall hook (node index.js) calls getVemosInterface(), which base64-decodes the string [encoded-url-redacted] to hxxps://jsonkeeper[.]com/b/BN77K, fetches that URL via axios GET, and writes the response's 'cookie' field into the stdin of a detached 'node' subprocess spawned with detached:true and unref() for stealth and persistence. The publisher email and the remote-fetch-then-execute pattern make this a payload dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vemos-sdk",
+        "purl": "pkg:npm/vemos-sdk@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vemos-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3791"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T02:37:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/BN77K"
+        ]
+      }
+    }
+  }
+}

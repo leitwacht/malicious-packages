@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4449",
+  "aliases": [
+    "MAL-2026-5678"
+  ],
+  "modified": "2026-06-11T21:25:56Z",
+  "published": "2026-06-11T21:25:20Z",
+  "summary": "Malicious code in internallib_v557 (npm)",
+  "details": "Package internallib_v557@1.0.5 exports a command() function that, when called, deploys an SSH RSA public key into /home/gitlab-runner/.ssh/authorized_keys (persistent backdoor), reads CTF flag files (/home/internal/user.txt, /root/root.txt) and GitLab CI.git/config credentials from multiple paths, and runs system recon (ls /home/, cat /etc/passwd). The package has no lifecycle hooks, so it does not auto-execute on install, but as a library dependency it is a trojan: any package that requires() and calls.command() is compromised. Minimal package.json with no description, no repository, and an unknown publisher — no indication of legitimate use.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "internallib_v557",
+        "purl": "pkg:npm/internallib_v557@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/internallib_v557/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4449"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T21:25:20Z",
+      "indicators_observed": {}
+    }
+  }
+}

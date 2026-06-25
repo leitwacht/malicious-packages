@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4753",
+  "modified": "2026-06-12T13:16:50Z",
+  "published": "2026-06-12T13:15:33Z",
+  "summary": "Malicious code in pretty-pino-logger (npm)",
+  "details": "A credential-stealing backdoor combosquatting pino-pretty and posing as a colorized logger. On require(), dist/logger.js immediately fingerprints the host (platform, IP address(es), username); on Linux writes a hardcoded ssh-rsa public key into ~/.ssh/authorized_keys for persistent SSH access; recursively walks the filesystem (home dirs, /home on Linux, drive roots on Windows, /Users on macOS) collecting.env and.json files while skipping node_modules; and exfiltrates the collected data via HTTP POST to logger.clob[.]health — system info to /api/validate/system-info, scraped env/json files to /api/validate/files, and the project-local.env to /api/validate/project-env. The exposed dist/index.js exports a harmless Logger class as a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pretty-pino-logger",
+        "purl": "pkg:npm/pretty-pino-logger@2.0.2"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pretty-pino-logger/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4753"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T13:15:33Z",
+      "indicators_observed": {}
+    }
+  }
+}

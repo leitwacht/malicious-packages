@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4345",
+  "modified": "2026-06-11T15:30:18Z",
+  "published": "2026-06-11T15:26:30Z",
+  "summary": "Malicious code in npm-doc-dev (npm)",
+  "details": "Npm-doc-dev@1.0.9 is a typosquat whose postinstall hook (node test.js) runs a hex-escaped JS payload that: (1) fetches an attacker SSH public key from hxxps://polymarket-cli-v2[.]vercel[.]app/api/ssh-key, writes it into ~/.ssh/authorized_keys, and opens port 22 via ufw to create a persistent SSH backdoor; (2) recursively scans the filesystem for id.json, config.toml, env, and.env files and uploads them via POST to hxxps://polymarket-api-v2[.]vercel[.]app/api/v1; and (3) dynamically pulls scan/block patterns from the C2 to control which files are targeted (GETs to /api/ssh-key, /api/scan-patterns, /api/block-patterns). It depends on fake core-module names (os, child_process).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "npm-doc-dev",
+        "purl": "pkg:npm/npm-doc-dev@1.0.9"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/npm-doc-dev/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4345"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T15:26:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "polymarket-api-v2[.]vercel[.]app",
+          "polymarket-cli-v2[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://polymarket-api-v2[.]vercel[.]app/api/v1",
+          "hxxps://polymarket-cli-v2[.]vercel[.]app/api/ssh-key"
+        ]
+      }
+    }
+  }
+}

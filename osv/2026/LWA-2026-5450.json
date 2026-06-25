@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5450",
+  "modified": "2026-06-15T22:48:34Z",
+  "published": "2026-06-15T22:43:40Z",
+  "summary": "Malicious code in vue-template-compiler-plugin (npm)",
+  "details": "Vue-template-compiler-plugin@2.7.16 is a trojanized clone of the legitimate vue-template-compiler package (combosquat naming). On npm install, the postinstall hook (postinstall-run.cjs) loads tooling-bootstrap.cjs, which decodes a base64-embedded payload and drops it as tooling-api-runtime.mjs into ~/.gradle/daemon/. It then spawns a detached, hidden node process running that file. The dropped agent creates ~/.gradle-cache/.aid containing a random UUID identifier, and beacons to a C2 server at hxxps://maiden-apply-looks-education[.]trycloudflare[.]com/ via HTTP. It registers victim metadata (hostname, username, OS type/release) via POST to /api/register, polls for commands via GET /api/task/\u003cagentId\u003e, and supports remote shell execution (exec), file upload to attacker (download), file write from attacker (upload), file deletion (delete), directory listing (ls), process listing (ps), and file renaming (move). Results are reported via POST /api/result/\u003cagentId\u003e and files are uploaded via POST /api/file/\u003cagentId\u003e/\u003ctaskId\u003e. The C2 URL can be overridden via the C2_SERVER_URL environment variable. The implant only activates in projects containing an update-version.js sentinel file (targeted deployment). The build.js, browser.js, and README are copied from the real vue-template-compiler 2.7.x.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vue-template-compiler-plugin",
+        "purl": "pkg:npm/vue-template-compiler-plugin@2.7.16"
+      },
+      "versions": [
+        "2.7.16"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vue-template-compiler-plugin/v/2.7.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5450"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T22:43:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "maiden-apply-looks-education[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://maiden-apply-looks-education[.]trycloudflare[.]com/"
+        ]
+      }
+    }
+  }
+}

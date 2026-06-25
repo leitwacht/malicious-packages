@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5307",
+  "modified": "2026-06-15T05:35:53Z",
+  "published": "2026-06-15T05:33:52Z",
+  "summary": "Malicious code in tradepilot (npm)",
+  "details": "The package tradepilot@2.3.3 is a remote-code-execution downloader disguised as a trading bot. At runtime (when required/imported), it silently fetches a second-stage payload from hxxps://bet[.]slotgambit[.]com/icons/106 (with header bearrtoken: logo) and executes the response body's \"credits\" field via new Function(...) with full Node.js access (require, process, Buffer, module.exports). This gives the attacker arbitrary code execution in the victim's environment. The package depends on @primno/dpapi (Windows DPAPI credential decryptor), node-machine-id (host fingerprinting), better-sqlite3/sqlite3 (credential-database access), socket[.]io-client (real-time C2 channel), and axios (HTTP). The C2 host is bet[.]slotgambit[.]com, path /icons/106, protocol HTTPS. The package has no install lifecycle hooks — execution triggers on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tradepilot",
+        "purl": "pkg:npm/tradepilot@2.3.3"
+      },
+      "versions": [
+        "2.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tradepilot/v/2.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5307"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T05:33:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bet[.]slotgambit[.]com"
+        ],
+        "url_observed": [
+          "hxxps://bet[.]slotgambit[.]com/icons/106"
+        ]
+      }
+    }
+  }
+}

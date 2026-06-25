@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5474",
+  "modified": "2026-06-16T00:43:56Z",
+  "published": "2026-06-16T00:43:23Z",
+  "summary": "Malicious code in web3-deploy-helper (npm)",
+  "details": "The package web3-deploy-helper@1.0.0 runs a postinstall script (postinstall.js) that steals Ethereum wallet credentials. On installation, it reads private keys, mnemonics, and seed phrases from.env files, hardhat config files, and environment variables. Harvested credentials are AES-encrypted and exfiltrated as transaction data in zero-value Ethereum transactions to address 0xCBbecC5E5Eb88582e6305cF6ab688f03e02Ce16f, using public RPC providers (eth[.]llamarpc[.]com, rpc[.]ankr[.]com/eth, ethereum[.]publicnode[.]com). The package index.js is an inert stub with no real functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "web3-deploy-helper",
+        "purl": "pkg:npm/web3-deploy-helper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/web3-deploy-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5474"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T00:43:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eth[.]llamarpc[.]com",
+          "ethereum[.]publicnode[.]com",
+          "rpc[.]ankr[.]com"
+        ],
+        "url_observed": [
+          "hxxps://eth[.]llamarpc[.]com",
+          "hxxps://ethereum[.]publicnode[.]com",
+          "hxxps://rpc[.]ankr[.]com/eth"
+        ],
+        "wallet_observed": [
+          "0xCBbecC5E5Eb88582e6305cF6ab688f03e02Ce16f"
+        ]
+      }
+    }
+  }
+}

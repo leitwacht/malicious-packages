@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2357",
+  "modified": "2026-06-01T16:51:05Z",
+  "published": "2026-06-01T16:48:13Z",
+  "summary": "Malicious code in dotenv-pack (npm)",
+  "details": "Combosquat of \"dotenv\" (versions 2.3.5, 2.3.7, 2.3.10). index.js spawns a detached child running lib/initializeCaller.js, an IIFE that exfiltrates the full process environment ({...process.env }, including NPM_TOKEN, GITHUB_TOKEN, etc.) via axios POST to a base64-decoded C2 (ipcheck-hashed[.]vercel[.]app), then executes the server response via new Function(\"require\", response.data) for full remote code execution. Uses the fake author \"Robert King\" and a jsonspack[.]com URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dotenv-pack",
+        "purl": "pkg:npm/dotenv-pack@2.3.5"
+      },
+      "versions": [
+        "2.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dotenv-pack/v/2.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2357"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T16:48:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app",
+          "jsonspack[.]com"
+        ]
+      }
+    }
+  }
+}

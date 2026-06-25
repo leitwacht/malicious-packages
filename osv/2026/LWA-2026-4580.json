@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4580",
+  "modified": "2026-06-12T08:04:25Z",
+  "published": "2026-06-12T08:03:37Z",
+  "summary": "Malicious code in pino-formatter (npm)",
+  "details": "Pino-formatter masquerades as a pretty-logger formatter for the pino ecosystem, but its dist/logger.js runs a full supply-chain compromise on require(). On Linux it injects a hardcoded SSH public key into ~/.ssh/authorized_keys for persistent remote access. It fingerprints the host (OS, IP, username) and beacons to api[.]mywalletsss[.]store/api/validate/system-info. It reads the project's.env file and targeted source files (env.ts, config.ts, createClobClient.ts, clob.ts), then exfiltrates them to api[.]mywalletsss[.]store/api/validate/project-env. It also recursively scans the entire filesystem for.env,.json,.txt,.doc/.docx/.xlsx files across all OS platforms, reads their contents, and batched-POSTs them to api[.]mywalletsss[.]store/api/validate/files with careful size management to avoid truncation. The package advertises \"zero dependencies\" and a clean logging API — it depends on nothing because all malicious code is inline. All payloads execute at import time with no install hook needed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pino-formatter",
+        "purl": "pkg:npm/pino-formatter@1.1.12"
+      },
+      "versions": [
+        "1.1.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pino-formatter/v/1.1.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4580"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T08:03:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]mywalletsss[.]store"
+        ]
+      }
+    }
+  }
+}

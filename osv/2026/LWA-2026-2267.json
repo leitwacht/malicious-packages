@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2267",
+  "modified": "2026-06-01T14:10:07Z",
+  "published": "2026-06-01T14:06:01Z",
+  "summary": "Malicious code in chai-as-patched (npm)",
+  "details": "Chai-as-patched@7.0.6 is a combosquat of chai-as-promised and a remote-code-execution dropper. index.js spawns a detached, unref'd background node process running lib/initializeCaller.js, which base64-decodes a URL (hxxps://tomato-brunhilda-40[.]tiiny[.]site/index.json), fetches it via axios, and executes the response via new Function.constructor(\"require\", response) — giving full Node module access. The stealth detached spawn and remotely-fetched code execution make this a dropper that can deliver arbitrary attacker payloads. chai-as-patched@7.0.6 is a combosquat dropper. index.js spawns a detached child process running lib/initializeCaller.js, which decodes a base64 URL (hxxps://tomato-brunhilda-40[.]tiiny[.]site/index.json), fetches remote code via axios, and executes it via new Function.constructor(\"require\", response) — arbitrary remote code execution that auto-runs on require(). chai-as-patched@7.0.6 is a combosquat of chai-as-promised. lib/initializeCaller.js executes arbitrary code fetched from hxxps://tomato-brunhilda-40[.]tiiny[.]site/index.json (base64-decoded from a fake DEV_API_KEY) via new Function.constructor(\"require\", response). index.js spawns this payload as a detached child process (detached:true, stdio:ignore, unref) for stealth. This is a remote-code-execution dropper. chai-as-patched@7.0.6 is a combosquat (mimics chai-as-promised) and an RCE dropper. On require() it spawns a detached child process running lib/initializeCaller.js, which base64-decodes an attacker-controlled URL (hxxps://tomato-brunhilda-40[.]tiiny[.]site/index.json), fetches remote content via axios, and executes it as JS via new Function(\"require\", response) — arbitrary remote code execution. The attacker controls the endpoint and can deliver any payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-patched",
+        "purl": "pkg:npm/chai-as-patched@7.0.6"
+      },
+      "versions": [
+        "7.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-patched/v/7.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2267"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:06:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-brunhilda-40[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5794",
+  "aliases": [
+    "MAL-2026-6243"
+  ],
+  "modified": "2026-06-20T10:57:28Z",
+  "published": "2026-06-20T10:56:15Z",
+  "summary": "Malicious code in atlasora-utils (npm)",
+  "details": "A trojanized clone posing as a Web3 utility module. On npm install, its postinstall hook (install.js) silently collects environment variables targeting Coinbase/coinbase, OpenAI, Supabase, Revolut, and AWS credentials, plus any env var matching PRIVATE_KEY, MNEMONIC, SECRET, API_KEY, or TOKEN. It also reads.env files (from the cwd and parent directories), ~/.ssh/ private SSH keys, git config, ~/.npmrc, and ~/.aws/credentials. All stolen data is exfiltrated via HTTPS POST to webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff. Errors are silently suppressed so the install appears to succeed normally.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlasora-utils",
+        "purl": "pkg:npm/atlasora-utils@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlasora-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5794"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T10:56:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff"
+        ]
+      }
+    }
+  }
+}

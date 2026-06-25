@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5429",
+  "modified": "2026-06-15T20:16:10Z",
+  "published": "2026-06-15T20:13:51Z",
+  "summary": "Malicious code in vite-plugin-vue-extend (npm)",
+  "details": "This package masquerades as a Vite/Vue utility plugin but contains a destructive wiper payload in package/index.min.js. When the exported default function is called, it recursively deletes the dist, bin, and lib directories from the following sibling packages in node_modules: vite, vue, vue-types, typescript, vue-tsc, less, ant-design-vue, store, lib-flexible, dayjs, vue-router, pinia, echarts, axios, and less-loader. The deletions are triggered on staggered timers (every 5-10 minutes at random intervals) with activation dates starting July 2023 (all in the past). Paths use backslash separators, indicating Windows targeting. No network C2 or credential exfiltration — this is a pure data-sabotage payload that destroys a Vue/Vite developer's build toolchain and dependencies.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-plugin-vue-extend",
+        "purl": "pkg:npm/vite-plugin-vue-extend@1.0.9"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-plugin-vue-extend/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5429"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T20:13:51Z",
+      "indicators_observed": {}
+    }
+  }
+}

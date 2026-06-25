@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5591",
+  "aliases": [
+    "MAL-2026-5932"
+  ],
+  "modified": "2026-06-16T19:22:54Z",
+  "published": "2026-06-16T18:59:09Z",
+  "summary": "Malicious code in package-uploader (npm)",
+  "details": "A Windows malware dropper disguised as a UI navbar utility. Its package.json declares a postinstall lifecycle hook that runs install-hook.js, which carries an embedded, XOR-encrypted (single-byte key 0x42) Windows PE executable as a base64 string. On install it decrypts the payload, writes it to a randomly-named.exe in the system TEMP directory, and launches it as a detached, hidden background process via cmd /c start /b; the dropped binary is then deleted after a short delay to hide it. It additionally writes a second helper script to TEMP and spawns it detached: after a roughly 90-second delay this script removes the related dependency entry from the victim project's package.json and package-lock.json and recursively deletes the package's own installed folder (falling back to a scheduled task) to erase forensic traces of the installation. The advertised functionality is a decoy; the package exists solely to drop and run a native Windows executable while self-cleaning.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "package-uploader",
+        "purl": "pkg:npm/package-uploader@1.3.25"
+      },
+      "versions": [
+        "1.3.25"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/package-uploader/v/1.3.25"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5591"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T18:59:09Z",
+      "indicators_observed": {
+        "file_observed": [
+          "install-hook.js"
+        ]
+      }
+    }
+  }
+}

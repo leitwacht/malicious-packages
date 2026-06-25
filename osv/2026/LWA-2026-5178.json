@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5178",
+  "aliases": [
+    "MAL-2026-6063"
+  ],
+  "modified": "2026-06-14T04:05:21Z",
+  "published": "2026-06-14T04:03:03Z",
+  "summary": "Malicious code in sort-btree (npm)",
+  "details": "Sort-btree@2.1.4 is a trojanized version of a BTree data-structure library. Upon loading, it spawns a hidden background process that: (1) collects system information (hostname, platform, CPU count, memory, running processes); (2) exfiltrates the data to both Slack (POST to slack[.]com/api/chat.postMessage, channel C0ATC9UKKA4) and Telegram (POST to api[.]telegram[.]org with a hardcoded bot token, chat ID -1003968723972); (3) connects to the Ethereum Sepolia testnet via Infura and Alchemy RPC endpoints using base64-encoded embedded API keys; (4) reads encrypted commands from the Sepolia smart contract at 0x661e50e19f05e3c0d04fd75891456d1f0a24508d, decrypting them with PBKDF2+AES-GCM; (5) generates an X25519 Diffie-Hellman keypair and registers a public key on-chain via the contract's setCPubKey method; (6) listens for TData1Updated/TData2Updated events from the contract; (7) when triggered, fetches and decrypts the payload data, either self-destructing or writing the second-stage payload to ~/.config/update-notifier/Updates/AppUpdates (Linux), ~/Library/Application Support/AppleSoftware/Updates/AppUpdates (macOS), or %APPDATA%/Microsoft/Network/Connections/Updates/AppUpdates (Windows) and executing it as a persistent detached Node.js process; (8) self-deletes the payload files and sanitizes the entry-point code after execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sort-btree",
+        "purl": "pkg:npm/sort-btree@2.1.4"
+      },
+      "versions": [
+        "2.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sort-btree/v/2.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5178"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T04:03:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "slack[.]com"
+        ],
+        "wallet_observed": [
+          "0x661e50e19f05e3c0d04fd75891456d1f0a24508d"
+        ]
+      }
+    }
+  }
+}

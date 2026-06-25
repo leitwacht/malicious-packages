@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5817",
+  "aliases": [
+    "MAL-2026-6252"
+  ],
+  "modified": "2026-06-21T15:46:36Z",
+  "published": "2026-06-21T15:45:16Z",
+  "summary": "Security-research / proof-of-concept package: zomato-logger (npm)",
+  "details": "Zomato-logger@1.0.0 is a combosquat package impersonating Zomato (the food delivery service) with no real logging functionality — the main entrypoint is a 62-byte stub. On install, the preinstall hook runs a curl command that exfiltrates the system hostname, username, current working directory, and the entire environment variable listing (base64-encoded) to the OAST callback endpoint d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/\u003cbase64-package-name\u003e. On uninstall, a preuninstall hook similarly beacons the hostname to the same host. The environment dump captures any tokens or secrets present in the installer's environment (NPM_TOKEN, GITHUB_TOKEN, AWS credentials, etc.). The target host is an OAST/interaction-service domain used for data capture. IOC: oast[.]site host d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site (port 80).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zomato-logger",
+        "purl": "pkg:npm/zomato-logger@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zomato-logger/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5817"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-21T15:45:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site",
+          "oast[.]site"
+        ],
+        "url_observed": [
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/",
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/uninstall/zomato-logger"
+        ]
+      }
+    }
+  }
+}

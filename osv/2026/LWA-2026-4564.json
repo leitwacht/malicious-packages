@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4564",
+  "aliases": [
+    "MAL-2026-5985"
+  ],
+  "modified": "2026-06-12T07:34:30Z",
+  "published": "2026-06-12T07:32:51Z",
+  "summary": "Malicious code in node-path-utils (npm)",
+  "details": "On require(), the package fetches JSON from jsonkeeper[.]com (a public pastebin-like service) and evals the response content, giving the attacker full remote code execution on any machine that installs this package. The package impersonates Node's built-in path module (name \"node-path-utils\", description \"exact copy of the NodeJS path module\") but contains a hidden IIFE in path.js that calls loadTokenData(), which base64-decodes the URL [encoded-url-redacted] (jsonkeeper[.]com/b/P0CND), fetches the JSON content field, and passes it to eval(). A second URL (jsonkeeper[.]com/b/XTXBX) is present but commented out. the package was published once as version 1.23.2, and it bundles unnecessary dependencies (axios, mddriver) that are irrelevant to path utilities — all indicators of a combosquat supply-chain attack delivering dynamic second-stage payloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-path-utils",
+        "purl": "pkg:npm/node-path-utils@1.23.2"
+      },
+      "versions": [
+        "1.23.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-path-utils/v/1.23.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4564"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T07:32:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

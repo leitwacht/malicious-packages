@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5689",
+  "aliases": [
+    "MAL-2026-6305"
+  ],
+  "modified": "2026-06-18T08:57:21Z",
+  "published": "2026-06-18T08:53:38Z",
+  "summary": "Malicious code in @frostnode/waitfor (npm)",
+  "details": "This package is a trojanized clone of the popular rxjs-poll polling/backoff library, republished under a different name. The legitimate library code is kept intact as a decoy, but the distribution bundle includes an extra heavily obfuscated file (dist/cjs/tickinit.cjs, ~259KB, javascript-obfuscator string-array style) that has no public API and no type definitions. It is wired to execute in two ways: the package.json postinstall hook runs it directly (node./dist/cjs/tickinit.cjs), and the main entry point was patched to require it on import, so it also runs whenever the library is used. When triggered, the obfuscated code makes an outbound HTTPS request, buffers the remote response, and then runs that downloaded content as a shell command via child_process.execFileSync(shell, [-c, \u003cremote body\u003e]) with a short timeout, wrapped in a try/catch that hides any error. This is a remote-code download-and-execute dropper that runs at install time and at import time, giving the operator arbitrary command execution on the victim host with no visible output.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@frostnode/waitfor",
+        "purl": "pkg:npm/%40frostnode/waitfor@0.10.5"
+      },
+      "versions": [
+        "0.10.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@frostnode/waitfor/v/0.10.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5689"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:53:38Z",
+      "indicators_observed": {
+        "file_observed": [
+          "dist/cjs/tickinit.cjs",
+          "dist/cjs/tickinit.mjs"
+        ],
+        "npm_package_observed": [
+          "@frostnode/waitfor@0.10.5"
+        ]
+      }
+    }
+  }
+}

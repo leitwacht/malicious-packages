@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5478",
+  "modified": "2026-06-16T01:46:43Z",
+  "published": "2026-06-16T01:43:22Z",
+  "summary": "Malicious code in web3logger (npm)",
+  "details": "Web3logger@1.1.1 is a trojanized web3 logging library that exfiltrates data passed to its exported log() function. The code is heavily obfuscated with javascript-obfuscator (dictionary array, RC4 string cipher, anti-debugging) to hide its C2 endpoint. When installed as a dependency, any data passed to log() — such as wallet keys, RPC URLs, environment variables, or other secrets in a web3/crypto project — is sent via axios to an attacker-controlled remote server. The API endpoint is constructed from multiple obfuscated and decoded strings, deliberately concealed from static analysis. The package has no install hooks (no lifecycle scripts); the exfiltration occurs at runtime when the consuming application calls the library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "web3logger",
+        "purl": "pkg:npm/web3logger@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/web3logger/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5478"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T01:43:22Z",
+      "indicators_observed": {}
+    }
+  }
+}

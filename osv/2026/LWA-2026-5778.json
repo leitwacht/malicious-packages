@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5778",
+  "modified": "2026-06-19T17:22:03Z",
+  "published": "2026-06-19T17:21:15Z",
+  "summary": "Malicious code in ts-bn-proto (npm)",
+  "details": "When installed, the package's postinstall script (node test.js) immediately executes four credential-harvesting routines without user consent. It scans the home directory, all drive roots (Linux /home, Windows C:\\, macOS /Users), and the current working directory for sensitive files including.env files, JSON wallet files (id.json), config.toml, and any files whose names contain wallet/key/seed/mnemonic/private_key/keystore/metamask/phantom/trezor/ledger keywords. It also collects shell command histories from ~/.bash_history, ~/.zsh_history, ~/.local/share/fish/fish_history, and PowerShell ConsoleHost_history.txt across platforms. On Windows and macOS, it steals the Telegram Desktop session directory (tdata) by gzipping the entire folder. All stolen data is exfiltrated via multipart HTTP POST requests to hxxps://data-stream[.]space/api/v1. The exfiltration server endpoint can be overridden by the BACKUP_API_URL environment variable.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-bn-proto",
+        "purl": "pkg:npm/ts-bn-proto@5.8.1"
+      },
+      "versions": [
+        "5.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-bn-proto/v/5.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5778"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T17:21:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "data-stream[.]space"
+        ],
+        "url_observed": [
+          "hxxps://data-stream[.]space/api/v1"
+        ]
+      }
+    }
+  }
+}

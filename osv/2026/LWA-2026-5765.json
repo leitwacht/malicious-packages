@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5765",
+  "aliases": [
+    "MAL-2026-6227"
+  ],
+  "modified": "2026-06-19T10:52:40Z",
+  "published": "2026-06-19T10:51:29Z",
+  "summary": "Malicious code in new-ts-helper (npm)",
+  "details": "Package new-ts-helper@9.0.2 is a credential-harvesting infostealer. Its index.js exports functions that, when called, recursively scan the working directory for credential and configuration files (id.json, config.toml, Config.Toml, config.json,.env, env, and git conflict markers \"======\") and collect shell history from ~/.bash_history, ~/.zsh_history, ~/.local/share/fish/fish_history, and PowerShell console history on both Windows and Linux. It also actively executes `bash -c history` and `zsh -c 'fc -l -1000'` to extract shell history. All collected files and shell history are uploaded via HTTP POST to hxxps://vercel-backend-five-vert[.]vercel[.]app/api/v1, with the data tagged by the USER environment variable and the machine's local IP address. The package's test.js script (run via `npm test`) immediately invokes the full exfiltration chain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "new-ts-helper",
+        "purl": "pkg:npm/new-ts-helper@9.0.2"
+      },
+      "versions": [
+        "9.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/new-ts-helper/v/9.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5765"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T10:51:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vercel-backend-five-vert[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://vercel-backend-five-vert[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

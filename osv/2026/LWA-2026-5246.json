@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5246",
+  "modified": "2026-06-14T13:49:48Z",
+  "published": "2026-06-14T13:47:59Z",
+  "summary": "Malicious code in tailmagic (npm)",
+  "details": "Tailmagic@2.3.2 is a malicious npm package that, when required, fetches a second-stage payload from bet[.]slotgambit[.]com/icons/106 (with custom header bearrtoken: \"logo\") and executes it server-side via new Function() with full Node.js API access (require, process, Buffer, console, setTimeout, Promise). The advertised API (setDefault) does not exist; the module's real export runs the loader immediately on require. The payload's dependencies suggest second-stage capabilities including browser credential theft (via @primno/dpapi to decrypt Windows DPAPI data, sqlite3/better-sqlite3 for Chrome cookie databases, node-machine-id for host fingerprinting, and socket[.]io-client for real-time C2).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailmagic",
+        "purl": "pkg:npm/tailmagic@2.3.2"
+      },
+      "versions": [
+        "2.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailmagic/v/2.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5246"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T13:47:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bet[.]slotgambit[.]com"
+        ]
+      }
+    }
+  }
+}

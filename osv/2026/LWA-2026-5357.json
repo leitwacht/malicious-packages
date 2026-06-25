@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5357",
+  "modified": "2026-06-15T10:10:38Z",
+  "published": "2026-06-15T10:08:52Z",
+  "summary": "Malicious code in ug-env-switch-ball (npm)",
+  "details": "The preinstall script (node check-environment.js) runs initSystem() which exfiltrates system information via DNS. It collects the victim's OS username, hostname, public IP address (fetched from api[.]ipify[.]org, api[.]myip[.]com, or ifconfig[.]me), DNS server addresses, and package metadata. This data is hex-encoded, split into chunks, and exfiltrated as subdomains of s[.]3271df58[.]gfde[.]site via DNS resolution queries (dns.resolve4). The publisher address (gfde[.]site) shares the same domain as the exfiltration endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ug-env-switch-ball",
+        "purl": "pkg:npm/ug-env-switch-ball@7.9.9"
+      },
+      "versions": [
+        "7.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ug-env-switch-ball/v/7.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5357"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T10:08:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]myip[.]com",
+          "gfde[.]site",
+          "ifconfig[.]me",
+          "s[.]3271df58[.]gfde[.]site"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://api[.]myip[.]com",
+          "hxxps://ifconfig[.]me/ip"
+        ]
+      }
+    }
+  }
+}

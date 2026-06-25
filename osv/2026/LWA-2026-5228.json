@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5228",
+  "modified": "2026-06-14T09:04:02Z",
+  "published": "2026-06-14T09:02:57Z",
+  "summary": "Malicious code in strutil-kit (npm)",
+  "details": "Strutil-kit@1.0.0 is a trojanized npm package posing as a string manipulation utility. On installation, the postinstall hook (bin/setup.js) spawns assets/setup-helper.exe — a 9.8MB PyInstaller-packaged Python executable — as a hidden, detached background process on Windows (windowsHide:true, detached:true, stdio:'ignore'). The Python binary contains a full embedded interpreter with network libraries (requests, urllib3, socket, ssl, http.client) for C2 communication, and subprocess for local command execution. The legitimate-looking string library in dist/index.js is a decoy; the only real behaviour is the silent execution of the packed payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "strutil-kit",
+        "purl": "pkg:npm/strutil-kit@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/strutil-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5228"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T09:02:57Z",
+      "indicators_observed": {}
+    }
+  }
+}

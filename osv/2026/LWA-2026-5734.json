@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5734",
+  "aliases": [
+    "MAL-2026-6190"
+  ],
+  "modified": "2026-06-18T18:02:51Z",
+  "published": "2026-06-18T18:01:56Z",
+  "summary": "Malicious code in mjs-eslint-helper (npm)",
+  "details": "Mjs-eslint-helper is a combosquat package impersonating an ESLint utility. Its index.js contains base64-obfuscated code that, when any exported function is called (e.g., via the bundled test.js script), recursively searches the current working directory for sensitive files including id.json (Solana CLI wallet keypair), config.toml, Config.Toml, config.json,.env, env, and files named ====== (mnemonic seed phrase storage). It also reads shell history from bash, zsh, fish, sh, and PowerShell. All collected files and shell history are exfiltrated to backend-helper-service[.]vercel[.]app/api/v1 via HTTP POST, with each payload tagged by the victim's USER and local IP address. The data is sent with Content-Type: application/octet-stream and Content-Disposition: attachment headers. This targets Solana wallet private keys, environment credentials, and CLI history for credential theft.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mjs-eslint-helper",
+        "purl": "pkg:npm/mjs-eslint-helper@4.0.1"
+      },
+      "versions": [
+        "4.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mjs-eslint-helper/v/4.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5734"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T18:01:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "backend-helper-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://backend-helper-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

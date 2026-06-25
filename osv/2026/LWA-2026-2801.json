@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2801",
+  "aliases": [
+    "MAL-2026-5748"
+  ],
+  "modified": "2026-06-07T21:19:53Z",
+  "published": "2026-06-07T21:12:28Z",
+  "summary": "Malicious code in chai-utils-test (npm)",
+  "details": "This combosquat of the Chai test library is a dropper. Its index.js spawns a detached, unref'd background node process running a payload that fetches stage-2 code from hxxp://statecheck[.]ddns[.]net/api/scanner.js via axios using a hardcoded HTTP Basic auth header (base64 YWRtaW46c2VjcmV0MTIz, i.e. admin:secret123), then executes it with new Function(\"require\", s), giving the remote code full require access. The publisher impersonates real Chai maintainers. chai-utils-test@4.5.2 is a combosquat of the chai assertion library acting as a multi-stage remote-code-execution dropper. Its index.js spawns a detached background node process (detached:true, child.unref()) running a bundled payload file that uses axios to fetch stage-2 code from hxxps://statecheck[.]ddns[.]net/api/scanner.js with hardcoded base64 Basic-auth credentials (admin:secret123), then executes the response via new Function(\"require\", s), granting the operator full require access. The publisher impersonates the real Chai maintainers.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-utils-test",
+        "purl": "pkg:npm/chai-utils-test@4.5.2"
+      },
+      "versions": [
+        "4.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-utils-test/v/4.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2801"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T21:12:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "statecheck[.]ddns[.]net"
+        ],
+        "url_observed": [
+          "hxxp://statecheck[.]ddns[.]net/api/scanner[.]js",
+          "hxxps://statecheck[.]ddns[.]net/api/scanner[.]js"
+        ]
+      }
+    }
+  }
+}

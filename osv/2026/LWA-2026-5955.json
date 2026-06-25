@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5955",
+  "modified": "2026-06-25T01:51:46Z",
+  "published": "2026-06-25T01:50:48Z",
+  "summary": "Malicious code in base58-cli (npm)",
+  "details": "Base58-cli@1.0.0 is a CLI wrapper that, at import time, triggers a clipboard hijacker in its dependency base58-core. After a 72-hour delay from installation, the payload establishes persistence by appending a re-loader to ~/.bashrc, ~/.zshrc, or ~/.profile (Linux/macOS) or writing to the Windows Startup folder, then polls the clipboard every 2.5 seconds. It scans clipboard content for cryptocurrency wallet addresses (BTC, ETH, Solana), private keys (WIF format, hex keys, seed phrases), and HTTP POSTs captured data to 2[.]27[.]62[.]51:8080/api/health (backup: 2[.]27[.]62[.]51:8081/api/health). It also replaces BTC addresses with bc1qjft978uykglsh0adcyx6xhkes56vqzs3fual3l, ETH addresses with 0xd63eD44065eDb1e2ad2519B011c06412dA7B7c5B, and Solana addresses with A7ajd7W5WYdrnkeaiBRjVoK6uBEDvgnuZcpzQXqo18Ph to redirect crypto transactions to attacker-controlled wallets.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "base58-cli",
+        "purl": "pkg:npm/base58-cli@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/base58-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5955"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T01:50:48Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]27[.]62[.]51:8080",
+          "2[.]27[.]62[.]51:8081"
+        ],
+        "url_observed": [
+          "hxxp://2[.]27[.]62[.]51:8080/api/health",
+          "hxxp://2[.]27[.]62[.]51:8081/api/health"
+        ],
+        "wallet_observed": [
+          "0xd63eD44065eDb1e2ad2519B011c06412dA7B7c5B",
+          "A7ajd7W5WYdrnkeaiBRjVoK6uBEDvgnuZcpzQXqo18Ph",
+          "bc1qjft978uykglsh0adcyx6xhkes56vqzs3fual3l"
+        ]
+      }
+    }
+  }
+}

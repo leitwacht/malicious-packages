@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5197",
+  "modified": "2026-06-14T08:04:50Z",
+  "published": "2026-06-14T08:03:04Z",
+  "summary": "Malicious code in stringfy-utils-kit (npm)",
+  "details": "Postinstall hook (bin/setup.js) launches a 9.8MB Windows PE binary (assets/setup-helper.exe) with hidden window, detached process, and stdio ignored — the binary runs silently in the background with no visible indication. The binary is a PyInstaller-packaged Python application containing network libraries (urllib3, requests, socket, ssl) and process-execution modules (subprocess, tempfile, shutil), enabling second-stage payload download, command execution, and data exfiltration. The package markets itself as a string manipulation utility but is installed via npm under a name (stringfy-utils-kit) that does not match its documented project name (string-master), and its only actual utility code is a benign facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "stringfy-utils-kit",
+        "purl": "pkg:npm/stringfy-utils-kit@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/stringfy-utils-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5197"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T08:03:04Z",
+      "indicators_observed": {}
+    }
+  }
+}

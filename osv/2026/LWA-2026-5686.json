@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5686",
+  "aliases": [
+    "MAL-2026-6309"
+  ],
+  "modified": "2026-06-18T08:58:01Z",
+  "published": "2026-06-18T08:53:20Z",
+  "summary": "Malicious code in @nullzero/urlcat (npm)",
+  "details": "This package impersonates the popular urlcat URL-builder library: its manifest reuses the upstream urlcat repository link, description and keywords but it is published under a different scope and adds a postinstall hook running a file (lib/encoder.js) that does not exist in the genuine project. That file contains a heavily obfuscated payload (hex-renamed identifiers, a string-array with a custom base64 decoder, and control-flow flattening) that executes automatically when the package is installed, and again the first time the URL-building function is called. When it runs it copies the entire process environment, reads the machine hostname, base64-encodes the harvested data using an embedded custom alphabet, and launches a child process to transmit it to an attacker-controlled endpoint whose address is stored encoded inside the obfuscated blob. The legitimate functionality is preserved as a decoy so the theft is not noticed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@nullzero/urlcat",
+        "purl": "pkg:npm/%40nullzero/urlcat@1.4.2"
+      },
+      "versions": [
+        "1.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@nullzero/urlcat/v/1.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5686"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:53:20Z",
+      "indicators_observed": {
+        "file_observed": [
+          "lib/encoder.js"
+        ],
+        "technique_observed": [
+          "os.hostname("
+        ]
+      }
+    }
+  }
+}

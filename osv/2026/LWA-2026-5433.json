@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5433",
+  "modified": "2026-06-15T21:00:01Z",
+  "published": "2026-06-15T20:58:27Z",
+  "summary": "Malicious code in vl-ui-action-group (npm)",
+  "details": "Vl-ui-action-group@10.1.1 is a dependency-confusion recon package. Both the preinstall and postinstall hooks execute curl to send host reconnaissance data to hxxps://178fx66q[.]instances[.]httpworkbench[.]com/depconf/ via GET query parameters. The exfiltrated data includes the package name, the current username ($(whoami)), hostname ($(hostname)), working directory ($PWD), and install timestamp ($(date +%s)). The package's index.js is an empty stub and the description is misleading — the package has no real functionality beyond these data-gathering lifecycle hooks.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vl-ui-action-group",
+        "purl": "pkg:npm/vl-ui-action-group@10.1.1"
+      },
+      "versions": [
+        "10.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vl-ui-action-group/v/10.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5433"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T20:58:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "178fx66q[.]instances[.]httpworkbench[.]com"
+        ],
+        "url_observed": [
+          "hxxps://178fx66q[.]instances[.]httpworkbench[.]com/depconf/"
+        ]
+      }
+    }
+  }
+}

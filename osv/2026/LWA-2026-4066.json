@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4066",
+  "aliases": [
+    "MAL-2026-4617"
+  ],
+  "modified": "2026-06-11T01:58:20Z",
+  "published": "2026-06-11T01:56:57Z",
+  "summary": "Security-research / proof-of-concept package: n8n-nodes-pentest-rce (npm)",
+  "details": "Package n8n-nodes-pentest-rce@1.0.1 ships a postinstall script performing aggressive host reconnaissance: reads kubernetes service account token from /var/run/secrets/kubernetes[.]io/serviceaccount/token, dumps env vars (harvesting NPM_TOKEN, GITHUB_TOKEN, etc.), fingerprints host (hostname, uname, /etc/os-release), checks container capabilities and seccomp (sandbox escape feasibility), and enumerates mounts, ip config, /proc/1/cgroup and /proc/1/status. Output is delimited with =RCE_START= / =RCE_END= markers for easy scraping from npm install logs. The n8n node code is a stub that does nothing (PentestNode.node.js just passes input through). The actual product is the postinstall recon — a credential-harvesting and environment-fingerprinting payload. Not benign research: K8s SA token is a real credential, environment dump captures all tokens. No verifiable repo/program reference.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-pentest-rce",
+        "purl": "pkg:npm/n8n-nodes-pentest-rce@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-pentest-rce/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4066"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-11T01:56:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io"
+        ]
+      }
+    }
+  }
+}

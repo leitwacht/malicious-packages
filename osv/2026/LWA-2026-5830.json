@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5830",
+  "aliases": [
+    "MAL-2026-6264"
+  ],
+  "modified": "2026-06-22T08:59:14Z",
+  "published": "2026-06-22T08:58:15Z",
+  "summary": "Malicious code in search-from-feed (npm)",
+  "details": "Package search-from-feed@999.0.0 runs a host-metadata beacon on npm install via preinstall and postinstall hooks that both execute callback.js. The script collects the victim's hostname, username, home directory, working directory, local IP, external IP (via api[.]ipify[.]org), operating system platform/arch/release, Node.js version, and CI/CD environment metadata (GitHub repository name, GitHub actor, GitLab user login, Jenkins build number, CircleCI/Buildkite/Travis CI status). All collected data is posted to a Discord webhook at discord[.]com/api/webhooks/1516163806559076442 (POST with JSON payload including user, hostname, IPs, cwd, CI details). A secondary DNS callback exfiltration channel encodes base64-truncated host metadata into DNS queries to the Discord webhook hostname. The script also checks for the presence of NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, and DOCKER_PASSWORD in the process environment to escalate its severity assessment, though it does not exfiltrate the actual token values.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "search-from-feed",
+        "purl": "pkg:npm/search-from-feed@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/search-from-feed/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5830"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T08:58:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "discord[.]com"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://discord[.]com/api/webhooks/1516163806559076442/j-EsZnZ4l2wqzbeef39EDg8f6hr_UsyIKNH5Y9wm9RBBBOcep36EfeEHKn_HlM6e-EZ6"
+        ]
+      }
+    }
+  }
+}

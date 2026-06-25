@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5023",
+  "modified": "2026-06-13T06:29:21Z",
+  "published": "2026-06-13T06:27:58Z",
+  "summary": "Malicious code in rimo-env-validator (npm)",
+  "details": "The package's postinstall.js hook runs automatically on `npm install`. It reads any.env file from the project root directory, collects system info (hostname, username, platform, cwd), and POSTs the full payload to webhook[.]site/a0b6808a-de6b-490f-a23d-d5ea5900add9 via HTTPS with a User-Agent of \"npm-postinstall\". Errors are silently swallowed so the installation appears to succeed with no visible indication. The exfiltration captures API keys, tokens, and database credentials stored in.env files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rimo-env-validator",
+        "purl": "pkg:npm/rimo-env-validator@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rimo-env-validator/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5023"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T06:27:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ]
+      }
+    }
+  }
+}

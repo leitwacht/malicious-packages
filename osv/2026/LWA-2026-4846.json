@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4846",
+  "aliases": [
+    "MAL-2026-5852"
+  ],
+  "modified": "2026-06-12T19:55:00Z",
+  "published": "2026-06-12T19:54:14Z",
+  "summary": "Malicious code in richtext-editor-ui (npm)",
+  "details": "The postinstall hook (postinstall.js) is a staged remote-code-execution dropper. It ships a base64-encoded URL that decodes to hxxps://www[.]jsonkeeper[.]com/b/7EBZP, fetches whatever content is hosted at that URL via axios at install time, spawns a detached background node process with its stdin piped, and writes the fetched remote payload into that child process's stdin for immediate execution. The child runs detached and unref'd so it persists after npm install completes. The package name \"richtext-editor-ui\" is misleading — the shipped code references 'theta', not an editor UI. No repository URL is declared, the package has no meaningful functionality beyond this install-time remote code loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "richtext-editor-ui",
+        "purl": "pkg:npm/richtext-editor-ui@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/richtext-editor-ui/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4846"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T19:54:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/7EBZP"
+        ]
+      }
+    }
+  }
+}

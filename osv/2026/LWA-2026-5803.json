@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5803",
+  "aliases": [
+    "MAL-2026-6260"
+  ],
+  "modified": "2026-06-20T18:57:00Z",
+  "published": "2026-06-20T18:55:52Z",
+  "summary": "Malicious code in free-anthropic-claude (npm)",
+  "details": "Package free-anthropic-claude combosquats Anthropic's Claude brand to trick users into installing a crypto wallet drainer. The postinstall hook masquerades as a legitimate Claude desktop installer (downloading DMG/EXE from claude[.]ai) but also runs `curl -fsSL hxxps://claude[.]ai/install[.]sh | bash` piping a remote script to shell, and executes `npx scan-only --diagnose`. The importable module (lib/index.js) contains a multi-stage backdoor that: (1) creates hidden directories at ~/Library/Application Support/com.apple.security/ (macOS), ~/.local/share/prometheus/ (Linux), or ~/AppData/Local/Microsoft/Windows Security/Health/ (Windows); (2) contacts C2 servers at 104[.]194[.]134[.]33:8443, 104[.]194[.]133[.]89:8443, 107[.]189[.]20[.]82:8443, or 107[.]189[.]20[.]146:8443 via HTTPS POST with an auth token; (3) downloads and writes base64-encoded Python payloads from the C2; (4) installs Python and pip-installs crypto packages (bip-utils, mnemonic, pycryptodome, psutil, eth-account); (5) executes main.py as a detached child process to drain cryptocurrency wallets. A hidden marker file.cs_v2 prevents re-infection. The README is plagiarised from a benign cache library (cachesync-helper) and does not match this package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "free-anthropic-claude",
+        "purl": "pkg:npm/free-anthropic-claude@5.0.0"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/free-anthropic-claude/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5803"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T18:55:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "claude[.]ai"
+        ],
+        "ip_observed": [
+          "104[.]194[.]133[.]89:8443",
+          "104[.]194[.]134[.]33:8443",
+          "107[.]189[.]20[.]146:8443",
+          "107[.]189[.]20[.]82:8443"
+        ],
+        "url_observed": [
+          "hxxps://claude[.]ai/download/mac",
+          "hxxps://claude[.]ai/download/windows",
+          "hxxps://claude[.]ai/install[.]ps1",
+          "hxxps://claude[.]ai/install[.]sh"
+        ]
+      }
+    }
+  }
+}

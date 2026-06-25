@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5095",
+  "modified": "2026-06-13T17:18:35Z",
+  "published": "2026-06-13T17:17:54Z",
+  "summary": "Malicious code in self-v8 (npm)",
+  "details": "Self-v8@8.3.9 contains a Discord token validator and exfiltrator. When imported, its check() function reads the running script file, extracts Discord tokens from a CONFIG object using regex, validates each token by logging into Discord via discord.js-selfbot-v13, and POSTs the validation results (including the full config snippet) to a Discord webhook at discord[.]com/api/webhooks/1450251813067423817/XJrDOIGOLOlIW2hsFTo0_BNjcX16FFSYEYHQRpqLZZm8Lx98BY4iGejC5r0FWZRLn2i5. The webhook receives all validated token identities and surrounding configuration, enabling the attacker to collect working Discord credentials silently.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "self-v8",
+        "purl": "pkg:npm/self-v8@8.3.9"
+      },
+      "versions": [
+        "8.3.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/self-v8/v/8.3.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5095"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T17:17:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5872",
+  "aliases": [
+    "MAL-2026-6303"
+  ],
+  "modified": "2026-06-23T11:33:38Z",
+  "published": "2026-06-23T10:56:49Z",
+  "summary": "Malicious code in react-simple-utils-kit (npm)",
+  "details": "The package react-simple-utils-kit@1.0.4 is a trojanized npm package that runs an SSRF probe and environment-data exfiltration via its postinstall hook (postinstall.js). On installation it: collects hostname, working directory, network configuration (ifconfig, ip route), and the COZE_WORKLOAD_API_TOKEN environment variable; probes cloud metadata endpoints at 169[.]254[.]169[.]254 (AWS), 100[.]100[.]100[.]200 (Alibaba Cloud), and metadata[.]tencentyun[.]com (Tencent Cloud); tests outbound SSRF capability via src-ssrf[.]bytedance[.]net; and POSTs all gathered data to the C2 host 2e3bkumw[.]requestrepo[.]com over HTTP. The package describes itself deceptively as a \"date formatting utility for React\" and contains no date-formatting code — the sole payload is the installer-side reconnaissance and exfiltration. The package masquerades as a date-formatting utility for React but its postinstall hook (postinstall.js) performs cloud-metadata reconnaissance and exfiltrates results to an attacker-controlled server. At install time it: (1) collects the hostname, working directory, network interface config, and routing table via shell commands; (2) probes cloud metadata endpoints running HTTP services at 169[.]254[.]169[.]254 (AWS/OpenStack), 100[.]100[.]100[.]200 (Alibaba Cloud), and metadata[.]tencentyun[.]com (Tencent Cloud); (3) tests server-side request forgery (SSRF) against src-ssrf[.]bytedance[.]net; (4) checks for the COZE_WORKLOAD_API_TOKEN environment variable and leaks it if present. All collected data is posted to hxxp://2e3bkumw[.]requestrepo[.]com under paths /ssrf-env, /ssrf-echo, /ssrf-blind, and /ssrf-internal-reach. Temporary exfil payloads are written to /tmp/_post_*.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-simple-utils-kit",
+        "purl": "pkg:npm/react-simple-utils-kit@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-simple-utils-kit/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5872"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T10:56:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "2e3bkumw[.]requestrepo[.]com",
+          "metadata[.]tencentyun[.]com",
+          "src-ssrf[.]bytedance[.]net"
+        ],
+        "url_observed": [
+          "hxxp://2e3bkumw[.]requestrepo[.]com",
+          "hxxp://2e3bkumw[.]requestrepo[.]com/bonus-workspaces",
+          "hxxp://2e3bkumw[.]requestrepo[.]com/ssrf-blind",
+          "hxxp://2e3bkumw[.]requestrepo[.]com/ssrf-echo",
+          "hxxp://2e3bkumw[.]requestrepo[.]com/ssrf-env",
+          "hxxp://2e3bkumw[.]requestrepo[.]com/ssrf-internal-reach",
+          "hxxp://metadata[.]tencentyun[.]com/latest/meta-data/",
+          "hxxps://src-ssrf[.]bytedance[.]net/ssrf",
+          "hxxps://src-ssrf[.]bytedance[.]net/ssrf?host=2e3bkumw[.]requestrepo[.]com"
+        ]
+      }
+    }
+  }
+}

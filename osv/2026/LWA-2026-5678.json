@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5678",
+  "aliases": [
+    "MAL-2026-6091"
+  ],
+  "modified": "2026-06-18T06:22:13Z",
+  "published": "2026-06-18T06:04:35Z",
+  "summary": "Malicious code in datacamp-light (npm)",
+  "details": "This package masquerades as a lightweight DataCamp utility but exists only to fingerprint the host at install time. Its package.json registers a postinstall script that runs install.js, which collects the machine hostname, the current username, the user home directory, the OS platform, the current working directory, and a timestamp. It serializes this data to JSON and sends it via an HTTPS POST to a hardcoded remote endpoint (dc.iam.c.noratomo[.]asia/install), explicitly disabling TLS certificate validation so the exfiltration succeeds even against an attacker-controlled or self-signed server. The package main module (index.js) is an empty stub with no genuine functionality, confirming the package is purely a host-reconnaissance beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "datacamp-light",
+        "purl": "pkg:npm/datacamp-light@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/datacamp-light/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5678"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T06:04:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dc.iam.c.noratomo[.]asia"
+        ],
+        "url_observed": [
+          "hxxps://dc.iam.c.noratomo[.]asia/install"
+        ]
+      }
+    }
+  }
+}

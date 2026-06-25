@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5740",
+  "aliases": [
+    "MAL-2026-6285"
+  ],
+  "modified": "2026-06-18T19:37:44Z",
+  "published": "2026-06-18T19:36:52Z",
+  "summary": "Malicious code in new-solt (npm)",
+  "details": "New-solt@0.0.7 is a crypto-credential theft implant disguised as a Solana-adjacent package. When required and run (or when npm test is executed), it performs full filesystem scanning across the victim's home directories and mounted drives for cryptocurrency wallet files, including:.env files, Solana id.json keypair files, and files with names matching wallet/key/seed/mnemonic/keystore/phantom/metamask patterns. It also steals shell history (bash, zsh, fish, PowerShell) to recover previously typed credentials, and exfiltrates the Telegram Desktop tdata session folder (enabling account takeover). All stolen data is uploaded via HTTP multipart POST to hxxps://vercel-backend-rn1xzfazn-djbdhdfjjt5-2167s-projects[.]vercel[.]app/api/v1. The package additionally depends on the known-malicious child_process npm package, providing a secondary attack vector.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "new-solt",
+        "purl": "pkg:npm/new-solt@0.0.7"
+      },
+      "versions": [
+        "0.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/new-solt/v/0.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5740"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T19:36:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vercel-backend-rn1xzfazn-djbdhdfjjt5-2167s-projects[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://vercel-backend-rn1xzfazn-djbdhdfjjt5-2167s-projects[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

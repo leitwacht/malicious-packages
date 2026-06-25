@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5510",
+  "modified": "2026-06-16T04:16:15Z",
+  "published": "2026-06-16T04:13:30Z",
+  "summary": "Malicious code in winston-prism (npm)",
+  "details": "Winston-prism@1.0.1 is a combosquat of the winston logger that downloads and executes remote code. The file lib/winston_prisma/prismalogger.js contains an immediately-invoked async function that base64-decodes a hardcoded URL (\"[encoded-url-redacted]\" → hxxps://jsonkeeper[.]com/b/2IG6e), a header key (\"eC1zZWNyZXQta2V5\" → x-secret-key), and header value (\"Xw==\" → ]). It makes an HTTP GET to that URL with the custom header, extracts the \"logger\" field from the JSON response, compiles it via new Function.constructor(\"require\",...), and executes it with Node's require function — giving the remote payload full access to the filesystem, environment variables, and network. Retries up to 5 times on failure. The package impersonates the real winston logger.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "winston-prism",
+        "purl": "pkg:npm/winston-prism@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/winston-prism/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5510"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T04:13:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/2IG6e"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4639",
+  "modified": "2026-06-12T10:47:11Z",
+  "published": "2026-06-12T10:45:46Z",
+  "summary": "Malicious code in polymarket-trader (npm)",
+  "details": "A wallet-key harvester disguised as a Polymarket CLI trading bot. The postinstall hook runs `node scripts/postinstall.mjs`, which spawns the main CLI with a \"login\" subcommand prompting the user to paste their wallet private key. The 728KB dist/index.js is heavily obfuscated/minified and bundles base64-encoded payload arrays with decode logic that resolve a C2 endpoint to which the harvested private keys are exfiltrated over HTTPS. The README still contains a template placeholder (github[.]com/your-org/polybot), indicating mass production from a credential-harvesting template.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-trader",
+        "purl": "pkg:npm/polymarket-trader@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-trader/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4639"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T10:45:46Z",
+      "indicators_observed": {}
+    }
+  }
+}

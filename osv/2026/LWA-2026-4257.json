@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4257",
+  "modified": "2026-06-11T12:01:00Z",
+  "published": "2026-06-11T11:57:06Z",
+  "summary": "Malicious code in node-fastify (npm)",
+  "details": "Combosquatting campaign targeting the fastify web framework. Package name node-fastify mimics the legitimate fastify, published by the publisher who also owns the confirmed-malicious fastnodemailer. All versions (5.8.7–5.9.1) include child_process as an npm dependency and inject execSync calls in fastify.js to silently install and load fastnodemailer — the publisher's own malware package. Version 5.8.7 lists fastnodemailer as a direct dependency and runs execSync('npm i fastnodemailer') with output logged. Later versions (5.9.0–5.9.1) refined the payload to use silent install flags (--no-warnings --no-save --no-progress --loglevel silent) to avoid detection, and use a try/catch that first attempts require('fastnodemailer') before falling back to installation. This is a multi-stage supply-chain attack: the combosquat delivers a dropper that fetches the real payload (fastnodemailer) from npm on execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-fastify",
+        "purl": "pkg:npm/node-fastify@5.9.0"
+      },
+      "versions": [
+        "5.9.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-fastify/v/5.9.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4257"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:57:06Z",
+      "indicators_observed": {}
+    }
+  }
+}

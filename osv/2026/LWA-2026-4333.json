@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4333",
+  "modified": "2026-06-11T15:35:08Z",
+  "published": "2026-06-11T15:09:14Z",
+  "summary": "Malicious code in npm-bs58.js (npm)",
+  "details": "Npm-bs58.js@2.0.2 is a combosquat of the bs58 cryptocurrency library. Its sole dependency, base128-x58, contains a trojanized decode() function: when a victim decodes a base58 string (such as a Bitcoin address or private key), the function silently POSTs that string to a Telegram bot API sendMessage endpoint before returning the decoded value, exfiltrating any base58-encoded data to the attacker's Telegram channel. There are no lifecycle hooks; exfiltration occurs at runtime whenever the library is used, targeting blockchain developers.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "npm-bs58.js",
+        "purl": "pkg:npm/npm-bs58.js@2.0.2"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/npm-bs58.js/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4333"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T15:09:14Z",
+      "indicators_observed": {}
+    }
+  }
+}

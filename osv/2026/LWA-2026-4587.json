@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4587",
+  "modified": "2026-06-12T08:24:13Z",
+  "published": "2026-06-12T08:22:02Z",
+  "summary": "Malicious code in pino-pretty-logger (npm)",
+  "details": "Combosquat of the legitimate pino-pretty package. On require() it auto-executes a multi-function infostealer and backdoor: (1) beacons system info (OS, IPs, username) to coreagnar[.]me/api/validate/system-info; (2) reads.env from the project directory and posts it; (3) recursively scans the filesystem for wallet/credential JSON files,.env files, and credential-related documents, then uploads them; (4) steals the Telegram Desktop tdata directory for session hijacking; (5) on Linux, installs a hardcoded SSH public key into ~/.ssh/authorized_keys for persistent remote access.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pino-pretty-logger",
+        "purl": "pkg:npm/pino-pretty-logger@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pino-pretty-logger/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4587"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T08:22:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coreagnar[.]me"
+        ]
+      }
+    }
+  }
+}

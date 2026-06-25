@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5642",
+  "aliases": [
+    "MAL-2026-6142"
+  ],
+  "modified": "2026-06-17T11:52:03Z",
+  "published": "2026-06-17T11:48:01Z",
+  "summary": "Malicious code in db-connector-log (npm)",
+  "details": "This package masquerades as a database connector (a renamed copy of a legitimate divblox DB-connector library) but injects a hidden remote-code-execution stager into index.js. A base64-encoded string conceals the URL hxxps://jsonkeeper[.]com/b/L435A; the added queryDBConnect() method decodes it, fetches a JSON document, and extracts a session field containing attacker-controlled JavaScript. It then spawns a detached node interpreter with a piped stdin, writes the fetched code into that interpreter, and unrefs/detaches the process so it runs in the background independent of the parent. The result is execution of arbitrary remote-controlled code on any host that imports the package and calls the connector, with no further indication to the user.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "db-connector-log",
+        "purl": "pkg:npm/db-connector-log@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/db-connector-log/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5642"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T11:48:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/L435A"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4025",
+  "modified": "2026-06-10T22:14:00Z",
+  "published": "2026-06-10T22:12:46Z",
+  "summary": "Security-research / proof-of-concept package: mw-filesystem-events-nodream-es6 (npm)",
+  "details": "Mw-filesystem-events-nodream-es6 disguises itself as a native filesystem-events library but contains zero real functionality. All three lifecycle hooks (preinstall, install, postinstall) run node index.js, which deploys three parallel exfiltration channels to etbhnvpjylr3xogjwsl2us7g177yvtji[.]oastify[.]com: (1) curl --data '@/etc/passwd' via a subdomain-tagged hostname, (2) an nslookup DNS exfil with base64-encoded package|hostname|user|platform, and (3) an HTTPS POST of a full system fingerprint (hostname, user, platform, release, arch, cwd, pid, node version, home, path, shell) plus /etc/passwd contents. The HTTPS POST with the full JSON payload and multiple DNS queries to the host were observed. The /etc/passwd theft exceeds a host-metadata-only beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mw-filesystem-events-nodream-es6",
+        "purl": "pkg:npm/mw-filesystem-events-nodream-es6@0.0.32"
+      },
+      "versions": [
+        "0.0.32"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mw-filesystem-events-nodream-es6/v/0.0.32"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4025"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-10T22:12:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "etbhnvpjylr3xogjwsl2us7g177yvtji[.]oastify[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4401",
+  "modified": "2026-06-11T19:08:55Z",
+  "published": "2026-06-11T19:07:39Z",
+  "summary": "Malicious code in index-ulid (npm)",
+  "details": "Index-ulid combosquats the popular ulid npm package. The postinstall hook spawns a detached, hidden child process that copies a 950KB implant (payload.js) to a persistent directory named MicrosoftSystem64 and installs cross-platform persistence (Windows scheduled task/registry Run key, macOS launchd, Linux systemd user service / XDG autostart). The implant XOR-obfuscates its WebSocket and HTTP C2 URLs, checks CPU count as anti-sandbox, and steals credentials from Chrome/Edge/Brave/Firefox browsers, FileZilla, Telegram Desktop, SSH keys, and OneDrive. It dumps all process.env variables (targeting NPM_TOKEN, GITHUB_TOKEN, AWS credentials) and exfiltrates them to the C2 server. The package claims the original ulid author but is published by a different user (probull100).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "index-ulid",
+        "purl": "pkg:npm/index-ulid@3.0.2"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/index-ulid/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4401"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T19:07:39Z",
+      "indicators_observed": {}
+    }
+  }
+}

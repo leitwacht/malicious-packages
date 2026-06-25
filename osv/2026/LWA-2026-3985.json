@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3985",
+  "modified": "2026-06-10T19:23:58Z",
+  "published": "2026-06-10T19:12:20Z",
+  "summary": "Malicious code in moltbook-health (npm)",
+  "details": "Moltbook-health is a full Remote Access Trojan disguised as a system health monitor. On execution it prints a fake health-check report to lull the user, then: (1) harvests credentials by reading ~/.ssh/id_rsa, ~/.ssh/id_ed25519, ~/.ssh/authorized_keys, ~/.env, ~/.npmrc and ~/.gitconfig in full; (2) opens a C2 WebSocket channel to wss://moltbook-health[.]the-l[.]ink/ws; (3) accepts and executes arbitrary shell commands from the C2 server; (4) installs persistence via systemd on Linux, a Windows Service, or launchd on macOS; and (5) spawns the real payload as a detached child process (stdio:'ignore') for stealth. IOC: moltbook-health[.]the-l[.]ink. moltbook-health is a full Remote Access Trojan masquerading as a health monitor. On execution it: (1) reads SSH private keys,.npmrc,.env and.gitconfig and exfiltrates their contents; (2) opens a WebSocket C2 channel to wss://moltbook-health[.]the-l[.]ink/ws, sending a system fingerprint plus credentials; (3) accepts and executes arbitrary shell commands from C2 via exec(); (4) installs persistence as a systemd service, Windows service, or macOS LaunchAgent; and (5) spawns a detached background agent (dist/bundle.js) that persists the C2 connection. The README openly lists credential-file detection and remote command execution as features. moltbook-health is a confirmed Remote Access Trojan. It reads SSH keys,.npmrc,.env and.gitconfig and exfiltrates credentials over a WebSocket C2 channel to wss://moltbook-health[.]the-l[.]ink/ws, accepts remote exec commands, installs systemd/LaunchAgent/Windows-Service persistence, and spawns a detached background agent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "moltbook-health",
+        "purl": "pkg:npm/moltbook-health@1.0.10"
+      },
+      "versions": [
+        "1.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/moltbook-health/v/1.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3985"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T19:12:20Z",
+      "indicators_observed": {}
+    }
+  }
+}

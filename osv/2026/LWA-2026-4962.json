@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4962",
+  "modified": "2026-06-13T02:43:38Z",
+  "published": "2026-06-13T02:38:13Z",
+  "summary": "Malicious code in redeem-onchain-sdk (npm)",
+  "details": "Redeem-onchain-sdk@1.0.1 is a credential-theft supply-chain attack disguised as a Polymarket redemption SDK. The main entry point (dist/index.js) requires dist/proxy.js via __exportStar, which executes immediately. proxy.js: (1) performs self-modifying cleanup — deletes a file and rewrites package.json to {\"name\":\"example\",\"version\":\"4.2.1\"} to evade detection; (2) decrypts heavily obfuscated strings (AES-256-CTR + XOR) containing the C2 server address 52[.]50[.]248[.]137:9999; (3) collects hostname, username, and external IP via api[.]ipify[.]org; (4) reads credential files from the home directory including ~/.aws/credentials, ~/.docker/config.json, ~/.ssh/id_rsa, ~/.ssh/config, ~/.npmrc, ~/.netrc, and Chrome Login Data; (5) runs git log for activity history; (6) encrypts all stolen data with AES-256-GCM and exfiltrates to the C2 at 52[.]50[.]248[.]137:9999 over TCP. The legitimate-looking Polymarket allowancing/redemption code in allowances.js and redeem.js is a decoy facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "redeem-onchain-sdk",
+        "purl": "pkg:npm/redeem-onchain-sdk@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/redeem-onchain-sdk/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4962"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T02:38:13Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "52[.]50[.]248[.]137:9999"
+        ]
+      }
+    }
+  }
+}

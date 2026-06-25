@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3962",
+  "modified": "2026-06-10T16:32:16Z",
+  "published": "2026-06-10T16:30:14Z",
+  "summary": "Malicious code in metrica-node (npm)",
+  "details": "A remote-code-execution dropper disguised as a pino logging library. On require(), index.js spawns lib/caller.js as a detached background process (detached:true, stdio:\"ignore\", child.unref()) that survives parent exit. caller.js fetches a second-stage payload from jsonkeeper[.]com/b/BADC6 (base64-obfuscated: '[encoded-url-redacted]' decodes to that URL) with an auth header (x-secret-key: _), then executes the response's 'cookie' field via new Function.constructor(\"require\", payload), giving the attacker unrestricted Node.js require access on the victim machine. The package clones pino's internals (lib/tools.js, lib/proto.js, 40KB+ docs/) as camouflage, and the description is a nonsensical template.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "metrica-node",
+        "purl": "pkg:npm/metrica-node@2.4.5"
+      },
+      "versions": [
+        "2.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/metrica-node/v/2.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3962"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T16:30:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

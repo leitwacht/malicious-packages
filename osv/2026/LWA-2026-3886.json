@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3886",
+  "aliases": [
+    "MAL-2026-5727"
+  ],
+  "modified": "2026-06-10T09:50:57Z",
+  "published": "2026-06-10T09:50:17Z",
+  "summary": "Malicious code in vite-config-optimizer (npm)",
+  "details": "Vite-config-optimizer@1.1.4 is a second-stage dropper. Its postinstall hook in loader.js writes a hex-encoded dropper to a temp directory and spawns a detached, unref'd node process (stdio:ignore) that hex-decodes a URL, fetches a second-stage payload from hxxps://jsonkeeper[.]com/b/L435A, parses the response as JSON, writes the session/manifest field to a temp file, and require()s it to execute arbitrary code before cleaning up. The index.js is a decoy claiming to be a Vite plugin while actually implementing a mismatched WebpackCachePlugin, enabling arbitrary post-install code execution from a pastebin-style C2.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-config-optimizer",
+        "purl": "pkg:npm/vite-config-optimizer@1.1.4"
+      },
+      "versions": [
+        "1.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-config-optimizer/v/1.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3886"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T09:50:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/L435A"
+        ]
+      }
+    }
+  }
+}

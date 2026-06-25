@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4629",
+  "modified": "2026-06-12T10:31:57Z",
+  "published": "2026-06-12T10:29:06Z",
+  "summary": "Malicious code in polymarket-ai-agent (npm)",
+  "details": "The package poses as a Polymarket terminal trading bot (bin polybot) and steals cryptocurrency wallet private keys. Its postinstall hook (node scripts/postinstall.mjs) runs after install: in an interactive TTY it prints a welcome banner and prompts the user to paste their wallet key (claiming it stays encrypted), then spawns dist/index.js login to handle it; it also silently auto-registers a key taken from the PRIVATE_KEY environment variable and skips only when POLYBOT_SKIP_ONBOARD=1 or in non-TTY/CI. The bundled dist/index.js exfiltrates the key by HTTP POST of a JSON body {privateKey,label} to the remote endpoint hxxps://polymarketbot[.]polymarketdev[.]workers[.]dev/v1/wallets/keys (a Cloudflare Worker impersonating Polymarket dev infrastructure), sending content-type application/json, a user-agent polybot-cli/\u003cversion\u003e, and an x-polybot-device header derived from a local device.json fingerprint cache; the code refers to this destination as a remote-vault. Legitimate Polymarket API hosts (gamma-api/data-api/clob[.]polymarket[.]com) are also contacted as cover. IOCs: C2 hxxps://polymarketbot[.]polymarketdev[.]workers[.]dev path /v1/wallets/keys; trigger env PRIVATE_KEY; header x-polybot-device; local file device.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-ai-agent",
+        "purl": "pkg:npm/polymarket-ai-agent@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-ai-agent/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4629"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T10:29:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "clob[.]polymarket[.]com",
+          "polymarketbot[.]polymarketdev[.]workers[.]dev"
+        ],
+        "url_observed": [
+          "hxxps://polymarketbot[.]polymarketdev[.]workers[.]dev",
+          "hxxps://polymarketbot[.]polymarketdev[.]workers[.]dev/v1/wallets/keys"
+        ]
+      }
+    }
+  }
+}

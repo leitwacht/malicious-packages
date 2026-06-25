@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5840",
+  "aliases": [
+    "MAL-2026-6276"
+  ],
+  "modified": "2026-06-22T17:28:02Z",
+  "published": "2026-06-22T17:27:18Z",
+  "summary": "Malicious code in node-core-libs (npm)",
+  "details": "Node-core-libs@1.0.0 is a combosquat package impersonating Node.js core utilities. On Windows systems, the postinstall script XOR-decodes a C2 host (node22[.]lunes[.]host) and port (3258), then HTTP GETs /nl from the C2 to download a second-stage JavaScript payload. The payload is written to %TEMP%/ms_\u003crandom\u003e.js. A VBS launcher script is written to %TEMP%/mv_\u003crandom\u003e.vbs, which uses WScript.Shell to spawn node.exe silently in a hidden window, then deletes itself. The postinstall hook cleans its tracks by removing the postinstall entry from its own package.json and any node-fetch-utils/package.json, writes a marker file to the temp directory, and deletes itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-core-libs",
+        "purl": "pkg:npm/node-core-libs@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-core-libs/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5840"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T17:27:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "node22[.]lunes[.]host"
+        ],
+        "url_observed": [
+          "hxxp://node22[.]lunes[.]host:3258/nl"
+        ]
+      }
+    }
+  }
+}

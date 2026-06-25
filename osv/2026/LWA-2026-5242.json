@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5242",
+  "modified": "2026-06-14T12:20:53Z",
+  "published": "2026-06-14T12:19:28Z",
+  "summary": "Malicious code in sycm-vendors (npm)",
+  "details": "Package sycm-vendors@55.0.0 is a supply-chain attack that hijacks npm install resolution via a malicious dependency entry. Its package.json declares a self-referencing dependency with a tarball URL pointing to an attacker-controlled server at hxxps://repo[.]securityctrl[.]com/sycm-vendors. When npm resolves this dependency during install, it fetches a malicious tarball from that external host. The package's own shipped code is a 92-byte stub that prints a benign message; the README claims to be a \"placeholder\" — both are camouflage. The actual payload is delivered from the external URL at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sycm-vendors",
+        "purl": "pkg:npm/sycm-vendors@55.0.0"
+      },
+      "versions": [
+        "55.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sycm-vendors/v/55.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5242"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T12:19:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "repo[.]securityctrl[.]com"
+        ],
+        "url_observed": [
+          "hxxps://repo[.]securityctrl[.]com/sycm-vendors"
+        ]
+      }
+    }
+  }
+}

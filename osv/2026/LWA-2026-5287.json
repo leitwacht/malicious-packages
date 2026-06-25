@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5287",
+  "aliases": [
+    "MAL-2026-5784"
+  ],
+  "modified": "2026-06-15T02:56:46Z",
+  "published": "2026-06-15T02:55:54Z",
+  "summary": "Malicious code in vaults-monitor-cron (npm)",
+  "details": "Vaults-monitor-cron@999.0.0 is a dependency-confusion credential harvester. On npm install, the preinstall hook runs postinstall.js, which collects environment variables matching secret/credential patterns (key, token, pass, private, ssh, deploy, auth, api, rpc, wallet, sentry, docker, slack, host) — including NPM_TOKEN, GITHUB_TOKEN, SSH keys, AWS credentials, and wallet secrets — along with hostname, username, and working directory. The collected data is POSTed to hxxps://185[.]130[.]46[.]35:8443/collect. The hook uses \"|| true\" to mask failures, making installation appear successful. The package has no legitimate functionality (index.js exports an empty object).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vaults-monitor-cron",
+        "purl": "pkg:npm/vaults-monitor-cron@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vaults-monitor-cron/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5287"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T02:55:54Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]130[.]46[.]35:8443"
+        ],
+        "url_observed": [
+          "hxxps://185[.]130[.]46[.]35"
+        ]
+      }
+    }
+  }
+}

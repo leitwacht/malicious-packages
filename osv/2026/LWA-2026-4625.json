@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4625",
+  "modified": "2026-06-12T09:58:25Z",
+  "published": "2026-06-12T09:57:00Z",
+  "summary": "Malicious code in pocbitbarrontest (npm)",
+  "details": "A credential-stealing implant with persistent Discord C2. The postinstall hook (node scripts/collect.js) performs comprehensive credential harvesting: it reads browser saved passwords via a Python helper (Chrome/Brave/Edge AES-GCM + DPAPI decryption), steals Discord tokens from LevelDB, scrapes Telegram sessions, reads ~/.aws/credentials, GCloud/Azure configs, the macOS Keychain, SSH private keys, and.env files containing API keys (Stripe, AWS, GitHub). It fingerprints the host via hxxps://api.ipify[.]org and exfiltrates everything to a Discord webhook as an embed with file attachments. It then spawns agent.js as a detached background process — a full C2 implant that connects to Discord's Gateway WebSocket, listens for commands in a C2 channel, and supports remote screenshot capture, file exfiltration from Documents/Desktop, and downloading and executing arbitrary payloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pocbitbarrontest",
+        "purl": "pkg:npm/pocbitbarrontest@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pocbitbarrontest/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4625"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T09:57:00Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org"
+        ]
+      }
+    }
+  }
+}

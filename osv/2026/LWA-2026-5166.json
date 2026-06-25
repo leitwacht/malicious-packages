@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5166",
+  "modified": "2026-06-14T00:57:36Z",
+  "published": "2026-06-14T00:48:21Z",
+  "summary": "Malicious code in sjs-builder (npm)",
+  "details": "On require/import, sjs-builder sends a POST request to api[.]devnet[.]solana[.]com with a getAccountInfo JSON-RPC call for hardcoded wallet address 4WF8QCFEnVD7BLs3QAVe2SjxRZ4n3EboCsdhj363VAqZ. It decodes the returned account data, extracts JavaScript source code from byte offset 36, and executes it via new Function(\"require\",\"module\",\"exports\",src). This allows the wallet controller to remotely change the executed payload at any time without updating the npm package. The wallet address is on the Solana devnet and the RPC endpoint is api[.]devnet[.]solana[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sjs-builder",
+        "purl": "pkg:npm/sjs-builder@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sjs-builder/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5166"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T00:48:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]devnet[.]solana[.]com"
+        ]
+      }
+    }
+  }
+}

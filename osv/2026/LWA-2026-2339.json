@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2339",
+  "modified": "2026-06-01T15:50:48Z",
+  "published": "2026-06-01T15:44:20Z",
+  "summary": "Malicious code in @keeneye/toolkit (npm)",
+  "details": "@keeneye/toolkit@5.0.1 is a malicious second-stage dropper providing no real functionality (dist/index.js re-exports a src/index.js absent from the tarball). Its heavily obfuscated postinstall (560+ _0x identifiers) downloads a script from a remote keeneye-controlled host (config[.]keeneye[.]io) and executes it via spawn(node,[downloaded_file]); the README misrepresents this as \"telemetry\". It shares an identical structure with @keeneye/uikit (same namespace, same version 5.0.1, same obfuscated postinstall dropper). @keeneye/toolkit@5.0.1 is an install-time RCE dropper. The postinstall.js (13.5KB, 562 obfuscated identifiers) downloads platform-specific payloads via HTTP/HTTPS and spawns them as child processes. The package's dist/index.js requires a non-existent src/index.js — zero runtime functionality, purely a delivery vehicle. Version history is fabricated (first publish claims 5.0.1). The README admits 'telemetry' to telemetry[.]keeneye[.]io as a cover story, but the code downloads and executes arbitrary binaries, not telemetry posts. No direct token-theft markers found.js' (JS-level, not shell), bypassing shell-level detectors. This is a classic remote code execution supply-chain attack pattern.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@keeneye/toolkit",
+        "purl": "pkg:npm/%40keeneye/toolkit@5.0.1"
+      },
+      "versions": [
+        "5.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@keeneye/toolkit/v/5.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2339"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T15:44:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "config[.]keeneye[.]io",
+          "telemetry[.]keeneye[.]io"
+        ]
+      }
+    }
+  }
+}

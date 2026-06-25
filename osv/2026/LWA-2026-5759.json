@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5759",
+  "aliases": [
+    "MAL-2026-6217"
+  ],
+  "modified": "2026-06-19T08:35:14Z",
+  "published": "2026-06-19T08:34:16Z",
+  "summary": "Malicious code in aikaf788812 (npm)",
+  "details": "During npm install, the postinstall hook runs scripts/postinstall.js which spawns scripts/shell.js as a hidden background process. shell.js establishes a reverse shell backdoor to C2 host 114[.]67[.]90[.]67 using four concurrent methods: (1) Node.js net module TCP connect-back on ports 3334, 4444, 443, 80, 8080, and 53; (2) bash /dev/tcp reverse shell on the same ports (Linux/macOS); (3) Python reverse shell (python3 then python fallback) with threading on the same ports; (4) A HTTP pingback to 114[.]67[.]90[.]67:8333 at /ping?h=HOSTNAME\u0026amp;u=USER\u0026amp;d=CWD\u0026amp;o=OS_INFO that exfiltrates the installer's hostname, username, working directory, and operating system details. The package disguises itself as a string manipulation utility (index.js exports capitalize/truncate/camelCase etc.) but the payload is in scripts/postinstall.js and scripts/shell.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "aikaf788812",
+        "purl": "pkg:npm/aikaf788812@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/aikaf788812/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5759"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T08:34:16Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "114[.]67[.]90[.]67",
+          "114[.]67[.]90[.]67:3334",
+          "114[.]67[.]90[.]67:443",
+          "114[.]67[.]90[.]67:4444",
+          "114[.]67[.]90[.]67:53",
+          "114[.]67[.]90[.]67:80",
+          "114[.]67[.]90[.]67:8080",
+          "114[.]67[.]90[.]67:8333"
+        ]
+      }
+    }
+  }
+}

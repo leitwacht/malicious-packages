@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5800",
+  "aliases": [
+    "MAL-2026-6282"
+  ],
+  "modified": "2026-06-20T13:22:54Z",
+  "published": "2026-06-20T13:22:15Z",
+  "summary": "Malicious code in local-ip-helper (npm)",
+  "details": "Malicious npm package disguised as a local IP address helper. On npm install, the postinstall hook automatically executes a credential and information stealer. The payload scans the user's home directory, all available drives (Windows), /home (Linux), and /Users (macOS) for sensitive files including.env files, Solana wallet keypair files (id.json), config.toml, and any document files (doc/docx/xls/xlsx) whose names contain wallet/credential keywords (key, wallet, seed, mnemonic, metamask, phantom, keystore, privatekey, recovery, etc.). It collects shell command history from bash (.bash_history), zsh (.zsh_history), fish, and PowerShell. On Windows and macOS it exfiltrates the Telegram Desktop session directory (tdata), which contains session keys and authentication data. All stolen files are uploaded via HTTPS multipart POST to parket-server-help[.]vercel[.]app/api/v1, batched in 4 MB chunks, along with the victim's username and platform identifier. The package also reads and uploads the current working directory for the same file types.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "local-ip-helper",
+        "purl": "pkg:npm/local-ip-helper@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/local-ip-helper/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5800"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T13:22:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "parket-server-help[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://parket-server-help[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

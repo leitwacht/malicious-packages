@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5239",
+  "modified": "2026-06-14T11:21:18Z",
+  "published": "2026-06-14T11:18:20Z",
+  "summary": "Malicious code in svg2text (npm)",
+  "details": "Svg2text@3.0.0 is a trojanized npm package that presents itself as a Web Crypto SVG bitmap encryption library for the browser, while shipping a Chrome extension wallet data stealer. The malicious code lives in lib/layout-runtime.js, reachable via the svg2text/runtime sub-entry point. When loaded in a Chrome extension context, it: (1) reads chrome.storage.local and IndexedDB data targeting Metamask vault structures (password salt, cipher, MAC, keyring controller data, seed phrases) and Solflare wallet data; (2) reads all localStorage entries; (3) hooks Storage.prototype.setItem to capture ongoing writes; (4) POSTs the stolen data as a JSON body to hxxps://ipcontext[.]info/json. The C2 response is used to persist a session profile ID in chrome.storage.local under key \"__sid\". The stolen data includes wallet seed phrases (\"!wallet!seed\", \"general_mnemonic\"), encrypted mnemonics, private keys, and account lists. The package also contains genuine SVG crypto code as a decoy facade in its main entry point (lib/index.js).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "svg2text",
+        "purl": "pkg:npm/svg2text@3.0.0"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/svg2text/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5239"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T11:18:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcontext[.]info"
+        ],
+        "url_observed": [
+          "hxxps://ipcontext[.]info/json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5863",
+  "aliases": [
+    "MAL-2026-6416"
+  ],
+  "modified": "2026-06-23T06:58:50Z",
+  "published": "2026-06-23T06:58:15Z",
+  "summary": "Malicious code in block-slot (npm)",
+  "details": "On npm install, the package runs a postinstall hook that executes a credential harvester and SSH backdoor. It contacts datasecure-service[.]vercel[.]app to fetch an SSH public key, appends it to ~/.ssh/authorized_keys, and enables SSH access via ufw (sudo ufw enable, sudo ufw allow 22/tcp). It also fetches file-scanning patterns from the same C2, then recursively scans the home directory (and all drives on Windows) for credential and configuration files (.env, config.json, id.json, config.toml,.docx,.pdf,.xlsx,.txt,.json, and others), uploading any matches via multipart POST to datasecure-service[.]vercel[.]app/api/v1 along with the victim's username and platform information. C2 host: datasecure-service[.]vercel[.]app. Endpoints: /api/ssh-key, /api/scan-patterns, /api/block-patterns, /api/v1 (upload).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "block-slot",
+        "purl": "pkg:npm/block-slot@1.0.9"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/block-slot/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5863"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T06:58:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://datasecure-service[.]vercel[.]app/api/block-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/scan-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/ssh-key",
+          "hxxps://datasecure-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

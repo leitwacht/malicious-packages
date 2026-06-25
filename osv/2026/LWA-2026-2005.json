@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2005",
+  "modified": "2026-06-01T06:09:04Z",
+  "published": "2026-06-01T01:12:39Z",
+  "summary": "Malicious code in masterkrweb (npm)",
+  "details": "A single-version squatting package (masterkrweb, version 9.9.9, no repository or readme, description \"Reserved package\") whose preinstall hook runs index.js to exfiltrate os.hostname() and os.userInfo().username via HTTPS GET to the hardcoded IP 185[.]225[.]232[.]206. An install-time host-metadata beacon. masterkrweb version 9.9.9, a single-version publish whose preinstall hook runs index.js to exfiltrate os.hostname() and os.userInfo().username via HTTP GET to the hardcoded IP 185[.]225[.]232[.]206. Generic \"Reserved package\" description, no provenance. masterkrweb version 9.9.9 (single publish, \"Reserved package\" description, no readme or repository) whose preinstall runs node index.js, which collects os.hostname() and os.userInfo().username and sends them via HTTPS GET to the hardcoded IP 185[.]225[.]232[.]206. masterkrweb version 9.9.9, a ~262-byte single-version package whose preinstall hook (node index.js) grabs os.hostname() and os.userInfo().username and sends them via HTTP GET to 185[.]225[.]232[.]206/?h=\u003chost\u003e\u0026u=\u003cuser\u003e\u0026pkg=masterkrweb. An install-time reconnaissance beacon to a bare IP, with no repository or provenance. masterkrweb@9.9.9 is a host-fingerprinting malware beacon. Preinstall hook runs `node index.js` which exfiltrates os.hostname() and os.userInfo().username via HTTP GET to hardcoded IP 185[.]225[.]232[.]206/?h={hostname}\u0026u={username}\u0026pkg=masterkrweb. Package version is 9.9.9 (attacker pattern to surface above legitimate versions), description is the generic \"Reserved package\", publisher is a gmail address with no repository URL. No token-theft markers found but the hostname/username exfil to a raw IP is sufficient for classification as a credential-harvesting recon beacon. Not a benign research artifact — no research provenance or disclosure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "masterkrweb",
+        "purl": "pkg:npm/masterkrweb@9.9.9"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/masterkrweb/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2005"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T01:12:39Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]225[.]232[.]206"
+        ]
+      }
+    }
+  }
+}

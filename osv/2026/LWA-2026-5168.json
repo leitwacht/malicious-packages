@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5168",
+  "modified": "2026-06-14T00:57:36Z",
+  "published": "2026-06-14T00:48:51Z",
+  "summary": "Malicious code in sjs-lint-build1 (npm)",
+  "details": "Sjs-lint-build1@1.0.4 is a ransomware + data exfiltration payload. On installation, the postinstall hook (node test.js) executes a heavily obfuscated 58KB JavaScript payload. The code: (1) fingerprints the host by reading process.env.HOSTNAME, process.env.COMPUTERNAME, and os.hostname(); (2) recursively walks the filesystem matching target file extensions; (3) exfiltrates matched files to a remote C2 server via HTTP POST using multipart/form-data, prepending each file with the hostname; (4) generates RSA key pairs using big-integer to encrypt local files (randomPrime-based key generation with encrypt/decrypt using modular exponentiation); (5) writes ransom notes. The package depends on axios, form-data, and child_process/fs/path/os for network exfil and filesystem operations.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sjs-lint-build1",
+        "purl": "pkg:npm/sjs-lint-build1@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sjs-lint-build1/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5168"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T00:48:51Z",
+      "indicators_observed": {}
+    }
+  }
+}

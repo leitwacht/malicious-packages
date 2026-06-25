@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2981",
+  "aliases": [
+    "MAL-2026-5528"
+  ],
+  "modified": "2026-06-08T08:49:10Z",
+  "published": "2026-06-08T08:43:19Z",
+  "summary": "Malicious code in events-runtime (npm)",
+  "details": "Events-runtime@3.2.1 is a combosquat of the real 'events' package and a full command-and-control implant. Its events.js is a copy of Node's EventEmitter with a backdoor in emit(): when args[0].eventId == 'eventId0' it spawns tests/galas-emit.min.js as a detached background process. That payload connects to Slack (api[.]slack[.]com) and Telegram (api[.]telegram[.]org) using bundled hardcoded bot tokens, fingerprints the victim (hostname, platform, arch, CPUs, memory, uptime) and beacons to both channels; it also reaches Sepolia testnet RPC via Infura/Alchemy and interacts with smart contracts for C2 orchestration. A second payload, errors.min.js, polls Slack conversations.history for AES-GCM-encrypted commands, downloads files in chunks, writes them to disk and spawns them as detached node processes. Both payloads carry a worm-style self-propagation marker ('REDISTRIBUTION REQUIRES INCLUSION OF THIS LICENSE.').",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "events-runtime",
+        "purl": "pkg:npm/events-runtime@3.2.1"
+      },
+      "versions": [
+        "3.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/events-runtime/v/3.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2981"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T08:43:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]slack[.]com",
+          "api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}

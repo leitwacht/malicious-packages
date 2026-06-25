@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5172",
+  "modified": "2026-06-14T01:49:08Z",
+  "published": "2026-06-14T01:47:51Z",
+  "summary": "Malicious code in snavbox (npm)",
+  "details": "When installed or executed, snavbox downloads multiple binary executables (sing-box proxy, cloudflared tunnel client, and Nezha monitoring agent) from the C2 host amd64[.]ssss[.]nyc[.]mn (paths: /sb, /bot, /agent, /v1). The binaries are stored under.npm/ with randomized 6-character filenames, given execute permissions, and launched as background daemons. The software configures a full proxy server stack (VMess WebSocket, VLESS REALITY, Hysteria2, TUIC, SOCKS5 inbounds) with Cloudflare WARP WireGuard outbound routing, and establishes a Cloudflare tunnel to expose the proxy to the internet. It fingerprints the host (IP address via ipv4[.]ip[.]sb, geo/ISP via api[.]ip[.]sb/geoip and ip-api[.]com/json) and registers with a remote Nezha monitoring dashboard for command-and-control. Generated proxy subscription links are optionally exfiltrated to an UPLOAD_URL endpoint or a Telegram bot (api[.]telegram[.]org) configured via BOT_TOKEN and CHAT_ID environment variables.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "snavbox",
+        "purl": "pkg:npm/snavbox@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/snavbox/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5172"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T01:47:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "ip-api[.]com"
+        ]
+      }
+    }
+  }
+}

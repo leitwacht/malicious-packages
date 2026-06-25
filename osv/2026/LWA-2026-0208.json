@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-0208",
+  "modified": "2026-05-27T04:36:29Z",
+  "published": "2026-05-27T04:18:55Z",
+  "summary": "Malicious code in @cryptobaby/cryptopapi (npm)",
+  "details": "This package is a Solana wallet drainer (a de-obfuscated variant of the same code). On import the main entry (src/esm/index.js, with a CJS twin at src/cjs/index.cjs) walks parent directories to find a.env file and reads PRIVATE_KEY and RPC_ENDPOINT, rebuilding a Solana Keypair. It fetches the SOL/USD price from api[.]coingecko[.]com/api/v3/simple/price?ids=solana and, when the wallet's USD value exceeds a $1000 threshold, signs and submits a VersionedTransaction that drains the full balance (less fee and a 0.001 SOL reserve) to the hardcoded destination 7y6drvHexdLjKDMeWPRwTdQt1NUd7tAZNmeZNkoAYcKk. C2/IOC: drain destination Solana address 7y6drvHexdLjKDMeWPRwTdQt1NUd7tAZNmeZNkoAYcKk.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@cryptobaby/cryptopapi",
+        "purl": "pkg:npm/%40cryptobaby/cryptopapi@6.6.7"
+      },
+      "versions": [
+        "6.6.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@cryptobaby/cryptopapi/v/6.6.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-0208"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-27T04:18:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]coingecko[.]com"
+        ]
+      }
+    }
+  }
+}

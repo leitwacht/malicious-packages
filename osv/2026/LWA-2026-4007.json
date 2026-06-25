@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4007",
+  "modified": "2026-06-10T19:45:46Z",
+  "published": "2026-06-10T19:42:22Z",
+  "summary": "Malicious code in mongoose-lean-hooks (npm)",
+  "details": "Package takeover of mongoose-lean-hooks. index.js contains a hidden second-stage dropper appended after the legitimate plugin code: it uses axios to fetch remote code from jsonkeeper[.]com/b/A5BA8, then executes it via new Function('require', res.data.data). The declared dependencies (axios, request, sqlite3) are unnecessary for the claimed Mongoose timestamp-plugin purpose. The dropper is a C2 channel: fetch remote payload, then evaluate it at runtime with access to require, enabling arbitrary code execution in the installer's environment.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mongoose-lean-hooks",
+        "purl": "pkg:npm/mongoose-lean-hooks@0.5.2"
+      },
+      "versions": [
+        "0.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mongoose-lean-hooks/v/0.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4007"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T19:42:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4713",
+  "modified": "2026-06-12T12:45:25Z",
+  "published": "2026-06-12T12:44:43Z",
+  "summary": "Malicious code in prettlog (npm)",
+  "details": "Prettlog@1.0.10 poses as a logging library but contains a credential-harvesting implant. Its dist/index.js embeds a C2 endpoint (89[.]116[.]23[.]67:9001/poly) and when logger[.]info() is called, it scans the filesystem — including /, /root, /home, /var/www, /etc, /opt — for.env and.json files, reads them, base64-encodes their contents, and uploads them to the C2 via axios with up to 80 concurrent connections. It also writes to /root/.ssh/authorized_keys (SSH persistence). The postinstall hook is a decoy (just a comment); the real payload runs at runtime when the logger is used.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "prettlog",
+        "purl": "pkg:npm/prettlog@1.0.10"
+      },
+      "versions": [
+        "1.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/prettlog/v/1.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4713"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T12:44:43Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "89[.]116[.]23[.]67:9001"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1309",
+  "modified": "2026-05-30T06:26:40Z",
+  "published": "2026-05-30T06:25:23Z",
+  "summary": "Malicious code in lsp-mcp (npm)",
+  "details": "CI/CD reconnaissance beacon disguised as an \"LSP MCP bridge utility\": lsp-mcp@0.0.4 ships only a bin script that POSTs system telemetry (node version, OS, arch, GITHUB_REPOSITORY, GITHUB_REPOSITORY_OWNER, RUNNER_OS, CI provider) to webhook[.]site/18de28aa-ad1c-447e-b9b2-6e2adbdf864c. It has no real LSP/MCP functionality, only a decoy console.log(\"lsp-mcp: reserved package\"). Version history shows escalation from a placeholder to a basic hostname beacon to the full webhook[.]site exfil. No lifecycle hooks (runs only on explicit bin invocation via npx/global install); harvesting GITHUB_REPOSITORY_OWNER and GITHUB_REPOSITORY identifies high-value targets for follow-on attacks.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lsp-mcp",
+        "purl": "pkg:npm/lsp-mcp@0.0.4"
+      },
+      "versions": [
+        "0.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lsp-mcp/v/0.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1309"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-30T06:25:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ]
+      }
+    }
+  }
+}

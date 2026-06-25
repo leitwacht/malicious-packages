@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5743",
+  "aliases": [
+    "MAL-2026-6286"
+  ],
+  "modified": "2026-06-18T20:59:06Z",
+  "published": "2026-06-18T20:58:15Z",
+  "summary": "Malicious code in new-solt-1 (npm)",
+  "details": "New-solt-1@0.0.9 is a credential-and-session harvesting package. On load, it scans the victim's filesystem (home directories on Linux/macOS, all drives on Windows) for files matching wallet keywords (key, wallet, seed, mnemonic, metamask, phantom, keystore, trezor, ledger, recovery, etc.),.env files, id.json, and config.toml. It also collects shell history files (.bash_history,.zsh_history, PowerShell ConsoleHost_history.txt) via direct file reads and fallback commands (bash -c history, zsh -c 'fc -l -1000'). On Windows and macOS it additionally steals the Telegram Desktop tdata session folder, which contains authentication data. All stolen files are uploaded via multipart HTTP POST to hxxps://vercel-backend-five-vert[.]vercel[.]app/api/v1. The exfiltration endpoint is configurable via the BACKUP_API_URL environment variable.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "new-solt-1",
+        "purl": "pkg:npm/new-solt-1@0.0.9"
+      },
+      "versions": [
+        "0.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/new-solt-1/v/0.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5743"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T20:58:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vercel-backend-five-vert[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://vercel-backend-five-vert[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

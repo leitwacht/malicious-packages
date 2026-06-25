@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5131",
+  "modified": "2026-06-13T19:33:54Z",
+  "published": "2026-06-13T19:33:08Z",
+  "summary": "Malicious code in session-exp (npm)",
+  "details": "Combosquat of the popular express-session package. On require(), the module session/cookie.js decodes a Base64 string to hxxps://api[.]npoint[.]io/cbbe4c31888c0fcfbdd8, fetches a JSON payload from that URL using the axios HTTP library, and executes eval(res.data.cookie) — providing the attacker with arbitrary remote code execution inside the installer's process. The payload URL is hosted on npoint[.]io (a free JSON hosting service), so the attacker can change the delivered payload at any time without republishing the package. The README markets the package for blockchain applications, likely to target crypto wallet environments.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "session-exp",
+        "purl": "pkg:npm/session-exp@1.3.20"
+      },
+      "versions": [
+        "1.3.20"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/session-exp/v/1.3.20"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5131"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T19:33:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io",
+          "npoint[.]io"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/cbbe4c31888c0fcfbdd8"
+        ]
+      }
+    }
+  }
+}

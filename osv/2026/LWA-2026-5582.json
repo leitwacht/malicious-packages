@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5582",
+  "aliases": [
+    "MAL-2026-5892"
+  ],
+  "modified": "2026-06-16T16:57:35Z",
+  "published": "2026-06-16T15:31:39Z",
+  "summary": "Malicious code in caspian-day-js (npm)",
+  "details": "This package masquerades as the popular dayjs date library (typosquat: it copies dayjs metadata, author and repository URL). It ships an obfuscated install-time script that runs automatically via a postinstall hook. On install it disables TLS certificate validation, writes tracking marker files into the system temp directory (including one encoding the package name and one recording the install path), downloads a remote first-stage script over the network, saves it to a randomly named.js file in the temp directory, and launches it as a detached Node.js process while passing a hardcoded remote command-and-control endpoint (IP 23[.]254[.]164[.]123 port 443) as an argument. It then deletes its own installer file to hide the activity. The net effect is silent remote-code execution at install time and a persistent second-stage process beaconing to attacker infrastructure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "caspian-day-js",
+        "purl": "pkg:npm/caspian-day-js@1.11.23"
+      },
+      "versions": [
+        "1.11.23"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/caspian-day-js/v/1.11.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5582"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T15:31:39Z",
+      "indicators_observed": {
+        "file_artifact": [
+          ".pkg_history"
+        ],
+        "ip_observed": [
+          "23[.]254[.]164[.]123",
+          "23[.]254[.]164[.]123:443"
+        ],
+        "technique": [
+          "NODE_TLS_REJECT_UNAUTHORIZED=0"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4628",
+  "modified": "2026-06-12T10:16:34Z",
+  "published": "2026-06-12T10:14:55Z",
+  "summary": "Malicious code in polygon-bitquery-apis (npm)",
+  "details": "A remote-code-execution implant masquerading as a Polygon/Bitquery API helper. The index.js function getPlugin() fetches JSON from hxxps://bet.slotgambit[.]com/icons/107 and passes the response's data.credits field into a new Function() constructor with a full Node.js context (require, process, global, Buffer, setTimeout, console), so the C2 server can return arbitrary JavaScript that runs in the installer's process with full filesystem, env, and module access. A companion setDefaultModule function that constructs CDN URLs serves as a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polygon-bitquery-apis",
+        "purl": "pkg:npm/polygon-bitquery-apis@2.2.3"
+      },
+      "versions": [
+        "2.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polygon-bitquery-apis/v/2.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4628"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T10:14:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bet[.]slotgambit[.]com"
+        ],
+        "url_observed": [
+          "hxxps://bet[.]slotgambit[.]com/icons/107"
+        ]
+      }
+    }
+  }
+}

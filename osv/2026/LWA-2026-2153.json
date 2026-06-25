@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2153",
+  "aliases": [
+    "MAL-2026-5110"
+  ],
+  "modified": "2026-06-01T08:00:57Z",
+  "published": "2026-06-01T07:54:47Z",
+  "summary": "Malicious code in jingmeideshishi (npm)",
+  "details": "A package (jingmeideshishi, version 1.0.7) disguised as a utility library (hello/sleep/retry helpers serving as a cover story) whose preinstall hook runs test-ssrf.js. That script performs SSRF probing against internal Baidu URLs (bsrc-ssrf[.]n[.]baidu-int[.]com, 10[.]169[.]4[.]131) and exfiltrates the reachability results via POST to 101[.]35[.]44[.]248:80/log at install time. Signal: preinstall-node-script. Package jingmeideshishi@1.0.7 claims to be \"Lightweight utility helpers\" (README shows hello/sleep/retry functions in index.js) but the preinstall hook runs test-ssrf.js which probes Baidu internal SSRF endpoints (bsrc-ssrf[.]n[.]baidu-int[.]com/xingzhi, 10[.]169[.]4[.]131/xingzhi) from the install target and POSTs reachability/latency results to 101[.]35[.]44[.]248/log. README is a complete decoy — no disclosure of this behavior. Not a declared research artifact. The package performs unauthorized network reconnaissance during install without informed consent. No token-theft markers found but the exfiltration of network reachability data to an external server is concerning.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "jingmeideshishi",
+        "purl": "pkg:npm/jingmeideshishi@1.0.7"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/jingmeideshishi/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2153"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T07:54:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bsrc-ssrf[.]n[.]baidu-int[.]com"
+        ],
+        "ip_observed": [
+          "101[.]35[.]44[.]248",
+          "101[.]35[.]44[.]248:80"
+        ]
+      }
+    }
+  }
+}

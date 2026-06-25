@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5369",
+  "modified": "2026-06-15T11:00:57Z",
+  "published": "2026-06-15T10:59:17Z",
+  "summary": "Malicious code in unicode-colors (npm)",
+  "details": "Package unicode-colors@4.1.4 carries a malicious preinstall script (dist/util.js) that runs on 'npm install'. The script evades detection by checking for virtualized environments (VMware, VirtualBox, KVM, Hyper-V MAC address prefixes), available CPU cores, free memory, system uptime (\u003c2 hours), and sandbox hostnames. If no sandbox is detected, it makes an HTTPS request to an obfuscated C2 server and executes the response body via eval() — a second-stage remote code execution payload. The package is named misleadingly \"unicode-colors\" but ships the unrelated LayUI front-end framework as cover. It executes arbitrary code from its C2 on every install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "unicode-colors",
+        "purl": "pkg:npm/unicode-colors@4.1.4"
+      },
+      "versions": [
+        "4.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/unicode-colors/v/4.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5369"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T10:59:17Z",
+      "indicators_observed": {}
+    }
+  }
+}

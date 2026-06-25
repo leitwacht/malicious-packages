@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3899",
+  "aliases": [
+    "MAL-2026-5520"
+  ],
+  "modified": "2026-06-10T11:20:37Z",
+  "published": "2026-06-10T10:38:26Z",
+  "summary": "Security-research / proof-of-concept package: @access-risk/browser-remedy-react (npm)",
+  "details": "@access-risk/browser-remedy-react@99.0.0 is a 1.8KB dependency-confusion stub (3 files) that runs postinstall.js on install. The script collects system metadata (os.hostname(), os.userInfo().username, install path, and a directory tree to depth 2) and exfiltrates via two channels: an HTTPS POST of the base64-encoded JSON payload to the callback domain xjaipnfhcpawuhzlgzkzx9k5rrgo6df89.oast[.]fun, and a DNS fallback that encodes hostname and username as a hex subdomain label resolved against the same oast[.]fun domain. The exfiltration was observed carrying a JSON body of the form {\"h\":...,\"u\":\"\u003cuser\u003e\",\"p\":\"...\",\"tree\":[...]}. @access-risk/browser-remedy-react@99.0.0 is a dependency-confusion/version-squat reconnaissance implant. The package has no real functionality (index.js = module.exports = {}; 3 files, 1864 bytes). Its postinstall script captures hostname, username, cwd, and directory tree, then exfiltrates via HTTPS POST and DNS fallback to xjaipnfhcpawuhzlgzkzx9k5rrgo6df89[.]oast[.]fun — an attacker-controlled oastify intercept sink. The 99.0.0 version on a first publish is a classic sentinel/version-squat tactic to override legitimate packages.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@access-risk/browser-remedy-react",
+        "purl": "pkg:npm/%40access-risk/browser-remedy-react@99.0.0"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@access-risk/browser-remedy-react/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3899"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-10T10:38:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oast[.]fun",
+          "xjaipnfhcpawuhzlgzkzx9k5rrgo6df89[.]oast[.]fun"
+        ]
+      }
+    }
+  }
+}

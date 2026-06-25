@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4968",
+  "aliases": [
+    "MAL-2026-5723"
+  ],
+  "modified": "2026-06-13T02:54:34Z",
+  "published": "2026-06-13T02:53:10Z",
+  "summary": "Malicious code in @ci-lifecycle-test/postinstall-ping (npm)",
+  "details": "Package @ci-lifecycle-test/postinstall-ping@1.0.0 executes a postinstall script (node postinstall.js) that reads every environment variable from process.env, serialises the entire object as JSON, and POSTs it to eoarlb39lor5s7x[.]m[.]pipedream[.]net, a third-party webhook/requestbin service. Any secrets present in the environment — npm tokens, GitHub tokens, cloud provider credentials, API keys — are exfiltrated to an attacker-controlled endpoint on install. Errors are silently discarded via.catch(()=\u003e{}), so the npm install succeeds without warning the user. This is a CI/CD credential harvester that targets build pipelines and developer machines.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ci-lifecycle-test/postinstall-ping",
+        "purl": "pkg:npm/%40ci-lifecycle-test/postinstall-ping@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ci-lifecycle-test/postinstall-ping/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4968"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T02:53:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eoarlb39lor5s7x[.]m[.]pipedream[.]net"
+        ]
+      }
+    }
+  }
+}

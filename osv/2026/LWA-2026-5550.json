@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5550",
+  "aliases": [
+    "MAL-2026-5880"
+  ],
+  "modified": "2026-06-16T10:10:43Z",
+  "published": "2026-06-16T10:09:14Z",
+  "summary": "Malicious code in nat-ulid (npm)",
+  "details": "A trojanized clone of the legitimate `ulid` identifier library, published under the combosquat name `nat-ulid`. On install, the postinstall script runs a dropper (`dist/node/utils.js`) that copies a 962KB payload (`payload.js`) into a hidden directory (`MicrosoftSystem64` under the user's local data folder) and establishes persistence via Windows scheduled tasks/registry Run key, macOS launchd, or Linux systemd user service/desktop autostart. The payload is a full-featured information-stealer and remote access trojan (RAT): it harvests SSH private keys (id_rsa, id_ed25519), environment variables including NPM_TOKEN, GITHUB_TOKEN, and other secrets,.env files, browser credential stores (Chrome, Edge, Firefox, Brave, Opera, Vivaldi), cryptocurrency wallet directories (Exodus, Electrum, MetaMask), macOS keychain, shell history, and Telegram session data. It also operates a keylogger, clipboard monitor, and screenshot capture system. All stolen data is exfiltrated to a remote C2 server over WebSocket and HTTPS to XOR-obfuscated server URLs via API endpoints under `/api/validate/` and `/api/screenshot/`. The implant also supports arbitrary remote command execution, binary deployment, and full remote terminal control. The package exits early on machines with fewer than 5 CPU cores to evade sandbox analysis.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nat-ulid",
+        "purl": "pkg:npm/nat-ulid@3.0.2"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nat-ulid/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5550"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T10:09:14Z",
+      "indicators_observed": {}
+    }
+  }
+}

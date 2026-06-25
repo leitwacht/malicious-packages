@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5094",
+  "modified": "2026-06-13T17:06:28Z",
+  "published": "2026-06-13T17:04:35Z",
+  "summary": "Security-research / proof-of-concept package: seek-pass (npm)",
+  "details": "All versions (100.0.0, 100.3.0, 100.6.0, 100.10.0) of seek-pass run a preinstall hook (node index.js) that performs extensive system reconnaissance: probes cloud metadata endpoints (hxxp://169[.]254[.]169[.]254/latest/meta-data/, hxxp://metadata[.]google[.]internal/, hxxp://100[.]100[.]100[.]200/latest/meta-data/) for AWS, GCP, and Alibaba credentials; probes Kubernetes API (kubernetes.default.svc); probes internal services (intranet, gitlab.internal, jenkins.internal, corporate.local). It collects hostname, FQDN, OS/distro/kernel, container type, network interface details (IPs, MAC addresses, netmasks), user/group info, sudo capability, DNS search domains, corporate environment variables (VPN, PROXY, LDAP, ACTIVE_DIRECTORY), SSL certificate subjects, and git repository metadata. All evidence is POSTed as JSON to hwoapraaaotwtsnourpqddszm5n3kkhvo[.]oast[.]fun:443/seek-pass via HTTPS with custom headers (X-Evidence-Proof, X-Source-Hostname, X-Source-User) and a SHA-256 proof hash. The earlier version (100.0.0) exfiltrated hostname/platform/arch as a simpler beacon before the full reconnaissance payload was added.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "seek-pass",
+        "purl": "pkg:npm/seek-pass@100.6.0"
+      },
+      "versions": [
+        "100.6.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/seek-pass/v/100.6.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5094"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-13T17:04:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "hwoapraaaotwtsnourpqddszm5n3kkhvo[.]oast[.]fun"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4253",
+  "aliases": [
+    "MAL-2026-5266"
+  ],
+  "modified": "2026-06-11T12:04:21Z",
+  "published": "2026-06-11T11:56:31Z",
+  "summary": "Malicious code in node-env-resolver-vite (npm)",
+  "details": "A supply-chain compromised package. An attacker injected a 4.5MB obfuscated eval-based payload into./package/index.js and weaponized a binding.gyp file that uses the GYP \u003c!(...) syntax to silently execute 'node index.js \u003e /dev/null 2\u003e\u00261' during npm install (no lifecycle script needed). The legitimate package code (dist/index.js, a clean 1.6KB Vite env-resolver plugin) remains intact, indicating the compromise was via injected files. The version was deprecated with the note 'SECURITY: compromised supply-chain build (2026-06-04 worm)'. The obfuscated eval decoder applies a Caesar-cipher transform to a character-code array and evals the result; the worm payload activates during install via the binding.gyp vector.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-env-resolver-vite",
+        "purl": "pkg:npm/node-env-resolver-vite@2.4.2"
+      },
+      "versions": [
+        "2.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-env-resolver-vite/v/2.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4253"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:56:31Z",
+      "indicators_observed": {}
+    }
+  }
+}

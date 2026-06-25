@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4359",
+  "modified": "2026-06-11T15:56:27Z",
+  "published": "2026-06-11T15:53:14Z",
+  "summary": "Malicious code in npm-scanner (npm)",
+  "details": "Masquerades as an \"npm-scanner\" security tool but is a full C2 implant. On execution, the bin script index.js shows a fake health check to deceive the user, then installs cross-platform persistence via systemd (Linux), LaunchAgent (macOS, com.moltbook.health.plist), or a Windows Service. It then spawns dist/bundle.js as a detached background process that opens a WebSocket connection to wss://moltbook-health[.]the-l[.]ink/ws (C2 channel) and reads ~/.npmrc and ~/.npm-scanner-id for credential exfiltration. The internal branding is \"Moltbook Health Monitor\" and the scanner output is entirely fabricated.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "npm-scanner",
+        "purl": "pkg:npm/npm-scanner@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/npm-scanner/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4359"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T15:53:14Z",
+      "indicators_observed": {}
+    }
+  }
+}

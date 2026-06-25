@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5174",
+  "modified": "2026-06-14T02:50:57Z",
+  "published": "2026-06-14T02:47:59Z",
+  "summary": "Malicious code in solana-token-api (npm)",
+  "details": "Solana-token-api@1.0.0 is a combosquat package impersonating the Solana ecosystem. The postinstall hook runs an obfuscated JavaScript payload (main.js) that downloads a zip archive from external URLs, extracts it using adm-zip, and executes a Python script (exec.py) via pythonw.exe (Windows headless Python). The payload sets the environment variable REALTEKAUDIO to the C2 endpoint hxxps://postprocesser[.]com/[.]well-known/pki-validation/go/cinnamonroll[.]php?id=mumu before launching the script. The C2 path masquerades as SSL certificate validation traffic. The package includes a benign-looking cover module (solana-token-api.js) that fetches legitimate Solana token metadata, while the actual payload runs in the background during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solana-token-api",
+        "purl": "pkg:npm/solana-token-api@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solana-token-api/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5174"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T02:47:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "postprocesser[.]com"
+        ],
+        "url_observed": [
+          "hxxps://postprocesser[.]com/[.]well-known/pki-validation/go/cinnamonroll[.]php"
+        ]
+      }
+    }
+  }
+}

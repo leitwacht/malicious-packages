@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5403",
+  "modified": "2026-06-15T16:59:24Z",
+  "published": "2026-06-15T16:58:35Z",
+  "summary": "Malicious code in vfat-tools (npm)",
+  "details": "The postinstall hook (node lib/setup.js) steals credentials from the build environment. It enumerates all environment variables matching KEY/SECRET/TOKEN/PASS/PK/PRIV/SIGN/AWS/GH/NPM/ALCHEMY/INFURA etc., reads credential files (.env, secret.json, ~/.foundry/.env, ~/.ssh/id_rsa, ~/.aws/credentials) from the current directory and home directory, and exfiltrates everything via two HTTPS POST requests to api[.]telegram[.]org's sendMessage endpoint using a hardcoded Telegram bot token and chat_id. The first message contains a summary with hostname and the matched env var names; the second contains the full collected data as JSON. The script then self-deletes (lib/setup.js) to hide evidence. Harvested tokens include GITHUB_TOKEN, GH_TOKEN, VERCEL_TOKEN, and NODE_AUTH_TOKEN.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vfat-tools",
+        "purl": "pkg:npm/vfat-tools@2.0.0"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vfat-tools/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5403"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T16:58:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}

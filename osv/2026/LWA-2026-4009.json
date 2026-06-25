@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4009",
+  "modified": "2026-06-10T20:00:20Z",
+  "published": "2026-06-10T19:59:31Z",
+  "summary": "Malicious code in @sauruslord/libsignal (npm)",
+  "details": "@sauruslord/libsignal@2.0.2 is a combosquat of the Signal Protocol library that performs runtime code injection. At require(), index.js schedules install.js's installNewsletterAutoFollow() which (1) searches for @whiskeysockets/baileys in the project's node_modules, (2) overwrites baileys/lib/Socket/newsletter.js with a malicious replacement that forces the WhatsApp client to auto-follow hardcoded newsletter 120363425694844039@newsletter, and (3) calls process.exit(0) after 20s to restart. The package also declares Node.js core modules (crypto, fs, path) as npm dependencies — a red flag pattern since no legitimate libsignal would shadow built-in modules. No token theft observed, but this is a code-injection supply-chain attack modifying files in another installed package at runtime without user consent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sauruslord/libsignal",
+        "purl": "pkg:npm/%40sauruslord/libsignal@2.0.2"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sauruslord/libsignal/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4009"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T19:59:31Z",
+      "indicators_observed": {}
+    }
+  }
+}

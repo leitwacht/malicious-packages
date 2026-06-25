@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3387",
+  "aliases": [
+    "MAL-2026-5355"
+  ],
+  "modified": "2026-06-09T02:45:27Z",
+  "published": "2026-06-09T02:44:50Z",
+  "summary": "Malicious code in ethereum-kit-1 (npm)",
+  "details": "Confirmed crypto wallet stealer. The postinstall hook runs src/index.js which contains a hardcoded Telegram bot token (8227918239:...) and chat ID. It scans the victim's home directory and cwd for Solana (~/.config/solana/id.json), Ethereum keystore, Bitcoin wallet.dat, Tron keystore, SSH keys, and project secrets (.env, wallet.json, mnemonic.txt, seed.txt, etc.), then exfilitrates each found file via api[.]telegram[.]org/bot\u003cTOKEN\u003e/sendDocument. The publisher and package name (\"ethereum-kit-1\") are consistent with a combosquat/phishing targeting crypto developers. No token-theft markers for npm/GitHub tokens were found — the attack focuses on crypto wallet theft. This is a true-positive supply-chain attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ethereum-kit-1",
+        "purl": "pkg:npm/ethereum-kit-1@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ethereum-kit-1/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3387"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-09T02:44:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}

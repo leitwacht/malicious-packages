@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5680",
+  "aliases": [
+    "MAL-2026-6356"
+  ],
+  "modified": "2026-06-18T06:52:06Z",
+  "published": "2026-06-18T04:35:35Z",
+  "summary": "Malicious code in safe-json-38bd (npm)",
+  "details": "A package advertised as a JSON utility whose only real content is a cross-platform credential-stealing dropper. Its manifest runs the payload on both the preinstall and postinstall lifecycle hooks, so it executes automatically on install. On Linux/CI the payload enumerates all environment variable names and exfiltrates CI and cloud secrets, including AWS access keys, session tokens, GitHub and npm tokens, and GitHub Actions OIDC/runtime tokens. It requests ECS task-role IAM credentials from the container metadata endpoint (169[.]254[.]170[.]2) and ECS task metadata, checks for SSH private keys, performs container-escape reconnaissance (mount table, process capabilities, presence of the Docker socket), and reads the host process startup script. When a DynamoDB table name is present in the environment it uses the stolen task role to list and describe tables and write an item. All collected data is sent via HTTPS POST to a hardcoded Cloudflare tunnel command-and-control host. On Windows the payload performs a fodhelper.exe UAC bypass using an ms-settings registry hijack, registers a SYSTEM-level scheduled task to read and exfiltrate sibling build artifacts, and overwrites a findings file with a tampered verdict, beaconing results to the same C2.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "safe-json-38bd",
+        "purl": "pkg:npm/safe-json-38bd@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/safe-json-38bd/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5680"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T04:35:35Z",
+      "indicators_observed": {}
+    }
+  }
+}

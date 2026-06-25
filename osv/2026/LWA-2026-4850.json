@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4850",
+  "modified": "2026-06-12T20:09:13Z",
+  "published": "2026-06-12T20:08:28Z",
+  "summary": "Malicious code in rc-icon (npm)",
+  "details": "Package rc-icon@99.9.1 is a dependency-confusion vehicle. Its only purpose is to pull an unvetted external dependency into the installer's build pipeline: it declares a dependency on \"ltidisafe\" hosted at an external Google Cloud Storage URL rather than from the npm registry. The package body is a 26-byte stub (console.log(\"ltidifromh1\")) with no functional value, and the version 99.9.1 is set absurdly high to hijack semver resolution over any legitimate rc-icon version. Installing this package causes the installer's npm to fetch and execute code from an attacker-controlled GCS bucket, enabling arbitrary code execution in the build environment — a supply-chain initial-access attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rc-icon",
+        "purl": "pkg:npm/rc-icon@99.9.1"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rc-icon/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4850"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-12T20:08:28Z",
+      "indicators_observed": {}
+    }
+  }
+}

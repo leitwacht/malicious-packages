@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4259",
+  "modified": "2026-06-11T12:04:40Z",
+  "published": "2026-06-11T11:57:21Z",
+  "summary": "Malicious code in node-fetch-core (npm)",
+  "details": "Node-fetch-core@1.0.0 combosquats the popular node-fetch package. Its preinstall hook (node install.js) runs execSync to curl a second-stage payload from a raw GitHub gist (gist[.]githubusercontent[.]com/p1g3/888a...), saves it to /Library/Caches/com.apple.act.mond (a disguised, persistent macOS cache path), chmods it executable, and executes it — all wrapped in a silent catch block to avoid alarming the installer. This is a first-stage dropper; the gist-hosted payload is the actual malicious component retrieved at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-fetch-core",
+        "purl": "pkg:npm/node-fetch-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-fetch-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4259"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T11:57:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gist[.]githubusercontent[.]com"
+        ]
+      }
+    }
+  }
+}

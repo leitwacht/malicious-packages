@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4369",
+  "aliases": [
+    "MAL-2026-5576"
+  ],
+  "modified": "2026-06-11T17:27:07Z",
+  "published": "2026-06-11T17:26:12Z",
+  "summary": "Malicious code in vite-tsconfig (npm)",
+  "details": "Vite-tsconfig@1.1.2 ships a remote-code-execution implant in lib/mapProps.js. When a developer uses the configJson() middleware, it spawns a detached Node.js subprocess (detached:true, stdio:ignore, child.unref()) that fetches arbitrary code from jsonkeeper[.]com/b/LVKHJ and executes it via new Function(\u0026quot;require\u0026quot;, code) — giving the attacker full require() access. The TypeScript source src/mapProps.ts is deliberately omitted from the tarball (only the compiled JS and.d.ts are shipped). Publisher uses an account. This is a stealthy second-stage RCE loader that activates on API usage, not install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-tsconfig",
+        "purl": "pkg:npm/vite-tsconfig@1.1.2"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-tsconfig/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4369"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T17:26:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

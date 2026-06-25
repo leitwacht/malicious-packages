@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4588",
+  "modified": "2026-06-12T08:24:29Z",
+  "published": "2026-06-12T08:22:05Z",
+  "summary": "Malicious code in pino-pretty-logs (npm)",
+  "details": "This is a combosquat of the popular pino-pretty logger. Its package main dist/index.js presents a legitimate-looking Logger class as cover but, at module load, executes the bundled malicious payload via a top-level require(\"./logger\"). dist/logger.js (~51KB) is heavily obfuscated javascript-obfuscator output (string-array decoder, _0x identifiers, ~1700 obfuscation hits, String.fromCharCode) that at runtime requires os and fs and reads process.env, consistent with host/environment information-stealer behavior triggered simply by importing the package. The exfiltration endpoint is hidden inside the RC4-style encoded string array and is not recoverable in plaintext, so no network IOC is provided.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pino-pretty-logs",
+        "purl": "pkg:npm/pino-pretty-logs@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pino-pretty-logs/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4588"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T08:22:05Z",
+      "indicators_observed": {}
+    }
+  }
+}

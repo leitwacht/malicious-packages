@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5653",
+  "modified": "2026-06-17T17:29:30Z",
+  "published": "2026-06-17T17:22:53Z",
+  "summary": "Malicious code in relative-time-live (npm)",
+  "details": "This package presents itself as a self-updating relative-time formatting utility with optional React/Vue bindings, and its visible code does implement that functionality cleanly. However, its published code unconditionally side-effect-imports a hard dependency (dom-weave) at module load, and that dependency in turn dynamically loads a further package (sync-logger). The deepest package masquerades as a logging utility but, on import, decodes a large embedded base64 blob by XOR-ing it against a fixed 16-byte key and immediately executes the decoded result as code via the Function constructor, all wrapped in an error-swallowing try/catch to stay silent on failure. The net effect is that merely installing or importing this relative-time package causes hidden, obfuscated code to run on the host through a multi-tier dependency chain whose lower tiers look innocuous in isolation. This staged structure (appealing top-level utility -\u003e innocuous middle helper -\u003e obfuscated self-executing payload leaf) is characteristic of a deliberate supply-chain dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "relative-time-live",
+        "purl": "pkg:npm/relative-time-live@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/relative-time-live/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5653"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T17:22:53Z",
+      "indicators_observed": {
+        "npm_package": [
+          "dom-weave@0.1.0",
+          "relative-time-live@0.1.0",
+          "sync-logger@1.0.0"
+        ],
+        "xor_key_observed": [
+          "e0337c5c5c3214f1"
+        ]
+      }
+    }
+  }
+}

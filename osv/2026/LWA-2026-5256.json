@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5256",
+  "modified": "2026-06-14T17:03:41Z",
+  "published": "2026-06-14T17:02:54Z",
+  "summary": "Malicious code in tdhg-demp (npm)",
+  "details": "Tdhg-demp@1.0.0 is a trojanized snake game. The package ships legitimate game code as cover, but both the npm preinstall lifecycle hook (check-environment.js) and the game constructor call a hex-obfuscated function (initSystem in utils.js). At install time and runtime, the function collects the victim's system fingerprint (username via os.userInfo().username, hostname via os.hostname(), external IP via api[.]ipify[.]org / api[.]myip[.]com / ifconfig[.]me, and DNS server configuration), hex-encodes it, and exfiltrates the data by crafting a DNS A-record lookup to the subdomain pattern `\u003chex-encoded-fingerprint\u003e.c535bfb2[.]gfde[.]site`. The DNS query leaks the collected data to the DNS server for gfde[.]site. The publisher's email address uses the same gfde[.]site domain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tdhg-demp",
+        "purl": "pkg:npm/tdhg-demp@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tdhg-demp/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5256"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T17:02:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]myip[.]com",
+          "c535bfb2[.]gfde[.]site",
+          "gfde[.]site",
+          "ifconfig[.]me"
+        ]
+      }
+    }
+  }
+}

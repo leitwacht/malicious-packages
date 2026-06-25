@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5974",
+  "modified": "2026-06-25T15:41:10Z",
+  "published": "2026-06-25T15:40:08Z",
+  "summary": "Malicious code in chai-as-built (npm)",
+  "details": "Chai-as-built@6.0.3 is a trojanized clone of the pino logger that performs remote code execution. When index.js is required, it spawns a detached background Node.js process running lib/initializeCaller.js. That script decodes a base64-embedded endpoint (amethyst-lorrin-26[.]tiiny[.]site/index.json), fetches it via axios with an x-secret-key header, and passes the response's cookie field into new Function.constructor('require', response), executing arbitrary remote code in the context of the victim's process. The payload retries up to 5 times on failure. Only the @6.0.3 version exists; the package name combosquats chai-as-promised to impersonate the chai testing library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-built",
+        "purl": "pkg:npm/chai-as-built@6.0.3"
+      },
+      "versions": [
+        "6.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-built/v/6.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5974"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T15:40:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

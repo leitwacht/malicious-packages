@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5289",
+  "aliases": [
+    "MAL-2026-5785"
+  ],
+  "modified": "2026-06-15T02:58:04Z",
+  "published": "2026-06-15T02:56:50Z",
+  "summary": "Malicious code in ve-hemi-rewards (npm)",
+  "details": "This package is a dependency-confusion implant. Its preinstall script (postinstall.js) collects the installer's hostname, username, current working directory, and all environment-variable names matching key/secret/token/pass/private/ssh/deploy/auth/api/rpc/wallet/sentry/docker/graph/slack/host (harvesting credentials, API keys, and tokens from env), then POSTs the stolen data to 185[.]130[.]46[.]35:8443/collect via HTTPS. All errors are silently swallowed (|| true, empty try/catch) so installation succeeds without visible failure. The package ships only 3 files (758 bytes) and uses version 999.0.0 to maximize install priority over legitimate packages in dependency-resolution order.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ve-hemi-rewards",
+        "purl": "pkg:npm/ve-hemi-rewards@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ve-hemi-rewards/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5289"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T02:56:50Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]130[.]46[.]35:8443"
+        ]
+      }
+    }
+  }
+}

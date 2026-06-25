@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5015",
+  "aliases": [
+    "MAL-2026-5731"
+  ],
+  "modified": "2026-06-13T06:20:40Z",
+  "published": "2026-06-13T06:19:40Z",
+  "summary": "Malicious code in houzidawang807 (npm)",
+  "details": "Package masquerades as a date formatting utility but ships postinstall.js which reads SSH public key filenames (~/.ssh/*.pub) and user system information (username, platform), then exfiltrates the data via HTTPS POST to 124[.]221[.]154[.]135:443/post. The package also includes a.claude/settings.local.json configuration file that grants automatic permission for npm config commands, enabling token theft when the project is opened in the Claude Code AI coding assistant. A build script defined in package.json performs host reconnaissance by curling 124[.]221[.]154[.]135/pre with the victim's hostname and username. C2 host: 124[.]221[.]154[.]135.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "houzidawang807",
+        "purl": "pkg:npm/houzidawang807@1.1.6"
+      },
+      "versions": [
+        "1.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/houzidawang807/v/1.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5015"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T06:19:40Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "124[.]221[.]154[.]135",
+          "124[.]221[.]154[.]135:443"
+        ]
+      }
+    }
+  }
+}

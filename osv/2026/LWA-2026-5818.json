@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5818",
+  "aliases": [
+    "MAL-2026-6249"
+  ],
+  "modified": "2026-06-21T15:46:38Z",
+  "published": "2026-06-21T15:45:16Z",
+  "summary": "Security-research / proof-of-concept package: blinkit-core (npm)",
+  "details": "The preinstall hook exfiltrates the installer's hostname, username, current working directory, and ALL environment variables (base64-encoded via `env | base64 -w0`) to `d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/\u003cbase64-package-name\u003e` via curl over HTTP. A preuninstall hook also sends the hostname to `d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/uninstall/blinkit-core`. The package's `index.js` is a 61-byte stub exporting only name and version; the hooks are the entire payload, designed to capture npm tokens, GitHub tokens, cloud credentials, and any other secrets present in the shell environment at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "blinkit-core",
+        "purl": "pkg:npm/blinkit-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/blinkit-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5818"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-21T15:45:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site"
+        ],
+        "url_observed": [
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/install/",
+          "hxxp://d8s0b82plbq3u5sb2vo0sb3a9obr4yjt7[.]oast[.]site/uninstall/blinkit-core"
+        ]
+      }
+    }
+  }
+}

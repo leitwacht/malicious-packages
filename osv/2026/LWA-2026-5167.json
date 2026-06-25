@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5167",
+  "modified": "2026-06-14T00:57:34Z",
+  "published": "2026-06-14T00:48:46Z",
+  "summary": "Malicious code in sjs-builders (npm)",
+  "details": "On installation, the postinstall hook runs test.js which loads a heavily-obfuscated 52KB payload (index.js). The payload walks the filesystem from the current working directory, recursively searching for files matching specific extensions (likely credential and config files such as.env, SSH keys, and token files). For each matching file, it reads the contents and composes a multipart/form-data POST request combining the file data with the installer's process environment variables, then exfiltrates the payload to a remote server via axios over HTTPS. The C2 URL and targeted file extensions are runtime-decoded from obfuscated string tables to evade static analysis.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sjs-builders",
+        "purl": "pkg:npm/sjs-builders@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sjs-builders/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5167"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T00:48:46Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5668",
+  "modified": "2026-06-17T21:56:07Z",
+  "published": "2026-06-17T20:57:26Z",
+  "summary": "Malicious code in @yhong91/vibetime (npm)",
+  "details": "This package masquerades as an AI coding-activity tracker CLI but exfiltrates data from the host. A bundled adapter shells out to ps/lsof/ss/netstat to locate a locally running Codeium/Windsurf language-server process, scrapes its CSRF token directly from the process command line, scans its localhost listening ports, and then makes authenticated POST requests to that server private RPC endpoints (LanguageServerService Heartbeat and GetCascadeTrajectoryGeneratorMetadata) using the stolen token to harvest AI session trajectory data. It additionally installs hooks into Claude Code, Codex, OpenCode and Pi that capture executed commands, file paths and working directories, and uploads the collected data to a hardcoded raw IP endpoint (hxxp://121[.]196[.]224[.]82:3001) over plaintext HTTP rather than the advertised official domain. It also spawns a detached background process that outlives the CLI invocation for persistence.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yhong91/vibetime",
+        "purl": "pkg:npm/%40yhong91/vibetime@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yhong91/vibetime/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5668"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T20:57:26Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "121[.]196[.]224[.]82",
+          "121[.]196[.]224[.]82:3001"
+        ],
+        "path_observed": [
+          "/exa.language_server_pb.LanguageServerService/GetCascadeTrajectoryGeneratorMetadata",
+          "/exa.language_server_pb.LanguageServerService/Heartbeat"
+        ],
+        "url_observed": [
+          "hxxp://121[.]196[.]224[.]82",
+          "hxxp://121[.]196[.]224[.]82:3001/v3/agent/ingest",
+          "hxxp://121[.]196[.]224[.]82:3001/v3/agent/sessions",
+          "hxxp://121[.]196[.]224[.]82:3001/v3/machines"
+        ]
+      }
+    }
+  }
+}

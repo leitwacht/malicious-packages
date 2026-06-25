@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5535",
+  "modified": "2026-06-16T07:52:41Z",
+  "published": "2026-06-16T07:51:01Z",
+  "summary": "Malicious code in xrpl-ts (npm)",
+  "details": "Xrpl-ts is a combosquat of the legitimate xrpl XRP Ledger library. It bundles a trojanized copy of the real library where Wallet.fromSeed() has been modified to exfiltrate wallet seeds to a Telegram bot. When any wallet is derived via Wallet.generate(), Wallet.fromSeed(), Wallet.fromSecret(), Wallet.fromMnemonic(), or Wallet.fromEntropy(), the seed (private key material) is POSTed to api[.]telegram[.]org via a hardcoded bot token and chat ID in the request URL. The exfiltration code is injected into packages/xrpl/src/Wallet/index.ts and runs whenever the library creates or restores a wallet. IOCs: Telegram C2 at api[.]telegram[.]org; a hardcoded bot token and chat ID in the Wallet.fromSeed() method.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "xrpl-ts",
+        "purl": "pkg:npm/xrpl-ts@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/xrpl-ts/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5535"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T07:51:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3392",
+  "aliases": [
+    "MAL-2026-5360"
+  ],
+  "modified": "2026-06-09T03:25:23Z",
+  "published": "2026-06-09T03:24:48Z",
+  "summary": "Malicious code in wallet-sdk-9 (npm)",
+  "details": "Wallet-sdk-9@3.7.73 is a crypto-wallet credential stealer. The postinstall script runs index.js which: (1) detects sandbox/CI environments to evade analysis, (2) scans for 19+ targeted files including Solana/Ethereum/Bitcoin/Tron/Sui/Aptos wallet keys, SSH private keys,.env files, mnemonic/seed/recovery phrases, (3) exfiltrates every found file to Telegram via api[.]telegram[.]org/bot\u003cTOKEN\u003e/sendDocument with hardcoded bot token [redacted-credential] and chat ID 6433587894, (4) sends a formatted message with hostname/username. The package name 'wallet-sdk-9' is pretexting — the real wallet SDK names are 'wallet-sdk' with no number. Publisher aicrypto-xzggg / an account is a throwaway. Static signals confirmed at runtime: postinstall lifecycle + file discovery + Telegram C2 exfil.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wallet-sdk-9",
+        "purl": "pkg:npm/wallet-sdk-9@3.7.73"
+      },
+      "versions": [
+        "3.7.73"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wallet-sdk-9/v/3.7.73"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3392"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-09T03:24:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}

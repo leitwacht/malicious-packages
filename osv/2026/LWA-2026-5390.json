@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5390",
+  "aliases": [
+    "MAL-2026-5798"
+  ],
+  "modified": "2026-06-15T15:07:55Z",
+  "published": "2026-06-15T15:06:59Z",
+  "summary": "Malicious code in @resolvx/core (npm)",
+  "details": "The @resolvx/core package's postinstall script (scripts/postinstall.cjs) performs host reconnaissance and delivers a second-stage payload. On installation it collects the compromised host's hostname, username, operating system platform, and CPU architecture via Node.js os module calls, encodes this data as base64, and sends it via HTTP GET to 213[.]218[.]160[.]189:8080 and 213[.]218[.]160[.]189:80 at path /s?q=\u003cbeacon\u003e. The C2 server's response is optionally XOR-decrypted using a 64-character hex key split from the response body. The decrypted payload is written to /tmp/.node_\u003crandom\u003e.js and executed as a detached, hidden background Node.js process (spawned with stdio:'ignore', windowsHide:true, detached:true) that outlives the installer. The temp file is deleted 5 seconds after execution. The package also includes basic VM/analysis-tool detection (checks for Wireshark, Fiddler, Procmon, x64dbg, IDA running on Windows) and exits silently if detected.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@resolvx/core",
+        "purl": "pkg:npm/%40resolvx/core@2.4.2"
+      },
+      "versions": [
+        "2.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@resolvx/core/v/2.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5390"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T15:06:59Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "213[.]218[.]160[.]189:80",
+          "213[.]218[.]160[.]189:8080"
+        ]
+      }
+    }
+  }
+}

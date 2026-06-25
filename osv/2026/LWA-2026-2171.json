@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2171",
+  "aliases": [
+    "MAL-2026-5139"
+  ],
+  "modified": "2026-06-01T11:31:36Z",
+  "published": "2026-06-01T10:54:36Z",
+  "summary": "Malicious code in @redhat-cloud-services/hcc-kessel-mcp (npm)",
+  "details": "@redhat-cloud-services/hcc-kessel-mcp@0.3.1 — supply-chain compromise. Version 0.3.0 had NO lifecycle scripts and a clean 22KB tarball (empty scripts object). Version 0.3.1 adds preinstall: \"node index.js\" with a 4.3MB root index.js containing Caesar-cipher-decoded eval() (classic obfuscated payload). The preinstall is undocumented — README says nothing about it, and the legitimate MCP server code in dist/ has no need for a preinstall bootstrap. The 4.3MB file is 99% of package size. Publisher is Red Hat GitHub Actions (trusted publisher via OIDC) — likely CI/CD pipeline compromise or credential theft, not account takeover by a stranger. No token-theft markers found in plaintext but the eval'd code could contain anything. This is the exact pattern of a clean package being backdoored in a subsequent version with an obfuscated lifecycle hook. @redhat-cloud-services/hcc-kessel-mcp@0.3.1 is a supply-chain compromise. A 4.3MB root index.js uses eval() with a Caesar-cipher/number-array decoder to execute obfuscated code, run on every install via a preinstall:'node index.js' hook. The package.json 'files' field lists only dist/README/LICENSE, yet the obfuscated root index.js is present in the tarball (a hand-crafted publish); the legitimate server code in dist/ has no need for any preinstall hook. A 4.3MB obfuscated eval preinstall has no legitimate purpose in an MCP tool.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@redhat-cloud-services/hcc-kessel-mcp",
+        "purl": "pkg:npm/%40redhat-cloud-services/hcc-kessel-mcp@0.3.1"
+      },
+      "versions": [
+        "0.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@redhat-cloud-services/hcc-kessel-mcp/v/0.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2171"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T10:54:36Z",
+      "indicators_observed": {}
+    }
+  }
+}

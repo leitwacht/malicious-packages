@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5269",
+  "modified": "2026-06-14T21:19:21Z",
+  "published": "2026-06-14T21:17:57Z",
+  "summary": "Malicious code in test-leakage-attack-node (npm)",
+  "details": "The package exfiltrates all environment variables from the installer's machine via an HTTP GET request during npm install. The preinstall and postinstall hooks both run index.js, which collects every key-value pair from process.env, serializes them as JSON, base64-encodes the payload, and sends it to hxxp://somewhere[.]somehow[.]local/ in the X-Hidden request header. The exfiltrated data includes all environment secrets the victim has configured: API tokens, cloud credentials, database passwords, CI/CD tokens, and other sensitive configuration. The C2 host is somewhere.somehow.local (port 80, path /), and the exfiltration channel is the X-Hidden header on GET requests.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "test-leakage-attack-node",
+        "purl": "pkg:npm/test-leakage-attack-node@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/test-leakage-attack-node/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5269"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T21:17:57Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxp://somewhere[.]somehow[.]local/"
+        ]
+      }
+    }
+  }
+}

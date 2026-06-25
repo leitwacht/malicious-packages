@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5744",
+  "aliases": [
+    "MAL-2026-6188"
+  ],
+  "modified": "2026-06-18T21:02:26Z",
+  "published": "2026-06-18T21:01:24Z",
+  "summary": "Malicious code in eslint-helper-1 (npm)",
+  "details": "Eslint-helper-1@5.0.4 ships an information stealer disguised as an ESLint helper. The package contains index.js which searches the current working directory and parent directories for credential files — including Solana CLI wallet keys (id.json),.env files, config.json, and config.toml — and collects shell command history from bash, zsh, fish, and PowerShell (on both Windows and Linux). All stolen files and history are exfiltrated via HTTPS POST with Content-Type: application/octet-stream to hxxps://vercel-backend-five-vert[.]vercel[.]app/api/v1. The package also resolves the victim's local IP address via a UDP DNS socket to 8[.]8[.]8[.]8:80, which is prepended to exfiltrated payloads as a username@ip prefix. The test.js entry point triggers the full exfiltration chain immediately when executed. The package has no lifecycle hooks (it does not auto-execute on npm install), but contains all the code required for credential theft and exfiltration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eslint-helper-1",
+        "purl": "pkg:npm/eslint-helper-1@5.0.4"
+      },
+      "versions": [
+        "5.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eslint-helper-1/v/5.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5744"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T21:01:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vercel-backend-five-vert[.]vercel[.]app"
+        ],
+        "ip_observed": [
+          "8[.]8[.]8[.]8:80"
+        ],
+        "url_observed": [
+          "hxxps://vercel-backend-five-vert[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

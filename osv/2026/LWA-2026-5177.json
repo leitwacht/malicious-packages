@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5177",
+  "modified": "2026-06-14T03:33:19Z",
+  "published": "2026-06-14T03:32:53Z",
+  "summary": "Malicious code in solidity-compile-deploy (npm)",
+  "details": "Solidity-compile-deploy@1.0.0 exfiltrates all environment variables to a remote Redis database when imported. The index.js module creates a connection to clean-calf-70292[.]upstash[.]io:6379 (an Upstash Redis instance) using an embedded connection URL, then serialises the entire process.env object to the key \"foo\" on that server. This steals any credentials, tokens, API keys and secrets present in the runtime environment (NPM_TOKEN, GITHUB_TOKEN, AWS keys, etc.). The exfiltration executes as a side-effect of loading the module with no lifecycle hook required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solidity-compile-deploy",
+        "purl": "pkg:npm/solidity-compile-deploy@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solidity-compile-deploy/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5177"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T03:32:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "clean-calf-70292[.]upstash[.]io"
+        ]
+      }
+    }
+  }
+}

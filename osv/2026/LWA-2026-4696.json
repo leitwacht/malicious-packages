@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4696",
+  "modified": "2026-06-12T12:31:35Z",
+  "published": "2026-06-12T12:30:25Z",
+  "summary": "Malicious code in prettier-lint-lenz (npm)",
+  "details": "Combosquat of the 'prettier' code formatter. The postinstall hook copies bundled payload files to %LOCALAPPDATA%\\prettier-lint, then runs ctll.mjs which creates a Windows scheduled task 'CdllProtect' that persists across reboots. The payload cdll.mjs polls the Windows clipboard every 250ms and POSTs its contents to hxxp://204[.]10[.]194[.]64:5000/api/nonce — a clipboard-monitoring data exfiltration implant. Also sends an 'installed' beacon at install time to the same C2. No token-theft markers found, but clipboard exfil and persistence alone are a clear supply-chain attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "prettier-lint-lenz",
+        "purl": "pkg:npm/prettier-lint-lenz@2.6.4"
+      },
+      "versions": [
+        "2.6.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/prettier-lint-lenz/v/2.6.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4696"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T12:30:25Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "204[.]10[.]194[.]64:5000"
+        ],
+        "url_observed": [
+          "hxxp://204[.]10[.]194[.]64"
+        ]
+      }
+    }
+  }
+}

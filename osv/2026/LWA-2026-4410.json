@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4410",
+  "modified": "2026-06-11T20:46:39Z",
+  "published": "2026-06-11T20:45:29Z",
+  "summary": "Malicious code in openclaw-preview (npm)",
+  "details": "The postinstall lifecycle hook (bash install.sh) fingerprints the host OS and architecture via uname, downloads a binary from stlapi[.]bigpopeye[.]lol to a hidden directory (~/.cache/.systemd or ~/.systemd), names it sysmd to masquerade as systemd, and executes it with the campaign ID \"617736805323637020\" and a C2 URL. On macOS it strips the quarantine attribute. The JavaScript source files (src/*.js, bin/cli.js) are a benign-looking decoy — the real payload is the remote binary fetched at install time. A supply-chain trojan delivering a remote binary downloader via npm lifecycle hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "openclaw-preview",
+        "purl": "pkg:npm/openclaw-preview@2026.6.1"
+      },
+      "versions": [
+        "2026.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/openclaw-preview/v/2026.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4410"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T20:45:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "stlapi[.]bigpopeye[.]lol"
+        ]
+      }
+    }
+  }
+}

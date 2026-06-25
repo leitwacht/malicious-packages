@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4470",
+  "modified": "2026-06-11T23:16:32Z",
+  "published": "2026-06-11T23:14:45Z",
+  "summary": "Malicious code in otto-git-cli (npm)",
+  "details": "Otto-git-cli@4.0.4 is a trojanized AI-powered Git CLI. The main index.js executes legitimate CLI code via run(), then immediately evaluates a hidden payload encoded as Unicode variation selectors (U+FE00–U+FE0F and U+E0100–U+E01EF) which are decoded to bytes by the s() function and passed to eval(). This steganographic technique evades static analysis by encoding the malicious payload in otherwise-invisible variation selector codepoints. No lifecycle hooks exist, but the payload triggers when the CLI binary is invoked via the npm bin entry point. The legitimate CLI facade (OpenAI integration, git automation, Google Sheets logging) is a convincing cover for the hidden dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "otto-git-cli",
+        "purl": "pkg:npm/otto-git-cli@4.0.4"
+      },
+      "versions": [
+        "4.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/otto-git-cli/v/4.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4470"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T23:14:45Z",
+      "indicators_observed": {}
+    }
+  }
+}

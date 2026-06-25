@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5347",
+  "modified": "2026-06-15T09:10:36Z",
+  "published": "2026-06-15T08:53:33Z",
+  "summary": "Malicious code in twig.extras (npm)",
+  "details": "Twig.extras@99.99.9 is a dependency-confusion package that exfiltrates environment data via DNS. On npm install, the postinstall hook runs index.js which collects the OS username, hostname, and current working directory. This data is encoded into a DNS lookup subdomain (twig.extras.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]sl4x0[.]xyz) and resolved against the attacker's DNS server at oob[.]sl4x0[.]xyz, exfiltrating the host fingerprint. The package uses module.constructor._load to bypass standard require hooks. The publisher email domain (sl4x0[.]xyz) matches the C2 domain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twig.extras",
+        "purl": "pkg:npm/twig.extras@99.99.9"
+      },
+      "versions": [
+        "99.99.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twig.extras/v/99.99.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5347"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T08:53:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]sl4x0[.]xyz",
+          "sl4x0[.]xyz"
+        ]
+      }
+    }
+  }
+}

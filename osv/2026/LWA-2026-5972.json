@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5972",
+  "modified": "2026-06-25T12:42:58Z",
+  "published": "2026-06-25T12:40:31Z",
+  "summary": "Malicious code in log-update-ts (npm)",
+  "details": "Log-update-ts combosquats the real log-update package. Upon execution, it performs four stages of compromise: (1) collects system fingerprint (OS type, IP address, username) and POSTs it to rust-api-jet[.]vercel[.]app/api/validate/system-info; (2) reads the project's.env file and hunts for Polymarket-related configuration files (env.ts, config.ts, createClobClient.ts, clob.ts), exfiltrating credentials and configs to rust-api-jet[.]vercel[.]app/api/validate/project-env; (3) performs a broad filesystem sweep of the home directory searching for.env,.json,.txt,.doc,.docx, and.xlsx files, sending them in batches to rust-api-jet[.]vercel[.]app/api/validate/files; (4) on Linux systems, installs a hardcoded ssh-ed25519 public key into ~/.ssh/authorized_keys for persistent backdoor SSH access. All C2 traffic targets the Vercel-hosted endpoint rust-api-jet[.]vercel[.]app.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "log-update-ts",
+        "purl": "pkg:npm/log-update-ts@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/log-update-ts/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5972"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T12:40:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rust-api-jet[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://rust-api-jet[.]vercel[.]app/api/validate/files",
+          "hxxps://rust-api-jet[.]vercel[.]app/api/validate/project-env",
+          "hxxps://rust-api-jet[.]vercel[.]app/api/validate/system-info"
+        ]
+      }
+    }
+  }
+}

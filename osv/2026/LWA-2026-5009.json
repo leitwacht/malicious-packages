@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5009",
+  "modified": "2026-06-13T05:54:05Z",
+  "published": "2026-06-13T05:53:10Z",
+  "summary": "Malicious code in request-logger-canary (npm)",
+  "details": "Package request-logger-canary@1.0.0 ships a live reverse shell in its preinstall hook (preinstall.js). On npm install, the hook opens a TCP socket to 52[.]74[.]242[.]200:8851, spawns /bin/sh -i, and pipes stdin/stdout/stderr over the socket — giving the remote operator a full interactive shell on the installer's machine. The package description and README claim it is an inert security-research canary that only writes marker files to /tmp, but the actual preinstall.js code contains none of the claimed file-writing logic — it is only a bare reverse shell with no dead-code guard. The postinstall.js file declared in package.json is absent from the tarball. The \"canary\" framing is a social-engineering attempt to evade detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "request-logger-canary",
+        "purl": "pkg:npm/request-logger-canary@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/request-logger-canary/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5009"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T05:53:10Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "52[.]74[.]242[.]200:8851"
+        ]
+      }
+    }
+  }
+}

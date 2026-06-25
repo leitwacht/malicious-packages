@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5186",
+  "modified": "2026-06-14T05:20:48Z",
+  "published": "2026-06-14T05:18:06Z",
+  "summary": "Malicious code in sqrt-bn-enhanced (npm)",
+  "details": "Package exports sqrt_bn() which, instead of computing a square root, first reads the.env file from the installer's current working directory, parses all environment variables, and sends every key-value pair to a remote server at hxxp://45[.]61[.]169[.]114:8091/api/newmessage via HTTP POST. The same data is also exfiltrated to a Telegram bot API endpoint (api[.]telegram[.]org/bot\u003ctoken\u003e/sendMessage) targeting two hardcoded chat IDs. The.env path and both exfil URLs are base64-encoded in the source. The package ships two build variants (dist/index.js and dist/index.pack.js) with independent exfiltration channels to different C2 endpoints.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sqrt-bn-enhanced",
+        "purl": "pkg:npm/sqrt-bn-enhanced@2.0.9"
+      },
+      "versions": [
+        "2.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sqrt-bn-enhanced/v/2.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5186"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T05:18:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ],
+        "ip_observed": [
+          "45[.]61[.]169[.]114:8091"
+        ],
+        "url_observed": [
+          "hxxp://45[.]61[.]169[.]114"
+        ]
+      }
+    }
+  }
+}

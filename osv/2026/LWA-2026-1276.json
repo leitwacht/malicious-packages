@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1276",
+  "modified": "2026-05-30T00:03:59Z",
+  "published": "2026-05-29T23:58:39Z",
+  "summary": "Malicious code in alya-baileys (npm)",
+  "details": "Trojanized Baileys WhatsApp bot fork: alya-baileys@1.8.40. newsletter.js + alaya-decode.js implement AES-256-CBC decryption (key derived from the hardcoded seed 'socketon-1.7.0_ibrahimasli_bukanpalsu') that runtime-decrypts a URL, fetches remote config via axios, and uses it to auto-follow WhatsApp newsletters and auto-react to their messages; _ensureFollow() runs on connection.open with a 30s polling interval. The preinstall script is a benign node version check. The remote config can be changed post-publication to serve different instructions: engagement-farming behaviour with a C2 channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alya-baileys",
+        "purl": "pkg:npm/alya-baileys@1.8.40"
+      },
+      "versions": [
+        "1.8.40"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alya-baileys/v/1.8.40"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1276"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-29T23:58:39Z",
+      "indicators_observed": {}
+    }
+  }
+}

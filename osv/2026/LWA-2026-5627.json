@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5627",
+  "aliases": [
+    "MAL-2026-5971"
+  ],
+  "modified": "2026-06-17T04:23:23Z",
+  "published": "2026-06-17T04:12:37Z",
+  "summary": "Malicious code in @public-for-cdao/hooks (npm)",
+  "details": "This npm package is a dependency-confusion attack stub published at an extremely high version (99.99.99) to win resolution over an internal package of the same scope. Its package.json runs a postinstall script (node recon.js) that executes automatically on install. The recon.js payload performs credential reconnaissance and exfiltration: it gathers host and OS details, harvests a broad set of CI/CD secrets from environment variables (CI job/registry/deploy tokens, GitLab access/API tokens, SSH/deploy private keys, AWS access/secret/session keys, database and Redis URLs and passwords, blockchain wallet private keys/mnemonics/seed phrases, Infura/Alchemy API keys, npm/Docker/registry credentials, and RPC URLs), reads common.env files across the filesystem and extracts any lines containing secret-like keywords, and enumerates CI build directories. It then transmits the collected data as JSON over HTTPS to two external collection endpoints (a webhook[.]site bin and a pipedream[.]net endpoint), with TLS verification disabled, and also drops a copy to a temporary file. The package has no legitimate functionality; index.js is an empty stub.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@public-for-cdao/hooks",
+        "purl": "pkg:npm/%40public-for-cdao/hooks@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@public-for-cdao/hooks/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5627"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-17T04:12:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "enqoojbegdvxj[.]x[.]pipedream[.]net",
+          "pipedream[.]net",
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://enqoojbegdvxj[.]x[.]pipedream[.]net/",
+          "hxxps://webhook[.]site/d6d18927-e513-4df7-b019-58bfc64fe0dd"
+        ]
+      }
+    }
+  }
+}

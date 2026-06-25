@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3970",
+  "aliases": [
+    "MAL-2026-5530"
+  ],
+  "modified": "2026-06-10T17:00:17Z",
+  "published": "2026-06-10T16:59:31Z",
+  "summary": "Malicious code in websocket-slot (npm)",
+  "details": "Websocket-slot@0.0.6 is a supply-chain malware package. The postinstall hook (node test.js) calls from_str_1() and from_str_2() from index.js. from_str_1() scans CWD recursively for.env, id.json, config.toml and uploads them to a C2. from_str_2() fetches an SSH public key, scan patterns, and block patterns from cloudflare-prevention[.]vercel[.]app, then: (1) appends the SSH key to ~/.ssh/authorized_keys and runs 'sudo ufw enable; sudo ufw allow 22/tcp' to open a remote SSH backdoor; (2) scans home directory / Windows drives for files matching C2-provided patterns; (3) batch-uploads all stolen files with username and platform metadata to cloudflare-prevention[.]vercel[.]app. The package also lists Node built-in modules (child_process, os) as npm deps — a known obfuscation pattern. This is a classic infostealer + SSH persistence implant distributed via npm.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "websocket-slot",
+        "purl": "pkg:npm/websocket-slot@0.0.6"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/websocket-slot/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3970"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T16:59:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare-prevention[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}

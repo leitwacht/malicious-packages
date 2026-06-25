@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5189",
+  "modified": "2026-06-14T06:49:03Z",
+  "published": "2026-06-14T06:48:03Z",
+  "summary": "Malicious code in st-biginteger (npm)",
+  "details": "St-biginteger is a combosquat of the legitimate big.js arbitrary-precision decimal arithmetic library. The package ships a clean copy of big.js source but declares a dependency on sjs-builders (a known-malicious package). When installed, sjs-builders' postinstall hook executes heavily obfuscated JavaScript (javascript-obfuscator style with dictionary-array decoding) that runs arbitrary payload. This is a dependency-chain supply-chain attack: the combosquat appears legitimate at first glance (same README, repo URL, and source as the real library) but silently introduces malware through its dependency tree.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "st-biginteger",
+        "purl": "pkg:npm/st-biginteger@5.0.5"
+      },
+      "versions": [
+        "5.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/st-biginteger/v/5.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5189"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T06:48:03Z",
+      "indicators_observed": {}
+    }
+  }
+}

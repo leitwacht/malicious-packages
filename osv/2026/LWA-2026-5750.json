@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5750",
+  "aliases": [
+    "MAL-2026-6456"
+  ],
+  "modified": "2026-06-19T06:32:16Z",
+  "published": "2026-06-19T06:31:29Z",
+  "summary": "Malicious code in stitch-design (npm)",
+  "details": "During npm install, the preinstall script (scripts/preinstall.js) automatically executes and performs reconnaissance on the developer's machine. It reads sensitive files including ~/.gitconfig, ~/.config/git/config, ~/.git-credentials, ~/.ssh/*.pub, ~/.npmrc, and ~/.docker/config.json. It also runs git config, npm config get email, gh api user, and claude auth status commands. All email addresses extracted from these files and commands are exfiltrated via HTTPS GET requests to stitch-design[.]ai/api/v1 with query parameters src and user. The install exits with code 1 to obscure the activity. The same harvesting payload is also present in the CLI binary (bin/cli.js).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "stitch-design",
+        "purl": "pkg:npm/stitch-design@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/stitch-design/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5750"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T06:31:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "stitch-design[.]ai"
+        ],
+        "url_observed": [
+          "hxxps://stitch-design[.]ai/api/v1"
+        ]
+      }
+    }
+  }
+}

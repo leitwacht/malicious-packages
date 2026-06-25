@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4363",
+  "aliases": [
+    "MAL-2026-5710"
+  ],
+  "modified": "2026-06-11T16:44:25Z",
+  "published": "2026-06-11T16:43:27Z",
+  "summary": "Malicious code in chalk-plus-ts (npm)",
+  "details": "A trojanized nodemailer clone published under a combosquat name (\"chalk-plus-ts\" riding the chalk+TypeScript popularity). The publisher impersonates the real nodemailer author (Andris Reinman) in the package metadata. The postinstall hook runs node lib/utils/index.js, which spawns a detached child process running lib/utils/smtp-connection/index.js. That child fetches a JSON payload from jsonkeeper[.]com/b/QHDXR, extracts the 'cookie' property, and passes it to new Function(\"require\", data.cookie)(require) — a classic remote-code-execution download-and-run pattern. The package also ships an AES-256-CBC decryption module (parse.js) with hardcoded key and IV, plus a 262KB encrypted LICENSE file, providing an alternative offline payload decryption path. The self-dependency (chalk-plus-ts@^1.0.3) is a secondary anomaly; the core threat is the postinstall RCE backdoor.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chalk-plus-ts",
+        "purl": "pkg:npm/chalk-plus-ts@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chalk-plus-ts/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4363"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T16:43:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ]
+      }
+    }
+  }
+}

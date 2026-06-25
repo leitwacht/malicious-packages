@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4951",
+  "modified": "2026-06-13T00:53:57Z",
+  "published": "2026-06-13T00:53:12Z",
+  "summary": "Malicious code in react-remove-properties (npm)",
+  "details": "A dependency-confusion package. The manifest declares a self-referencing dependency to hxxp://pack[.]nppacks[.]com/npm/react-remove-properties, an external HTTP URL instead of the npm registry, so npm install fetches and executes code from that external server during dependency resolution. It also depends on \"axios\", which likely resolves through the same external path. The shipped index.js is a bare 106-byte stub that only prints \"Hello, world!\" and carries an unverifiable \"security testing PoC\" claim with no repository URL or bug-bounty reference; the real payload is delivered from pack[.]nppacks[.]com at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-remove-properties",
+        "purl": "pkg:npm/react-remove-properties@6.14.0"
+      },
+      "versions": [
+        "6.14.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-remove-properties/v/6.14.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4951"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-13T00:53:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pack[.]nppacks[.]com"
+        ],
+        "url_observed": [
+          "hxxp://pack[.]nppacks[.]com/npm/react-remove-properties"
+        ]
+      }
+    }
+  }
+}

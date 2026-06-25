@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5805",
+  "modified": "2026-06-21T01:35:12Z",
+  "published": "2026-06-21T01:34:16Z",
+  "summary": "Malicious code in @paoletti/viem (npm)",
+  "details": "@paoletti/viem@2.53.1 is a trojanized clone of the legitimate viem Ethereum library. The package replaces the critical cryptographic dependency `@noble/hashes` (used for keccak256, sha256, and ripemd160 hashing in all Ethereum signing and wallet operations) with `@paoletti/hashes` via the npm alias `\"@noble/hashes\": \"npm:@paoletti/hashes@1.8.0\"`. When any code imports hashing functions from `@noble/hashes`, npm resolves this to the attacker-controlled `@paoletti/hashes` instead, giving the attacker control over cryptographic operations underpinning wallet signing, transaction construction, and address derivation. The package is published by the publisher \"the publisher\" and has no install scripts — the attack is the dependency substitution itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@paoletti/viem",
+        "purl": "pkg:npm/%40paoletti/viem@2.53.1"
+      },
+      "versions": [
+        "2.53.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@paoletti/viem/v/2.53.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5805"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T01:34:16Z",
+      "indicators_observed": {}
+    }
+  }
+}

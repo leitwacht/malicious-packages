@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4820",
+  "aliases": [
+    "MAL-2026-4655"
+  ],
+  "modified": "2026-06-12T17:54:49Z",
+  "published": "2026-06-12T17:53:27Z",
+  "summary": "Malicious code in qr-code-styling-temp (npm)",
+  "details": "Same package (qr-code-styling-temp@9.9.10) as LWA-2026-4820, confirmed malware. Install hook loads obfuscated DNS beacon that collects username, hostname, and cwd, then exfiltrates them via dns.resolve4 queries to oob[.]sl4x0[.]xyz — an OOB DNS exfiltration channel during npm install. Combosquats the qr-code-styling package. Version 9.9.10 is version-gaming to appear established. The install hook (node index.js) silently loads lib/core.js, which imports an obfuscated DNS beacon (lib/6ad264.js and lib/b02e30.js). At runtime during install, it collects the victim's username (os.userInfo().username), hostname (os.hostname()), and cwd basename, then encodes them into a DNS lookup to \u003csubdomain\u003e.oob[.]sl4x0[.]xyz via dns.resolve4. This is an OOB data exfiltration channel — the attacker's DNS server logs the host info embedded in the query domain. The src/ files are well-written decoy utility code unrelated to QR code styling. No token theft observed but the DNS beacon is a clear host-fingerprinting exfil on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "qr-code-styling-temp",
+        "purl": "pkg:npm/qr-code-styling-temp@9.9.10"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/qr-code-styling-temp/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4820"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T17:53:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]sl4x0[.]xyz"
+        ]
+      }
+    }
+  }
+}

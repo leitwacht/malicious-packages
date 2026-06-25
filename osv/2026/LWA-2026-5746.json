@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5746",
+  "aliases": [
+    "MAL-2026-6219"
+  ],
+  "modified": "2026-06-19T08:58:39Z",
+  "published": "2026-06-19T02:41:45Z",
+  "summary": "Malicious code in chai-as-forgeted (npm)",
+  "details": "Chai-as-forgeted is a combosquat of the well-known chai assertion library. The package exports an Express middleware that spawns a detached child process (surviving the parent) which fetches a second-stage payload from a remote JSON storage service (api[.]jsonstorage[.]net) and executes it as arbitrary code via the Function constructor with full Node.js require access. The C2 URL and authentication header are stored as base64-encoded strings inside lib/caller.js. The remote payload can read, exfiltrate, and modify any data accessible to the Node.js process. IOC: api[.]jsonstorage[.]net (C2 relay host). Package chai-as-forgeted is a typosquat of a chai plugin that serves as a remote code loader. When required, it spawns a detached background Node.js process (lib/caller.js) that: 1) decodes a base64-embedded endpoint pointing to api[.]jsonstorage[.]net at path /v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/a179ea35-b962-4722-b3f1-e28316d1a44a, 2) sends an HTTPS GET with a custom header (x-secret-key), 3) reads the.cookie field from the JSON response, and 4) executes it as arbitrary JavaScript code via the Function constructor with full access to Node.js require(). The URL contains two UUIDs suggesting a user-specific payload store. The loader retries up to 5 times on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-forgeted",
+        "purl": "pkg:npm/chai-as-forgeted@9.24.6"
+      },
+      "versions": [
+        "9.24.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-forgeted/v/9.24.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5746"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T02:41:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]net"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/a179ea35-b962-4722-b3f1-e28316d1a44a"
+        ]
+      }
+    }
+  }
+}

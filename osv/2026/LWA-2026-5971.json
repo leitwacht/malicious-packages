@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5971",
+  "modified": "2026-06-25T12:43:07Z",
+  "published": "2026-06-25T12:39:21Z",
+  "summary": "Malicious code in txs-builder (npm)",
+  "details": "Txs-builder@1.0.6 is a trojanized package disguised as an ecommerce transaction-data generator. It ships a base64-encoded payload in test_address_list.js (with 0x-prefix obfuscation) that is decoded and eval'd when the package's exported getTransactions() function is called. The decoded code downloads a remote script from hxxps://kb4h5c83t[.]userdom[.]com/inform[.]php, writes it to the system's temporary directory as tmp_20260521, and executes it as a detached Python process. The final remote payload is fetched at runtime, making this a multi-stage downloader trojan.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "txs-builder",
+        "purl": "pkg:npm/txs-builder@1.0.6"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/txs-builder/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5971"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T12:39:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kb4h5c83t[.]userdom[.]com"
+        ],
+        "url_observed": [
+          "hxxps://kb4h5c83t[.]userdom[.]com/inform[.]php"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5579",
+  "modified": "2026-06-16T16:56:28Z",
+  "published": "2026-06-15T12:03:08Z",
+  "summary": "Malicious code in unique-new-york-standard-wallet (npm)",
+  "details": "This package impersonates a Solana wallet provider. It ships both an npm library and a browser/Safari extension bundle that inject a fake wallet (RealGhost) into web pages and register it as a Solana wallet-standard provider. On load it begins polling a hardcoded remote command-and-control endpoint (an ngrok tunnel) once per second and executes commands returned by the server. It also POSTs page telemetry (current URL, scroll position, version) to the same C2. Wallet signing methods (signTransaction, signAndSendTransaction, signAllTransactions) serialize transactions to base64 and route them through a content-script bridge controlled by the attacker, and a hardcoded attacker public key is returned to the page on connection. The hardcoded developer tunnels, empty package metadata, and remote-command execution show this is a wallet-hijacking harness rather than a legitimate wallet integration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "unique-new-york-standard-wallet",
+        "purl": "pkg:npm/unique-new-york-standard-wallet@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/unique-new-york-standard-wallet/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5579"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T12:03:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "444ed2e6988a[.]ngrok[.]app"
+        ],
+        "url_observed": [
+          "hxxps://444ed2e6988a[.]ngrok[.]app/api/command",
+          "hxxps://444ed2e6988a[.]ngrok[.]app/api/log"
+        ],
+        "wallet_observed": [
+          "9fXVcjT6eKTVLN7e3Yi3VvzznGCg9fwNXgHRKMkEZZze"
+        ]
+      }
+    }
+  }
+}

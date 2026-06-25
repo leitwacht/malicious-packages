@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5414",
+  "modified": "2026-06-15T18:59:17Z",
+  "published": "2026-06-15T18:58:11Z",
+  "summary": "Malicious code in @dilxzphrine/libsignal-node (npm)",
+  "details": "Combosquat package @dilxzphrine/libsignal-node impersonates the Signal protocol library but silently patches the @whiskeysockets/baileys WhatsApp library at runtime. On require(), index.js schedules a payload that overwrites baileys/lib/Socket/newsletter.js with a modified version. The modified code auto-follows two hardcoded WhatsApp newsletter JIDs (120363330289360382@newsletter and 120363409782361079@newsletter) via WhatsApp's w:mex query infrastructure whenever the WhatsApp socket is initialized. A.cache marker file is written into the baileys node_modules directory to ensure the patch only executes once. The attacker's goal is to inflate newsletter follower counts through victims' WhatsApp credentials. The legitimate Signal protocol source files (src/crypto.js etc.) are shipped as a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dilxzphrine/libsignal-node",
+        "purl": "pkg:npm/%40dilxzphrine/libsignal-node@2.5.0"
+      },
+      "versions": [
+        "2.5.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dilxzphrine/libsignal-node/v/2.5.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5414"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T18:58:11Z",
+      "indicators_observed": {}
+    }
+  }
+}

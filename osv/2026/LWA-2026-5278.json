@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5278",
+  "modified": "2026-06-14T22:48:37Z",
+  "published": "2026-06-14T22:47:52Z",
+  "summary": "Malicious code in textdecode (npm)",
+  "details": "Textdecode@1.2.7 is a credential-stealing Trojan disguised as a text decoder library. When required, lib/utf8-decoder.js (heavily obfuscated) executes immediately. It decrypts browser-saved credentials from Chrome, Edge, and Brave using the Windows DPAPI (via @primno/dpapi), reads stored passwords and cookies from browser profile directories (Login Data, Cookies, Local State). It targets 30+ crypto wallet browser extensions including Metamask, Coinbase, Phantom, Trust, BinanceChain, Exodus, Keplr, OKX, and others by scanning their extension storage. It steals Discord authentication tokens from both the Discord desktop app (Local Storage, leveldb) and browser profiles. It collects system fingerprints (hostname, username, OS, architecture, hardware UUID via wmic). Stolen data is exfiltrated through the Dropbox API (api[.]dropboxapi[.]com and content[.]dropboxapi[.]com) using hardcoded application credentials for uploading/downloading files. It uses PowerShell with hidden windows to zip collected data, and can kill processes via taskkill.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "textdecode",
+        "purl": "pkg:npm/textdecode@1.2.7"
+      },
+      "versions": [
+        "1.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/textdecode/v/1.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5278"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T22:47:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]dropboxapi[.]com",
+          "content[.]dropboxapi[.]com"
+        ]
+      }
+    }
+  }
+}

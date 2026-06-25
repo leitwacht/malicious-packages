@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5487",
+  "aliases": [
+    "MAL-2026-5581"
+  ],
+  "modified": "2026-06-16T02:45:10Z",
+  "published": "2026-06-16T02:43:35Z",
+  "summary": "Malicious code in webpack-patch (npm)",
+  "details": "A trojanized clone of the pino logger published under the combosquat name \"webpack-patch\". The package's index.js exports a function that spawns a detached background Node.js child process running lib/caller.js, hidden via stdio:ignore and child.unref(). caller.js uses axios to fetch a second-stage payload from hxxps://jsonkeeper[.]com/b/XRGF3 (with an 'x-secret-key' request header), then evaluates the response's.cookie field using the Function constructor with the Node.js require() object passed in — giving the remote code full filesystem and network access. Errors are silently retried up to 5 times for stealth. The fetched payload can execute arbitrary code on the installer's machine without their knowledge.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "webpack-patch",
+        "purl": "pkg:npm/webpack-patch@1.1.7"
+      },
+      "versions": [
+        "1.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/webpack-patch/v/1.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5487"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T02:43:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/XRGF3"
+        ]
+      }
+    }
+  }
+}

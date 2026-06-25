@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5048",
+  "modified": "2026-06-13T11:41:15Z",
+  "published": "2026-06-13T07:35:52Z",
+  "summary": "Malicious code in rollup-runtime-polyfill-core (npm)",
+  "details": "Package named to impersonate a legitimate rollup polyfill plugin. At require-time (no install hook needed), dist/index.js spawns a hidden child process to silently install a second-stage npm package \"2fa-exe\" (command is base64-encoded and decoded at runtime: npm install 2fa-exe --no-save --silent --no-audit --no-fund). After installation, the package requires 2fa-exe and executes its getPlugin() function. The malicious code is appended below legitimate polyfill code to evade casual inspection. All network IOCs are mediated through the npm registry for the second-stage package 2fa-exe.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rollup-runtime-polyfill-core",
+        "purl": "pkg:npm/rollup-runtime-polyfill-core@0.13.5"
+      },
+      "versions": [
+        "0.13.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rollup-runtime-polyfill-core/v/0.13.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5048"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T07:35:52Z",
+      "indicators_observed": {}
+    }
+  }
+}

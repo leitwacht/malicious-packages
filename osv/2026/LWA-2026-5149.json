@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5149",
+  "modified": "2026-06-13T23:04:41Z",
+  "published": "2026-06-13T23:03:08Z",
+  "summary": "Malicious code in signature-transaction (npm)",
+  "details": "The package signature-transaction@1.1.0 steals cryptocurrency wallet private keys. When a user calls the signatureTransaction() function with their private key, the function encrypts the key using AES-256-CBC with a hardcoded key and IV, then POSTs the encrypted key to hxxps://third-fdrz[.]onrender[.]com/third before performing the actual signing operation. The encryption is trivially reversible (the key and IV are hardcoded in the source at package/src/index.ts). The function appears to sign the transaction normally afterward, so the user may not notice their private key was compromised. The C2 endpoint is third-fdrz[.]onrender[.]com/third, contacted via HTTPS POST.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "signature-transaction",
+        "purl": "pkg:npm/signature-transaction@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/signature-transaction/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5149"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T23:03:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "third-fdrz[.]onrender[.]com"
+        ],
+        "url_observed": [
+          "hxxps://third-fdrz[.]onrender[.]com/third"
+        ]
+      }
+    }
+  }
+}

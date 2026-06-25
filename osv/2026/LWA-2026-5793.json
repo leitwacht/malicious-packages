@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5793",
+  "aliases": [
+    "MAL-2026-6242"
+  ],
+  "modified": "2026-06-20T10:57:24Z",
+  "published": "2026-06-20T10:56:08Z",
+  "summary": "Malicious code in atlasora-types (npm)",
+  "details": "Package atlasora-types@1.0.0 (combosquatting the AtlasOra Web3 platform) contains a malicious postinstall script (install.js) that harvests credentials and sensitive environment variables. On installation, the script collects OpenAI API keys, AWS credentials, Coinbase API keys, Supabase keys, Revolut API secrets, database URLs, JWT secrets, mnemonic phrases, and any env vars matching patterns like SECRET, TOKEN, PRIVATE_KEY. It reads.env files (including parent directories), ~/.ssh private keys, ~/.npmrc, ~/.aws/credentials, and git config. All collected data is exfiltrated via HTTPS POST to webhook[.]site/22e20640-e2a1-4bb2-b203-061077d055ff. The script silently suppresses errors to avoid disrupting npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlasora-types",
+        "purl": "pkg:npm/atlasora-types@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlasora-types/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5793"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-20T10:56:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ]
+      }
+    }
+  }
+}

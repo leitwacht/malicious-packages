@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5923",
+  "aliases": [
+    "MAL-2026-6350"
+  ],
+  "modified": "2026-06-23T14:31:34Z",
+  "published": "2026-06-23T14:30:38Z",
+  "summary": "Malicious code in chai-as-operated (npm)",
+  "details": "Trojanized clone of the pino logger library distributed as the combosquat package 'chai-as-operated'. The package bundles legitimate pino source code as camouflage but injects malicious code in index.js and lib/initializeCaller.js. When the exported middleware function is called, it spawns a detached background Node.js process that decodes a base64-embedded URL (hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json), fetches its contents via HTTP GET with an 'x-secret-key' header, and executes the 'cookie' field of the response as arbitrary JavaScript code via the Function constructor, passing the 'require' function so the payload can use all Node.js modules. This is a remote code execution dropper that retrieves and runs a second-stage payload from a free file-hosting service (tiiny[.]site).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-operated",
+        "purl": "pkg:npm/chai-as-operated@6.0.3"
+      },
+      "versions": [
+        "6.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-operated/v/6.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5923"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-23T14:30:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiiny[.]site",
+          "tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

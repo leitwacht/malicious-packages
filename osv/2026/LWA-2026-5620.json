@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5620",
+  "modified": "2026-06-17T04:23:12Z",
+  "published": "2026-06-17T04:12:44Z",
+  "summary": "Malicious code in @public-for-cdao/utils (npm)",
+  "details": "This npm package is a dependency-confusion attack stub. Its package.json registers a postinstall script that executes a bundled recon.js the moment the package is installed. The script collects host details (hostname, OS, architecture, username, working directory) and then harvests a wide range of CI/CD and cloud secrets from environment variables (e.g. CI job/registry/deploy tokens and passwords, GitLab access tokens, SSH private keys, AWS access keys and session tokens, database and Redis URLs/passwords, npm tokens, Slack/Discord tokens, crypto private keys, mnemonics and seed phrases, and container-registry credentials). It additionally searches common.env file locations and CI build directories, extracting any lines that look like keys, secrets, tokens, passwords, or mnemonics. The harvested data is serialized to JSON and exfiltrated over HTTPS (with TLS certificate validation disabled) to two external collector endpoints, and a copy is written to a hidden file in /tmp. The artificially high version number (99.99.99) and public scope are characteristic of a dependency-confusion package designed to override a private internal dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@public-for-cdao/utils",
+        "purl": "pkg:npm/%40public-for-cdao/utils@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@public-for-cdao/utils/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5620"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-17T04:12:44Z",
+      "indicators_observed": {}
+    }
+  }
+}

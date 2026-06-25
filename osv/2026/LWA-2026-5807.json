@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5807",
+  "modified": "2026-06-21T01:44:10Z",
+  "published": "2026-06-21T01:43:15Z",
+  "summary": "Malicious code in metrics-probe-9b4c (npm)",
+  "details": "Metrics-probe-9b4c@1.0.0 runs a credential-harvesting payload in its preinstall and postinstall hooks (node run.js). On Windows, the payload:\n1. Escalates to SYSTEM via a UAC bypass (fodhelper.exe with registry manipulation)\n2. Runs a SYSTEM-level PowerShell script that collects: Windows Credential Manager entries (via cmdkey and vaultcmd), LSA secrets from HKLM\\SECURITY\\Policy\\Secrets, SYSTEM environment variables, Azure CLI/MSAL authentication caches from all user profiles, PowerShell history, NuGet/dotnet credential stores, and ProgramData config files containing secrets/tokens/passwords\n3. Exfiltrates all collected credentials via HTTPS GET and POST requests to detector-blonde-instructional-circular[.]trycloudflare[.]com:443 at the /beacon endpoint with tss-daas-creds| markers\n4. Cleans up the scheduled task and temporary files after execution On non-Windows systems, the payload silently confirms code execution via a beacon to the same host. C2: detector-blonde-instructional-circular[.]trycloudflare[.]com:443, path /beacon?d=tss-daas-creds|...",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "metrics-probe-9b4c",
+        "purl": "pkg:npm/metrics-probe-9b4c@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/metrics-probe-9b4c/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5807"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-21T01:43:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "detector-blonde-instructional-circular[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://detector-blonde-instructional-circular[.]trycloudflare[.]com/beacon"
+        ]
+      }
+    }
+  }
+}

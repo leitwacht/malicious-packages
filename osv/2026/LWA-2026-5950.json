@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5950",
+  "aliases": [
+    "MAL-2026-6395"
+  ],
+  "modified": "2026-06-24T08:33:21Z",
+  "published": "2026-06-24T08:32:27Z",
+  "summary": "Malicious code in react-campaign-optimizer (npm)",
+  "details": "Postinstall hook (postinstall.js) automatically on install exfiltrates the complete process environment (all secrets, API keys, tokens) and performs deep host/network reconnaissance to an external C2 at 2e3bkumw[.]requestrepo[.]com via HTTPS POST. The script collects: host fingerprint (hostname, OS, platform, CPU count, memory, network interfaces, user info); routing table, ARP cache, DNS configuration, and /etc/hosts contents; running process list, open network sockets, and open file descriptors; cloud metadata from 169[.]254[.]169[.]254 (AWS/Azure/GCP IMDS), 100[.]100[.]100[.]200 (Alibaba), 100[.]64[.]0[.]1 and 169[.]254[.]0[.]23 (Baidu) across 13 paths each including /meta-data/iam/security-credentials/; internal SSRF probing of gateway IPs (10.x, 172.x, 192.168.x) and Kubernetes API endpoints on ports 80/443/6443; TCP port scan of 19 internal services (SSH, MySQL, PostgreSQL, Redis, MongoDB, Elasticsearch, Kafka, Docker, Etcd, etc.); DNS reconnaissance of ~40 internal hostnames (*.baidu[.]com, *.internal, kubernetes.default.svc); sensitive file reads (/etc/passwd, SSH private keys, kubeconfig, Docker config,.npmrc); Kubernetes service account token extraction attempt; and container environment detection. All collected data is JSON-encoded and POSTed to hxxps://2e3bkumw[.]requestrepo[.]com/{path} in phases. C2 host: 2e3bkumw[.]requestrepo[.]com (443/TCP, HTTPS). File paths: package/postinstall.js (the implant).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-campaign-optimizer",
+        "purl": "pkg:npm/react-campaign-optimizer@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-campaign-optimizer/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5950"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-24T08:32:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "2e3bkumw[.]requestrepo[.]com",
+          "baidu[.]com"
+        ],
+        "url_observed": [
+          "hxxps://2e3bkumw[.]requestrepo[.]com/",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/C1-container",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/D1-dns-internal",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/E0-summary",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/E1-env-all",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/E2-routing",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/E3-processes",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/F1-sensitive-files",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/FINAL-ALL",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/K1-k8s-token",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/M1-metadata",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/S1-internal-ssrf",
+          "hxxps://2e3bkumw[.]requestrepo[.]com/S2-port-scan"
+        ]
+      }
+    }
+  }
+}

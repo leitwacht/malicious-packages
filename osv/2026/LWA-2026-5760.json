@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5760",
+  "aliases": [
+    "MAL-2026-6235"
+  ],
+  "modified": "2026-06-19T08:41:04Z",
+  "published": "2026-06-19T08:40:15Z",
+  "summary": "Malicious code in yianzzkf6687 (npm)",
+  "details": "Postinstall hook runs node scripts/postinstall.js which spawns a hidden, detached background process executing scripts/shell.js — a multi-method reverse shell targeting C2 host 114[.]67[.]90[.]67 across ports 3334, 4444, 443, 80, 8080, and 53. The payload uses Node net sockets (spawning /bin/sh -i on Linux or hidden PowerShell.exe on Windows with pipes to the TCP socket), Bash /dev/tcp, and Python 2/3 reverse shells. Additionally, an HTTP GET pingback on port 8333 exfiltrates the hostname, username, working directory, and OS platform/release to the same IP. Logs to /tmp/.npm-cache.log to disguise as npm cache activity. The package's index.js is a harmless decoy string-manipulation library to evade casual inspection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "yianzzkf6687",
+        "purl": "pkg:npm/yianzzkf6687@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/yianzzkf6687/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5760"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-19T08:40:15Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "114[.]67[.]90[.]67"
+        ],
+        "url_observed": [
+          "hxxp://114[.]67[.]90[.]67:8333/ping?h=\u0026u=\u0026d=\u0026o="
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3961",
+  "modified": "2026-06-10T16:31:06Z",
+  "published": "2026-06-10T16:29:49Z",
+  "summary": "Malicious code in metrica-chain (npm)",
+  "details": "Metrica-chain masquerades as a logger by vendoring large amounts of the legitimate pino logger internals to appear benign. Its entry point exports a no-op middleware that silently spawns lib/caller.js as a detached, unref'd child process with stdio:ignore. lib/caller.js base64-decodes a URL (hxxps://jsonkeeper[.]com/b/BADC6) and fetches stage-2 code via axios.get with a custom x-secret-key header; the fetched code is passed to new Function.constructor(\"require\", s) and invoked with the full require scope, giving arbitrary code execution in the installer's context. It retries up to 5 times and suppresses console.log output to stay hidden.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "metrica-chain",
+        "purl": "pkg:npm/metrica-chain@2.4.5"
+      },
+      "versions": [
+        "2.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/metrica-chain/v/2.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3961"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T16:29:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/BADC6"
+        ]
+      }
+    }
+  }
+}

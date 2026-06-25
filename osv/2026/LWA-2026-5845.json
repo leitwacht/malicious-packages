@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5845",
+  "modified": "2026-06-22T18:14:13Z",
+  "published": "2026-06-22T18:12:22Z",
+  "summary": "Malicious code in shadxino (npm)",
+  "details": "Shadxino@1.0.7 is a trojanized exam-cheating toolkit masquerading as a \"DOM utility.\" When executed via the bin entry 'shadxino → bin/kalamasha-tool.js', it copies the Electron binary to SearchApp.exe (masquerading as Windows Search) and spawns it detached and hidden under %LOCALAPPDATA%\\Microsoft\\Windows\\Diagnostics\\. The spawned Electron app (package/main.js): (1) opens a hidden off-screen browser window to chatgpt[.]com with a hardcoded ChatGPT session-token cookie (__Secure-next-auth.session-token) for authenticated cheating; (2) uses Win32 FFI to set WDA_EXCLUDEFROMCAPTURE (invisible to screen sharing/recording) and WS_EX_TOOLWINDOW (hidden from Alt-Tab); (3) hooks global keyboard/mouse input via uiohook-napi; (4) polls every 50ms to maintain topmost z-order and restore itself if hidden by proctor software; (5) detects Safe Exam Browser desktop switches and spawns a child Electron process on the proctored desktop via CreateProcessW. Three bundled extraction scripts support the cheat pipeline: bin/chrome_cookies.ps1 steals Chrome/Edge cookies for openai[.]com/chatgpt[.]com domains (DPAPI + AES-256-GCM decryption, SQLite read), bin/stealth_capture.ps1 captures the foreground window as an in-memory base64 PNG (zero disk trace), and bin/uia_extract.py / bin/uia_get_text.ps1 extract text from proctored browser windows via Windows UI Automation. A 27MB compiled UIA binary (bin/uia_extract.exe) is also bundled. The watchdog in kalamasha-tool.js auto-respawns the Electron process on crash with adaptive backoff (2s/5s/15s) and refuses to exit unless a.kill_watchdog sentinel file exists. The package deploys to %LOCALAPPDATA%\\Microsoft\\Windows\\Diagnostics\\ and writes a boot.log there.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "shadxino",
+        "purl": "pkg:npm/shadxino@1.0.7"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/shadxino/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5845"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T18:12:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chatgpt[.]com",
+          "openai[.]com"
+        ]
+      }
+    }
+  }
+}

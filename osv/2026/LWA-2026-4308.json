@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4308",
+  "modified": "2026-06-11T14:13:59Z",
+  "published": "2026-06-11T14:11:29Z",
+  "summary": "Malicious code in noon-contracts (npm)",
+  "details": "The package's postinstall hook runs \"node scripts/setup.js\", which after a short setTimeout delay spawns a detached background bash process and performs broad credential and secret theft. It reads all files in ~/.ssh, searches the home tree for.env/.env.* files (max-depth 6) and greps for PRIVATE_KEY/MNEMONIC/SEED_PHRASE/DEPLOYER_WALLET_PRIVATE_KEY, and collects AWS credentials/config plus cli and sso caches (and runs aws sts/s3/lambda/secretsmanager), Kubernetes secrets via \"kubectl get secrets -A -o json\" and ~/.kube/config, git credentials and ghp_/gho_/glpat- tokens, ~/.docker/config.json plus docker container env, npm/yarn auth tokens, and Vercel/Netlify/Cloudflare/Heroku deploy tokens, plus shell rc/history files. Collected data is exfiltrated as JSON via HTTP POST to the C2 at 82[.]221[.]101[.]203 port 8443 path /t, with an alert-only notification (hostname_user_label) sent to ntfy.sh topic \"noon-nc7x4q\" using bearer token tk_d8zm1wdv4qd8g7r02gb7giyy6ocme.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "noon-contracts",
+        "purl": "pkg:npm/noon-contracts@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/noon-contracts/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4308"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T14:11:29Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "82[.]221[.]101[.]203"
+        ]
+      }
+    }
+  }
+}

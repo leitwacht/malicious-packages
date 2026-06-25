@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5536",
+  "aliases": [
+    "MAL-2026-6120"
+  ],
+  "modified": "2026-06-16T08:00:23Z",
+  "published": "2026-06-16T07:59:32Z",
+  "summary": "Malicious code in @caspianph/storyteller (npm)",
+  "details": "The package's postinstall script (setup.cjs) contains obfuscated code that disables TLS certificate validation, contacts a hardcoded C2 server at 23[.]254[.]164[.]92:8000 via the path /update/49890878, downloads a second-stage payload, writes it to a temp directory with a random hex filename + '.json' extension, and executes it as a detached, hidden node process. The script then deletes itself to hide its tracks. The package's main entry point (index.js) is a benign \"hello world\" module serving as a decoy. No credentials or tokens are stolen — this is a remote access trojan that pulls arbitrary code from the C2 upon installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@caspianph/storyteller",
+        "purl": "pkg:npm/%40caspianph/storyteller@1.1.13"
+      },
+      "versions": [
+        "1.1.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@caspianph/storyteller/v/1.1.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5536"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-16T07:59:32Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "23[.]254[.]164[.]92:8000"
+        ],
+        "url_observed": [
+          "hxxps://23[.]254[.]164[.]92:8000/update/49890878"
+        ]
+      }
+    }
+  }
+}

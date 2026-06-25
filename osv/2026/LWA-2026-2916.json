@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2916",
+  "modified": "2026-06-08T05:56:46Z",
+  "published": "2026-06-07T23:03:22Z",
+  "summary": "Malicious code in solana-web3-fork (npm)",
+  "details": "CRITICAL TP: solana-web3-fork@1.0.0 is a combosquat of the real @solana/web3.js package, published by the publisher The lib/index.cjs.js and lib/index.esm.js bundles contain appended top-level malware (~lines 11210-11330) that: (1) checks if host IP is 104[.]239[.]66[.]223 (attacker's own IP — anti-analysis); (2) skips VPS/host/server hostnames (more anti-analysis); (3) harvests Solana wallet keys (~/.config/solana/id.json), SSH private keys, AWS credentials,.env files; (4) scrapes env vars matching KEY/SECRET/MNEMONIC/PRIVATE/TOKEN/GITHUB/NPM/SOLANA/etc; (5) rewrites Solana CLI config to redirect RPC to hxxp://104[.]239[.]66[.]223:8899; (6) exfiltrates everything via Telegram Bot API (bot token [redacted-credential], chat ID 8346336575) with HMAC-authenticated requests. Runs on require()/import — no lifecycle hook needed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solana-web3-fork",
+        "purl": "pkg:npm/solana-web3-fork@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solana-web3-fork/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2916"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T23:03:22Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "104[.]239[.]66[.]223",
+          "104[.]239[.]66[.]223:8899"
+        ],
+        "url_observed": [
+          "hxxp://104[.]239[.]66[.]223"
+        ]
+      }
+    }
+  }
+}

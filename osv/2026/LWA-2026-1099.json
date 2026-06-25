@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1099",
+  "modified": "2026-05-29T21:52:26Z",
+  "published": "2026-05-29T00:13:51Z",
+  "summary": "Malicious code in @veertly/web-app (npm)",
+  "details": "Dependency-confusion stub: @veertly/web-app uses a high sentinel version (99.9.9), a scoped name mimicking a real service, and a tiny (1010-byte) tarball. A preinstall hook runs index.js, which collects os.userInfo().username, os.hostname(), and the current working directory, then beacons them to api[.]telegram[.]org/bot8775202566:.../sendMessage with chat_id=1483949647. The error handler is deliberately silent to avoid surfacing failures. Outbound telemetry exfil to an external API at install time. A @veertly-scoped package (version 99.9.9) whose preinstall script (node index.js) collects os.userInfo().username, os.hostname(), and process.cwd() and exfiltrates them to Telegram via api[.]telegram[.]org using a hardcoded bot token and chat ID 1483949647. The script silently swallows errors to evade notice. The description framing it as security research is a pretext for stealthy host reconnaissance. A @veertly-scoped package (version 99.9.9) with a preinstall hook (node index.js) that collects os.userInfo().username, os.hostname(), and process.cwd() and exfiltrates them to Telegram via a hardcoded bot token and chat ID 1483949647. Arabic comments frame it as a research proof-of-concept, but the mechanism is straightforward install-time data exfiltration. A sibling version (100.0.2) carries a different preinstall payload that beacons to 13[.]50[.]241[.]66:8080/poc-Swisscom-Abuelkhair.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@veertly/web-app",
+        "purl": "pkg:npm/%40veertly/web-app@99.9.9"
+      },
+      "versions": [
+        "99.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@veertly/web-app/v/99.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1099"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-05-29T00:13:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ],
+        "ip_observed": [
+          "13[.]50[.]241[.]66:8080"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3974",
+  "aliases": [
+    "MAL-2026-5517"
+  ],
+  "modified": "2026-06-10T17:17:06Z",
+  "published": "2026-06-10T17:16:17Z",
+  "summary": "Malicious code in firefly-utilities-helper (npm)",
+  "details": "Firefly-utilities-helper is a dependency-confusion carrier package. The package itself is an empty shell (index.js exports {}, ~359 bytes, no lifecycle hooks), but its only dependency is an off-registry HTTPS tarball at hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]0[.]6[.]tgz. At npm install time that attacker-controlled tarball is fetched and extracted; if it carries lifecycle hooks, arbitrary code executes. The package has zero functionality and exists solely to route the installer into an attacker-controlled archive.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "firefly-utilities-helper",
+        "purl": "pkg:npm/firefly-utilities-helper@99.9.1"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/firefly-utilities-helper/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3974"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-10T17:16:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]0[.]6[.]tgz"
+        ]
+      }
+    }
+  }
+}

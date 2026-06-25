@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5039",
+  "modified": "2026-06-13T07:25:01Z",
+  "published": "2026-06-13T07:22:52Z",
+  "summary": "Malicious code in rollup-plugin-polyfill-connect (npm)",
+  "details": "Rollup-plugin-polyfill-connect@1.0.1 contains two exported functions (getPlugin and setPlugin) that act as remote code execution backdoors. When called, they make HTTPS requests to rest-icon-handler[.]store (endpoints /icons/903 and /icons/77) and pass the response body through JSON.parse() then eval(), enabling the C2 server to execute arbitrary code on the host. The functions also implement a retry mechanism (up to 3 attempts) to ensure payload delivery. The package is named to resemble a legitimate rollup build plugin but contains no actual plugin functionality — the backdoor is the only significant behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rollup-plugin-polyfill-connect",
+        "purl": "pkg:npm/rollup-plugin-polyfill-connect@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rollup-plugin-polyfill-connect/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5039"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T07:22:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rest-icon-handler[.]store"
+        ]
+      }
+    }
+  }
+}

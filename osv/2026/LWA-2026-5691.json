@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5691",
+  "aliases": [
+    "MAL-2026-6312"
+  ],
+  "modified": "2026-06-18T06:52:51Z",
+  "published": "2026-06-18T06:49:40Z",
+  "summary": "Malicious code in @tinyfox/shapecheck (npm)",
+  "details": "This package masquerades as a TypeScript runtime-validation library (it bundles the genuine library files as a decoy) but adds a postinstall script that runs a bundled, heavily obfuscated loader (dist/bootstrap.cjs / bootstrap.mjs). The loader is protected with a rotating string-array decoder that performs base64 + RC4 decryption to hide its real logic. When the package is installed, the loader: reads and copies the full process environment; sets an environment-variable flag as a re-entry guard so it only runs once; and then launches the Node binary in the background twice over - once with the --eval flag to execute decrypted JavaScript, and once via a shell using -c to run a command string. Both child processes are started with detached:true, stdio set to ignore, and are unrefd so they keep running after the install finishes. The decrypted strings include an HTTPS scheme, indicating the spawned code reaches out over the network. Net effect: installing the package triggers a silent, self-detaching install-time dropper that executes hidden code and contacts a remote host - behavior wholly unrelated to a validation library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tinyfox/shapecheck",
+        "purl": "pkg:npm/%40tinyfox/shapecheck@0.8.7"
+      },
+      "versions": [
+        "0.8.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tinyfox/shapecheck/v/0.8.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5691"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T06:49:40Z",
+      "indicators_observed": {
+        "file_observed": [
+          "package/dist/bootstrap.cjs",
+          "package/dist/bootstrap.mjs"
+        ],
+        "impersonates": [
+          "rulr"
+        ],
+        "npm_package": [
+          "@tinyfox/shapecheck@0.8.7"
+        ]
+      }
+    }
+  }
+}

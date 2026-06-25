@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5440",
+  "modified": "2026-06-15T21:14:01Z",
+  "published": "2026-06-15T21:13:20Z",
+  "summary": "Malicious code in vl-ui-code-preview (npm)",
+  "details": "Dependency-confusion package impersonating the Flemish government's @govflanders/vl-ui-code-preview library. The unscoped vl-ui-code-preview@10.1.1 ships a 55-byte placeholder index.js with no functional code. Both preinstall and postinstall hooks execute curl commands that exfiltrate system metadata (username via whoami, hostname, current working directory, and current timestamp) to the external endpoint hxxps://178fx66q[.]instances[.]httpworkbench[.]com/depconf/. The URL path /depconf/ and parameters (pkg, u, h, d, t) indicate targeted dependency-confusion reconnaissance measuring which environments are susceptible to the attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vl-ui-code-preview",
+        "purl": "pkg:npm/vl-ui-code-preview@10.1.1"
+      },
+      "versions": [
+        "10.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vl-ui-code-preview/v/10.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5440"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-15T21:13:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "178fx66q[.]instances[.]httpworkbench[.]com"
+        ],
+        "url_observed": [
+          "hxxps://178fx66q[.]instances[.]httpworkbench[.]com/depconf/"
+        ]
+      }
+    }
+  }
+}

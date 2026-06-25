@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5844",
+  "aliases": [
+    "MAL-2026-6277"
+  ],
+  "modified": "2026-06-22T18:10:57Z",
+  "published": "2026-06-22T18:10:16Z",
+  "summary": "Malicious code in search-from-search (npm)",
+  "details": "The package search-from-search@999.99.99 uses dependency confusion (sentinel version 999.99.99) to be installed inside CI pipelines. On npm install, both its preinstall and postinstall hooks run callback.js, which performs extensive system reconnaissance: collects hostname, OS, platform, architecture, user identity (username, uid, gid, homedir, shell), local and external IP addresses, working directory, Node.js version, and CI-environment detection. It then dumps ALL environment variables — including NPM_TOKEN, GITHUB_TOKEN, AWS credentials, and other secrets — and POSTs the entire data payload as JSON to the C2 endpoint at 132[.]243[.]20[.]244:8000/api/collect over plain HTTP.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "search-from-search",
+        "purl": "pkg:npm/search-from-search@999.99.99"
+      },
+      "versions": [
+        "999.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/search-from-search/v/999.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5844"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-22T18:10:16Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "132[.]243[.]20[.]244:8000"
+        ],
+        "url_observed": [
+          "hxxp://132[.]243[.]20[.]244:8000/api/collect"
+        ]
+      }
+    }
+  }
+}
