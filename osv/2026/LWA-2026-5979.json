@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5979",
+  "modified": "2026-06-25T21:28:19Z",
+  "published": "2026-06-25T21:27:38Z",
+  "summary": "Malicious code in @salem_jalal/osc-components (npm)",
+  "details": "Dependency-confusion package impersonating the Hilton Design System internal package (@dx-ui/osc-components). On npm install, the postinstall hook (install.js) collects system metadata (hostname, platform, CPU architecture, username, current working directory, Node.js version, npm registry URL, DNS server addresses) and sends them via HTTP GET to dm-tech.ly:8001/poc-osc/callback. When the module is required in a browser context, the main entry (index.js) exfiltrates the browser's current URL, all cookies (document.cookie), all localStorage key-value pairs, and the user-agent string to dm-tech.ly:8001/poc-osc/exfil via fetch with credentials:include. IOCs: domain dm-tech.ly, port 8001, paths /poc-osc/callback and /poc-osc/exfil.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@salem_jalal/osc-components",
+        "purl": "pkg:npm/%40salem_jalal/osc-components@1981.17.7"
+      },
+      "versions": [
+        "1981.17.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@salem_jalal/osc-components/v/1981.17.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5979"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-25T21:27:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dm-tech[.]ly"
+        ],
+        "url_observed": [
+          "hxxp://dm-tech[.]ly:8001/poc-osc/callback",
+          "hxxp://dm-tech[.]ly:8001/poc-osc/exfil"
+        ]
+      }
+    }
+  }
+}
