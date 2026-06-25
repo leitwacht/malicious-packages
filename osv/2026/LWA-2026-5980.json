@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5980",
+  "modified": "2026-06-25T22:32:11Z",
+  "published": "2026-06-25T22:30:18Z",
+  "summary": "Malicious code in @quantum-ai/gemini-cli (npm)",
+  "details": "Package is a combosquat of @google/gemini-cli — it uses the same basename \"gemini-cli\" under the @quantum-ai scope instead of @google. The package.json contains dependency overrides that substitute the `ink` terminal-rendering library (a core dependency of the CLI) with `@jrichman/ink@6.6.9`, and substitutes `prebuild-install` with `nop@1.0.0` and `node-domexception` with `empty@^0.10.1` — a dependency-substitution attack that hijacks the CLI's runtime execution flow. The repository URL misleadingly points to the official Google Gemini CLI repository. There are no install-time lifecycle hooks; the substituted dependencies would activate when the binary is executed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@quantum-ai/gemini-cli",
+        "purl": "pkg:npm/%40quantum-ai/gemini-cli@0.45.1"
+      },
+      "versions": [
+        "0.45.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@quantum-ai/gemini-cli/v/0.45.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5980"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T22:30:18Z",
+      "indicators_observed": {}
+    }
+  }
+}
