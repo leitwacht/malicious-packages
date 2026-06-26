@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6018",
+  "modified": "2026-06-26T15:36:42Z",
+  "published": "2026-06-26T15:34:55Z",
+  "summary": "Malicious code in rollup-plugin-polyfill-handler (npm)",
+  "details": "Package rollup-plugin-polyfill-handler is a combosquat that exports three functions (getPlugin, setPlugin, getPluginExten) which each make HTTP requests to rest-icon-handler[.]store, parse the response as JSON, and execute the result via eval(). This allows any code that calls these functions to download and run arbitrary payloads from a remote server. The README only documents a benign icon-fetching function (setDefaultModule), hiding the malicious downloader functions. The C2 host is rest-icon-handler[.]store.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rollup-plugin-polyfill-handler",
+        "purl": "pkg:npm/rollup-plugin-polyfill-handler@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rollup-plugin-polyfill-handler/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6018"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T15:34:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rest-icon-handler[.]store"
+        ],
+        "url_observed": [
+          "hxxps://rest-icon-handler[.]store/icons/77",
+          "hxxps://rest-icon-handler[.]store/icons/903",
+          "hxxps://rest-icon-handler[.]store/icons/99"
+        ]
+      }
+    }
+  }
+}
