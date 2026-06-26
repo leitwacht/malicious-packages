@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6016",
+  "aliases": [
+    "MAL-2026-6522"
+  ],
+  "modified": "2026-06-26T15:34:10Z",
+  "published": "2026-06-26T15:32:49Z",
+  "summary": "Security-research / proof-of-concept package: @epsteinlovekids483/crossmint-wallets-sdk-pentest (npm)",
+  "details": "A trojanized clone of the @crossmint/wallets-sdk npm package, published under a different scope with a -pentest suffix. The package ships a file dist/shai-hulud.js loaded on every require()/import of the main entry point. On execution it: harvests environment variables matching token/secret patterns (TOKEN, KEY, SECRET, PASS, SEED, MNEMONIC, WALLET, PRIVATE, CREDENTIAL, API_KEY, AWS, AZURE, GCP, STRIPE, SLACK, TWILIO, DOCKER, NPM, GITHUB, TURBO, NEXT_PUBLIC, OIDC, ACTIONS); executes `gh auth token` to extract the GitHub CLI token; reads ~/.npmrc (npm tokens), ~/.aws/credentials (AWS access keys), SSH private keys from ~/.ssh/; base64-encodes all stolen data and POSTs it to 127[.]0[.]0[.]1:8052/exfil as JSON; writes the stolen data to ~/.shai-hulud; and appends `node ~/.shai-hulud \u0026` to ~/.bashrc for persistence on shell startup.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@epsteinlovekids483/crossmint-wallets-sdk-pentest",
+        "purl": "pkg:npm/%40epsteinlovekids483/crossmint-wallets-sdk-pentest@1.0.2-pentest"
+      },
+      "versions": [
+        "1.0.2-pentest"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@epsteinlovekids483/crossmint-wallets-sdk-pentest/v/1.0.2-pentest"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6016"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-26T15:32:49Z",
+      "indicators_observed": {}
+    }
+  }
+}
