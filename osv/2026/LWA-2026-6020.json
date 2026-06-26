@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6020",
+  "modified": "2026-06-26T17:23:47Z",
+  "published": "2026-06-26T17:22:47Z",
+  "summary": "Malicious code in chai-as-assured (npm)",
+  "details": "Chai-as-assured@7.1.2 is a combosquat of the legitimate chai-as-promised package. Its main entry (lib/chai-as-assured.js) contains an immediately-invoked async function that base64-decodes a remote URL (hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json), fetches its content via axios with a custom HTTP header (x-secret-key), and executes the response as arbitrary JavaScript code via new Function.constructor(\"require\", response), giving the remote payload full access to Node.js require(). The download retries up to 5 times on failure. The package also impersonates the real chai-as-promised author in its metadata.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-assured",
+        "purl": "pkg:npm/chai-as-assured@7.1.2"
+      },
+      "versions": [
+        "7.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-assured/v/7.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6020"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T17:22:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}
