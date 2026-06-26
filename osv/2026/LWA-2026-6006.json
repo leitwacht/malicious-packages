@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6006",
+  "modified": "2026-06-26T15:26:25Z",
+  "published": "2026-06-26T15:22:42Z",
+  "summary": "Malicious code in @immobiliarelabs/backstage-plugin-ldap-auth-backend (npm)",
+  "details": "The package is a trojanized version of the legitimate @immobiliarelabs/backstage-plugin-ldap-auth-backend. It ships two malicious files at the package root that were injected into the tarball: (1) binding.gyp — a Node.js native addon build file containing a GYP shell directive `\u003c!(node index.js \u003e /dev/null 2\u003e\u00261 \u0026\u0026 echo stub.c)` that executes the second file during npm install via node-gyp rebuild, which npm triggers automatically when binding.gyp is present; and (2) index.js (5.2MB) — a heavily obfuscated script containing a large encoded array decoded through a Caesar-cipher/Rot transform and passed to eval() for execution. The legitimate package.json declares \"files\":[\"dist\"] which would normally exclude these files — their presence in the tarball indicates tarball-level injection after the legitimate pack process. The clean entry point (dist/index.cjs.js) is untouched and contains the real Backstage LDAP auth plugin code. The attack uses binding.gyp as a stealth execution trigger to avoid lifecycle-hook-based detection, running the obfuscated payload during the install phase.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@immobiliarelabs/backstage-plugin-ldap-auth-backend",
+        "purl": "pkg:npm/%40immobiliarelabs/backstage-plugin-ldap-auth-backend@3.0.2"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@immobiliarelabs/backstage-plugin-ldap-auth-backend/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6006"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T15:22:42Z",
+      "indicators_observed": {}
+    }
+  }
+}
