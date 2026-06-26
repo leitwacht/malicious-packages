@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5992",
+  "modified": "2026-06-26T02:24:04Z",
+  "published": "2026-06-26T02:23:10Z",
+  "summary": "Malicious code in chai-as-synced (npm)",
+  "details": "Combosquat of the popular chai-as-promised assertion library. On import, index.js spawns a detached background Node.js process that runs lib/initializeCaller.js. That file contains a base64-encoded C2 URL (hxxps://amethyst-lorrin-26[.]tiinyy[.]site/index[.]json) and credentials. It fetches the remote JSON over HTTP with the header x-secret-key: _, extracts the \"cookie\" field from the response, and executes its contents as arbitrary code via the Function constructor, passing the real require module. The download-and-execute loop retries up to 5 times on failure. The C2 host is amethyst-lorrin-26[.]tiinyy[.]site (a free site hosting service).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-synced",
+        "purl": "pkg:npm/chai-as-synced@6.0.3"
+      },
+      "versions": [
+        "6.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-synced/v/6.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5992"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T02:23:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiinyy[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiinyy[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}
