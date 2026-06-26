@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5993",
+  "modified": "2026-06-26T03:03:24Z",
+  "published": "2026-06-26T03:02:38Z",
+  "summary": "Security-research / proof-of-concept package: dttfdsdee (npm)",
+  "details": "On package install, the postinstall lifecycle hook executes a curl command that recursively lists the contents of the /data/ directory ($(ls -laR /data/)) and POSTs the output as the request body to a remote host at 3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com via HTTP. The oastify[.]com domain is an out-of-band application security testing (OAST) callback server operated as an exfiltration sink. This reconnaissance payload allows the attacker to confirm execution on the target and map filesystem contents under /data/. The package's published source code (index.js) contains benign string utility functions (camelToKebab, slugify, truncate, etc.) that serve as a decoy; the malicious behaviour is entirely in the postinstall hook defined in package.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dttfdsdee",
+        "purl": "pkg:npm/dttfdsdee@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dttfdsdee/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5993"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-26T03:02:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com",
+          "oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxp://3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com/data"
+        ]
+      }
+    }
+  }
+}
