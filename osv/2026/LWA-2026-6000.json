@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6000",
+  "modified": "2026-06-26T09:07:27Z",
+  "published": "2026-06-26T09:06:43Z",
+  "summary": "Security-research / proof-of-concept package: dtxto1ols (npm)",
+  "details": "A trojanized string-utility package. The published source code (index.js) contains benign functions (camelToKebab, slugify, truncate, etc.) as camouflage, while the postinstall hook performs host reconnaissance and data exfiltration. On install, the shell script scans the filesystem for database client binaries (mysql, mongo, mongosh, psql, redis-cli, sqlite3, elasticsearch) and writes the results to /data/db_clients_check.txt. It then sends the data via HTTP POST to the external endpoint hxxp://3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com/data/db_clients_check[.]txt. The oastify[.]com domain is an attacker-controlled exfiltration callback server. The package has no repository URL and no homepage.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dtxto1ols",
+        "purl": "pkg:npm/dtxto1ols@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dtxto1ols/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6000"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-26T09:06:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com",
+          "oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxp://3dhd6wwmusbh04m22igmzvb4hvnmblza[.]oastify[.]com/data/db_clients_check[.]txt"
+        ]
+      }
+    }
+  }
+}
