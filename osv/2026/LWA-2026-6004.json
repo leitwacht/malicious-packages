@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6004",
+  "modified": "2026-06-26T13:36:07Z",
+  "published": "2026-06-26T13:35:01Z",
+  "summary": "Malicious code in express-plugin (npm)",
+  "details": "The package express-plugin@1.6.6 is a remote code execution downloader. On require(), it fetches JSON from hxxps://jsonkeeper[.]com/b/PRA3O, extracts the \"cookie\" field, and executes it as arbitrary code via the Function constructor with the Node.js `require` module as an argument, granting the remote payload full filesystem and environment access. The package express-plugin@1.6.6 is a remote code execution downloader. On require(), it fetches JSON from hxxps://jsonkeeper[.]com/b/PRA3O, extracts the \"cookie\" field from the response, and passes it to the Function constructor to dynamically create and execute arbitrary remote code. The newly-constructed function receives the Node.js `require` module as an argument, giving the C2-controlled payload full access to read the filesystem, environment variables, and installed modules. The package has no declared dependencies and its only file is a stub with stolen code comments from the normalize-path project. The payload hosting URL is jsonkeeper[.]com/b/PRA3O.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-plugin",
+        "purl": "pkg:npm/express-plugin@1.6.6"
+      },
+      "versions": [
+        "1.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-plugin/v/1.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6004"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T13:35:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/PRA3O"
+        ]
+      }
+    }
+  }
+}
