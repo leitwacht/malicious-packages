@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5998",
+  "modified": "2026-06-26T09:00:18Z",
+  "published": "2026-06-26T08:59:37Z",
+  "summary": "Malicious code in ts-einkle (npm)",
+  "details": "Ts-einkle@1.0.9 is a trojanized package that installs an SSH backdoor and exfiltrates sensitive files on install. Its postinstall hook (node test.js) calls into index.js which: (1) contacts datasecure-service[.]vercel[.]app to fetch an SSH public key from /api/ssh-key; (2) installs that key into ~/.ssh/authorized_keys and runs sudo ufw enable + sudo ufw allow 22/tcp to ensure SSH access persists; (3) fetches file-scan patterns from /api/scan-patterns and exclusion patterns from /api/block-patterns; (4) recursively scans the home directory (or C:\\ on Windows) for files with extensions.txt,.json,.env,.doc,.xlsx,.pdf,.toml, and.docx; (5) scans the current working directory for credential files (id.json, config.toml,.env, config.json,.env.example); (6) uploads all matching files to the C2 at datasecure-service[.]vercel[.]app/api/v1 in multipart batches of up to 4MB, tagged with the victim's username and platform. The package depends on 'child_process' and 'os' as npm packages to mask its use of Node.js built-in modules via dependency confusion.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-einkle",
+        "purl": "pkg:npm/ts-einkle@1.0.9"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-einkle/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5998"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-26T08:59:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://datasecure-service[.]vercel[.]app/api/block-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/scan-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/ssh-key",
+          "hxxps://datasecure-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}
