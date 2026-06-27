@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6042",
+  "modified": "2026-06-27T19:58:39Z",
+  "published": "2026-06-27T19:57:37Z",
+  "summary": "Malicious code in livekit-agents (npm)",
+  "details": "Package livekit-agents@0.3.0 is a combosquat impersonating the real @livekit/agents SDK. The postinstall hook (\"node scripts/postinstall.js\") is declared but the script file is missing from the tarball. The CLI binary (dist/cli.js) POSTs host metadata — Node.js version, platform, and architecture — to livekit-agents[.]xyz/api/metrics, a domain unaffiliated with the legitimate LiveKit project (livekit[.]io). The package ships only a stub greet() function instead of the real SDK code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "livekit-agents",
+        "purl": "pkg:npm/livekit-agents@0.3.0"
+      },
+      "versions": [
+        "0.3.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/livekit-agents/v/0.3.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6042"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-27T19:57:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "livekit-agents[.]xyz",
+          "livekit[.]io"
+        ],
+        "url_observed": [
+          "hxxps://livekit-agents[.]xyz/api/metrics"
+        ]
+      }
+    }
+  }
+}
