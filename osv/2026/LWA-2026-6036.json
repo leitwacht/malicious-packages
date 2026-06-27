@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6036",
+  "aliases": [
+    "MAL-2026-6544"
+  ],
+  "modified": "2026-06-27T21:21:14Z",
+  "published": "2026-06-27T02:49:44Z",
+  "summary": "Malicious code in chai-as-persisted (npm)",
+  "details": "Package chai-as-persisted is a typosquat of the real chai-as-promised assertion library. Its postinstall hook (npm run smoke:pino) executes index.js, which spawns a detached background Node.js child process (lib/initializeCaller.js). That child process decodes a base64-embedded URL (hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json), fetches its content via axios with a hardcoded x-secret-key header, and passes the response body to new Function.constructor(\"require\",...) — executing arbitrary remote code fetched from a third-party hosting site. The package bundles the real pino logger codebase as camouflage but replaces the entry point with this remote-code-execution loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-persisted",
+        "purl": "pkg:npm/chai-as-persisted@6.1.9"
+      },
+      "versions": [
+        "6.1.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-persisted/v/6.1.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6036"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-27T02:49:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

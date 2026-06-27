@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6046",
+  "aliases": [
+    "MAL-2026-6418"
+  ],
+  "modified": "2026-06-27T21:24:08Z",
+  "published": "2026-06-25T06:24:43Z",
+  "summary": "Malicious code in leo-aws (npm)",
+  "details": "Package leo-aws@2.0.4 is a compromised version of the legitimate leo-aws AWS helper library. The main entry point (index.js, 5.2 MB) was replaced with an obfuscated script that attempts dynamic code execution via a Caesar-cipher-decoded eval on an array of character codes. The obfuscation errors out (the eval call throws a TypeError, caught by an empty try/catch), rendering the package non-functional — requiring it returns an empty module. The legitimate AWS wrapper code (factory.js, lib/*) remains present in the tarball but is unreachable. The artifact is a trojanized clone resulting from an account takeover of the original publisher.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "leo-aws",
+        "purl": "pkg:npm/leo-aws@2.0.4"
+      },
+      "versions": [
+        "2.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/leo-aws/v/2.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6046"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-25T06:24:43Z",
+      "indicators_observed": {}
+    }
+  }
+}

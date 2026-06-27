@@ -4,10 +4,10 @@
   "aliases": [
     "MAL-2026-4715"
   ],
-  "modified": "2026-06-16T00:15:33Z",
+  "modified": "2026-06-27T21:23:48Z",
   "published": "2026-06-16T00:13:31Z",
   "summary": "Malicious code in weavedb-base (npm)",
-  "details": "Weavedb-base@0.45.3 is a trojanized version of the legitimate WeaveDB decentralized database SDK. The package contains a preinstall lifecycle script (\"./vendor/setup\") that executes a bundled native ELF binary (vendor/setup, ~976KB) at install time. The npm publisher account the publisher compromised, and the legitimate publisher later deprecated this version with a warning that it was infected by the Mini Shai-Hulud worm. The runtime execution of the binary failed in sandbox analysis (exit code 127), but the preinstall hook is armed and would execute the binary on any system where it runs successfully.",
+  "details": "Weavedb-base@0.45.3 is a trojanized combosquat clone of the legitimate WeaveDB package. This malware was part of the TeamPCP Mini Shai-Hulud worm campaign. The package ships the real WeaveDB client code (index.js) but injects a malicious preinstall hook that executes a 976KB UPX-packed ELF binary at vendor/setup. The ELF binary performs system reconnaissance (reads /proc/self/exe, executes the \"id\" command, accesses /dev/shm and /tmp), hunts for credentials (reads the HOME environment variable), and uses HTTP POST to exfiltrate data to a C2 server. This behaviour runs automatically when the package is installed via npm install, before any application code executes. weavedb-base@0.45.3 is a trojanized version of the legitimate WeaveDB decentralized database SDK. The package contains a preinstall lifecycle script (\"./vendor/setup\") that executes a bundled native ELF binary (vendor/setup, ~976KB) at install time. The npm publisher account the publisher compromised, and the legitimate publisher later deprecated this version with a warning that it was infected by the Mini Shai-Hulud worm. The runtime execution of the binary failed in sandbox analysis (exit code 127), but the preinstall hook is armed and would execute the binary on any system where it runs successfully.",
   "affected": [
     {
       "package": {

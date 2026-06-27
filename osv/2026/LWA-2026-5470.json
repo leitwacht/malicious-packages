@@ -4,10 +4,10 @@
   "aliases": [
     "MAL-2026-4723"
   ],
-  "modified": "2026-06-16T00:21:50Z",
+  "modified": "2026-06-27T21:23:39Z",
   "published": "2026-06-16T00:19:07Z",
   "summary": "Malicious code in weavedb-sdk (npm)",
-  "details": "Package weavedb-sdk@0.45.3 is a trojanized clone of the legitimate WeaveDB SDK. It ships a 976KB UPX-packed ELF binary at `./tools/setup` executed via the `preinstall` lifecycle hook. The binary is a Mini Shai-Hulud worm variant: upon install it harvests environment variables including NPM_TOKEN from the victim's system and uses them to self-propagate by republishing malicious versions to other packages the victim maintains. The binary communicated with Cloudflare-protected endpoints (104.16.x.x range) during execution. The package was officially deprecated by npm with the message 'COMPROMISED via Mini Shai-Hulud worm (TeamPCP).' The package also pulls in known compromised dependencies (weavedb-base, weavedb-contracts) as secondary payload delivery mechanisms.",
+  "details": "Weavedb-sdk@0.45.3 is a trojanized version of the legitimate WeaveDB decentralized database SDK. A 976KB ELF binary (tools/setup) was added to the package and is executed via a preinstall hook. The binary is downloaded and run on every npm install of this package. The package also depends on two other compromised packages (weavedb-base, weavedb-contracts) which spread the infection through the dependency tree, consistent with a self-propagating worm. The registry has confirmed the compromise. Package weavedb-sdk@0.45.3 is a trojanized clone of the legitimate WeaveDB SDK. It ships a 976KB UPX-packed ELF binary at `./tools/setup` executed via the `preinstall` lifecycle hook. The binary is a Mini Shai-Hulud worm variant: upon install it harvests environment variables including NPM_TOKEN from the victim's system and uses them to self-propagate by republishing malicious versions to other packages the victim maintains. The binary communicated with Cloudflare-protected endpoints (104.16.x.x range) during execution. The package was officially deprecated by npm with the message 'COMPROMISED via Mini Shai-Hulud worm (TeamPCP).' The package also pulls in known compromised dependencies (weavedb-base, weavedb-contracts) as secondary payload delivery mechanisms.",
   "affected": [
     {
       "package": {

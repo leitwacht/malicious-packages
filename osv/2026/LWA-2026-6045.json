@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6045",
+  "modified": "2026-06-27T21:21:15Z",
+  "published": "2026-06-22T00:57:45Z",
+  "summary": "Malicious code in free-anthropic-claude (npm)",
+  "details": "Free-anthropic-claude is a combosquat package impersonating the Anthropic Claude SDK. It declares a postinstall lifecycle hook (scripts.postinstall = \"node cli.js\") that executes automatically on npm install. The package's index.js spawns a Python child process with the detached flag (cp.spawn(python, [pyPath], { detached: true })), creating a background process that persists independently of the parent npm process. The package has no repository and provides no legitimate SDK functionality — its sole purpose is to execute code at install time and spawn a persistent child process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "free-anthropic-claude",
+        "purl": "pkg:npm/free-anthropic-claude@5.3.0"
+      },
+      "versions": [
+        "5.3.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/free-anthropic-claude/v/5.3.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6045"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-22T00:57:45Z",
+      "indicators_observed": {}
+    }
+  }
+}
