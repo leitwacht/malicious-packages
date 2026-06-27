@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6034",
+  "modified": "2026-06-27T02:07:46Z",
+  "published": "2026-06-27T02:07:03Z",
+  "summary": "Malicious code in chai-as-persisted (npm)",
+  "details": "Chai-as-persisted is a combosquat of the real chai-as-promised testing plugin. On install, its postinstall hook runs index.js, which spawns a detached child process executing lib/initializeCaller.js. That child POSTs a request to hxxps://www.ipregionchecker[.]org/api/ip-check-encrypted/3aeb34a37 with header x-secret-key: secret, receives the response, and passes it into new Function.constructor('require', response), executing arbitrary code downloaded from the remote server. The package has no repository and its description does not match its declared purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-persisted",
+        "purl": "pkg:npm/chai-as-persisted@4.2.8"
+      },
+      "versions": [
+        "4.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-persisted/v/4.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6034"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-27T02:07:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]ipregionchecker[.]org"
+        ],
+        "url_observed": [
+          "hxxps://www[.]ipregionchecker[.]org/api/ip-check-encrypted/3aeb34a37"
+        ]
+      }
+    }
+  }
+}
