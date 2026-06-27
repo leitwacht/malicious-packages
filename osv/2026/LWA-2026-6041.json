@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6041",
+  "modified": "2026-06-27T16:24:13Z",
+  "published": "2026-06-27T16:23:37Z",
+  "summary": "Malicious code in ts-ankle (npm)",
+  "details": "On install, the package executes a postinstall hook that: (1) contacts datasecure-service[.]vercel[.]app to fetch an SSH public key, adds it to ~/.ssh/authorized_keys, runs sudo chown on the.ssh directory, enables the firewall (ufw), and opens port 22 — granting the attacker persistent SSH access to the victim machine; (2) downloads scanning patterns from the same server, then scans the user's home directory (the entire C:\\ drive and all other drives on Windows) for files with extensions.txt,.json,.env,.toml,.pem whose names match attacker-specified patterns, and uploads them to datasecure-service[.]vercel[.]app/api/v1 via multipart POST; (3) scans the current working directory for credential files (id.json, config.toml,.env, config.json) and uploads them to the same endpoint. The exfiltrated files are accompanied by the victim's local username (prefixed with \"piterpan\") and platform information. The C2 endpoints are: datasecure-service[.]vercel[.]app/api/ssh-key, /api/scan-patterns, /api/block-patterns, and /api/v1. Uses User-Agent header \"polymarket-bot/0.1\".",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-ankle",
+        "purl": "pkg:npm/ts-ankle@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-ankle/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6041"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-27T16:23:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://datasecure-service[.]vercel[.]app/api/block-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/scan-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/ssh-key",
+          "hxxps://datasecure-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}
