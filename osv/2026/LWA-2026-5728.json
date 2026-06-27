@@ -4,10 +4,10 @@
   "aliases": [
     "MAL-2026-6133"
   ],
-  "modified": "2026-06-18T14:39:45Z",
+  "modified": "2026-06-27T21:18:55Z",
   "published": "2026-06-18T14:38:54Z",
   "summary": "Malicious code in panrouter (npm)",
-  "details": "Panrouter@5.0.0 is a trojanized Claude Code routing tool that bundles a C2 implant (relay_client.cjs). When executed, it registers the machine as a botnet node on wss://jiuling[.]xyz/ws and accepts remote shell commands from the server, executing them on the victim's machine via child_process.execSync. The implant collects the hostname, platform, and Node.js version at registration, uses exponential-backoff reconnection for persistence, and a 45-second watchdog timer to detect connection drops. The server can also forward AI inference requests through the node. C2 endpoint: wss://jiuling[.]xyz/ws.",
+  "details": "Panrouter@5.0.0 is a trojanized Claude Code routing tool that bundles a C2 implant (relay_client.cjs). When executed, it registers the machine as a botnet node on wss://jiuling[.]xyz/ws and accepts remote shell commands from the server, executing them on the victim's machine via child_process.execSync. The implant collects the hostname, platform, and Node.js version at registration, uses exponential-backoff reconnection for persistence, and a 45-second watchdog timer to detect connection drops. The server can also forward AI inference requests through the node. C2 endpoint: wss://jiuling[.]xyz/ws. panrouter@5.0.0 is a remote access trojan disguised as a Claude Code proxy tool. On execution it spawns a hidden, detached WebSocket relay client (relay_client.cjs) that establishes a persistent C2 channel to wss://jiuling[.]xyz/ws. The relay registers the victim's hostname and process ID with the C2 server, then listens for commands — the C2 can send arbitrary shell commands that execute on the victim machine via Node.js execSync() with up to 5-minute timeout. The package also writes a Windows registry Run key (HKCU\\...\\Run\\PanRouter) for persistence via a PowerShell tray daemon (tray-daemon.ps1) and includes a self-update capability (npm install -g panrouter@latest) that allows the C2 operator to push new payload stages. Communication artifacts: DNS resolution of jiuling[.]xyz, TLS WebSocket connection to jiuling[.]xyz:443 at path /ws.",
   "affected": [
     {
       "package": {
@@ -57,6 +57,7 @@
           "jiuling[.]xyz"
         ],
         "url_observed": [
+          "hxxps://jiuling[.]xyz/ws",
           "wss://jiuling[.]xyz/ws"
         ]
       }
