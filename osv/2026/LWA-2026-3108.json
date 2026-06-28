@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3108",
+  "aliases": [
+    "MAL-2026-5528"
+  ],
+  "modified": "2026-06-28T06:06:47Z",
+  "published": "2026-06-08T21:39:50Z",
+  "summary": "Malicious code in events-runtime (npm)",
+  "details": "This package masquerades as a drop-in replacement for the standard `events` event-emitter polyfill: its events.js is a verbatim copy of the legitimate EventEmitter source with one hidden block inserted into the emit() method. When an event is emitted whose first argument carries a sentinel property (eventId === \"eventId0\"), the patched emit silently launches a detached, output-suppressed, hidden background Node process running a bundled minified script in tests/. That script is a multi-stage dropper. It reads attacker-controlled data from a smart contract on the Sepolia Ethereum testnet (via public RPC), derives an x25519/AES-GCM key, and decrypts the on-chain blobs into an executable file which it marks 755 and runs as a further detached child process — an on-chain (EtherHiding-style) command-and-control channel whose payload can be swapped by the attacker and which evades URL/domain blocklists. It also harvests host fingerprint data (platform, release, architecture, hostname, CPU and memory details, uptime) together with a generated public key and exfiltrates it to Telegram (api[.]telegram[.]org sendMessage) and Slack (chat.postMessage) using hardcoded bot/bearer tokens. Finally it performs anti-forensic cleanup: it deletes its own payload files and rewrites the parent events.js to splice out the malicious block, so later inspection shows only a benign events shim.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "events-runtime",
+        "purl": "pkg:npm/events-runtime@3.2.3"
+      },
+      "versions": [
+        "3.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/events-runtime/v/3.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3108"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T21:39:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "api.telegram[.]org",
+          "slack[.]com"
+        ],
+        "file_observed": [
+          "tests/errors.min.js",
+          "tests/galas-emit.min.js",
+          "tests/galas.min.js"
+        ],
+        "wallet_observed": [
+          "0xc0445F1b679DC46280A0f03F451bdf613b5A0feA"
+        ]
+      }
+    }
+  }
+}

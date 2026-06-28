@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2827",
+  "aliases": [
+    "MAL-2026-5242"
+  ],
+  "modified": "2026-06-28T06:10:04Z",
+  "published": "2026-06-07T21:27:46Z",
+  "summary": "Malicious code in creditcard.js (npm)",
+  "details": "This is a compromised/trojanized build of the popular creditcard.js credit-card validation library. The legitimate package ships only its dist/ bundle, but this version adds an extra package-root index.js containing a heavily obfuscated payload. The payload is hidden behind two layers of obfuscation: an outer Caesar-cipher decoder fed a roughly 600k-element character-code array, and inner AES-128-GCM-encrypted blobs decrypted at load time with hardcoded keys and IVs via node:crypto. Once decoded, the payload uses node:child_process to silently download the Bun JavaScript runtime from a GitHub releases URL (curl), unzip it into a temporary directory, and chmod it executable. This stages a separate runtime so a follow-on payload can run outside Node, bypassing Node-based security tooling. None of this behaviour relates to credit-card validation; it is an obfuscated dropper injected into a trusted package name.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "creditcard.js",
+        "purl": "pkg:npm/creditcard.js@2.1.8"
+      },
+      "versions": [
+        "2.1.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/creditcard.js/v/2.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2827"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T21:27:46Z",
+      "indicators_observed": {
+        "file_observed": [
+          "index.js"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2280",
+  "aliases": [
+    "MAL-2026-5119"
+  ],
+  "modified": "2026-06-28T06:07:53Z",
+  "published": "2026-06-01T14:23:57Z",
+  "summary": "Malicious code in @redhat-cloud-services/types (npm)",
+  "details": "This package publishes itself as TypeScript type definitions (its main entry is a.d.ts file) yet adds a preinstall lifecycle hook that runs node index.js the moment the package is installed. index.js is a ~900KB three-layer obfuscated dropper. The first layer is an eval() fed by a ROT/Caesar-cipher decoder applied to a ~633,000-element character-code array; its decoded output reconstructs an AES-128-GCM decryption routine (crypto.createDecipheriv with a hardcoded hex key, IV and auth tag) that decrypts an embedded ciphertext into a further obfuscated stage. The final payload downloads a pinned Bun runtime from GitHub to execute outside the local Node install, then harvests credentials and secrets from the host and CI environment — cloud provider credentials (AWS instance/ECS metadata, Secrets Manager, SSM; Azure managed identity; GCP service-account tokens), HashiCorp Vault tokens, Kubernetes service-account tokens, GitHub and npm tokens, ~/.npmrc, ~/.netrc and shell history — and exfiltrates them to attacker-controlled GitHub repositories. It further abuses Docker socket access to escalate privileges and self-propagates by republishing tampered package tarballs and injecting malicious CI workflows. A type-definitions package has no legitimate reason to execute code at install time; the obfuscated install-time dropper and credential theft are unambiguously malicious.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@redhat-cloud-services/types",
+        "purl": "pkg:npm/%40redhat-cloud-services/types@3.6.4"
+      },
+      "versions": [
+        "3.6.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@redhat-cloud-services/types/v/3.6.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2280"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:23:57Z",
+      "indicators_observed": {}
+    }
+  }
+}
