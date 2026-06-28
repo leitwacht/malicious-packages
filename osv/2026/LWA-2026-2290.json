@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2290",
+  "aliases": [
+    "MAL-2026-5113"
+  ],
+  "modified": "2026-06-28T06:13:16Z",
+  "published": "2026-06-01T14:23:59Z",
+  "summary": "Malicious code in @redhat-cloud-services/frontend-components (npm)",
+  "details": "This package masquerades as the legitimate @redhat-cloud-services/frontend-components but ships a malicious install-time payload. Its package.json sets a preinstall hook (node index.js) so the code executes automatically when the package is installed. index.js is a single eval() over a Caesar-cipher-decoded character array; that first layer decrypts two AES-128-GCM encrypted blobs using hardcoded keys. The first decrypted blob is a bootstrapper that downloads the bun JavaScript runtime from the official bun GitHub releases URL into a temporary directory, unzips it and marks it executable. The second, larger blob is a heavily obfuscated (string-array rotation) main payload that talks to the GitHub REST API using an Authorization token header, hunts for credentials, and creates or dispatches GitHub Actions workflows in repositories (it parses for workflow_dispatch and writes workflow files with elevated permissions) to persist and spread. The combined behaviour - automatic install-time execution, multi-stage encrypted droppers, fetching an alternate runtime, credential access and self-propagation via injected CI workflows - is characteristic of a self-replicating supply-chain worm and is unambiguously malicious.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@redhat-cloud-services/frontend-components",
+        "purl": "pkg:npm/%40redhat-cloud-services/frontend-components@7.7.5"
+      },
+      "versions": [
+        "7.7.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@redhat-cloud-services/frontend-components/v/7.7.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2290"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:23:59Z",
+      "indicators_observed": {}
+    }
+  }
+}

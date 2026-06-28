@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2291",
+  "aliases": [
+    "MAL-2026-5143"
+  ],
+  "modified": "2026-06-28T06:14:33Z",
+  "published": "2026-06-01T14:24:57Z",
+  "summary": "Malicious code in @redhat-cloud-services/javascript-clients-shared (npm)",
+  "details": "This package masquerades as the Red Hat javascript-clients-shared library but injects a malicious install-time payload. Its package.json declares a preinstall hook (node index.js) that runs a top-level index.js which is not the real library entrypoint. index.js is a single eval() of a Caesar-cipher-encoded string; once decoded it imports node:crypto and AES-128-GCM-decrypts two embedded blobs using hardcoded keys, IVs and auth tags. The first blob is a bootstrapper that downloads the Bun JavaScript runtime (bun v1.3.13) from GitHub releases via curl and unzip into a temporary directory, marks it executable, and caches its path. The second blob is a ~590KB heavily obfuscated payload (string-array rotation obfuscation) containing GitHub API helpers (authenticated fetch/JSON/header builders), references to GitHub Actions workflow_dispatch and a generated workflow filename, and base64 encoding routines - consistent with a self-propagating worm that harvests developer/CI credentials and pushes malicious GitHub Actions workflows to spread. Running the downloaded Bun binary lets the payload execute outside the Node.js process, helping it evade Node-level controls. Installing this package at any depth triggers the chain automatically.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@redhat-cloud-services/javascript-clients-shared",
+        "purl": "pkg:npm/%40redhat-cloud-services/javascript-clients-shared@2.0.11"
+      },
+      "versions": [
+        "2.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@redhat-cloud-services/javascript-clients-shared/v/2.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2291"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:24:57Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/bun-linux-x64[.]zip"
+        ]
+      }
+    }
+  }
+}

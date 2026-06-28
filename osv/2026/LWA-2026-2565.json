@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2565",
+  "aliases": [
+    "MAL-2026-5210"
+  ],
+  "modified": "2026-06-28T06:12:38Z",
+  "published": "2026-06-07T18:20:13Z",
+  "summary": "Malicious code in ai-sdk-ollama (npm)",
+  "details": "This package masquerades as the Vercel AI SDK provider for Ollama, but the published tarball adds a root index.js that is absent from the genuine project (where all real code lives under dist/). That index.js is a single heavily obfuscated line: a numeric char-code array is turned into text, Caesar-shifted, and passed to eval(). The recovered code is a self-running async function that constructs an AES-128-GCM decryptor from hardcoded keys and decrypts two embedded ciphertext blobs: a small bootstrap and a large multi-hundred-kilobyte second stage. The bootstrap (recovered via offline decryption) imports child_process, fs, path and os, then downloads the Bun JavaScript runtime from GitHub releases (bun-v1.3.13) into a temporary directory, unzips it, and marks it executable. The large encrypted second-stage payload is then run under that freshly downloaded runtime. Pulling and staging a separate runtime to execute a hidden, encrypted payload at install/import time, behind layered obfuscation and AES encryption, is malicious dropper behaviour with no legitimate purpose in an AI SDK provider package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ai-sdk-ollama",
+        "purl": "pkg:npm/ai-sdk-ollama@0.13.1"
+      },
+      "versions": [
+        "0.13.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ai-sdk-ollama/v/0.13.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2565"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:20:13Z",
+      "indicators_observed": {
+        "sha_or_key_observed": [
+          "aes128gcm_key:577c2245b86609cc8a09b23f5287dc3e",
+          "aes128gcm_key:ddb65192bb252d4ca0a8977c05de2a35"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/bun-OS-ARCH[.]zip"
+        ]
+      }
+    }
+  }
+}

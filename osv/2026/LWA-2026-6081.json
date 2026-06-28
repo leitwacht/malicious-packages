@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6081",
+  "aliases": [
+    "MAL-2026-6526"
+  ],
+  "modified": "2026-06-28T06:12:14Z",
+  "published": "2026-06-26T15:17:53Z",
+  "summary": "Malicious code in @immobiliarelabs/backstage-plugin-gitlab (npm)",
+  "details": "This version is a trojanized republish of a legitimate Backstage GitLab plugin. The package.json only lists dist/ as its published files, but the tarball smuggles in two extra root-level files that do not belong to the real plugin: a binding.gyp and an index.js. The binding.gyp declares a native build target whose source list abuses GYP command-substitution syntax: \"\u003c!(node index.js \u003e /dev/null 2\u003e\u00261 \u0026\u0026 echo stub.c)\". Because npm automatically runs node-gyp whenever a binding.gyp is present (no install/postinstall script is needed), this causes node index.js to run during configuration on every install of the package - even though it is a pure frontend plugin that ships no C/C++ sources and has no reason to build a native addon. index.js is a single obfuscated line that eval()s the output of a Caesar-cipher decoder over a very large character-code array. Decoding it reveals an async routine that uses node:crypto to AES-128-GCM-decrypt two embedded ciphertext blobs with hardcoded keys. The first blob bootstraps a downloader: it creates a temp directory, fetches the Bun JavaScript runtime from the official Bun GitHub release (bun-v1.3.13) via curl, unzips it, and chmods it executable. The second, larger encrypted blob is the actual payload, which is then executed using the just-downloaded Bun runtime. The result is silent install-time remote code execution staged through a fake native-build hook and layered Caesar+AES obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@immobiliarelabs/backstage-plugin-gitlab",
+        "purl": "pkg:npm/%40immobiliarelabs/backstage-plugin-gitlab@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@immobiliarelabs/backstage-plugin-gitlab/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6081"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T15:17:53Z",
+      "indicators_observed": {
+        "file_observed": [
+          "binding.gyp",
+          "index.js"
+        ]
+      }
+    }
+  }
+}

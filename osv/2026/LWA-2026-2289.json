@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2289",
+  "aliases": [
+    "MAL-2026-5138"
+  ],
+  "modified": "2026-06-28T06:13:04Z",
+  "published": "2026-06-01T14:23:58Z",
+  "summary": "Malicious code in @redhat-cloud-services/frontend-components-utilities (npm)",
+  "details": "This release is a trojanized build of an otherwise legitimate utility library. Its package.json declares a preinstall hook (node index.js) so the malicious code executes automatically whenever the package is installed into any project. index.js is a ~2MB single-line file whose entire body is wrapped in eval() fed by a letter-rotation (Caesar) decoder; the decoded first stage imports node:crypto and uses AES-128-GCM (createDecipheriv) to decrypt two embedded ciphertext blobs that are then evaluated and executed. The first decrypted stage defines a helper that, based on the host OS/arch, downloads the Bun JavaScript runtime from the official oven-sh GitHub release (bun-v1.3.13), unzips it to a temporary directory, marks it executable (chmod 755), and caches its path so the second, larger decrypted payload runs under this freshly fetched Bun interpreter instead of Node. The combination of an auto-running install hook, multi-layer obfuscation (a rotation cipher feeding AES-GCM feeding eval), and an on-the-fly download-and-execute of a foreign runtime to launch hidden code is unambiguously malicious and bears the hallmarks of a self-propagating credential-stealing npm worm.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@redhat-cloud-services/frontend-components-utilities",
+        "purl": "pkg:npm/%40redhat-cloud-services/frontend-components-utilities@7.4.4"
+      },
+      "versions": [
+        "7.4.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@redhat-cloud-services/frontend-components-utilities/v/7.4.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2289"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:23:58Z",
+      "indicators_observed": {
+        "aes_iv_observed": [
+          "a93a92c2646bbdd98201895a"
+        ],
+        "aes_key_observed": [
+          "00f9a63b82ea03fb27918b9ddb09c2ed"
+        ]
+      }
+    }
+  }
+}
