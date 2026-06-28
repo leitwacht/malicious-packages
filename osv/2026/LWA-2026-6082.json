@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6082",
+  "aliases": [
+    "MAL-2026-6526"
+  ],
+  "modified": "2026-06-28T06:25:00Z",
+  "published": "2026-06-26T15:18:16Z",
+  "summary": "Malicious code in @immobiliarelabs/backstage-plugin-gitlab (npm)",
+  "details": "A compromised release of this Backstage GitLab plugin ships two files that are not part of the genuine package: a root-level binding.gyp and an index.js dropper. The genuine package is a pure React/TypeScript frontend plugin and publishes only its dist/ output. The injected binding.gyp uses GYP command-expansion syntax (\"\u003c!(node index.js...)\") in its sources field; because npm automatically runs node-gyp whenever a binding.gyp exists at the package root, this causes `node index.js` to execute on every install of the package — with no install or postinstall script declared, and regardless of the package main entry. index.js is a layered, obfuscated dropper: an outer eval() runs a Caesar-cipher-decoded wrapper that imports node:crypto, AES-128-GCM-decrypts an embedded encrypted blob, and eval()s the decrypted second-stage code. The use of a native-build manifest to trigger silent install-time execution in a frontend-only plugin, combined with multi-layer (Caesar + AES-GCM) self-decrypting eval, is characteristic of a supply-chain attack rather than legitimate functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@immobiliarelabs/backstage-plugin-gitlab",
+        "purl": "pkg:npm/%40immobiliarelabs/backstage-plugin-gitlab@2.1.2"
+      },
+      "versions": [
+        "2.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@immobiliarelabs/backstage-plugin-gitlab/v/2.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6082"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-26T15:18:16Z",
+      "indicators_observed": {
+        "file_observed": [
+          "binding.gyp",
+          "index.js"
+        ]
+      }
+    }
+  }
+}

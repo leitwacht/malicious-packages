@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5128",
+  "aliases": [
+    "MAL-2026-5750"
+  ],
+  "modified": "2026-06-28T06:24:06Z",
+  "published": "2026-06-13T18:18:20Z",
+  "summary": "Malicious code in mailconfirmer (npm)",
+  "details": "Disguised as an email-confirmation utility, this package carries no real functionality and instead acts as an install-time dropper. Its package.json runs a postinstall script (install-hook.js) that, on install, silently launches a hidden, Base64/UTF-16LE-encoded PowerShell command. The decoded PowerShell downloads a second-stage binary from a GitHub releases URL, XOR-decrypts it with a single-byte key (0x42), writes it to the user TEMP directory as tmp.exe, executes it in a hidden window, then deletes the dropped file after a few seconds. A second hidden, detached PowerShell process sleeps for five minutes and then recursively force-deletes the installed package directory to remove traces of the infection. The combination of decoy metadata, hidden encoded execution, remote XOR-encrypted payload retrieval, and self-destruction is unambiguously malicious.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mailconfirmer",
+        "purl": "pkg:npm/mailconfirmer@3.3.11"
+      },
+      "versions": [
+        "3.3.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mailconfirmer/v/3.3.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5128"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T18:18:20Z",
+      "indicators_observed": {
+        "file_dropped": [
+          "%TEMP%\\tmp.exe"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/Dimitrijenco/Sticky_note/releases/download/v2/launcher[.]bin"
+        ],
+        "xor_key": [
+          "0x42"
+        ]
+      }
+    }
+  }
+}
