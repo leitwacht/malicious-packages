@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6593",
+  "modified": "2026-07-10T14:39:53Z",
+  "published": "2026-07-10T14:38:57Z",
+  "summary": "Malicious code in type-elint (npm)",
+  "details": "Type-elint@3.3.7 is a trojanized clone of the pino logger that performs remote code execution on install. The package's index.js spawns a detached background Node.js process running lib/caller.js. That script fetches JavaScript source code from hxxps://json[.]extendsclass[.]com/bin/863e90480800 (using the HTTP header x-secret-key: _) and executes the response's cookie field via the Function constructor with full require() access, giving the remote server arbitrary code execution on the installer's machine. The package also contains base64-encoded references to hxxps://jsonkeeper[.]com/b/XRGF3 as additional infrastructure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "type-elint",
+        "purl": "pkg:npm/type-elint@3.3.7"
+      },
+      "versions": [
+        "3.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/type-elint/v/3.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6593"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T14:38:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "json[.]extendsclass[.]com",
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://json[.]extendsclass[.]com/bin/863e90480800",
+          "hxxps://jsonkeeper[.]com/b/XRGF3"
+        ]
+      }
+    }
+  }
+}
