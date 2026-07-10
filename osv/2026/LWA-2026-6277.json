@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6277",
+  "aliases": [
+    "MAL-2026-6732"
+  ],
+  "modified": "2026-07-02T21:08:51Z",
+  "published": "2026-07-02T21:06:39Z",
+  "summary": "Malicious code in unreal-horde-dashboard (npm)",
+  "details": "The preinstall hook in package.json runs a Node.js script that collects the victim's hostname, username, working directory, operating system, CPU architecture, Node.js version, npm agent, CI/CD environment variables, and environment variables matching credential patterns (AWS_, GITHUB_, GH_, NPM_, EPIC_, UE_, HORDE_, P4, CI, BUILD, TOKEN, KEY, SECRET). The collected data is serialized as JSON and exfiltrated via HTTP POST to 109[.]123[.]247[.]172 on port 80 at /npm/unreal_horde_dashboard, and via a DNS lookup to \u003chostname\u003e-\u003cusername\u003e.unreal_horde_dashboard.npm[.]epic-dc[.]oast[.]fun. The package contains no functional code — index.js is a stub exporting an empty object. The version 99999.0.0 and \"Internal package\" description are dependency-confusion indicators.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "unreal-horde-dashboard",
+        "purl": "pkg:npm/unreal-horde-dashboard@99999.0.0"
+      },
+      "versions": [
+        "99999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/unreal-horde-dashboard/v/99999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6277"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T21:06:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npm[.]epic-dc[.]oast[.]fun",
+          "unreal_horde_dashboard.npm[.]epic-dc[.]oast[.]fun"
+        ],
+        "ip_observed": [
+          "109[.]123[.]247[.]172"
+        ],
+        "url_observed": [
+          "hxxp://109[.]123[.]247[.]172/npm/unreal_horde_dashboard"
+        ]
+      }
+    }
+  }
+}

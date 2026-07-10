@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6095",
+  "aliases": [
+    "MAL-2026-6596"
+  ],
+  "modified": "2026-06-28T21:09:45Z",
+  "published": "2026-06-28T21:02:56Z",
+  "summary": "Malicious code in @digitalcnzz/embedded-sdk (npm)",
+  "details": "The package @digitalcnzz/embedded-sdk@1.0.7 is a trojanized clone of the Apache Superset embedded SDK. On postinstall (node.prepare.cjs), it first evades analysis by exiting if it detects sandbox environments (checking for dummy/honey tokens, CI/CD variables, sandbox hostnames/usernames, detector env vars). After passing these evasion checks and a 15-45 second randomized delay, it collects system fingerprint data (hostname, username, platform, architecture, Node version, non-internal IP addresses, registry URL) and dumps ALL environment variables (excluding only npm_lifecycle_* variables). This captured data — including NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and any other secrets present in the environment — is POSTed as JSON to open[.]larksuite[.]com (Lark/Feishu) via a bot webhook endpoint at /open-api/bot/v2/hook/{webhook-id}. The package has no repository, no README, and the only functional file is the malicious postinstall hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@digitalcnzz/embedded-sdk",
+        "purl": "pkg:npm/%40digitalcnzz/embedded-sdk@1.0.7"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@digitalcnzz/embedded-sdk/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6095"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-28T21:02:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "open[.]larksuite[.]com"
+        ],
+        "url_observed": [
+          "hxxps://open[.]larksuite[.]com/open-api/bot/v2/hook/"
+        ]
+      }
+    }
+  }
+}

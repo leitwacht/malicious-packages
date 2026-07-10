@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2674",
+  "aliases": [
+    "MAL-2026-5231"
+  ],
+  "modified": "2026-06-28T06:30:02Z",
+  "published": "2026-06-07T20:08:14Z",
+  "summary": "Malicious code in autotel-tanstack (npm)",
+  "details": "This package — published as OpenTelemetry instrumentation for TanStack Start — was trojanized with a self-propagating supply-chain worm injected on top of the legitimate code (the tarball ballooned ~13x). A weaponized binding.gyp is added at the package root whose sources entry uses gyp command-expansion: \"\u003c!(node index.js \u003e /dev/null 2\u003e\u00261 \u0026\u0026 echo stub.c)\". Because node-gyp evaluates this expression during the native build/configure step, the bundled index.js runs automatically at install time — evading tools that only inspect npm lifecycle scripts (preinstall/postinstall). index.js is heavily obfuscated: an eval() wrapped in a ROT-13 Caesar-cipher decoder that, once decoded, is an async loader which imports node:crypto, builds an AES-128-GCM decipher with a hardcoded hex key, decrypts an embedded ciphertext blob, and executes the decrypted second-stage payload dynamically via the Function constructor. The decrypted stage harvests cloud/registry credentials and tokens and propagates to other packages owned by the compromised maintainer. Installing or building this package runs attacker code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-tanstack",
+        "purl": "pkg:npm/autotel-tanstack@1.13.27"
+      },
+      "versions": [
+        "1.13.27"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-tanstack/v/1.13.27"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2674"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T20:08:14Z",
+      "indicators_observed": {
+        "crypto_key_observed": [
+          "11c85e05f29628ce3b88e54cd97a3377"
+        ],
+        "file_added": [
+          "binding.gyp",
+          "index.js"
+        ]
+      }
+    }
+  }
+}

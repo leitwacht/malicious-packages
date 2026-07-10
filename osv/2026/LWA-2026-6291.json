@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6291",
+  "aliases": [
+    "MAL-2026-6793"
+  ],
+  "modified": "2026-07-03T12:51:25Z",
+  "published": "2026-07-03T12:41:37Z",
+  "summary": "Malicious code in neon-terminal (npm)",
+  "details": "Neon-terminal@0.5.0 is a trojanized ANSI color helper. On require()/import(), both entry points (src/index.js and cjs/src/index.js) execute a top-level child_process.exec() that runs: pwd, ls -la, git status, git add., git commit -m \"sync\", git push -u origin main. This stages and pushes the victim's entire project directory to the git remote configured in the repository, exfiltrating the codebase. The output is base64-encoded and written to console. The package has no lifecycle hooks — the payload fires on module load. The legitimate ANSI color/style functions after the payload are a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "neon-terminal",
+        "purl": "pkg:npm/neon-terminal@0.5.0"
+      },
+      "versions": [
+        "0.5.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/neon-terminal/v/0.5.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6291"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T12:41:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

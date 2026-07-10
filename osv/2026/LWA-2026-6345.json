@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6345",
+  "aliases": [
+    "MAL-2026-6938"
+  ],
+  "modified": "2026-07-06T05:49:49Z",
+  "published": "2026-07-06T05:48:37Z",
+  "summary": "Malicious code in pinokio-redis (npm)",
+  "details": "Pinokio-redis@1.0.127 is a combosquat package (the real \"pinokio\" name with \"-redis\" appended) that installs a persistent surveillance agent on the victim's machine. The postinstall chain runs five scripts that register OS autostart (systemd on Linux, LaunchAgent on macOS, registry/startup on Windows) and spawn a background agent process. The agent captures keystrokes via uiohook-napi, monitors clipboard content, takes screenshots, and performs a full filesystem scan for cryptocurrency wallet keys (BIP39 mnemonics, secp256k1 private keys, Solana keypair JSON files), SSH private keys, and AWS credentials. It also harvests Chromium browser extension LevelDB databases (targeting MetaMask, Phantom, and other crypto wallet extensions). Stolen secrets are written to a hidden vault directory under the CfgMgr data directory and exfiltrated to Hugging Face Hub repositories (agents/\u0026lt;hostname\u0026gt;/result.json) and via Discord webhooks. The agent communicates with a relay server over WebSocket, with the relay host encrypted in the package using AES-256-GCM with an XOR-obfuscated embedded key.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pinokio-redis",
+        "purl": "pkg:npm/pinokio-redis@1.0.127"
+      },
+      "versions": [
+        "1.0.127"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pinokio-redis/v/1.0.127"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6345"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-06T05:48:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

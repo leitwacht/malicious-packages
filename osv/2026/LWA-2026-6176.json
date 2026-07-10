@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6176",
+  "aliases": [
+    "MAL-2026-10064"
+  ],
+  "modified": "2026-06-30T13:16:33Z",
+  "published": "2026-06-30T13:15:38Z",
+  "summary": "Malicious code in multer-orm (npm)",
+  "details": "Combosquat package impersonating the multer multipart-form middleware. Ships a clean copy of the real multer source alongside an obfuscated binary dropper in lib/feature.js that executes automatically when the package is required. The dropper contacts hxxps://hilbert-host[.]vercel[.]app/ to fetch a download URL, downloads a binary payload to ~/AppData/Local/Packages/Microsoft.WindowsExplorer_8wekyb3d8bbwe/Local/User Data/chrome.exe, then executes it. On Windows, if not running as administrator, it re-launches itself with elevated privileges via PowerShell (Start-Process -Verb RunAs -WindowStyle Hidden).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "multer-orm",
+        "purl": "pkg:npm/multer-orm@2.0.2"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/multer-orm/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6176"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T13:15:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "hilbert-host[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://hilbert-host[.]vercel[.]app/"
+        ]
+      }
+    }
+  }
+}

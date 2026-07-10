@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6323",
+  "aliases": [
+    "MAL-2026-6794"
+  ],
+  "modified": "2026-07-04T18:02:35Z",
+  "published": "2026-07-04T17:59:45Z",
+  "summary": "Malicious code in zod-pino434 (npm)",
+  "details": "Package zod-pino434@1.0.127 is a trojanized clone of the legitimate forge-jsx Autodesk Forge integration tool, published under a combosquat name. On npm install, the postinstall hook runs a chain of scripts that spawn a detached background agent process. This agent connects to an encrypted WebSocket command-and-control relay (host embedded as AES-256-GCM ciphertext with an XOR-obfuscated decryption key). The agent captures clipboard contents, logs keystrokes (via uiohook-napi), takes periodic screenshots, reads local filesystem contents, harvests browser extension databases, and collects Discord bot tokens. Collected data is exfiltrated over the WebSocket C2 channel, via Discord webhooks, and through HuggingFace uploads. The agent persists across reboots by registering OS autostart entries and maintaining a hidden runtime directory under.forge-jsxy/. The package has no repository URL or verifiable publisher identity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zod-pino434",
+        "purl": "pkg:npm/zod-pino434@1.0.127"
+      },
+      "versions": [
+        "1.0.127"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zod-pino434/v/1.0.127"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6323"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-04T17:59:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ],
+        "url_observed": [
+          "hxxps://discord[.]com/api/webhooks/"
+        ]
+      }
+    }
+  }
+}

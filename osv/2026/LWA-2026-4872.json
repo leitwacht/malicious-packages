@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4872",
+  "aliases": [
+    "MAL-2026-3757"
+  ],
+  "modified": "2026-06-28T06:26:06Z",
+  "published": "2026-06-12T20:24:21Z",
+  "summary": "Malicious code in claw-subagent-service (npm)",
+  "details": "This npm package masquerades as a service helper but acts as a cross-platform remote-control backdoor. On install it runs a postinstall hook that silently and without consent registers a persistent, auto-starting system service (a Windows service via a bundled service-wrapper executable, a Linux systemd unit at /etc/systemd/system, or a macOS LaunchDaemon), configured to auto-start at boot and restart indefinitely on crash; on Windows it checks for administrator rights and removes any prior copy first. The installed daemon supervises a worker process and periodically self-updates from the registry. The worker fetches an access token from a remote server (newsradar[.]dreamdt[.]cn) and connects to a third-party instant-messaging backend (RongCloud) to receive command-and-control messages. Through this channel a remote operator can start/stop/restart or fully uninstall and wipe the local config of the controlled service, and — most seriously — the worker auto-installs an autonomous AI coding agent (opencode-ai), runs it as a local service on port 4096, and forwards operator chat messages to it, giving the operator arbitrary, instruction-driven code and command execution on the victim host with the elevated privileges of the installed service. The combination of silent unauthorized persistence and a covert remote execution channel makes this a backdoor.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "claw-subagent-service",
+        "purl": "pkg:npm/claw-subagent-service@0.0.101"
+      },
+      "versions": [
+        "0.0.101"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/claw-subagent-service/v/0.0.101"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4872"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T20:24:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "newsradar[.]dreamdt[.]cn",
+          "newsradar.dreamdt[.]cn"
+        ],
+        "file_observed": [
+          "/Library/LaunchDaemons/SilentNodeService.plist",
+          "/etc/systemd/system/SilentNodeService.service",
+          "service/daemon/clawsubagentservice.exe",
+          "~/.claw-bridge/config.json"
+        ],
+        "package_installed": [
+          "opencode-ai@latest"
+        ],
+        "port_observed": [
+          "28765",
+          "4096"
+        ],
+        "service_name_observed": [
+          "SilentNodeService",
+          "claw-subagent-service"
+        ],
+        "url_observed": [
+          "hxxps://newsradar.dreamdt[.]cn/im",
+          "hxxps://newsradar.dreamdt[.]cn/im/api/claw/token/"
+        ]
+      }
+    }
+  }
+}

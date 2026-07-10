@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6138",
+  "aliases": [
+    "MAL-2026-6673"
+  ],
+  "modified": "2026-06-29T16:58:39Z",
+  "published": "2026-06-29T16:57:41Z",
+  "summary": "Malicious code in anthropic-toolkit (npm)",
+  "details": "The package anthropic-toolkit is a combosquat targeting developers who use the @anthropic-ai/sdk package. On install, the postinstall hook (scripts/postinstall.js) collects a detailed environment fingerprint including: hostname, username, domain name, git-configured email from.gitconfig, GitHub CLI identity from ~/.config/gh/hosts.yml, email comments from SSH public key files, git remote origin URLs and reflog author emails, GCP project ID and account from ~/.config/gcloud/properties, AWS profile names from ~/.aws/config (credential lines filtered out), DNS search domain from /etc/resolv.conf, and the parent project's package.json metadata (name, author, repository). The collected data is serialized as JSON and POSTed to hxxps://npm-package-logger-228835561205[.]europe-west1[.]run[.]app over HTTPS. The package ships legitimate-looking TypeScript utility source files (retry wrapper, streaming helpers, token estimator) as cover for the postinstall recon implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "anthropic-toolkit",
+        "purl": "pkg:npm/anthropic-toolkit@0.2.0"
+      },
+      "versions": [
+        "0.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/anthropic-toolkit/v/0.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6138"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-29T16:57:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npm-package-logger-228835561205[.]europe-west1[.]run[.]app"
+        ],
+        "url_observed": [
+          "hxxps://npm-package-logger-228835561205[.]europe-west1[.]run[.]app"
+        ]
+      }
+    }
+  }
+}

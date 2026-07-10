@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6579",
+  "modified": "2026-07-10T03:24:23Z",
+  "published": "2026-07-10T03:23:50Z",
+  "summary": "Malicious code in chai-as-structured (npm)",
+  "details": "Combosquat package impersonating the chai assertion library (chai-as-structured). On require(), index.js spawns a detached node child process running lib/initializeCaller.js. That script decodes a base64-embedded URL (tomato-brunhilda-40[.]tiiny[.]site/index.json), sends an HTTP GET with a custom header, and passes the response body through the Function constructor with require access — executing arbitrary remote code downloaded from the C2 server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-structured",
+        "purl": "pkg:npm/chai-as-structured@7.0.5"
+      },
+      "versions": [
+        "7.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-structured/v/7.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6579"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T03:23:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-brunhilda-40[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

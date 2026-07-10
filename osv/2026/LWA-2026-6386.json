@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6386",
+  "modified": "2026-07-07T13:12:10Z",
+  "published": "2026-07-07T09:07:50Z",
+  "summary": "Malicious code in @pimy-b2cweb/common (npm)",
+  "details": "Dependency-confusion packages published under the @pimy-b2cweb scope at version 99.99.99. Both preinstall and install hooks collect system information (username, hostname, working directory, package name) via base64-encoded HTTPS GET requests and DNS lookups to callback[.]m0chan[.]co[.]uk. The hooks run curl and nslookup to exfiltrate the encoded data to the C2 domain. @pimy-b2cweb/common@99.99.99 is a combosquat/dependency-confusion package with a 21-byte stub index.js. Both the preinstall and install lifecycle hooks collect the installer's username, hostname, current working directory, and package name, base64-encode them, and exfiltrate the data via an HTTPS GET request to pimy-b2cweb[.]callback[.]m0chan[.]co[.]uk/\u003cbase64-payload\u003e and a DNS lookup to \u003cbase64-package-name\u003e.pimy-b2cweb[.]callback[.]m0chan[.]co[.]uk. The C2 domain is callback[.]m0chan[.]co[.]uk.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pimy-b2cweb/common",
+        "purl": "pkg:npm/%40pimy-b2cweb/common@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pimy-b2cweb/common/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6386"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-07T09:07:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "callback[.]m0chan[.]co[.]uk",
+          "pimy-b2cweb[.]callback[.]m0chan[.]co[.]uk"
+        ],
+        "url_observed": [
+          "hxxps://pimy-b2cweb[.]callback[.]m0chan[.]co[.]uk/"
+        ]
+      }
+    }
+  }
+}

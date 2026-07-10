@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2599",
+  "aliases": [
+    "MAL-2026-5224"
+  ],
+  "modified": "2026-06-28T06:36:22Z",
+  "published": "2026-06-07T18:55:50Z",
+  "summary": "Malicious code in autotel-mcp-instrumentation (npm)",
+  "details": "This package masquerades as an OpenTelemetry instrumentation library for the Model Context Protocol, and its TypeScript source and built dist/ output are indeed a clean tracing library. However, the published tarball also ships a top-level index.js that is not part of that library and is a multi-stage obfuscated dropper. index.js wraps a string-of-character-codes payload in an eval() of a Caesar-cipher decoder function; decoding it reveals an async loader that imports node:crypto and uses AES-128-GCM (createDecipheriv with hex key/IV and an auth tag) to decrypt large hex-encoded ciphertext blobs embedded in the same file, then eval()s the decrypted code. The encrypted second stage accounts for a roughly tenfold size increase of the package (about 0.5MB to 5MB). Layered obfuscation plus runtime decrypt-and-eval of a hidden payload that has no relationship to the advertised observability functionality is characteristic of malware staging, and the decrypted code is concealed precisely to evade static review.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-mcp-instrumentation",
+        "purl": "pkg:npm/autotel-mcp-instrumentation@29.0.2"
+      },
+      "versions": [
+        "29.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-mcp-instrumentation/v/29.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2599"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:55:50Z",
+      "indicators_observed": {}
+    }
+  }
+}

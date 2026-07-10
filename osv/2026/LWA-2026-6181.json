@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6181",
+  "modified": "2026-06-30T15:54:34Z",
+  "published": "2026-06-30T15:53:39Z",
+  "summary": "Malicious code in auth-next-gen (npm)",
+  "details": "Combosquat package impersonating authentication libraries. Ships a copy of the pino logger source as camouflage. The module's entry point loads lib/writer.js, which collects host fingerprinting data (all environment variables, operating system platform, hostname, username, and MAC addresses from network interfaces) and then fetches a remote payload from hxxps://www[.]jsonkeeper[.]com/b/PJNZP via the axios HTTP library and executes it with eval(), enabling arbitrary remote code execution. A secondary C2 URL (hxxps://www[.]jsonkeeper[.]com/b/HY6M6) is also hardcoded using hex encoding. The fetched payload operates in a closure with access to all collected environment variables, including any credentials or tokens present in the runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "auth-next-gen",
+        "purl": "pkg:npm/auth-next-gen@1.6.29"
+      },
+      "versions": [
+        "1.6.29"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/auth-next-gen/v/1.6.29"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6181"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T15:53:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/HY6M6",
+          "hxxps://www[.]jsonkeeper[.]com/b/PJNZP"
+        ]
+      }
+    }
+  }
+}

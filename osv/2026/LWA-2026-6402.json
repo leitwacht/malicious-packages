@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6402",
+  "modified": "2026-07-07T12:38:37Z",
+  "published": "2026-07-07T12:38:00Z",
+  "summary": "Malicious code in motion-pull (npm)",
+  "details": "Motion-pull@2.3.5 is a combosquat impersonating the pino logger. On require(), it spawns a detached background Node.js process that decodes a base64-embedded C2 URL (hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df), POSTs all environment variables (process.env) to that endpoint, then passes the server's response to new Function(\"require\", response.data) — enabling arbitrary remote code execution on the installer's machine. The payload retries up to 5 times on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "motion-pull",
+        "purl": "pkg:npm/motion-pull@2.3.5"
+      },
+      "versions": [
+        "2.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/motion-pull/v/2.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6402"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T12:38:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2583",
+  "aliases": [
+    "MAL-2026-5217"
+  ],
+  "modified": "2026-06-28T06:35:58Z",
+  "published": "2026-06-07T18:42:03Z",
+  "summary": "Malicious code in autotel-cloudflare (npm)",
+  "details": "This package masquerades as a Cloudflare OpenTelemetry instrumentation library, bundling a genuine OpenTelemetry-for-Workers source tree, but its main entry point (index.js) is a malicious multi-stage dropper. The entry point runs eval() over an inline letter-shift (Caesar/ROT-20) decoder applied to an array of character codes. The decoded stage uses Node's crypto module to AES-128-GCM-decrypt two embedded blobs with hardcoded keys. The first blob is a bootstrapper that downloads the Bun JavaScript runtime from a GitHub releases ZIP into a temporary directory using curl and unzip, marks it executable, and uses it to run the next stage off the Node engine. The second blob is a large, string-array-obfuscated payload containing GitHub API client code (authenticated fetch helpers carrying access tokens), cryptographic routines (PBKDF2, random bytes, hashing), and environment-variable harvesting logic -- consistent with a credential-stealing and self-propagating worm that abuses stolen GitHub tokens to spread and to exfiltrate secrets. No legitimate observability library decrypts and executes a hidden payload or sideloads an alternate runtime at import time; the obfuscation, embedded encryption, runtime sideloading, and token/secret harvesting are unambiguously malicious.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-cloudflare",
+        "purl": "pkg:npm/autotel-cloudflare@2.18.16"
+      },
+      "versions": [
+        "2.18.16"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-cloudflare/v/2.18.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2583"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:42:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/"
+        ]
+      }
+    }
+  }
+}

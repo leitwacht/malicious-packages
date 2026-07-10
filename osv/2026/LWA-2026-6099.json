@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6099",
+  "aliases": [
+    "MAL-2026-6566"
+  ],
+  "modified": "2026-06-29T02:59:47Z",
+  "published": "2026-06-29T02:58:37Z",
+  "summary": "Malicious code in date-uuid (npm)",
+  "details": "Date-uuid is a trojanized package that masquerades as a UUID v7 generator but silently downloads and executes remote code when required. On import (require('date-uuid')), the entry point lib/bootstrap.js triggers lib/store.js which reads the HOST project's README.md at lines 120 and 123 for markers matching ^api1: and ^api2: patterns. These markers are base64-decoded (with hardcoded prefix and infix affixes) to reconstruct a URL. The package fetches content from that URL, writes it to /tmp/temp_\u003ctimestamp\u003e.vbs, executes it via child_process.exec, then deletes it. The C2 URL is steganographically embedded in the victim's own project README, making the attack hard to detect. The package exports a benign UUID API alongside the payload in lib/store.js. Both published versions (1.0.0, 1.0.1) contain this downloader — 1.0.1 adds affix obfuscation to the base64 decoding step.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "date-uuid",
+        "purl": "pkg:npm/date-uuid@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/date-uuid/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6099"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-29T02:58:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

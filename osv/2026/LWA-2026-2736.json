@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2736",
+  "aliases": [
+    "MAL-2026-5238"
+  ],
+  "modified": "2026-06-28T06:31:59Z",
+  "published": "2026-06-07T20:29:17Z",
+  "summary": "Malicious code in awaitly-postgres (npm)",
+  "details": "The published package is a typosquat/trojan of a PostgreSQL workflow adapter whose real code lives in dist/. It ships an extra root index.js that is not declared in the package manifest file list and is a multi-stage obfuscated dropper. The first layer is a character-code array passed through a Caesar/ROT cipher and run via eval(). The decoded code defines an AES-128-GCM helper that decrypts embedded hex blobs in memory. The first decrypted blob spawns a shell (child_process.execSync) to download the Bun JavaScript runtime archive from GitHub into a temporary directory (curl -sSL of bun-\u003cos\u003e-\u003carch\u003e.zip), unzips it, and chmod 755 the extracted binary. A second, much larger AES-128-GCM encrypted blob is then decrypted in memory and executed under that downloaded runtime as the real second-stage payload, which is never present in cleartext on disk. Fetching and executing an external runtime to run a hidden, encrypted second stage is the behaviour of a staged dropper, not a database library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "awaitly-postgres",
+        "purl": "pkg:npm/awaitly-postgres@0.1.1"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/awaitly-postgres/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2736"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T20:29:17Z",
+      "indicators_observed": {
+        "file_observed": [
+          "package/index.js"
+        ]
+      }
+    }
+  }
+}

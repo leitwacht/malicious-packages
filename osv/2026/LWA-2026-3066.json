@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3066",
+  "aliases": [
+    "MAL-2026-5250"
+  ],
+  "modified": "2026-06-28T10:40:41Z",
+  "published": "2026-06-08T11:57:25Z",
+  "summary": "Malicious code in executable-stories-cypress (npm)",
+  "details": "Version 3.1.1 ships a trojanized root index.js that is not part of the published files list (the genuine library code lives under dist/). On import it runs a multi-stage dropper: a ROT13-obfuscated string is passed to eval, which reconstructs an async routine that loads node:crypto and AES-128-GCM-decrypts two hardcoded ciphertext blobs using embedded keys/IVs/auth-tags. The first decrypted stage defines a helper that creates a temporary directory, downloads the Bun runtime archive from the official Bun GitHub releases URL (bun-v1.3.13) via a curl child process, unzips it, and marks the binary executable. This bootstraps an external runtime so the second encrypted blob (the real payload) can be executed outside the normal Node environment. No legitimate Cypress BDD-testing package downloads and executes a separate runtime to run hidden, encrypted code; this is an injected remote-code-execution dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "executable-stories-cypress",
+        "purl": "pkg:npm/executable-stories-cypress@3.1.1"
+      },
+      "versions": [
+        "3.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/executable-stories-cypress/v/3.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3066"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T11:57:25Z",
+      "indicators_observed": {}
+    }
+  }
+}

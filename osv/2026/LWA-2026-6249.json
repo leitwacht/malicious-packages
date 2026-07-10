@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6249",
+  "aliases": [
+    "MAL-2026-6788"
+  ],
+  "modified": "2026-07-02T13:40:25Z",
+  "published": "2026-07-02T13:39:05Z",
+  "summary": "Malicious code in datefmt-helper (npm)",
+  "details": "On npm install, the postinstall hook (postinstall.js) downloads and executes a remote script from a hardcoded IP. On Linux/macOS it fetches hxxp://115[.]190[.]124[.]243:8761/slt and pipes it to sh; on Windows it downloads hxxp://115[.]190[.]124[.]243:8761/swt to C:\\Users\\Public\\run.bat and runs it. The package's index.js is a benign date-formatting decoy; the malicious behaviour is in the lifecycle hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "datefmt-helper",
+        "purl": "pkg:npm/datefmt-helper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/datefmt-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6249"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T13:39:05Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "115[.]190[.]124[.]243:8761"
+        ],
+        "url_observed": [
+          "hxxp://115[.]190[.]124[.]243",
+          "hxxp://115[.]190[.]124[.]243:8761/slt",
+          "hxxp://115[.]190[.]124[.]243:8761/swt"
+        ]
+      }
+    }
+  }
+}

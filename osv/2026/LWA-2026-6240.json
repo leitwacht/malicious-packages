@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6240",
+  "modified": "2026-07-02T10:58:14Z",
+  "published": "2026-07-01T14:23:01Z",
+  "summary": "Malicious code in mjs-eslint (npm)",
+  "details": "Mjs-eslint@7.0.7 is a trojanized clone of the legitimate big.js library. It copies the entire big.js source tree verbatim but injects a require('ts-eslint-helper') call at line 605 of both big.js and big.mjs that executes at module evaluation time. The ts-eslint-helper dependency recursively searches the current working directory for credential and configuration files (id.json, config.toml, config.json,.env, env) and exfiltrates them via HTTP POST to hxxps://polymarket-clob-service[.]vercel[.]app/api/v1, prepending each file with the system username and local IP address. Any project that imports this package silently leaks its configuration files and credentials to the remote endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mjs-eslint",
+        "purl": "pkg:npm/mjs-eslint@7.0.7"
+      },
+      "versions": [
+        "7.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mjs-eslint/v/7.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6240"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-01T14:23:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "polymarket-clob-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://polymarket-clob-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

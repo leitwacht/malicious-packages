@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6248",
+  "modified": "2026-07-02T13:29:38Z",
+  "published": "2026-07-02T13:28:41Z",
+  "summary": "Malicious code in lusha-iam-widgets (npm)",
+  "details": "The package pins its node-fetch dependency to a full URL pointing at an attacker-controlled custom registry (registry[.]ctzbg[.]com) instead of a standard npm semver range. When npm installs this package, it fetches node-fetch from that external registry, which the attacker controls and can serve arbitrary code as that dependency at any time. The package ships benign-looking React UI components (styled-components, MultipleInvites) as camouflage; the attack vector is the dependency resolution itself. IOC: registry[.]ctzbg[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lusha-iam-widgets",
+        "purl": "pkg:npm/lusha-iam-widgets@1.5.2"
+      },
+      "versions": [
+        "1.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lusha-iam-widgets/v/1.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6248"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T13:28:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "registry[.]ctzbg[.]com"
+        ],
+        "url_observed": [
+          "hxxps://registry[.]ctzbg[.]com/lusha-iam-widgets/node-fetch"
+        ]
+      }
+    }
+  }
+}

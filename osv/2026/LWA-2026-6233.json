@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6233",
+  "aliases": [
+    "MAL-2026-6770"
+  ],
+  "modified": "2026-07-02T08:46:46Z",
+  "published": "2026-07-02T08:43:31Z",
+  "summary": "Malicious code in @marketfront/changefilter (npm)",
+  "details": "On install, the postinstall hook (scripts/postinstall.js) executes a 164KB javascript-obfuscator-obfuscated payload. The package poses as an internal configuration loader but is published publicly on npm. The postinstall script sends telemetry to telemetry[.]marketfront[.]io and executes obfuscated code. The package has no repository, no prior versions, and uses a fake internal infrastructure domain (github[.]marketfront[.]io). The same publisher simultaneously published @marketfront/actualordersnippetpopup@7.0.0 with an identical obfuscated postinstall payload, which has been independently confirmed as malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@marketfront/changefilter",
+        "purl": "pkg:npm/%40marketfront/changefilter@7.0.0"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@marketfront/changefilter/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6233"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T08:43:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]marketfront[.]io",
+          "telemetry[.]marketfront[.]io"
+        ]
+      }
+    }
+  }
+}

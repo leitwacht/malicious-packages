@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6297",
+  "aliases": [
+    "MAL-2026-10072"
+  ],
+  "modified": "2026-07-03T14:48:28Z",
+  "published": "2026-07-03T14:46:44Z",
+  "summary": "Malicious code in polymarket-trader-apis (npm)",
+  "details": "Polymarket-trader-apis is a combosquat of the legitimate Polymarket prediction-market platform. The package's main entry point (index.js) fetches remote code from hxxps://svganchordev[.]net/icons/108 and executes it via the Function constructor with full Node.js runtime access (require, process, Buffer, console, setTimeout). The fetched payload (data.credits) runs in a context that includes all Node.js globals, enabling arbitrary code execution. The package declares dependencies that form a credential-theft toolkit: @primno/dpapi (Windows credential extraction), better-sqlite3 and sqlite3 (browser credential-database access), node-machine-id (device fingerprinting), and socket[.]io-client (real-time C2 channel). The README describes a fake Polymarket trading utility, but the code performs no trading functions — it is a remote-code-execution dropper. C2: svganchordev[.]net, path /icons/{token}.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-trader-apis",
+        "purl": "pkg:npm/polymarket-trader-apis@0.1.0"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-trader-apis/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6297"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T14:46:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/108"
+        ]
+      }
+    }
+  }
+}

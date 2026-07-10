@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2580",
+  "aliases": [
+    "MAL-2026-5214"
+  ],
+  "modified": "2026-06-28T06:31:48Z",
+  "published": "2026-06-07T18:41:09Z",
+  "summary": "Malicious code in autotel-aws (npm)",
+  "details": "This version of autotel-aws is a trojanized build of the legitimate OpenTelemetry AWS instrumentation package. It achieves code execution at install time without any npm lifecycle script: the bundled binding.gyp file is weaponized so that node-gyp (run automatically by npm when a binding.gyp is present) executes the package index.js, with its output redirected to /dev/null to suppress evidence. The index.js is heavily obfuscated — it applies a ROT-style letter-substitution decoder to a large embedded character-code array and passes the result directly to eval. The decoded first stage is an async routine that loads node:crypto and builds an AES-128-GCM decryptor, then decrypts a multi-megabyte embedded ciphertext blob and executes it as a second stage. The behaviour is consistent with a self-propagating npm worm that, once running, harvests cloud and registry credentials and OIDC tokens and spreads by abusing compromised maintainer accounts and repositories. The package size is ~5.5x larger than prior legitimate releases, reflecting the embedded encrypted payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-aws",
+        "purl": "pkg:npm/autotel-aws@0.13.10"
+      },
+      "versions": [
+        "0.13.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-aws/v/0.13.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2580"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:41:09Z",
+      "indicators_observed": {
+        "file_observed": [
+          "package/binding.gyp",
+          "package/index.js"
+        ]
+      }
+    }
+  }
+}

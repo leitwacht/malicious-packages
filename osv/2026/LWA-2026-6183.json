@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6183",
+  "aliases": [
+    "MAL-2026-6698"
+  ],
+  "modified": "2026-06-30T20:33:45Z",
+  "published": "2026-06-30T20:32:37Z",
+  "summary": "Security-research / proof-of-concept package: cursed-modules (npm)",
+  "details": "Cursed-modules@999.0.0 employs dependency-confusion (high version 999.0.0, no repository, no real functionality) to deliver a multi-phase reconnaissance and exfiltration payload. Preinstall/install/postinstall hooks all run install.js, which reads /flag, /flag.txt, HTB/GleamCTF flags,.npmrc files, environment variables, and running processes, then HTTP PUTs the collected data to 154[.]57[.]164[.]76:30728/api/modules/ECT-839201. The require-time payload in index.js runs unconditionally, performing the same reconnaissance (flag files,.npmrc, env vars, process listing, mount table) and exfiltrating to 154[.]57[.]164[.]76:30728/api/modules/ECT-654321. A secondary recon.js module scans the full system (cron jobs, network state, verdaccio registry configs, Docker indicators, supervisor configs, npm config) and exfiltrates results, also writing them to /tmp/recon-output.json. The install-phase payload is gated to fire only on CTF-like environments (paths containing /app, /challenge, /home/user or verdaccio registry), but the require-phase payload activates on every import without restriction.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cursed-modules",
+        "purl": "pkg:npm/cursed-modules@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cursed-modules/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6183"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-06-30T20:32:37Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "154[.]57[.]164[.]76:30728"
+        ],
+        "url_observed": [
+          "hxxp://154[.]57[.]164[.]76:30728/api/modules/ECT-654321",
+          "hxxp://154[.]57[.]164[.]76:30728/api/modules/ECT-839201"
+        ]
+      }
+    }
+  }
+}

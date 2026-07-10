@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6470",
+  "modified": "2026-07-08T19:02:47Z",
+  "published": "2026-07-08T19:01:17Z",
+  "summary": "Malicious code in no-for-of-loops (npm)",
+  "details": "Package declares a self-referencing dependency via an attacker-controlled HTTP URL (hxxp://pack[.]nppacks[.]com/npm/no-for-of-loops) in both dependencies and devDependencies. On npm install, the package manager fetches the tarball from this non-registry host, allowing the attacker to serve arbitrary malicious code at install time. The HTTP protocol also enables man-in-the-middle tampering. The package's own source code is a benign Babel plugin for compile-time constant replacement, but the manifest hijacks dependency resolution to an external attacker-controlled endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "no-for-of-loops",
+        "purl": "pkg:npm/no-for-of-loops@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/no-for-of-loops/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6470"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-08T19:01:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pack[.]nppacks[.]com"
+        ],
+        "url_observed": [
+          "hxxp://pack[.]nppacks[.]com/npm/no-for-of-loops"
+        ]
+      }
+    }
+  }
+}

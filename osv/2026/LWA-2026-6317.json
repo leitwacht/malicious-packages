@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6317",
+  "aliases": [
+    "MAL-2026-6939"
+  ],
+  "modified": "2026-07-04T14:23:22Z",
+  "published": "2026-07-04T14:22:48Z",
+  "summary": "Malicious code in polytrade (npm)",
+  "details": "Polytrade@2.4.1 is a trojanized package impersonating a Polymarket API SDK. When imported, the getPlugin() function fetches a payload from hxxps://svganchordev[.]net/icons/106 and executes it via new Function() with full Node.js context (require, process, Buffer, etc.), enabling arbitrary remote code execution on the installer's machine. The package also ships a real OpenSSH ed25519 private key (package/gitlab) and its corresponding public key (package/gitlab.pub). The C2 host is svganchordev[.]net, path /icons/106, with a custom header bearrtoken: logo.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polytrade",
+        "purl": "pkg:npm/polytrade@2.4.1"
+      },
+      "versions": [
+        "2.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polytrade/v/2.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6317"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-04T14:22:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/106"
+        ]
+      }
+    }
+  }
+}

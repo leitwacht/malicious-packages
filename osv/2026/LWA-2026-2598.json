@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2598",
+  "aliases": [
+    "MAL-2026-5222"
+  ],
+  "modified": "2026-06-28T10:40:25Z",
+  "published": "2026-06-07T18:55:34Z",
+  "summary": "Malicious code in autotel-hono (npm)",
+  "details": "This package ships as an OpenTelemetry middleware for the Hono web framework but its top-level entrypoint contains no legitimate library code. Instead, index.js is a single obfuscated statement: an eval() of a Caesar-cipher-encoded decoder applied to an array of hundreds of thousands of character codes. Decoding that layer reveals a self-executing async function that imports Nodes crypto module, builds an AES-128-GCM decryptor using hardcoded keys, initialization vectors and authentication tags, and uses it to decrypt two large embedded ciphertext blobs. The decrypted output is then executed as code, forming a multi-stage loader that conceals its real behaviour behind two layers of obfuscation (Caesar cipher then authenticated encryption). The installed artifact is roughly 4.4MB, about 53x larger than prior clean releases of the same name, consistent with malicious payload injection into a hijacked package. No part of this entrypoint performs the telemetry functionality the package advertises.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-hono",
+        "purl": "pkg:npm/autotel-hono@0.4.26"
+      },
+      "versions": [
+        "0.4.26"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-hono/v/0.4.26"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2598"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:55:34Z",
+      "indicators_observed": {
+        "crypto_authtag_observed": [
+          "7ac06b90186818860c0617923f4980cb",
+          "bfa29bb8a4c8d49a7bbf3d29daf1219c"
+        ],
+        "crypto_iv_observed": [
+          "76fa28fef55ac3f5b0de9519",
+          "82b2340e3ff84e892ecac698"
+        ],
+        "crypto_key_observed": [
+          "b52fc621581d657f0598c62833738d41",
+          "b661720f04576cd4a7d9e5b2ccbaa7f6"
+        ],
+        "file_observed": [
+          "package/binding.gyp",
+          "package/index.js"
+        ]
+      }
+    }
+  }
+}

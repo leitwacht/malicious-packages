@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6373",
+  "aliases": [
+    "MAL-2026-6969"
+  ],
+  "modified": "2026-07-07T07:39:40Z",
+  "published": "2026-07-07T07:38:15Z",
+  "summary": "Malicious code in vite-json-pwa (npm)",
+  "details": "Combosquat of the legitimate @vite-pwa/json-config package. The package ships a file dist/client/dev/reactopt.js that, when loaded, fetches attacker-controlled code from hxxps://www[.]jsonkeeper[.]com/b/J7GQS and executes it via new Function(\"require\", response.data.Cookie), giving the attacker arbitrary code execution in the installer's Node.js process. The main entry point (dist/index.mjs / dist/index.js) spawns this payload as a detached child process via spawn(\"node\", [script,...], {detached: true}) with stdio ignored, so it runs in the background.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-json-pwa",
+        "purl": "pkg:npm/vite-json-pwa@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-json-pwa/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6373"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T07:38:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/J7GQS"
+        ]
+      }
+    }
+  }
+}

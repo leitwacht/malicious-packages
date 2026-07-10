@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6381",
+  "aliases": [
+    "MAL-2026-6949"
+  ],
+  "modified": "2026-07-07T08:38:11Z",
+  "published": "2026-07-07T08:37:40Z",
+  "summary": "Malicious code in vps-adapter-core (npm)",
+  "details": "The package vps-adapter-core@1.0.0 is a remote-access trojan. Its postinstall.js script (runs automatically on npm install) performs four malicious actions: (1) writes an SSH public key into ~/.ssh/authorized_keys, granting the attacker persistent SSH access to the victim's machine; (2) writes a cron job to /etc/cron.d/eni-persist that fires reverse TCP shells to 185[.]112[.]147[.]174 on ports 7007, 443, 80, 8080, 4444, 5555, 1337, and 9001 every minute and on every reboot; (3) immediately spawns detached bash reverse shells to the same IP and ports; (4) removes npm-related directories under ~/.paperclip/adapter-plugins to conceal its presence. The package has no legitimate functionality — index.js is a decoy stub returning {ok:true}.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vps-adapter-core",
+        "purl": "pkg:npm/vps-adapter-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vps-adapter-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6381"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T08:37:40Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]112[.]147[.]174"
+        ]
+      }
+    }
+  }
+}

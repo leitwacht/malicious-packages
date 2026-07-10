@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6151",
+  "aliases": [
+    "MAL-2026-6701"
+  ],
+  "modified": "2026-06-29T18:20:23Z",
+  "published": "2026-06-29T18:19:45Z",
+  "summary": "Malicious code in ripshakti (npm)",
+  "details": "During npm install, the preinstall hook automatically executes index.js which steals cloud credentials and environment secrets from the installation host. The script queries the AWS EC2 metadata service (169[.]254[.]169[.]254) to harvest IAM security credentials (AccessKeyId, SecretAccessKey, SessionToken), the instance identity document, user-data content, and extensive instance metadata (hostname, IPs, instance-id, type, availability-zone, region, AMI-id, security groups, MAC addresses). It also targets AWS ECS/Fargate containers via 169[.]254[.]170[.]2 using the AWS_CONTAINER_CREDENTIALS_RELATIVE_URI and AWS_CONTAINER_CREDENTIALS_FULL_URI environment variables. Additionally, it filters all environment variables for patterns matching key, secret, token, password, auth, credential, api, aws, database, and other sensitive terms. All stolen data is base64-encoded and exfiltrated via HTTPS GET requests to the interaction-testing host oastify[.]com at the path 9x7dxkrzy9hpff6ds3y1umla218swik7[.]oastify[.]com/?d=[base64].",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ripshakti",
+        "purl": "pkg:npm/ripshakti@80.0.0"
+      },
+      "versions": [
+        "80.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ripshakti/v/80.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6151"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-29T18:19:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "9x7dxkrzy9hpff6ds3y1umla218swik7[.]oastify[.]com",
+          "oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxps://9x7dxkrzy9hpff6ds3y1umla218swik7[.]oastify[.]com"
+        ]
+      }
+    }
+  }
+}

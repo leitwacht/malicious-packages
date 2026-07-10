@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6442",
+  "aliases": [
+    "MAL-2026-7022"
+  ],
+  "modified": "2026-07-07T20:39:41Z",
+  "published": "2026-07-07T20:38:55Z",
+  "summary": "Malicious code in tslint-conf (npm)",
+  "details": "Tslint-conf@7.2.1 is a combosquat of the real tslint package. On require(), index.js spawns lib/caller.js as a detached background child process. caller.js fetches a remote payload from an IPFS gateway (hxxps://peach-eligible-penguin-917[.]mypinata[.]cloud/ipfs/bafkreigjnxn5vnn34rc5r43ajwwkmk4akqpm4awmq5gdhakgszpeqiffsu) and executes it via new Function.constructor(\"require\",...), giving the attacker arbitrary code execution on the installer's machine. The detached spawn with child.unref() allows the parent process to exit while the payload continues running in the background.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tslint-conf",
+        "purl": "pkg:npm/tslint-conf@7.2.1"
+      },
+      "versions": [
+        "7.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tslint-conf/v/7.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6442"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T20:38:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "peach-eligible-penguin-917[.]mypinata[.]cloud"
+        ],
+        "url_observed": [
+          "hxxps://peach-eligible-penguin-917[.]mypinata[.]cloud/ipfs/bafkreigjnxn5vnn34rc5r43ajwwkmk4akqpm4awmq5gdhakgszpeqiffsu"
+        ]
+      }
+    }
+  }
+}

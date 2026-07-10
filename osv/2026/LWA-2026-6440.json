@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6440",
+  "aliases": [
+    "MAL-2026-6958"
+  ],
+  "modified": "2026-07-07T20:10:25Z",
+  "published": "2026-07-07T20:08:50Z",
+  "summary": "Malicious code in ts-await (npm)",
+  "details": "Ts-await@3.1.8 is a trojanized clone of the pino logger package that downloads and executes remote code. When the module is imported, index.js spawns a detached child process running lib/caller.js. That file fetches a second-stage payload from an IPFS gateway (peach-eligible-penguin-917[.]mypinata[.]cloud, CID bafkreigjnxn5vnn34rc5r43ajwwkmk4akqpm4awmq5gdhakgszpeqiffsu) using the HTTP header x-secret-key: _. The response's cookie field is executed via the Function constructor with full Node.js require access, giving the attacker arbitrary code execution on the installer's machine. The fetch retries up to 5 times and suppresses console output during the operation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-await",
+        "purl": "pkg:npm/ts-await@3.1.8"
+      },
+      "versions": [
+        "3.1.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-await/v/3.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6440"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T20:08:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "peach-eligible-penguin-917[.]mypinata[.]cloud"
+        ],
+        "url_observed": [
+          "hxxps://peach-eligible-penguin-917[.]mypinata[.]cloud/ipfs/bafkreigjnxn5vnn34rc5r43ajwwkmk4akqpm4awmq5gdhakgszpeqiffsu"
+        ]
+      }
+    }
+  }
+}

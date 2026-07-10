@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6294",
+  "aliases": [
+    "MAL-2026-10067"
+  ],
+  "modified": "2026-07-03T12:56:17Z",
+  "published": "2026-07-03T12:53:37Z",
+  "summary": "Malicious code in polymarket-apis (npm)",
+  "details": "Polymarket-apis@1.1.0 is a combosquat package impersonating the Polymarket API SDK. The exported getPlugin() function fetches remote JavaScript code from hxxps://svganchordev[.]net/icons/{token} and executes it via the Function constructor with full Node.js runtime access (require, process, Buffer, child_process). The fetched response field \"data.credits\" is the executed payload. The package ships dependencies for credential theft: @primno/dpapi (Windows DPAPI credential decryption), better-sqlite3 (browser credential database access), node-machine-id (system fingerprinting), and socket[.]io-client (C2 communications). Any code importing and calling getPlugin() will download and execute an arbitrary second-stage payload from the C2 host svganchordev[.]net.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-apis",
+        "purl": "pkg:npm/polymarket-apis@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-apis/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6294"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T12:53:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/"
+        ]
+      }
+    }
+  }
+}

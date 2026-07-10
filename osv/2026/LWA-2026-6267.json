@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6267",
+  "modified": "2026-07-02T16:54:01Z",
+  "published": "2026-07-02T16:47:37Z",
+  "summary": "Malicious code in express-ini (npm)",
+  "details": "The package express-ini@12.1.10 is a combosquat of the legitimate express framework. On install, the postinstall hook (node index.js) runs a heavily obfuscated JavaScript payload. The payload requires child_process (spawn), fs, os, path, and crypto modules. It spawns a hidden child process with windowsHide:true, reads the current working directory, writes a file to the user's home directory, and suppresses all errors in try/catch blocks to evade detection. The C2 endpoint and exact file paths are encoded inside the obfuscated string array and require runtime deobfuscation to recover. The package has no functional express-related code — it is a second-stage dropper that deploys a persistent payload on installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-ini",
+        "purl": "pkg:npm/express-ini@12.1.10"
+      },
+      "versions": [
+        "12.1.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-ini/v/12.1.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6267"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T16:47:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

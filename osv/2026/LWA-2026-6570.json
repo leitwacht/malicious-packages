@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6570",
+  "aliases": [
+    "MAL-2026-10057"
+  ],
+  "modified": "2026-07-09T16:55:15Z",
+  "published": "2026-07-09T16:54:09Z",
+  "summary": "Malicious code in chunk-parser (npm)",
+  "details": "Chunk-parser@1.0.0 is a remote access trojan (RAT) disguised as a chunk parser. The package contains no chunk-parsing code. On execution via its CLI entry point (bin/cli.js), it accepts a C2 server URL and deployment hash via a --token argument, installs persistence on the host, and begins beaconing to the C2. The implant collects host identity (hostname, username, OS info, local IPs, public IP via api[.]ipify[.]org), scans the filesystem directory tree, enumerates installed Chrome/Edge/Brave browser extensions, and awaits commands from the C2 at POST /api/telemetry/poll-command. Supported commands include: arbitrary shell command execution (via execSync), directory tree scanning with configurable depth, and file exfiltration — the implant zips targeted files/directories and uploads them as base64 to the C2 at /api/telemetry/upload-download. Telemetry reports are posted to /api/telemetry/report. Persistence mechanisms: systemd user service (~/.config/systemd/user/runtimedev-link.service), launchd plist (~/Library/LaunchAgents/com[.]runtimedev[.]link.plist), crontab @reboot entry, XDG autostart desktop file, and Windows Task Scheduler (hidden task named runtimedev-link) launched via a VBS script using wscript.exe with CREATE_NO_WINDOW. The implant also downloads a portable Node.js binary (v22.22.0) from nodejs[.]org to bootstrap itself if needed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chunk-parser",
+        "purl": "pkg:npm/chunk-parser@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chunk-parser/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6570"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T16:54:09Z",
+      "indicators_observed": {}
+    }
+  }
+}

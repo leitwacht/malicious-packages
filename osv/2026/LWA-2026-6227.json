@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6227",
+  "aliases": [
+    "MAL-2026-6764"
+  ],
+  "modified": "2026-07-01T23:10:59Z",
+  "published": "2026-07-01T23:09:36Z",
+  "summary": "Malicious code in @marketfront/advertisingdevtool (npm)",
+  "details": "The package @marketfront/advertisingdevtool@7.0.0 runs a heavily obfuscated postinstall script (scripts/postinstall.js, 166KB) on installation. The script is obfuscated with javascript-obfuscator, uses anti-debug timing checks, reads process.argv and process.env, and makes dynamic require() calls with obfuscated module names. The README states the package sends telemetry to telemetry[.]marketfront[.]io on install. The package has no actual source code (dist/index.js re-exports a non-existent src/index.js), no dependencies, and the repository URL points to a fake github[.]marketfront[.]io domain. The obfuscated postinstall script is a C2 beacon that phones home to telemetry[.]marketfront[.]io.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@marketfront/advertisingdevtool",
+        "purl": "pkg:npm/%40marketfront/advertisingdevtool@7.0.0"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@marketfront/advertisingdevtool/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6227"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-01T23:09:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]marketfront[.]io",
+          "telemetry[.]marketfront[.]io"
+        ]
+      }
+    }
+  }
+}

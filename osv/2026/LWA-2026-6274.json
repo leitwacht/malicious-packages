@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6274",
+  "aliases": [
+    "MAL-2026-6729"
+  ],
+  "modified": "2026-07-02T21:07:17Z",
+  "published": "2026-07-02T21:06:39Z",
+  "summary": "Malicious code in robomerge (npm)",
+  "details": "A dependency-confusion package impersonating Epic Games' internal robomerge tool. On install, the preinstall hook sends the victim's hostname, username, cwd, platform, architecture, and node version to hxxp://109[.]123[.]247[.]172/npm/robomerge via HTTP POST. It also collects up to 30 environment variables matching credential/crypto-key patterns (AWS_, GITHUB_, GH_, NPM_, EPIC_, UE_, TOKEN, KEY, SECRET, etc.) and exfiltrates them to the same endpoint. Additionally, a DNS callback is sent to \u003chostname\u003e-\u003cusername\u003e.robomerge[.]npm[.]epic-dc[.]oast[.]fun via dns.lookup. The package's index.js is a 20-byte stub; the only executable code is the exfiltration payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "robomerge",
+        "purl": "pkg:npm/robomerge@99999.0.0"
+      },
+      "versions": [
+        "99999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/robomerge/v/99999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6274"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T21:06:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "robomerge[.]npm[.]epic-dc[.]oast[.]fun"
+        ],
+        "ip_observed": [
+          "109[.]123[.]247[.]172"
+        ],
+        "url_observed": [
+          "hxxp://109[.]123[.]247[.]172/npm/robomerge"
+        ]
+      }
+    }
+  }
+}

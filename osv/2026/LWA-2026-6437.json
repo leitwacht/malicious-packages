@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6437",
+  "aliases": [
+    "MAL-2026-10048"
+  ],
+  "modified": "2026-07-07T18:32:59Z",
+  "published": "2026-07-07T18:22:52Z",
+  "summary": "Malicious code in chai-as-thread (npm)",
+  "details": "Chai-as-thread@7.0.8 is a trojanized clone of the pino logger package, published under a combosquat name. When the exported Express middleware is invoked, index.js spawns a detached background Node.js process (lib/initializeCaller.js) that decodes a hardcoded base64 URL (hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json), fetches its contents via axios, and passes the response body to new Function.constructor(\"require\", response) — executing arbitrary remote code from the attacker-controlled server. The payload retries up to 5 times on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-thread",
+        "purl": "pkg:npm/chai-as-thread@7.0.8"
+      },
+      "versions": [
+        "7.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-thread/v/7.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6437"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T18:22:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-brunhilda-40[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

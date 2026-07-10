@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3243",
+  "modified": "2026-06-28T06:27:55Z",
+  "published": "2026-06-09T21:20:39Z",
+  "summary": "Malicious code in file-public-cdn-hn (npm)",
+  "details": "This package contains a browser-cookie stealer. One of its bundled scripts enumerates every cookie from all domains using the browser cookies API, concatenates them into a single text dump grouped by domain, and uploads that dump as a timestamped.txt file to a remote server (ninja2t[.]top/upload.php). After a successful upload it sends the URL of the stolen-cookie file to an attacker-controlled Telegram bot via the Telegram sendMessage API. The package main entry point is a harmless Hello World decoy, and the name/keywords masquerade as a CDN helper utility. Installing or loading this code exposes all of a victim browser session cookies, enabling session hijacking and account takeover.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "file-public-cdn-hn",
+        "purl": "pkg:npm/file-public-cdn-hn@1.1.17599-1758001725447"
+      },
+      "versions": [
+        "1.1.17599-1758001725447"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/file-public-cdn-hn/v/1.1.17599-1758001725447"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3243"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-09T21:20:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api.telegram[.]org",
+          "ninja2t[.]top"
+        ],
+        "telegram_chat_id": [
+          "-4770102151"
+        ],
+        "url_observed": [
+          "hxxp://ninja2t[.]top/uploads/",
+          "hxxps://api.telegram[.]org/bot7667087049:[secret-redacted]/sendMessage",
+          "hxxps://ninja2t[.]top/upload.php"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2828",
+  "aliases": [
+    "MAL-2026-5242"
+  ],
+  "modified": "2026-06-28T06:26:37Z",
+  "published": "2026-06-07T21:28:02Z",
+  "summary": "Malicious code in creditcard.js (npm)",
+  "details": "This version of the credit-card validation library carries a malicious payload in an index.js file that is not part of the package's advertised entry points: the manifest only declares the dist directory, yet index.js is present in the published tarball. index.js contains nothing but a single eval() call whose argument is produced by a Caesar-cipher deobfuscator applied to a large array of character codes. Decoding the cipher reveals an async self-executing function that loads Node's crypto module, defines an AES-128-GCM decryption helper, and uses a hardcoded key, initialization vector, and authentication tag to decrypt a roughly one-megabyte embedded ciphertext blob into a second-stage payload that is then executed in the same context. This is a two-stage, self-decrypting code-execution loader: the letter-shift layer hides the bootstrap and the AES-GCM layer keeps the real payload encrypted to defeat source inspection. A legitimate validation library has no reason to ship hidden, multiply-obfuscated, dynamically-decrypted executable code; the package is a dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "creditcard.js",
+        "purl": "pkg:npm/creditcard.js@3.0.60"
+      },
+      "versions": [
+        "3.0.60"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/creditcard.js/v/3.0.60"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2828"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T21:28:02Z",
+      "indicators_observed": {
+        "aes_gcm_authtag": [
+          "7a58a5d9eb4acf7cfc6be9df61c31bd3"
+        ],
+        "aes_iv": [
+          "25516f5c285d3dee8e80d685"
+        ],
+        "aes_key": [
+          "a0f0bdbd05f08e79d32fc92f08973496"
+        ]
+      }
+    }
+  }
+}

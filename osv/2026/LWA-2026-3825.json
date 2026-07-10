@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3825",
+  "modified": "2026-06-28T06:27:38Z",
+  "published": "2026-06-10T06:53:48Z",
+  "summary": "Malicious code in ldpbootstrap-jquery (npm)",
+  "details": "An npm package that ships a Windows HTA (ActiveX/Windows Script Host) installer rather than any Node.js code. When run as an HTA it creates a folder under %LOCALAPPDATA%\\Landpage, then either downloads a PowerShell install script from a server-configurable URL or decodes an embedded base64 PowerShell stub, writes it to disk, and runs it via powershell.exe -ExecutionPolicy RemoteSigned. That PowerShell script downloads an MSI installer from a server-controlled URL and installs it silently (msiexec /i /quiet /norestart), automatically re-launching with a UAC elevation prompt (RunAs) if the unprivileged install is denied, and running the installer with a hidden window. The downloaded MSI is not integrity-checked, so the controlling server can deliver and silently install any payload with elevated privileges. It also conceals its own window off-screen and beacons a session token plus OS version to a configurable registration endpoint. This is a staged remote-payload dropper/loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ldpbootstrap-jquery",
+        "purl": "pkg:npm/ldpbootstrap-jquery@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ldpbootstrap-jquery/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3825"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-10T06:53:48Z",
+      "indicators_observed": {
+        "http_header_observed": [
+          "X-Landpage-Payload",
+          "X-Landpage-Session"
+        ],
+        "path_observed": [
+          "%LOCALAPPDATA%\\Landpage",
+          "%LOCALAPPDATA%\\Landpage\\.landpage-session.txt"
+        ]
+      }
+    }
+  }
+}

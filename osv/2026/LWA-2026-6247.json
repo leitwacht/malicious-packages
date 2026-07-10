@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6247",
+  "aliases": [
+    "MAL-2026-10061"
+  ],
+  "modified": "2026-07-02T11:53:03Z",
+  "published": "2026-07-02T11:52:36Z",
+  "summary": "Security-research / proof-of-concept package: cursed-ecto-d3ab00 (npm)",
+  "details": "All four lifecycle hooks (preinstall, install, postinstall, prepare) execute identical malicious code. On install, the package runs shell commands to read flag files from common paths (/flag*, /root/flag*, /flag.txt, /app/flag*, /srv/flag*, /home/*/flag*, /flag, /run/secrets/*) and environment variables matching \"flag\" or \"htb\". It also collects hostname, user id, and working directory. All collected data is base64-encoded and exfiltrated via HTTPS GET to forward-amber-prairie-ruled[.]trycloudflare[.]com/x?d=. Additionally, the package probes a list of internal hosts (127[.]0[.]0[.]1, localhost, app, web, frontend, console, ecto, registry, backend, nginx on ports 3000, 8080, 80, 5000, 4000) and sends a PUT request to /api/modules/ECT-839201 with a JSON manifest declaring the host \"PWNED\" — attempting to compromise an Ecto application registry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cursed-ecto-d3ab00",
+        "purl": "pkg:npm/cursed-ecto-d3ab00@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cursed-ecto-d3ab00/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6247"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-02T11:52:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "forward-amber-prairie-ruled[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://forward-amber-prairie-ruled[.]trycloudflare[.]com/x?d="
+        ]
+      }
+    }
+  }
+}

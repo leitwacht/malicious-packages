@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-0053",
+  "aliases": [
+    "MAL-2026-4496"
+  ],
+  "modified": "2026-06-28T06:27:52Z",
+  "published": "2026-05-27T21:26:43Z",
+  "summary": "Malicious code in bandkit (npm)",
+  "details": "This package presents itself as open-source scaffolding for Ethereum range-bound trading strategies (contract deployment, executor, React hooks). It hides a hardcoded Ethereum recipient address inside dist/defaultStrategyWallet.js by storing the 20-byte address XORd against a key, with both the ciphertext and the key present in the file so the address is reconstructed at runtime (decoding to 0xe9e41c03d5b0b6fb543f4cd1cd8ad81ece4c830f). A comment dismisses this as cosmetic obfuscation to discourage scrutiny. When an application deploys the included BandStrategy contract without explicitly supplying its own strategy-wallet address, the deployment hook passes this hidden address as the contracts constructor argument, making it the immutable strategy wallet. The BandStrategy contract then routes the entire deposited ETH balance to that wallet when a user activates the strategy engine, with no mechanism to return the funds to the depositor. The result is that funds deposited by users of an application built on this package are irrevocably sent to the attacker-controlled address.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bandkit",
+        "purl": "pkg:npm/bandkit@1.0.7"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bandkit/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-0053"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-27T21:26:43Z",
+      "indicators_observed": {
+        "wallet_observed": [
+          "0xe9e41c03d5b0b6fb543f4cd1cd8ad81ece4c830f"
+        ]
+      }
+    }
+  }
+}

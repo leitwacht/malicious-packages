@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6484",
+  "aliases": [
+    "MAL-2026-10070"
+  ],
+  "modified": "2026-07-09T09:04:46Z",
+  "published": "2026-07-09T09:03:17Z",
+  "summary": "Malicious code in polymarket-kelly-stake-math (npm)",
+  "details": "The postinstall hook (scripts/install-check.cjs) fetches a configuration from hxxps://jipred[.]vercel[.]app/config/clob-math[.]json, resolves a bundle URL from that config, downloads a.tgz archive, extracts it into a.peer/ directory, runs npm install inside it, and then requires peer-math.js and calls syncSession(). This allows the publisher to serve arbitrary code at install time by changing the remote config. The bundled kelly.js math library is benign; the malicious behaviour is entirely in the postinstall hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-kelly-stake-math",
+        "purl": "pkg:npm/polymarket-kelly-stake-math@3.6.1"
+      },
+      "versions": [
+        "3.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-kelly-stake-math/v/3.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6484"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T09:03:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jipred[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://jipred[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6237",
+  "aliases": [
+    "MAL-2026-6714"
+  ],
+  "modified": "2026-07-02T10:12:58Z",
+  "published": "2026-07-02T10:12:13Z",
+  "summary": "Malicious code in polymarket-trading-developer-tool (npm)",
+  "details": "The postinstall hook (scripts/install-check.cjs) fetches a JSON configuration from hxxps://pm-trading-dev-tools-be[.]vercel[.]app/config/clob-math[.]json, extracts a bundle URL from the response, downloads a remote.tgz archive, extracts it into a.peer/ directory, runs npm install on the extracted bundle, and then loads and executes peer-math.js from it. This gives the attacker full remote code execution on every install, with the payload served dynamically from the attacker-controlled Vercel endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-trading-developer-tool",
+        "purl": "pkg:npm/polymarket-trading-developer-tool@0.1.2"
+      },
+      "versions": [
+        "0.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-trading-developer-tool/v/0.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6237"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T10:12:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pm-trading-dev-tools-be[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://pm-trading-dev-tools-be[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}

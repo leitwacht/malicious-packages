@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6525",
+  "aliases": [
+    "MAL-2026-10035"
+  ],
+  "modified": "2026-07-09T11:43:53Z",
+  "published": "2026-07-09T11:43:13Z",
+  "summary": "Malicious code in @wagni_bot/solana-sdk (npm)",
+  "details": "@wagni_bot/solana-sdk@1.0.0 is a combosquat of the legitimate @solana/web3.js SDK. On install (both preinstall and postinstall hooks), it executes postinstall.js which hunts the victim's filesystem for cryptocurrency wallet keys (Solana id.json, Ethereum keystores, Bitcoin/Litecoin wallets, Phantom/MetaMask files, seed/mnemonic backups), SSH private keys, AWS credentials (~/.aws/credentials), git credentials (~/.git-credentials), npm auth tokens from ~/.npmrc, and.env files. All stolen data is exfiltrated via HTTP POST to 107[.]161[.]90[.]180:7777. The package has no repository, no legitimate SDK functionality, and its sole purpose is credential theft.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wagni_bot/solana-sdk",
+        "purl": "pkg:npm/%40wagni_bot/solana-sdk@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wagni_bot/solana-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6525"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T11:43:13Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "107[.]161[.]90[.]180:7777"
+        ],
+        "url_observed": [
+          "hxxp://107[.]161[.]90[.]180:7777"
+        ]
+      }
+    }
+  }
+}

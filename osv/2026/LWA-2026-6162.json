@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6162",
+  "aliases": [
+    "MAL-2026-10052"
+  ],
+  "modified": "2026-06-29T20:54:32Z",
+  "published": "2026-06-29T20:47:47Z",
+  "summary": "Malicious code in chai-promised-test (npm)",
+  "details": "Chai-promised-test@1.3.5 is a trojanized clone of the pino logger published under a misleading name. Upon require(), the package spawns a detached background Node.js process (stdio:ignore, unref'd) that executes lib/caller.js. This file sends an HTTP GET request to hxxps://jsonkeeper[.]com/b/EXSIF with a custom header x-secret-key: _, reads response.data.cookie from the response, and passes the retrieved string into the Function constructor to execute as arbitrary code with access to the require() function. The remote URL is attacker-controlled and can serve any malicious second-stage payload. The package also suppresses console.log during execution and retries up to 5 times.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-promised-test",
+        "purl": "pkg:npm/chai-promised-test@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-promised-test/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6162"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-29T20:47:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/EXSIF"
+        ]
+      }
+    }
+  }
+}

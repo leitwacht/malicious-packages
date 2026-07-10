@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6583",
+  "modified": "2026-07-10T09:11:48Z",
+  "published": "2026-07-10T09:08:52Z",
+  "summary": "Malicious code in txs-runner-lib (npm)",
+  "details": "Txs-runner-lib@1.0.1 is a trojanized package that poses as an ecommerce transaction-data generator. When the exported getTransactions() function is called, it reads a hidden file (test_address_list.js) containing base64-encoded JavaScript, decodes it, and executes it via eval(). The decoded payload downloads a second-stage script from hxxps://koroeyalcustom[.]com/api/v1/aws[.]php/bag[.]php using axios, writes it to a temporary file (tmp_20260202), and executes it via a detached Python process (python3 on Linux/macOS, python on Windows). The C2 host is koroeyalcustom[.]com, path /api/v1/aws.php/bag.php.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "txs-runner-lib",
+        "purl": "pkg:npm/txs-runner-lib@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/txs-runner-lib/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6583"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T09:08:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "koroeyalcustom[.]com"
+        ],
+        "url_observed": [
+          "hxxps://koroeyalcustom[.]com/api/v1/aws[.]php/bag[.]php"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6556",
+  "aliases": [
+    "MAL-2026-10063"
+  ],
+  "modified": "2026-07-09T13:54:38Z",
+  "published": "2026-07-09T13:54:09Z",
+  "summary": "Malicious code in express-router-engine (npm)",
+  "details": "Express-router-engine@3.6.6 is a combosquat package impersonating the Express ecosystem. On require(), it fetches a remote payload from hxxps://www[.]jsonkeeper[.]com/b/JTOGJ and executes the \"cookie\" field of the response as arbitrary JavaScript code via the Function constructor, passing the Node.js require() function to the payload. This gives the attacker full control over the runtime environment to execute any second-stage commands, exfiltrate data, or install further malware. The C2 endpoint is jsonkeeper[.]com at path /b/JTOGJ.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-router-engine",
+        "purl": "pkg:npm/express-router-engine@3.6.6"
+      },
+      "versions": [
+        "3.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-router-engine/v/3.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6556"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T13:54:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/JTOGJ"
+        ]
+      }
+    }
+  }
+}

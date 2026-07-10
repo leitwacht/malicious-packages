@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6469",
+  "aliases": [
+    "MAL-2026-7008"
+  ],
+  "modified": "2026-07-08T22:22:09Z",
+  "published": "2026-07-08T18:46:50Z",
+  "summary": "Malicious code in chai-as-const (npm)",
+  "details": "Chai-as-const is a combosquat of the popular chai assertion library. When the exported middleware function is called, it spawns a detached background Node.js process that POSTs all environment variables (including any NPM tokens, GitHub tokens, AWS credentials, and other secrets) to a C2 endpoint at hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/b4dadd6a26d820d08596, then executes the server's response as arbitrary code via the Function constructor — enabling remote code execution on the installer's machine. chai-as-const is a combosquat of the chai testing library. When required, it spawns a detached background process that POSTs all environment variables (including credentials, tokens, and API keys) to a remote C2 endpoint at ipcheck-hashed[.]vercel[.]app/api/auth/b4dadd6a26d820d08596, then executes arbitrary JavaScript code returned by the server. The package has no repository URL and its description is a copy-pasted vulnerability management document unrelated to its functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-const",
+        "purl": "pkg:npm/chai-as-const@1.4.5"
+      },
+      "versions": [
+        "1.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-const/v/1.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6469"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-08T18:46:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/b4dadd6a26d820d08596"
+        ]
+      }
+    }
+  }
+}

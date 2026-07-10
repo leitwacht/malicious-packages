@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2760",
+  "aliases": [
+    "MAL-2026-5239"
+  ],
+  "modified": "2026-06-28T06:31:11Z",
+  "published": "2026-06-07T20:37:18Z",
+  "summary": "Malicious code in awaitly-visualizer (npm)",
+  "details": "This package masquerades as a visualization/rendering helper for the awaitly workflow library but ships a heavily obfuscated multi-stage dropper in a root index.js that is published outside the package's own declared files allowlist. The first stage is a 1.3-million-element character-code array passed through a Caesar-cipher decoder and run via eval. The decoded stage imports node:crypto and AES-128-GCM-decrypts two embedded blobs using hardcoded keys, IVs and authentication tags: a small bootstrap script and a ~650KB second-stage payload. It then writes the decrypted payload to a randomly named temporary file (/tmp/p\u003crandom\u003e.js), executes it with the Bun runtime via child_process.execSync (running eval on the bootstrap script first to locate or provision Bun when it is not already present), and immediately deletes the temporary file afterward to remove forensic traces. The layered Caesar+AES obfuscation, drop-to-temp-and-run, and self-cleanup are characteristic of a credential/wallet stealer or backdoor loader and have no legitimate purpose in a diagram-rendering library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "awaitly-visualizer",
+        "purl": "pkg:npm/awaitly-visualizer@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/awaitly-visualizer/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2760"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T20:37:18Z",
+      "indicators_observed": {
+        "crypto_iv_observed": [
+          "3b5689e1f5f8a0c8b6cf8a7b",
+          "b57a1aa6709dce856da65b1e"
+        ],
+        "crypto_key_observed": [
+          "7e68093592a421e002eede66a079957a",
+          "8ab1efd53c3ed127b3e9e7edbc610237"
+        ],
+        "file_observed": [
+          "index.js"
+        ]
+      }
+    }
+  }
+}

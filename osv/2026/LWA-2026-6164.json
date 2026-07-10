@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6164",
+  "aliases": [
+    "MAL-2026-10041"
+  ],
+  "modified": "2026-06-30T03:25:03Z",
+  "published": "2026-06-30T03:24:03Z",
+  "summary": "Malicious code in chai-as-buffered (npm)",
+  "details": "Combosquat package impersonating the chai assertion library. When imported, it spawns a detached background process or runs inline code that fetches a second-stage payload from api[.]jsonstorage[.]net (URL: /v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/a179ea35-b962-4722-b3f1-e28316d1a44a) with request header x-secret-key: _. The fetched response is executed as JavaScript via new Function() with full Node.js require() access, allowing arbitrary remote code execution on the installer's machine. The package is a trojanized clone of the pino logging library with no meaningful connection to the chai assertion library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-buffered",
+        "purl": "pkg:npm/chai-as-buffered@3.7.24"
+      },
+      "versions": [
+        "3.7.24"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-buffered/v/3.7.24"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6164"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T03:24:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]net"
+        ]
+      }
+    }
+  }
+}

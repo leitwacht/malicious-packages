@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6175",
+  "modified": "2026-06-30T12:21:24Z",
+  "published": "2026-06-30T12:20:39Z",
+  "summary": "Malicious code in notify-logs (npm)",
+  "details": "Notify-logs@1.3.5 is a trojanized clone of the pino logging library. The package ships a copy of pino's source code but replaces the entry point so that when the module is required, it spawns a detached, hidden background Node.js process. That process fetches arbitrary JavaScript code from hxxps://jsonkeeper[.]com/b/EXSIF via an HTTP GET request (with headers x-secret-key: _) and executes the response's \"cookie\" field using Function constructor, giving the remote payload unrestricted access to Node.js require() and full system-level capabilities. The downloaded code can perform any action — credential theft, file exfiltration, additional payload download, or persistence — without the installer's awareness, since the child process runs silently with detached stdio.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "notify-logs",
+        "purl": "pkg:npm/notify-logs@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/notify-logs/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6175"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T12:20:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/EXSIF"
+        ]
+      }
+    }
+  }
+}

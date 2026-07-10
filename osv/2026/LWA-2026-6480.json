@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6480",
+  "aliases": [
+    "MAL-2026-10071"
+  ],
+  "modified": "2026-07-09T08:25:11Z",
+  "published": "2026-07-09T08:24:07Z",
+  "summary": "Malicious code in polymarket-kit (npm)",
+  "details": "Polymarket-kit@2.4.1 is a combosquat package impersonating the legitimate Polymarket SDK. When imported, index.js fetches a remote payload from hxxps://svganchordev[.]net/icons/106 and executes it via new Function() with full Node.js access (require, process, Buffer, child_process). The package ships a real SSH private key (package/gitlab, OpenSSH ED25519 format). Its dependencies include node-machine-id (host fingerprinting), @primno/dpapi (Windows credential decryption), better-sqlite3 (local database access), socket[.]io-client (C2 channel), and express/axios/request (HTTP server and client). The package has no repository and its code does not implement any Polymarket API functionality — it is a remote-code-execution dropper that runs arbitrary code from svganchordev[.]net on the importing system.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-kit",
+        "purl": "pkg:npm/polymarket-kit@2.4.1"
+      },
+      "versions": [
+        "2.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-kit/v/2.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6480"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T08:24:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/106"
+        ]
+      }
+    }
+  }
+}

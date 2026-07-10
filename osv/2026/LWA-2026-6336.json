@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6336",
+  "aliases": [
+    "MAL-2026-6990"
+  ],
+  "modified": "2026-07-05T20:07:19Z",
+  "published": "2026-07-05T19:59:37Z",
+  "summary": "Security-research / proof-of-concept package: ai-gen-ai-opt-in (npm)",
+  "details": "The postinstall hook runs postinstall.js which collects the installer's external IP address, geo-location (city, region, country, ISP, organization), hostname, and username. This data is encoded into a DNS subdomain and exfiltrated via a DNS lookup to p1r2d74iwjk057raam6myf7e258wzkt8i[.]oastify[.]com, an attacker-controlled OAST callback host. The package also fetches geo-location data from ip-api[.]com/json/ during the exfiltration process. Both packages (gen-ai-opt-in and ai-gen-ai-opt-in) contain identical payloads with the same C2 domain. The package ai-gen-ai-opt-in@99.0.0 is a combosquat package with no repository or legitimate purpose. Its postinstall hook (postinstall.js) collects the installer's hostname, username, public IP address, city, region, country, ISP, and organization by querying ip-api[.]com/json/. All collected data is encoded into a subdomain and exfiltrated via a DNS lookup to the interact.sh callback host p1r2d74iwjk057raam6myf7e258wzkt8i[.]oastify[.]com, a DNS-tunnel exfiltration technique that bypasses HTTP-level monitoring.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ai-gen-ai-opt-in",
+        "purl": "pkg:npm/ai-gen-ai-opt-in@99.0.0"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ai-gen-ai-opt-in/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6336"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-05T19:59:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ip-api[.]com",
+          "p1r2d74iwjk057raam6myf7e258wzkt8i[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxps://ip-api[.]com/json/"
+        ]
+      }
+    }
+  }
+}

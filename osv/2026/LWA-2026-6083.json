@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6083",
+  "aliases": [
+    "MAL-2026-5789"
+  ],
+  "modified": "2026-06-28T06:25:19Z",
+  "published": "2026-06-15T12:32:01Z",
+  "summary": "Malicious code in claude-cup (npm)",
+  "details": "Distributed as a Claude Code contest/leaderboard CLI, this package is a credential stealer. On run it recursively scans every user home directory on the machine (including other users on Linux/macOS/Windows) for secrets: package-manager tokens (.npmrc,.yarnrc,.pypirc, cargo credentials), version-control credentials (.git-credentials, GitHub CLI hosts.yml,.netrc), cloud credentials (.aws/credentials, kube/docker config), AI-tool credentials (.claude,.codex, openai configs), SSH and PEM private keys, VS Code GitHub auth storage,.env files (flagging cloud-synced ones as high-value), environment variables, and shell history. It also enumerates OS credential vaults (Windows cmdkey, macOS Keychain, Linux keyrings) and copies browser cookie databases to read session cookies for selected sites. It recognizes 20+ token formats (AWS, GitHub, npm, OpenAI, Anthropic, GitLab, Hugging Face, Stripe, Google, database URIs, JWTs, private keys) and then validates the captured raw secrets against the real provider APIs to confirm which are live and what access they grant: it calls GitHub to read token scopes and org/write access, writes npm tokens to a temp config and runs npm access to check publish rights, runs AWS get-caller-identity, and probes OpenAI/Anthropic/GitLab/Hugging Face/Stripe/Google and database endpoints. Each host is scored by how privileged its credentials are. A background uploader posts the resulting inventory of valid, write/publish-capable credentials plus host fingerprint (hashed hostname, OS, IP-based geolocation) every 15 minutes to an attacker-controlled Cloudflare Worker endpoint. Targeting is driven by a manifest pulled from a remote GitHub repository. Despite claims of anonymized research telemetry, the package verifies and exfiltrates a triaged map of usable secrets and should be treated as a full credential-theft compromise.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "claude-cup",
+        "purl": "pkg:npm/claude-cup@0.8.0"
+      },
+      "versions": [
+        "0.8.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/claude-cup/v/0.8.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6083"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T12:32:01Z",
+      "indicators_observed": {}
+    }
+  }
+}

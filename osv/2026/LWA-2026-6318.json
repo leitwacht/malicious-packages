@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6318",
+  "aliases": [
+    "MAL-2026-6796"
+  ],
+  "modified": "2026-07-04T15:58:12Z",
+  "published": "2026-07-04T15:57:37Z",
+  "summary": "Malicious code in internallib_v234 (npm)",
+  "details": "Package index.js exports a function that executes a reverse shell via child_process.exec: it curls a script from reverse-shell.sh/10[.]0[.]74[.]133:443 and pipes it to sh. The package declares a self-dependency (internallib_v234@^1.0.0) and ships a.gitlab-ci.yml that triggers the payload in CI pipelines by running npm update against a local registry (hxxp://0[.]0[.]0[.]0:4873/) then executing check.js which requires the package and invokes the command. The reverse shell connects to 10[.]0[.]74[.]133:443.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "internallib_v234",
+        "purl": "pkg:npm/internallib_v234@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/internallib_v234/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6318"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-04T15:57:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

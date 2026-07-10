@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6302",
+  "aliases": [
+    "MAL-2026-6995"
+  ],
+  "modified": "2026-07-03T17:09:00Z",
+  "published": "2026-07-03T17:07:52Z",
+  "summary": "Malicious code in chai-redirection (npm)",
+  "details": "Chai-redirection@0.0.1 is a combosquat of the chai assertion library. When the package is required, it spawns a detached Node.js child process that fetches a payload from hxxps://www[.]jsonkeeper[.]com/b/PC5CK and executes the response's \"cookie\" field as arbitrary code via the Function constructor. It also makes a second HTTP request to a configurable endpoint (path: /defy/v3) with a \"bearrtoken\" header, and on a 404 response executes the response's \"token\" field as code. The package's README describes a redirect-testing API that does not match the actual exported code, serving as a decoy. The C2 host is jsonkeeper[.]com (path /b/PC5CK).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-redirection",
+        "purl": "pkg:npm/chai-redirection@0.0.1"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-redirection/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6302"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T17:07:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/PC5CK"
+        ]
+      }
+    }
+  }
+}

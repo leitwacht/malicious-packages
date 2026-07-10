@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2581",
+  "aliases": [
+    "MAL-2026-5215"
+  ],
+  "modified": "2026-06-28T06:34:15Z",
+  "published": "2026-06-07T18:41:27Z",
+  "summary": "Malicious code in autotel-backends (npm)",
+  "details": "The published package contains a top-level index.js whose entire body is wrapped in eval() over a Caesar-cipher (rotate-by-8) encoded string. The decoded bootstrap is an async IIFE that pulls in node:crypto and builds an AES-128-GCM decryptor, then decrypts two hardcoded ciphertext blobs embedded in the file. The first decrypted blob is a runtime dropper: it derives the host OS/arch, constructs a download URL for the Bun JavaScript runtime (github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/bun-\u003cos\u003e-\u003carch\u003e.zip), fetches it with curl into a freshly created temp directory, unzips it, and chmod 755s the resulting bun binary, exposing its path via globalThis. The second, much larger decrypted blob is a hidden second-stage payload intended to be executed by that downloaded Bun runtime; this multi-megabyte encrypted blob inflates the package to ~4.79MB, roughly 17x a normal release. This is a multi-stage obfuscated dropper that downloads and runs an unsanctioned runtime to execute concealed code, behaviour entirely inconsistent with the package being an OpenTelemetry vendor-backend configuration helper. None of this exists in the legitimate upstream package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-backends",
+        "purl": "pkg:npm/autotel-backends@2.12.26"
+      },
+      "versions": [
+        "2.12.26"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-backends/v/2.12.26"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2581"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:41:27Z",
+      "indicators_observed": {
+        "aes_key_observed": [
+          "06dfb0cd0fb64fb1b222c7a15d8762c5",
+          "5fe898febc7212695770eb72e7cba8ae"
+        ]
+      }
+    }
+  }
+}

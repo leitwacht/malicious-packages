@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6287",
+  "modified": "2026-07-03T23:09:50Z",
+  "published": "2026-07-03T09:52:55Z",
+  "summary": "Malicious code in chai-presentation (npm)",
+  "details": "Combosquat package impersonating the chai assertion library. On require(), index.js spawns a detached Node.js child process running lib/caller.js, which fetches a remote payload from a C2 endpoint (constructed from config values) and executes it via new Function.constructor. Additionally, index.js contains an inline runHandler that fetches from hxxps://www[.]jsonkeeper[.]com/b/PC5CK and executes the response as code. The attacker gains arbitrary code execution on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-presentation",
+        "purl": "pkg:npm/chai-presentation@0.0.2"
+      },
+      "versions": [
+        "0.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-presentation/v/0.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6287"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T09:52:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/PC5CK"
+        ]
+      }
+    }
+  }
+}

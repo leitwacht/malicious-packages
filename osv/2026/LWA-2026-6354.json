@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6354",
+  "modified": "2026-07-06T19:48:50Z",
+  "published": "2026-07-06T19:47:38Z",
+  "summary": "Malicious code in express-guardian (npm)",
+  "details": "Express-guardian is a combosquat package impersonating Express security middleware. When required, it spawns a detached child process that makes an HTTP GET request to hxxp://server-genimi-check[.]vercel[.]app/defy/v3 with a hardcoded authorization header. If the server responds with HTTP 404 and a JSON body containing a 'token' field, that token is executed as arbitrary JavaScript code via the Function constructor, granting the attacker full remote code execution on the installer's machine. The package's README fraudulently claims to provide SQL injection detection, XSS protection, and request sanitization — none of this functionality exists in the code. C2 endpoint: server-genimi-check[.]vercel[.]app, path /defy/v3.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-guardian",
+        "purl": "pkg:npm/express-guardian@1.4.1"
+      },
+      "versions": [
+        "1.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-guardian/v/1.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6354"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-06T19:47:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "server-genimi-check[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxp://server-genimi-check[.]vercel[.]app/defy/v3"
+        ]
+      }
+    }
+  }
+}

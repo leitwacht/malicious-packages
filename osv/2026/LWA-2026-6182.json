@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6182",
+  "aliases": [
+    "MAL-2026-6726"
+  ],
+  "modified": "2026-06-30T19:24:32Z",
+  "published": "2026-06-30T19:23:54Z",
+  "summary": "Malicious code in db-convertor (npm)",
+  "details": "Package masquerades as a MySQL database connector but contains a hidden queryDBConnect() method that decodes a base64-embedded URL (hxxps://jsonkeeper[.]com/b/SH5ZW), fetches a remote payload over HTTPS, spawns a detached Node.js process with stdin piped, and writes the fetched payload into the child process's stdin for remote code evaluation. The child process is spawned with detached:true and unref() to outlive the parent. The payload delivery URL is jsonkeeper[.]com/b/SH5ZW.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "db-convertor",
+        "purl": "pkg:npm/db-convertor@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/db-convertor/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6182"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T19:23:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/SH5ZW"
+        ]
+      }
+    }
+  }
+}

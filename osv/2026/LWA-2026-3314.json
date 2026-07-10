@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3314",
+  "aliases": [
+    "MAL-2026-2930"
+  ],
+  "modified": "2026-06-28T06:30:03Z",
+  "published": "2026-06-08T21:51:12Z",
+  "summary": "Malicious code in path-internal (npm)",
+  "details": "This package impersonates the Node.js core path module: package.json points main at path.js, which is a verbatim copy of the upstream Node path implementation with a hidden payload spliced into the middle of the file. As soon as the module is required/imported, a self-invoking function fetches a JSON document from a hardcoded paste-style URL (base64-encoded in the source as the constant randomStringRe, decoding to hxxps://www[.]jsonkeeper[.]com/b/HQVPL), reads its content field, and passes it straight to eval(). This is a remote code loader: the attacker can serve arbitrary JavaScript from that endpoint and have it executed on any machine that imports the package, with no further user interaction. A second hardcoded URL (hxxps://www[.]jsonkeeper[.]com/b/HI4TR) is present for an identical, currently commented-out second-stage loader. The package declares axios, request and execp as dependencies, consistent with downloading and executing further payloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "path-internal",
+        "purl": "pkg:npm/path-internal@1.0.10"
+      },
+      "versions": [
+        "1.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/path-internal/v/1.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3314"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T21:51:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/HI4TR",
+          "hxxps://www[.]jsonkeeper[.]com/b/HQVPL"
+        ]
+      }
+    }
+  }
+}

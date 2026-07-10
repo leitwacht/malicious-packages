@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6292",
+  "modified": "2026-07-03T12:52:32Z",
+  "published": "2026-07-03T12:41:39Z",
+  "summary": "Malicious code in ne-logger (npm)",
+  "details": "Ne-logger depends on neon-terminal, which executes a shell command at module load time. The command runs pwd, ls -la, and git status to discover the victim's working directory and repository state, then runs git add., git commit -m \"sync\", and git push -u origin main to exfiltrate the entire repository to the attacker's configured git remote. Any project that installs ne-logger or any package depending on it will automatically execute this payload when the module is loaded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ne-logger",
+        "purl": "pkg:npm/ne-logger@0.5.0"
+      },
+      "versions": [
+        "0.5.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ne-logger/v/0.5.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6292"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T12:41:39Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4869",
+  "aliases": [
+    "MAL-2026-3747"
+  ],
+  "modified": "2026-06-28T06:27:27Z",
+  "published": "2026-06-12T20:24:08Z",
+  "summary": "Malicious code in @aiscene/aiserver (npm)",
+  "details": "This package presents itself as an AI automation server but installs a remote-controlled code-execution channel. On startup (its bin entry, npm start, or loading dist/index.js) it begins polling a hardcoded remote endpoint at hxxp://nethp-test[.]jd[.]com/rest/execution-queue/tasks/next every five seconds over plaintext HTTP, with no way to override the URL. Task responses can contain a JavaScript code field (supplied either as code entries in a naturalLanguage array or as a raw script detected heuristically), which the package executes via the AsyncFunction constructor inside a forked Node worker process. This gives whoever controls the remote endpoint arbitrary JavaScript execution on every host that runs the package, and the plaintext channel additionally exposes it to network tampering. At startup and every 30 seconds the package also reports host identity to the same server, including the machine hostname, a non-internal IPv4 address, and node metadata (type/version/region/tags). Finally, it ships a live third-party cloud model API key hardcoded as the default AI key in dist/config/index.js and in dist/.env, injecting it into the environment, so any installer silently consumes the key owner credentials and quota.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@aiscene/aiserver",
+        "purl": "pkg:npm/%40aiscene/aiserver@1.4.1"
+      },
+      "versions": [
+        "1.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@aiscene/aiserver/v/1.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4869"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T20:24:08Z",
+      "indicators_observed": {
+        "api_key_observed": [
+          "pk-485b2b56-7334-4bed-bd74-09bb42ca3baf"
+        ],
+        "domain_observed": [
+          "nethp-test[.]jd[.]com"
+        ],
+        "file_observed": [
+          "dist/.env",
+          "dist/config/index.js",
+          "dist/executor/code-executor.js",
+          "dist/task/poller.js"
+        ],
+        "url_observed": [
+          "hxxp://nethp-test[.]jd[.]com/rest/execution-queue/tasks/next",
+          "hxxp://nethp-test[.]jd[.]com/rest/execution-nodes/heartbeat",
+          "hxxp://nethp-test[.]jd[.]com/rest/execution-nodes/register"
+        ]
+      }
+    }
+  }
+}

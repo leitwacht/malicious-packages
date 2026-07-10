@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6554",
+  "aliases": [
+    "MAL-2026-10046"
+  ],
+  "modified": "2026-07-09T13:09:25Z",
+  "published": "2026-07-09T13:08:33Z",
+  "summary": "Malicious code in chai-as-smart (npm)",
+  "details": "Package \"chai-as-smart\" is a combosquat of the popular \"chai\" assertion library. When required, it spawns a detached background process that POSTs all environment variables (including any NPM/GitHub/cloud tokens the installer has set) to a remote C2 endpoint at hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df, then executes the server's response as arbitrary JavaScript code via the Function constructor, enabling full remote code execution on the victim's machine. The C2 URL is base64-encoded in the source as \"[encoded-url-redacted]\". The payload retries up to 5 times on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-smart",
+        "purl": "pkg:npm/chai-as-smart@2.3.5"
+      },
+      "versions": [
+        "2.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-smart/v/2.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6554"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T13:08:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df"
+        ]
+      }
+    }
+  }
+}

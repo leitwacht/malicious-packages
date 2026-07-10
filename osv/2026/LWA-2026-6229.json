@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6229",
+  "aliases": [
+    "MAL-2026-6767"
+  ],
+  "modified": "2026-07-01T23:13:37Z",
+  "published": "2026-07-01T23:09:37Z",
+  "summary": "Malicious code in @marketfront/basemarkettemplate (npm)",
+  "details": "The package @marketfront/basemarkettemplate@7.0.0 is a trojanized hollow package. It ships no functional code — dist/index.js re-exports a non-existent file. The only payload is a 166KB heavily obfuscated postinstall script (scripts/postinstall.js) that uses javascript-obfuscator with anti-debugging, anti-tampering, and environment-detection checks. On install, the postinstall reads the NODE_OPTIONS environment variable, inspects process.argv, and loads additional modules via decoded require() calls. The README fabricates a fake company and claims to send \"anonymous telemetry\" to telemetry[.]marketfront[.]io as a cover story for C2 beaconing. No repository, no verifiable publisher identity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@marketfront/basemarkettemplate",
+        "purl": "pkg:npm/%40marketfront/basemarkettemplate@7.0.0"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@marketfront/basemarkettemplate/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6229"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-01T23:09:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "telemetry[.]marketfront[.]io"
+        ]
+      }
+    }
+  }
+}

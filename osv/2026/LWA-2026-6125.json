@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6125",
+  "aliases": [
+    "MAL-2026-6587"
+  ],
+  "modified": "2026-06-29T11:29:27Z",
+  "published": "2026-06-29T11:28:38Z",
+  "summary": "Malicious code in clob-client-math (npm)",
+  "details": "On npm install, the postinstall hook (scripts/install-check.cjs) silently executes a multi-stage remote code loader while the package presents itself as a legitimate Polymarket Kelly-staking library. The hook resolves a second-stage tarball URL by fetching a JSON config from the package.json homepage field (polymarket-clob-service[.]vercel[.]app/config/clob-math.json) or from the environment variables PSM_PEER_URL, PSM_SYNC_CONFIG, or KELLY_PEER_CONFIG. It downloads the tarball via HTTP into a temp directory, extracts it, runs npm install on its dependencies, and executes the unpacked peer-math.js by calling its syncSession() function — giving the attacker full remote code execution on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "clob-client-math",
+        "purl": "pkg:npm/clob-client-math@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/clob-client-math/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6125"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-29T11:28:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "polymarket-clob-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://polymarket-clob-service[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}

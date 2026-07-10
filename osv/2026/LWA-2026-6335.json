@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6335",
+  "aliases": [
+    "MAL-2026-6944"
+  ],
+  "modified": "2026-07-05T18:05:52Z",
+  "published": "2026-07-05T18:04:37Z",
+  "summary": "Malicious code in zredis-typed (npm)",
+  "details": "Zredis-typed@1.0.127 is a combosquat package (unrelated to Redis) that installs a full remote-access trojan (RAT) on the victim's machine. On `npm install`, the postinstall chain runs five scripts that: (1) patch a clipboard-event native binary; (2) build the dist/ directory; (3) copy the agent to a hidden durable runtime under `~/.local/share/cfgmgr/.forge-jsxy/runtime/` (or `%LOCALAPPDATA%\\CfgMgr\\data\\.forge-jsxy\\runtime\\` on Windows); (4) register OS autostart via `forge-autostart` (Windows registry/Linux systemd/macOS LaunchAgent); (5) spawn a detached background process (`forge-agent`). The agent performs: clipboard monitoring and exfiltration, keyboard input capture, full-desktop screenshot capture (uploaded via Discord webhooks), remote file-system access (file explorer served over WebSocket), Chromium browser extension database harvesting, filesystem-wide secret/credential scanning, and Discord bot token abuse. The C2 channel is an encrypted WebSocket relay — the relay host and port are AES-256-GCM encrypted in `dist/deploymentDefaults.js` with an XOR-obfuscated embedded decryption key. The relay server also serves a self-update tarball at `/api/zredis-typed-package.tgz`. The agent connects to the relay on startup and accepts remote commands including file read/write, screenshot capture, terminal execution, and extension-database exfiltration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zredis-typed",
+        "purl": "pkg:npm/zredis-typed@1.0.127"
+      },
+      "versions": [
+        "1.0.127"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zredis-typed/v/1.0.127"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6335"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-05T18:04:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

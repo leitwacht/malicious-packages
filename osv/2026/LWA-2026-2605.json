@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2605",
+  "aliases": [
+    "MAL-2026-5223"
+  ],
+  "modified": "2026-06-28T06:30:12Z",
+  "published": "2026-06-07T19:00:58Z",
+  "summary": "Malicious code in autotel-mcp (npm)",
+  "details": "The package ships its entire root index.js as an obfuscated self-decrypting dropper. The file is a single eval() call wrapping a Caesar-cipher (shift-19) string decoder applied to a numeric char-code array. Decoding yields an async IIFE that pulls in node:crypto and AES-128-GCM-decrypts a large embedded ciphertext blob using a key, IV and auth tag hardcoded in the source. The decrypted second stage imports node:child_process, fs, path and os and installs a globalThis.getBunPath() helper that: detects the host OS/architecture, creates a temp directory, downloads the Bun runtime binary (bun-v1.3.13) as a zip from a GitHub release URL using curl, unzips it, and marks the extracted binary executable (chmod 755), caching the path -- staging a downloaded executable to run a subsequent payload outside the Node process. The package presents itself as an OpenTelemetry MCP tool to appear legitimate; no benign reason exists for a telemetry helper to ship a doubly-obfuscated eval blob that fetches and chmods a foreign runtime binary at load time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-mcp",
+        "purl": "pkg:npm/autotel-mcp@0.1.14"
+      },
+      "versions": [
+        "0.1.14"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-mcp/v/0.1.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2605"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T19:00:58Z",
+      "indicators_observed": {
+        "aes_authtag_observed": [
+          "9255078f7691f244a2e836b379974677"
+        ],
+        "aes_iv_observed": [
+          "1ed67523930592a3fd39ebd4"
+        ],
+        "aes_key_observed": [
+          "9f19d66224c513d9032926d2b0673304"
+        ]
+      }
+    }
+  }
+}

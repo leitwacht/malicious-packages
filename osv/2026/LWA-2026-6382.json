@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6382",
+  "aliases": [
+    "MAL-2026-6989"
+  ],
+  "modified": "2026-07-07T08:42:11Z",
+  "published": "2026-07-07T08:41:40Z",
+  "summary": "Malicious code in ag-charts-test (npm)",
+  "details": "Combosquat of the legitimate ag-charts package (AG Grid charting library). The package ships no functional code — index.js is a stub exporting an empty object. Its sole purpose is to declare an external dependency on \"ltidisafe\" fetched from a Google Cloud Storage bucket (hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]1[.]9[.]tgz), which is loaded and installed as a regular npm dependency at install time. This allows the attacker to serve arbitrary malicious code from the external tarball under the guise of a dependency. The version 99.9.1 is a dependency-confusion tactic to outrank legitimate versions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ag-charts-test",
+        "purl": "pkg:npm/ag-charts-test@99.9.1"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ag-charts-test/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6382"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-07T08:41:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]1[.]9[.]tgz"
+        ]
+      }
+    }
+  }
+}

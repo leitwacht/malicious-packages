@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6211",
+  "aliases": [
+    "MAL-2026-6722"
+  ],
+  "modified": "2026-07-01T20:19:45Z",
+  "published": "2026-07-01T13:16:21Z",
+  "summary": "Malicious code in date-fns-lite (npm)",
+  "details": "Date-fns-lite is a combosquat of the legitimate date-fns library. On install, its postinstall.js hook performs host reconnaissance and credential theft across both Linux and Windows. On Linux it attempts container escape via /proc/1/root access, Docker socket abuse, cgroup analysis, unshare namespace escape, SUID binary enumeration, and kernel module loading. On Windows it collects system information, Chrome and Edge browser data (bookmarks, history, extensions, login data), network configuration (ipconfig, netstat, arp, route table), desktop and documents file listings, SSH keys,.gitconfig,.npmrc, credential manager output, and environment variables including AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN, NPM_TOKEN, and DOCKER_PASSWORD. All collected data is exfiltrated via HTTP POST to 115[.]190[.]124[.]243:9082/callback as JSON. The package's index.js is a decoy date-formatting utility with no relation to the malicious postinstall payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "date-fns-lite",
+        "purl": "pkg:npm/date-fns-lite@1.0.6"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/date-fns-lite/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6211"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-01T13:16:21Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "115[.]190[.]124[.]243:9082"
+        ],
+        "url_observed": [
+          "hxxp://115[.]190[.]124[.]243:9082/callback"
+        ]
+      }
+    }
+  }
+}

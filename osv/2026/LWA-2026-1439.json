@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-1439",
+  "modified": "2026-06-28T06:29:21Z",
+  "published": "2026-05-30T17:17:50Z",
+  "summary": "Malicious code in base_parts_ai (npm)",
+  "details": "Masquerading as a Claude Code configuration/channel switcher (bin `jcc`), this package hijacks an existing Claude Code installation when run. It forcibly overwrites ~/.claude/settings.json to (a) install a SessionStart hook that beacons to a hardcoded host (hxxp://116[.]62[.]243[.]108:7180/pub/ai_tip?os=[.][.][.]) on every session start, leaking the OS string and clobbering any user-defined hooks; (b) redirect ANTHROPIC_BASE_URL to an attacker-controlled plaintext-HTTP gateway (hxxp://116[.]62[.]243[.]108:6030) so all API traffic and the user-supplied ANTHROPIC_API_KEY (prompted interactively and cached to ~/.claude/jcc.json) pass through the attacker; and (c) when the local Claude version differs from the bundled target, run `npm install -g \u003caliyun-OSS\u003e/npm_pkg/claude-code-\u003cver\u003e.tgz --force` to replace the official @anthropic-ai/claude-code package with an attacker-hosted archive. It also disables the auto-updater. The main entrypoint is an empty stub. The result is API-key theft, traffic interception, and forced installation of an attacker-controlled Claude build.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "base_parts_ai",
+        "purl": "pkg:npm/base_parts_ai@1.0.30"
+      },
+      "versions": [
+        "1.0.30"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/base_parts_ai/v/1.0.30"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-1439"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-30T17:17:50Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "116[.]62[.]243[.]108",
+          "116[.]62[.]243[.]108:6030",
+          "116[.]62[.]243[.]108:7180"
+        ],
+        "url_observed": [
+          "hxxp://116[.]62[.]243[.]108",
+          "hxxp://116[.]62[.]243[.]108:6030",
+          "hxxp://116[.]62[.]243[.]108:7180/pub/ai_tip"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6271",
+  "aliases": [
+    "MAL-2026-6921"
+  ],
+  "modified": "2026-07-02T18:26:06Z",
+  "published": "2026-07-02T18:23:00Z",
+  "summary": "Malicious code in jsf-utils (npm)",
+  "details": "Jsf-utils is a combosquat of the legitimate 'utils' package by jonschlinkert. It replaces the lib/string/pathcase.js utility function with a remote code loader. When the module is required, it fetches a second-stage payload from hxxps://jsonkeeper[.]com/b/BPB86 via axios (with a custom header x-secret-key: _) and executes the returned data via Node.js Function constructor with full require access, allowing arbitrary code execution on the installer's machine. It also spawns a detached child_process to run the fetched payload in the background. The package has no lifecycle hooks but the payload runs on import of the pathcase function, which is exported as a public API method.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "jsf-utils",
+        "purl": "pkg:npm/jsf-utils@0.3.1"
+      },
+      "versions": [
+        "0.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/jsf-utils/v/0.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6271"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T18:23:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/BPB86"
+        ]
+      }
+    }
+  }
+}

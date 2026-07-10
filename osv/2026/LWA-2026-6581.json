@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6581",
+  "modified": "2026-07-10T06:09:27Z",
+  "published": "2026-07-10T06:08:53Z",
+  "summary": "Malicious code in env-fast (npm)",
+  "details": "Env-fast@1.0.0 is a trojanized environment-variable loader. The public API (load/parse/config) is a functional decoy. On require(), the module starts a 72-hour delayed timer, after which it collects a system fingerprint (hostname, platform, OS release, architecture, CPU count, total memory, network interface names, home directory, temp directory, uptime, Node.js version) and checks for the existence of ~/.npmrc and SSH private key files (id_rsa, id_ed25519, id_ecdsa). It also counts environment variable names matching patterns like key, secret, token, password, auth, private, wallet, seed, mnemonic. All collected data is POSTed as JSON to 2[.]27[.]62[.]51:8080/api/health. A 6-hourly heartbeat beacon then repeats the same POST to the same endpoint. The package has no install hook — the payload executes when the module is imported, which is the normal usage pattern for an env loader, making the activation transparent to the user.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "env-fast",
+        "purl": "pkg:npm/env-fast@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/env-fast/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6581"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T06:08:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]27[.]62[.]51:8080"
+        ],
+        "url_observed": [
+          "hxxp://2[.]27[.]62[.]51:8080/api/health"
+        ]
+      }
+    }
+  }
+}

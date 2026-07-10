@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2578",
+  "aliases": [
+    "MAL-2026-5212"
+  ],
+  "modified": "2026-06-28T06:33:34Z",
+  "published": "2026-06-07T18:40:35Z",
+  "summary": "Malicious code in autotel-adapters (npm)",
+  "details": "This package ships a multi-stage obfuscated dropper in its main entry point. On import, index.js runs eval() over a Caesar-cipher-encoded character-code array (per-letter shift of 20) to reconstruct and execute a hidden script. That script imports node:crypto and uses AES-128-GCM (createDecipheriv) with hard-coded keys, IVs and auth tags to decrypt embedded hex blobs. The first decrypted blob is a bootstrap that, using child_process execSync, creates a temp directory and downloads the standalone Bun runtime from the official Bun GitHub releases (bun-v1.3.13 zip), unzips it and chmods it to 755 — sideloading an alternate JavaScript runtime. A second, ~600KB AES-128-GCM-encrypted blob is the stage-2 payload run through that downloaded Bun interpreter. The package also includes a native binding.gyp and is roughly 13.7x larger than its previous versions. The encryption, runtime sideloading and layered obfuscation are characteristic of supply-chain malware and have no place in a framework-adapter helper library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-adapters",
+        "purl": "pkg:npm/autotel-adapters@0.3.5"
+      },
+      "versions": [
+        "0.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-adapters/v/0.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2578"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:40:35Z",
+      "indicators_observed": {
+        "crypto_key_observed": [
+          "4e9a71e8914130796eaa9334a5114a2f",
+          "c8b04d46f3db023284f024933123d63b"
+        ],
+        "file_observed": [
+          "binding.gyp",
+          "index.js"
+        ]
+      }
+    }
+  }
+}

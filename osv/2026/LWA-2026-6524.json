@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6524",
+  "aliases": [
+    "MAL-2026-10022"
+  ],
+  "modified": "2026-07-09T11:43:44Z",
+  "published": "2026-07-09T11:43:15Z",
+  "summary": "Malicious code in @wagni_bot/binance-sdk (npm)",
+  "details": "@wagni_bot/binance-sdk@1.0.0 is a combosquat package impersonating the Binance crypto exchange SDK. Both the preinstall and postinstall lifecycle hooks execute postinstall.js, which is a credential and cryptocurrency wallet harvester. On install, the script: (1) hunts Solana wallet private keys (id.json) from ~/.config/solana, ~/.solana, and ~/.local/share/solana; (2) hunts Ethereum keystore files from ~/.ethereum/keystore; (3) hunts Bitcoin and Litecoin wallet files; (4) recursively searches the home directory for wallet files,.env,.env.local, and.env.production files; (5) steals SSH private keys from ~/.ssh/; (6) steals AWS credentials from ~/.aws/credentials; (7) steals git credentials from ~/.git-credentials; (8) steals npm auth tokens from ~/.npmrc. All stolen data is exfiltrated via HTTP POST to 107[.]161[.]90[.]180:7777, along with the hostname, username, and current working directory.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wagni_bot/binance-sdk",
+        "purl": "pkg:npm/%40wagni_bot/binance-sdk@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wagni_bot/binance-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6524"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T11:43:15Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "107[.]161[.]90[.]180:7777"
+        ],
+        "url_observed": [
+          "hxxp://107[.]161[.]90[.]180:7777"
+        ]
+      }
+    }
+  }
+}

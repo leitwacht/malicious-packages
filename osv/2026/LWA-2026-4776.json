@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4776",
+  "aliases": [
+    "MAL-2026-5396"
+  ],
+  "modified": "2026-06-28T06:35:09Z",
+  "published": "2026-06-12T15:29:51Z",
+  "summary": "Malicious code in @sqlite-node/createsql (npm)",
+  "details": "This package advertises itself as a SQLite toolkit but contains no SQLite functionality. Its main module fetches a hardcoded remote GitHub gist over HTTPS, extracts the contents of the first file in that gist, and passes it directly to eval(), executing attacker-controlled JavaScript whenever the module is loaded. The remotely-hosted payload can be changed by the attacker at any time, making it a remote-code-execution loader/dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sqlite-node/createsql",
+        "purl": "pkg:npm/%40sqlite-node/createsql@1.0.9"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sqlite-node/createsql/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4776"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T15:29:51Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxps://api[.]github[.]com/gists/198a0bbec7a6018e9250615d26e37b90",
+          "hxxps://gist[.]github[.]com/metabrainai000/198a0bbec7a6018e9250615d26e37b90[.]js"
+        ]
+      }
+    }
+  }
+}

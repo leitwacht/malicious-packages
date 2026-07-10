@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6275",
+  "aliases": [
+    "MAL-2026-6737"
+  ],
+  "modified": "2026-07-02T21:07:40Z",
+  "published": "2026-07-02T21:06:40Z",
+  "summary": "Malicious code in epic-internal-tools (npm)",
+  "details": "The package epic-internal-tools@99999.0.0 is a dependency-confusion credential stealer. Its preinstall hook collects host metadata (hostname, username, cwd, platform, architecture, Node.js version, CI environment variables) and filters process.env for credential patterns matching AWS_*, GITHUB_*, GH_*, NPM_*, EPIC_*, UE_*, HORDE_*, P4, CI, BUILD, TOKEN, KEY, and SECRET — collecting up to 30 such entries. The assembled payload is POSTed as JSON to hxxp://109[.]123[.]247[.]172/npm/epic_internal_tools. Additionally, the script performs a DNS callback to {hostname}-{username}.epic_internal_tools.npm[.]epic-dc[.]oast[.]fun, using the oast[.]fun exfiltration callback service. The package's main file (index.js) is a stub that exports an empty object — the sole purpose of the package is the preinstall credential-theft payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "epic-internal-tools",
+        "purl": "pkg:npm/epic-internal-tools@99999.0.0"
+      },
+      "versions": [
+        "99999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/epic-internal-tools/v/99999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6275"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T21:06:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "epic-dc[.]oast[.]fun",
+          "npm[.]epic-dc[.]oast[.]fun",
+          "oast[.]fun"
+        ],
+        "ip_observed": [
+          "109[.]123[.]247[.]172"
+        ],
+        "url_observed": [
+          "hxxp://109[.]123[.]247[.]172/npm/epic_internal_tools"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3263",
+  "aliases": [
+    "MAL-2026-2929"
+  ],
+  "modified": "2026-06-28T06:33:14Z",
+  "published": "2026-06-08T20:10:40Z",
+  "summary": "Malicious code in path-extend (npm)",
+  "details": "Path-extend masquerades as a copy of the Node.js core path module but contains an injected remote-code-execution dropper. Two URLs are hidden as base64-encoded strings disguised as regular-expression variables (named randomStringRe and tokenStringRe). At module load, a self-invoking function calls a routine that performs fetch(atob(url)) against hxxps://www[.]jsonkeeper[.]com/b/P0CND4, parses the JSON response, and passes its content field directly to eval(). The result is that merely importing the package downloads attacker-controlled JavaScript from jsonkeeper[.]com and executes it with the privileges of the host process -\u003e arbitrary remote code execution. A second, currently-commented variant targets a sibling endpoint (.../b/XTTBX). The package also pulls axios, request, and execp as dependencies to stage further payload and command-execution capability.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "path-extend",
+        "purl": "pkg:npm/path-extend@1.0.13"
+      },
+      "versions": [
+        "1.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/path-extend/v/1.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3263"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T20:10:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/P0CND4",
+          "hxxps://www[.]jsonkeeper[.]com/b/XTTBX"
+        ]
+      }
+    }
+  }
+}

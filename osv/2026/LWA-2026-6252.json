@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6252",
+  "aliases": [
+    "MAL-2026-10056"
+  ],
+  "modified": "2026-07-02T13:52:04Z",
+  "published": "2026-07-02T09:35:07Z",
+  "summary": "Malicious code in chain-chai-await (npm)",
+  "details": "Chain-chai-await@1.3.6 is a trojanized package masquerading as a logging library (pino clone). On require(), index.js spawns a detached child process running lib/caller.js, which fetches a remote payload from hxxps://jsonkeeper[.]com/b/TJKON (with custom header x-secret-key) and executes the returned 'cookie' value via the Function constructor — a remote-code-execution dropper. The package also ships a base64-encoded variant of the same C2 URL in lib/const.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chain-chai-await",
+        "purl": "pkg:npm/chain-chai-await@1.3.6"
+      },
+      "versions": [
+        "1.3.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chain-chai-await/v/1.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6252"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T09:35:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/TJKON",
+          "hxxps://jsonkeeper[.]com/b/ZK45J"
+        ]
+      }
+    }
+  }
+}

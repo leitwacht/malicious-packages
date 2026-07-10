@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6436",
+  "aliases": [
+    "MAL-2026-6984"
+  ],
+  "modified": "2026-07-07T18:05:17Z",
+  "published": "2026-07-07T18:03:50Z",
+  "summary": "Malicious code in @vite-ln/build-ts (npm)",
+  "details": "@vite-ln/build-ts is a combosquat of the Vite build tool. The package ships a trojanized bin/vite.js that appends an obfuscated payload after the legitimate Vite bootstrap code. The payload uses a string-shuffling decoder to set up global require/module/__dirname/__filename and executes a decoded function body. The package declares @solana/web3.js, axios, socket[.]io-client, and form-data as devDependencies — none of which are Vite dependencies — indicating a Solana wallet drainer that communicates over HTTP/WebSocket C2 channels. The main bundle (dist/node/chunks/dep-Cy9twKMn.js) also fetches remote content and executes it via new Function, enabling remote code execution. The package claims \"Evan You\" as author and links to the real Vite repository on GitHub, but is published by a different account under a different scope.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vite-ln/build-ts",
+        "purl": "pkg:npm/%40vite-ln/build-ts@5.17.0"
+      },
+      "versions": [
+        "5.17.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vite-ln/build-ts/v/5.17.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6436"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T18:03:50Z",
+      "indicators_observed": {}
+    }
+  }
+}

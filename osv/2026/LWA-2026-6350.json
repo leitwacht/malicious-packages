@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6350",
+  "modified": "2026-07-06T18:11:28Z",
+  "published": "2026-07-06T18:08:06Z",
+  "summary": "Malicious code in notify-funcs (npm)",
+  "details": "Notify-funcs@1.3.5 is a trojanized package that downloads and executes remote code when required. On module load, index.js reads DEV_API_CHECK_DOMAIN and DEV_DEPENDENCY_TOKEN from a shipped.env file, constructs the URL hxxp://vercel-five-coral[.]vercel[.]app/defy/v3, fetches it via the 'request' module, parses the JSON response, and passes the 'token' field to new Function.constructor('require',...) — executing arbitrary remote code with full Node.js require() access. The C2 domain is vercel-five-coral[.]vercel[.]app, path /defy/v3.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "notify-funcs",
+        "purl": "pkg:npm/notify-funcs@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/notify-funcs/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6350"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-06T18:08:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vercel-five-coral[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxp://vercel-five-coral[.]vercel[.]app/defy/v3"
+        ]
+      }
+    }
+  }
+}

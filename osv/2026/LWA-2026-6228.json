@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6228",
+  "aliases": [
+    "MAL-2026-6765"
+  ],
+  "modified": "2026-07-01T23:11:27Z",
+  "published": "2026-07-01T23:09:37Z",
+  "summary": "Malicious code in @marketfront/bannerpopup (npm)",
+  "details": "The postinstall script (scripts/postinstall.js) is a 164KB heavily obfuscated JavaScript payload using javascript-obfuscator with array shuffling, RC4/XOR string decryption, and anti-debugging checks that scan process.argv for profiler/debugger flags and process.env.NODE_OPTIONS. The package claims to be an internal authentication client but ships no actual library code (dist/index.js is a 76-byte stub pointing to a non-existent file), has zero dependencies, and the repository URL points to a non-existent domain. The obfuscated postinstall runs automatically on npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@marketfront/bannerpopup",
+        "purl": "pkg:npm/%40marketfront/bannerpopup@7.0.0"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@marketfront/bannerpopup/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6228"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-01T23:09:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

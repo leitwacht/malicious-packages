@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6576",
+  "aliases": [
+    "MAL-2026-10098"
+  ],
+  "modified": "2026-07-09T23:24:00Z",
+  "published": "2026-07-09T23:23:36Z",
+  "summary": "Malicious code in fastify-addone (npm)",
+  "details": "Fastify-addone@5.1.0 is a typosquat of the legitimate fastify-plugin package. On require(), the file lib/getPluginName.js executes a top-level fetch to hxxps://www[.]jsonkeeper[.]com/b/HDXPP, retrieves JSON content, and passes it to eval() — achieving remote code execution on every import. The fetched payload is served from www[.]jsonkeeper[.]com and is fully attacker-controlled, enabling arbitrary code execution in the context of any project that depends on this package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fastify-addone",
+        "purl": "pkg:npm/fastify-addone@5.1.0"
+      },
+      "versions": [
+        "5.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fastify-addone/v/5.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6576"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T23:23:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/HDXPP"
+        ]
+      }
+    }
+  }
+}

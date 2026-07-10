@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3089",
+  "aliases": [
+    "MAL-2026-5258"
+  ],
+  "modified": "2026-06-28T06:34:15Z",
+  "published": "2026-06-08T12:09:21Z",
+  "summary": "Malicious code in executable-stories-vitest (npm)",
+  "details": "This release of executable-stories-vitest is trojanized. Alongside the legitimate compiled library in dist/, the tarball ships a hidden top-level index.js that the package manifest does not reference. That file consists of a single eval() call wrapped around a custom character-shift (Caesar, shift 11) decoder fed a numeric array of several hundred thousand char codes. When evaluated it reconstructs a self-executing async function that imports node:crypto, builds an AES-128-GCM decryption helper, and decrypts two large embedded ciphertext blobs (key/IV/auth-tag hardcoded inline) into a multi-megabyte hidden payload which it then runs. The payload behaves as a self-propagating npm worm: it executes during package installation, harvests cloud and package-registry credentials and OIDC tokens from the environment, and spreads by republishing trojanized versions of other packages owned by the stolen accounts and by planting backdoor files in linked source repositories. The unpacked size is roughly 14x a normal release, consistent with the embedded encrypted stages. Treat any environment where this version was installed as credential-compromised: rotate npm/registry tokens, cloud and CI/CD OIDC credentials, and audit recently published packages and repository commits under the affected accounts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "executable-stories-vitest",
+        "purl": "pkg:npm/executable-stories-vitest@2.0.1"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/executable-stories-vitest/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3089"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T12:09:21Z",
+      "indicators_observed": {}
+    }
+  }
+}

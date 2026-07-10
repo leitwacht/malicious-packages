@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6170",
+  "modified": "2026-06-30T10:14:04Z",
+  "published": "2026-06-30T10:13:05Z",
+  "summary": "Malicious code in ddok-modal (npm)",
+  "details": "Ddok-modal@1.0.0 is a trojanized React component posing as a wallet-connection modal (supporting MetaMask, Phantom, Rabby etc.). When imported by an application, it: (1) fetches the victim's public IP from api[.]ipify[.]org and geolocation from ipapi[.]co; (2) establishes a WebSocket to wss://api[.]wagmiwallet[.]org; (3) presents fake \"forgot password\" modals that capture every keystroke (each character sent individually as key_type 'cha', Enter presses sent as key_type 'enter'); (4) exfiltrates captured keystrokes, IP, and geolocation redundantly — via HTTP POST to hxxps://api[.]wagmiwallet[.]org/api/keys and via Socket[.]io events (emit 'insertKey') to the same WebSocket server. It also listens for a 'showMacModal' socket event from the server to trigger additional phishing modals. C2 infrastructure: wagmirequest.la, api[.]wagmiwallet[.]org (HTTPS and WSS), www.riveanimation.cards.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ddok-modal",
+        "purl": "pkg:npm/ddok-modal@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ddok-modal/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6170"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T10:13:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]wagmiwallet[.]org",
+          "ipapi[.]co",
+          "ipify[.]org",
+          "wagmirequest[.]la",
+          "www[.]riveanimation[.]cards"
+        ],
+        "url_observed": [
+          "hxxps://api[.]wagmiwallet[.]org/api/keys",
+          "hxxps://api[.]wagmiwallet[.]org/api/users/user-id/",
+          "hxxps://wagmirequest[.]la",
+          "hxxps://www[.]riveanimation[.]cards",
+          "wss://api[.]wagmiwallet[.]org"
+        ]
+      }
+    }
+  }
+}

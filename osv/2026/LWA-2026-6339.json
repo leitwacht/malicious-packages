@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6339",
+  "aliases": [
+    "MAL-2026-6931"
+  ],
+  "modified": "2026-07-05T20:08:48Z",
+  "published": "2026-07-05T20:07:50Z",
+  "summary": "Malicious code in chai-sdk (npm)",
+  "details": "Chai-sdk is a combosquat package impersonating the chai assertion library. On import, index.js spawns a detached node process running lib/initializeCaller.js, which fetches a remote payload from amethyst-lorrin-26[.]tiiny[.]site/index.json and executes it via new Function(\"require\", response.data.cookie), giving the attacker arbitrary code execution with full access to the Node.js require() module. The C2 URL is base64-encoded in the source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-sdk",
+        "purl": "pkg:npm/chai-sdk@1.4.8"
+      },
+      "versions": [
+        "1.4.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-sdk/v/1.4.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6339"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-05T20:07:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

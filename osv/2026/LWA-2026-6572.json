@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6572",
+  "modified": "2026-07-09T18:18:52Z",
+  "published": "2026-07-09T18:18:13Z",
+  "summary": "Malicious code in polymarket-mcp-v2 (npm)",
+  "details": "On install, the postinstall hook runs an obfuscated script that performs credential theft and installs an SSH backdoor. The script searches the filesystem for.env, ids.json, and config.toml files and exfiltrates them to hxxp://170[.]205[.]31[.]203:3000/api/v1. It also contacts the same C2 at /api/ssh-key to retrieve an attacker SSH public key, which it appends to ~/.ssh/authorized_keys, then enables ufw and opens port 22/tcp to maintain persistent remote access. The script additionally fetches file-scanning patterns from the C2 at /api/scan-patterns and /api/block-patterns, then scans the entire filesystem for matching files and batch-uploads them to the C2 with system metadata (username, platform). C2 host: 170[.]205[.]31[.]203:3000.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-mcp-v2",
+        "purl": "pkg:npm/polymarket-mcp-v2@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-mcp-v2/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6572"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T18:18:13Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3000"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203",
+          "hxxp://170[.]205[.]31[.]203:3000/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3000/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3000/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2992",
+  "modified": "2026-06-28T06:25:48Z",
+  "published": "2026-06-08T22:24:44Z",
+  "summary": "Malicious code in events-runtime (npm)",
+  "details": "Events-runtime is a typosquat of Node.js core events package: events.js is a near-verbatim copy of the legitimate EventEmitter with a hidden modification to its emit() method. When an event is emitted whose first argument carries a marker property (eventId == \"eventId0\"), emit() silently launches a detached, output-suppressed background Node process running a bundled, heavily obfuscated script (tests/galas-emit.min.js). That script: collects detailed host reconnaissance (OS platform/release, architecture, hostname, CPU count, total/free memory, uptime) and exfiltrates it as a formatted system report to both a Telegram bot and a Slack workspace using hard-coded, base64-encoded API tokens; establishes a blockchain-based command-and-control channel by querying and subscribing to events on an Ethereum Sepolia smart contract (via Infura with an Alchemy fallback), reading encrypted payloads from on-chain getter methods and TData update events; derives AES-GCM keys via x25519 Diffie-Hellman and PBKDF2 to decrypt the on-chain data; writes and executes a second-stage binary/file (subwatcher) with mode 755 as a further detached process; and performs anti-forensic self-destruction by deleting its own files, splicing the injected lines back out of events.js, stripping a license string, and killing its prior process. The package has no legitimate added functionality beyond the cloned event emitter and exists solely to deliver this exfiltration and remote-control payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "events-runtime",
+        "purl": "pkg:npm/events-runtime@3.2.2"
+      },
+      "versions": [
+        "3.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/events-runtime/v/3.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2992"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T22:24:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "dropped_file": [
+          "subwatcher",
+          "tests/galas-emit.min.js"
+        ],
+        "slack_bot_token": [
+          "xoxb-[secret-redacted]"
+        ],
+        "slack_channel": [
+          "C0B8XPGCKQS"
+        ],
+        "telegram_bot_token": [
+          "8961878831:[secret-redacted]"
+        ],
+        "telegram_chat_id": [
+          "-1003952553968"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot8961878831:[secret-redacted]/sendMessage",
+          "hxxps://eth-sepolia[.]g[.]alchemy[.]com/v2/[key-redacted]",
+          "hxxps://sepolia[.]infura[.]io/v3/[key-redacted]",
+          "hxxps://slack[.]com/api/chat.postMessage"
+        ],
+        "wallet_observed": [
+          "0x661e50E19f05E3c0d04fD75891456D1F0A24508D"
+        ]
+      }
+    }
+  }
+}

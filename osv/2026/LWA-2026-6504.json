@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6504",
+  "modified": "2026-07-09T10:11:34Z",
+  "published": "2026-07-09T10:09:33Z",
+  "summary": "Malicious code in express-session-kit (npm)",
+  "details": "Express-session-kit is a combosquat package impersonating the real express-session middleware. On require(), it executes a C2 beacon in session/check.js that phones home to hxxp://check-server-state[.]vercel[.]app/server/v2 with a \"bearrtoken\" header. If the server responds with a 404 containing a \"token\" field, that value is executed as code via new Function(\"require\",...) — delivering arbitrary remote code into the installer's process. The index.js also spawns a detached child process to run the beacon persistently. The package fraudulently claims TJ Holowaychuk as author and references a non-existent github[.]com/expressjs/session-kit repository.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-session-kit",
+        "purl": "pkg:npm/express-session-kit@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-session-kit/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6504"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T10:09:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "check-server-state[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxp://check-server-state[.]vercel[.]app/server/v2"
+        ]
+      }
+    }
+  }
+}

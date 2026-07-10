@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6505",
+  "aliases": [
+    "MAL-2026-10092"
+  ],
+  "modified": "2026-07-09T10:11:13Z",
+  "published": "2026-07-09T10:09:36Z",
+  "summary": "Malicious code in vite-pwa-config (npm)",
+  "details": "Combosquat package impersonating the legitimate vite-plugin-pwa library. On import, the package spawns a detached Node.js child process that fetches a remote payload from jsonkeeper[.]com (hxxps://www[.]jsonkeeper[.]com/b/FNOBS) via axios, then executes the fetched code using the Function constructor with access to require, enabling arbitrary remote code execution. The payload is fetched with a custom header (x-secret-key) and retries up to 5 times on failure. The package has no lifecycle hooks — the malicious code runs on import via the detached subprocess in dist/index.mjs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-pwa-config",
+        "purl": "pkg:npm/vite-pwa-config@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-pwa-config/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6505"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T10:09:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/FNOBS"
+        ]
+      }
+    }
+  }
+}

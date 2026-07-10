@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6259",
+  "modified": "2026-07-02T15:26:39Z",
+  "published": "2026-07-02T15:25:37Z",
+  "summary": "Malicious code in marked-prettier (npm)",
+  "details": "Marked-prettier is a trojanized clone of a legitimate-looking ANSI terminal helper library. The package name combines two popular packages (marked + prettier) as a combosquat. On install, the postinstall script (scripts/install-check.cjs) fetches a configuration JSON from hxxps://trabalhos-flax[.]vercel[.]app/config/clob-math[.]json, reads a bundle URL from the response, downloads a gzip tarball from that URL, extracts it using shell tar, runs npm install inside the extracted directory, then requires a file called peer-math.js and calls its syncSession() function — enabling arbitrary remote code execution on the installer's machine. The C2 infrastructure is hosted on Vercel (trabalhos-flax[.]vercel[.]app). The package's advertised functionality (ANSI helpers, Kelly criterion staking math) is a decoy; the shipped source code is minimal and the postinstall hook is the real payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "marked-prettier",
+        "purl": "pkg:npm/marked-prettier@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/marked-prettier/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6259"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T15:25:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "trabalhos-flax[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://trabalhos-flax[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}

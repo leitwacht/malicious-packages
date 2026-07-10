@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6113",
+  "aliases": [
+    "MAL-2026-6657"
+  ],
+  "modified": "2026-06-29T09:54:47Z",
+  "published": "2026-06-29T09:53:45Z",
+  "summary": "Malicious code in authsessionbridge (npm)",
+  "details": "Authsessionbridge@1.6.29 is a trojanized clone of the pino logger package: it ships pino's documentation, images, and library files under a false name claiming to handle authentication state synchronization. It contains an injected payload in lib/writer.js that executes on require(). The payload collects host metadata (all environment variables, hostname, operating system/platform, username, and non-loopback MAC addresses via os.networkInterfaces()) and then issues an axios GET request to hxxps://www[.]jsonkeeper[.]com/b/PJNZP, executing the response body with eval() — a remote code execution downloader. A second C2 URL (hxxps://www[.]jsonkeeper[.]com/b/HY6M6) is stored hex-encoded in the same file as a fallback. The collected fingerprint data is accessible to the remotely loaded code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "authsessionbridge",
+        "purl": "pkg:npm/authsessionbridge@1.6.29"
+      },
+      "versions": [
+        "1.6.29"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/authsessionbridge/v/1.6.29"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6113"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-29T09:53:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/HY6M6",
+          "hxxps://www[.]jsonkeeper[.]com/b/PJNZP"
+        ]
+      }
+    }
+  }
+}

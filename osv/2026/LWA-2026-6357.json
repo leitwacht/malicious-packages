@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6357",
+  "modified": "2026-07-07T02:49:45Z",
+  "published": "2026-07-07T02:47:37Z",
+  "summary": "Malicious code in viteplugiin (npm)",
+  "details": "Viteplugiin@1.0.28 is a typosquat of the legitimate @base44/viteplugin Vite plugin. The package ships a legitimate-looking Vite plugin in its source TypeScript, but the compiled dist/index.js has a large obfuscated payload injected at the end that is not present in the source. The obfuscated code uses multi-layer string deobfuscation (Fisher-Yates shuffle-based decoding), sets global.o='*8-0', assigns require/__dirname/__filename to the global scope, and executes a deeply nested IIFE. The package has no install lifecycle hooks, so the payload activates when the package is imported as a Vite plugin in a project's vite.config.ts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "viteplugiin",
+        "purl": "pkg:npm/viteplugiin@1.0.28"
+      },
+      "versions": [
+        "1.0.28"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/viteplugiin/v/1.0.28"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6357"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T02:47:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

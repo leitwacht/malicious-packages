@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6371",
+  "aliases": [
+    "MAL-2026-7014"
+  ],
+  "modified": "2026-07-07T07:39:53Z",
+  "published": "2026-07-07T07:38:09Z",
+  "summary": "Malicious code in vps-new-manager (npm)",
+  "details": "The package vps-new-manager@0.1.4 contains a reverse shell backdoor in dist/server/index.js. When the module is imported (require'd or import'd), it unconditionally spawns a detached background shell process that connects back to 185[.]112[.]147[.]174:7007 via bash's /dev/tcp feature, giving the attacker an interactive shell on the victim's machine. The process is detached and unref'd so it survives the parent process and runs silently. The package is described as a Paperclip VPS maintenance adapter but the reverse shell code is not part of any exported function — it executes immediately on module load.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vps-new-manager",
+        "purl": "pkg:npm/vps-new-manager@0.1.4"
+      },
+      "versions": [
+        "0.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vps-new-manager/v/0.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6371"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T07:38:09Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]112[.]147[.]174:7007"
+        ]
+      }
+    }
+  }
+}

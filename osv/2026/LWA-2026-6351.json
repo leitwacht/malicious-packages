@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6351",
+  "aliases": [
+    "MAL-2026-10111"
+  ],
+  "modified": "2026-07-06T19:08:47Z",
+  "published": "2026-07-06T19:08:00Z",
+  "summary": "Malicious code in nodepack-daemon (npm)",
+  "details": "Nodepack-daemon@1.2.9 is a trojanized clone of the pino logger package. When the package is required, index.js spawns a detached background Node.js process (child_process.spawn with detached:true and stdio:\"ignore\") that runs lib/caller.js. That script fetches a remote payload from hxxps://jsonkeeper[.]com/b/QWPQX via HTTP GET (with a custom header \"x-secret-key\") and executes the response body using the Function constructor with full access to Node's require(), enabling arbitrary code execution on the installer's machine. The C2 host is jsonkeeper[.]com, path /b/QWPQX.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nodepack-daemon",
+        "purl": "pkg:npm/nodepack-daemon@1.2.9"
+      },
+      "versions": [
+        "1.2.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nodepack-daemon/v/1.2.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6351"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-06T19:08:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/QWPQX"
+        ]
+      }
+    }
+  }
+}

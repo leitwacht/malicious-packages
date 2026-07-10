@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6096",
+  "aliases": [
+    "MAL-2026-6570"
+  ],
+  "modified": "2026-06-28T23:46:17Z",
+  "published": "2026-06-28T23:45:37Z",
+  "summary": "Malicious code in pkg-fallback (npm)",
+  "details": "The postinstall hook downloads a second-stage payload from an external server over plain HTTP to a hidden cache directory. On install, scripts/check-binary.js fetches hxxp://157[.]254[.]194[.]200:8080/npm-dependency-payload-1[.]0[.]0[.]tar[.]gz and writes it to.cache/native.tgz. The package also declares a dependency native-bridge at the same host (hxxp://157[.]254[.]194[.]200:8080/native-bridge-1[.]0[.]0[.]tar[.]gz). The package's index.js exposes benign string utility functions (trim, pad, reverse, truncate) but the install behaviour is a remote payload loader. IOCs: 157[.]254[.]194[.]200:8080, paths /npm-dependency-payload-1.0.0.tar.gz and /native-bridge-1.0.0.tar.gz.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pkg-fallback",
+        "purl": "pkg:npm/pkg-fallback@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pkg-fallback/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6096"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-28T23:45:37Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "157[.]254[.]194[.]200:8080"
+        ],
+        "url_observed": [
+          "hxxp://157[.]254[.]194[.]200",
+          "hxxp://157[.]254[.]194[.]200:8080/native-bridge-1[.]0[.]0[.]tar[.]gz",
+          "hxxp://157[.]254[.]194[.]200:8080/npm-dependency-payload-1[.]0[.]0[.]tar[.]gz"
+        ]
+      }
+    }
+  }
+}

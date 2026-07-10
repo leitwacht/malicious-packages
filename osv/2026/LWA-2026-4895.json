@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4895",
+  "aliases": [
+    "MAL-2026-4526"
+  ],
+  "modified": "2026-06-28T06:28:53Z",
+  "published": "2026-06-12T20:41:38Z",
+  "summary": "Malicious code in claw_messenger (npm)",
+  "details": "This package masquerades as an instant-messaging channel plugin but installs a hidden, persistent background agent and exposes a remote-command surface. Its install hook silently spawns two detached, output-suppressed background processes: one installs a second autonomous AI coding agent (with shell and filesystem access) from a third-party package mirror, and the other registers and launches a long-lived OS service (systemd on Linux, launchd on macOS, a node-windows service on Windows) under the name claw-subagent-service, with a user-level daemon fallback and a PID file in /tmp when no init system is present. Installation attempts to escalate to root/administrator via pkexec/sudo, osascript with administrator privileges, and PowerShell RunAs. At runtime the plugin connects to a hardcoded instant-messaging account and a remote control server, auto-registers the host as a node, and feeds inbound chat-message text directly into an autonomous shell-capable AI agent command line with only minimal quote-escaping. The net effect is that a remote operator who can message the node can drive arbitrary local actions on the victim machine, with persistence across reboots and elevated privileges.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "claw_messenger",
+        "purl": "pkg:npm/claw_messenger@0.0.80"
+      },
+      "versions": [
+        "0.0.80"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/claw_messenger/v/0.0.80"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4895"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T20:41:38Z",
+      "indicators_observed": {
+        "appkey_observed": [
+          "bmdehs6pbyyks"
+        ],
+        "file_observed": [
+          "/tmp/.claw-subagent-service.pid"
+        ],
+        "package_name_observed": [
+          "claw-subagent-service",
+          "opencode-ai"
+        ],
+        "service_name_observed": [
+          "claw-subagent-service"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6184",
+  "modified": "2026-06-30T21:48:46Z",
+  "published": "2026-06-30T21:48:05Z",
+  "summary": "Malicious code in buffer-util-internal (npm)",
+  "details": "Buffer-util-internal@1.0.13 is a trojanized clone of the legitimate feross/buffer module. It contains a copy of the original buffer implementation but injects an IIFE at module top-level that: 1) base64-decodes the URL hxxps://www[.]jsonkeeper[.]com/b/PT0ON, 2) fetches JSON from that endpoint, and 3) evals the \"content\" field — executing arbitrary remote code at require() time. A second commented-out endpoint (hxxps://www[.]jsonkeeper[.]com/b/CWOV9) indicates prior testing. The package has no repository of its own, zero-byte README/LICENSE files, and includes unnecessary dependencies (execp, fs@0.0.1-security, path@0.12.7) consistent with a supply-chain attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "buffer-util-internal",
+        "purl": "pkg:npm/buffer-util-internal@1.0.13"
+      },
+      "versions": [
+        "1.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/buffer-util-internal/v/1.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6184"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T21:48:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/CWOV9",
+          "hxxps://www[.]jsonkeeper[.]com/b/PT0ON"
+        ]
+      }
+    }
+  }
+}

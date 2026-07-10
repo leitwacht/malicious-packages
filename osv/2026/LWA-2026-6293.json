@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6293",
+  "aliases": [
+    "MAL-2026-10044"
+  ],
+  "modified": "2026-07-03T23:09:46Z",
+  "published": "2026-07-03T12:53:07Z",
+  "summary": "Malicious code in chai-as-serialized (npm)",
+  "details": "Chai-as-serialized is a combosquat package impersonating the chai assertion library. On require(), it spawns a detached background Node.js process that fetches attacker-controlled code from hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json (with a custom x-secret-key header) and executes it via the Function constructor with full access to Node.js require(), enabling arbitrary remote code execution. The remote payload can serve different second-stage malware per request, including credential theft or crypto-draining code. The package has no repository, a generic description unrelated to its name, and no legitimate functionality. Combosquat package impersonating the chai assertion library. On require(), index.js spawns a detached Node.js child process running lib/initializeCaller.js. That script fetches a remote payload from hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json and executes the response via new Function.constructor, giving the attacker arbitrary code execution on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-serialized",
+        "purl": "pkg:npm/chai-as-serialized@7.0.8"
+      },
+      "versions": [
+        "7.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-serialized/v/7.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6293"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T12:53:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-brunhilda-40[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

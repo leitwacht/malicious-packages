@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6279",
+  "modified": "2026-07-03T03:25:14Z",
+  "published": "2026-07-03T03:23:38Z",
+  "summary": "Malicious code in polygon-gamma-apis (npm)",
+  "details": "Polygon-gamma-apis is a combosquat of the polymarket-clob-api SDK (the package's own README is a verbatim copy of the real SDK's documentation). The package contains a remote-code-execution dropper in index.js: the exported getPlugin() function fetches a JSON payload from hxxps://svganchordev[.]net/icons/111 (with the request header 'bearrtoken: logo') and passes the response's 'credits' field into a new Function() constructor injected with the full set of Node.js globals — including require (granting access to child_process, fs, and all system APIs). This allows the remote server to execute arbitrary code on any machine that requires this package. The host svganchordev[.]net serves the remotely-controlled second-stage payload. The package also ships dependencies suitable for system fingerprinting (node-machine-id) and Windows credential access (@primno/dpapi), alongside socket[.]io-client, better-sqlite3, express, and axios, providing a full attack toolchain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polygon-gamma-apis",
+        "purl": "pkg:npm/polygon-gamma-apis@1.5.2"
+      },
+      "versions": [
+        "1.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polygon-gamma-apis/v/1.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6279"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T03:23:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/111"
+        ]
+      }
+    }
+  }
+}

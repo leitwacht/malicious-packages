@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6268",
+  "modified": "2026-07-02T18:02:14Z",
+  "published": "2026-07-02T18:00:37Z",
+  "summary": "Malicious code in transform-es2015-sticky-regex (npm)",
+  "details": "A dependency hijack via a self-referencing external URL. The package transform-es2015-sticky-regex (combosquat of the Babel transform plugin naming) declares a dependency and devDependency on itself at the URL hxxp://pack[.]nppacks[.]com/npm/transform-es2015-sticky-regex — a plain-HTTP attacker-controlled endpoint. When npm resolves the dependency graph, it fetches and installs code from that server, enabling the attacker to deliver arbitrary payloads to every install target. The shipped index.js contains a benign Babel plugin (red herring); the actual malicious delivery channel is the external URL dependency resolution at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "transform-es2015-sticky-regex",
+        "purl": "pkg:npm/transform-es2015-sticky-regex@6.24.3"
+      },
+      "versions": [
+        "6.24.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/transform-es2015-sticky-regex/v/6.24.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6268"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T18:00:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pack[.]nppacks[.]com"
+        ],
+        "url_observed": [
+          "hxxp://pack[.]nppacks[.]com/npm/transform-es2015-sticky-regex"
+        ]
+      }
+    }
+  }
+}

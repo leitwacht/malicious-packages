@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6273",
+  "aliases": [
+    "MAL-2026-6923"
+  ],
+  "modified": "2026-07-02T19:46:38Z",
+  "published": "2026-07-02T19:45:41Z",
+  "summary": "Malicious code in notifier-utils (npm)",
+  "details": "Notifier-utils@1.3.7 is a trojanized install that fetches and executes arbitrary remote code. When the exported middleware function is called, index.js spawns a detached background node process (stdio:ignore, unref'd) running lib/caller.js. That script uses axios to GET a payload from hxxps://jsonkeeper[.]com/b/BPB86 (with a custom \"x-secret-key\" header), then compiles and runs it via new Function.constructor(\"require\", src) — granting the fetched code full Node.js module access. The payload URL is attacker-controlled and can be changed at any time to deliver arbitrary second-stage commands. The package ships cloned pino logger documentation as camouflage and has no real functionality of its own.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "notifier-utils",
+        "purl": "pkg:npm/notifier-utils@1.3.7"
+      },
+      "versions": [
+        "1.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/notifier-utils/v/1.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6273"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T19:45:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/BPB86"
+        ]
+      }
+    }
+  }
+}

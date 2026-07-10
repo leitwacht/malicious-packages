@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6438",
+  "aliases": [
+    "MAL-2026-10108"
+  ],
+  "modified": "2026-07-07T18:55:14Z",
+  "published": "2026-07-07T18:53:51Z",
+  "summary": "Malicious code in url-func-registry (npm)",
+  "details": "Package url-func-registry@1.0.4 contains a remote code execution backdoor. The createJsonService() function fetches attacker-controlled code from hxxps://www[.]jsonkeeper[.]com/b/XVHGD and executes it via the Function constructor with Node.js require() access, giving the remote payload full arbitrary code execution capabilities. The code is triggered when consumer code calls getFunc('JsonS'). The package also performs host reconnaissance by fetching from hxxp://ip-api[.]com/json. The package's description as a URL/function registry is a cover for this backdoor.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "url-func-registry",
+        "purl": "pkg:npm/url-func-registry@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/url-func-registry/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6438"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T18:53:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ip-api[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxp://ip-api[.]com/json",
+          "hxxps://www[.]jsonkeeper[.]com/b/XVHGD"
+        ]
+      }
+    }
+  }
+}

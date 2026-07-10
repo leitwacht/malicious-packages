@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5670",
+  "modified": "2026-06-28T06:27:12Z",
+  "published": "2026-06-17T20:57:48Z",
+  "summary": "Malicious code in @yhong91/vibetime (npm)",
+  "details": "This package advertises itself as a CLI that installs activity-tracking hooks into AI coding agents (Claude Code, Codex, OpenCode, etc.) and uploads usage rollups. Its bundled bin/vibetime.mjs additionally targets a co-installed AI assistant language server (Antigravity / Codeium Windsurf): it enumerates the host process table (ps), regex-scrapes the language server private --csrf_token from its command line, discovers the PID localhost listening ports, then issues authenticated HTTP POSTs to 127[.]0[.]0[.]1:\u003cport\u003e RPC endpoints (Heartbeat, GetCascadeTrajectoryGeneratorMetadata) using the stolen CSRF token in an X-Codeium-Csrf-Token header with TLS verification disabled, harvesting the assistant session trajectory metadata. The collected data and the agent activity rollups are uploaded to a hardcoded raw IP endpoint at hxxp://121[.]196[.]224[.]82:3001 over plaintext HTTP, not the project advertised domain. It also spawns a detached, unref-ed background Node child process so a sync runner persists after the CLI exits. Stealing another local service authentication token from the process table to read its private session contents and shipping them to a hardcoded remote endpoint is credential/session theft.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yhong91/vibetime",
+        "purl": "pkg:npm/%40yhong91/vibetime@0.1.3"
+      },
+      "versions": [
+        "0.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yhong91/vibetime/v/0.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5670"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T20:57:48Z",
+      "indicators_observed": {
+        "header_observed": [
+          "X-Codeium-Csrf-Token"
+        ],
+        "ip_observed": [
+          "121[.]196[.]224[.]82",
+          "121[.]196[.]224[.]82:3001"
+        ],
+        "path_observed": [
+          "/exa.language_server_pb.LanguageServerService/GetCascadeTrajectoryGeneratorMetadata",
+          "/exa.language_server_pb.LanguageServerService/Heartbeat"
+        ],
+        "url_observed": [
+          "hxxp://121[.]196[.]224[.]82",
+          "hxxp://121[.]196[.]224[.]82:3001"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4903",
+  "aliases": [
+    "MAL-2026-4703"
+  ],
+  "modified": "2026-06-28T06:34:28Z",
+  "published": "2026-06-12T20:42:58Z",
+  "summary": "Malicious code in veteran (npm)",
+  "details": "This package executes a postinstall hook (node install.js) that runs automatically when the package is installed. The hook downloads a platform-specific native executable from a hardcoded third-party domain (laogou[.]us), writes it into the package bin/ directory, marks it executable (chmod 0755), and immediately runs it. A source comment claims the binary comes from GitHub Releases, but the actual download URL points to an unrelated domain rather than the project repository. The executable is not bundled in the published tarball, so the code that ultimately runs on the host is fetched live from a remotely-controlled server and can be changed at any time without republishing the npm package. The wrapper (index.js) repeats the same fetch-and-execute behaviour the first time the CLI is invoked if the binary is absent. Downloading and executing an opaque native binary from a non-official, mutable remote source during installation is a remote-code-execution supply-chain risk regardless of the binary current contents.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "veteran",
+        "purl": "pkg:npm/veteran@1.0.11"
+      },
+      "versions": [
+        "1.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/veteran/v/1.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4903"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T20:42:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "laogou[.]us"
+        ],
+        "url_observed": [
+          "hxxps://laogou[.]us/download/veteran/v1.0.2/"
+        ]
+      }
+    }
+  }
+}

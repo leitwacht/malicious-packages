@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6383",
+  "aliases": [
+    "MAL-2026-10073"
+  ],
+  "modified": "2026-07-07T08:51:31Z",
+  "published": "2026-07-07T08:48:41Z",
+  "summary": "Malicious code in tailwind-animate-v4 (npm)",
+  "details": "Tailwind-animate-v4 is a combosquat of the real tailwindcss-animate plugin. The package ships a trojanized index.js: the file begins with legitimate Tailwind CSS animation plugin code but appends an eval(atob(...)) payload that executes when the module is required. The obfuscated JavaScript payload captures the require function onto the global scope, sets __dirname and __filename globally, and runs a large obfuscated function. The package.json author is forged to impersonate the real plugin's maintainer. No lifecycle hooks are used — the payload runs at require-time when the package is loaded as a Tailwind CSS plugin.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-animate-v4",
+        "purl": "pkg:npm/tailwind-animate-v4@2.1.0"
+      },
+      "versions": [
+        "2.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-animate-v4/v/2.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6383"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T08:48:41Z",
+      "indicators_observed": {}
+    }
+  }
+}

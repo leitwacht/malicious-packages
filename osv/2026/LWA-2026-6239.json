@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6239",
+  "aliases": [
+    "MAL-2026-6920"
+  ],
+  "modified": "2026-07-02T10:58:01Z",
+  "published": "2026-06-30T23:11:37Z",
+  "summary": "Malicious code in crypto-base58 (npm)",
+  "details": "Crypto-base58@1.0.1 is a trojanized clone that depends on base58-core, which contains a clipboard-hijacking crypto drainer. On require(), the payload activates after a 72-hour delay, then polls the system clipboard every 2.5 seconds. It detects and replaces Bitcoin (bc1/1/3-prefix), Ethereum (0x-prefix), and Solana addresses with attacker-controlled addresses: bc1qjft978uykglsh0adcyx6xhkes56vqzs3fual3l (BTC), 0xd63eD44065eDb1e2ad2519B011c06412dA7B7c5B (ETH), A7ajd7W5WYdrnkeaiBRjVoK6uBEDvgnuZcpzQXqo18Ph (SOL). It also captures private keys (WIF format, 50-52 chars), BIP39 seed phrases, and hex private keys (64 hex chars). Captured clipboard data is exfiltrated via HTTP POST to 2[.]27[.]62[.]51:8080/api/health (backup: 2[.]27[.]62[.]51:8081/api/health) along with hostname, platform, and working directory. The payload establishes persistence by appending a node loader to ~/.bashrc, ~/.zshrc, ~/.profile (Linux/macOS) or writing to the Windows Startup folder.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "crypto-base58",
+        "purl": "pkg:npm/crypto-base58@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/crypto-base58/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6239"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-06-30T23:11:37Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]27[.]62[.]51:8080",
+          "2[.]27[.]62[.]51:8081"
+        ],
+        "url_observed": [
+          "hxxp://2[.]27[.]62[.]51:8080/api/health",
+          "hxxp://2[.]27[.]62[.]51:8081/api/health"
+        ],
+        "wallet_observed": [
+          "0xd63eD44065eDb1e2ad2519B011c06412dA7B7c5B",
+          "A7ajd7W5WYdrnkeaiBRjVoK6uBEDvgnuZcpzQXqo18Ph",
+          "bc1qjft978uykglsh0adcyx6xhkes56vqzs3fual3l"
+        ]
+      }
+    }
+  }
+}

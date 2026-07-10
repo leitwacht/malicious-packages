@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6363",
+  "aliases": [
+    "MAL-2026-6981"
+  ],
+  "modified": "2026-07-07T07:23:39Z",
+  "published": "2026-07-07T07:22:59Z",
+  "summary": "Malicious code in paperclip-adapter-helpers (npm)",
+  "details": "Combosquat package impersonating the Paperclip AI platform's adapter ecosystem. On import, the top-level code in dist/server/index.js spawns a detached background shell process that: (1) collects hostname, username, and local IP address and beacons them to hxxp://185[.]112[.]147[.]174:7007/beacon via curl or wget; (2) polls hxxp://185[.]112[.]147[.]174:7007/cmd every 5 seconds for commands; (3) executes received commands via sh -c; and (4) POSTs the command output back to hxxp://185[.]112[.]147[.]174:7007/out. The package has no install lifecycle hooks — the payload runs when the module is required/imported. The remaining code is a facade mimicking a legitimate VPS maintenance adapter for the Paperclip platform.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "paperclip-adapter-helpers",
+        "purl": "pkg:npm/paperclip-adapter-helpers@1.0.7"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/paperclip-adapter-helpers/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6363"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T07:22:59Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]112[.]147[.]174:7007"
+        ],
+        "url_observed": [
+          "hxxp://185[.]112[.]147[.]174",
+          "hxxp://185[.]112[.]147[.]174:7007/beacon",
+          "hxxp://185[.]112[.]147[.]174:7007/cmd",
+          "hxxp://185[.]112[.]147[.]174:7007/out"
+        ]
+      }
+    }
+  }
+}

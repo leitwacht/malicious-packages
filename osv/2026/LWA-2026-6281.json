@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6281",
+  "aliases": [
+    "MAL-2026-6932"
+  ],
+  "modified": "2026-07-03T05:28:10Z",
+  "published": "2026-07-03T05:27:37Z",
+  "summary": "Malicious code in evm-typechain (npm)",
+  "details": "Evm-typechain@0.5.4 is a combosquat package impersonating the TypeChain Ethereum tooling ecosystem. The package ships a trojanized clone of a Mongoose plugin with an injected remote code execution payload. When the package is required (require('evm-typechain')), it fetches a second-stage payload from hxxps://www[.]jsonkeeper[.]com/b/PC5CK and executes it via new Function('require',...), giving the attacker arbitrary code execution in the context of the importing application. The README describes a TypeScript Ethereum typechain toolkit, but the actual code is a Mongoose schema plugin with the injected downloader — the package does not deliver the described functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "evm-typechain",
+        "purl": "pkg:npm/evm-typechain@0.5.4"
+      },
+      "versions": [
+        "0.5.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/evm-typechain/v/0.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6281"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T05:27:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/PC5CK"
+        ]
+      }
+    }
+  }
+}

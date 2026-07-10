@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6192",
+  "aliases": [
+    "MAL-2026-10047"
+  ],
+  "modified": "2026-06-30T23:40:05Z",
+  "published": "2026-06-30T23:39:04Z",
+  "summary": "Malicious code in chai-as-staged (npm)",
+  "details": "Package chai-as-staged@6.0.4 is a combosquat of the real chai-as-promised assertion plugin. It ships a trojanized copy of the pino logger codebase with a remote-code-execution payload in lib/initializeCaller.js. When required and the exported middleware function is called, index.js spawns a detached Node.js child process running lib/initializeCaller.js. That script decodes a hardcoded base64 URL (hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json), fetches the remote resource via axios.get() with a custom HTTP header x-secret-key: _, and executes the response body's 'cookie' field as arbitrary JavaScript code via new Function.constructor(\"require\",...), granting full access to Node.js modules. The detached spawn (stdio:'ignore', unref()) ensures the payload process outlives the parent. C2: amethyst-lorrin-26[.]tiiny[.]site (HTTPS).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-staged",
+        "purl": "pkg:npm/chai-as-staged@6.0.4"
+      },
+      "versions": [
+        "6.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-staged/v/6.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6192"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T23:39:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amethyst-lorrin-26[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://amethyst-lorrin-26[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

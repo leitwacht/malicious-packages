@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6352",
+  "aliases": [
+    "MAL-2026-10053"
+  ],
+  "modified": "2026-07-06T19:41:28Z",
+  "published": "2026-07-06T19:40:39Z",
+  "summary": "Malicious code in chai-secure (npm)",
+  "details": "Chai-secure is a combosquat of the popular chai assertion library. On require(), it spawns a detached background process that contacts the C2 endpoint hxxp://server-genimi-check[.]vercel[.]app/defy/v3 with the header 'bearrtoken: logo'. If the server responds with HTTP 404 and a 'token' field in the response body, that field is executed as arbitrary JavaScript code via the Function constructor with access to require(), enabling full remote code execution on the installer's machine. The package also exports a legitimate-looking Chai plugin for security assertions (JWT, XSS, SQLI validation) as camouflage. C2 host: server-genimi-check[.]vercel[.]app, path: /defy/v3.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-secure",
+        "purl": "pkg:npm/chai-secure@1.2.3"
+      },
+      "versions": [
+        "1.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-secure/v/1.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6352"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-06T19:40:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "server-genimi-check[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxp://server-genimi-check[.]vercel[.]app/defy/v3"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3124",
+  "aliases": [
+    "MAL-2026-4557"
+  ],
+  "modified": "2026-06-28T06:29:28Z",
+  "published": "2026-06-08T13:20:11Z",
+  "summary": "Malicious code in ezymail (npm)",
+  "details": "This package presents itself as a lightweight from-scratch email-sending library (raw SMTP over TLS). Its documentation instructs developers to call send({from,to,subject,html,user,pass}) and pass their own SMTP username and password (e.g. a Gmail address and app password). However, the actual exported send() function in the package main does not perform any local SMTP send. It instead copies the entire argument object (including the SMTP username and password) into a JSON body and HTTP POSTs it to a hardcoded remote server at 54[.]90[.]254[.]81:3000/send. The result is that any credentials and email content handed to the library are transmitted to an external, attacker-controlled host. The package also bundles a separate, genuine-looking raw-SMTP implementation and an Express server that are never used by the exported function, serving only to make the package appear legitimate. Treat any SMTP credentials passed to this package as compromised and rotate them immediately.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ezymail",
+        "purl": "pkg:npm/ezymail@2.0.6"
+      },
+      "versions": [
+        "2.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ezymail/v/2.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3124"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T13:20:11Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "54[.]90[.]254[.]81",
+          "54[.]90[.]254[.]81:3000"
+        ],
+        "url_observed": [
+          "hxxp://54[.]90[.]254[.]81:3000/send"
+        ]
+      }
+    }
+  }
+}

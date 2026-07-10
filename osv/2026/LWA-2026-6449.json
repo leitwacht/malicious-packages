@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6449",
+  "aliases": [
+    "MAL-2026-10075"
+  ],
+  "modified": "2026-07-08T08:17:03Z",
+  "published": "2026-07-08T08:16:17Z",
+  "summary": "Malicious code in testudo-pack (npm)",
+  "details": "The postinstall hook in package.json runs index.js, which downloads a remote binary from sloth-antagonist[.]vercel[.]app and executes it as a background process. The hook constructs the URL using obfuscated character codes: on Windows it downloads from hxxps://sloth-antagonist[.]vercel[.]app/service/assets/fetchBinary and saves it as %LOCALAPPDATA%\\Programs\\WinMetrics\\WinService.exe; on Linux it downloads from hxxps://sloth-antagonist[.]vercel[.]app/service/assets/fetchLinuxBinary and saves it as ~/.local/share/WinMetrics/WinMetrics. The downloaded binary is spawned detached with stdio ignored (hidden on Windows) and runs immediately after install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "testudo-pack",
+        "purl": "pkg:npm/testudo-pack@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/testudo-pack/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6449"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-08T08:16:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "sloth-antagonist[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://sloth-antagonist[.]vercel[.]app/service/assets/fetchBinary",
+          "hxxps://sloth-antagonist[.]vercel[.]app/service/assets/fetchLinuxBinary"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6388",
+  "modified": "2026-07-07T09:19:21Z",
+  "published": "2026-07-07T09:18:38Z",
+  "summary": "Malicious code in express-mongo-limit (npm)",
+  "details": "Express-mongo-limit is a combosquat of the legitimate express-mongo-sanitize package. On install, the postinstall hook runs index.js which: (1) installs clipboardy and screenshot-desktop globally, (2) starts a crypto-clipper (service.js) that monitors the clipboard every second and replaces Ethereum (0x...), Bitcoin (bc1.../1.../3...), Solana, and Tron wallet addresses with the attacker's addresses — 0x62Fc857DE5469fDd81F57F309c2fb000cad7bbbb (ETH), bc1q8tzzpun6rd45s6fgar2up8nfelt4u2r2h999cc (BTC), 6A7vQWJveJBWP78oktAjoZbMakrCAQyLphJ5Kswy5xA4 (SOL), TUqk5th1eXZWrt1arsqpxZ3frqaCxc9Lr4 (TRX), (3) captures screenshots every 2 seconds and emails them to an account via nodemailer, (4) exfiltrates all environment variables (process.env) via POST to hxxps://ipcheck-six[.]vercel[.]app/api, (5) registers PM2 startup for persistence. A commented-out code block would fetch from hxxps://gamboracle[.]vercel[.]app/api and execute the response via new Function() — a remote code execution channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-mongo-limit",
+        "purl": "pkg:npm/express-mongo-limit@2.0.1"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-mongo-limit/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6388"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T09:18:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gamboracle[.]vercel[.]app",
+          "ipcheck-six[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://gamboracle[.]vercel[.]app/api",
+          "hxxps://ipcheck-six[.]vercel[.]app/api"
+        ],
+        "wallet_observed": [
+          "0x62Fc857DE5469fDd81F57F309c2fb000cad7bbbb",
+          "6A7vQWJveJBWP78oktAjoZbMakrCAQyLphJ5Kswy5xA4",
+          "TUqk5th1eXZWrt1arsqpxZ3frqaCxc9Lr4",
+          "bc1q8tzzpun6rd45s6fgar2up8nfelt4u2r2h999cc"
+        ]
+      }
+    }
+  }
+}

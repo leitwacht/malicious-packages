@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2288",
+  "aliases": [
+    "MAL-2026-5135"
+  ],
+  "modified": "2026-06-28T10:43:19Z",
+  "published": "2026-06-01T14:23:58Z",
+  "summary": "Malicious code in @redhat-cloud-services/frontend-components-advisor-components (npm)",
+  "details": "This release of the package is a hijacked/compromised version of the legitimate React component library of the same name. Its package.json declares a preinstall lifecycle hook (\"preinstall\": \"node index.js\") so the code executes automatically the moment the package is installed, before any application code runs. index.js is roughly 2 MB of obfuscated JavaScript: the outer layer is an eval over a character-code array decoded with a Caesar/ROT letter-shift cipher. Decoding that layer reveals an async self-executing function that imports node:crypto and builds an AES-128-GCM decryption helper, then decrypts two hardcoded ciphertext blobs embedded in the file using hardcoded keys, IVs, and GCM authentication tags. One decrypts to a UTF-8 string and the other to a large multi-kilobyte encrypted second-stage payload, which the loader then executes. A genuine UI component library has no reason to ship a multi-megabyte encrypted blob, an AES decryption loader, or an install-time hook. This is an obfuscated encrypted-second-stage dropper that runs hidden malicious code at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@redhat-cloud-services/frontend-components-advisor-components",
+        "purl": "pkg:npm/%40redhat-cloud-services/frontend-components-advisor-components@3.8.6"
+      },
+      "versions": [
+        "3.8.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@redhat-cloud-services/frontend-components-advisor-components/v/3.8.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2288"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:23:58Z",
+      "indicators_observed": {
+        "aes_gcm_authtag_observed": [
+          "2e9800442ceeeb1dc48d51d2a87f497c",
+          "305742f965ada43d5f2f8a9ec185510b"
+        ],
+        "aes_iv_observed": [
+          "2a67e9dbe480c2de504e7980",
+          "cb690841bf6288029ebe32ba"
+        ],
+        "aes_key_observed": [
+          "25e1b020fe7d826d0f380302491fdb10",
+          "412d756971f583d98d37ee6a893507a1"
+        ]
+      }
+    }
+  }
+}

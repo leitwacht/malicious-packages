@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6439",
+  "aliases": [
+    "MAL-2026-6955"
+  ],
+  "modified": "2026-07-07T19:24:34Z",
+  "published": "2026-07-07T19:24:14Z",
+  "summary": "Malicious code in hello244b (npm)",
+  "details": "The package contains only a package.json with a postinstall hook that runs inline JavaScript. On install, the hook collects environment variables matching GITHUB, ACTIONS, RUNNER, AWS, TOKEN, or SECRET patterns; fetches the GitHub Actions OIDC identity token if available; and queries the AWS EC2 instance metadata service (169[.]254[.]169[.]254) for IAM security credentials. All collected data — including env vars, OIDC token, and AWS IAM role credentials — is exfiltrated via HTTPS POST to bcd5-45-241-232-210[.]ngrok-free[.]app with path /?github_attack=1. The package has no repository, no license, and ships no functional code beyond this credential-harvesting lifecycle hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hello244b",
+        "purl": "pkg:npm/hello244b@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hello244b/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6439"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T19:24:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bcd5-45-241-232-210[.]ngrok-free[.]app"
+        ],
+        "url_observed": [
+          "hxxps://bcd5-45-241-232-210[.]ngrok-free[.]app/?github_attack=1"
+        ]
+      }
+    }
+  }
+}

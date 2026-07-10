@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6528",
+  "aliases": [
+    "MAL-2026-10025"
+  ],
+  "modified": "2026-07-09T11:44:24Z",
+  "published": "2026-07-09T11:43:14Z",
+  "summary": "Malicious code in @wagni_bot/ethereum-wallet (npm)",
+  "details": "On install, the package runs postinstall.js which performs host fingerprinting (hostname, username, cwd) and then hunts for cryptocurrency wallet files (Solana id.json, Ethereum keystore, Bitcoin/Litecoin wallet.dat, mnemonic/seed/recovery files), environment files (.env,.env.local,.env.production), SSH private keys, AWS credentials (~/.aws/credentials), git credentials (~/.git-credentials), and npm auth tokens (~/.npmrc containing authToken). All discovered secrets are exfiltrated via HTTP POST to 107[.]161[.]90[.]180:7777 as JSON.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wagni_bot/ethereum-wallet",
+        "purl": "pkg:npm/%40wagni_bot/ethereum-wallet@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wagni_bot/ethereum-wallet/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6528"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T11:43:14Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "107[.]161[.]90[.]180:7777"
+        ],
+        "url_observed": [
+          "hxxp://107[.]161[.]90[.]180:7777"
+        ]
+      }
+    }
+  }
+}

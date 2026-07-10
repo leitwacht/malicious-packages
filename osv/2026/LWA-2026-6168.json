@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6168",
+  "aliases": [
+    "MAL-2026-6674"
+  ],
+  "modified": "2026-06-30T09:30:44Z",
+  "published": "2026-06-30T09:30:08Z",
+  "summary": "Malicious code in ripshakti1 (npm)",
+  "details": "Upon npm install, the preinstall script automatically executes index.js which harvests cloud credentials and environment secrets from the installation machine. The script queries the AWS EC2 metadata service (169[.]254[.]169[.]254) to steal IAM temporary credentials, the instance identity document, user-data (often containing secrets), and extensive instance metadata (hostname, IP addresses, instance-id, instance-type, availability-zone, region, AMI ID, security groups, network MACs). It also queries the ECS container credential endpoint (169[.]254[.]170[.]2) using AWS_CONTAINER_CREDENTIALS_RELATIVE_URI and AWS_CONTAINER_CREDENTIALS_FULL_URI environment variables. Additionally it scrapes all environment variables for keys matching patterns like key, secret, token, password, auth, credential, api, aws, database. All stolen data is base64-encoded and exfiltrated via HTTPS GET requests containing the data in query parameters to a2de2lw03amqkgbex432znqb72du1kp9[.]oastify[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ripshakti1",
+        "purl": "pkg:npm/ripshakti1@81.0.0"
+      },
+      "versions": [
+        "81.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ripshakti1/v/81.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6168"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-30T09:30:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "a2de2lw03amqkgbex432znqb72du1kp9[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxps://a2de2lw03amqkgbex432znqb72du1kp9[.]oastify[.]com"
+        ]
+      }
+    }
+  }
+}

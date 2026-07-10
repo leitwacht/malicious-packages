@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6487",
+  "aliases": [
+    "MAL-2026-10036"
+  ],
+  "modified": "2026-07-09T09:43:13Z",
+  "published": "2026-07-09T09:42:29Z",
+  "summary": "Malicious code in @wagni_bot/web3-agent (npm)",
+  "details": "A cluster of six combosquat packages impersonating legitimate web3 SDKs (web3-agent, bsc-sdk, opensea-sdk, polygon-sdk, metemask-sdk, hyperliquid-sdk) all publish an identical postinstall.js that steals credentials. On install, the script scans the current working directory and home directory for SSH private keys (id_rsa, id_ed25519),.pem/.key files,.cred files, and.env files, reads their contents, and exfiltrates them via HTTP POST to 107[.]161[.]90[.]180:7777. It also harvests environment variables containing PRIVATE, SECRET, TOKEN, API_KEY, PASSWORD, MNEMONIC, SEED, WALLET, or AWS and sends those to the same C2 endpoint. Each POST includes the hostname, username, and cwd as metadata.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wagni_bot/web3-agent",
+        "purl": "pkg:npm/%40wagni_bot/web3-agent@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wagni_bot/web3-agent/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6487"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T09:42:29Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "107[.]161[.]90[.]180:7777"
+        ],
+        "url_observed": [
+          "hxxp://107[.]161[.]90[.]180:7777"
+        ]
+      }
+    }
+  }
+}

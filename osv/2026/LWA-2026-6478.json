@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6478",
+  "aliases": [
+    "MAL-2026-10038"
+  ],
+  "modified": "2026-07-09T03:47:00Z",
+  "published": "2026-07-09T03:46:35Z",
+  "summary": "Malicious code in antsrcsrctest (npm)",
+  "details": "Antsrcsrctest@1.0.0 is a trojanized date-formatting utility whose preinstall hook (node preinstall.js) executes a reconnaissance and exfiltration payload. On install, the script collects the hostname, platform, working directory, and full process environment variables; runs id, whoami, hostname, and ps aux via execSync; checks for container environments by reading /.dockerenv, /proc/1/cgroup, and /proc/self/mountinfo; queries the Alibaba Cloud instance metadata endpoint (hxxp://100[.]100[.]100[.]200/latest/meta-data/) for cloud credentials; and POSTs all collected data to hxxp://101[.]35[.]44[.]248/ and hxxp://101[.]35[.]44[.]248/env.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "antsrcsrctest",
+        "purl": "pkg:npm/antsrcsrctest@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/antsrcsrctest/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6478"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T03:46:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "101[.]35[.]44[.]248",
+          "101[.]35[.]44[.]248:80"
+        ],
+        "url_observed": [
+          "hxxp://101[.]35[.]44[.]248/",
+          "hxxp://101[.]35[.]44[.]248/env"
+        ]
+      }
+    }
+  }
+}

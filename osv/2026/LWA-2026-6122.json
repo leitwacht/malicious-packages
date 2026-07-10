@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6122",
+  "aliases": [
+    "MAL-2026-6678"
+  ],
+  "modified": "2026-06-29T10:55:15Z",
+  "published": "2026-06-29T10:54:38Z",
+  "summary": "Malicious code in ts-linting-builder (npm)",
+  "details": "Ts-linting-builder@2.1.2 runs a postinstall hook (node test.js) that activates two credential-theft and backdoor payloads on install. Payload 1 (from_str_1) walks the current working directory for files named.env, id.json, config.toml, and Config.toml and uploads them to hxxps://datasecure-service[.]vercel[.]app/api/v1 with the victim's username. Payload 2 (from_str_2) fetches an SSH public key from hxxps://datasecure-service[.]vercel[.]app/api/ssh-key and appends it to ~/.ssh/authorized_keys, then executes sudo ufw enable and sudo ufw allow 22/tcp to open SSH access. It also fetches file-pattern lists from the same C2, recursively scans the home directory (or Windows drives) for matching files, and exfiltrates them via multipart POST to hxxps://datasecure-service[.]vercel[.]app/api. The package declares child_process and os as npm dependencies to shadow Node.js core modules for this purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-linting-builder",
+        "purl": "pkg:npm/ts-linting-builder@2.1.2"
+      },
+      "versions": [
+        "2.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-linting-builder/v/2.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6122"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-29T10:54:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://datasecure-service[.]vercel[.]app/api",
+          "hxxps://datasecure-service[.]vercel[.]app/api/block-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/scan-patterns",
+          "hxxps://datasecure-service[.]vercel[.]app/api/ssh-key",
+          "hxxps://datasecure-service[.]vercel[.]app/api/v1"
+        ]
+      }
+    }
+  }
+}

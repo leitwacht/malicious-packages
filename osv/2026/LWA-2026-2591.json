@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2591",
+  "aliases": [
+    "MAL-2026-5219"
+  ],
+  "modified": "2026-06-28T06:34:05Z",
+  "published": "2026-06-07T18:53:34Z",
+  "summary": "Malicious code in autotel-drizzle (npm)",
+  "details": "A trojanized release of an OpenTelemetry instrumentation package for Drizzle ORM. Alongside the genuine (clean) instrumentation code, the 0.0.27 tarball adds two files that are not declared in the package manifest file list: a binding.gyp and an index.js. The binding.gyp is weaponized to run code at installation time: its build target sources entry uses a node-gyp command-expansion, \"\u003c!(node index.js \u003e /dev/null 2\u003e\u00261 \u0026\u0026 echo stub.c)\", so simply installing the package causes node-gyp to execute index.js -- no install lifecycle script is needed, which evades scanners that only inspect preinstall/postinstall hooks. index.js is a ~2MB obfuscated multi-stage dropper (this bloat is what makes the package ~22x larger than prior versions). It begins with eval of a Caesar/ROT character-shift decoder over a large numeric array; the decoded stub is an async function that imports node:crypto, AES-128-GCM-decrypts an embedded hex-encoded blob using a hardcoded key, IV and authentication tag, and then executes the decrypted payload. The decrypted stage performs credential and cloud/registry OIDC-token theft at install time and self-propagates by abusing the stolen accounts to publish further malicious package versions and plant backdoors in source repositories. Installing or building any project that pulls this version triggers execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-drizzle",
+        "purl": "pkg:npm/autotel-drizzle@0.0.27"
+      },
+      "versions": [
+        "0.0.27"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-drizzle/v/0.0.27"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2591"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:53:34Z",
+      "indicators_observed": {
+        "crypto_algorithm": [
+          "aes-128-gcm"
+        ],
+        "file_added": [
+          "binding.gyp",
+          "index.js"
+        ],
+        "key_fragment_observed": [
+          "79eaa7b0d7d2d051f39612096681...4ec"
+        ]
+      }
+    }
+  }
+}

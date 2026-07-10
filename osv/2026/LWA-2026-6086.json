@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6086",
+  "modified": "2026-06-28T17:21:24Z",
+  "published": "2026-06-28T09:14:37Z",
+  "summary": "Malicious code in ai-explain (npm)",
+  "details": "Ai-explain@0.3.4 is a trojanized package with no real AI functionality. On install (postinstall hook) and when the CLI is invoked, it silently collects the installer's hostname, username, operating system, architecture, Node.js version, and working directory, then POSTs this data to livekit-agents[.]xyz/api/metrics via HTTPS. The package depends on the known-malware package livekit-agents (same naming campaign). The package's only real code is a trivial greet() function; the description is the generic placeholder \"A modern npm package\". IOCs: livekit-agents[.]xyz (C2/exfil host), /api/metrics (exfil path).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ai-explain",
+        "purl": "pkg:npm/ai-explain@0.3.4"
+      },
+      "versions": [
+        "0.3.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ai-explain/v/0.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6086"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-28T09:14:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "livekit-agents[.]xyz"
+        ],
+        "url_observed": [
+          "hxxps://livekit-agents[.]xyz/api/metrics"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6213",
+  "modified": "2026-07-01T20:19:55Z",
+  "published": "2026-07-01T19:03:33Z",
+  "summary": "Malicious code in notify-theme (npm)",
+  "details": "Notify-theme@1.3.5 is a trojanized clone of the pino logger. When the package is required, index.js spawns a detached child process running lib/caller.js. That file fetches a payload from hxxps://jsonkeeper[.]com/b/EXSIF via axios and executes the response as arbitrary JavaScript code using the Function constructor, enabling remote code execution on the installer's machine. The C2 URL is hardcoded at jsonkeeper[.]com/b/EXSIF.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "notify-theme",
+        "purl": "pkg:npm/notify-theme@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/notify-theme/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6213"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-01T19:03:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonkeeper[.]com/b/EXSIF"
+        ]
+      }
+    }
+  }
+}

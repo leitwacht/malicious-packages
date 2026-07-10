@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6448",
+  "aliases": [
+    "MAL-2026-10074"
+  ],
+  "modified": "2026-07-08T08:10:28Z",
+  "published": "2026-07-08T08:09:14Z",
+  "summary": "Malicious code in testis-pack (npm)",
+  "details": "The preinstall hook runs index.js, which decodes a hostname from charcode arrays and fetches a platform-specific binary from hxxps://sloth-antagonist[.]vercel[.]app/service/assets/fetchBinary (Windows) or /service/assets/fetchLinuxBinary (Linux). The binary is saved to ~/.local/share/WinMetrics/WinMetrics (Linux) or %LOCALAPPDATA%\\Programs\\WinMetrics\\WinService.exe (Windows) and spawned as a detached background process with stdio ignored and the window hidden on Windows. The package also exports a thin XOR/CRC pack/unpack wrapper as a decoy module.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "testis-pack",
+        "purl": "pkg:npm/testis-pack@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/testis-pack/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6448"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-08T08:09:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "sloth-antagonist[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://sloth-antagonist[.]vercel[.]app/service/assets/fetchBinary",
+          "hxxps://sloth-antagonist[.]vercel[.]app/service/assets/fetchLinuxBinary"
+        ]
+      }
+    }
+  }
+}

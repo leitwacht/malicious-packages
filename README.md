@@ -30,13 +30,19 @@ never silently dropped).
 
 - `malware` — attacker-embedded malicious code (credential/wallet theft, backdoor,
   dropper, install-time RCE);
-- `dependency_confusion` — a name/scope squat that executes a payload;
+- `dependency_confusion` — a name/scope squat whose payload is delivered from an
+  untrusted external source (a fetched tarball or a named-malicious dependency),
+  not embedded in the package itself;
 - `pua` — riskware (proxyware, remote-binary-exec, miners, aggressive telemetry);
 - `research_poc` — a security-research / proof-of-concept package.
 
 All of these exhibit behaviour you would not want running in your build — that is
 the bar. We describe each **factually** and never frame a research PoC as criminal
-malware (only `malware`/`dependency_confusion` records carry the CWE-506 tag). Note
+malware. CWE tags are category-accurate: `malware` carries **CWE-506** (Embedded
+Malicious Code); `dependency_confusion` carries **CWE-829** (Inclusion of
+Functionality from an Untrusted Control Sphere — the code is pulled from an
+external dependency/tarball, not embedded here); `pua` and `research_poc` carry no
+CWE. Note
 that OSV consumers block *every* record regardless of category; the label is for
 human clarity, not a severity downgrade.
 

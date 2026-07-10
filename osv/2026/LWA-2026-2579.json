@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2579",
+  "aliases": [
+    "MAL-2026-5213"
+  ],
+  "modified": "2026-06-28T10:40:27Z",
+  "published": "2026-06-07T18:40:52Z",
+  "summary": "Malicious code in autotel-audit (npm)",
+  "details": "This package publishes as a routine OpenTelemetry/Autotel audit helper but is a self-propagating npm worm. Its unpacked size is roughly 110x larger than prior releases. index.js consists of a single eval() call wrapped around a Caesar-cipher (ROT) decoder applied to a ~620,000-element character-code array; decoding it produces an async loader that uses node:crypto AES-128-GCM to decrypt two embedded ciphertext blobs and execute them. The first decrypted stage downloads the Bun runtime from the official Bun GitHub releases archive into a temporary directory, marks it executable, and uses it to run the second, larger encrypted payload -- the worm body, which steals registry/cloud OIDC credentials and propagates by compromising other packages owned by stolen accounts. Execution is triggered at install time through a weaponized binding.gyp whose node-gyp source list runs node index.js via the \u003c!(...) command-substitution form, so the payload fires during npm install even though package.json declares no lifecycle scripts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-audit",
+        "purl": "pkg:npm/autotel-audit@0.1.15"
+      },
+      "versions": [
+        "0.1.15"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-audit/v/0.1.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2579"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:40:52Z",
+      "indicators_observed": {
+        "aes_key_observed": [
+          "4934c86a76afeb2ce34f517024c4556d",
+          "c7dff5d0e79a56ec5148eeb6a5731120"
+        ]
+      }
+    }
+  }
+}

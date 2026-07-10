@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6400",
+  "aliases": [
+    "MAL-2026-7009"
+  ],
+  "modified": "2026-07-07T12:23:42Z",
+  "published": "2026-07-07T12:22:51Z",
+  "summary": "Malicious code in configration (npm)",
+  "details": "Configration@2.3.5 is a typosquat of \"configuration\". When required, index.js spawns a detached child process running lib/initializeCaller.js, which POSTs all environment variables (process.env) to a C2 endpoint at hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df, then executes arbitrary code returned by the C2 server via new Function(\"require\", response.data). The payload retries up to 5 times and suppresses console output during the operation. This exfiltrates credentials, API keys, and tokens from the environment and enables remote code execution on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "configration",
+        "purl": "pkg:npm/configration@2.3.5"
+      },
+      "versions": [
+        "2.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/configration/v/2.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6400"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T12:22:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df"
+        ]
+      }
+    }
+  }
+}

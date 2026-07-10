@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3075",
+  "aliases": [
+    "MAL-2026-5254"
+  ],
+  "modified": "2026-06-28T06:36:47Z",
+  "published": "2026-06-08T12:00:59Z",
+  "summary": "Malicious code in executable-stories-jest (npm)",
+  "details": "This release of executable-stories-jest carries a malicious, heavily obfuscated dropper injected into the package root index.js, distinct from the genuine library code shipped under dist/. The entire index.js is a single self-decoding stage: a character-code array passed through a Caesar-cipher transform and handed to eval(). The decoded second stage is an async IIFE that pulls in Node's crypto module, builds an AES-128-GCM decipher helper with hardcoded keys, initialization vectors and authentication tags, and decrypts two large embedded ciphertext blobs into in-memory buffers, one of which is a multi-megabyte encrypted final payload. The package then evaluates this runtime-decrypted, attacker-controlled code. This layered obfuscation (Caesar-encoded eval wrapper plus AES-GCM payload decryption plus dynamic code evaluation) has no legitimate purpose in a test-documentation library and is characteristic of a staged malware dropper. Installing or importing this version executes the hidden payload. Do not install version 3.1.1; pin to a known-good release and rotate any credentials exposed on affected machines.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "executable-stories-jest",
+        "purl": "pkg:npm/executable-stories-jest@3.1.1"
+      },
+      "versions": [
+        "3.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/executable-stories-jest/v/3.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3075"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T12:00:59Z",
+      "indicators_observed": {
+        "aes_gcm_authtag_observed": [
+          "09c6345a3e0a40b89bd0f46f57d31a22",
+          "49a0c57d0f1706c257ca3ff2e8bab1dc"
+        ],
+        "aes_gcm_iv_observed": [
+          "3f24c344173259f3b18ff5a5",
+          "87a4782f8f9db374233c30c7"
+        ],
+        "aes_gcm_key_observed": [
+          "9d6ec3c4be32a50716c043bcebbe2fd9",
+          "def42c5d76bd75209bbd9f9fc73775a7"
+        ]
+      }
+    }
+  }
+}

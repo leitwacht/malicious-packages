@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-3458",
+  "aliases": [
+    "MAL-2026-5190"
+  ],
+  "modified": "2026-06-28T06:36:54Z",
+  "published": "2026-06-09T09:41:19Z",
+  "summary": "Malicious code in hbsig (npm)",
+  "details": "This release is a trojanized build of an otherwise-legitimate HTTP-message-signature library. The published JavaScript modules are the genuine library code, but the package manifest adds a preinstall lifecycle hook (\"preinstall\": \"./bin/install-deps\") that runs automatically when the package is installed. Despite its script-like name, bin/install-deps is not a shell script: it is a ~976KB native Linux ELF x86-64 executable bundled inside the package. The binary is UPX-compressed, an anti-analysis packing technique used to obscure its true behaviour from static inspection. Installing the package therefore silently executes an opaque, packed native binary on the victim machine with the privileges of the install process. Bundling and auto-executing a packed native executable from an install hook is malicious dropper behaviour and serves no legitimate purpose for a signature library. The manifest additionally lists the package as a dependency of itself, a propagation/confusion pattern associated with self-replicating supply-chain worm activity. Do not install this version; treat any machine that installed it as compromised.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hbsig",
+        "purl": "pkg:npm/hbsig@0.3.2"
+      },
+      "versions": [
+        "0.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hbsig/v/0.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-3458"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-09T09:41:19Z",
+      "indicators_observed": {}
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6523",
+  "aliases": [
+    "MAL-2026-10031"
+  ],
+  "modified": "2026-07-09T11:43:48Z",
+  "published": "2026-07-09T11:43:14Z",
+  "summary": "Malicious code in @wagni_bot/orca-sdk (npm)",
+  "details": "On install, the package runs postinstall.js (via both preinstall and postinstall hooks). The script fingerprints the host (hostname, username, current working directory) and then systematically hunts for and exfiltrates crypto wallet files (Solana id.json, Ethereum keystore, Bitcoin/Litecoin wallet.dat, and 20+ other wallet filenames), environment variable files (.env,.env.local,.env.production), SSH private keys (id_*, deploy_*, config, authorized_keys), AWS credentials (~/.aws/credentials), git-credentials, and npm auth tokens (~/.npmrc containing authToken). All stolen data is POSTed as JSON to hxxp://107[.]161[.]90[.]180:7777.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wagni_bot/orca-sdk",
+        "purl": "pkg:npm/%40wagni_bot/orca-sdk@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wagni_bot/orca-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6523"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T11:43:14Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "107[.]161[.]90[.]180:7777"
+        ],
+        "url_observed": [
+          "hxxp://107[.]161[.]90[.]180",
+          "hxxp://107[.]161[.]90[.]180:7777"
+        ]
+      }
+    }
+  }
+}

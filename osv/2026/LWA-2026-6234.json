@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6234",
+  "aliases": [
+    "MAL-2026-6779"
+  ],
+  "modified": "2026-07-02T08:52:34Z",
+  "published": "2026-07-02T08:45:14Z",
+  "summary": "Malicious code in @marketfront/fingerprint (npm)",
+  "details": "The package @marketfront/fingerprint@7.0.0 is a trojanized package that ships no real source code — only a heavily obfuscated postinstall script (scripts/postinstall.js, 161KB) encoded with javascript-obfuscator. On install, the postinstall hook runs automatically. The obfuscated payload contains anti-debug and anti-VM checks: it scans process.argv and process.env.NODE_OPTIONS for sandbox/debugger indicators, runs a timing loop to detect breakpoints, and reconstructs its payload strings at runtime via char-code decoding. The package claims to be an internal authentication client from \"the publisher Platform Engineering\" but the repository, documentation, and issue-tracker URLs (github[.]marketfront[.]io, docs[.]marketfront[.]io, jira[.]marketfront[.]io) are non-resolving. The dist/index.js is a stub that re-exports a non-existent src/index.js. This package is part of the same campaign as @marketfront/actualordersnippetpopup@7.0.0, which has been independently confirmed as malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@marketfront/fingerprint",
+        "purl": "pkg:npm/%40marketfront/fingerprint@7.0.0"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@marketfront/fingerprint/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6234"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T08:45:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "docs[.]marketfront[.]io",
+          "github[.]marketfront[.]io",
+          "jira[.]marketfront[.]io"
+        ]
+      }
+    }
+  }
+}

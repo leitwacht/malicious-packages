@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6360",
+  "aliases": [
+    "MAL-2026-6910"
+  ],
+  "modified": "2026-07-07T06:20:04Z",
+  "published": "2026-07-07T06:19:40Z",
+  "summary": "Malicious code in zluri-ad-connector (npm)",
+  "details": "The package zluri-ad-connector@9.9.9 is a trojanized clone (combosquat on the Zluri identity platform name, version 9.9.9) with no actual AD connector functionality. Its preinstall hook (package/scripts.preinstall: \"node index.js\") executes package/index.js, which harvests environment variables matching sensitive key patterns (npm_token, github_token, aws_access_key_id, aws_secret_access_key, aws_session_token, ci/circle/travis/gitlab tokens, passwords, API keys, credentials) and collects system fingerprint data (hostname, homedir, username, OS type/release, DNS servers, PATH, Node.js version, npm context). All collected data is serialized and POSTed via HTTPS to y543452sgo96xsasfdr72ms4rvxmld92[.]oastify[.]com:443. Errors are silently swallowed to avoid detection. The package has no repository, no actual connector code, and its sole purpose is credential exfiltration on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zluri-ad-connector",
+        "purl": "pkg:npm/zluri-ad-connector@9.9.9"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zluri-ad-connector/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6360"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T06:19:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "y543452sgo96xsasfdr72ms4rvxmld92[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxps://y543452sgo96xsasfdr72ms4rvxmld92[.]oastify[.]com/"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6309",
+  "modified": "2026-07-03T19:59:49Z",
+  "published": "2026-07-03T19:58:37Z",
+  "summary": "Malicious code in debugcli (npm)",
+  "details": "Debugcli@4.3.4 is a combosquat of the popular 'debug' package. On install, the postinstall hook (install.js) collects environment variables matching token/secret patterns (AWS_, GITHUB_, NPM_, STRIPE, OPENAI, ANTHROPIC, and 25+ others), reads credential files from ~/.aws/credentials, ~/.npmrc, ~/.git-credentials, ~/.kube/config, ~/.docker/config.json, ~/.ssh/config, ~/.netrc, ~/.pypirc, and.env files, and extracts Chrome extension vaults for MetaMask and TrustWallet. All stolen data is exfiltrated via the Telegram Bot API (hardcoded bot token and chat ID in install.js) as a text summary, a gzipped JSON dump, and wallet archives. The package's index.js is a decoy that simply re-exports the legitimate 'debug' module.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "debugcli",
+        "purl": "pkg:npm/debugcli@4.3.4"
+      },
+      "versions": [
+        "4.3.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/debugcli/v/4.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6309"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-03T19:58:37Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot*/"
+        ]
+      }
+    }
+  }
+}

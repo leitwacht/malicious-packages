@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6529",
+  "aliases": [
+    "MAL-2026-10029"
+  ],
+  "modified": "2026-07-09T12:05:41Z",
+  "published": "2026-07-09T12:03:16Z",
+  "summary": "Malicious code in @wagni_bot/meteora-sdk (npm)",
+  "details": "Combosquat DeFi SDK packages (meteora-sdk, orca-sdk, solana-sdk, jupiter-sdk, pumpfun-sdk) that run a credential/secret harvester on install via both preinstall and postinstall hooks. The payload in postinstall.js enumerates the user's home directory, Desktop, Documents, Downloads, /root, and /tmp for wallet files (id.json, wallet.json, keypair.json, metamask.json, phantom.json, seed.txt, mnemonic.txt, etc.), Solana and Ethereum keystores, SSH private keys, AWS credentials,.env files,.git-credentials,.npmrc, and browser extension data (MetaMask/Phantom Chrome/Brave/Edge storage). It also scans text files for BIP39 seed phrases. All stolen data is exfiltrated via HTTP POST to 107[.]161[.]90[.]180:7777 as JSON containing hostname, username, and file contents.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wagni_bot/meteora-sdk",
+        "purl": "pkg:npm/%40wagni_bot/meteora-sdk@1.2.0"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wagni_bot/meteora-sdk/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6529"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T12:03:16Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "107[.]161[.]90[.]180:7777"
+        ],
+        "url_observed": [
+          "hxxp://107[.]161[.]90[.]180:7777"
+        ]
+      }
+    }
+  }
+}

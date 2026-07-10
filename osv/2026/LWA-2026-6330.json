@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6330",
+  "modified": "2026-07-05T15:30:45Z",
+  "published": "2026-07-05T15:29:37Z",
+  "summary": "Malicious code in @bobfrankston/gcal (npm)",
+  "details": "A Google Calendar CLI tool that depends on a known-malware OAuth library from the same publisher. The package's goauth.js imports authenticateOAuth() from @bobfrankston/oauthsupport, which handles the Google OAuth token exchange and can harvest the user's Google access and refresh tokens during authentication. The package also ships a Windows PE executable (bin/gcalics.exe, 215KB) for.ics file association. The postinstall hook is benign (prints a tip on Windows). The attack is credential theft via the malicious OAuth dependency during the legitimate-looking OAuth flow.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@bobfrankston/gcal",
+        "purl": "pkg:npm/%40bobfrankston/gcal@0.1.68"
+      },
+      "versions": [
+        "0.1.68"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@bobfrankston/gcal/v/0.1.68"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6330"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-05T15:29:37Z",
+      "indicators_observed": {}
+    }
+  }
+}

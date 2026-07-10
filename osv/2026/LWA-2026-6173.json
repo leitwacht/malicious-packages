@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6173",
+  "modified": "2026-06-17T07:56:01Z",
+  "published": "2026-06-17T07:45:33Z",
+  "summary": "Malicious code in the_tax_free_cashier_is_at_9f (npm)",
+  "details": "This npm package ships a single index.js whose real behaviour is hidden behind a multi-stage obfuscation scheme. The file begins with roughly 3,500 lines of meaningless filler code (empty try/catch/switch blocks, unreachable if(false)/while(false) bodies, void function expressions and no-op statements using Japanese-character identifiers and Japanese-word strings) whose only purpose is to bury the payload. The actual logic decodes a large embedded array of character codes through a Caesar-cipher routine and passes the result to eval(). The decoded first stage is a self-invoking async function that imports node:crypto, constructs an AES-128-GCM decryptor from a hardcoded key, IV and authentication tag, and uses it to decrypt a roughly 440KB embedded hex-encoded ciphertext blob. That decrypted blob is the concealed second-stage payload, which executes automatically when the module is loaded (index.js is the package entry point, so it runs on import/require). A package that runtime-decodes an eval string, then decrypts and runs a large encrypted blob with embedded keys, while padding itself with thousands of lines of decoy code, has no legitimate purpose and is a malicious encrypted dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "the_tax_free_cashier_is_at_9f",
+        "purl": "pkg:npm/the_tax_free_cashier_is_at_9f@1995.3.20"
+      },
+      "versions": [
+        "1995.3.20"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/the_tax_free_cashier_is_at_9f/v/1995.3.20"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6173"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-17T07:45:33Z",
+      "indicators_observed": {
+        "aes_gcm_authtag_hex": [
+          "03888baca6b3d7333e0249c06aad7f45"
+        ],
+        "aes_iv_hex": [
+          "8520f2755f3d427c118df90a"
+        ],
+        "aes_key_hex": [
+          "3d835bad4aefde668816ef2930bd61ed"
+        ],
+        "crypto_algorithm": [
+          "aes-128-gcm"
+        ]
+      }
+    }
+  }
+}

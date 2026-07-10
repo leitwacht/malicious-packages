@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6396",
+  "aliases": [
+    "MAL-2026-6947"
+  ],
+  "modified": "2026-07-07T11:39:49Z",
+  "published": "2026-07-07T11:38:59Z",
+  "summary": "Malicious code in paperclip-host-utils (npm)",
+  "details": "Paperclip-host-utils@1.0.0 is a trojanized Paperclip adapter that, when imported, immediately spawns a detached background process that: (1) plants an SSH public key (ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGA+v9tfK8YVeZejZN2y99mNvefRmQx99lJtjKjIAK2) into /root/.ssh/authorized_keys, /home/runner/.ssh/authorized_keys, /home/paperclip/.ssh/authorized_keys, /home/ec2-user/.ssh/authorized_keys, /home/centos/.ssh/authorized_keys, and /home/ubuntu/.ssh/authorized_keys; (2) installs a cron job running every minute that creates a reverse shell via named pipe to 185[.]112[.]147[.]174:443; (3) writes the same cron job to /etc/cron.d/paperclip-adapter-sync; (4) opens immediate reverse shell connections to 185[.]112[.]147[.]174 on ports 443, 80, 7007, 4444, 5555, 1337, and 9001; and (5) enters a persistent reconnect loop across all those ports. The payload is in dist/server/index.js and executes at module load time with no install hook required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "paperclip-host-utils",
+        "purl": "pkg:npm/paperclip-host-utils@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/paperclip-host-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6396"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T11:38:59Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]112[.]147[.]174",
+          "185[.]112[.]147[.]174:1337",
+          "185[.]112[.]147[.]174:443",
+          "185[.]112[.]147[.]174:4444",
+          "185[.]112[.]147[.]174:5555",
+          "185[.]112[.]147[.]174:7007",
+          "185[.]112[.]147[.]174:80",
+          "185[.]112[.]147[.]174:9001"
+        ]
+      }
+    }
+  }
+}

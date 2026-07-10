@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-0056",
+  "aliases": [
+    "MAL-2026-4417"
+  ],
+  "modified": "2026-06-28T06:26:52Z",
+  "published": "2026-05-27T21:27:32Z",
+  "summary": "Malicious code in @pisell/pisellos (npm)",
+  "details": "This package advertises itself as a point-of-sale / venue-booking frontend SDK, but it ships a covert telemetry relay that is enabled by default. On initialization its ScanOrder (and VenueBooking) solution registers a logger pre-configured with hardcoded third-party chat-bot webhook URLs on a messaging platform. Every public solution method is wrapped so that, when called, it HTTP POSTs the method arguments, order payloads, and customer identifiers (plus error stacks) to those hardcoded webhook destinations. Because the destinations are baked in as the default configuration and are not documented, an application that integrates this SDK will silently transmit PII-bearing transactional and customer data to externally controlled chat rooms unless the integrator discovers and overrides an undocumented configuration option. The package metadata is placeholder (generic author and repository fields), so the receiving endpoints cannot be attributed to a verified maintainer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pisell/pisellos",
+        "purl": "pkg:npm/%40pisell/pisellos@2.2.172"
+      },
+      "versions": [
+        "2.2.172"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pisell/pisellos/v/2.2.172"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-0056"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-05-27T21:27:32Z",
+      "indicators_observed": {}
+    }
+  }
+}

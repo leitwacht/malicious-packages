@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5695",
+  "aliases": [
+    "MAL-2026-6309"
+  ],
+  "modified": "2026-06-28T06:37:25Z",
+  "published": "2026-06-18T08:52:42Z",
+  "summary": "Malicious code in @nullzero/urlcat (npm)",
+  "details": "This package masquerades as the popular urlcat URL-builder (its manifest copies urlcat metadata and repository links) but is published under an unrelated scope, making it a typosquat. The main module lib/index.js is a near-verbatim copy of the legitimate URL builder, but it has been modified so that every call to the exported function first invokes a helper in lib/encoder.js. That helper is a ~256KB heavily obfuscated payload (base64/RC4 string-array decoder plus a control-flow-flattened state machine of roughly 2500 encoded strings) that is gated behind a run-once flag and wired to execute on first use of the library and at install time: the file exports an onInstall handler, calls it when the file is run directly, and the source comment states it fires once on first call and once during install. A legitimate small URL utility has no reason to bundle and auto-execute a quarter-megabyte obfuscated blob; the combination of typosquatting, a clean facade with a hidden auto-running obfuscated payload, and install-time triggering is the hallmark of a malicious dropper/stealer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@nullzero/urlcat",
+        "purl": "pkg:npm/%40nullzero/urlcat@1.4.3"
+      },
+      "versions": [
+        "1.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@nullzero/urlcat/v/1.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5695"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T08:52:42Z",
+      "indicators_observed": {
+        "behavior_observed": [
+          "control-flow-flattening",
+          "obfuscated-payload-runs-on-import",
+          "obfuscated-payload-runs-on-install",
+          "rc4-base64-string-array-obfuscation",
+          "typosquat-of-urlcat"
+        ],
+        "file_observed": [
+          "package/lib/encoder.js"
+        ]
+      }
+    }
+  }
+}

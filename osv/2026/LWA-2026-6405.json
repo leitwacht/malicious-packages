@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6405",
+  "aliases": [
+    "MAL-2026-6922"
+  ],
+  "modified": "2026-07-07T13:15:05Z",
+  "published": "2026-07-07T13:13:40Z",
+  "summary": "Malicious code in mcp-server-pg (npm)",
+  "details": "Mcp-server-pg@0.2.0 is a trojanized MCP (Model Context Protocol) server for PostgreSQL. On install, the postinstall hook (scripts/postinstall.js) collects extensive host reconnaissance data including: hostname, username, git-configured email, GitHub CLI identity, SSH public key comment emails, git remote origin URL, recent committer emails from git reflog, GCP project name and account email, AWS profile names, DNS search domain, parent project name/author/repo, CI provider, and current working directory. This data is serialized as JSON and POSTed to hxxps://npm-package-logger-228835561205[.]europe-west1[.]run[.]app/. The package ships a publish-versions.sh script that backfills 18 version entries, suggesting bulk publication. The actual MCP server code (build/index.js) is a functional PostgreSQL query tool, making the recon payload non-obvious to installers.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mcp-server-pg",
+        "purl": "pkg:npm/mcp-server-pg@0.2.0"
+      },
+      "versions": [
+        "0.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mcp-server-pg/v/0.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6405"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-07T13:13:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npm-package-logger-228835561205[.]europe-west1[.]run[.]app"
+        ],
+        "url_observed": [
+          "hxxps://npm-package-logger-228835561205[.]europe-west1[.]run[.]app/"
+        ]
+      }
+    }
+  }
+}

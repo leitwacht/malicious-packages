@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2646",
+  "aliases": [
+    "MAL-2026-5230"
+  ],
+  "modified": "2026-06-28T06:27:54Z",
+  "published": "2026-06-07T19:38:59Z",
+  "summary": "Malicious code in autotel-subscribers (npm)",
+  "details": "This version of the package is a compromised supply-chain build belonging to a self-propagating npm worm. It ships a weaponized binding.gyp at the package root whose node-gyp build target uses command-substitution syntax (\"\u003c!(node index.js \u003e /dev/null 2\u003e\u00261 \u0026\u0026 echo stub.c)\") to spawn a shell command when node-gyp processes the package. Because node-gyp runs during installation, this executes the package-root index.js automatically at install time WITHOUT any npm pre/postinstall lifecycle script — evading tooling that only inspects lifecycle hooks. index.js is heavily obfuscated: it opens with a Caesar-cipher decoder whose output is passed to eval(). The decoded first stage imports node:crypto and uses aes-128-gcm (createDecipheriv with a hex key/IV and a 16-byte auth tag) to decrypt an embedded hex blob, then executes the decrypted second stage. The resulting payload harvests cloud and package-registry credentials and OIDC tokens and propagates by abusing stolen accounts to compromise further packages and repositories. The genuine analytics functionality in dist/ is left intact as cover. Do not install this version; treat any credentials or tokens exposed on a machine that installed it as compromised.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autotel-subscribers",
+        "purl": "pkg:npm/autotel-subscribers@10.0.1"
+      },
+      "versions": [
+        "10.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autotel-subscribers/v/10.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2646"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T19:38:59Z",
+      "indicators_observed": {}
+    }
+  }
+}

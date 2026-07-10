@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6498",
+  "aliases": [
+    "MAL-2026-10030"
+  ],
+  "modified": "2026-07-09T09:44:15Z",
+  "published": "2026-07-09T09:42:53Z",
+  "summary": "Malicious code in @wagni_bot/opensea-sdk (npm)",
+  "details": "The postinstall hook (postinstall.js) runs on install and exfiltrates credentials to a remote server at 107[.]161[.]90[.]180:7777. It collects SSH private keys (id_rsa, id_ed25519) from ~/.ssh/ and the current directory,.pem/.key/.cred files,.env files, and environment variables containing PRIVATE, SECRET, TOKEN, API_KEY, PASSWORD, MNEMONIC, SEED, WALLET, or AWS. All stolen data is POSTed as JSON to hxxp://107[.]161[.]90[.]180:7777. The package contains no functional SDK code — index.js is 19 bytes and the sole purpose is the credential-harvesting postinstall script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wagni_bot/opensea-sdk",
+        "purl": "pkg:npm/%40wagni_bot/opensea-sdk@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wagni_bot/opensea-sdk/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6498"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-09T09:42:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "107[.]161[.]90[.]180:7777"
+        ],
+        "url_observed": [
+          "hxxp://107[.]161[.]90[.]180",
+          "hxxp://107[.]161[.]90[.]180:7777"
+        ]
+      }
+    }
+  }
+}
