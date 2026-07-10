@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6591",
+  "modified": "2026-07-10T14:12:17Z",
+  "published": "2026-07-10T14:10:33Z",
+  "summary": "Malicious code in async-chain-dom (npm)",
+  "details": "Trojanized clone of the pino logger. When the package is required, index.js spawns a detached child process running lib/vcall.js, which fetches a remote payload from hxxps://api[.]jsonsilo[.]com/public/df71fd55-4f0c-4326-9b5b-a285e38023a5 and executes it via the Function constructor with the full require() scope passed in, giving the remote code full access to the filesystem and Node.js APIs. A secondary C2 domain (vercel-five-coral[.]vercel[.]app) is stored in a shipped.env file. The package has no lifecycle hooks — the payload runs on require(), not install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "async-chain-dom",
+        "purl": "pkg:npm/async-chain-dom@1.3.5"
+      },
+      "versions": [
+        "1.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/async-chain-dom/v/1.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6591"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T14:10:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonsilo[.]com",
+          "vercel-five-coral[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxp://vercel-five-coral[.]vercel[.]app/",
+          "hxxps://api[.]jsonsilo[.]com/public/df71fd55-4f0c-4326-9b5b-a285e38023a5"
+        ]
+      }
+    }
+  }
+}
