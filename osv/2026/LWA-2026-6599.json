@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6599",
+  "aliases": [
+    "MAL-2026-10129"
+  ],
+  "modified": "2026-07-10T14:53:37Z",
+  "published": "2026-07-10T14:53:14Z",
+  "summary": "Malicious code in rtc-integration-frontend-sdk (npm)",
+  "details": "On install, the postinstall hook (node index.js) executes a host-reconnaissance script. It collects the system's hostname, OS platform and architecture, username, private IP addresses, public IP (queried from api[.]ipify[.]org), current working directory, and package name, then exfiltrates all of this data to a hardcoded Discord webhook URL (discord[.]com/api/webhooks/1524917003394089029/...). The webhook URL is the C2 endpoint for data exfiltration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rtc-integration-frontend-sdk",
+        "purl": "pkg:npm/rtc-integration-frontend-sdk@99.9.0"
+      },
+      "versions": [
+        "99.9.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rtc-integration-frontend-sdk/v/99.9.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6599"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T14:53:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "discord[.]com"
+        ],
+        "url_observed": [
+          "hxxps://discord[.]com/api/webhooks/1524917003394089029/[secret-redacted]"
+        ]
+      }
+    }
+  }
+}
