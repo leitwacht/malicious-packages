@@ -1,0 +1,74 @@
+# Rebuild the osv-scanner offline DB (npm all.zip) from the tracked OSV records
+# and publish it as a rolling Release asset — so the ~1MB binary lives in Releases,
+# NOT in git history (the JSON records under osv/ stay the diffable source of truth).
+#
+# Stable consumer URL:
+#   https://github.com/leitwacht/malicious-packages/releases/download/db-latest/all.zip
+#
+# Supply-chain notes (this is a malware-detection feed — keep the trust surface small):
+#   * no third-party marketplace actions; publishing uses the GitHub-provided `gh`
+#     CLI + the auto-injected GITHUB_TOKEN (scoped to this repo, contents:write).
+#   * actions/checkout is first-party; pin it to a commit SHA for full immutability.
+name: build-offline-db
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'osv/**'                                  # rebuild when records change
+      - '.github/workflows/build-offline-db.yml'  # ...and when this job changes (seeds first run)
+  workflow_dispatch: {}       # allow a manual rebuild
+
+permissions:
+  contents: write             # create/update the Release + upload the asset
+
+concurrency:
+  group: offline-db           # never let two rebuilds race the same Release
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4   # TODO: pin to a commit SHA for immutability
+
+      - name: Build all.zip deterministically
+        run: |
+          python3 - <<'PY'
+          import glob, os, zipfile
+          recs = sorted(glob.glob("osv/**/LWA-*.json", recursive=True))
+          os.makedirs("osv-scanner/npm", exist_ok=True)
+          # Deterministic: sorted entries + fixed 1980 mtime → bytes change only when
+          # the records do (reproducible builds; re-runs don't churn the asset).
+          with zipfile.ZipFile("osv-scanner/npm/all.zip", "w", zipfile.ZIP_DEFLATED) as z:
+              for f in recs:
+                  zi = zipfile.ZipInfo(os.path.basename(f), date_time=(1980, 1, 1, 0, 0, 0))
+                  zi.compress_type = zipfile.ZIP_DEFLATED
+                  with open(f, "rb") as fh:
+                      z.writestr(zi, fh.read())
+          print(f"all.zip: {len(recs)} records")
+          with open(os.environ["GITHUB_ENV"], "a") as e:
+              e.write(f"RECORD_COUNT={len(recs)}\n")
+          PY
+
+      - name: Publish to rolling Release (db-latest)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOTES="Prebuilt osv-scanner offline DB (npm), rebuilt on every record change.
+          Records: ${RECORD_COUNT}. Source commit: ${GITHUB_SHA}.
+
+          Use:
+            mkdir -p db/osv-scanner/npm
+            curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/db-latest/all.zip \\
+              -o db/osv-scanner/npm/all.zip
+            osv-scanner scan source --offline --local-db-path ./db -L package-lock.json"
+          if gh release view db-latest >/dev/null 2>&1; then
+            gh release upload db-latest osv-scanner/npm/all.zip --clobber
+            gh release edit  db-latest --notes "$NOTES"
+          else
+            gh release create db-latest osv-scanner/npm/all.zip \
+              --title "OSV offline database (rolling)" \
+              --notes "$NOTES"
+          fi

@@ -5,9 +5,8 @@ packages detected by [Leitwacht](https://leitwacht.eu), in
 [OSV](https://ossf.github.io/osv-schema/) format — a CC0 OSV **source database**,
 consumable by `osv-scanner` / `deps.dev` and ingestible by `osv.dev`.
 
-Why permissive: the Leitwacht **agent** is the product, so we give detections
-away to the commons under CC0 — unlike copyleft vendor feeds, ours can be
-absorbed by OSV and embedded anywhere, copyleft-free.
+Released under CC0 so it can be absorbed by OSV and embedded anywhere, with no
+attribution or licensing burden on consumers.
 
 ## What's in here
 
@@ -59,13 +58,21 @@ data.
 
 ## Using it to block installs
 
+The prebuilt osv-scanner offline DB is published as a rolling **Release** asset
+(kept out of git so the repo stays lean). Fetch it and gate your lockfile offline:
+
 ```sh
-# clone this feed, then gate your lockfile against it offline:
-git clone https://github.com/leitwacht/malicious-packages leitwacht-osv
-# the feed ships a prebuilt osv-scanner offline DB at osv-scanner/npm/all.zip,
-# so point --local-db-path at the repo root (NOT the osv/ tree):
+# download the latest offline DB into a local db path:
+mkdir -p leitwacht-osv/osv-scanner/npm
+curl -sSL https://github.com/leitwacht/malicious-packages/releases/download/db-latest/all.zip \
+  -o leitwacht-osv/osv-scanner/npm/all.zip
+# scan against it (offline — osv-scanner reads only all.zip, never the osv/ tree):
 osv-scanner scan source --offline --local-db-path ./leitwacht-osv -L package-lock.json
 ```
+
+To browse or audit the raw detections, `git clone` the repo — the JSON records
+under `osv/` are the source of truth; the Release asset is just those records
+packed for osv-scanner.
 
 Or — once this feed is ingested as an OpenSSF source — you get our detections
 automatically through `osv.dev`, `osv-scanner`, GitHub/Dependabot, and any tool
