@@ -62,13 +62,27 @@ The prebuilt osv-scanner offline DB is published as a rolling **Release** asset
 (kept out of git so the repo stays lean). Fetch it and gate your lockfile offline:
 
 ```sh
-# download the latest offline DB into a local db path:
-mkdir -p leitwacht-osv/osv-scanner/npm
-curl -sSL https://github.com/leitwacht/malicious-packages/releases/download/db-latest/all.zip \
-  -o leitwacht-osv/osv-scanner/npm/all.zip
-# scan against it (offline — osv-scanner reads only all.zip, never the osv/ tree):
-osv-scanner scan source --offline --local-db-path ./leitwacht-osv -L package-lock.json
+base=https://github.com/leitwacht/malicious-packages/releases/download/db-latest
+mkdir -p leitwacht-osv/osv-scanner/npm && cd leitwacht-osv/osv-scanner/npm
+# download the latest offline DB + its signature:
+curl -sSLO $base/all.zip
+curl -sSLO $base/all.zip.cosign.bundle
+
+# VERIFY it's genuinely ours before trusting it (keyless Sigstore — there is no
+# key to distribute; the signature is bound to our exact build workflow identity):
+cosign verify-blob all.zip \
+  --bundle all.zip.cosign.bundle \
+  --certificate-identity \
+    'https://github.com/leitwacht/malicious-packages/.github/workflows/build-offline-db.yml@refs/heads/main' \
+  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com'
+
+# then scan offline (osv-scanner reads only all.zip, never the osv/ tree):
+cd - && osv-scanner scan source --offline --local-db-path ./leitwacht-osv -L package-lock.json
 ```
+
+The DB is signed on every rebuild with [Sigstore](https://www.sigstore.dev/)
+keyless signing; a `sha256sum -c all.zip.sha256` is also published for a plain
+integrity check.
 
 To browse or audit the raw detections, `git clone` the repo — the JSON records
 under `osv/` are the source of truth; the Release asset is just those records

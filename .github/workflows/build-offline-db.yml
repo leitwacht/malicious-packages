@@ -20,7 +20,8 @@ on:
   workflow_dispatch: {}       # allow a manual rebuild
 
 permissions:
-  contents: write             # create/update the Release + upload the asset
+  contents: write             # create/update the Release + upload the assets
+  id-token: write             # keyless Sigstore signing via ambient OIDC (no private key)
 
 concurrency:
   group: offline-db           # never let two rebuilds race the same Release
@@ -52,23 +53,46 @@ jobs:
               e.write(f"RECORD_COUNT={len(recs)}\n")
           PY
 
+      - name: Checksum
+        working-directory: osv-scanner/npm
+        run: sha256sum all.zip > all.zip.sha256
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3   # TODO: pin to a commit SHA
+
+      - name: Sign all.zip (keyless / Sigstore)
+        working-directory: osv-scanner/npm
+        run: |
+          # Keyless: signing identity is this workflow's OIDC token — no private
+          # key exists to manage or leak. Emits a self-contained bundle (sig +
+          # Fulcio cert + Rekor transparency-log entry) verifiable offline-ish.
+          cosign sign-blob --yes all.zip --bundle all.zip.cosign.bundle
+
       - name: Publish to rolling Release (db-latest)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: osv-scanner/npm
         run: |
+          ASSETS="all.zip all.zip.sha256 all.zip.cosign.bundle"
+          IDENTITY="https://github.com/${GITHUB_REPOSITORY}/.github/workflows/build-offline-db.yml@refs/heads/main"
           NOTES="Prebuilt osv-scanner offline DB (npm), rebuilt on every record change.
           Records: ${RECORD_COUNT}. Source commit: ${GITHUB_SHA}.
 
+          Verify (keyless Sigstore — no key to trust, only our workflow identity):
+            cosign verify-blob all.zip \\
+              --bundle all.zip.cosign.bundle \\
+              --certificate-identity '${IDENTITY}' \\
+              --certificate-oidc-issuer 'https://token.actions.githubusercontent.com'
+            sha256sum -c all.zip.sha256
+
           Use:
-            mkdir -p db/osv-scanner/npm
-            curl -sL https://github.com/${GITHUB_REPOSITORY}/releases/download/db-latest/all.zip \\
-              -o db/osv-scanner/npm/all.zip
+            mkdir -p db/osv-scanner/npm && mv all.zip db/osv-scanner/npm/
             osv-scanner scan source --offline --local-db-path ./db -L package-lock.json"
           if gh release view db-latest >/dev/null 2>&1; then
-            gh release upload db-latest osv-scanner/npm/all.zip --clobber
+            gh release upload db-latest $ASSETS --clobber
             gh release edit  db-latest --notes "$NOTES"
           else
-            gh release create db-latest osv-scanner/npm/all.zip \
+            gh release create db-latest $ASSETS \
               --title "OSV offline database (rolling)" \
               --notes "$NOTES"
           fi
