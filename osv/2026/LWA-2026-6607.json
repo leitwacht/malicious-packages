@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6607",
+  "modified": "2026-07-10T19:00:49Z",
+  "published": "2026-07-10T18:58:31Z",
+  "summary": "Malicious code in chai-as-doc (npm)",
+  "details": "Package \"chai-as-doc\" is a combosquat trojan. When required, its exported middleware function spawns a detached background process that: (1) decodes a base64-embedded C2 endpoint at hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df, (2) POSTs the entire process.env object to that endpoint (exfiltrating all environment variables including API keys, tokens, and secrets from the installer's environment), and (3) executes arbitrary code returned by the C2 server via new Function() — enabling remote code execution on the victim's machine. The C2 host is ipcheck-hashed[.]vercel[.]app, path /api/auth/6c1d60d35852ef0c05df.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-doc",
+        "purl": "pkg:npm/chai-as-doc@2.3.5"
+      },
+      "versions": [
+        "2.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-doc/v/2.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6607"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T18:58:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df"
+        ]
+      }
+    }
+  }
+}
