@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6597",
+  "aliases": [
+    "MAL-2026-10127"
+  ],
+  "modified": "2026-07-10T15:54:48Z",
+  "published": "2026-07-10T15:53:22Z",
+  "summary": "Malicious code in eth-react-redirection (npm)",
+  "details": "Eth-react-redirection@1.0.0 is a trojanized package that masquerades as a React navigation library but contains no React code. On require(), it spawns a detached background Node.js process. The package also contains a C2 beacon in lib/levels.js that makes an HTTP GET request to mongos-hooks-api[.]vercel[.]app/defy/v3 with a custom authorization header. If the C2 responds with HTTP 404 and a.token field in the body, that field is executed as arbitrary JavaScript via the Function constructor, enabling remote code execution and second-stage payload delivery. The C2 endpoint is configured in lib/config.js (hxxp://mongos-hooks-api[.]vercel[.]app/defy/v3).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eth-react-redirection",
+        "purl": "pkg:npm/eth-react-redirection@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eth-react-redirection/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6597"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T15:53:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mongos-hooks-api[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxp://mongos-hooks-api[.]vercel[.]app/defy/v3"
+        ]
+      }
+    }
+  }
+}

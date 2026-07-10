@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6598",
+  "modified": "2026-07-10T15:55:45Z",
+  "published": "2026-07-10T15:53:56Z",
+  "summary": "Malicious code in type-atob (npm)",
+  "details": "Type-atob@3.3.7 is a trojanized clone of the pino logger library that downloads and executes arbitrary remote code. When the package's middleware export is called, it spawns a detached Node.js child process that fetches code from hxxps://json[.]extendsclass[.]com/bin/49b93b00acf1 via an HTTP GET request and executes it using the Function constructor. The C2 host is json[.]extendsclass[.]com and the specific resource path is /bin/49b93b00acf1. The fetched payload is passed to new Function(\"require\", payload) and immediately invoked, giving the attacker full control over the Node.js runtime environment.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "type-atob",
+        "purl": "pkg:npm/type-atob@3.3.7"
+      },
+      "versions": [
+        "3.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/type-atob/v/3.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6598"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-10T15:53:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "json[.]extendsclass[.]com"
+        ],
+        "url_observed": [
+          "hxxps://json[.]extendsclass[.]com/bin/49b93b00acf1"
+        ]
+      }
+    }
+  }
+}
