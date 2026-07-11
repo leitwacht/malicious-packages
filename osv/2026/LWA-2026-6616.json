@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6616",
+  "modified": "2026-07-11T13:43:45Z",
+  "published": "2026-07-11T13:43:14Z",
+  "summary": "Malicious code in kuaishou (npm)",
+  "details": "Package ships only a package.json with a malicious prepare lifecycle hook. On install, the hook collects the hostname, platform, username, and full process environment variables, then POSTs them to crabbing-thong-overhung[.]ngrok-free[.]dev/?cross_os_cloud=1. If running in a GitHub Actions CI context (ACTIONS_ID_TOKEN_REQUEST_URL is set), it additionally fetches the OIDC identity token and exfiltrates it to the same endpoint, enabling cloud-credential theft via token exchange.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "kuaishou",
+        "purl": "pkg:npm/kuaishou@99.9.9"
+      },
+      "versions": [
+        "99.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/kuaishou/v/99.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6616"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-11T13:43:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "crabbing-thong-overhung[.]ngrok-free[.]dev"
+        ],
+        "url_observed": [
+          "hxxps://crabbing-thong-overhung[.]ngrok-free[.]dev/?cross_os_cloud=1"
+        ]
+      }
+    }
+  }
+}
