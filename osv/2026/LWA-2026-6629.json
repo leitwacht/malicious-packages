@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6629",
+  "modified": "2026-07-11T19:09:19Z",
+  "published": "2026-07-11T19:08:48Z",
+  "summary": "Malicious code in svg-fetcher (npm)",
+  "details": "Svg-fetcher@2.4.1 is a trojanized package that performs remote code execution. The exported getPlugin() function fetches JSON from hxxps://svganchordev[.]net/icons/106 and passes the response body into new Function() with full Node.js built-in access (require, module, exports, process, console, Buffer), enabling the remote server to execute arbitrary JavaScript on the consumer's machine. The package also ships a real OpenSSH ed25519 private key (package/gitlab) and its corresponding public key (package/gitlab.pub). The package has no install hooks — the payload runs when the consumer calls the exported getPlugin() function. C2 host: svganchordev[.]net, path: /icons/106, request header: bearrtoken: logo.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "svg-fetcher",
+        "purl": "pkg:npm/svg-fetcher@2.4.1"
+      },
+      "versions": [
+        "2.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/svg-fetcher/v/2.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6629"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-11T19:08:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/106"
+        ]
+      }
+    }
+  }
+}
