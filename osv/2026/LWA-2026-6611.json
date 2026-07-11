@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6611",
+  "modified": "2026-07-11T08:39:25Z",
+  "published": "2026-07-11T08:38:49Z",
+  "summary": "Malicious code in supertokens-web (npm)",
+  "details": "Supertokens-web@1.16.0 is a combosquat of the legitimate SuperTokens authentication SDK. On require(), index.js decodes a C2 hostname (filament-zap[.]vercel[.]app) and path (/service/assets/fetchBinary on Windows, /service/assets/fetchLinuxBinary on Linux) via String.fromCharCode, downloads a binary from that URL over HTTPS, writes it to ~/.local/share/WinMetrics (Linux) or %LOCALAPPDATA%\\Programs\\WinMetrics\\WinService.exe (Windows), sets executable permissions on Linux, and spawns it as a detached background process. The package then re-exports the real supertokens-web-js module to mask the payload. C2: filament-zap[.]vercel[.]app, paths: /service/assets/fetchBinary and /service/assets/fetchLinuxBinary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "supertokens-web",
+        "purl": "pkg:npm/supertokens-web@1.16.0"
+      },
+      "versions": [
+        "1.16.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/supertokens-web/v/1.16.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6611"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-11T08:38:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "filament-zap[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}
