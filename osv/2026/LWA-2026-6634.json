@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6634",
+  "modified": "2026-07-12T10:05:23Z",
+  "published": "2026-07-12T10:04:13Z",
+  "summary": "Malicious code in @kkael/baileys (npm)",
+  "details": "@kkael/baileys is a trojanized clone of the legitimate @whiskeysockets/baileys WhatsApp library. The package ships an injected payload in lib/Utils/messages-media.js that decodes a base64-encoded URL pointing to raw[.]githubusercontent[.]com/Kkael-0xf/Kael-Database/refs/heads/main/Private.json, fetches the JSON after a 60-second delay, and iterates over the returned IDs to perform newsletter-follow actions every 5 seconds. The payload executes at require-time when lib/Socket/newsletter.js imports and calls loadBase(). The package also replaces the legitimate signal library dependency with @skycodee/libsignal, a known-malicious package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kkael/baileys",
+        "purl": "pkg:npm/%40kkael/baileys@8.0.8"
+      },
+      "versions": [
+        "8.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kkael/baileys/v/8.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6634"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-12T10:04:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/Kkael-0xf/Kael-Database/refs/heads/main/Private[.]json"
+        ]
+      }
+    }
+  }
+}
