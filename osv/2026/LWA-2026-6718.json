@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6718",
+  "modified": "2026-07-13T18:06:35Z",
+  "published": "2026-07-13T18:05:28Z",
+  "summary": "Malicious code in font-huge (npm)",
+  "details": "Font-huge@2.5.3 is a trojanized package that poses as a font library but functions as a remote code execution downloader. When imported, the exported getPlugin() function fetches a JSON payload from hxxps://svganchordev[.]net/icons/107 and executes the 'credits' field of the response via new Function() with full Node.js globals (require, process, Buffer, console, setTimeout, Promise). The package bundles dependencies for credential theft (@primno/dpapi for Windows DPAPI extraction), system fingerprinting (node-machine-id), C2 communication (socket[.]io-client), and local database access (sqlite3, better-sqlite3). The README describes a font collection API that does not exist in the code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "font-huge",
+        "purl": "pkg:npm/font-huge@2.5.3"
+      },
+      "versions": [
+        "2.5.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/font-huge/v/2.5.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6718"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T18:05:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/107"
+        ]
+      }
+    }
+  }
+}
