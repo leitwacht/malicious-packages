@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6724",
+  "modified": "2026-07-13T21:32:02Z",
+  "published": "2026-07-13T21:31:25Z",
+  "summary": "Malicious code in monitoring-service-util (npm)",
+  "details": "On install, monitoring-service-util@1.0.0 executes a base64-encoded payload that steals the NPM_TOKEN environment variable, archives the victim's /root/.codex directory, and publishes the stolen codebase as node-fsagent@5.0.\u003ctimestamp\u003e to the npm registry using the stolen token. The payload writes a.npmrc file with the stolen token for authentication and logs its activity to /tmp/.sysmon.log. This is a self-propagating worm that uses the victim's own npm credentials to exfiltrate their codebase and re-publish it under the attacker's package name.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "monitoring-service-util",
+        "purl": "pkg:npm/monitoring-service-util@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/monitoring-service-util/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6724"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T21:31:25Z",
+      "indicators_observed": {}
+    }
+  }
+}
