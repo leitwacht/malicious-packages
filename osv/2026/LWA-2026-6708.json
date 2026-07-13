@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6708",
+  "modified": "2026-07-13T14:35:33Z",
+  "published": "2026-07-13T14:34:14Z",
+  "summary": "Malicious code in auth-gen-next (npm)",
+  "details": "Auth-gen-next@1.7.13 is a trojanized clone of the pino logging library. On require(), it collects all environment variables (including NPM_TOKEN, GITHUB_TOKEN, AWS credentials, and other secrets), the system hostname, platform, username, and MAC addresses, then exfiltrates this data via HTTP POST to jsonkeeper[.]com/b/HY6M6 and json[.]extendsclass[.]com/bin/87d723d36c43. The package also contains heavily obfuscated second-stage code in lib/content.js that connects to the CoinMarketCap API as a cover, performs Ethereum JSON-RPC wallet operations, XOR-decodes strings, and spawns child processes. The package has no repository and its description is a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "auth-gen-next",
+        "purl": "pkg:npm/auth-gen-next@1.7.13"
+      },
+      "versions": [
+        "1.7.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/auth-gen-next/v/1.7.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6708"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T14:34:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "json[.]extendsclass[.]com",
+          "jsonkeeper[.]com",
+          "pro-api[.]coinmarketcap[.]com"
+        ],
+        "url_observed": [
+          "hxxps://json[.]extendsclass[.]com/bin/87d723d36c43",
+          "hxxps://jsonkeeper[.]com/b/HY6M6",
+          "hxxps://pro-api[.]coinmarketcap[.]com/public-api/v1/"
+        ]
+      }
+    }
+  }
+}
