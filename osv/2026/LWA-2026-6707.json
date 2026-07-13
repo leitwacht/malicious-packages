@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6707",
+  "modified": "2026-07-13T14:10:15Z",
+  "published": "2026-07-13T14:09:25Z",
+  "summary": "Malicious code in node-sysmon-native (npm)",
+  "details": "Node-sysmon-native@1.0.0 is a trojanized native addon that masquerades as a system-monitoring package. On install, node-gyp rebuild compiles sysmon[.]cc, which contains an XOR-encoded C2 URL. When the module is required, it spawns a detached pthread that loops fetching commands from the C2 server's /cmd/commands endpoint, executes them via bash -c, and posts the output to /cmd/results. The C2 server is at 152[.]53[.]120[.]90. The package has no repository and its sole purpose is to establish a remote shell on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-sysmon-native",
+        "purl": "pkg:npm/node-sysmon-native@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-sysmon-native/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6707"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T14:09:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "sysmon[.]cc"
+        ],
+        "ip_observed": [
+          "152[.]53[.]120[.]90"
+        ],
+        "url_observed": [
+          "hxxp://152[.]53[.]120[.]90/cmd/commands",
+          "hxxp://152[.]53[.]120[.]90/cmd/results"
+        ]
+      }
+    }
+  }
+}
