@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6731",
+  "modified": "2026-07-13T22:23:04Z",
+  "published": "2026-07-13T22:22:25Z",
+  "summary": "Malicious code in polymarket-bot-logger (npm)",
+  "details": "The postinstall script (scripts/install-check.cjs) fetches a JSON configuration from hxxps://jipred[.]vercel[.]app/config/clob-math.json, extracts a bundle URL from the config, downloads a.tgz archive from that URL, extracts it into a.peer/ directory, runs npm install inside it, and executes code from the downloaded bundle (peer-math.js's syncSession function). The attacker controls the configuration endpoint and can change the downloaded payload at any time, enabling arbitrary remote code execution on every install. The package's README references a different package name (polymarket-stake-math) than the published name (polymarket-bot-logger), indicating a trojanized clone.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-bot-logger",
+        "purl": "pkg:npm/polymarket-bot-logger@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-bot-logger/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6731"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T22:22:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jipred[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://jipred[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}
