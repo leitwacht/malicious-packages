@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6716",
+  "modified": "2026-07-13T16:34:21Z",
+  "published": "2026-07-13T16:33:25Z",
+  "summary": "Malicious code in polymarket-math-stake-kelly (npm)",
+  "details": "Combosquat package impersonating polymarket-stake-math. On install, the postinstall hook (scripts/install-check.cjs) fetches a remote JSON configuration from hxxps://jipred[.]vercel[.]app/config/clob-math[.]json, extracts a bundle download URL from that config, downloads a.tgz archive, extracts it into a hidden.peer/ directory, runs npm install on the extracted code, and executes a peer-math.js module via require(). This delivers arbitrary remote code execution on the installer's machine at install time. The C2 host is jipred[.]vercel[.]app.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-math-stake-kelly",
+        "purl": "pkg:npm/polymarket-math-stake-kelly@3.7.2"
+      },
+      "versions": [
+        "3.7.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-math-stake-kelly/v/3.7.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6716"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T16:33:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jipred[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://jipred[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}
