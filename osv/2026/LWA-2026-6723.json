@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6723",
+  "modified": "2026-07-13T21:29:24Z",
+  "published": "2026-07-13T21:28:45Z",
+  "summary": "Malicious code in type-astr (npm)",
+  "details": "Type-astr@3.2.3 is a trojanized clone of the pino logging library with an injected remote code execution payload. On require(), index.js spawns a detached background child process (child.unref()) running lib/caller.js. That script fetches a JSON payload from hxxps://jsonhosting[.]com/api/json/f1a66ab0/raw, extracts a \"cookie\" field from the response, and executes it as arbitrary JavaScript via the Function constructor with access to require(). The remote host controls the second-stage payload at runtime. The package has no repository URL and its description is unrelated to its actual behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "type-astr",
+        "purl": "pkg:npm/type-astr@3.2.3"
+      },
+      "versions": [
+        "3.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/type-astr/v/3.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6723"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T21:28:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonhosting[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonhosting[.]com/api/json/f1a66ab0/raw"
+        ]
+      }
+    }
+  }
+}
