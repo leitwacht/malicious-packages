@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6717",
+  "modified": "2026-07-13T16:39:24Z",
+  "published": "2026-07-13T16:38:26Z",
+  "summary": "Malicious code in polymarket-stake-kelly-math (npm)",
+  "details": "On install, the postinstall hook (scripts/install-check.cjs) fetches a JSON config from hxxps://jipred[.]vercel[.]app/config/clob-math[.]json, reads a peerBundle URL from that config, downloads a.tgz archive from that URL, extracts it into a.peer/ directory inside the package, runs npm install inside.peer/, then requires peer-math.js and calls its syncSession() function. This is a multi-stage remote code execution pipeline: the attacker controls the config endpoint and can serve arbitrary second-stage payloads at install time. The package is a combosquat of the legitimate polymarket-stake-math package (the README references the wrong package name).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-stake-kelly-math",
+        "purl": "pkg:npm/polymarket-stake-kelly-math@3.8.2"
+      },
+      "versions": [
+        "3.8.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-stake-kelly-math/v/3.8.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6717"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T16:38:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jipred[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://jipred[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}
