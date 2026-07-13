@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6670",
+  "aliases": [
+    "MAL-2026-10433"
+  ],
+  "modified": "2026-07-13T11:09:39Z",
+  "published": "2026-07-13T11:08:59Z",
+  "summary": "Malicious code in chain-guardian (npm)",
+  "details": "Chain-guardian@1.1.0 is a trojanized version of the legitimate chain-guardian Ethereum gas reporter. When the package is loaded (require'd), it spawns a detached background Node.js process that fetches attacker-controlled code from hxxp://check-server-state[.]vercel[.]app/server/v2 and executes it via new Function('require',...), allowing the remote server to run arbitrary code on the installer's machine. The C2 request uses a hardcoded bearer token \"gemini\". The package has no repository, no lifecycle hooks, and its code is a clone of the real chain-guardian with the malicious payload injected into index.js and lib/utils.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chain-guardian",
+        "purl": "pkg:npm/chain-guardian@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chain-guardian/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6670"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T11:08:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "check-server-state[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxp://check-server-state[.]vercel[.]app/server/v2"
+        ]
+      }
+    }
+  }
+}
