@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6714",
+  "aliases": [
+    "MAL-2026-10448"
+  ],
+  "modified": "2026-07-13T16:08:59Z",
+  "published": "2026-07-13T16:02:26Z",
+  "summary": "Malicious code in @sqlite-group/schema-generator (npm)",
+  "details": "@sqlite-group/schema-generator@1.0.2 is a combosquat package that acts as a remote-code-execution dropper. When imported (require), index.js fetches a GitHub Gist (b57a92378ad0a52430137c3b810e7107) via api[.]github[.]com and executes the gist content with eval(). The gist is controlled by the same publisher (getchainverse[.]com domain), allowing the attacker to serve arbitrary malicious code at any time. The package has no lifecycle hooks and no legitimate SQL functionality despite its name and description.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sqlite-group/schema-generator",
+        "purl": "pkg:npm/%40sqlite-group/schema-generator@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sqlite-group/schema-generator/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6714"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T16:02:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "getchainverse[.]com"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/gists/b57a92378ad0a52430137c3b810e7107",
+          "hxxps://gist[.]github[.]com/getchainverse/b57a92378ad0a52430137c3b810e7107[.]js"
+        ]
+      }
+    }
+  }
+}
