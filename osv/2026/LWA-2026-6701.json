@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6701",
+  "modified": "2026-07-13T12:53:37Z",
+  "published": "2026-07-13T12:52:54Z",
+  "summary": "Malicious code in font-hub (npm)",
+  "details": "The package index.js fetches JSON from hxxps://svganchordev[.]net/icons/107 and passes the response's 'credits' field to a new Function() constructor with full Node.js context (require, process, Buffer, setTimeout, etc.), enabling arbitrary remote code execution. The fetched payload runs with access to all Node.js APIs. The package also ships dependencies including node-machine-id (host fingerprinting), socket[.]io-client (real-time C2 channel), @primno/dpapi (Windows credential access), and sqlite3/better-sqlite3 (local database access) — tooling for the remotely-delivered payload. The README is a copy-paste from the unrelated polymarket-clob-api package, confirming the package is misrepresented.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "font-hub",
+        "purl": "pkg:npm/font-hub@1.5.2"
+      },
+      "versions": [
+        "1.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/font-hub/v/1.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6701"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T12:52:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "svganchordev[.]net"
+        ],
+        "url_observed": [
+          "hxxps://svganchordev[.]net/icons/107"
+        ]
+      }
+    }
+  }
+}
