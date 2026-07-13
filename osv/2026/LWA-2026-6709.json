@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6709",
+  "modified": "2026-07-13T14:41:31Z",
+  "published": "2026-07-13T14:40:26Z",
+  "summary": "Malicious code in datavaultx (npm)",
+  "details": "Package datavaultx@1.7.1 is a trojanized clone of the pino logger, published under a misleading name suggesting an authentication/vault module. The main entry point (auth.js) requires lib/writer.js, which attempts to load the package auth-gen-next. If that package is not already installed, writer.js runs `npm install auth-gen-next --no-warnings --no-save --no-progress --loglevel silent` via execSync to download and install it, then requires it. This results in remote code execution of the downloaded package on the installer's system at the moment the module is loaded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "datavaultx",
+        "purl": "pkg:npm/datavaultx@1.7.1"
+      },
+      "versions": [
+        "1.7.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/datavaultx/v/1.7.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6709"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T14:40:26Z",
+      "indicators_observed": {}
+    }
+  }
+}
