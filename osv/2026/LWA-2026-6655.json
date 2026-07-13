@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6655",
+  "aliases": [
+    "MAL-2026-10407"
+  ],
+  "modified": "2026-07-13T08:28:19Z",
+  "published": "2026-07-13T08:26:39Z",
+  "summary": "Malicious code in awesome-terminal (npm)",
+  "details": "The postinstall hook in scripts/install-check.cjs fetches a JSON config from hxxps://trabalhos-flax[.]vercel[.]app/config/clob-math[.]json, reads a bundle URL from the config, downloads a.tgz archive to a temp directory, extracts it via shell tar, runs npm install inside the extracted directory, and executes peer-math.js's syncSession() function. This gives the attacker full remote code execution on every install. The package's README describes an ASCII mascot generator, but the shipped code is a Kelly-criterion betting calculator for Polymarket prediction markets — the description is a decoy. The config URL is an attacker-controlled Vercel deployment that can serve arbitrary payloads at any time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "awesome-terminal",
+        "purl": "pkg:npm/awesome-terminal@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/awesome-terminal/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6655"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T08:26:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "trabalhos-flax[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://trabalhos-flax[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}

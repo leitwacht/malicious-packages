@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6654",
+  "modified": "2026-07-13T08:27:21Z",
+  "published": "2026-07-13T08:26:31Z",
+  "summary": "Malicious code in type-context (npm)",
+  "details": "Type-context@3.2.7 is a trojanized package that executes remote code on import. The main entry point (index.js) spawns a detached background Node.js process running lib/caller.js. That script fetches JavaScript code from hxxps://json[.]extendsclass[.]com/bin/250fca079abb (with header x-secret-key: _) and executes it via the Function constructor, retrying up to 5 times on failure. The fetched payload is fully attacker-controlled, enabling arbitrary remote code execution on any system that requires this package. A secondary URL (hxxps://jsonkeeper[.]com/b/XRFG3) is also embedded in base64-encoded form.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "type-context",
+        "purl": "pkg:npm/type-context@3.2.7"
+      },
+      "versions": [
+        "3.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/type-context/v/3.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6654"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T08:26:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com"
+        ],
+        "url_observed": [
+          "hxxps://json[.]extendsclass[.]com/bin/250fca079abb",
+          "hxxps://jsonkeeper[.]com/b/XRFG3"
+        ]
+      }
+    }
+  }
+}
