@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6722",
+  "modified": "2026-07-13T20:59:18Z",
+  "published": "2026-07-13T20:58:27Z",
+  "summary": "Malicious code in chai-as-verified (npm)",
+  "details": "Combosquat of the chai assertion library. When the package is required, index.js spawns lib/initializeCaller.js as a detached background process. That script decodes a base64-embedded URL (hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json), fetches it via axios with a custom header (x-secret-key: _), and passes the response body to new Function.constructor(\"require\",...) — executing arbitrary remote code with full Node.js require access. The downloader retries up to 5 times on failure. C2 host: tomato-brunhilda-40[.]tiiny[.]site.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-verified",
+        "purl": "pkg:npm/chai-as-verified@7.1.5"
+      },
+      "versions": [
+        "7.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-verified/v/7.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6722"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T20:58:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-brunhilda-40[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}
