@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6671",
+  "modified": "2026-07-13T11:48:20Z",
+  "published": "2026-07-13T11:47:45Z",
+  "summary": "Malicious code in finvu-hdfc-sdk (npm)",
+  "details": "Combosquat package impersonating the finvu HDFC financial SDK. The package is a 38-byte stub with no meaningful code — its only purpose is to declare an external tarball dependency at hxxps://storage[.]googleapis[.]com/lscunpentest/pack_ux_foundry[.]tgz. When npm install resolves this dependency, it fetches and extracts the attacker-controlled tarball from the GCS bucket, delivering whatever payload the attacker chooses. The package has no repository, no README, and no lifecycle hooks — the entire attack is the off-registry dependency pulling untrusted code at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "finvu-hdfc-sdk",
+        "purl": "pkg:npm/finvu-hdfc-sdk@99.9.9"
+      },
+      "versions": [
+        "99.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/finvu-hdfc-sdk/v/99.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6671"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T11:47:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "storage[.]googleapis[.]com"
+        ],
+        "url_observed": [
+          "hxxps://storage[.]googleapis[.]com/lscunpentest/pack_ux_foundry[.]tgz"
+        ]
+      }
+    }
+  }
+}

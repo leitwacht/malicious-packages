@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6677",
+  "modified": "2026-07-13T11:49:37Z",
+  "published": "2026-07-13T11:48:07Z",
+  "summary": "Malicious code in @nordic-dev/linting-tools (npm)",
+  "details": "Seven dependency-confusion packages published at version 99.9.1, each an empty stub (no code, no lifecycle hooks) that declares a single dependency on a remote tarball hosted at ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-*.tgz. The scoped names (@meli-testing/jest-react, @nordic-dev/linting-tools, @fuji-web-components/maps, @mplay-core-lib/utilities, @mplay-frontend-ui/link, @global-theme/context, @one-chat/react) mimic internal/private organization packages, and the sentinel version 99.9.1 ensures they win dependency resolution. When installed, npm fetches and extracts the remote ltidisafe tarball from the Google Cloud Storage bucket, which is the actual payload. The remote tarball URLs are: hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]4[.]tgz, hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]7[.]tgz, hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]3[.]tgz, and similar version variants across the packages. Seven scoped npm packages (@fuji-web-components/maps, @nordic-dev/linting-tools, @mplay-core-lib/utilities, @meli-testing/jest-react, @global-theme/context, @one-chat/react, @mplay-frontend-ui/link) all at version 99.9.1 are dependency-confusion stubs. Each package contains only an empty index.js (module.exports = {}) with no description, repository, or README, and declares a dependency on \"ltidisafe\" fetched from ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-*.tgz. The high version number ensures npm resolves these over any lower-version internal package with the same scoped name, pulling in the CDN-hosted payload on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@nordic-dev/linting-tools",
+        "purl": "pkg:npm/%40nordic-dev/linting-tools@99.9.1"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@nordic-dev/linting-tools/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6677"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-13T11:48:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]1[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]3[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]4[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]5[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]6[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]7[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]2[.]8[.]tgz"
+        ]
+      }
+    }
+  }
+}
