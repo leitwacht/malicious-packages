@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6726",
+  "modified": "2026-07-13T21:45:12Z",
+  "published": "2026-07-13T21:44:38Z",
+  "summary": "Malicious code in type-swap (npm)",
+  "details": "Type-swap@3.1.3 is a trojanized clone of the pino logger package. On require(), index.js spawns a detached child process running lib/caller.js. That script fetches attacker-controlled content from hxxps://jsonhosting[.]com/api/json/e16583b1/raw, extracts a \"cookie\" value from the JSON response, and executes it as arbitrary code via the Function constructor with access to Node.js require(). The remote payload can perform any action including credential theft, data exfiltration, or backdoor installation. The package's README is a verbatim copy of the legitimate pino logger documentation, but the package name and code are unrelated.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "type-swap",
+        "purl": "pkg:npm/type-swap@3.1.3"
+      },
+      "versions": [
+        "3.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/type-swap/v/3.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6726"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T21:44:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonhosting[.]com"
+        ],
+        "url_observed": [
+          "hxxps://jsonhosting[.]com/api/json/e16583b1/raw"
+        ]
+      }
+    }
+  }
+}

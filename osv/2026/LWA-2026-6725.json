@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6725",
+  "modified": "2026-07-13T21:43:52Z",
+  "published": "2026-07-13T21:43:25Z",
+  "summary": "Malicious code in test_adminet (npm)",
+  "details": "Test_adminet@99.9.9 runs a preinstall hook that executes `node index.js`, which uses child_process.exec to send a curl request to webhook[.]site/d5968c3d-d0d7-46c4-9305-a726b24fce9c/test_adminest/$(whoami)/$(hostname)/. The User-Agent header contains base64-encoded contents of /etc/passwd, /etc/hosts, the output of `id`, and /etc/shadow (if readable). This exfiltrates system identity and sensitive files to a webhook[.]site endpoint on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "test_adminet",
+        "purl": "pkg:npm/test_adminet@99.9.9"
+      },
+      "versions": [
+        "99.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/test_adminet/v/99.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6725"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T21:43:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/d5968c3d-d0d7-46c4-9305-a726b24fce9c/test_adminest/"
+        ]
+      }
+    }
+  }
+}
