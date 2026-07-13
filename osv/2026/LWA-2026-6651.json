@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6651",
+  "aliases": [
+    "MAL-2026-6689"
+  ],
+  "modified": "2026-07-13T06:42:56Z",
+  "published": "2026-07-13T06:38:53Z",
+  "summary": "Malicious code in decimal-format-core (npm)",
+  "details": "The postinstall hook (scripts/install-check.cjs) fetches a JSON configuration from the package's homepage URL (logstream-api[.]online), extracts a peerBundle URL from the response, downloads a gzip-compressed tarball from that URL, extracts it using shell tar, runs npm install on the extracted code, and executes the installed module's syncSession() function. All downloaded artifacts are deleted after execution. The package's homepage field in package.json points to the attacker-controlled config endpoint. The numeric.js and logger.js files are benign decoy code; the malicious payload is delivered at install time from the remote server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "decimal-format-core",
+        "purl": "pkg:npm/decimal-format-core@3.5.4"
+      },
+      "versions": [
+        "3.5.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/decimal-format-core/v/3.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6651"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T06:38:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "logstream-api[.]online"
+        ],
+        "url_observed": [
+          "hxxps://logstream-api[.]online//config/dfc-sync[.]json"
+        ]
+      }
+    }
+  }
+}
