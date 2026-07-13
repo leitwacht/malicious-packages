@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6650",
+  "modified": "2026-07-13T02:09:34Z",
+  "published": "2026-07-13T02:08:40Z",
+  "summary": "Malicious code in @npmresearch3/bench-ee3e (npm)",
+  "details": "The package runs a preinstall/postinstall hook (node run.js) that harvests credentials and exfiltrates them to a remote server. On Linux/CI environments it reads GITHUB_TOKEN, NPM_TOKEN, ACTIONS_ID_TOKEN_REQUEST_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SESSION_TOKEN from environment variables; fetches IAM credentials from the ECS metadata endpoint (169[.]254[.]170[.]2); checks for SSH keys under /root/.ssh and /home/runner/.ssh; probes DynamoDB tables using the task role; and sends all collected data via HTTPS POST to economics-alexandria-davis-parallel[.]trycloudflare[.]com:443. On Windows it attempts UAC bypass via the fodhelper registry key (HKCU\\Software\\Classes\\ms-settings\\Shell\\Open\\command) and creates a scheduled task running as SYSTEM to exfiltrate whoami output to the same C2 host. The package has no repository and no documented legitimate purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@npmresearch3/bench-ee3e",
+        "purl": "pkg:npm/%40npmresearch3/bench-ee3e@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@npmresearch3/bench-ee3e/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6650"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T02:08:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "economics-alexandria-davis-parallel[.]trycloudflare[.]com"
+        ],
+        "url_observed": [
+          "hxxps://economics-alexandria-davis-parallel[.]trycloudflare[.]com/beacon"
+        ]
+      }
+    }
+  }
+}
