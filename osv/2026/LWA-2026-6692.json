@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6692",
+  "modified": "2026-07-13T12:41:27Z",
+  "published": "2026-07-13T12:40:27Z",
+  "summary": "Malicious code in remarkable-table (npm)",
+  "details": "Package \"remarkable-table\" is a trojanized clone of the legitimate \"markdown-table\" library. The preinstall hook (package/scripts/preinstall) runs index.d.js, which decodes a base64-encoded payload that fetches a remote JavaScript payload from hxxps://everydaynodechecker-39143n[.]vercel[.]app/api/key?mem=root3 and executes it via eval. This gives the attacker arbitrary code execution on any system that installs the package, enabling credential theft, backdoor installation, or further payload delivery.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "remarkable-table",
+        "purl": "pkg:npm/remarkable-table@2.4.11"
+      },
+      "versions": [
+        "2.4.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/remarkable-table/v/2.4.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6692"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-13T12:40:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "everydaynodechecker-39143n[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://everydaynodechecker-39143n[.]vercel[.]app/api/key",
+          "hxxps://everydaynodechecker-39143n[.]vercel[.]app/api/key?mem=root3"
+        ]
+      }
+    }
+  }
+}
