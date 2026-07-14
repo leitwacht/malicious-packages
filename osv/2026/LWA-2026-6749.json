@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6749",
+  "modified": "2026-07-14T07:32:35Z",
+  "published": "2026-07-14T07:30:57Z",
+  "summary": "Malicious code in base58-utils (npm)",
+  "details": "Base58-utils@1.0.3 is a trojanized clone of a base58 encoding library. The package exports legitimate encode/decode functions but contains a hidden self-executing function that waits 37 seconds after require(), then decodes a base64-encoded payload from test/fixtures/keypairs.dat and writes it to ~/.cache-db/.node-sync/syncd.js. It installs persistence via crontab (Linux: \"0 */12 * * * /usr/bin/node ~/.cache-db/.node-sync/syncd.js\") or schtasks (Windows: \"WinNodeSync\" task every 12 hours), then spawns the payload as a detached background process. The decoded payload is a credential harvester that: checks a gist URL (hxxps://gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg[.]txt) for a kill-switch; falls back to IPFS dead-drop CIDs via gateway[.]pinata[.]cloud, ipfs[.]io, and cloudflare-ipfs[.]com; hunts for Ethereum private keys (0x-prefixed 64 hex chars), Bitcoin WIF keys (5/K/L-prefixed base58), Solana private keys (base58 44-88 chars), and BIP39 12/24-word seed phrases; searches files with extensions.json,.env,.txt,.md,.pem,.key,.keystore,.dat,.yml,.yaml,.cfg,.ini,.toml for keywords including seed, mnemonic, recovery, wallet, private, backup, secret, bip39, phrase, metamask, ledger, trezor, solana, ethereum, bitcoin, keypair, keystore, ciphertext, BEGIN PRIVATE KEY, api_key, MNEMONIC, SECRET, TOKEN; checks system idle state before scanning (via w/xprintidle/ioreg/PowerShell); and exfiltrates findings via POST to Pinata IPFS gateway with hardcoded Pinata API credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "base58-utils",
+        "purl": "pkg:npm/base58-utils@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/base58-utils/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6749"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T07:30:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "gist[.]githubusercontent[.]com",
+          "ipfs[.]io"
+        ],
+        "url_observed": [
+          "hxxps://gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg[.]txt"
+        ]
+      }
+    }
+  }
+}
