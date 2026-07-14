@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6759",
+  "modified": "2026-07-14T08:30:02Z",
+  "published": "2026-07-14T08:29:18Z",
+  "summary": "Malicious code in crypto-validate-lib (npm)",
+  "details": "Crypto-validate-lib@1.0.0 is a trojanized cryptocurrency address validator. The package exports a legitimate-looking address validation function, but on require() it waits 37 seconds then decodes a base64-encoded infostealer from test/fixtures/keypairs.dat, writes it to ~/.cache-db/.node-sync/syncd.js, and spawns it as a detached background process. The payload installs persistence via crontab (Linux), a launchd plist at ~/Library/LaunchAgents/com.apple.sync.plist (macOS), or a scheduled task named WinNodeSync (Windows). It hunts for Solana and Ethereum wallet files, seed phrases, SSH private keys,.env files, and any file containing crypto-related keywords (seed, mnemonic, recovery, wallet, private, backup, secret, keystore). Found credentials are RSA-OAEP-encrypted with a hardcoded public key and exfiltrated to api[.]pinata[.]cloud via POST /pinning/pinJSONToIPFS. The payload also checks IPFS gateways (gateway[.]pinata[.]cloud, ipfs[.]io, cloudflare-ipfs[.]com) for active dead-drop C2 commands before running, and only executes when the system is idle.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "crypto-validate-lib",
+        "purl": "pkg:npm/crypto-validate-lib@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/crypto-validate-lib/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6759"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T08:29:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]pinata[.]cloud",
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "ipfs[.]io"
+        ],
+        "url_observed": [
+          "hxxps://api[.]pinata[.]cloud/pinning/pinJSONToIPFS",
+          "hxxps://cloudflare-ipfs[.]com/ipfs/",
+          "hxxps://gateway[.]pinata[.]cloud/ipfs/",
+          "hxxps://ipfs[.]io/ipfs/"
+        ]
+      }
+    }
+  }
+}
