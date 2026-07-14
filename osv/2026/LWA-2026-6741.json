@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6741",
+  "modified": "2026-07-14T04:09:18Z",
+  "published": "2026-07-14T03:17:57Z",
+  "summary": "Malicious code in @spending-behavior-ui/cashflow-widget (npm)",
+  "details": "Dependency-confusion packages published at version 99.9.1 with scoped names mimicking internal UI component namespaces (@spending-behavior-ui/cashflow-widget, @spending-behavior-ui/widget-insights, @sw-commons-components/message-upsell, process-status-widget). Each package is an empty stub (module.exports = {}) with no repository, no description, and no lifecycle hooks, but declares a single dependency fetched from a non-registry URL at ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-*.tgz. The off-registry tarball is served from Google Cloud Storage and is fetched automatically at install time, allowing the attacker to serve arbitrary payloads without further publishes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@spending-behavior-ui/cashflow-widget",
+        "purl": "pkg:npm/%40spending-behavior-ui/cashflow-widget@99.9.1"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@spending-behavior-ui/cashflow-widget/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6741"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-14T03:17:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]3[.]7[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]3[.]8[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]3[.]9[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]4[.]1[.]tgz"
+        ]
+      }
+    }
+  }
+}
