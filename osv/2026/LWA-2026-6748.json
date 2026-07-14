@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6748",
+  "modified": "2026-07-14T07:25:53Z",
+  "published": "2026-07-14T07:11:47Z",
+  "summary": "Malicious code in eth-dev (npm)",
+  "details": "Eth-dev@1.0.2 is a trojanized Ethereum utility package. The index.js exports legitimate ABI/keccak/RLP helper functions but appends a delayed self-executing dropper. 37 seconds after require(), it decodes a base64 payload from test/fixtures/keypairs.dat and writes it to ~/.cache-db/.node-sync/syncd.js. It then establishes persistence via cron (Linux), schtasks (Windows), or a LaunchAgent (macOS) to run the payload every 12 hours, and immediately spawns it as a detached background process. The second-stage payload is a credential and cryptocurrency-wallet stealer: it fetches a C2 configuration from a GitHub Gist (gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg.txt), then scans the filesystem for wallet files (.json,.env,.pem,.key,.keystore,.yml,.cfg,.ini,.toml) and searches file contents for keywords including seed, mnemonic, private, wallet, keystore, bip39, metamask, phantom, solana, ethereum, bitcoin, PRIVATE_KEY, MNEMONIC, SECRET, and TOKEN. Stolen data is exfiltrated via Pinata/IPFS gateways (gateway[.]pinata[.]cloud, ipfs[.]io, cloudflare-ipfs[.]com) using hardcoded Pinata API credentials (key: 13c766575b9270a9825d, secret: 8aae3dd8ebd0132de8676388878e1978eec627794fb5f38c5786c0839591a392). A hardcoded RSA public key is used to encrypt exfiltrated data before upload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eth-dev",
+        "purl": "pkg:npm/eth-dev@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eth-dev/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6748"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T07:11:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "gist[.]githubusercontent[.]com",
+          "ipfs[.]io"
+        ],
+        "sha256_observed": [
+          "8aae3dd8ebd0132de8676388878e1978eec627794fb5f38c5786c0839591a392"
+        ],
+        "url_observed": [
+          "hxxps://gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg[.]txt"
+        ]
+      }
+    }
+  }
+}
