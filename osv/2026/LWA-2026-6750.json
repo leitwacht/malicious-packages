@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6750",
+  "modified": "2026-07-14T07:38:22Z",
+  "published": "2026-07-14T07:37:29Z",
+  "summary": "Malicious code in arb-kit (npm)",
+  "details": "Arb-kit@1.0.1 is a trojanized Arbitrum SDK that drops a credential-stealing payload. The package exports benign ABI encoding/gas estimation functions, but a 37-second-delayed IIFE in index.js decodes a base64 payload from test/fixtures/keypairs.dat into ~/.cache-db/.node-sync/syncd.js. It establishes persistence via cron (Linux), schtasks (Windows), or a LaunchAgent plist (macOS). The dropped payload (syncd.js) walks the filesystem for wallet files, seed phrases, mnemonic backups, keystores, private keys, and.env files, searching for keywords including \"seed\", \"mnemonic\", \"recovery\", \"wallet\", \"private\", \"backup\", \"secret\", \"bip39\", \"metamask\", \"phantom\", \"ledger\", \"trezor\", \"solana\", \"ethereum\", \"bitcoin\", \"keypair\", \"keystore\", \"PRIVATE KEY\", \"MNEMONIC\", \"SECRET\", \"TOKEN\". Stolen data is exfiltrated to IPFS via Pinata (gateway[.]pinata[.]cloud, ipfs[.]io, cloudflare-ipfs[.]com) using hardcoded Pinata API credentials. A dead-man switch at gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg.txt controls activation. The payload also checks system idle time to evade detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "arb-kit",
+        "purl": "pkg:npm/arb-kit@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/arb-kit/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6750"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T07:37:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "gist[.]githubusercontent[.]com",
+          "ipfs[.]io"
+        ],
+        "url_observed": [
+          "hxxps://gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg[.]txt"
+        ],
+        "wallet_observed": [
+          "Qmcqz3w8j4qFQXDAXAxnrdc2oSX3nzBT4NqtpTqL8mr1ga",
+          "QmdTXoqVmTHY1i4ZWdLkLoQ9YChp5TXPh5cWXwnAYZt5iF",
+          "QmfJkLU5gdCpqbbqEjWYC2anXW9FmuEeSLLeLiHVJKYUjp"
+        ]
+      }
+    }
+  }
+}
