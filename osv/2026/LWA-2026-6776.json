@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6776",
+  "aliases": [
+    "MAL-2026-10580"
+  ],
+  "modified": "2026-07-14T15:10:59Z",
+  "published": "2026-07-14T15:10:12Z",
+  "summary": "Malicious code in ethers-core (npm)",
+  "details": "Ethers-core is a combosquat package impersonating the real the publisher.js library. On postinstall, it runs dist/index.min.js which: (1) reads environment variables (PRIVATE_KEY, MNEMONIC, GITHUB_TOKEN, NPM_TOKEN, AWS credentials, etc.) and scans ~/.ssh/, ~/.aws/, ~/.npmrc, wallet files, and keystores for private keys; (2) exfiltrates all collected data via a Telegram bot and a webhook; (3) checks Ethereum and Bitcoin wallet balances via cloudflare-eth[.]com and blockchain[.]info; (4) drains any wallet with balance ≥1 ETH to attacker address 0x72bC6c8584713676cD5B56B0f94e1A6af3161f05 or ≥0.01 BTC to bc1qvg0vmlxf2ly248my69r2k6zut8s4q93j9mqvtf; (5) installs persistence by appending to ~/.bashrc/~/.zshrc/~/.profile and creating a GNOME autostart entry that runs a beacon script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ethers-core",
+        "purl": "pkg:npm/ethers-core@6.13.7"
+      },
+      "versions": [
+        "6.13.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ethers-core/v/6.13.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6776"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T15:10:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "blockchain[.]info",
+          "cloudflare-eth[.]com",
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot*/sendMessage",
+          "hxxps://blockchain[.]info/pushtx",
+          "hxxps://blockchain[.]info/unspent",
+          "hxxps://cloudflare-eth[.]com",
+          "hxxps://webhook[.]site/YOUR_ID"
+        ],
+        "wallet_observed": [
+          "0x72bC6c8584713676cD5B56B0f94e1A6af3161f05",
+          "bc1qvg0vmlxf2ly248my69r2k6zut8s4q93j9mqvtf"
+        ]
+      }
+    }
+  }
+}
