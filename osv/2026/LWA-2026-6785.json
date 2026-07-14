@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6785",
+  "aliases": [
+    "MAL-2026-10608"
+  ],
+  "modified": "2026-07-14T19:18:39Z",
+  "published": "2026-07-14T19:16:58Z",
+  "summary": "Malicious code in chain-sdk-js (npm)",
+  "details": "Chain-sdk-js@1.0.3 impersonates the Theta Blockchain SDK. At require-time, the package reads DES-encrypted blobs (rsa.db, des.db) from a dependency (thedata), decrypts them with the hardcoded password \"hydra\" using CryptoJS.DES, then spawns a detached node child process and pipes the decrypted payload to its stdin for execution. The encrypted payload files are located at node_modules/thedata/apps/docs/app/rsa.db and node_modules/thedata/apps/docs/app/des.db. The decryption key \"hydra\" is hardcoded in the source. The package has no repository and claims author \"Theta Labs\" but is not affiliated with the legitimate Theta project.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chain-sdk-js",
+        "purl": "pkg:npm/chain-sdk-js@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chain-sdk-js/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6785"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T19:16:58Z",
+      "indicators_observed": {}
+    }
+  }
+}
