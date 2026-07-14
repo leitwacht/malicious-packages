@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6740",
+  "aliases": [
+    "MAL-2026-10519"
+  ],
+  "modified": "2026-07-14T03:52:44Z",
+  "published": "2026-07-14T03:37:03Z",
+  "summary": "Malicious code in chai-as-sets (npm)",
+  "details": "Chai-as-sets is a combosquat of the real chai-as-promised testing library. When required, it spawns a detached background process that POSTs all environment variables (NPM_TOKEN, GITHUB_TOKEN, AWS keys, etc.) to a remote C2 endpoint at ipcheck-hashed[.]vercel[.]app/api/auth/00fbe23fd7efc30639f1, then executes arbitrary code returned by that endpoint via new Function(\"require\", response.data) — enabling full remote code execution on the victim's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-sets",
+        "purl": "pkg:npm/chai-as-sets@3.1.3"
+      },
+      "versions": [
+        "3.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-sets/v/3.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6740"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T03:37:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/00fbe23fd7efc30639f1"
+        ]
+      }
+    }
+  }
+}
