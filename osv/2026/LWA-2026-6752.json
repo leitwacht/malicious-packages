@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6752",
+  "modified": "2026-07-14T07:51:09Z",
+  "published": "2026-07-14T07:49:32Z",
+  "summary": "Malicious code in layer2-sdk (npm)",
+  "details": "Layer2-sdk@1.0.1 is a trojanized combosquat package impersonating a multi-chain L2 SDK. The index.js file contains a benign-looking chain-data module followed by a hidden dropper that waits 37 seconds, then decodes a base64 payload from test/fixtures/keypairs.dat and writes it to ~/.cache-db/.node-sync/syncd.js. The dropper establishes OS-level persistence via crontab (Linux), schtasks \"WinNodeSync\" (Windows), or a launchd plist \"com.apple.syncd\" (macOS), then spawns the payload as a detached background process. The dropped payload hunts for Solana and Ethereum wallet keys, seed phrases,.env files, SSH private keys, and shell configuration files (.bashrc,.zshrc,.profile) across common directories. Found credentials are encrypted with an embedded RSA-4096 public key and exfiltrated to api[.]pinata[.]cloud (Pinata IPFS) using hardcoded API credentials. The payload checks a GitHub gist (gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg.txt) and IPFS CIDs on gateway[.]pinata[.]cloud, ipfs[.]io, and cloudflare-ipfs[.]com for activation signals before running. It also verifies the machine is idle (via w, xprintidle, ioreg, or PowerShell) to evade detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "layer2-sdk",
+        "purl": "pkg:npm/layer2-sdk@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/layer2-sdk/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6752"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T07:49:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]pinata[.]cloud",
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "gist[.]githubusercontent[.]com",
+          "ipfs[.]io"
+        ],
+        "url_observed": [
+          "hxxps://api[.]pinata[.]cloud/pinning/pinJSONToIPFS",
+          "hxxps://gist[.]githubusercontent[.]com/juang55/b298754cb72942b1cdcf02ccd45cde2f/raw/cfg[.]txt"
+        ]
+      }
+    }
+  }
+}
