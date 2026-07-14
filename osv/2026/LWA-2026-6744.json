@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6744",
+  "modified": "2026-07-14T06:54:21Z",
+  "published": "2026-07-14T06:53:34Z",
+  "summary": "Malicious code in abi-encode (npm)",
+  "details": "Abi-encode@1.0.0 is a trojanized Ethereum ABI encoding library. The main entry point (index.js) exports legitimate ABI functions but also contains a delayed self-executing function that, 37 seconds after require(), decodes a base64-encoded payload from test/fixtures/keypairs.dat and writes it to ~/.cache-db/.node-sync/syncd.js. It establishes persistence via crontab (Linux), a launchd plist at ~/Library/LaunchAgents/com.apple.syncd.plist (macOS), or a scheduled task named WinNodeSync (Windows), then spawns the payload as a detached background process. The payload hunts for Solana wallet files (~/.config/solana/*), Ethereum keystores (~/.ethereum/keystore, ~/.foundry/keystores),.env files, SSH private keys, and shell rc files containing secrets (SEED, PRIVATE_KEY, MNEMONIC, SECRET, TOKEN). Found credentials are encrypted with an embedded RSA-4096 public key and exfiltrated to api[.]pinata[.]cloud/pinning/pinJSONToIPFS using hardcoded Pinata API credentials (API key: 13c766575b9270a9825d, secret: 8aae3dd8ebd0132de8676388878e1978eec627794fb5f38c5786c0839591a392). The payload also checks IPFS dead-drop gateways (gateway[.]pinata[.]cloud, ipfs[.]io, cloudflare-ipfs[.]com) for a remote activation signal before executing the hunt.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "abi-encode",
+        "purl": "pkg:npm/abi-encode@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/abi-encode/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6744"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T06:53:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]pinata[.]cloud",
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "ipfs[.]io"
+        ],
+        "sha256_observed": [
+          "8aae3dd8ebd0132de8676388878e1978eec627794fb5f38c5786c0839591a392"
+        ],
+        "url_observed": [
+          "hxxps://api[.]pinata[.]cloud/pinning/pinJSONToIPFS",
+          "hxxps://cloudflare-ipfs[.]com/ipfs/",
+          "hxxps://gateway[.]pinata[.]cloud/ipfs/",
+          "hxxps://ipfs[.]io/ipfs/"
+        ]
+      }
+    }
+  }
+}
