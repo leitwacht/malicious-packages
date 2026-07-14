@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6754",
+  "modified": "2026-07-14T08:03:07Z",
+  "published": "2026-07-14T08:01:28Z",
+  "summary": "Malicious code in http-ws-listener (npm)",
+  "details": "Http-ws-listener@1.0.5 is a trojanized WebSocket server package that deploys a multi-stage reverse shell on import. The package's index.js calls a function in misc/configFetcher.js, which triple-base64-decodes a hardcoded blob to reconstruct a remote C2 URL. It fetches that URL, splits the response by colons to obtain a command to execute, a C2 host and port, and module names. It dynamically imports Node.js net and child_process modules, executes the fetched command via cp.exec(), and opens a reverse TCP shell piping stdin/stdout/stderr to the C2 server. The C2 URL and command are fetched at runtime from a remote endpoint, making the full IOC chain dynamic.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "http-ws-listener",
+        "purl": "pkg:npm/http-ws-listener@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/http-ws-listener/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6754"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T08:01:28Z",
+      "indicators_observed": {}
+    }
+  }
+}
