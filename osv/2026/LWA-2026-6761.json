@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6761",
+  "modified": "2026-07-14T08:36:10Z",
+  "published": "2026-07-14T08:35:20Z",
+  "summary": "Malicious code in eth-wallet-helpers (npm)",
+  "details": "Eth-wallet-helpers@1.0.0 is a trojanized Ethereum wallet utility. The package exports benign address-validation and key-derivation functions, but 37 seconds after require() it decodes a base64-embedded second-stage payload from test/fixtures/keypairs.dat and writes it to ~/.cache-db/.node-sync/syncd.js, then spawns it as a detached background process. The payload checks IPFS dead-drop CIDs via gateway[.]pinata[.]cloud, ipfs[.]io, and cloudflare-ipfs[.]com for an active command signal. It then hunts for cryptocurrency wallet files (Solana keystores in ~/.config/solana, Ethereum keystores in ~/.ethereum/keystore, Foundry keystores, Hardhat configs),.env files, SSH private keys, shell configs, and seed phrases across ~/Desktop, ~/Documents, ~/Downloads, and ~/Escritorio. Found credentials are encrypted with an embedded RSA-4096 public key and exfiltrated to api[.]pinata[.]cloud via the Pinata IPFS API using hardcoded API credentials. The payload establishes persistence: cron job on Linux (every 12 hours), a launchd plist (com.apple.syncd) on macOS, and a scheduled task (WinNodeSync) on Windows. It also checks whether the machine is idle before running to avoid detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eth-wallet-helpers",
+        "purl": "pkg:npm/eth-wallet-helpers@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eth-wallet-helpers/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6761"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T08:35:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]pinata[.]cloud",
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "ipfs[.]io"
+        ]
+      }
+    }
+  }
+}
