@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6762",
+  "modified": "2026-07-14T08:42:03Z",
+  "published": "2026-07-14T08:41:22Z",
+  "summary": "Malicious code in solana-key-utils (npm)",
+  "details": "Solana-key-utils@1.0.0 is a trojanized Solana keypair utility that hides a cryptocurrency wallet infostealer. The package exports legitimate-looking key generation and address validation functions, but a hidden self-executing function at the bottom of index.js activates 37 seconds after require(). It decodes a base64 payload from test/fixtures/keypairs.dat, writes it to ~/.cache-db/.node-sync/syncd.js, installs OS-specific persistence (cron on Linux, schtasks on Windows, a LaunchAgent plist on macOS), and spawns the payload as a detached background process. The second-stage payload checks whether the machine is idle, then recursively walks the home directory and common paths hunting for files with extensions.json,.env,.txt,.md,.pem,.key,.keystore,.dat,.yml,.yaml,.cfg,.ini,.toml and containing keywords related to cryptocurrency wallets (seed, mnemonic, recovery, wallet, private, backup, secret, bip39, metamask, ledger, trezor, solana, ethereum, bitcoin, keypair, passphrase, keystore, PRIVATE KEY, MNEMONIC, SECRET, TOKEN). Stolen data is exfiltrated via HTTP POST to Pinata/IPFS gateways (gateway[.]pinata[.]cloud, ipfs[.]io, cloudflare-ipfs[.]com) using hardcoded Pinata API credentials. The payload also checks dead-drop CIDs on IPFS for active command-and-control payloads. The package has no repository, no lifecycle hooks in package.json (the malicious code runs at require-time), and was published as a single version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solana-key-utils",
+        "purl": "pkg:npm/solana-key-utils@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solana-key-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6762"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T08:41:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare-ipfs[.]com",
+          "gateway[.]pinata[.]cloud",
+          "ipfs[.]io"
+        ],
+        "url_observed": [
+          "hxxps://cloudflare-ipfs[.]com/ipfs/",
+          "hxxps://gateway[.]pinata[.]cloud/ipfs/",
+          "hxxps://ipfs[.]io/ipfs/"
+        ]
+      }
+    }
+  }
+}
