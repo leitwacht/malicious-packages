@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6733",
+  "modified": "2026-07-14T01:24:23Z",
+  "published": "2026-07-14T01:23:39Z",
+  "summary": "Malicious code in chai-as-auth (npm)",
+  "details": "Chai-as-auth@2.3.5 is a trojanized clone of the pino logger published under a combosquat name (piggybacking on the chai assertion library). The package ships a malicious IIFE in lib/initializeCaller.js that decodes a base64-embedded C2 URL (hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df), POSTs the entire process.env (including any NPM_TOKEN, GITHUB_TOKEN, and other credentials) to that endpoint, then executes the response body as arbitrary JavaScript via new Function(\"require\", response.data), enabling full remote code execution. The payload retries up to 5 times on failure. The package has no repository, no lifecycle hooks, and its description and keywords are unrelated to its name.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-auth",
+        "purl": "pkg:npm/chai-as-auth@2.3.5"
+      },
+      "versions": [
+        "2.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-auth/v/2.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6733"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T01:23:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df"
+        ]
+      }
+    }
+  }
+}
