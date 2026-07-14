@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6783",
+  "modified": "2026-07-14T18:45:43Z",
+  "published": "2026-07-14T18:45:07Z",
+  "summary": "Malicious code in assertion-utils-js (npm)",
+  "details": "Assertion-utils-js@2.4.3 is a trojanized clone of the Chai assertion library. On require(), index.js spawns a detached background Node.js process running an obfuscated script (lib/chai/utils/assertion.js). That script performs an HTTP GET to coolblast[.]zapto[.]org:8888/api/x-handler?key=W7qL9!mX2 and executes the returned content as code via new Function(require, body), enabling arbitrary remote code execution. The package has no repository, no lifecycle hooks, and its only purpose is to load the real Chai code as camouflage while the background payload fetcher runs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "assertion-utils-js",
+        "purl": "pkg:npm/assertion-utils-js@2.4.3"
+      },
+      "versions": [
+        "2.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/assertion-utils-js/v/2.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6783"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T18:45:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coolblast[.]zapto[.]org"
+        ],
+        "url_observed": [
+          "hxxp://coolblast[.]zapto[.]org:8888/api/x-handler?key=W7qL9!mX2"
+        ]
+      }
+    }
+  }
+}
