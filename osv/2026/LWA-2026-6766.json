@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6766",
+  "modified": "2026-07-14T09:05:27Z",
+  "published": "2026-07-14T09:00:11Z",
+  "summary": "Malicious code in @asyncapi/generator (npm)",
+  "details": "Trojanized clone of the @asyncapi/generator-helpers, @asyncapi/generator-components, and @asyncapi/generator packages. All three were published within seconds of each other with identical injected obfuscated code appended to legitimate source files. The payload uses javascript-obfuscator to hide a detached child_process.spawn call that runs an encoded second-stage payload via Node.js -e with detached:true, stdio:'ignore', and windowsHide:true, then immediately unrefs the process. The legitimate utility functions are preserved above the injection, making the packages appear functional. The same gitHead commit hash appears across all three packages. The packages are: @asyncapi/generator-helpers@1.1.1 (injected in src/utils.js), @asyncapi/generator-components@0.7.1 (injected in lib/utils/ErrorHandling.js), and @asyncapi/generator@3.3.1 (injected in lib/templates/config/validator.js).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@asyncapi/generator",
+        "purl": "pkg:npm/%40asyncapi/generator@3.3.1"
+      },
+      "versions": [
+        "3.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@asyncapi/generator/v/3.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6766"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T09:00:11Z",
+      "indicators_observed": {}
+    }
+  }
+}
