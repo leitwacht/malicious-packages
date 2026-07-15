@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6829",
+  "modified": "2026-07-15T21:21:54Z",
+  "published": "2026-07-15T21:19:06Z",
+  "summary": "Malicious code in @npmresearch4/bench-cbb7 (npm)",
+  "details": "The package runs a credential-harvesting payload at preinstall, postinstall, and require time. The file run.js enumerates all environment variables (including NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and dozens of other CI/CD and cloud service tokens), reads the ECS IAM task-role credential endpoint (169[.]254[.]170[.]2) to capture AWS credentials, reads ECS container metadata, fingerprints the host (hostname, user, cgroup, network interfaces, mount points, capabilities), and exfiltrates everything via HTTPS POST to curves-highly-arbor-displayed[.]trycloudflare[.]com:443 at the path /beacon. The payload also runs an embedded DynamoDB permission audit script that attempts to list, describe, scan, put, update, delete, and query DynamoDB tables using the stolen AWS credentials. The package has no repository and no functional purpose beyond exfiltration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@npmresearch4/bench-cbb7",
+        "purl": "pkg:npm/%40npmresearch4/bench-cbb7@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@npmresearch4/bench-cbb7/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6829"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T21:19:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "curves-highly-arbor-displayed[.]trycloudflare[.]com"
+        ],
+        "sha256": [
+          "0f750afeda62145aab097f0ea0d6a4043ee450a0f5b9cecd63d7c8080e102a42"
+        ],
+        "url_observed": [
+          "hxxps://curves-highly-arbor-displayed[.]trycloudflare[.]com/beacon"
+        ]
+      }
+    }
+  }
+}
