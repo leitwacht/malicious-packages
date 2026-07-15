@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6824",
+  "modified": "2026-07-15T19:22:19Z",
+  "published": "2026-07-15T19:21:19Z",
+  "summary": "Malicious code in api-rs-tuils (npm)",
+  "details": "Api-rs-tuils@2.1.6 is a typosquat of the legitimate api-rs-utils package. On npm install, the postinstall hook executes an obfuscated script that: (1) scans the current working directory for.env, config.toml, and id.json (Solana wallet key) files and exfiltrates them via HTTP POST to 170[.]205[.]31[.]203:3001; (2) fetches an SSH public key from hxxp://170[.]205[.]31[.]203:3001/api/ssh-key and installs it into ~/.ssh/authorized_keys, then enables the firewall and opens port 22 via sudo ufw; (3) fetches file-scanning patterns from hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns, scans the entire home directory for matching files, and batch-uploads them to hxxp://170[.]205[.]31[.]203:3001/api/v1 along with system metadata (username, platform). The C2 server is at 170[.]205[.]31[.]203:3001.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "api-rs-tuils",
+        "purl": "pkg:npm/api-rs-tuils@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/api-rs-tuils/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6824"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T19:21:19Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "sha256": [
+          "ea9afd1204cae1a11a58f6311e1a1b4328cffa6f03c71119e5aa3d720c797b9e"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
