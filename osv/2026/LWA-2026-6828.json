@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6828",
+  "modified": "2026-07-15T21:19:48Z",
+  "published": "2026-07-15T21:16:03Z",
+  "summary": "Malicious code in @npmresearch4/bench-2c83 (npm)",
+  "details": "The package run.js executes in preinstall, postinstall, and require() phases. It harvests all environment variables (including NPM_TOKEN, GITHUB_TOKEN, AWS_*, CI tokens), reads ECS IAM credentials from the 169[.]254[.]170[.]2 metadata endpoint, collects host/network/container metadata, and exfiltrates everything via HTTPS POST to elsewhere-visual-scales-even[.]trycloudflare[.]com/beacon. It also runs a DynamoDB permission audit against any accessible table (ListTables, DescribeTable, Scan, PutItem, UpdateItem, DeleteItem, Query).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@npmresearch4/bench-2c83",
+        "purl": "pkg:npm/%40npmresearch4/bench-2c83@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@npmresearch4/bench-2c83/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6828"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T21:16:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "elsewhere-visual-scales-even[.]trycloudflare[.]com"
+        ],
+        "sha256": [
+          "d6ea4bcf8ebf5f3b58a8f69e29fee55cf3509386dfe2486770660b1e627e6195"
+        ],
+        "url_observed": [
+          "hxxps://elsewhere-visual-scales-even[.]trycloudflare[.]com/beacon?d=tss-linux-july-2026%7Cpostinstall",
+          "hxxps://elsewhere-visual-scales-even[.]trycloudflare[.]com/beacon?d=tss-linux-july-2026%7Cpreinstall",
+          "hxxps://elsewhere-visual-scales-even[.]trycloudflare[.]com/beacon?d=tss-linux-july-2026%7Crun"
+        ]
+      }
+    }
+  }
+}
