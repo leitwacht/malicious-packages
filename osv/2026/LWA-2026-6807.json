@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6807",
+  "modified": "2026-07-15T10:32:47Z",
+  "published": "2026-07-15T10:32:16Z",
+  "summary": "Malicious code in commonjs-assert (npm)",
+  "details": "Combosquat package impersonating the chai assertion library. On require(), index.js spawns a detached child process running an obfuscated payload in lib/chai/utils/assertion.js. The payload beacons to coolblast[.]zapto[.]org:8888 via HTTP GET to /api/x-handler?key=W7qL9!mX2, then fetches and executes remote code via new Function(). The C2 domain resolved to 10[.]88[.]0[.]1 in sandbox testing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "commonjs-assert",
+        "purl": "pkg:npm/commonjs-assert@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/commonjs-assert/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6807"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T10:32:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coolblast[.]zapto[.]org"
+        ],
+        "url_observed": [
+          "hxxp://coolblast[.]zapto[.]org:8888/api/x-handler?key=W7qL9!mX2"
+        ]
+      }
+    }
+  }
+}
