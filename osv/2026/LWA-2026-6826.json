@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6826",
+  "modified": "2026-07-15T20:17:28Z",
+  "published": "2026-07-15T20:16:20Z",
+  "summary": "Security-research / proof-of-concept package: ddaxx (npm)",
+  "details": "Package ddaxx@1.0.0 ships an obfuscated browser-side script (package/a.js) that targets the WordPress site noviembreacional[.]com. When loaded on that site, the script: (1) beacons the page HTML to a canarytoken at canarytokens[.]com/tags/feedback/kiwhjd8z03ya08mh9wc04hn/submit.asp?x; (2) reads the logged-in BuddyPress username; (3) if the user is not the site admin, it fetches the user's account deletion page, extracts the CSRF nonce, and POSTs to delete that user's account; (4) if the user IS the site admin, it fetches the account settings page, extracts the nonce, and POSTs to change the account email to nyalorx@25_proton.me, then triggers a WordPress password reset for that email. The script uses fetch() with credentials: 'include' to perform authenticated cross-site requests against the WordPress REST endpoints.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ddaxx",
+        "purl": "pkg:npm/ddaxx@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ddaxx/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6826"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-15T20:16:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "canarytokens[.]com",
+          "noviembreacional[.]com"
+        ],
+        "sha256": [
+          "53c25e54eb353381a78c5f8344c411c9444a5fc9cfc144ce50106350626ae6c3"
+        ],
+        "url_observed": [
+          "hxxps://canarytokens[.]com/tags/feedback/kiwhjd8z03ya08mh9wc04hn/submit[.]asp?x"
+        ]
+      }
+    }
+  }
+}
