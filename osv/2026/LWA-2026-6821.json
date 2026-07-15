@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6821",
+  "modified": "2026-07-15T18:34:51Z",
+  "published": "2026-07-15T18:33:15Z",
+  "summary": "Malicious code in axios-test-one (npm)",
+  "details": "Axios-test-one@1.19.0 is a trojanized clone of the real axios HTTP library. The package copies the entire axios codebase but renames it to axios-test-one and injects a dependency on the known-malware package telemetry-metrics. A new file lib/helpers/telemetry.js imports telemetry-metrics and calls telemetry().plugin(). The core request handler in lib/core/Axios.js is modified to call this telemetry function on every GET request, so any application using this package to make GET requests will execute the malicious telemetry-metrics payload. The package has no repository, no documented purpose beyond the cloned axios description, and ships the injected telemetry hook in the request path.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "axios-test-one",
+        "purl": "pkg:npm/axios-test-one@1.19.0"
+      },
+      "versions": [
+        "1.19.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/axios-test-one/v/1.19.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6821"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T18:33:15Z",
+      "indicators_observed": {
+        "sha256": [
+          "38e67e767f8c9ce44b8766c12843fea27ee22d1fb74dd22bb6894af98660b806"
+        ]
+      }
+    }
+  }
+}
