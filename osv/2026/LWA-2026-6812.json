@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6812",
+  "modified": "2026-07-15T16:57:37Z",
+  "published": "2026-07-15T16:56:26Z",
+  "summary": "Malicious code in xxdxa (npm)",
+  "details": "Package xxdxa@1.0.5 ships an obfuscated browser-side JavaScript payload (package/i.js) that targets the WordPress site noviembreaccional[.]com. When loaded in a browser on that domain, the script exfiltrates the full page HTML and the logged-in username to a canarytokens[.]com beacon (hxxps://canarytokens[.]com/images/terms/e63c36xvesfv8udb0yii1xztu/contact[.]php). If the logged-in user is not the site owner (\"JuanCuates\"), the script fetches the victim's account settings page, extracts the WordPress nonce, and POSTs to delete the victim's account. If the logged-in user IS the site owner, the script fetches the account edit page, extracts the nonce and profile fields, then POSTs to change the account email to an account and triggers a password reset via wp-login.php?action=lostpassword — achieving full account takeover. Every step of the attack beacons status to the canarytoken URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "xxdxa",
+        "purl": "pkg:npm/xxdxa@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/xxdxa/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6812"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T16:56:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "canarytokens[.]com",
+          "noviembreaccional[.]com"
+        ],
+        "sha256": [
+          "df9ab56eeb72e3bc79cd8602a5d7c7ac4176251f1fde0eee23d666757fdfed07"
+        ],
+        "url_observed": [
+          "hxxps://canarytokens[.]com/images/terms/e63c36xvesfv8udb0yii1xztu/contact[.]php"
+        ]
+      }
+    }
+  }
+}
