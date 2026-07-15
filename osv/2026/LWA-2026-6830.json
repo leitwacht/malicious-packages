@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6830",
+  "modified": "2026-07-15T21:29:33Z",
+  "published": "2026-07-15T21:29:16Z",
+  "summary": "Malicious code in internallib_v907 (npm)",
+  "details": "The package index.js exports a command() function that executes a reverse shell download cradle via child_process.exec: it runs curl against reverse-shell.sh with the IP 10[.]0[.]67[.]6 on port 4444 and pipes the result to sh. The package also ships a.gitlab-ci.yml that runs npm update against a local registry (hxxp://0[.]0[.]0[.]0:4873/) and then executes check.js, which requires the package and calls command(), triggering the reverse shell on CI execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "internallib_v907",
+        "purl": "pkg:npm/internallib_v907@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/internallib_v907/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6830"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T21:29:16Z",
+      "indicators_observed": {
+        "sha256": [
+          "d59f767b511d3c896d2e67a09d60847eca2b4cac6af7f89887950b50e5d06150"
+        ]
+      }
+    }
+  }
+}
