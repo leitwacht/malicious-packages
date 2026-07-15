@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6804",
+  "modified": "2026-07-15T09:41:38Z",
+  "published": "2026-07-15T09:33:04Z",
+  "summary": "Malicious code in chai-assertix (npm)",
+  "details": "Package chai-assertix@7.0.6 is a combosquat of the real \"chai\" library. It ships a trojanized copy of the pino logger source tree with an injected remote code execution payload in lib/initializeCaller.js. On require(), the file decodes a base64-embedded C2 URL (hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json) and fetches it with a custom header (x-secret-key: _). The response's \"cookie\" field is passed to the Function constructor and executed as arbitrary JavaScript with full access to Node.js require(), enabling the attacker to run any code on the installer's machine. The payload retries up to 5 times on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-assertix",
+        "purl": "pkg:npm/chai-assertix@7.0.6"
+      },
+      "versions": [
+        "7.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-assertix/v/7.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6804"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T09:33:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-brunhilda-40[.]tiiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}
