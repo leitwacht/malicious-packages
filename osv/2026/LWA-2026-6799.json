@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6799",
+  "aliases": [
+    "MAL-2026-10629"
+  ],
+  "modified": "2026-07-15T05:50:41Z",
+  "published": "2026-07-15T05:49:18Z",
+  "summary": "Malicious code in ai-pro-sdk (npm)",
+  "details": "Ai-pro-sdk@2.0.3 is a trojanized AI SDK package. On import, it dynamically loads the dependency data-blockv@1.0.1, which ships an AES-CBC-encrypted blob (data.js, OpenSSL \"Salted__\" format). The SDK decrypts this blob using the hardcoded password \"babyysharkk\" and writes the decrypted JavaScript to a temporary file under the system temp directory (ai-pro-sdk-child-*.js). It then spawns a detached Node.js child process (spawned with detached:true, unref'd) that executes the decrypted payload, inheriting all environment variables. The child process makes outbound network connections (DNS queries observed). The legitimate-looking AI SDK code (message conversion, validation schemas, error handling) serves as camouflage for this multi-stage payload delivery.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ai-pro-sdk",
+        "purl": "pkg:npm/ai-pro-sdk@2.0.3"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ai-pro-sdk/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6799"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T05:49:18Z",
+      "indicators_observed": {}
+    }
+  }
+}
