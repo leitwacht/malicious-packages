@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6843",
+  "modified": "2026-07-16T10:55:37Z",
+  "published": "2026-07-16T10:55:16Z",
+  "summary": "Malicious code in @hibachi-xyz/sdk (npm)",
+  "details": "@hibachi-xyz/sdk@99.0.0 is a dependency-confusion stub that exfiltrates environment variables on import. The index.js entry point collects all environment variables matching credential patterns (KEY, SECRET, TOKEN, PASS, PRIV, AWS, GITHUB, NPM, DOCKER, KUBE, CF_ and others), the hostname, username, and output of whoami/id/cgroup, then POSTs the data to jorijo[.]xyz:8443/t over HTTPS (with TLS certificate validation disabled). The module exports an empty object and provides no real functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hibachi-xyz/sdk",
+        "purl": "pkg:npm/%40hibachi-xyz/sdk@99.0.0"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@hibachi-xyz/sdk/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6843"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-16T10:55:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jorijo[.]xyz"
+        ],
+        "sha256": [
+          "b4454da84a56f96aeb4f75a23f43058c8f1ec570cff159a9356e137dfa17adad"
+        ],
+        "url_observed": [
+          "hxxps://jorijo[.]xyz:8443/t"
+        ]
+      }
+    }
+  }
+}
