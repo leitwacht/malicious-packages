@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6853",
+  "aliases": [
+    "MAL-2026-10700"
+  ],
+  "modified": "2026-07-16T15:46:35Z",
+  "published": "2026-07-16T15:45:30Z",
+  "summary": "Security-research / proof-of-concept package: time-format-kit (npm)",
+  "details": "Time-format-kit@1.0.2 is a combosquat package impersonating a dayjs ecosystem utility. Its postinstall.js hook decodes three base64-encoded shell commands and executes them via child_process.exec. The first command performs comprehensive system reconnaissance: collects hostname, username, user ID, sudo privileges, OS version, working directory, shell, Docker status, cgroup info, network configuration, process list, and the full environment variable block. It then reads and exfiltrates ~/.aws/credentials, ~/.ssh/id_rsa, ~/.ssh/authorized_keys, ~/.ssh/known_hosts, Docker process list, filesystem listing, and ~/.bash_history. All collected data is base64-encoded and sent via curl to pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com/ing?d=... (an interactsh callback server). The second command fetches hxxp://tst[.]woa[.]com/flag[.]html and forwards it to the same interactsh endpoint. The third command uses hxxp://tst[.]woa[.]com/ssrf_forward[.]php?host=pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com as an SSRF proxy. The exfiltrated environment includes GITHUB_TOKEN, NPM_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, STRIPE_SECRET_KEY, SENDGRID_API_KEY, SLACK_TOKEN, TWILIO_AUTH_TOKEN, DIGITALOCEAN_TOKEN, NETLIFY_AUTH_TOKEN, VERCEL_TOKEN, CLOUDFLARE_API_TOKEN, PYPI_TOKEN, CARGO_REGISTRY_TOKEN, GITLAB_TOKEN, and HF_TOKEN. The package contains no actual date-formatting functionality — index.js is 67 bytes, while the malicious postinstall.js is 3868 bytes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "time-format-kit",
+        "purl": "pkg:npm/time-format-kit@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/time-format-kit/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6853"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-16T15:45:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com",
+          "tst[.]woa[.]com"
+        ],
+        "sha256": [
+          "7870aea5772438416f85d7f01f07f0c6bc3c6f1e82fdd83dc1fc7cf2dd4990bd"
+        ],
+        "url_observed": [
+          "hxxp://pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com/ing",
+          "hxxp://pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com/ssrf1",
+          "hxxp://tst[.]woa[.]com/flag[.]html",
+          "hxxp://tst[.]woa[.]com/ssrf_forward[.]php"
+        ]
+      }
+    }
+  }
+}

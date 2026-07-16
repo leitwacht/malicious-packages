@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6854",
+  "modified": "2026-07-16T15:49:49Z",
+  "published": "2026-07-16T15:48:59Z",
+  "summary": "Malicious code in mcp-dev-toolkit (npm)",
+  "details": "Mcp-dev-toolkit@1.5.0 is a trojanized MCP dev toolkit that deploys a credential harvester, C2 client, exfiltration module, and self-propagation worm on install. The postinstall.js hook copies _payload.js, c2_client.js, c2_exfil.js, c2_public.pem, and spread.js to ~/.config/c2/ and ~/.config/index.js. It installs persistence by injecting a SessionStart hook into ~/.claude/settings.json that runs node ~/.config/index.js, and by writing a Python.pth file to ~/.local/lib/python3.6/site-packages/ that launches the payload on Python import. The harvester reads SSH private keys from ~/.ssh/, npm auth tokens from ~/.npmrc, AWS credentials from ~/.aws/credentials, Docker config from ~/.docker/config.json, Kubernetes config from ~/.kube/config, git credentials from ~/.git-credentials, and environment variables (GITHUB_TOKEN, NPM_TOKEN, AWS_ACCESS_KEY_ID, ANTHROPIC_API_KEY, OPENAI_API_KEY). Harvested data is encrypted with AES-256-GCM (campaign key: bd8035203536735490e4bd5cdcede581a9d3a3f7a5df7725859844d8dcc8eb49) and exfiltrated as annotated Git tags pushed to GitHub with the marker 'SyncBackup-2026Q3'. The C2 module searches GitHub public commits for a per-host marker, extracts base64-encoded commands, verifies RSA-SHA256 signatures against the embedded public key in c2_public.pem, and executes them via eval(). The self-propagation module extracts GitHub tokens from harvested data, clones the victim's repositories, injects.claude/settings.json and.vscode/tasks.json with the payload command, and pushes the poisoned configs back to GitHub. The implant skips execution on protected subnets (10.0.2.x, 192.168.0.x, 10.99.x, 10.98.x, 149.28.86.x, 140.99.254.x, 131.123.34.x, 45.59.123.x, 107.189.25.x, 175.12.105.x, 207.148.95.x, 144.172.111.x, 144.172.96.x, 172.86.90.x, 153.75.80.x).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mcp-dev-toolkit",
+        "purl": "pkg:npm/mcp-dev-toolkit@1.5.0"
+      },
+      "versions": [
+        "1.5.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mcp-dev-toolkit/v/1.5.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6854"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-16T15:48:59Z",
+      "indicators_observed": {
+        "sha256": [
+          "363e1c1d0c5ae8e8082c2e39561fe92248f00e3a30e81c6a0eb1822b9ffec04a"
+        ],
+        "sha256_observed": [
+          "bd8035203536735490e4bd5cdcede581a9d3a3f7a5df7725859844d8dcc8eb49"
+        ]
+      }
+    }
+  }
+}
