@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6852",
+  "modified": "2026-07-16T14:27:47Z",
+  "published": "2026-07-16T14:27:20Z",
+  "summary": "Malicious code in application-util (npm)",
+  "details": "The postinstall hook executes a credential-theft and backdoor payload. On install, the package recursively searches the filesystem for.env, id.json, and config.toml files and exfiltrates them via HTTP POST to 170[.]205[.]31[.]203:3000/api/v1, prepending the system username. It then fetches an SSH public key from 170[.]205[.]31[.]203:3001/api/ssh-key and injects it into ~/.ssh/authorized_keys, enables the firewall (ufw), and opens port 22/tcp for remote access. It also fetches file-scanning patterns from the same C2, scans the filesystem (homedir on Unix, all drives on Windows) for matching files, and batch-uploads them to 170[.]205[.]31[.]203:3001/api/v1 along with system metadata (username, platform).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "application-util",
+        "purl": "pkg:npm/application-util@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/application-util/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6852"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-16T14:27:20Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3000",
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
