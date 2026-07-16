@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6867",
+  "modified": "2026-07-16T20:43:20Z",
+  "published": "2026-07-16T20:36:15Z",
+  "summary": "Malicious code in web3-terminal (npm)",
+  "details": "The postinstall hook (node test.js) executes a credential harvester and SSH backdoor. The code scans the working directory for id.json, config.toml, and.env files and uploads them to hxxp://170[.]205[.]31[.]203:3000/api/v1. It then fetches an SSH public key from hxxp://170[.]205[.]31[.]203:3001/api/ssh-key, appends it to ~/.ssh/authorized_keys, enables the firewall and opens port 22 for remote access. It also fetches file-scanning patterns from the same C2 server, scans the home directory (or all drives on Windows) for matching files, and uploads them to hxxp://170[.]205[.]31[.]203:3001/api/v1. The package name (web3-terminal) is unrelated to its description (a copy of the ts-api documentation), indicating combosquatting.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "web3-terminal",
+        "purl": "pkg:npm/web3-terminal@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/web3-terminal/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6867"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-16T20:36:15Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3000",
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203",
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}

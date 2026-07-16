@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6866",
+  "aliases": [
+    "MAL-2026-10735"
+  ],
+  "modified": "2026-07-16T20:42:28Z",
+  "published": "2026-07-16T20:25:22Z",
+  "summary": "Malicious code in isite (npm)",
+  "details": "Isite@2026.7.2 is a trojanized version of a legitimate Node.js web framework. When required, the package POSTs its full configuration (including security keys, MongoDB connection details, session secrets, and proxy settings) to social-browser[.]com/api/core-trusted-data. The C2 server can respond with a \"delete\" command that triggers recursive deletion of the filesystem. The implant uses a custom obfuscation scheme (base64→number-pair encoding) to hide the C2 URL and activation logic, and is time-gated via encoded date values. The exfiltration uses HTTP POST with User-Agent \"eval\" to social-browser[.]com on port 80.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "isite",
+        "purl": "pkg:npm/isite@2026.7.2"
+      },
+      "versions": [
+        "2026.7.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/isite/v/2026.7.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6866"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-16T20:25:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "social-browser[.]com"
+        ],
+        "sha256": [
+          "8438cb078864fd9b37b381b22270924b70723743ebca198c36f04d345d6888ce"
+        ],
+        "url_observed": [
+          "hxxp://social-browser[.]com/api/core-trusted-data"
+        ]
+      }
+    }
+  }
+}
