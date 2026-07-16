@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6850",
+  "modified": "2026-07-16T13:18:30Z",
+  "published": "2026-07-16T13:18:10Z",
+  "summary": "Security-research / proof-of-concept package: string-formatter-pro (npm)",
+  "details": "The package's postinstall.js hook runs a shell command that uses curl to scrape cloud instance metadata endpoints (AWS 169[.]254[.]169[.]254, Alibaba Cloud 100[.]100[.]100[.]200 and 169[.]254[.]0[.]23, Tencent Cloud metadata[.]tencentyun[.]com) for IAM credentials, then POSTs the collected data to pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com via /metadata and /data paths. It also attempts to list /data/ and exfiltrate its contents to the same callback host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "string-formatter-pro",
+        "purl": "pkg:npm/string-formatter-pro@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/string-formatter-pro/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6850"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-16T13:18:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com",
+          "pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com"
+        ],
+        "sha256": [
+          "209d017c82bd0c40e191ec1c92b97aeac580294c38088fc81e01f9a409680a2f"
+        ],
+        "url_observed": [
+          "hxxp://metadata[.]tencentyun[.]com/latest/meta-data/",
+          "hxxp://pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com/data",
+          "hxxp://pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com/metadata"
+        ]
+      }
+    }
+  }
+}

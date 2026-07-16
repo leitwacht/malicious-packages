@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6849",
+  "modified": "2026-07-16T13:17:37Z",
+  "published": "2026-07-16T13:17:12Z",
+  "summary": "Security-research / proof-of-concept package: http-req-lite (npm)",
+  "details": "Http-req-lite@1.0.0 is a combosquat package impersonating a simple HTTP request helper. Its postinstall hook (postinstall.js) executes two curl commands: one fetches tst[.]woa[.]com/flag.html and pipes the response as a POST body to pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com/ssrf1; the other sends a request to tst[.]woa[.]com/ssrf_forward.php?host=pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com, using the external host as an SSRF forwarder parameter. The main index.js is a trivial 67-byte fetch wrapper with no relation to the postinstall behaviour. IOCs: tst[.]woa[.]com, pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com, /flag.html, /ssrf_forward.php, /ssrf1.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "http-req-lite",
+        "purl": "pkg:npm/http-req-lite@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/http-req-lite/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6849"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-16T13:17:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com",
+          "tst[.]woa[.]com"
+        ],
+        "sha256": [
+          "b222d92c44287293a610dd1c197072edbc67731038309f877a982b70f8747648"
+        ],
+        "url_observed": [
+          "hxxp://pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com/ssrf1",
+          "hxxp://tst[.]woa[.]com/flag[.]html",
+          "hxxp://tst[.]woa[.]com/ssrf_forward[.]php?host=pwpzhsrbtvmfqrqr7onqcwnrcii960up[.]oastify[.]com"
+        ]
+      }
+    }
+  }
+}
