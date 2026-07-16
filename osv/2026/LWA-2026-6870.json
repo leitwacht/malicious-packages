@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6870",
+  "modified": "2026-07-16T23:02:05Z",
+  "published": "2026-07-16T23:01:15Z",
+  "summary": "Malicious code in chai-tracker (npm)",
+  "details": "Chai-tracker is a combosquat of the chai assertion library ecosystem. When the module is loaded (require('chai-tracker')), it spawns a hidden child Node.js process that loads a peer dependency named \"dbconnectify\" and calls its queryDBConnect() method. This acts as a second-stage loader — the dbconnectify package (also published by the same actor) contains the actual malicious behaviour. The spawn is detached (stdio: \"ignore\"), running silently in the background without the installer's knowledge.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-tracker",
+        "purl": "pkg:npm/chai-tracker@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-tracker/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6870"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-16T23:01:15Z",
+      "indicators_observed": {
+        "sha256": [
+          "38d40098b6a272ef99f586aa3989bfeab47c552369ab6eec691ef999406bf6a9"
+        ]
+      }
+    }
+  }
+}
