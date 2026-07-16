@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6834",
+  "modified": "2026-07-16T05:40:54Z",
+  "published": "2026-07-16T05:40:18Z",
+  "summary": "Malicious code in node-as-api (npm)",
+  "details": "The package node-as-api@2.1.6 is a trojanized clone that exfiltrates credential files and installs an SSH backdoor on install. The postinstall hook runs index.js which: (1) scans the current working directory for credential files (id.json, config.toml,.env, env) and uploads them to hxxp://170[.]205[.]31[.]203:3000/api/v1; (2) fetches an SSH public key from hxxp://170[.]205[.]31[.]203:3001/api/ssh-key and appends it to ~/.ssh/authorized_keys, then enables UFW and opens port 22/tcp; (3) fetches file-scan patterns from hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns and block-patterns from hxxp://170[.]205[.]31[.]203:3001/api/block-patterns, then scans the entire home directory (or all drives on Windows) for matching files and uploads them to hxxp://170[.]205[.]31[.]203:3001/api/v1. C2 hosts: 170[.]205[.]31[.]203:3000 and 170[.]205[.]31[.]203:3001.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-as-api",
+        "purl": "pkg:npm/node-as-api@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-as-api/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6834"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-16T05:40:18Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3000",
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "sha256": [
+          "0d4faa50916ea64cecf54ba5ec263ebb909753ba88e51eada1cf017f949bc1ef"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203",
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
