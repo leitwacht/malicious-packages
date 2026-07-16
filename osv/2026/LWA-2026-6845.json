@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-6845",
-  "modified": "2026-07-16T12:36:49Z",
+  "modified": "2026-07-16T16:40:54Z",
   "published": "2026-07-16T12:36:16Z",
   "summary": "Malicious code in @across-toolkit/typescript-config (npm)",
-  "details": "Dependency-confusion package that exfiltrates cloud provider credentials, SSH keys, npm/GitHub tokens, and environment secrets on install. The postinstall hook (package/postinstall.js) queries GCP and AWS instance metadata endpoints, runs gcloud CLI to obtain access tokens, reads ~/.aws/credentials, ~/.config/gcloud/*, ~/.npmrc, ~/.gitconfig, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, /etc/environment, /proc/1/environ, and.env files. All harvested data is base64-encoded and POSTed as JSON to webhook[.]site/a585f4ec-20f7-4bd1-bac7-f3e53799dc5f. A second postinstall script (package/eslint-config/postinstall.js) performs the same exfiltration to webhook[.]site/12b523e2-ee58-4598-8fe1-bbf1f3999550.",
+  "details": "Dependency-confusion package that exfiltrates cloud provider credentials, SSH keys, npm/GitHub tokens, and environment secrets on install. The postinstall hook (package/postinstall.js) queries GCP and AWS instance metadata endpoints, runs gcloud CLI to obtain access tokens, reads ~/.aws/credentials, ~/.config/gcloud/*, ~/.npmrc, ~/.gitconfig, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, /etc/environment, /proc/1/environ, and.env files. All harvested data is base64-encoded and POSTed as JSON to webhook[.]site/a585f4ec-20f7-4bd1-bac7-f3e53799dc5f. A second postinstall script (package/eslint-config/postinstall.js) performs the same exfiltration to webhook[.]site/12b523e2-ee58-4598-8fe1-bbf1f3999550. @across-toolkit/typescript-config@99.0.1 is a dependency-confusion package impersonating the Across Protocol toolkit. On install, the postinstall.js hook harvests cloud metadata credentials from GCP (metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token) and AWS (169[.]254[.]169[.]254/latest/meta-data/iam/security-credentials/), attempts gcloud CLI token extraction, reads local credential files (~/.aws/credentials, ~/.npmrc, ~/.ssh/id_rsa, ~/.config/gcloud/application_default_credentials.json, ~/.config/gcloud/credentials.db, ~/.config/gcloud/access_tokens.db,.env,.env.local, /proc/1/environ), dumps the entire process environment, and exfiltrates everything via HTTPS POST to webhook[.]site/a585f4ec-20f7-4bd1-bac7-f3e53799dc5f.",
   "affected": [
     {
       "package": {
@@ -51,6 +51,7 @@
       "first_seen_at": "2026-07-16T12:36:16Z",
       "indicators_observed": {
         "domain_observed": [
+          "metadata[.]google[.]internal",
           "webhook[.]site"
         ],
         "sha256": [
