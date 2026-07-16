@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6848",
+  "modified": "2026-07-16T16:40:38Z",
+  "published": "2026-07-16T12:48:39Z",
+  "summary": "Malicious code in @across-toolkit/typescript-config (npm)",
+  "details": "@across-toolkit/typescript-config@99.0.0 is a dependency-confusion package impersonating the Across Protocol toolkit. On install, the postinstall.js hook harvests cloud metadata credentials from GCP (metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token) and AWS (169[.]254[.]169[.]254/latest/meta-data/iam/security-credentials/), reads local credential files (~/.aws/credentials, ~/.npmrc, ~/.ssh/id_rsa, ~/.config/gcloud/application_default_credentials.json,.env,.env.local, /proc/1/environ), dumps the entire process environment (including all API keys and tokens), and exfiltrates everything via HTTPS POST to webhook[.]site/a585f4ec-20f7-4bd1-bac7-f3e53799dc5f. A second payload in eslint-config/postinstall.js performs the same credential theft to webhook[.]site/12b523e2-ee58-4598-8fe1-bbf1f3999550.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@across-toolkit/typescript-config",
+        "purl": "pkg:npm/%40across-toolkit/typescript-config@99.0.0"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@across-toolkit/typescript-config/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6848"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-16T12:48:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]google[.]internal",
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "396023e88ed887f45495ab2fc1d6f2ce91186e4f888136d0f7000639ca758511"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/12b523e2-ee58-4598-8fe1-bbf1f3999550",
+          "hxxps://webhook[.]site/a585f4ec-20f7-4bd1-bac7-f3e53799dc5f"
+        ]
+      }
+    }
+  }
+}
