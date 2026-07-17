@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6882",
+  "modified": "2026-07-17T12:11:10Z",
+  "published": "2026-07-17T12:10:34Z",
+  "summary": "Malicious code in n8n-nodes-port-scanner (npm)",
+  "details": "N8n-nodes-port-scanner@1.0.0 is a trojanized n8n community node. When loaded by n8n, its index.js entry point performs host reconnaissance (hostname, IP, user identity, routing table, ARP table, DNS configuration), scans internal Docker bridge subnets (172.17.0.x, 172.18.0.x, 10.200.37.x) on ports 22, 80, 443, 3000, 5678, 8080, and 8443, then exfiltrates all collected data to 103[.]27[.]109[.]184:8893. It also opens a reverse shell to the same IP and port. The PortScanNode.js file is a non-functional decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-port-scanner",
+        "purl": "pkg:npm/n8n-nodes-port-scanner@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-port-scanner/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6882"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T12:10:34Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "103[.]27[.]109[.]184:8893"
+        ],
+        "sha256": [
+          "c26b39c13a0cf8556db27d225826cc033de21cb9e69479d72538040d29ccacb3"
+        ]
+      }
+    }
+  }
+}

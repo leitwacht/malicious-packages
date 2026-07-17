@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6883",
+  "modified": "2026-07-17T12:13:58Z",
+  "published": "2026-07-17T12:13:29Z",
+  "summary": "Malicious code in n8n-nodes-api-finder (npm)",
+  "details": "N8n-nodes-api-finder@1.0.0 is a trojanized n8n community node package. On require, it executes an IIFE that collects the hostname, IP address, and username via shell commands, then scans internal Docker network ranges (172.18.x, 172.17.x, 172.16.x, 10.200.x, 10.202.x) on ports 8080 and 5678 for Evolution API and n8n instances using both curl and Node.js HTTP. All collected data is exfiltrated to C2 at 103[.]27[.]109[.]184:8893 via a raw TCP socket. The same C2 endpoint also receives a reverse shell spawned via /bin/bash -i piped through a socket. The ApiFinderNode.js file is a decoy n8n node stub with an empty execute method.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-api-finder",
+        "purl": "pkg:npm/n8n-nodes-api-finder@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-api-finder/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6883"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T12:13:29Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "103[.]27[.]109[.]184:8893"
+        ],
+        "sha256": [
+          "77813378c867112a5178a4cc11ccb7993a615321bddf7a48da90461eb0085b79"
+        ]
+      }
+    }
+  }
+}
