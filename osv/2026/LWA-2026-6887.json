@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6887",
+  "modified": "2026-07-17T12:22:00Z",
+  "published": "2026-07-17T12:21:35Z",
+  "summary": "Malicious code in n8n-nodes-final-mile (npm)",
+  "details": "N8n-nodes-final-mile is a combosquat of the n8n workflow-automation node package. The package's index.js contains a reverse shell backdoor: on require(), it spawns /bin/bash -i and /bin/sh -i, connects both to 103[.]27[.]109[.]184:8895 via a TCP socket, and pipes stdin/stdout/stderr to the remote host, giving the attacker shell access. The bundled LastNode.js is a decoy n8n node class that performs no real work.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-final-mile",
+        "purl": "pkg:npm/n8n-nodes-final-mile@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-final-mile/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6887"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T12:21:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "103[.]27[.]109[.]184:8895"
+        ],
+        "sha256": [
+          "33ae978ce78b691e318d6c8b62aca1265f74062d931b94e7ed8e09f1b6867cef"
+        ]
+      }
+    }
+  }
+}
