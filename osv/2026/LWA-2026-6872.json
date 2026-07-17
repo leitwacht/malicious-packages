@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6872",
+  "modified": "2026-07-17T05:35:39Z",
+  "published": "2026-07-17T05:35:15Z",
+  "summary": "Malicious code in habinger (npm)",
+  "details": "On install, the postinstall hook (node test.js) triggers index.js which performs credential theft and SSH backdoor installation. It scans the filesystem for.env, config.toml, and id.json files and exfiltrates them to hxxp://170[.]205[.]31[.]203:3000/api/v1. It also fetches an SSH public key from hxxp://170[.]205[.]31[.]203:3001/api/ssh-key and appends it to ~/.ssh/authorized_keys, granting persistent SSH access. It then fetches file-scanning patterns from the same C2 (hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns and /api/block-patterns), scans the entire home directory (or all drives on Windows) for matching files, and uploads them via multipart form to hxxp://170[.]205[.]31[.]203:3001/api/v1 along with the victim's username and platform metadata.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "habinger",
+        "purl": "pkg:npm/habinger@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/habinger/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6872"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T05:35:15Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3000",
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "sha256": [
+          "07e0c2455ca257b161698cf2521965c8979336e8ecdcfb3ebc1bb8bb2e93f9b3"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203",
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
