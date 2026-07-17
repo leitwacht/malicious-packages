@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6936",
+  "modified": "2026-07-17T14:38:29Z",
+  "published": "2026-07-17T14:33:52Z",
+  "summary": "Malicious code in tailwind-lineclamp (npm)",
+  "details": "Tailwind-lineclamp@0.4.5 is a combosquat of the legitimate @tailwindcss/line-clamp Tailwind CSS plugin. The package's src/index.js appends an eval(atob(...)) payload that executes at require-time. At runtime it queries the Tron blockchain (api[.]trongrid[.]io) and Aptos blockchain (fullnode[.]mainnet[.]aptoslabs[.]com) for transaction history on specific wallet addresses — TMfKQEd7TJJa5xNZJZ2Lep838vrzrs7mAP, TXfxHUet9pJVU1BgVkBAbrES4YUc1nGzcG (Tron) and 0xbe037400670fbf1c32364f762975908dc43eeb38759263e7dfcdabc76380811e, 0x3f0e5781d0855fb460661ac63257376db1941b2bb522499e4757ecb3ebd5dce3 (Aptos). The package has no repository and no lifecycle hooks — the payload runs when the module is loaded as a Tailwind plugin.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-lineclamp",
+        "purl": "pkg:npm/tailwind-lineclamp@0.4.5"
+      },
+      "versions": [
+        "0.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-lineclamp/v/0.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6936"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T14:33:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]trongrid[.]io",
+          "fullnode[.]mainnet[.]aptoslabs[.]com"
+        ],
+        "sha256": [
+          "0582a545ff9c87ff9c51cd44ec68dc792a15cb53d5df9774e20f830a8eaddf31"
+        ],
+        "wallet_observed": [
+          "0x3f0e5781d0855fb460661ac63257376db1941b2bb522499e4757ecb3ebd5dce3",
+          "0xbe037400670fbf1c32364f762975908dc43eeb38759263e7dfcdabc76380811e",
+          "TMfKQEd7TJJa5xNZJZ2Lep838vrzrs7mAP",
+          "TXfxHUet9pJVU1BgVkBAbrES4YUc1nGzcG"
+        ]
+      }
+    }
+  }
+}
