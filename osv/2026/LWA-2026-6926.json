@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6926",
+  "modified": "2026-07-17T14:05:22Z",
+  "published": "2026-07-17T14:04:29Z",
+  "summary": "Malicious code in crypto-javas (npm)",
+  "details": "The package crypto-javas@2.0.8 is a CI/CD credential harvester. On install (via the postinstall hook in setup.js) and on import (via auto-execute in index.js), it enumerates all environment variables — including CI tokens (GITHUB_TOKEN, NPM_TOKEN, AWS_*, etc.), API keys, and secrets — and exfiltrates them as a JSON payload via HTTPS POST to a configurable backend URL. The backend is configured through the BACKEND_URL and BACKEND_API_KEY environment variables, a.crypto-config.json file, a.env file, or the package.json crypto-javas.backend field. The exfiltration request includes an X-API-Key header and sends the full environment dump (key=value pairs) along with CI metadata (hostname, job ID, project name, commit SHA, branch). The package is described as a \"lightweight utility library\" but performs automatic credential theft with no user interaction required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "crypto-javas",
+        "purl": "pkg:npm/crypto-javas@2.0.8"
+      },
+      "versions": [
+        "2.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/crypto-javas/v/2.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6926"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T14:04:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "58b3553ae89edd07189fa7df501856d1e7b5b4e07cfe6f3f39a7d9a1955a806a"
+        ]
+      }
+    }
+  }
+}
