@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6880",
+  "modified": "2026-07-17T12:08:28Z",
+  "published": "2026-07-17T12:07:34Z",
+  "summary": "Malicious code in n8n-nodes-utils-helper (npm)",
+  "details": "N8n-nodes-utils-helper is a trojanized n8n community node package. On load, index.js runs extensive host reconnaissance: collects hostname, user identity, IP addresses, available tools (curl/wget/python3/python/nc/bash/sh/node), environment variables filtered for API keys, tokens, secrets, passwords, and database/container/n8n/WhatsApp credentials; checks for Docker socket access; fingerprints container cgroup and capabilities; scans the internal Docker bridge network (172[.]17[.]0[.]1 and 172[.]17[.]0[.]2) for open ports (22, 80, 443, 8080, 5678). All collected data is exfiltrated via TCP to 103[.]27[.]109[.]184:8893. The same C2 endpoint receives a reverse shell connection, giving the attacker interactive shell access to the compromised host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-utils-helper",
+        "purl": "pkg:npm/n8n-nodes-utils-helper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-utils-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6880"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T12:07:34Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "103[.]27[.]109[.]184:8893"
+        ],
+        "sha256": [
+          "57d9b4e8d299a6a566978e5981c11fc9124021ce2c9b2ab434654bc627aa292c"
+        ]
+      }
+    }
+  }
+}

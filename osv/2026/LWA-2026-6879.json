@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6879",
+  "modified": "2026-07-17T12:06:55Z",
+  "published": "2026-07-17T12:06:30Z",
+  "summary": "Malicious code in n8n-nodes-task-runner (npm)",
+  "details": "N8n-nodes-task-runner@1.0.0 is a trojanized n8n community node package. On require(), its index.js executes an IIFE that performs extensive host reconnaissance: hostname, user identity, network configuration, environment variables filtered for API keys/tokens/secrets/n8n/docker credentials, listening ports, Docker socket access, mounts, cgroups, capabilities, process list, crontab, and n8n-related files. It then scans the Docker bridge subnet 172[.]17[.]0[.]0/24 on ports 80, 443, 8080, and 5678 for open containers. All collected data is exfiltrated via TCP to 103[.]27[.]109[.]184:8892. A reverse shell is also established to the same IP:port. The package's TaskRunnerNode.js is a decoy node class with an empty execute method. The C2 endpoint is 103[.]27[.]109[.]184:8892.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-task-runner",
+        "purl": "pkg:npm/n8n-nodes-task-runner@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-task-runner/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6879"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T12:06:30Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "103[.]27[.]109[.]184:8892"
+        ],
+        "sha256": [
+          "9de53658773a74134cf53e3ab89f24ca1642614da9ec360dd605fb3746666b77"
+        ]
+      }
+    }
+  }
+}

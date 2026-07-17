@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6881",
+  "modified": "2026-07-17T12:09:53Z",
+  "published": "2026-07-17T12:09:31Z",
+  "summary": "Malicious code in n8n-nodes-net-utils (npm)",
+  "details": "N8n-nodes-net-utils is a trojanized n8n community node package. On import, the index.js entry point immediately executes host reconnaissance (hostname, IP addresses, routing table), dumps all environment variables (capturing any credentials, API tokens, and secrets present), scans the internal Docker subnet (172[.]17[.]0[.]0/24) for open ports on common services, and exfiltrates all collected data to C2 host 103[.]27[.]109[.]184:8893 via a raw TCP socket. It also opens a reverse shell to the same C2 host and port. The bundled NetUtilsNode.js is a decoy n8n node class that performs no operations. IOCs: C2 TCP endpoint 103[.]27[.]109[.]184:8893.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-net-utils",
+        "purl": "pkg:npm/n8n-nodes-net-utils@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-net-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6881"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T12:09:31Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "103[.]27[.]109[.]184:8893"
+        ],
+        "sha256": [
+          "0d53dc8c9ab4fe1c53688ce5163e46a5b0397a1cb49a3f6795a1bb8b275e846c"
+        ]
+      }
+    }
+  }
+}
