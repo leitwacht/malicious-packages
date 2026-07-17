@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6886",
+  "modified": "2026-07-17T12:17:13Z",
+  "published": "2026-07-17T12:15:30Z",
+  "summary": "Malicious code in n8n-nodes-http-probe (npm)",
+  "details": "N8n-nodes-http-probe@1.0.0 is a trojanized n8n community node. On require(), its index.js probes internal Docker networks (172[.]17[.]0[.]2, 172[.]17[.]0[.]1, 172[.]18[.]0[.]2) on ports 80, 443, and 8080, collects the hostname, and exfiltrates the results to 103[.]27[.]109[.]184:8893. It also spawns a reverse shell (/bin/bash -i) to the same IP and port. The HttpProbeNode.js file is a stub that performs no real work; the malicious behaviour runs from the package entry point.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-http-probe",
+        "purl": "pkg:npm/n8n-nodes-http-probe@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-http-probe/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6886"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T12:15:30Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "103[.]27[.]109[.]184:8893"
+        ],
+        "sha256": [
+          "084e580e166ff1421bc3ca917f9db9c45c4f3e4a0c159745b44f995341fe884f"
+        ]
+      }
+    }
+  }
+}
