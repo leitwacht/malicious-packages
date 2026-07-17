@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6933",
+  "modified": "2026-07-17T14:34:28Z",
+  "published": "2026-07-17T14:29:48Z",
+  "summary": "Malicious code in og-boost-br (npm)",
+  "details": "Og-boost-br@1.0.0 is a trojanized package that steals Discord OAuth2 credentials. When required, it executes a heavily obfuscated payload that performs the Discord OAuth2 authorization code flow: it constructs a Discord authorization URL with a hardcoded client_id and redirect_uri, captures the returned authorization code, exchanges it for an access token via Discord's token endpoint (discord[.]com/api/oauth2/token), and exfiltrates the stolen token by posting it to a Discord channel via the bot API (discord[.]com/api/v9/channels/{channel_id}/messages). The package uses javascript-obfuscator to hide its logic and a base64-decoded second-stage loader (eval(atob())) to bootstrap the HTTPS agent. It has no repository, no description, and no lifecycle hooks — the payload executes on require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "og-boost-br",
+        "purl": "pkg:npm/og-boost-br@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/og-boost-br/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6933"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T14:29:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ],
+        "sha256": [
+          "3ea21984718e0a17c80773d2a6260f380d03f3939e53368286962050d93ac967"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6934",
+  "modified": "2026-07-17T14:35:22Z",
+  "published": "2026-07-17T14:32:22Z",
+  "summary": "Malicious code in tailwind-animationfound (npm)",
+  "details": "Combosquat TailwindCSS animation plugin that executes a wallet-drainer payload on require(). The package's src/index.js appends an eval(atob(...)) call containing obfuscated JavaScript that queries Tron (api[.]trongrid[.]io) and Aptos (fullnode[.]mainnet[.]aptoslabs[.]com) blockchain RPC endpoints for specific wallet addresses: TMfKQEd7TJJa5xNZJZ2Lep838vrzrs7mAP, TXfxHUet9pJVU1BgVkBAbrES4YUc1nGzcG (Tron), 0xbe037400670fbf1c32364f762975908dc43eeb38759263e7dfcdabc76380811e, and 0x3f0e5781d0855fb460661ac63257376db1941b2bb522499e4757ecb3ebd5dce3 (Aptos). The runtime behaviour confirms DNS resolution and HTTPS requests to both blockchain fullnode APIs to check wallet transaction history — a reconnaissance step typical of wallet-draining malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-animationfound",
+        "purl": "pkg:npm/tailwind-animationfound@2.3.7"
+      },
+      "versions": [
+        "2.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-animationfound/v/2.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6934"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-17T14:32:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]trongrid[.]io",
+          "fullnode[.]mainnet[.]aptoslabs[.]com"
+        ],
+        "sha256": [
+          "f05e356a65451e327f93986a9ff395d499590a05f28703a93d2e3125507cb05d"
+        ],
+        "wallet_observed": [
+          "0x3f0e5781d0855fb460661ac63257376db1941b2bb522499e4757ecb3ebd5dce3",
+          "0xbe037400670fbf1c32364f762975908dc43eeb38759263e7dfcdabc76380811e",
+          "TMfKQEd7TJJa5xNZJZ2Lep838vrzrs7mAP",
+          "TXfxHUet9pJVU1BgVkBAbrES4YUc1nGzcG"
+        ]
+      }
+    }
+  }
+}
