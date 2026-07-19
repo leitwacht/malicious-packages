@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6946",
+  "modified": "2026-07-19T15:55:43Z",
+  "published": "2026-07-19T15:55:10Z",
+  "summary": "Malicious code in aftermath-finance (npm)",
+  "details": "Three combosquat packages (aftermath-finance, aftermathfi, aftermath-sui) targeting the Aftermath Finance SDK. On npm install, the preinstall hook runs setup.js which collects environment variables matching key/secret/token/pass/auth/private/sui/admin/deploy, the system hostname, username, current working directory, and git remote URLs, then exfiltrates the data as a JSON POST to 2[.]25[.]140[.]71:8443/aftermath/npm-dep-conf over HTTPS (with certificate validation disabled). The packages contain no legitimate SDK code — only the credential-harvesting payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "aftermath-finance",
+        "purl": "pkg:npm/aftermath-finance@99.0.0"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/aftermath-finance/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6946"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-19T15:55:10Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]25[.]140[.]71:8443"
+        ],
+        "sha256": [
+          "e21cbfccc40942454786520a52769dafe8e873dd6be4561f25144d7039c55cbb"
+        ],
+        "url_observed": [
+          "hxxps://2[.]25[.]140[.]71:8443/aftermath/npm-dep-conf"
+        ]
+      }
+    }
+  }
+}
