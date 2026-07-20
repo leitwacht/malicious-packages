@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6948",
+  "modified": "2026-07-20T02:01:58Z",
+  "published": "2026-07-20T02:00:32Z",
+  "summary": "Malicious code in json-validator-utils (npm)",
+  "details": "Json-validator-utils is a trojanized utility package. When the validateJson() or validateXml() functions are called, the package checks if the system has been running for at least 5 minutes (sandbox evasion), then fetches a command manifest from hxxps://cdn[.]jsdelivr[.]net/gh/cryptonomad411/cooll-utils/packages[.]json hosted on jsDelivr CDN. Based on the platform, it downloads and executes a remote payload: on Windows it downloads a.jse file and runs it via cscript.exe; on Linux it downloads an ELF binary via wget and installs a systemd user service for persistence; on macOS it downloads a binary via curl and installs a launchd plist for persistence. All spawned processes are detached and hidden. The C2 URL is XOR-encrypted in lib/core.js with key 0x55.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "json-validator-utils",
+        "purl": "pkg:npm/json-validator-utils@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/json-validator-utils/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6948"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-20T02:00:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cdn[.]jsdelivr[.]net"
+        ],
+        "sha256": [
+          "21beb07221d043d89a492b91ad72599eaf8f07ffea6949a789bb62ebd28a9272"
+        ],
+        "url_observed": [
+          "hxxps://cdn[.]jsdelivr[.]net/gh/cryptonomad411/cooll-utils/packages[.]json"
+        ]
+      }
+    }
+  }
+}
