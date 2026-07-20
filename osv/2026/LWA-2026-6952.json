@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6952",
+  "modified": "2026-07-20T08:17:20Z",
+  "published": "2026-07-20T08:16:35Z",
+  "summary": "Security-research / proof-of-concept package: twilio-serverless (npm)",
+  "details": "Five combosquat packages (twilio-functions, twilio-assets, twilio-deploy, twilio-internal, twilio-serverless) all at version 99.99.99 contain an identical postinstall hook that exfiltrates system metadata. On install, index.js collects hostname, username, home directory, current working directory, platform, architecture, NODE_ENV, and CI environment variables, then POSTs the data to webhook[.]site/42ce0f0e-a0a0-41b5-b157-1c0f918e064f. If that HTTPS request fails, it falls back to a DNS callback via HTTP GET to 2b22ede784d5[.]oast[.]fun. The packages have no repository, no description, and no legitimate functionality — they are reconnaissance implants targeting developers who may confuse them with official Twilio packages.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twilio-serverless",
+        "purl": "pkg:npm/twilio-serverless@99.99.99"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twilio-serverless/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6952"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-20T08:16:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "2b22ede784d5[.]oast[.]fun",
+          "oast[.]fun",
+          "webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxp://2b22ede784d5[.]oast[.]fun/",
+          "hxxps://webhook[.]site/42ce0f0e-a0a0-41b5-b157-1c0f918e064f"
+        ]
+      }
+    }
+  }
+}
