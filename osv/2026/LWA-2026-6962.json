@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6962",
+  "modified": "2026-07-20T22:25:10Z",
+  "published": "2026-07-20T22:24:33Z",
+  "summary": "Malicious code in @offa/offa-uwk (npm)",
+  "details": "The postinstall hook in index.js collects the system hostname, username, current working directory, and the full process environment variables (including NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, and other credentials) and sends them via HTTPS POST to e6b10849-38dc-4280-a8e3-72ab39cfaf65[.]webhook[.]site/collect. The preinstall hook writes a marker file to /home/OFFA/flag. The package has no repository, no documented purpose, and uses version 999.0.0 with a scoped name to exploit dependency confusion.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@offa/offa-uwk",
+        "purl": "pkg:npm/%40offa/offa-uwk@999.0.0"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@offa/offa-uwk/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6962"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-20T22:24:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "e6b10849-38dc-4280-a8e3-72ab39cfaf65[.]webhook[.]site"
+        ],
+        "url_observed": [
+          "hxxps://e6b10849-38dc-4280-a8e3-72ab39cfaf65[.]webhook[.]site/collect"
+        ]
+      }
+    }
+  }
+}
