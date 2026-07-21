@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6975",
+  "modified": "2026-07-21T13:33:19Z",
+  "published": "2026-07-21T13:32:36Z",
+  "summary": "Malicious code in faust-cont (npm)",
+  "details": "The package runs a postinstall hook (node install.js) that collects the hostname, OS type, and architecture, then writes a PowerShell script to the system temp directory and executes it hidden and detached. The PowerShell script installs the Deno runtime (via winget or scoop) and then downloads and executes a remote Deno script from hxxp://172[.]94[.]9[.]157/v028f8cde892b0b74c8[.]js with all permissions (-A flag), giving the attacker full remote code execution on the compromised machine. The package also contains a Telegram beacon function (though the bot token is empty in this version).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "faust-cont",
+        "purl": "pkg:npm/faust-cont@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/faust-cont/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6975"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T13:32:36Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "172[.]94[.]9[.]157"
+        ],
+        "url_observed": [
+          "hxxp://172[.]94[.]9[.]157/v028f8cde892b0b74c8[.]js"
+        ]
+      }
+    }
+  }
+}
