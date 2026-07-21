@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6974",
+  "modified": "2026-07-21T07:14:59Z",
+  "published": "2026-07-21T07:11:33Z",
+  "summary": "Malicious code in quickbuf (npm)",
+  "details": "Quickbuf@1.0.1 is a trojanized native module disguised as a buffer utility library. The JavaScript entry point (index.js) exports innocuous functions (xorBuffer, hashSha256, encodeBase64, etc.) that delegate to a compiled Rust native addon (quickbuf.win32-x64-msvc.node). The native binary contains a full implant: anti-analysis checks that detect analysis tools (wireshark, procmon, x64dbg, ollydbg, ida, processhacker, fiddler) and sandbox/VMs (via strings like \"sandbox\", \"virus\", \"malware\"), environment reconnaissance (reads USERNAME, COMPUTERNAME, LOCALAPPDATA), hidden PowerShell process launch (Start-Process -WindowStyle Hidden, powershell.exe, cmd.exe), a WinHTTP-based HTTP client with a Mozilla/5.0 User-Agent for C2 communication, file timestamp manipulation (SetFileTime), named pipe creation (NtCreateNamedPipeFile), and thread creation (CreateThread). The package's postinstall hook (node -e \"try{require('.')}catch(_){}\") silently loads the native module on install, triggering the payload's initialization. The JS wrapper is a decoy; all malicious functionality is compiled into the Rust.node binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "quickbuf",
+        "purl": "pkg:npm/quickbuf@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/quickbuf/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6974"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T07:11:33Z",
+      "indicators_observed": {
+        "sha256": [
+          "e7317112ccd6c6f6e2bfb5a6c2cf54884507b30cecf2c84d39084440bf0b9b77"
+        ]
+      }
+    }
+  }
+}
