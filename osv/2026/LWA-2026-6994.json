@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6994",
+  "modified": "2026-07-21T20:56:34Z",
+  "published": "2026-07-21T20:55:44Z",
+  "summary": "Malicious code in chai-as-deployer (npm)",
+  "details": "Chai-as-deployer is a combosquat package that trojanizes the pino logging library with a javascript-obfuscator C2 implant in lib/config.js. When required, the package beacons to a remote C2 server at 167[.]88[.]167[.]54:8087 via HTTP POST to /api/log with host metadata (hostname, OS, username, platform), sends a notification to /api/notify, and exfiltrates system information as a file upload (sysinfo.txt) via multipart/form-data POST to 167[.]88[.]167[.]54:8085/upload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-deployer",
+        "purl": "pkg:npm/chai-as-deployer@2.3.6"
+      },
+      "versions": [
+        "2.3.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-deployer/v/2.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6994"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T20:55:44Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "5779760c9096bc1c6f30a538053a965affc9949725ca993cd51e8f3b6031d050"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
