@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6964",
+  "modified": "2026-07-21T00:44:26Z",
+  "published": "2026-07-21T00:43:14Z",
+  "summary": "Malicious code in @dreamguyxeon/libsignal-node (npm)",
+  "details": "Trojanized clone of the legitimate libsignal-node package, published under the @dreamguyxeon scope. The package ships real Signal protocol source code as cover, but index.js loads install.js which patches the @whiskeysockets/baileys WhatsApp library at runtime. The patch replaces the newsletter.js module to fetch a list of channel IDs from raw[.]githubusercontent[.]com/DGXeon13/strings/refs/heads/main/strings.json and automatically follow those WhatsApp newsletter channels. The package also depends on the npm placeholder packages 'crypto', 'fs', and 'path' (dependency confusion), which are not Node.js built-in modules but separate npm packages that could be hijacked.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dreamguyxeon/libsignal-node",
+        "purl": "pkg:npm/%40dreamguyxeon/libsignal-node@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dreamguyxeon/libsignal-node/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6964"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-21T00:43:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "41906336d7a9cbf416ca8ac3e01af4ffad13a1048cd306390734fa18a061ba8c"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/DGXeon13/strings/refs/heads/main/strings[.]json"
+        ]
+      }
+    }
+  }
+}
