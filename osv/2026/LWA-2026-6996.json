@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6996",
+  "modified": "2026-07-21T05:03:33Z",
+  "published": "2026-07-21T04:58:32Z",
+  "summary": "Malicious code in consumerweb-creditcollection (npm)",
+  "details": "Package consumerweb-creditcollection@99.9.1 is a dependency-confusion attack. It contains no functional code (empty index.js) but declares a dependency on \"ltidisafe\" resolved from an external URL: hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]3[.]tgz. When installed, npm fetches this attacker-controlled tarball, which can execute arbitrary code in the installer's environment. The package name mimics an internal/enterprise naming convention, uses an inflated version number (99.9.1) to win dependency resolution, and has no repository or description. Dependency-confusion packages published at version 99.9.1 with names impersonating internal enterprise modules (commonweb-rewards, consumerweb-creditcollection, commonweb-moneymovement, cxpw-offers, requestor-util). Each package contains an empty index.js and declares a single dependency pointing to an external tarball hosted at ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-*.tgz. When installed, npm fetches and extracts the external tarball, which delivers the actual payload. The external tarball URLs are: hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]5[.]tgz, hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]3[.]tgz, hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]4[.]tgz, hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]4[.]9[.]tgz, hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]4[.]6[.]tgz.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "consumerweb-creditcollection",
+        "purl": "pkg:npm/consumerweb-creditcollection@99.9.1"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/consumerweb-creditcollection/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6996"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-21T04:58:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "8cbc228d4a7a8192d3fadb83cf03132fc525ba24de51a6ae402195f3ad1f4926"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]4[.]6[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]4[.]9[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]3[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]4[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]5[.]tgz"
+        ]
+      }
+    }
+  }
+}

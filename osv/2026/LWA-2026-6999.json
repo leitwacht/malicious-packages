@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6999",
+  "modified": "2026-07-21T21:08:34Z",
+  "published": "2026-07-21T21:07:18Z",
+  "summary": "Malicious code in tailwindcss-form-components (npm)",
+  "details": "Tailwindcss-form-components is a combosquat package impersonating the Tailwind CSS ecosystem. Its index.js hardcodes a C2 server at IP 46[.]183[.]25[.]232:45000 and fetches a payload from the path /icons/106. The fetched response is executed via new Function() with the full Node.js runtime context (require, process, Buffer, module, etc.) injected, giving the remote attacker arbitrary code execution on the victim's machine. The package depends on node-machine-id (host fingerprinting), better-sqlite3 and sqlite3 (local database access), socket[.]io-client (real-time C2 channel), and axios/request (HTTP exfiltration). The README links to an unrelated GitHub repository as cover.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-form-components",
+        "purl": "pkg:npm/tailwindcss-form-components@1.5.0"
+      },
+      "versions": [
+        "1.5.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-form-components/v/1.5.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6999"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T21:07:18Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "46[.]183[.]25[.]232:45000"
+        ],
+        "sha256": [
+          "80628acb17e595e339e1c0b9747ff15d0163e4ecbdb700e12dc917b275c6e4c4"
+        ],
+        "url_observed": [
+          "hxxp://46[.]183[.]25[.]232:45000/icons/106"
+        ]
+      }
+    }
+  }
+}
