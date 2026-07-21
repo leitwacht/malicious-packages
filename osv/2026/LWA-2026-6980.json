@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6980",
+  "modified": "2026-07-21T20:17:24Z",
+  "published": "2026-07-21T20:16:29Z",
+  "summary": "Malicious code in rollup-plugin-polyfill-helper (npm)",
+  "details": "Rollup-plugin-polyfill-helper is a combosquat package impersonating a rollup polyfill plugin. When required, it fetches JavaScript payloads from rest-icon-helper[.]store (paths /icons/303 and /icons/389) and executes them via eval(JSON.parse(body)), giving the remote server full control over the runtime. The package exports getPlugin(), setPlugin(), and getPluginExten() functions that perform this fetch-and-eval with retry logic. On non-Windows systems the first payload runs immediately and a second is scheduled 60 seconds later; on Windows the second payload runs directly. The package has no actual rollup plugin interface and no repository.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rollup-plugin-polyfill-helper",
+        "purl": "pkg:npm/rollup-plugin-polyfill-helper@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rollup-plugin-polyfill-helper/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6980"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T20:16:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rest-icon-helper[.]store"
+        ],
+        "sha256": [
+          "ea5cb507e7e0904a9a85ed3e6f8effe52838be51495b9bcf214a1c2a463d3dfa"
+        ],
+        "url_observed": [
+          "hxxps://rest-icon-helper[.]store/icons/303",
+          "hxxps://rest-icon-helper[.]store/icons/389"
+        ]
+      }
+    }
+  }
+}
