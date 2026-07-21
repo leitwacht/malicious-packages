@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7001",
+  "modified": "2026-07-21T21:18:46Z",
+  "published": "2026-07-21T21:17:23Z",
+  "summary": "Malicious code in chai-as-format (npm)",
+  "details": "Chai-as-format@2.3.5 is a trojanized clone of the pino logger package. On require(), the obfuscated implant in lib/config.js collects system information (hostname, OS, username, platform) and exfiltrates it to a remote C2 server at 167[.]88[.]167[.]54:8085 via multipart POST to /upload (uploading a sysinfo.txt file). It also beacons JSON payloads to /api/log and /api/notify on port 8087. The package uses the axios HTTP library for C2 communication. The package has no repository, no lifecycle hooks, and a nonsensical description.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-format",
+        "purl": "pkg:npm/chai-as-format@2.3.5"
+      },
+      "versions": [
+        "2.3.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-format/v/2.3.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7001"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T21:17:23Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "93f7478301fe1472c0734c01ace52e098b50050558957c418e5fa454c4ed2fe5"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
