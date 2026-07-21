@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6968",
+  "modified": "2026-07-21T04:38:59Z",
+  "published": "2026-07-21T04:38:35Z",
+  "summary": "Malicious code in app-data-ist (npm)",
+  "details": "The package app-data-ist@2.1.6 is a dependency-confusion attack that depends on npm packages named 'child_process' and 'os' (typosquatting Node.js core built-in modules). Its postinstall hook runs a script that: (1) scans the current directory and home directory for credential files (id.json, config.toml,.env) and exfiltrates them via HTTP POST to 170[.]205[.]31[.]203:3000/api/v1; (2) fetches an SSH public key and file-scan patterns from 170[.]205[.]31[.]203:3001/api/ssh-key, /api/scan-patterns, and /api/block-patterns; (3) on Linux, appends the attacker's SSH key to ~/.ssh/authorized_keys, creating a persistent backdoor; (4) scans the entire home directory (or all Windows user drives) for files matching the fetched patterns and batch-uploads them to 170[.]205[.]31[.]203:3001/api/v1. The package description is unrelated to its actual behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "app-data-ist",
+        "purl": "pkg:npm/app-data-ist@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/app-data-ist/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6968"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-21T04:38:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203:3000",
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
