@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6993",
+  "modified": "2026-07-21T20:50:41Z",
+  "published": "2026-07-21T20:46:13Z",
+  "summary": "Malicious code in chai-foundry (npm)",
+  "details": "Chai-foundry@7.0.3 is a trojanized clone of the pino logger. The package ships a 4.1MB obfuscated payload in lib/config.js that activates when the module is required. At runtime it beacons to C2 server 167[.]88[.]167[.]54:8087 via POST /api/log (sending hostname, OS, username, and a \"Starting client\" message) and POST /api/notify (sending a unique user key, hostname, OS, and username). It also exfiltrates system information as sysinfo.txt (hostname, OS, username, platform, timestamp) via multipart/form-data POST to 167[.]88[.]167[.]54:8085/upload. The C2 communication uses the axios HTTP library with a validation header on each request. The package has no repository, no README, and its description is generic filler text.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-foundry",
+        "purl": "pkg:npm/chai-foundry@7.0.3"
+      },
+      "versions": [
+        "7.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-foundry/v/7.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6993"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-21T20:46:13Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "414998b14e90d530fb89776937eda3bd7ae012f184b9532ea20dc3aafc3ba4ee"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
