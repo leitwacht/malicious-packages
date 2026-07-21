@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-6971",
+  "modified": "2026-07-21T04:55:32Z",
+  "published": "2026-07-21T04:54:34Z",
+  "summary": "Malicious code in commonweb-card (npm)",
+  "details": "Dependency-confusion attack. Package commonweb-card@99.9.1 is a stub (module.exports = {}) with no real functionality, published at version 99.9.1. Its sole dependency \"ltidisafe\" points to an attacker-controlled tarball at hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]2[.]tgz. When npm installs, it fetches and executes arbitrary code from the attacker's Google Cloud Storage bucket. The same campaign includes commonweb-balance@99.9.1 and commonweb-wallet@99.9.1, which use the same technique with different versions of the remote tarball (ltidisafe-3.4.5.tgz and ltidisafe-3.5.1.tgz).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "commonweb-card",
+        "purl": "pkg:npm/commonweb-card@99.9.1"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/commonweb-card/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-6971"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-21T04:54:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "641b30ef7809087bf1d46f0c0819bdc4a582f73a2ad07744b764ea2bd81bbcdb"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]5[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}
