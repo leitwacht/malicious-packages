@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7019",
+  "modified": "2026-07-22T09:17:48Z",
+  "published": "2026-07-22T09:15:23Z",
+  "summary": "Malicious code in ventrix-kit (npm)",
+  "details": "Ventrix-kit@1.5.2 is a trojanized utility library that functions as a remote code execution downloader. On require(), it fetches arbitrary JavaScript from a hardcoded C2 server at 31[.]97[.]137[.]157:45000/icons/116 (with custom header bearrtoken:logo) and executes the response via the Function constructor with full Node.js access (require, process, Buffer). The package ships dependencies for credential theft: @primno/dpapi (Windows DPAPI credential decryption), node-machine-id (machine fingerprinting), better-sqlite3/sqlite3 (browser database access), and socket[.]io-client (C2 channel). The README falsely advertises \"zero dependencies\" and a benign utility purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ventrix-kit",
+        "purl": "pkg:npm/ventrix-kit@1.5.2"
+      },
+      "versions": [
+        "1.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ventrix-kit/v/1.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7019"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T09:15:23Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "url_observed": [
+          "hxxps://31[.]97[.]137[.]157:45000/icons/116"
+        ]
+      }
+    }
+  }
+}
