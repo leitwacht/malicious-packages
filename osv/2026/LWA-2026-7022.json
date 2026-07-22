@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7022",
+  "modified": "2026-07-22T11:24:56Z",
+  "published": "2026-07-22T11:23:53Z",
+  "summary": "Malicious code in dbconnectify (npm)",
+  "details": "Trojanized MySQL database connector that contains a remote code execution backdoor. The package exports a DivbloxDatabaseConnector class that appears to be a legitimate database wrapper, but includes a hidden method queryDBConnect() that decodes a base64-embedded URL (hxxps://api[.]jsonbin[.]io/v3/b/6a609e63f5f4af5e29b05907), fetches the 'cookie' field from the JSON response, and compiles/executes it as arbitrary JavaScript via node:module.Module._compile(). The attacker controls the jsonbin[.]io bin and can serve any payload to compromised systems. The backdoor executes when the module is required. The package does not declare axios as a dependency, so the backdoor may fail silently if axios is not already installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dbconnectify",
+        "purl": "pkg:npm/dbconnectify@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dbconnectify/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7022"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T11:23:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonbin[.]io",
+          "jsonbin[.]io"
+        ],
+        "sha256": [
+          "e81a68a9d199e8219c6bfec3301a51fec6ac9603514d321e7ddab982d357ae8c"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a609e63f5f4af5e29b05907"
+        ]
+      }
+    }
+  }
+}
