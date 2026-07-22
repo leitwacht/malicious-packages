@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7021",
+  "modified": "2026-07-22T10:44:52Z",
+  "published": "2026-07-22T10:44:23Z",
+  "summary": "Malicious code in utility-kit-ts (npm)",
+  "details": "Utility-kit-ts@1.3.2 is a trojanized package impersonating a TypeScript utility library. When imported, it fetches a second-stage JavaScript payload from a hardcoded C2 server at 31[.]97[.]137[.]157:45000 via HTTP GET to /icons/109 (with custom header bearrtoken: \"logo\") and executes the response using the Function constructor with full Node.js API access (require, process, Buffer, setTimeout, etc.) passed into the eval context. The fetched code can perform arbitrary operations on the host. The package claims to be dependency-free but ships with heavy dependencies (axios, better-sqlite3, socket[.]io-client, node-machine-id, express) inconsistent with its stated purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "utility-kit-ts",
+        "purl": "pkg:npm/utility-kit-ts@1.3.2"
+      },
+      "versions": [
+        "1.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/utility-kit-ts/v/1.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7021"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T10:44:23Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "url_observed": [
+          "hxxp://31[.]97[.]137[.]157:45000/icons/109"
+        ]
+      }
+    }
+  }
+}
