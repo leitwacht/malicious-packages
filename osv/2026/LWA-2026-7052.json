@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7052",
+  "modified": "2026-07-22T21:21:17Z",
+  "published": "2026-07-22T21:20:24Z",
+  "summary": "Malicious code in gekko-trading-bot (npm)",
+  "details": "The package gekko-trading-bot@4.2.0 is a trojanized cryptocurrency trading bot. On npm install, the postinstall script (setup.js) downloads a binary from c2-proxy[.]metamasksvc[.]workers[.]dev/core.exe into ~/.gekko/gekko.exe (a hidden directory in the user's home folder). The download host is a Cloudflare Workers endpoint — the domain name \"c2-proxy.metamasksvc\" is a typosquat of MetaMask wallet infrastructure and explicitly advertises itself as a C2 proxy. The binary download is not documented in the package's README. The main index.js module is a decoy that fetches cryptocurrency price data from public exchange APIs (Binance, Coinbase, Kraken) with a 60-second polling loop, giving the package a veneer of legitimacy while the real payload is delivered at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "gekko-trading-bot",
+        "purl": "pkg:npm/gekko-trading-bot@4.2.0"
+      },
+      "versions": [
+        "4.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/gekko-trading-bot/v/4.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7052"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T21:20:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c2-proxy[.]metamasksvc[.]workers[.]dev"
+        ],
+        "sha256": [
+          "4fee7fab7543f508188ceba89d684a5f3d973dbf2f8bf3ebb09920cf98c3421b"
+        ],
+        "url_observed": [
+          "hxxps://c2-proxy[.]metamasksvc[.]workers[.]dev/core[.]exe"
+        ]
+      }
+    }
+  }
+}
