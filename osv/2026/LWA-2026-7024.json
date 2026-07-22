@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7024",
+  "modified": "2026-07-22T15:16:34Z",
+  "published": "2026-07-22T15:15:46Z",
+  "summary": "Malicious code in async-mutex-lock (npm)",
+  "details": "Async-mutex-lock@5.3.1 is a trojanized package that impersonates a mutex utility but functions as a remote code execution dropper. The main entry point (index.js) fetches a payload from 31[.]97[.]137[.]157:45000 over HTTPS with a custom HTTP header (bearrtoken: logo) and executes the response body via the Function constructor with the full Node.js runtime context (require, process, Buffer, console, timers) passed as parameters, giving the remote server arbitrary code execution on the installer's machine. The package has no repository and its code does not implement any mutex functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "async-mutex-lock",
+        "purl": "pkg:npm/async-mutex-lock@5.3.1"
+      },
+      "versions": [
+        "5.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/async-mutex-lock/v/5.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7024"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T15:15:46Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "66f9c1148abbc34cadee12480f64ac0b8c7e2d51f01a2d20c3d42fd176d61bdb"
+        ],
+        "url_observed": [
+          "hxxps://31[.]97[.]137[.]157:45000/icons/108"
+        ]
+      }
+    }
+  }
+}
