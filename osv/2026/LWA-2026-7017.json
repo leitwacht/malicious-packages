@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7017",
+  "modified": "2026-07-22T07:11:06Z",
+  "published": "2026-07-22T07:09:10Z",
+  "summary": "Malicious code in vectormark (npm)",
+  "details": "Vectormark@1.0.0 is a trojanized SVG helper that exports a hidden getPlugin() function. When called, getPlugin() reads the AVALANCHE_FUJI_RPC_URL and SNOWTRACE_API_KEY environment variables, performs an HTTPS GET to the RPC URL (default: hxxps://api[.]avax-test[.]dev/ext/bc/C/rpc) with TLS verification disabled, and passes the response body to new Function('require', data.toString())(require) — executing arbitrary remote code with full access to Node.js require(). The package's README describes only benign SVG parsing functions and does not document getPlugin(). The RPC URL is attacker-controlled via the AVALANCHE_FUJI_RPC_URL environment variable, making the response body a fully attacker-controlled payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vectormark",
+        "purl": "pkg:npm/vectormark@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vectormark/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7017"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T07:09:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]avax-test[.]dev"
+        ],
+        "sha256": [
+          "5f11eff77e82685cacda3e8d3cf6cb3c62c83b3cf7bd00b468895d5d5d3fb723"
+        ],
+        "url_observed": [
+          "hxxps://api[.]avax-test[.]dev/ext/bc/C/rpc"
+        ]
+      }
+    }
+  }
+}
