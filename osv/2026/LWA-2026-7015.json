@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7015",
+  "modified": "2026-07-22T06:28:49Z",
+  "published": "2026-07-22T06:27:23Z",
+  "summary": "Malicious code in vite-config-svg (npm)",
+  "details": "Vite-config-svg is a combosquat of the Vite build-tool ecosystem. Its exported getPlugin() and setPlugin() functions, documented as SVG file validators, instead spawn a child process that runs \"npm install rollup-plugin-polyfill-helper --no-save --silent --no-audit --no-fund\" and then require() the installed package. The command and package name are base64-encoded in the source to hide the payload. rollup-plugin-polyfill-helper is a known-malicious package published by the same account. Any consumer calling the exported API will silently install and load this malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-config-svg",
+        "purl": "pkg:npm/vite-config-svg@1.1.7"
+      },
+      "versions": [
+        "1.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-config-svg/v/1.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7015"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T06:27:23Z",
+      "indicators_observed": {
+        "sha256": [
+          "f2b17d5d8cebf74905581803c273263aa8efb013f29cbfc2f13da696e7c8faba"
+        ]
+      }
+    }
+  }
+}
