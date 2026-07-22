@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7016",
+  "modified": "2026-07-22T06:42:57Z",
+  "published": "2026-07-22T06:42:12Z",
+  "summary": "Malicious code in chai-as-stringify (npm)",
+  "details": "Chai-as-stringify@7.0.2 is a combosquat package impersonating the chai assertion library. On require(), it executes a heavily obfuscated payload (lib/config.js, 4MB) that collects system information — hostname, OS version, username, platform — and exfiltrates it via HTTP POST to a remote C2 server at 167[.]88[.]167[.]54:8085/upload (multipart/form-data with a sysinfo.txt file) and sends JSON beacon messages to 167[.]88[.]167[.]54:8087/api/log and 167[.]88[.]167[.]54:8087/api/notify. The C2 communications include a \"Userkey: 301\" identifier and a \"Validation\" HMAC header. The package has no repository, no lifecycle hooks, and its description is a generic template string unrelated to its functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-stringify",
+        "purl": "pkg:npm/chai-as-stringify@7.0.2"
+      },
+      "versions": [
+        "7.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-stringify/v/7.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7016"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T06:42:12Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "e77011442c3398d92029151af82862f309901064f5678ca76df3e34ceb7053b8"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
