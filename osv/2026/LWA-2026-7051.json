@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7051",
+  "modified": "2026-07-22T20:40:57Z",
+  "published": "2026-07-22T20:40:19Z",
+  "summary": "Malicious code in fastify-client-bundler (npm)",
+  "details": "Combosquat package impersonating a Fastify client bundler (the README describes a different package, \"Tailwindcss Forms Bundler\"). The exported getPlugin() function fetches a remote payload from a hardcoded IP address (31[.]97[.]137[.]157:45000) at path /icons/105 and executes it via new Function() with full Node.js context including require, process, and Buffer, enabling arbitrary remote code execution. The payload is served from the remote server at time of use, not shipped in the package itself. The C2 host is 31[.]97[.]137[.]157 on port 45000.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fastify-client-bundler",
+        "purl": "pkg:npm/fastify-client-bundler@1.4.0"
+      },
+      "versions": [
+        "1.4.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fastify-client-bundler/v/1.4.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7051"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-22T20:40:19Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157",
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "45be2ecbc2e49900a03fe96f6e96d505791a0ab2ffea17bbd70eb57f55b894f6"
+        ],
+        "url_observed": [
+          "hxxps://31[.]97[.]137[.]157:45000/icons/105"
+        ]
+      }
+    }
+  }
+}
