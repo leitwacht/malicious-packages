@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7075",
+  "modified": "2026-07-23T21:00:04Z",
+  "published": "2026-07-23T20:59:23Z",
+  "summary": "Malicious code in stellar-api-safe (npm)",
+  "details": "A Discord bot wrapper that steals user tokens and refresh tokens. When installed and configured, the package creates a Discord bot that accepts /add commands to collect Discord tokens and refresh tokens from users, stores them in local JSON files, and exfiltrates them to hardcoded Discord webhooks (webhook IDs 1527809440084922462 and 1527807036350398687). On startup, the bot generates invite links for every guild it joins and posts them to the attacker's webhook. A background loop continuously sends stored refresh tokens to stellarapi-backend-production[.]up[.]railway[.]app and alerts the attacker via webhook on failures. The package depends on stellar-api-core, another package from the same publisher.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "stellar-api-safe",
+        "purl": "pkg:npm/stellar-api-safe@1.0.8"
+      },
+      "versions": [
+        "1.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/stellar-api-safe/v/1.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7075"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-23T20:59:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com",
+          "stellarapi-backend-production[.]up[.]railway[.]app"
+        ],
+        "sha256": [
+          "1aa62aa9ed7f2366a9116a2e33a90494f288188cf4c51d48a7262cd2c8751227"
+        ],
+        "url_observed": [
+          "hxxps://discord[.]com/api/webhooks/1527807036350398687/[secret-redacted]",
+          "hxxps://discord[.]com/api/webhooks/1527809440084922462/[secret-redacted]",
+          "hxxps://stellarapi-backend-production[.]up[.]railway[.]app"
+        ]
+      }
+    }
+  }
+}
