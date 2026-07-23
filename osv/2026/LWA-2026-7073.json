@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7073",
+  "modified": "2026-07-23T20:11:48Z",
+  "published": "2026-07-23T20:09:03Z",
+  "summary": "Malicious code in rollup-packages-node-polyfills (npm)",
+  "details": "Rollup-packages-node-polyfills is a combosquat of the legitimate rollup-plugin-polyfill-node. At require-time, dist/index.js decodes a base64 payload that silently runs \"npm install ambera --no-save --silent --no-audit --no-fund\" via child_process.spawn with stdio:ignore and windowsHide:true, then requires the installed \"ambera\" package and calls its getPlugin() method. This is a remote-package downloader: the ambera package is not currently on the registry, but any future publish would be silently installed and executed on every require of this package. The package has no lifecycle hooks — the payload runs on module load.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rollup-packages-node-polyfills",
+        "purl": "pkg:npm/rollup-packages-node-polyfills@0.0.1"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rollup-packages-node-polyfills/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7073"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-23T20:09:03Z",
+      "indicators_observed": {
+        "sha256": [
+          "8d69fa96ed6b6f6f93a6fbadfaec00399bbf501915df549d8a768a033ed54445"
+        ]
+      }
+    }
+  }
+}
