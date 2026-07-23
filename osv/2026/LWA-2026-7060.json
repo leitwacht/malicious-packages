@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7060",
+  "modified": "2026-07-23T12:42:46Z",
+  "published": "2026-07-23T12:40:30Z",
+  "summary": "Malicious code in ambera (npm)",
+  "details": "Ambera@1.0.0 is a trojanized SVG utility package that exports benign helper functions (isSvg, getSvgSize, etc.) alongside a hidden getPlugin() function. When called, getPlugin() makes an HTTPS request to api[.]avax-test[.]dev/ext/bc/C/rpc and passes the response body to new Function('require', data)(require), executing arbitrary remote code in the Node.js process with full require access. The attacker controls the remote endpoint and can serve any malicious payload at any time. The package description claims to be zero-dependency but depends on the deprecated 'request' package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ambera",
+        "purl": "pkg:npm/ambera@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ambera/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7060"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-23T12:40:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]avax-test[.]dev"
+        ],
+        "sha256": [
+          "7cbcbcc8341d65968b39953ea8f0e2a7d2491c728b5a4f2d3d4b0113f0af170b"
+        ]
+      }
+    }
+  }
+}

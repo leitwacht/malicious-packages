@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7059",
+  "modified": "2026-07-23T12:41:29Z",
+  "published": "2026-07-23T12:40:15Z",
+  "summary": "Malicious code in @tobyvalk123/tixte (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) collects the installer's full environment variables (process.env), system username, and hostname, base64-encodes the data, and exfiltrates it via an HTTPS GET request to gjsidn[.]co/collect. The environment variables commonly contain NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, and other credentials, making this a credential-theft payload delivered through a trojanized string-utility package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tobyvalk123/tixte",
+        "purl": "pkg:npm/%40tobyvalk123/tixte@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tobyvalk123/tixte/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7059"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-23T12:40:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gjsidn[.]co"
+        ],
+        "sha256": [
+          "63630a7c14ff775e88b3108ab473d7a0e22fdca75092380f9bc624e155684579"
+        ],
+        "url_observed": [
+          "hxxps://gjsidn[.]co/collect"
+        ]
+      }
+    }
+  }
+}
