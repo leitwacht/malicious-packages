@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7064",
+  "modified": "2026-07-23T16:14:08Z",
+  "published": "2026-07-23T01:11:44Z",
+  "summary": "Malicious code in @bobfrankston/rmfmail (npm)",
+  "details": "@bobfrankston/rmfmail is a trojanized email client that steals saved browser credentials. At runtime it opens and exfiltrates Chromium WebView2 Login Data files (saved passwords). The postinstall hook runs JS that spawns detached subprocesses. The client bundle (client/app.bundle.js) fetches remote code and executes it via new Function. A bundled native PE executable (bin/rmfmailto.exe, 310KB) is shipped. The package depends on 8 known-malware packages and beacons telemetry to rmf39.aaz.lt/logit. DNS-based host discovery (dns.resolveMx) is used alongside host identity collection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@bobfrankston/rmfmail",
+        "purl": "pkg:npm/%40bobfrankston/rmfmail@1.2.168"
+      },
+      "versions": [
+        "1.2.168"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@bobfrankston/rmfmail/v/1.2.168"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7064"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-23T01:11:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rmf39[.]aaz[.]lt"
+        ],
+        "sha256": [
+          "3f80588ab4fcfb62f57dba98568aa5fcda9fbebbd65278679efdc0646d31816b"
+        ],
+        "url_observed": [
+          "hxxps://rmf39[.]aaz[.]lt/logit/",
+          "hxxps://rmf39[.]aaz[.]lt/mailx/rmfmail[.]apk"
+        ]
+      }
+    }
+  }
+}

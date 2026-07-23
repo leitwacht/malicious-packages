@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7067",
+  "modified": "2026-07-23T16:13:48Z",
+  "published": "2026-07-23T13:43:42Z",
+  "summary": "Malicious code in @bobfrankston/rmfmail (npm)",
+  "details": "@bobfrankston/rmfmail is a trojanized email client that steals saved browser credentials. At install time, the postinstall hook runs JS that spawns detached subprocesses. At runtime, the package opens and exfiltrates Chromium WebView2 Login Data files (saved passwords) from the installer's machine. It depends on 8 known-malware packages (@bobfrankston/iflow-direct, @bobfrankston/mailx-imap, @bobfrankston/mailx-sync, @bobfrankston/miscinfo, @bobfrankston/msger, @bobfrankston/oauthsupport, @bobfrankston/rmf-tiny, @bobfrankston/tcp-transport). The client-side bundle (client/app.bundle.js) contains a remote-code-execution pattern: it fetches code and executes it via new Function. The package beacons telemetry to rmf39.aaz.lt/logit. A bundled native PE executable (bin/rmfmailto.exe, 310KB) is also shipped. DNS-based host discovery (dns.resolveMx) is used alongside host identity collection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@bobfrankston/rmfmail",
+        "purl": "pkg:npm/%40bobfrankston/rmfmail@1.2.171"
+      },
+      "versions": [
+        "1.2.171"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@bobfrankston/rmfmail/v/1.2.171"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7067"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-23T13:43:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rmf39[.]aaz[.]lt"
+        ],
+        "sha256": [
+          "a52a310907460335f632ba49b0052fb955136c87b9a9652fe2d1f42d41aae7d8"
+        ],
+        "url_observed": [
+          "hxxps://rmf39[.]aaz[.]lt/logit/",
+          "hxxps://rmf39[.]aaz[.]lt/mailx/rmfmail[.]apk",
+          "hxxps://rmf39[.]aaz[.]lt/mailx/rmfmaildev[.]apk"
+        ]
+      }
+    }
+  }
+}
