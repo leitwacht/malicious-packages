@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7085",
+  "modified": "2026-07-24T09:56:44Z",
+  "published": "2026-07-24T09:56:00Z",
+  "summary": "Malicious code in @daylightqc/date-fmt-lite (npm)",
+  "details": "@daylightqc/date-fmt-lite is a combosquat package impersonating a date-formatting utility. On install, postinstall.js beacons the hostname, username, working directory, and Node.js version to hxxp://129[.]204[.]76[.]212:9999/rce-poc. On require, index.js executes a full reconnaissance payload: it reads and exfiltrates SSH private keys (~/.ssh/id_rsa, id_ed25519, id_ecdsa, config, authorized_keys), environment variables (including NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and dozens more), /etc/passwd, /etc/shadow, cron jobs, running processes, Kubernetes service account tokens, Docker environment,.npmrc and.env files, and filesystem listings. It probes cloud metadata endpoints across Alibaba Cloud (100[.]100[.]100[.]200), AWS (169[.]254[.]169[.]254), Tencent Cloud (metadata[.]tencentyun[.]com), and GCP (169[.]254[.]169[.]254 with Metadata-Flavor: Google). All collected data is POSTed to hxxp://129[.]204[.]76[.]212:9999/report. The package has no repository URL and provides no genuine date-formatting functionality beyond stubs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@daylightqc/date-fmt-lite",
+        "purl": "pkg:npm/%40daylightqc/date-fmt-lite@1.1.2"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@daylightqc/date-fmt-lite/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7085"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T09:56:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com"
+        ],
+        "ip_observed": [
+          "129[.]204[.]76[.]212:9999",
+          "metadata[.]tencentyun[.]com:80"
+        ],
+        "sha256": [
+          "1637ca5b4afc6dd39793f6219d1229ceec30be555c8549aab79aa16d8efa6089"
+        ],
+        "url_observed": [
+          "hxxp://129[.]204[.]76[.]212",
+          "hxxp://129[.]204[.]76[.]212:9999/rce-poc",
+          "hxxp://129[.]204[.]76[.]212:9999/report",
+          "hxxp://metadata[.]tencentyun[.]com/latest/meta-data/"
+        ]
+      }
+    }
+  }
+}

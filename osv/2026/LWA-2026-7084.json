@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7084",
+  "modified": "2026-07-24T09:55:41Z",
+  "published": "2026-07-24T09:54:46Z",
+  "summary": "Malicious code in cors-version (npm)",
+  "details": "Cors-version is a combosquat of the popular cors package. The package ships a trojanized SVG utility library (described as \"svgcraft-core\") with a remote-code-execution dropper in src/index.cjs. The getPlugin() function makes an HTTPS GET request to api[.]avax-test[.]dev/ext/bc/rpc (with TLS verification disabled), then passes the response body to new Function('require', data.toString())(require), executing arbitrary remote code with full Node.js require access. The package has no lifecycle hooks — the payload executes when the getPlugin() function is called by any code that imports the package. The package name cors-version is unrelated to its described SVG-utility purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cors-version",
+        "purl": "pkg:npm/cors-version@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cors-version/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7084"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T09:54:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]avax-test[.]dev"
+        ],
+        "sha256": [
+          "f8b95d8febefada9cced7c9ad3b2f3d0174426ad6f0b4b915bfc6f909063f1bd"
+        ],
+        "url_observed": [
+          "hxxps://api[.]avax-test[.]dev/ext/bc/rpc"
+        ]
+      }
+    }
+  }
+}

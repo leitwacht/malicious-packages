@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7082",
+  "modified": "2026-07-24T09:55:30Z",
+  "published": "2026-07-24T09:54:04Z",
+  "summary": "Malicious code in system-performance-helper (npm)",
+  "details": "The postinstall hook runs install.js, a full-featured infostealer and remote access trojan. It first performs VM/sandbox detection (checks for hypervisor, analysis tools, low memory) and sleeps 5-15 minutes to evade sandbox timeouts. It then establishes a Telegram-bot C2 channel (hardcoded bot token and chat ID in the source) supporting remote shell execution, file upload/download, screenshot capture, webcam capture, microphone recording, and keylogging. The payload steals browser credentials, cookies, history, and credit cards from Chrome, Edge, Brave, Opera, Vivaldi, Chromium, and Firefox. It extracts crypto wallet files from Exodus, Electrum, AtomicWallet, Ledger Live, Bitcoin, Wasabi, Sparrow, Trezor, and MetaMask directories. It steals SSH private keys (id_rsa, id_dsa, id_ed25519), Discord authentication tokens, Telegram Desktop session files, FileZilla FTP credentials, cloud provider credentials, and Wi-Fi passwords. It exfiltrates environment variables matching KEY/SECRET/TOKEN/PASS patterns. It establishes persistence via Windows scheduled tasks and registry Run keys, Linux crontab and systemd service, and macOS launchd plist. It can self-update by fetching a new payload from pastebin[.]com and supports a self-destruct routine that removes persistence artifacts and wipes command history and logs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "system-performance-helper",
+        "purl": "pkg:npm/system-performance-helper@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/system-performance-helper/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7082"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T09:54:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "pastebin[.]com"
+        ],
+        "sha256": [
+          "1a6dd8529e538c7f352b3fef1e5c18b50a917467e4e85868901b5513e8e86b10"
+        ],
+        "url_observed": [
+          "hxxps://pastebin[.]com/raw/your_update_payload"
+        ]
+      }
+    }
+  }
+}
