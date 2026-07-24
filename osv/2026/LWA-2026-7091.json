@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7091",
+  "modified": "2026-07-24T12:40:50Z",
+  "published": "2026-07-24T12:39:52Z",
+  "summary": "Malicious code in chai-as-rendered (npm)",
+  "details": "Combosquat package impersonating the chai testing library. The package exports a middleware function that, when called, spawns a detached background Node.js process. That process decodes a base64-encoded URL (api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/f89e8264-86c2-4684-94da-c3f82d59370f), fetches a payload via HTTP GET with a custom header (x-secret-key: _), and executes the fetched code using the Function constructor — a remote code execution downloader. The package has no repository URL and ships a trojanized copy of the pino logger as its codebase.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-rendered",
+        "purl": "pkg:npm/chai-as-rendered@1.2.0"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-rendered/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7091"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T12:39:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]net"
+        ],
+        "sha256": [
+          "b78569b1a83fe3b5870dd6bc13094b597d835e6a6c35e6e4229708896227c923"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/f89e8264-86c2-4684-94da-c3f82d59370f"
+        ]
+      }
+    }
+  }
+}
