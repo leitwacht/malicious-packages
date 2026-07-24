@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7097",
+  "modified": "2026-07-24T15:20:25Z",
+  "published": "2026-07-24T15:18:24Z",
+  "summary": "Malicious code in @cryptosrvc/no-brainer-sdk (npm)",
+  "details": "The package's postinstall hook runs dist/recon.js, which collects system metadata (hostname, username, internal IP addresses, CI environment flags, and the names of environment variables matching AWS/GCP/Azure/NPM/GitHub/SSH/TOKEN/SECRET/KEY patterns) and POSTs it as JSON to 138[.]68[.]108[.]20:80/cb. The main dist/index.js is a decoy GraphQL type generator. The recon payload runs silently (exits 0 on error) and does not break installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@cryptosrvc/no-brainer-sdk",
+        "purl": "pkg:npm/%40cryptosrvc/no-brainer-sdk@1.0.18"
+      },
+      "versions": [
+        "1.0.18"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@cryptosrvc/no-brainer-sdk/v/1.0.18"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7097"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T15:18:24Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "138[.]68[.]108[.]20:80"
+        ],
+        "url_observed": [
+          "hxxp://138[.]68[.]108[.]20:80/cb"
+        ]
+      }
+    }
+  }
+}

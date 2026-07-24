@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7098",
+  "modified": "2026-07-24T15:22:05Z",
+  "published": "2026-07-24T15:21:23Z",
+  "summary": "Malicious code in shiftmarkets-sdk (npm)",
+  "details": "The package shiftmarkets-sdk@2.1.0 is a combosquat of the legitimate Shift Markets exchange SDK. Its postinstall hook runs dist/recon.js, which silently collects system metadata — hostname, username, sudo_user, home directory, current working directory, platform, architecture, OS release, Node.js version, DNS domain, all network interface IPs (including internal addresses), CI/CD environment flags, and the names of all environment variables — then filters for variable names matching patterns for AWS, GCP, Azure, NPM, Docker, Kubernetes, Vault, tokens, secrets, keys, passwords, credentials, GitHub, GitLab, and SSH credentials. This data is POSTed as a JSON payload to 138[.]68[.]108[.]20:80/cb. The hook swallows all errors so the install never fails. The SDK's production API endpoints point to cryptosrvc[.]com rather than the legitimate Shift Markets domain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "shiftmarkets-sdk",
+        "purl": "pkg:npm/shiftmarkets-sdk@2.1.0"
+      },
+      "versions": [
+        "2.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/shiftmarkets-sdk/v/2.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7098"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T15:21:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cryptosrvc[.]com"
+        ],
+        "ip_observed": [
+          "138[.]68[.]108[.]20:80"
+        ],
+        "url_observed": [
+          "hxxp://138[.]68[.]108[.]20/cb"
+        ]
+      }
+    }
+  }
+}
