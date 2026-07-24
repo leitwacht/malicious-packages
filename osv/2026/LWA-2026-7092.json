@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7092",
+  "modified": "2026-07-24T15:17:20Z",
+  "published": "2026-07-24T15:16:35Z",
+  "summary": "Malicious code in @shiftmarkets/shift-exchange-root (npm)",
+  "details": "The package @shiftmarkets/shift-exchange-root@3.9.9 is a trojanized math utility. The postinstall hook runs dist/recon.js, which collects host metadata (hostname, username, home directory, working directory, platform, architecture, OS release, Node.js version), network interface IPs, CI/CD environment flags, and the NAMES of environment variables matching patterns like TOKEN, SECRET, KEY, AWS, NPM, GITHUB, GITLAB, SSH, DOCKER, KUBE, VAULT, CRED. This data is serialized as JSON and POSTed to hxxp://138[.]68[.]108[.]20:80/cb. The hook uses '|| true' to silently swallow errors and never break the install. The legitimate dist/index.js exports math functions (sum, multiply, divide, subtract, percent) to disguise the package as a normal dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shiftmarkets/shift-exchange-root",
+        "purl": "pkg:npm/%40shiftmarkets/shift-exchange-root@3.9.9"
+      },
+      "versions": [
+        "3.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shiftmarkets/shift-exchange-root/v/3.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7092"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T15:16:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "138[.]68[.]108[.]20:80"
+        ],
+        "sha256": [
+          "67f199773c824995f83e1974a1049819b2f6747f7673b76d5e8dca25ab7dd9d9"
+        ],
+        "url_observed": [
+          "hxxp://138[.]68[.]108[.]20",
+          "hxxp://138[.]68[.]108[.]20:80/cb"
+        ]
+      }
+    }
+  }
+}

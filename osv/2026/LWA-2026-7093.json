@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7093",
+  "modified": "2026-07-24T15:18:49Z",
+  "published": "2026-07-24T15:17:38Z",
+  "summary": "Malicious code in @shiftmarkets/no-brainer-sdk (npm)",
+  "details": "The package @shiftmarkets/no-brainer-sdk@1.0.18 runs a postinstall script (dist/recon.js) that collects system metadata — hostname, username, home directory, working directory, platform, architecture, OS release, Node.js version, network interface IPs, CI/CD environment flags, and the names of all environment variables — then POSTs the data as JSON to 138[.]68[.]108[.]20:80/cb. The beacon specifically enumerates environment variable names matching patterns for cloud provider credentials, API tokens, and CI/CD secrets (AWS, GITHUB, NPM, DOCKER, GITLAB, etc.) to identify high-value build environments. The package claims to be a GraphQL type generator but contains no such functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shiftmarkets/no-brainer-sdk",
+        "purl": "pkg:npm/%40shiftmarkets/no-brainer-sdk@1.0.18"
+      },
+      "versions": [
+        "1.0.18"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shiftmarkets/no-brainer-sdk/v/1.0.18"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7093"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-24T15:17:38Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "138[.]68[.]108[.]20:80"
+        ],
+        "sha256": [
+          "2ab874d5f55e7469d06418c40906d9fb03223d9ed7ea18e02694c6b7b3998488"
+        ],
+        "url_observed": [
+          "hxxp://138[.]68[.]108[.]20/cb"
+        ]
+      }
+    }
+  }
+}
