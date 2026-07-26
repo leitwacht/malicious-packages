@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7139",
+  "modified": "2026-07-26T11:42:19Z",
+  "published": "2026-07-26T11:39:27Z",
+  "summary": "Malicious code in encrypt-string-safe (npm)",
+  "details": "Encrypt-string-safe is a trojanized npm package that poses as a client-side encryption utility. When imported, it fetches a remote JavaScript payload from an obfuscated URL and executes it via new Function(), enabling the attacker to run arbitrary code on the importing system. The package has no lifecycle hooks — the payload runs on module import. The README describes encryption features that are not implemented; the actual code is a remote-code-execution dropper. The C2 host is encoded in the obfuscated string array at index 0x85 of the a0_0x6555() function in package/index.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "encrypt-string-safe",
+        "purl": "pkg:npm/encrypt-string-safe@2.2.0"
+      },
+      "versions": [
+        "2.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/encrypt-string-safe/v/2.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7139"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-26T11:39:27Z",
+      "indicators_observed": {
+        "sha256": [
+          "e406d33e1ad2502516c0f1ccf761b27d2486a690d859b0e9753109c9ac860593"
+        ]
+      }
+    }
+  }
+}
