@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7137",
+  "modified": "2026-07-26T10:16:56Z",
+  "published": "2026-07-26T10:16:23Z",
+  "summary": "Malicious code in dateuuidv2 (npm)",
+  "details": "Dateuuidv2 is a trojanized clone of a UUID v7 library that ships an encrypted download-and-execute payload. On require(), the package reads a PORT= line from the consuming project's README file, uses characters from that value to reconstruct an AES-256-GCM ciphertext, decrypts it with a hardcoded key (bde1af3b6ad9a44720d32006c8c12f4b6d265271e5d516b780605e10d067393b) and IV (550cdb11cd0fb75664cad82f), and extracts a C2 URL from the decrypted result. It then POSTs the victim's platform and OS release to that URL, writes the response to a temporary file under os.tmpdir() with a.vbs extension, executes the file via child_process.exec, and deletes it after execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dateuuidv2",
+        "purl": "pkg:npm/dateuuidv2@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dateuuidv2/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7137"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-26T10:16:23Z",
+      "indicators_observed": {
+        "sha256": [
+          "ecd9282b3acfe2116c7c3564489da64a261712145133e0146069b41382f46051"
+        ],
+        "sha256_observed": [
+          "bde1af3b6ad9a44720d32006c8c12f4b6d265271e5d516b780605e10d067393b"
+        ]
+      }
+    }
+  }
+}
