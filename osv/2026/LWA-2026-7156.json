@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7156",
+  "modified": "2026-07-27T15:41:50Z",
+  "published": "2026-07-27T15:40:05Z",
+  "summary": "Malicious code in @sqlite-table/schema-generator (npm)",
+  "details": "On require(), index.js fetches a remote payload from hxxps://api[.]github[.]com/gists/b57a92378ad0a52430137c3b810e7107 (a GitHub gist under the account \"getchainverse\") and executes it via eval(). At runtime the payload attempted DNS resolution to a C2 endpoint. The package has no lifecycle hooks — the malicious code runs when the module is imported, not at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sqlite-table/schema-generator",
+        "purl": "pkg:npm/%40sqlite-table/schema-generator@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sqlite-table/schema-generator/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7156"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-27T15:40:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "15b4857c73924c83ae9a6557d8537ce593af32f4fb47a97e0edd8e12f4fb9a32"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/gists/b57a92378ad0a52430137c3b810e7107",
+          "hxxps://gist[.]github[.]com/getchainverse/b57a92378ad0a52430137c3b810e7107[.]js"
+        ]
+      }
+    }
+  }
+}
