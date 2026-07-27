@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7160",
+  "modified": "2026-07-27T23:36:44Z",
+  "published": "2026-07-27T23:35:51Z",
+  "summary": "Malicious code in react-puller (npm)",
+  "details": "The package's postinstall hook runs index.js, which spawns a detached child process that downloads two Windows executables (CDPUserPlatform.exe and DOContentCacheMgr.exe) from hxxp://64[.]49[.]11[.]161:8000/share/ into ~/.react-pul/. It then adds DOContentCacheMgr.exe to the Windows startup registry key (HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run) for persistence and launches both executables via cmd.exe /c start. The downloader includes retry logic with exponential backoff and supports resuming partial downloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-puller",
+        "purl": "pkg:npm/react-puller@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-puller/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7160"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-27T23:35:51Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "64[.]49[.]11[.]161:8000"
+        ],
+        "sha256": [
+          "5a11b52d4bebc48d992d06d2c1d0308c8e7812bfba97c7ef65403728d2e2bd35"
+        ],
+        "url_observed": [
+          "hxxp://64[.]49[.]11[.]161",
+          "hxxp://64[.]49[.]11[.]161:8000/share/a32a3ac4-e969-465f-b290-78a5c900c2f3/CDPUserPlatform[.]exe",
+          "hxxp://64[.]49[.]11[.]161:8000/share/e5b56939-7508-4a36-97c5-3ab26afb4369/DOContentCacheMgr[.]exe"
+        ]
+      }
+    }
+  }
+}
