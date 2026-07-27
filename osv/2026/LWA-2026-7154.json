@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7154",
+  "modified": "2026-07-27T15:10:04Z",
+  "published": "2026-07-27T15:09:11Z",
+  "summary": "Malicious code in umber-root (npm)",
+  "details": "The postinstall hook (node dist/config.js) fetches a payload from hxxps://my-api[.]trade-api[.]workers[.]dev?id=3 and executes the response as arbitrary JavaScript code via dynamic function invocation. The C2 server controls what code runs on the installer's machine. The package ships a legitimate-looking color-toolkit library in src/ to appear benign, while the install-time payload provides a remote-code-execution backdoor.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "umber-root",
+        "purl": "pkg:npm/umber-root@1.1.2"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/umber-root/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7154"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-27T15:09:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "my-api[.]trade-api[.]workers[.]dev"
+        ],
+        "sha256": [
+          "bb95c438e00f314be04763a132d02b546b811e0819d609b0f611e80887926eee"
+        ],
+        "url_observed": [
+          "hxxps://my-api[.]trade-api[.]workers[.]dev"
+        ]
+      }
+    }
+  }
+}
