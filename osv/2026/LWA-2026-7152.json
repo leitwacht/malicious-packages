@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7152",
+  "modified": "2026-07-27T13:42:21Z",
+  "published": "2026-07-27T13:41:25Z",
+  "summary": "Malicious code in npm-wold (npm)",
+  "details": "The package npm-wold@1.1.1 is a trojanized object-utility library. Its postinstall hook (dist/config.js) fetches a payload from my-api[.]trade-api[.]workers[.]dev?id=4 and dynamically executes the response using globalThis[data.success](data.id), enabling arbitrary remote code execution on the installer's machine at install time. The bundled flatten/path utility code is a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "npm-wold",
+        "purl": "pkg:npm/npm-wold@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/npm-wold/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7152"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-27T13:41:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "data[.]id",
+          "my-api[.]trade-api[.]workers[.]dev"
+        ],
+        "sha256": [
+          "61fb459a172c37155e5a8bbf87dce2fe5c649efe18952c70de66ae55d3d251d8"
+        ],
+        "url_observed": [
+          "hxxps://my-api[.]trade-api[.]workers[.]dev?id=4"
+        ]
+      }
+    }
+  }
+}
