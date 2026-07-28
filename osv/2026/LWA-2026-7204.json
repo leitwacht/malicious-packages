@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7204",
+  "modified": "2026-07-28T22:57:19Z",
+  "published": "2026-07-28T22:11:39Z",
+  "summary": "Malicious code in @sapappgyver/appgyver-descriptors (npm)",
+  "details": "@sapappgyver/appgyver-descriptors@9.9.11 is a combosquat package impersonating SAP AppGyver. On install, the package runs an obfuscated beacon in lib/core.js that collects the installer's username, hostname, current working directory, and current timestamp, then exfiltrates this host metadata via a DNS query to oob[.]sl4x0[.]xyz. The DNS query format is: {prefix}.{username}.{hostname}.{cwd}.{timestamp}.oob[.]sl4x0[.]xyz. The package ships legitimate-looking utility code in src/ as cover, while the obfuscated payload resides in lib/6ad264.js, lib/b02e30.js, and lib/core.js. The publisher email shares the C2 domain. No credential or token theft was observed — the payload is a host-metadata beacon only.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sapappgyver/appgyver-descriptors",
+        "purl": "pkg:npm/%40sapappgyver/appgyver-descriptors@9.9.11"
+      },
+      "versions": [
+        "9.9.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sapappgyver/appgyver-descriptors/v/9.9.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7204"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T22:11:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]sl4x0[.]xyz",
+          "sl4x0[.]xyz"
+        ],
+        "sha256": [
+          "c20ce624a37134200f480c5d2a8731feed536400b855f69e2e0274e4dae57170"
+        ]
+      }
+    }
+  }
+}
