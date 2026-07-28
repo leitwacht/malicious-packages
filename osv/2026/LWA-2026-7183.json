@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7183",
+  "modified": "2026-07-28T10:42:54Z",
+  "published": "2026-07-28T10:41:03Z",
+  "summary": "Malicious code in chain-analyze (npm)",
+  "details": "Chain-analyze@1.0.2 is a trojanized Theta blockchain SDK. On require(), it reads an encrypted blob from node_modules/tchain-api/apps/docs/app/rsa.db, decrypts it with DES (password \"hydra\"), spawns a detached node subprocess, and pipes the decrypted code into its stdin for execution. The decryption key is imported from the dependency \"chain-manager\". The spawned process attempted network egress (DNS resolution observed). The package has no install script — the payload executes automatically when the module is loaded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chain-analyze",
+        "purl": "pkg:npm/chain-analyze@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chain-analyze/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7183"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T10:41:03Z",
+      "indicators_observed": {
+        "sha256": [
+          "4efc3a1412862fbb4a610fd1a8e1bd459ead56844adeb565946b8d8dac3028ce"
+        ]
+      }
+    }
+  }
+}
