@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7167",
+  "modified": "2026-07-28T07:10:51Z",
+  "published": "2026-07-28T07:09:49Z",
+  "summary": "Malicious code in color-convert-helper (npm)",
+  "details": "The package color-convert-helper@1.0.0 is a combosquat of a common utility name. Its postinstall.js lifecycle hook executes a multi-phase reconnaissance and exfiltration payload at install time. Phase 1 collects system information (hostname, user, OS, network config, Docker detection), all GitHub Actions CI environment variables, and every environment variable matching KEY/TOKEN/SECRET/CREDENTIAL patterns. It then scrapes cloud instance metadata from AWS (169[.]254[.]169[.]254/latest/meta-data/iam/security-credentials/), Tencent Cloud (metadata[.]tencentyun[.]com/latest/meta-data/), Alibaba Cloud (100[.]100[.]100[.]200/latest/meta-data/), and Google Cloud (metadata.google.internal/computeMetadata/v1/). Phase 2 performs SSRF probing against tst[.]woa[.]com via /ssrf_forward.php, fetches /flag.html, and exfiltrates results. All collected data is base64-encoded and exfiltrated via HTTP GET requests to pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com on port 80 to paths /d1, /s2, and /s2 with query parameters containing the stolen credentials, cloud metadata, and SSRF results.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "color-convert-helper",
+        "purl": "pkg:npm/color-convert-helper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/color-convert-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7167"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T07:09:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]google[.]internal",
+          "metadata[.]tencentyun[.]com",
+          "pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com",
+          "tst[.]woa[.]com"
+        ],
+        "sha256": [
+          "46b2f02d4f2c811d75478e445898934cd8c0f0d7e6ef2e6e85fe930223a570eb"
+        ],
+        "url_observed": [
+          "hxxp://metadata[.]google[.]internal/computeMetadata/v1/",
+          "hxxp://metadata[.]tencentyun[.]com/latest/meta-data/",
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/d1",
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/s2",
+          "hxxp://tst[.]woa[.]com/flag[.]html",
+          "hxxp://tst[.]woa[.]com/ssrf_forward[.]php"
+        ]
+      }
+    }
+  }
+}
