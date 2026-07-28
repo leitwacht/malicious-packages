@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7186",
+  "modified": "2026-07-28T13:00:56Z",
+  "published": "2026-07-28T13:00:30Z",
+  "summary": "Malicious code in toll_free (npm)",
+  "details": "Toll_free@1.0.1 contains no executable code — only a package.json with preinstall and postinstall hooks that curl a webhook[.]site URL, exfiltrating the installer's username (whoami), hostname, current working directory, and a timestamp. The curl output is discarded and errors suppressed, confirming the sole purpose is reconnaissance and beaconing, not installation. The exfiltration target is webhook[.]site (a webhook testing service commonly abused by malware for C2 callback collection).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "toll_free",
+        "purl": "pkg:npm/toll_free@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/toll_free/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7186"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T13:00:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "b76b07dfc15712e4878d78b765c48981a7f08b48a9efa69f2fe3c4efa2c1f794"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/#!/view/d80b4602-8a87-4693-8510-6ff77c62788e/631f82f2-a730-44e4-9506-e166b5ffcee3/1/toll_free"
+        ]
+      }
+    }
+  }
+}
