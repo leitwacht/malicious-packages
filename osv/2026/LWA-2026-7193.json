@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7193",
+  "modified": "2026-07-28T14:49:43Z",
+  "published": "2026-07-28T14:48:26Z",
+  "summary": "Malicious code in nagix-node (npm)",
+  "details": "Nagix-node@2.1.6 is a trojanized package that steals credentials and installs an SSH backdoor on the victim's machine. On install, the postinstall hook runs index.js which: (1) recursively scans the current working directory for files matching patterns including id.json, config.toml,.env and uploads them to hxxp://95[.]216[.]118[.]146:3000/api/v1; (2) fetches an SSH public key from hxxp://95[.]216[.]118[.]146:3001/api/ssh-key and appends it to ~/.ssh/authorized_keys, then enables the firewall and opens port 22; (3) scans the entire home directory for files matching attacker-controlled patterns fetched from hxxp://95[.]216[.]118[.]146:3001/api/scan-patterns and uploads them via multipart POST to hxxp://95[.]216[.]118[.]146:3001/api/v1 along with system metadata (username, platform). C2 host: 95[.]216[.]118[.]146 on ports 3000 and 3001. Endpoints: /api/v1 (POST - file exfil), /api/ssh-key (GET - SSH key fetch), /api/scan-patterns (GET), /api/block-patterns (GET).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nagix-node",
+        "purl": "pkg:npm/nagix-node@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nagix-node/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7193"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T14:48:26Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "95[.]216[.]118[.]146",
+          "95[.]216[.]118[.]146:3000",
+          "95[.]216[.]118[.]146:3001"
+        ],
+        "sha256": [
+          "239a8bd62be2d4b0b4725e5a397a6600c893cee9bd3d83a5ebf73c0163924a8f"
+        ],
+        "url_observed": [
+          "hxxp://95[.]216[.]118[.]146",
+          "hxxp://95[.]216[.]118[.]146:3000/api/v1",
+          "hxxp://95[.]216[.]118[.]146:3001/api/block-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/scan-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/ssh-key",
+          "hxxp://95[.]216[.]118[.]146:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
