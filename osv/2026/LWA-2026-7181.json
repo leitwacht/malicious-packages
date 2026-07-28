@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7181",
+  "modified": "2026-07-28T09:25:12Z",
+  "published": "2026-07-28T09:23:50Z",
+  "summary": "Security-research / proof-of-concept package: @adominadmininstr/fmt-date-helper (npm)",
+  "details": "@adominadmininstr/fmt-date-helper@1.0.0 is a trojanized date-formatting utility that exfiltrates environment credentials and probes cloud metadata services on install. The postinstall.js hook collects hostname, username, OS info, container environment details, and the full process list, then probes cloud metadata endpoints at metadata[.]tencentyun[.]com/latest/meta-data/ and 169[.]254[.]169[.]254/latest/meta-data/ for cloud instance credentials. It dumps all environment variables (including CI/CD tokens, cloud API keys, and authentication secrets) and base64-encodes the entire payload into an HTTP GET request to pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/z?d=\u0026lt;exfiltrated-data\u0026gt;. The exfiltrated data includes GITHUB_TOKEN, NPM_TOKEN, AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SENDGRID_API_KEY, SLACK_TOKEN, TWILIO_AUTH_TOKEN, and other credentials from the build environment.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@adominadmininstr/fmt-date-helper",
+        "purl": "pkg:npm/%40adominadmininstr/fmt-date-helper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@adominadmininstr/fmt-date-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7181"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-28T09:23:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com",
+          "pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com"
+        ],
+        "sha256": [
+          "4bc080ac914f4b5e59eb9640b036f363b011bed6da61891c309d23839b465b62"
+        ]
+      }
+    }
+  }
+}
