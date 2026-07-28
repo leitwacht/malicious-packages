@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7182",
+  "modified": "2026-07-28T10:28:34Z",
+  "published": "2026-07-28T10:25:27Z",
+  "summary": "Malicious code in fluid-type-ui (npm)",
+  "details": "Combosquat trojanized clone of the legitimate tailwindcss-fluid-type package. The package's src/index.js contains an injected payload that uses a hardcoded Ethereum address to query blockchain RPC endpoints (1rpc[.]io, eth[.]drpc[.]org) for a transaction whose `to` field encodes a C2 server IP address and port. It then connects to that C2 server over HTTP, XOR-decrypts a second-stage payload, and executes it via eval. The package has no repository and no install scripts — the payload runs when the module is required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fluid-type-ui",
+        "purl": "pkg:npm/fluid-type-ui@2.0.8"
+      },
+      "versions": [
+        "2.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fluid-type-ui/v/2.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7182"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T10:25:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth[.]drpc[.]org"
+        ],
+        "sha256": [
+          "6af940cafbaddf76b43f982159565cc03e7bacb2aea89871cc5fca80f67abb7c"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth[.]drpc[.]org"
+        ],
+        "wallet_observed": [
+          "0xa322e5f3d311d3080e6f0121063e9adc2490ef1a"
+        ]
+      }
+    }
+  }
+}
