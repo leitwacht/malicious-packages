@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7192",
+  "modified": "2026-07-28T14:09:09Z",
+  "published": "2026-07-28T14:08:23Z",
+  "summary": "Malicious code in @ghost_debugger/nanocache (npm)",
+  "details": "@ghost_debugger/nanocache is a trojanized npm package that poses as a zero-dependency LRU/TTL cache but bundles a Windows remote-access trojan. On import, the module automatically spawns vendor/nanocache.exe (a \"Screen Monitor Agent\" RAT) with detached process, hidden console, and no parent-process linkage. The executable connects to a WebSocket command-and-control server at wss://screen-monitoring-es32[.]onrender[.]com/ws/agent and an HTTP endpoint at hxxps://screen-monitoring-es32[.]onrender[.]com. It supports screen capture via GDI+, server-pushed updates, remote disconnect commands, and reconnection with retry. The binary registers a mutex (Local\\ScreenMonitorAgentMutex) to prevent multiple instances and includes --uninstall functionality. Only Windows systems are affected; on other platforms the binary launch is skipped.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ghost_debugger/nanocache",
+        "purl": "pkg:npm/%40ghost_debugger/nanocache@0.1.1"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ghost_debugger/nanocache/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7192"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T14:08:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "screen-monitoring-es32[.]onrender[.]com"
+        ],
+        "url_observed": [
+          "hxxps://screen-monitoring-es32[.]onrender[.]com",
+          "wss://screen-monitoring-es32[.]onrender[.]com/ws/agent"
+        ]
+      }
+    }
+  }
+}
