@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7162",
+  "modified": "2026-07-28T06:10:11Z",
+  "published": "2026-07-28T06:09:23Z",
+  "summary": "Malicious code in api-rust-sdk (npm)",
+  "details": "The package is a trojanized clone of a legitimate API codegen tool. On install, the postinstall hook executes code that: (1) scans the current working directory for credential files (id.json, config.toml,.env) and exfiltrates them to hxxp://95[.]216[.]118[.]146:3000/api/v1; (2) fetches an SSH public key from hxxp://95[.]216[.]118[.]146:3001/api/ssh-key and appends it to ~/.ssh/authorized_keys, then enables the firewall and opens port 22 for persistent SSH backdoor access; (3) fetches file-scanning patterns from the same C2 server, scans the entire home directory for matching files, and uploads them to hxxp://95[.]216[.]118[.]146:3001/api/v1 via multipart form. The C2 server is at 95[.]216[.]118[.]146 on ports 3000 and 3001.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "api-rust-sdk",
+        "purl": "pkg:npm/api-rust-sdk@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/api-rust-sdk/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7162"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T06:09:23Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "95[.]216[.]118[.]146",
+          "95[.]216[.]118[.]146:3000",
+          "95[.]216[.]118[.]146:3001"
+        ],
+        "url_observed": [
+          "hxxp://95[.]216[.]118[.]146",
+          "hxxp://95[.]216[.]118[.]146:3000/api/v1",
+          "hxxp://95[.]216[.]118[.]146:3001/api/block-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/scan-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/ssh-key",
+          "hxxp://95[.]216[.]118[.]146:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
