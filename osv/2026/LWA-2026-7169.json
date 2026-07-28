@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7169",
+  "modified": "2026-07-28T07:28:49Z",
+  "published": "2026-07-28T07:23:55Z",
+  "summary": "Malicious code in data-format-helper (npm)",
+  "details": "The package data-format-helper@1.0.1 is a trojanized utility that exfiltrates environment credentials and system metadata on install. Its postinstall.js runs a 5-phase reconnaissance payload: (1) harvests GitHub CI environment variables (GITHUB_REPOSITORY, GITHUB_ACTOR, GITHUB_REF, GITHUB_TOKEN, GITHUB_WORKFLOW, RUNNER_NAME) plus hostname, user identity, OS details, and Docker status; (2) probes the internal Tencent domain tst[.]woa[.]com via DNS and HTTP; (3) scans all environment variables for patterns matching KEY, TOKEN, SECRET, CREDENTIAL, NPM_TOKEN, GITHUB_TOKEN, GH_TOKEN, AWS_ and other credential-bearing names, then base64-encodes and exfiltrates them; (4) collects sudo privileges, running processes, network interfaces, and routing tables; (5) probes cloud metadata endpoints for Tencent Cloud (metadata[.]tencentyun[.]com), AWS (169[.]254[.]169[.]254), Alibaba Cloud (100[.]100[.]100[.]200), and GCP (metadata.google.internal). All collected data is sent via HTTP GET to the C2 domain pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com. The package's index.js contains only harmless color-conversion helper functions as a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "data-format-helper",
+        "purl": "pkg:npm/data-format-helper@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/data-format-helper/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7169"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T07:23:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com",
+          "pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com",
+          "tst[.]woa[.]com"
+        ],
+        "sha256": [
+          "a412bd39a264fda6606709c56b7240766c447b5980369518e2e297138eccb631"
+        ]
+      }
+    }
+  }
+}

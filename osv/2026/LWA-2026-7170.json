@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7170",
+  "modified": "2026-07-28T07:27:21Z",
+  "published": "2026-07-28T07:24:59Z",
+  "summary": "Security-research / proof-of-concept package: chart-data-utils (npm)",
+  "details": "Chart-data-utils@1.0.0 ships a benign decoy index.js (color utilities) but executes a multi-phase recon and credential-exfiltration payload in its postinstall hook. The payload collects: (A) GitHub CI environment variables (repository, actor, ref, job, run ID, event, workflow, runner), hostname, user identity, cgroup, Docker detection, OS/kernel, and working directory; (B) DNS and HTTP reachability of tst[.]woa[.]com; (C) all environment variables matching KEY/TOKEN/SECRET/CREDENTIAL/KUBE/JENKINS/NPM_TOKEN/GITHUB_TOKEN/AWS_ patterns; (D) sudo privileges, process list, network interfaces, and routing table; (E) cloud metadata from Tencent Cloud (metadata[.]tencentyun[.]com), AWS (169[.]254[.]169[.]254), Alibaba Cloud (100[.]100[.]100[.]200), and GCP (metadata.google.internal). All collected data is base64-encoded and exfiltrated via HTTP GET requests to pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com under paths /a through /e.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chart-data-utils",
+        "purl": "pkg:npm/chart-data-utils@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chart-data-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7170"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-07-28T07:24:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com",
+          "pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com",
+          "tst[.]woa[.]com"
+        ],
+        "sha256": [
+          "60222b8fabf369a4fb1d50ec8fe68321cb424319eaaf9df1e9452c4418413d4a"
+        ],
+        "url_observed": [
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/a",
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/b",
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/c",
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/d",
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/e"
+        ]
+      }
+    }
+  }
+}
