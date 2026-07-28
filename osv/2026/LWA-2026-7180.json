@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7180",
+  "modified": "2026-07-28T08:55:45Z",
+  "published": "2026-07-28T08:53:51Z",
+  "summary": "Malicious code in @adominadmininstr/date-util-helper (npm)",
+  "details": "The package @adominadmininstr/date-util-helper@1.0.0 runs a postinstall script (postinstall.js) on installation. The script collects system information (hostname, username, working directory, OS details, process list, IP addresses, DNS configuration), probes cloud metadata endpoints at hxxp://metadata[.]tencentyun[.]com/latest/meta-data/ and hxxp://169[.]254[.]169[.]254/latest/meta-data/, and harvests all environment variables including CI/CD tokens and cloud credentials. The collected data is base64-encoded and exfiltrated via an HTTP GET request to pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/z?d=\u0026lt;base64-data\u0026gt;. The exfiltrated environment variables include NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and other CI/CD platform secrets.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@adominadmininstr/date-util-helper",
+        "purl": "pkg:npm/%40adominadmininstr/date-util-helper@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@adominadmininstr/date-util-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7180"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T08:53:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com",
+          "pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com"
+        ],
+        "sha256": [
+          "31ae215128dc07d42b0b6991589b2701e54ecb4141bc7ea62a53bb457bb9de28"
+        ],
+        "url_observed": [
+          "hxxp://metadata[.]tencentyun[.]com/latest/meta-data/",
+          "hxxp://pzs5w7ntzhsnepwk564lyfdci3oucl0a[.]oastify[.]com/z"
+        ]
+      }
+    }
+  }
+}
