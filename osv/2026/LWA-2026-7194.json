@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7194",
+  "modified": "2026-07-28T16:41:17Z",
+  "published": "2026-07-28T16:39:46Z",
+  "summary": "Malicious code in postcss-motion-utils (npm)",
+  "details": "The package index.js is a heavily obfuscated remote-code-execution dropper. It contains a large base64-encoded payload array that is decoded at runtime and executed via new Function(\"require\",...), giving the decoded payload access to Node.js require. The code also makes a fetch call to retrieve and execute additional remote code. The package name combosquats a PostCSS utility but contains no CSS processing logic — the entire 164KB file is obfuscated malware. The package attempted network egress at runtime (DNS resolution to a sinkholed endpoint), confirming the payload is a live C2-capable dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss-motion-utils",
+        "purl": "pkg:npm/postcss-motion-utils@3.2.7"
+      },
+      "versions": [
+        "3.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/postcss-motion-utils/v/3.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7194"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-28T16:39:46Z",
+      "indicators_observed": {
+        "sha256": [
+          "3d74ea22db1ed4a7779ee5f3b68653f8894daee7f4b0992f7c5e393e82df039f"
+        ]
+      }
+    }
+  }
+}
