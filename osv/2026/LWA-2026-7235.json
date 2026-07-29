@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7235",
+  "modified": "2026-07-29T21:55:08Z",
+  "published": "2026-07-29T21:54:23Z",
+  "summary": "Malicious code in rollup-plugins-polyfills-rode (npm)",
+  "details": "Combosquat of the legitimate rollup-plugin-polyfill-node package. The postinstall script (dist/module.js) makes an HTTPS GET request to api[.]avax-test[.]dev/ext/bc/rpc with certificate validation disabled, then passes the response body to new Function('require', data)(require), executing arbitrary remote code at install time. The rest of the package contains legitimate browser polyfill code; the malicious payload is confined to the postinstall hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rollup-plugins-polyfills-rode",
+        "purl": "pkg:npm/rollup-plugins-polyfills-rode@0.13.4"
+      },
+      "versions": [
+        "0.13.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rollup-plugins-polyfills-rode/v/0.13.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7235"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T21:54:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]avax-test[.]dev"
+        ],
+        "url_observed": [
+          "hxxps://api[.]avax-test[.]dev/ext/bc/rpc"
+        ]
+      }
+    }
+  }
+}
