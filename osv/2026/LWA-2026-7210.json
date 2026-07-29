@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7210",
+  "modified": "2026-07-29T07:27:34Z",
+  "published": "2026-07-29T07:26:23Z",
+  "summary": "Malicious code in nagixjs (npm)",
+  "details": "Nagixjs@2.1.6 is a combosquat package (typosquatting 'nagix') that exfiltrates credential files and installs SSH persistence. On npm install, the postinstall hook runs an obfuscated script that: (1) recursively scans the filesystem for.env,.npmrc, config.toml, and.gitconfig files and uploads them to hxxp://95[.]216[.]118[.]146:3001; (2) fetches file-scanner patterns and an SSH public key from the same C2 server (hxxp://95[.]216[.]118[.]146:3001/api/ssh-key, /api/scan-patterns, /api/block-patterns); (3) scans the filesystem for files matching the C2-provided patterns and batch-uploads them to hxxp://95[.]216[.]118[.]146:3001/api/v1 via multipart form-data including the victim's username and platform; (4) writes the attacker's SSH public key into ~/.ssh/authorized_keys and enables SSH access via ufw. The C2 server IP is 95[.]216[.]118[.]146:3001.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nagixjs",
+        "purl": "pkg:npm/nagixjs@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nagixjs/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7210"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T07:26:23Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "95[.]216[.]118[.]146:3001"
+        ],
+        "url_observed": [
+          "hxxp://95[.]216[.]118[.]146",
+          "hxxp://95[.]216[.]118[.]146:3001/api/block-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/scan-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/ssh-key",
+          "hxxp://95[.]216[.]118[.]146:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
