@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7236",
+  "modified": "2026-07-29T22:18:53Z",
+  "published": "2026-07-29T22:17:24Z",
+  "summary": "Malicious code in osinthell (npm)",
+  "details": "Osinthell@1.9.5 is a destructive wiper targeting Windows systems. The package exports a `sorgu()` function that triggers 26 modules performing: MBR wipe (writes zeros to \\\\.\\PhysicalDrive0), deletion of C:\\ and System32 files, termination of critical processes (explorer.exe, dwm.exe, csrss.exe, winlogon.exe), fork bombs spawning hundreds of detached cmd/powershell/node processes, memory exhaustion via large buffer allocations, disk fill with 100MB files, deletion of boot files (boot.ini, bootmgr), deletion of SAM and SECURITY registry hives, corruption of the hosts file to block google[.]com/discord[.]com/github[.]com/youtube[.]com/reddit[.]com/microsoft[.]com/windows[.]com, disabling boot recovery via bcdedit, formatting C:, truncating all files on C:\\ through F:\\, deleting Program Files and Users directories, overwriting pagefile.sys and hiberfil.sys, spawning infinite ping loops, and forced system shutdown. Also includes full-screen image defacement via PowerShell/mshta/Internet Explorer/VBScript using a bundled image file. No lifecycle hooks — the payload runs only when the exported function is called.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "osinthell",
+        "purl": "pkg:npm/osinthell@1.9.5"
+      },
+      "versions": [
+        "1.9.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/osinthell/v/1.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7236"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T22:17:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com",
+          "reddit[.]com",
+          "windows[.]com",
+          "youtube[.]com"
+        ],
+        "sha256": [
+          "75c124ffbb3d716281a2796be22ed232b881bb1a591bfee10405a6e531ca10f3"
+        ]
+      }
+    }
+  }
+}
