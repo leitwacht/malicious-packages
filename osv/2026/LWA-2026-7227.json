@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7227",
+  "modified": "2026-07-29T14:46:07Z",
+  "published": "2026-07-29T14:45:36Z",
+  "summary": "Malicious code in test-flow-entire (npm)",
+  "details": "Test-flow-entire@1.0.0 is a dependency-confusion attack package. The package itself is a trivial stub (72 bytes of JS) with no functionality, but its package.json declares a dependency on \"layer-module-kernel-matrix\" resolved from the attacker-controlled URL hxxps://artifacts[.]stg[.]yosiroute[.]com/npm/layer-module-kernel-matrix. When npm installs this package, it fetches and installs code from that non-registry URL, which the attacker controls and can serve arbitrary malicious payloads from. The package has no repository, no README of substance, and its sole purpose is to redirect dependency resolution to an external attacker server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "test-flow-entire",
+        "purl": "pkg:npm/test-flow-entire@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/test-flow-entire/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7227"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-29T14:45:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "artifacts[.]stg[.]yosiroute[.]com"
+        ],
+        "sha256": [
+          "0594f1c24f5e6fd2eeb53e1d1da8cad22452252b51bff1faff95149aa3769cf3"
+        ],
+        "url_observed": [
+          "hxxps://artifacts[.]stg[.]yosiroute[.]com/npm/layer-module-kernel-matrix"
+        ]
+      }
+    }
+  }
+}
