@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7218",
+  "modified": "2026-07-29T09:42:23Z",
+  "published": "2026-07-29T09:41:05Z",
+  "summary": "Malicious code in streak-grid-core (npm)",
+  "details": "Streak-grid-core@1.0.0 is a trojanized package masquerading as a calendar-day and streak-math utility library. On import, it decodes a base64-embedded ELF binary and writes it to ~/.cache/svc/index, then spawns it as a detached background process. The ELF binary is a full C2 backdoor: it imports SSL/TLS (SSL_connect, TLS_client_method), socket/connect/DNS resolution (gethostbyname, connect, socket), process control (fork, execve, kill, pthread_detach), and file-system reconnaissance (readdir, stat, getcwd, uname, getenv). At runtime the binary attempted a DNS query to a remote host, confirming active C2 beaconing. The binary is dropped to the installer's home directory under.cache/svc/ and persists as a background process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-grid-core",
+        "purl": "pkg:npm/streak-grid-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-grid-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7218"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T09:41:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "9d9a6be8434c310feef3207007ffb3b7b3f03387bd2714fcd27ede4063be4dd5"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7219",
+  "modified": "2026-07-29T09:45:17Z",
+  "published": "2026-07-29T09:42:34Z",
+  "summary": "Malicious code in streak-view-core (npm)",
+  "details": "Package streak-view-core@1.0.0 is a trojanized npm package that drops and executes a C2 binary on import. The package masquerades as a calendar-day bucketing library but contains a base64-encoded ELF x86-64 binary embedded in index.mjs. On module import, an immediately-invoked function dynamically imports node:child_process, node:fs, node:os, and node:path. It first checks /etc/hostname for the string 'ubuntu-fc-uvm' and exits silently if detected. Otherwise, it decodes the embedded binary, writes it to ~/.cache/svc/index with executable permissions, and spawns it as a detached background process. The dropped binary links against OpenSSL (libssl.so.3, libcrypto.so.3) for encrypted command-and-control and contains symbols for SSL_connect, SSL_write, SSL_read, gethostbyname, gethostname, getenv, popen, execve, fork, pthread_create, pthread_detach, kill, uname, getcwd, readdir, opendir, bind, listen, and accept — indicating a full C2 implant with encrypted communications, process execution, file system enumeration, and network listener capabilities.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-view-core",
+        "purl": "pkg:npm/streak-view-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-view-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7219"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T09:42:34Z",
+      "indicators_observed": {
+        "sha256": [
+          "ebf5d744c4b0ab98e01a269a5a157e46afe059f274f0f17505320cac504b8916"
+        ]
+      }
+    }
+  }
+}
