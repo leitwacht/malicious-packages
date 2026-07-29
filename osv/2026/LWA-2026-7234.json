@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7234",
+  "modified": "2026-07-29T21:26:05Z",
+  "published": "2026-07-29T21:25:23Z",
+  "summary": "Malicious code in test-flow-entire5 (npm)",
+  "details": "Test-flow-entire5@1.0.0 is a dependency-confusion package that declares its sole dependency as a full HTTPS URL to an attacker-controlled server (artifacts[.]stg[.]yosiroute[.]com) rather than the npm registry. The npm-shrinkwrap.json reveals a full dependency chain — ticket-atomic-memo-plugin, digest-loader-field-schema, and script-token-struct-memo — all resolved from the same external host. The package itself is a trivial stub (73 bytes) whose only function is to pull in this external dependency tree at install time, giving the attacker arbitrary code execution on any system that installs it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "test-flow-entire5",
+        "purl": "pkg:npm/test-flow-entire5@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/test-flow-entire5/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7234"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-29T21:25:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "artifacts[.]stg[.]yosiroute[.]com"
+        ],
+        "sha256": [
+          "f1e1ab51130ce2c8679798605e380f6ccb0b3d703c22d2e80170cf33838b00e9"
+        ],
+        "url_observed": [
+          "hxxps://artifacts[.]stg[.]yosiroute[.]com/npm/digest-loader-field-schema",
+          "hxxps://artifacts[.]stg[.]yosiroute[.]com/npm/script-token-struct-memo",
+          "hxxps://artifacts[.]stg[.]yosiroute[.]com/npm/ticket-atomic-memo-plugin"
+        ]
+      }
+    }
+  }
+}
