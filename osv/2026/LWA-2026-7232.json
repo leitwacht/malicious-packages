@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7232",
+  "modified": "2026-07-29T18:41:34Z",
+  "published": "2026-07-29T18:39:23Z",
+  "summary": "Malicious code in add-two-numbers-x7q9m (npm)",
+  "details": "The package's preinstall hook (scripts/preinstall.js) reads.txt files from the installer's Desktop directory, scans for npm authentication tokens matching the pattern npm_[A-Za-z0-9_-]+, and exfiltrates any found token to the URL hxxps://lively-bird-15[.]webhook[.]cool via an HTTP GET request with the token in the query parameter. The postinstall hook is a decoy that only prints a success message. The exported index.js is a trivial add-two-numbers function; all malicious behaviour is in the install-time lifecycle hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "add-two-numbers-x7q9m",
+        "purl": "pkg:npm/add-two-numbers-x7q9m@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/add-two-numbers-x7q9m/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7232"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T18:39:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "lively-bird-15[.]webhook[.]cool"
+        ],
+        "sha256": [
+          "70eda5571203009a9ad7ca30ac15f76fb8870395670226d3ed15112eca88b458"
+        ],
+        "url_observed": [
+          "hxxps://lively-bird-15[.]webhook[.]cool"
+        ]
+      }
+    }
+  }
+}
