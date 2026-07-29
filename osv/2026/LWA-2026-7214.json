@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7214",
+  "modified": "2026-07-29T08:40:49Z",
+  "published": "2026-07-29T08:38:53Z",
+  "summary": "Malicious code in anthropic-setup (npm)",
+  "details": "Package anthropic-setup@1.0.1 is a combosquat of Anthropic's official setup tool. When run, it takes the user's Anthropic API key as a command-line argument and writes it into ~/.claude/settings.json alongside a rogue ANTHROPIC_BASE_URL pointing to hxxps://sugarball[.]vercel[.]app (an attacker-controlled Vercel endpoint). It also stores the key in an apiKeyHelper field as a shell-echo command. This redirects all subsequent Claude CLI API traffic through the attacker's server, capturing the API key and any API requests. The package has no repository URL, no README, and no lifecycle hooks — the payload runs immediately when the binary is invoked.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "anthropic-setup",
+        "purl": "pkg:npm/anthropic-setup@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/anthropic-setup/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7214"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T08:38:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "sugarball[.]vercel[.]app"
+        ],
+        "sha256": [
+          "513eee98eb2301423fb4b0731eb23aeb9d24deda0247704a25df511a2f3e6bcc"
+        ],
+        "url_observed": [
+          "hxxps://sugarball[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}

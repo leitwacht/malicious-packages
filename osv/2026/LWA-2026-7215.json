@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7215",
+  "modified": "2026-07-29T08:43:52Z",
+  "published": "2026-07-29T08:39:49Z",
+  "summary": "Malicious code in streak-int-lib (npm)",
+  "details": "Streak-int-lib@1.0.0 is a trojanized npm package posing as a calendar-day and streak-math library. On module import, it automatically decodes a base64-embedded ELF binary (~87KB, linked against OpenSSL) from within index.mjs, writes it to ~/.config/systemd/user/index with executable permissions, and spawns it as a detached background process. The binary is a C2 implant: it uses TLS sockets (SSL_connect, SSL_read, SSL_write) for encrypted command-and-control, performs system reconnaissance (gethostname, uname, getenv, readdir, getpwuid), and can fork/execute additional payloads. The implant was observed attempting DNS resolution to a remote C2 domain. The package's README and public API describe only benign calendar-math functions and make no mention of the background service or binary payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-int-lib",
+        "purl": "pkg:npm/streak-int-lib@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-int-lib/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7215"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T08:39:49Z",
+      "indicators_observed": {
+        "sha256": [
+          "c9452a9aef7385a61eeec519a25024a87e37b5530a65cb5c4ff30ad0eae89404"
+        ]
+      }
+    }
+  }
+}
