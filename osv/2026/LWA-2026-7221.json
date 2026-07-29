@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7221",
+  "modified": "2026-07-29T10:12:46Z",
+  "published": "2026-07-29T10:10:51Z",
+  "summary": "Malicious code in streak-cal-core (npm)",
+  "details": "Package streak-cal-core@1.0.0 is a trojanized library that poses as a calendar-day and streak-math helper. On import, it decodes a base64-encoded ELF binary embedded in the source code (the `_c` array in index.mjs), writes it to `data/svc/idx.bin` with executable permissions, and spawns it as a detached background process with the full environment. The spawned binary attempted network communication (DNS resolution observed). The package has no repository and no lifecycle hooks — the payload runs silently at module load time via setImmediate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-cal-core",
+        "purl": "pkg:npm/streak-cal-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-cal-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7221"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-29T10:10:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "8406e56c40956070d497756532ad83ebf63ebea388ea3fb848797b4ccc5885f0"
+        ]
+      }
+    }
+  }
+}
