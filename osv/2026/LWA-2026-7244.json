@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7244",
+  "modified": "2026-07-30T10:39:57Z",
+  "published": "2026-07-30T10:39:04Z",
+  "summary": "Malicious code in native-hello-plugin (npm)",
+  "details": "Native-hello-plugin@1.2.0 is a trojanized OpenClaw plugin. The package claims to implement a SHA-256 native addon, but the Windows binary (native/prebuilds/win32-x64/hello.node) contains an embedded PowerShell download cradle that executes a remote script from 89[.]124[.]113[.]217:8000/update.ps1 via iex (iwr). The payload runs when the plugin is loaded by the OpenClaw gateway on startup. The C2 host is 89[.]124[.]113[.]217:8000.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "native-hello-plugin",
+        "purl": "pkg:npm/native-hello-plugin@1.2.0"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/native-hello-plugin/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7244"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T10:39:04Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "89[.]124[.]113[.]217:8000"
+        ],
+        "sha256": [
+          "0d0a5f3f6973e7f67ef527ab59c0e038b53ffdb50a6fa51b61b8d48793d64011"
+        ],
+        "url_observed": [
+          "hxxp://89[.]124[.]113[.]217:8000/update[.]ps1"
+        ]
+      }
+    }
+  }
+}
