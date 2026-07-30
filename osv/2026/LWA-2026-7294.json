@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7294",
+  "modified": "2026-07-30T21:10:50Z",
+  "published": "2026-07-30T21:10:02Z",
+  "summary": "Malicious code in postcss-animate-css-vars (npm)",
+  "details": "Postcss-animate-css-vars is a trojanized PostCSS plugin that executes a multi-stage payload when loaded. The file src/normalize-options.js is heavily obfuscated (javascript-obfuscator) and, upon require(), writes a temporary.cjs file to the system temp directory containing the obfuscated payload, then spawns a detached child process (detached:true, windowsHide:true, stdio:'ignore') that re-executes the payload. The payload also fetches remote content and evaluates it dynamically. The package has no lifecycle hooks — the malicious code runs when any build pipeline loads the PostCSS plugin. The publisher email does not match the claimed author, indicating account takeover.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss-animate-css-vars",
+        "purl": "pkg:npm/postcss-animate-css-vars@2.0.3"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/postcss-animate-css-vars/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7294"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T21:10:02Z",
+      "indicators_observed": {
+        "sha256": [
+          "1eff52b998b97187bd4d914fe19111ca84b0b5ee1dc079dc597c197df460ed9f"
+        ]
+      }
+    }
+  }
+}
