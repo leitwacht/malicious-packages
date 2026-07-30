@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7288",
+  "modified": "2026-07-30T18:12:08Z",
+  "published": "2026-07-30T18:10:22Z",
+  "summary": "Malicious code in log-min (npm)",
+  "details": "Log-min@1.0.13 impersonates a Theta-blockchain SDK but contains a postinstall hook that decrypts a payload from a bundled dependency and executes it in a detached background Node.js process. The postinstall runs node src, which imports an encrypted payload from the 'thedata' dependency, decrypts it using DES with a hardcoded password, and pipes the decrypted code into a spawned Node.js process via stdin. The package also reads a bundled des.db file for key material. The detached process runs independently of the parent, and the installation triggered network egress (DNS queries to external hosts). The package has no repository and no verifiable publisher identity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "log-min",
+        "purl": "pkg:npm/log-min@1.0.13"
+      },
+      "versions": [
+        "1.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/log-min/v/1.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7288"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T18:10:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "f5305c24f799dfef0d2f19236906022eca926080c0c5f318b4edc9f064483bf3"
+        ]
+      }
+    }
+  }
+}
