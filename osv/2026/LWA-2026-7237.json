@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7237",
+  "modified": "2026-07-30T00:28:55Z",
+  "published": "2026-07-30T00:28:26Z",
+  "summary": "Malicious code in switchpaymentsapiserv-paypal (npm)",
+  "details": "The preinstall hook (preinstall.js) collects the installer's username, hostname, and current working directory, hex-encodes the data, and exfiltrates it via DNS lookup queries to the attacker-controlled domain d9jfvjgl8o8s72utl810ktk61s1xmsysr.o.jgl.red. The data is chunked into 60-character subdomain labels to fit DNS limits, with each chunk sent as a separate dns.lookup() call. The package name mimics a payment-service API (combosquat).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "switchpaymentsapiserv-paypal",
+        "purl": "pkg:npm/switchpaymentsapiserv-paypal@2.3.4"
+      },
+      "versions": [
+        "2.3.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/switchpaymentsapiserv-paypal/v/2.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7237"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T00:28:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "d9jfvjgl8o8s72utl810ktk61s1xmsysr[.]o[.]jgl[.]red",
+          "jgl[.]red"
+        ],
+        "sha256": [
+          "e45623c3196bdd7ee6ffbd3c460d9286c3fc92afa73a3792efa34adeaf14d444"
+        ]
+      }
+    }
+  }
+}
