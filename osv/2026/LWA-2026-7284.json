@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7284",
+  "modified": "2026-07-30T16:23:48Z",
+  "published": "2026-07-30T16:23:19Z",
+  "summary": "Malicious code in runtime-sentinel (npm)",
+  "details": "The package runtime-sentinel@1.0.2 contains a postinstall hook (node src/test.js) that fetches code from hxxps://workconfig[.]vercel[.]app over HTTPS and executes it via new Function('require', data.toString())(require). This is a remote-code-execution dropper: the payload is served from the remote host at install time, not shipped in the tarball. The package has no repository verification and its name impersonates a legitimate runtime monitoring tool.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "runtime-sentinel",
+        "purl": "pkg:npm/runtime-sentinel@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/runtime-sentinel/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7284"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T16:23:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "workconfig[.]vercel[.]app"
+        ],
+        "sha256": [
+          "5039023e9ff725a4c347625068c1403ef74e5d541c147dd72f0b68fe2c6321d3"
+        ],
+        "url_observed": [
+          "hxxps://workconfig[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}
