@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7246",
+  "modified": "2026-07-30T11:12:05Z",
+  "published": "2026-07-30T11:08:50Z",
+  "summary": "Malicious code in akamai-sensorv1 (npm)",
+  "details": "Combosquat package impersonating Akamai. Contains a multi-stage C2 implant: (1) A hidden payload is steganographically encoded using Unicode variation selectors inside a comment in index.js; sync-metrics.js decodes and executes it via dynamic code evaluation. (2) The visible code fetches a Google Calendar ICS feed, extracts a URL from the DESCRIPTION field of calendar events, appends /generate, and fetches JSON from that URL — a dead-drop C2 channel where the attacker controls the calendar to dynamically change the command server. At runtime the package performed a DNS sandbox-evasion check before executing its payload. No repository URL provided.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "akamai-sensorv1",
+        "purl": "pkg:npm/akamai-sensorv1@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/akamai-sensorv1/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7246"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T11:08:50Z",
+      "indicators_observed": {
+        "sha256": [
+          "2c5241c61dba369c636204ff43d808c55e5bd521625f012fcec281342541e24b"
+        ]
+      }
+    }
+  }
+}
