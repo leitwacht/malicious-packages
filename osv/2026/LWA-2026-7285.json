@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7285",
+  "modified": "2026-07-30T16:27:02Z",
+  "published": "2026-07-30T16:25:35Z",
+  "summary": "Malicious code in streak-metrics-math (npm)",
+  "details": "The package masquerades as a calendar-day streak math library but bundles a full C2 implant as a native ELF binary (dist/math-calc.bin). On import, dist/index.mjs spawns the binary as a detached background process. The binary is a remote access trojan (RAT) that: harvests browser credentials (Chrome/Chromium/Brave/Edge/Firefox Login Data, Cookies, Local State), SSH private keys, and database configuration files; performs system reconnaissance (uname, id, ps, env, network interfaces, routing tables, ARP cache, active connections); provides a remote shell with file upload/download/execution; exfiltrates stolen data to catbox.moe (litterbox.catbox.moe) and to a hardcoded C2 server at 217[.]60[.]77[.]63 via HTTP paths /Others/ and /SC/; supports port forwarding, SOCKS proxy, and RC2TUN tunnel protocol; establishes persistence via cron,.bashrc, and systemd user services; and can stage and execute additional payloads from the C2 server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-metrics-math",
+        "purl": "pkg:npm/streak-metrics-math@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-metrics-math/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7285"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T16:25:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "7e33dc57db99d2ec152ff2fd65d8bd0444c87603c28e6f3650c70e02834a2cc6"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63:80/Others/",
+          "hxxp://217[.]60[.]77[.]63:80/SC/",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
