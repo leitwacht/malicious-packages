@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7277",
+  "modified": "2026-07-30T16:06:04Z",
+  "published": "2026-07-30T15:59:14Z",
+  "summary": "Malicious code in akamai-sensorv3 (npm)",
+  "details": "Combosquat of the Akamai brand. The package is a multi-stage C2 implant. On require(), sync-metrics.js reads a Unicode variation-selector-encoded payload hidden in a comment inside index.js, decodes it, and executes it via new Function. The main module fetches a Google Calendar iCal feed and extracts a remote generator URL from the calendar's DESCRIPTION fields, then fetches that URL over HTTP/HTTPS and parses the response as JSON. The package attempted DNS egress to an external host. The payload is a remote-code-execution implant using a Google Calendar dead-drop as its C2 resolver.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "akamai-sensorv3",
+        "purl": "pkg:npm/akamai-sensorv3@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/akamai-sensorv3/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7277"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T15:59:14Z",
+      "indicators_observed": {
+        "sha256": [
+          "888a2b94aade3b53524ad54d151b932b18a52197955da05da9bf789300473854"
+        ]
+      }
+    }
+  }
+}

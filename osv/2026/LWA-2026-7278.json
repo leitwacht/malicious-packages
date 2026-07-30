@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7278",
+  "modified": "2026-07-30T16:06:03Z",
+  "published": "2026-07-30T16:03:28Z",
+  "summary": "Malicious code in streak-metrics-core (npm)",
+  "details": "Package streak-metrics-core@1.0.0 is a trojanized clone that bundles a REDSHELL C2 implant. On import, dist/index.mjs spawns dist/core-math.bin — a 63KB Linux x86_64 ELF binary providing full remote shell access. The implant beacons to C2 infrastructure (IP 217[.]60[.]77[.]63) with system profiling data, and supports: remote command execution via a /redshell command system; credential theft (SSH keys from ~/.ssh, browser login data and cookies from Chrome/Chromium/Brave/Edge/Firefox, database credentials from config files and env); persistence via systemd user service, cron @reboot, and bashrc injection; SOCKS proxy and port forwarding; file exfiltration via catbox.moe; and in-memory payload execution via memfd and shellcode staging. The binary uses OpenSSL for encrypted C2 communication.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-metrics-core",
+        "purl": "pkg:npm/streak-metrics-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-metrics-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7278"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T16:03:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "e8fc8f0735409cec6c686ff0a4ea1dd61804e57321eb7ac852935ebd068359f6"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63:80/Others/",
+          "hxxp://217[.]60[.]77[.]63:80/SC/",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
