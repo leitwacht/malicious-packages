@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7243",
+  "modified": "2026-07-30T09:26:39Z",
+  "published": "2026-07-30T09:25:56Z",
+  "summary": "Malicious code in streak-metric-core (npm)",
+  "details": "On module import, streak-metric-core@1.0.0 downloads a remote binary from a Backblaze B2 bucket and executes it as a detached background process. The URL is obfuscated using char-code arrays in dist/index.mjs. The binary is fetched from hxxps://f004[.]backblazeb2[.]com/file/dp8hbvocjd2fpza/service, saved to ~/.cache/streak-metric/service, made executable, and spawned with detached:true and stdio:ignore. The package's stated purpose (calendar-day bucketing and streak math) is unrelated to this behaviour, which is not documented in the README.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-metric-core",
+        "purl": "pkg:npm/streak-metric-core@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-metric-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7243"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T09:25:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "f004[.]backblazeb2[.]com"
+        ],
+        "sha256": [
+          "a6ed6886c2dc2ff1bfed0cdc18e8aeb7e2cb4a7f28b8f1ded0302db31f9f7ac6"
+        ],
+        "url_observed": [
+          "hxxps://f004[.]backblazeb2[.]com/file/dp8hbvocjd2fpza/service"
+        ]
+      }
+    }
+  }
+}
