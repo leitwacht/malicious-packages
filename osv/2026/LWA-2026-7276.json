@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7276",
+  "modified": "2026-07-30T15:59:37Z",
+  "published": "2026-07-30T15:55:29Z",
+  "summary": "Malicious code in supersig (npm)",
+  "details": "Supersig@1.0.5 masquerades as a Theta blockchain SDK library but is a trojanized package that executes remote code on install. At module load time, it imports a DES-encrypted payload from the known-malware dependency mkb-manager, decrypts it using the hardcoded password \"password\", spawns a detached Node.js child process, and pipes the decrypted code to its stdin for execution. The CJS and UMD bundles additionally read an RSA-encrypted payload from node_modules/tchain-api/apps/docs/app/rsa.db, decrypt it, and pipe it to a spawned node process. The spawned processes run detached and unref'd, making them invisible to the installer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "supersig",
+        "purl": "pkg:npm/supersig@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/supersig/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7276"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T15:55:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "33a2a3364b60cd6c9b957d45e152109904ccfefea7758689f9b17651010ffbb4"
+        ]
+      }
+    }
+  }
+}
