@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7241",
+  "modified": "2026-07-30T05:30:04Z",
+  "published": "2026-07-30T05:29:22Z",
+  "summary": "Malicious code in rollup-plugins-check (npm)",
+  "details": "The postinstall script (dist/module.js) makes an HTTPS GET request to workconfig[.]vercel[.]app (with TLS verification disabled) and passes the response body into new Function('require', data)(require), executing arbitrary remote code on the installer's machine with full Node.js require() access. The package claims to be a rollup polyfill plugin and references the legitimate FredKSchott/rollup-plugin-polyfill-node repository, but ships a malicious install-time downloader instead. IOC: workconfig[.]vercel[.]app (HTTPS).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rollup-plugins-check",
+        "purl": "pkg:npm/rollup-plugins-check@0.0.1"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rollup-plugins-check/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7241"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T05:29:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "workconfig[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}
