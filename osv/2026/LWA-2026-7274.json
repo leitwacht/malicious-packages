@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7274",
+  "modified": "2026-07-30T12:10:15Z",
+  "published": "2026-07-30T12:08:23Z",
+  "summary": "Malicious code in akamai-sensorv2 (npm)",
+  "details": "Akamai-sensorv2 is a combosquat trojan impersonating Akamai security tools. It contains a hidden payload encoded as Unicode variation selectors inside a comment block in index.js, decoded and executed at runtime via `new Function(\"require\",...)`. The package reads a Google Calendar ICS feed to dynamically resolve a C2 URL from calendar event descriptions, then fetches and executes JSON payloads from that URL with \"/generate\" appended. The attacker controls the calendar events and can change the C2 endpoint at any time without updating the package. The hidden payload has full filesystem and network access via the passed `require` function.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "akamai-sensorv2",
+        "purl": "pkg:npm/akamai-sensorv2@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/akamai-sensorv2/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7274"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-30T12:08:23Z",
+      "indicators_observed": {
+        "url_observed": [
+          "hxxps://calendar[.]google[.]com/calendar/ical/hev4229%40gmail[.]com/public/basic[.]ics"
+        ]
+      }
+    }
+  }
+}
