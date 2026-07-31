@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7303",
+  "modified": "2026-07-31T15:07:26Z",
+  "published": "2026-07-31T15:06:23Z",
+  "summary": "Malicious code in tailwind-opentype (npm)",
+  "details": "Tailwind-opentype@1.2.3 is a trojanized clone of a legitimate Tailwind CSS OpenType plugin. The dist/index.js file re-exports the real plugin code to appear legitimate, but on require() executes an eval(atob(...)) payload that deploys an Ethereum blockchain scanner and wallet drainer. The payload connects to Ethereum RPC endpoints (eth-mainnet[.]public[.]blastapi[.]io and others) to scan for transactions, extracts IP addresses from transaction data, and establishes XOR-encrypted C2 communication over HTTP to hxxp://{extracted-ip}:443/0x/cls and hxxp://{extracted-ip}:443/0x/ls. It spawns detached node child_processes to execute further stages. The package has no repository URL and no license.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-opentype",
+        "purl": "pkg:npm/tailwind-opentype@1.2.3"
+      },
+      "versions": [
+        "1.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-opentype/v/1.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7303"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-31T15:06:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eth-mainnet[.]public[.]blastapi[.]io"
+        ],
+        "url_observed": [
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io"
+        ]
+      }
+    }
+  }
+}
