@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7297",
+  "modified": "2026-07-31T07:16:45Z",
+  "published": "2026-07-31T07:16:25Z",
+  "summary": "Malicious code in @latlongid/location (npm)",
+  "details": "The package runs a DNS-based host-identity beacon on install. The postinstall hook executes index.js, which reads the machine's hostname via os.hostname(), hex-encodes it, and embeds it in a DNS lookup to the domain dns[.]gl0b[.]xyz. The query pattern is: {beacon-uuid}.h{hex-hostname}.{random-nonce}.dns[.]gl0b[.]xyz. The beacon UUID is 2d5bccee-3cfd-4d29-9131-2ecddf01d462. The hostname is exfiltrated to the DNS resolver at dns[.]gl0b[.]xyz on every install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@latlongid/location",
+        "purl": "pkg:npm/%40latlongid/location@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@latlongid/location/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7297"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-31T07:16:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dns[.]gl0b[.]xyz"
+        ],
+        "sha256": [
+          "d130dd6ddcb9e7455a18a7bbceff771d87234c391ef09f58bd166b41323a33eb"
+        ]
+      }
+    }
+  }
+}
