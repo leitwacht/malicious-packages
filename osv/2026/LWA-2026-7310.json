@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7310",
+  "modified": "2026-07-31T18:18:46Z",
+  "published": "2026-07-31T18:18:24Z",
+  "summary": "Malicious code in warp-drive-internal-tooling (npm)",
+  "details": "The package's preinstall hook runs a PowerShell command that downloads a remote archive from files.catbox.moe/5khq55[.]zip, extracts it to the system temporary directory, and executes the extracted Verification_Tool.exe with a hidden window. This is a remote download-and-execute dropper that delivers an unknown second-stage payload to Windows systems. The package has no repository, no documented purpose beyond a vague \"Internal sync utility\" description, and uses an inflated version number (99.9.9) consistent with dependency-confusion targeting.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "warp-drive-internal-tooling",
+        "purl": "pkg:npm/warp-drive-internal-tooling@99.9.9"
+      },
+      "versions": [
+        "99.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/warp-drive-internal-tooling/v/99.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7310"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-07-31T18:18:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "files[.]catbox[.]moe"
+        ],
+        "sha256": [
+          "f669a89ae4b86447894c18aed315539866756ed9ea9ba05f97b14ad771e34525"
+        ],
+        "url_observed": [
+          "hxxps://files[.]catbox[.]moe/5khq55[.]zip"
+        ]
+      }
+    }
+  }
+}
