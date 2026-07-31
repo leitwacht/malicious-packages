@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7299",
+  "modified": "2026-07-31T09:43:40Z",
+  "published": "2026-07-31T09:43:05Z",
+  "summary": "Malicious code in hardhat-hold (npm)",
+  "details": "Hardhat-hold@2.21.0 is a combosquat package (named to resemble the hardhat Ethereum development tool) that functions as a C2 reconnaissance implant. On require(), the heavily-obfuscated payload in lib/config.js (4MB, javascript-obfuscator output) beacons system information to a remote server at 167[.]88[.]167[.]54:8087 and 167[.]88[.]167[.]54:8085. It POSTs JSON to /api/log and /api/notify containing the hostname, operating system, and username. It also POSTs a multipart file upload to /upload containing a sysinfo.txt file with hostname, OS, username, platform, and timestamp. The package performs sandbox detection via DNS queries before activating its C2 channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-hold",
+        "purl": "pkg:npm/hardhat-hold@2.21.0"
+      },
+      "versions": [
+        "2.21.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-hold/v/2.21.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7299"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-31T09:43:05Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "f637aeb66a1be5c1f103e379b1040aed00dab2638e2800ce6826b62cfb846955"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
