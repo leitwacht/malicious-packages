@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-7363",
-  "modified": "2026-08-01T14:09:39Z",
+  "modified": "2026-08-01T16:04:52Z",
   "published": "2026-08-01T14:08:58Z",
   "summary": "Malicious code in pp-react-worldready-v5 (npm)",
-  "details": "Pp-react-worldready-v5@1.0.0 is a combosquat of the react-worldready package. Its preinstall hook (vishu.js) collects the victim's public IP from api[.]ipify[.]org, reads CI/CD environment variables (CI, GITHUB_ACTIONS, GITHUB_WORKFLOW, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, GITHUB_RUN_ATTEMPT), and exfiltrates the hostname, public IP, and CI metadata via HTTPS GET to webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110. It also performs a DNS lookup to ping-\u003chostname\u003e.your-collab-domain[.]oastify[.]com as a DNS-based exfiltration channel. No repository or documentation is provided.",
+  "details": "Pp-react-worldready-v5@1.0.0 is a combosquat of the react-worldready package. Its preinstall hook (vishu.js) collects the victim's public IP from api[.]ipify[.]org, reads CI/CD environment variables (CI, GITHUB_ACTIONS, GITHUB_WORKFLOW, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, GITHUB_RUN_ATTEMPT), and exfiltrates the hostname, public IP, and CI metadata via HTTPS GET to webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110. It also performs a DNS lookup to ping-\u003chostname\u003e.your-collab-domain[.]oastify[.]com as a DNS-based exfiltration channel. No repository or documentation is provided. The packages pp-react-worldready and pp-react-worldready-v5 are typosquat malware that exfiltrate CI/CD environment metadata at install time. The preinstall hook (vishu.js) performs external IP lookup via api[.]ipify[.]org, sends DNS beacons to an oastify[.]com subdomain for CI/CD fingerprinting, and exfiltrates environment variables (ci, gh_act, gh_wf) to webhook[.]site via HTTPS. The payload reads hostname, platform, and CI/CD environment variables, then beacons the data to the C2 at webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110 and via DNS to ping-build-*.your-collab-domain[.]oastify[.]com.",
   "affected": [
     {
       "package": {
@@ -52,6 +52,9 @@
       "indicators_observed": {
         "domain_observed": [
           "api[.]ipify[.]org",
+          "oastify[.]com",
+          "ping-build-24484d1117bd[.]your-collab-domain[.]oastify[.]com",
+          "ping-build-756d32d09b3e[.]your-collab-domain[.]oastify[.]com",
           "webhook[.]site",
           "your-collab-domain[.]oastify[.]com"
         ],
@@ -59,6 +62,7 @@
           "49defa4460e4703a01bb69fb5365d9a1c185116625d5fa87612ad289adff60e9"
         ],
         "url_observed": [
+          "hxxps://api[.]ipify[.]org/?format=json",
           "hxxps://api[.]ipify[.]org?format=json",
           "hxxps://webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110"
         ]
