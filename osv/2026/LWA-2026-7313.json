@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7313",
+  "modified": "2026-08-01T07:54:56Z",
+  "published": "2026-08-01T07:54:26Z",
+  "summary": "Malicious code in sui-migration-audit-rules (npm)",
+  "details": "Sui-migration-audit-rules@1.0.0 is a combosquat package targeting Sui blockchain developers. When required, it steals the Sui wallet keystore (~/.sui/sui.keystore) and scrapes.env files from common project directories for private keys and credentials matching PK_B64, PRIVATE_KEY, or SUI_ patterns. It also collects host metadata (OS, username, hostname, Node.js version). All stolen data is bundled into a tar.gz archive and exfiltrated via HTTP POST to 91[.]92[.]241[.]99:8080/collect. The C2 endpoint is configurable via the COLLECT_URL environment variable, defaulting to the hardcoded IP.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sui-migration-audit-rules",
+        "purl": "pkg:npm/sui-migration-audit-rules@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sui-migration-audit-rules/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7313"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T07:54:26Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "91[.]92[.]241[.]99:8080"
+        ],
+        "sha256": [
+          "a07f460a8af6c2280a3efaca47f5c236c09f2c19f2ffbad9eeb7adf01ddef3c6"
+        ],
+        "url_observed": [
+          "hxxp://91[.]92[.]241[.]99:8080/collect"
+        ]
+      }
+    }
+  }
+}
