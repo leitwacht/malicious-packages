@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7375",
+  "modified": "2026-08-01T22:08:08Z",
+  "published": "2026-08-01T22:06:26Z",
+  "summary": "Malicious code in @velliajs/telegram (npm)",
+  "details": "@velliajs/telegram@1.0.0 is a trojanized clone of the telegraf Telegram bot framework. The package ships a hardcoded GitHub personal access token in src/telegraf.ts and lib/telegraf.js. When the TraceCors.create() method is called, it fetches a remote JSON database from api[.]github[.]com/repos/Vellia-Elyvia/mydb/contents/db.json using the hardcoded token, and checks whether the bot's username is registered and active. If the bot is not registered, the library throws an error and refuses to operate — a remote authorization gate / kill switch. This exfiltrates the bot's identity to the attacker's GitHub repository.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@velliajs/telegram",
+        "purl": "pkg:npm/%40velliajs/telegram@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@velliajs/telegram/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7375"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T22:06:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/repos/Vellia-Elyvia/mydb/contents/db[.]json"
+        ]
+      }
+    }
+  }
+}
