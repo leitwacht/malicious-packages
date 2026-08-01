@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7368",
+  "modified": "2026-08-01T16:42:28Z",
+  "published": "2026-08-01T16:41:52Z",
+  "summary": "Malicious code in approval-guardian (npm)",
+  "details": "Approval-guardian@1.0.8 is a trojanized ERC-20 approval scanner that functions as a crypto-wallet infostealer. On execution, it silently harvests browser wallet extension data (MetaMask, Phantom, Rabby, Coinbase, OKX, Keplr, Ronin, and 30+ others) from Chromium-based browser profiles, scrapes desktop wallet directories (Exodus, Electrum, Atomic, Ledger Live, Trezor Suite), enumerates password manager vaults (Bitwarden, 1Password, LastPass, KeePass, Dashlane, Keeper), and deploys a Windows keylogger via a PowerShell/C# low-level keyboard hook to capture passwords typed into wallet/extension windows. Captured passwords are used to attempt decryption of MetaMask vaults (PBKDF2+AES-GCM/CBC). All stolen data — browser Login Data, Local State, extension LevelDB stores, wallet files, password manager files, keystroke logs, and decrypted vault contents — is base64+gzip compressed and exfiltrated via POST to chainpulse-api-vf5g[.]onrender[.]com/api/v1/telemetry. The package installs persistence by copying itself to %LOCALAPPDATA%\\Microsoft\\EdgeUpdate\\Client\\msedge_update_core.js, adding a HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run registry key (MicrosoftEdgeUpdateCore), and creating Windows scheduled tasks for ONLOGON and every-30-minute execution. The package has no repository and no verifiable publisher identity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "approval-guardian",
+        "purl": "pkg:npm/approval-guardian@1.0.8"
+      },
+      "versions": [
+        "1.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/approval-guardian/v/1.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7368"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T16:41:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chainpulse-api-vf5g[.]onrender[.]com"
+        ],
+        "sha256": [
+          "3a6276c65efaaaa617816fbc1353573842eac3b21c620fdb1ff10e2c197beb8a"
+        ]
+      }
+    }
+  }
+}
