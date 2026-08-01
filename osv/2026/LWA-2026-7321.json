@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7321",
+  "modified": "2026-08-01T11:28:05Z",
+  "published": "2026-08-01T11:23:23Z",
+  "summary": "Malicious code in arbocrate-sla-prober-arbocrate-sla-prober-core (npm)",
+  "details": "On require(), the package auto-executes a setup routine that fingerprints the host (hostname, username, cwd, Node.js version, PID) and detects the platform (Linux x64/arm64, macOS, Windows). It then connects to attacker-controlled hosts (oob-worker[.]cf, well1[.]site) to download a platform-specific binary, writes it to /var/tmp (or C:\\Windows\\Temp on Windows), makes it executable, and spawns it as a detached child process. The binary download is wrapped inside a large analytics-SDK facade (lib/telemetry.js) that provides HTTPS transport, endpoint rotation, and DNS-based failover to multiple CDN nodes. The package has no lifecycle hooks — execution happens on require() via process.nextTick.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "arbocrate-sla-prober-arbocrate-sla-prober-core",
+        "purl": "pkg:npm/arbocrate-sla-prober-arbocrate-sla-prober-core@7.5.8"
+      },
+      "versions": [
+        "7.5.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/arbocrate-sla-prober-arbocrate-sla-prober-core/v/7.5.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7321"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T11:23:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf",
+          "well1[.]site"
+        ],
+        "sha256": [
+          "42a1319fbaf21996e6d6b9a3c96729ed64b889ed3f41ae6177f47c06a3f1a94e"
+        ]
+      }
+    }
+  }
+}
