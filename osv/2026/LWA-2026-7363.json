@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7363",
+  "modified": "2026-08-01T14:09:39Z",
+  "published": "2026-08-01T14:08:58Z",
+  "summary": "Malicious code in pp-react-worldready-v5 (npm)",
+  "details": "Pp-react-worldready-v5@1.0.0 is a combosquat of the react-worldready package. Its preinstall hook (vishu.js) collects the victim's public IP from api[.]ipify[.]org, reads CI/CD environment variables (CI, GITHUB_ACTIONS, GITHUB_WORKFLOW, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, GITHUB_RUN_ATTEMPT), and exfiltrates the hostname, public IP, and CI metadata via HTTPS GET to webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110. It also performs a DNS lookup to ping-\u003chostname\u003e.your-collab-domain[.]oastify[.]com as a DNS-based exfiltration channel. No repository or documentation is provided.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pp-react-worldready-v5",
+        "purl": "pkg:npm/pp-react-worldready-v5@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pp-react-worldready-v5/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7363"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T14:08:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "webhook[.]site",
+          "your-collab-domain[.]oastify[.]com"
+        ],
+        "sha256": [
+          "49defa4460e4703a01bb69fb5365d9a1c185116625d5fa87612ad289adff60e9"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110"
+        ]
+      }
+    }
+  }
+}
