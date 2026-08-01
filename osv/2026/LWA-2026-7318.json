@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7318",
+  "modified": "2026-08-01T11:19:58Z",
+  "published": "2026-08-01T11:16:23Z",
+  "summary": "Malicious code in beaver-ui-actions-button (npm)",
+  "details": "Beaver-ui-actions-button masquerades as a React UI component but is a remote binary downloader. On require(), it collects a host fingerprint (hostname, username, cwd, Node.js version, PID) and downloads a platform-specific binary from attacker-controlled infrastructure (oob-worker[.]cf, *.well1[.]site). The binary is written to /var/tmp with a random name, made executable, and spawned as a detached process. Supported platforms: linux x64/arm64, macOS, Windows. The package has no repository, no React dependency, and no actual component code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-actions-button",
+        "purl": "pkg:npm/beaver-ui-actions-button@5.4.7"
+      },
+      "versions": [
+        "5.4.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-actions-button/v/5.4.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7318"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T11:16:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "f9a7c613ac623aa680d8d01620921e9b9854b64142823a856a6d5ddc025ed0a2"
+        ],
+        "url_observed": [
+          "hxxps://ldr[.]dl[.]well1[.]site/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf/101-adf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf/99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://tin[.]dl[.]well1[.]site/pkg/package",
+          "hxxps://tina[.]dl[.]well1[.]site/pkg/package-arm64",
+          "hxxps://win[.]dl[.]well1[.]site/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

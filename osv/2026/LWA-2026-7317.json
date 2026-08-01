@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7317",
+  "modified": "2026-08-01T11:19:47Z",
+  "published": "2026-08-01T11:16:23Z",
+  "summary": "Malicious code in accounts-timeline (npm)",
+  "details": "On require(), accounts-timeline silently downloads and executes a platform-specific binary from Cloudflare Workers subdomains (oob-worker[.]cf with subdomains 99-9b3[.]workers[.]dev through 103-070[.]workers[.]dev) with fallback DNS resolvers at tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, and win[.]dl[.]well1[.]site. The binary is fetched via HTTPS, written to /var/tmp (or C:\\Windows\\Temp on Windows) with a random filename, made executable, spawned as a detached background process via child_process.execFile, and then deleted after 5 seconds. The package collects a host fingerprint (hostname, username, cwd, Node.js version, PID) before downloading. Supported platforms: linux/x64, linux/arm64, darwin, win32.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "accounts-timeline",
+        "purl": "pkg:npm/accounts-timeline@9.6.10"
+      },
+      "versions": [
+        "9.6.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/accounts-timeline/v/9.6.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7317"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T11:16:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "103-070[.]workers[.]dev",
+          "99-9b3[.]workers[.]dev",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "3c2b89d14bcb926a862a0a51abb5386bc99e485fbea29c3c3fec69fead335f2f"
+        ],
+        "url_observed": [
+          "hxxps://100-416[.]workers[.]dev/pkg/package",
+          "hxxps://101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://103-070[.]workers[.]dev/pkg/package",
+          "hxxps://99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

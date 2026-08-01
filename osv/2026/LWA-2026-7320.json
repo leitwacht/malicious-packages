@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7320",
+  "modified": "2026-08-01T11:20:07Z",
+  "published": "2026-08-01T11:16:23Z",
+  "summary": "Malicious code in bcore-bravo-eslint-config (npm)",
+  "details": "Bcore-bravo-eslint-config is a combosquat package that downloads and executes a native binary on require(). On import, it collects a host fingerprint (hostname, username, cwd, Node.js version, PID) and contacts C2 servers at oob-worker[.]cf (subdomains: 99-9b3, 100-416, 101-adf, 102-baf, 103-070) and well1[.]site (subdomains: tin.dl, tina.dl, ldr.dl, win.dl) to download a platform-specific binary. The binary is written to /var/tmp (or %TEMP% on Windows) and executed as a detached process with output discarded. The package has no repository URL and its name impersonates an ESLint configuration package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bcore-bravo-eslint-config",
+        "purl": "pkg:npm/bcore-bravo-eslint-config@9.5.7"
+      },
+      "versions": [
+        "9.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bcore-bravo-eslint-config/v/9.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7320"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T11:16:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf",
+          "well1[.]site"
+        ],
+        "sha256": [
+          "37d77f9c3ccfc22064f52be40564aa3c593d2431adb5a65191366b395f623f67"
+        ],
+        "url_observed": [
+          "hxxps://ldr[.]dl[.]well1[.]site",
+          "hxxps://oob-worker[.]cf/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/pkg/package",
+          "hxxps://oob-worker[.]cf/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf/pkg/package[.]exe",
+          "hxxps://tin[.]dl[.]well1[.]site",
+          "hxxps://tina[.]dl[.]well1[.]site",
+          "hxxps://win[.]dl[.]well1[.]site"
+        ]
+      }
+    }
+  }
+}
