@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7312",
+  "modified": "2026-08-01T03:08:39Z",
+  "published": "2026-08-01T03:06:24Z",
+  "summary": "Malicious code in akamaijs (npm)",
+  "details": "Akamaijs@1.0.1 is a C2 implant that uses a Google Calendar ICS feed as a dead-drop command channel. On require(), the package fetches a Google Calendar ICS feed and parses VEVENT entries for base64-encoded or plain URLs in DESCRIPTION fields. It resolves a primary C2 endpoint from events with SUMMARY matching \"akamai\" (preferring trycloudflare tunnel URLs) and a secondary staging endpoint from events matching \"titi|stage|pkg\". A steganographic payload hidden in Unicode variation selectors within a source comment block is extracted and executed via new Function(), receiving the C2 channel function as a parameter. The sensor() function fetches the resolved C2 URL and parses the JSON response. The attacker controls the calendar events to serve new C2 URLs dynamically.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "akamaijs",
+        "purl": "pkg:npm/akamaijs@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/akamaijs/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7312"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T03:06:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "f1356e68605914daec3f647d7586db7836baf9006100db45b0369cf3df0b97bd"
+        ]
+      }
+    }
+  }
+}
