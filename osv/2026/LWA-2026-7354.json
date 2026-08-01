@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7354",
+  "modified": "2026-08-01T13:35:54Z",
+  "published": "2026-08-01T13:35:24Z",
+  "summary": "Security-research / proof-of-concept package: pp-react-worldready (npm)",
+  "details": "The package pp-react-worldready@1.0.0 runs a preinstall hook (node vishu.js) that silently collects host metadata at install time. It fetches the machine's public IP from api[.]ipify[.]org, then exfiltrates the IP and CI/CD environment variables (GITHUB_ACTIONS, GITHUB_WORKFLOW, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, GITHUB_RUN_ATTEMPT) to webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110 via HTTP GET. It also performs a DNS lookup to ping-\u003chostname\u003e.your-collab-domain[.]oastify[.]com as an out-of-band exfiltration channel. The package contains no React code and serves no legitimate purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pp-react-worldready",
+        "purl": "pkg:npm/pp-react-worldready@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pp-react-worldready/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7354"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-08-01T13:35:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "webhook[.]site",
+          "your-collab-domain[.]oastify[.]com"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://webhook[.]site/1b840cbf-f1a4-4d79-bf11-f1ef62949110"
+        ]
+      }
+    }
+  }
+}
