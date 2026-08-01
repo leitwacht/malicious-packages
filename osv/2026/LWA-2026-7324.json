@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7324",
+  "modified": "2026-08-01T11:23:36Z",
+  "published": "2026-08-01T11:16:23Z",
+  "summary": "Malicious code in afisha-storybook-default (npm)",
+  "details": "On require(), the package detects the host platform (Linux x64/arm64, macOS, Windows) and downloads a platform-specific native binary from attacker-controlled infrastructure. The download URLs are constructed from string-split arrays pointing to oob-worker[.]cf (Cloudflare Workers) with paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe, with fallback resolvers on tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, and win[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp (or %TEMP% on Windows) with a randomized filename and executed as a detached, hidden process via child_process.execFile(). The package also collects a host fingerprint (hostname, username, cwd, Node.js version, PID) before the download.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "afisha-storybook-default",
+        "purl": "pkg:npm/afisha-storybook-default@9.7.10"
+      },
+      "versions": [
+        "9.7.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/afisha-storybook-default/v/9.7.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7324"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T11:16:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "4289ece4fe9d2f1b85cf8c2a34a6a939082954c86e1b6cdc884c7b4dff3d6884"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/pkg/package",
+          "hxxps://oob-worker[.]cf/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

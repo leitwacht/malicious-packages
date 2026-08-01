@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7323",
+  "modified": "2026-08-01T11:20:17Z",
+  "published": "2026-08-01T11:15:24Z",
+  "summary": "Malicious code in accounts-loading-state (npm)",
+  "details": "Accounts-loading-state@8.9.4 is a remote binary downloader disguised as a microservice utility. On require, it collects a host fingerprint (hostname, username, cwd, Node.js version, PID) and downloads a platform-specific binary from Cloudflare Workers-based C2 infrastructure (oob-worker[.]cf subdomains on workers[.]dev, with well1[.]site as fallback). The binary is written to /var/tmp (or %TEMP% on Windows), made executable, and spawned as a detached process that outlives the parent. Platform-specific download paths: /pkg/package (linux x64), /pkg/package-arm64 (linux arm64), /pkg/loader_mac (macOS), /pkg/package.exe (Windows). The C2 domains are constructed from split strings to evade static detection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "accounts-loading-state",
+        "purl": "pkg:npm/accounts-loading-state@8.9.4"
+      },
+      "versions": [
+        "8.9.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/accounts-loading-state/v/8.9.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7323"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T11:15:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf",
+          "well1[.]site",
+          "workers[.]dev"
+        ],
+        "sha256": [
+          "ba01f4b5bd1cf54c76172d3106d3e9b6ac1655790819c772932a3830450ef96f"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/pkg/package",
+          "hxxps://oob-worker[.]cf/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}
