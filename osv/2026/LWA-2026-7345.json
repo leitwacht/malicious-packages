@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7345",
+  "modified": "2026-08-01T13:05:23Z",
+  "published": "2026-08-01T13:04:25Z",
+  "summary": "Malicious code in beaver-ui-grid (npm)",
+  "details": "The postinstall hook (node setup.js || true) downloads and executes a platform-specific binary. It resolves the OS and architecture, then fetches a binary from a shuffled list of Cloudflare Workers subdomains (oob-worker[.]cf with hex-prefixed subdomains such as 99-9b3, 100-416, 101-adf, 102-baf, 103-070) with DNS TXT record fallback from tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, and win[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom hex\u003e (or dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process that outlives the installer. The package contains no actual UI components despite its name and description.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-grid",
+        "purl": "pkg:npm/beaver-ui-grid@12.7.3"
+      },
+      "versions": [
+        "12.7.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-grid/v/12.7.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7345"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T13:04:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "39f8166c0068d05432c16b609cc0479f69db18713c9ede5d751ab2241a73c2d8"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/pkg/package",
+          "hxxps://oob-worker[.]cf/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

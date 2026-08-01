@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7344",
+  "modified": "2026-08-01T13:05:17Z",
+  "published": "2026-08-01T13:04:25Z",
+  "summary": "Malicious code in beaver-ui-layout (npm)",
+  "details": "Beaver-ui-layout@12.9.6 is a trojanized package impersonating a UI layout library. Its postinstall hook runs setup.js, which fingerprints the system (OS, architecture), then downloads a platform-specific binary payload from obfuscated C2 hosts (oob-worker[.]cf subdomains — 99-9b3[.]workers[.]dev, 100-416[.]workers[.]dev, 101-adf[.]workers[.]dev, 102-baf[.]workers[.]dev, 103-070[.]workers[.]dev) with DNS TXT fallback domains (tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process. A 6-hour stamp file prevents repeated downloads. The package ships a large decoy telemetry.js file to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-layout",
+        "purl": "pkg:npm/beaver-ui-layout@12.9.6"
+      },
+      "versions": [
+        "12.9.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-layout/v/12.9.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7344"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T13:04:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "100-416[.]workers[.]dev",
+          "101-adf[.]workers[.]dev",
+          "102-baf[.]workers[.]dev",
+          "103-070[.]workers[.]dev",
+          "99-9b3[.]workers[.]dev",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "f2baa8b7a17e2395a103e9a336d24c63344a13fda345bb9959f02d9c13d55314"
+        ]
+      }
+    }
+  }
+}
