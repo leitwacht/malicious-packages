@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7315",
+  "modified": "2026-08-01T10:24:53Z",
+  "published": "2026-08-01T10:23:48Z",
+  "summary": "Malicious code in accounts-final-form (npm)",
+  "details": "Accounts-final-form@9.9.9 is a combosquat of the legitimate final-form/react-final-form packages. On require(), it silently downloads and executes a platform-specific binary from attacker-controlled Cloudflare Workers endpoints (package-proxy[.]cf5oob[.]workers[.]dev, package-proxy[.]cf8oob[.]workers[.]dev, package-proxy[.]cf12oob[.]workers[.]dev, package-proxy[.]cf17-ddb[.]workers[.]dev, package-proxy[.]cf25-6eb[.]workers[.]dev) with fallback to well1[.]site domains (tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site). The downloaded binary is run as a detached child process. The package collects a host fingerprint (hostname, username, cwd, node version, PID) before contacting the C2 infrastructure. No repository or legitimate publisher identity is provided.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "accounts-final-form",
+        "purl": "pkg:npm/accounts-final-form@9.9.9"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/accounts-final-form/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7315"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T10:23:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "package-proxy[.]cf12oob[.]workers[.]dev",
+          "package-proxy[.]cf17-ddb[.]workers[.]dev",
+          "package-proxy[.]cf25-6eb[.]workers[.]dev",
+          "package-proxy[.]cf5oob[.]workers[.]dev",
+          "package-proxy[.]cf8oob[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "6550aaf0d6ae49ece9ab07328297fddc6ff96cffba5d4ec7676779a97dd29e74"
+        ]
+      }
+    }
+  }
+}
