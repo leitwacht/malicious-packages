@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7346",
+  "modified": "2026-08-01T13:05:26Z",
+  "published": "2026-08-01T13:04:25Z",
+  "summary": "Malicious code in beaver-ui-header (npm)",
+  "details": "The postinstall hook runs setup.js which downloads and executes a platform-specific binary payload. It detects the operating system and architecture, then fetches a binary from Cloudflare Workers subdomains (oob-worker[.]cf) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on the platform. If the primary download fails, it falls back to DNS TXT record-based payload delivery from domains tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, and win[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom hex\u003e (or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe on Windows) and launched as a detached hidden process. The package also attempts to load setup.js on import via require('./setup'). The package name (beaver-ui-header) and description (\"UI toolkit\") are a decoy — it contains no UI code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-header",
+        "purl": "pkg:npm/beaver-ui-header@12.3.9"
+      },
+      "versions": [
+        "12.3.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-header/v/12.3.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7346"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T13:04:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "4a9f241cb8e2ef6a44e3a544ebbe907b8d758d9f541bf18b50e98b7c46b514c2"
+        ]
+      }
+    }
+  }
+}

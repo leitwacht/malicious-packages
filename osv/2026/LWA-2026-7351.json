@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7351",
+  "modified": "2026-08-01T13:06:36Z",
+  "published": "2026-08-01T13:04:25Z",
+  "summary": "Malicious code in beaver-ui-form-object (npm)",
+  "details": "The package beaver-ui-form-object is a combosquat of a UI form library. On install, the postinstall hook runs setup.js which fingerprints the operating system and CPU architecture, then downloads a platform-specific binary payload from a shuffled list of Cloudflare Workers subdomains (oob-worker[.]cf/*.workers[.]dev). If the HTTP download fails, it falls back to DNS TXT-record resolution on wel1[.]site subdomains to retrieve the payload via base64-encoded TXT records. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows), made executable, and launched as a detached background process with stdout/stderr redirected to /dev/null. The package also attempts to load setup.js on require() via index.js. The README falsely describes this as \"anonymous usage metrics\" telemetry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-form-object",
+        "purl": "pkg:npm/beaver-ui-form-object@12.1.7"
+      },
+      "versions": [
+        "12.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-form-object/v/12.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7351"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T13:04:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf",
+          "wel1[.]site",
+          "workers[.]dev"
+        ],
+        "sha256": [
+          "af86b7d5cc4497ccd67eb32e8dc128f0c16db6add8913cf46b3948065bea239e"
+        ],
+        "url_observed": [
+          "hxxps://ldr[.]dl[.]wel1[.]site",
+          "hxxps://oob-worker[.]cf/100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf/101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf/102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf/103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf/99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://tin[.]dl[.]wel1[.]site",
+          "hxxps://tina[.]dl[.]wel1[.]site",
+          "hxxps://win[.]dl[.]wel1[.]site"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7348",
+  "modified": "2026-08-01T13:05:36Z",
+  "published": "2026-08-01T13:04:25Z",
+  "summary": "Malicious code in beaver-ui-form (npm)",
+  "details": "The package pretends to be a UI form component but its postinstall hook (node setup.js) downloads and executes platform-specific binaries. It fingerprints the operating system and architecture, then downloads a binary from Cloudflare Workers subdomains (oob-worker[.]cf) or via DNS TXT records from well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e on Linux/macOS or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows, then launched as a detached background process. The package also attempts to load the same dropper when imported via require(). A large decoy telemetry.js file pads the package to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-form",
+        "purl": "pkg:npm/beaver-ui-form@12.6.1"
+      },
+      "versions": [
+        "12.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-form/v/12.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7348"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T13:04:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf",
+          "well1[.]site"
+        ],
+        "sha256": [
+          "e66bd63587cf4a0b61d8f586a786acec381caf0a16f4b1f435f2e2e07a5df510"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/pkg/package",
+          "hxxps://oob-worker[.]cf/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

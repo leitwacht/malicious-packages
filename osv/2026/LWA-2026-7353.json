@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7353",
+  "modified": "2026-08-01T13:06:46Z",
+  "published": "2026-08-01T13:04:25Z",
+  "summary": "Malicious code in beaver-ui-icon-lock (npm)",
+  "details": "The postinstall hook runs setup.js, which downloads and executes a platform-specific binary. It detects the OS and architecture, then fetches a binary from Cloudflare Workers subdomains (oob-worker[.]cf paths: /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe) with a DNS TXT fallback via well1[.]site. The downloaded binary is written to /var/tmp/.cache_* (Linux/macOS) or %TEMP%\\dotnet_diag_*.exe (Windows) and launched as a detached background process. On Windows, the download uses powershell Invoke-RestMethod. A 6-hour timestamp file prevents repeated downloads. The package also requires(\"./setup\") on module load via index.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-icon-lock",
+        "purl": "pkg:npm/beaver-ui-icon-lock@12.2.3"
+      },
+      "versions": [
+        "12.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-icon-lock/v/12.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7353"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-01T13:04:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf",
+          "well1[.]site"
+        ],
+        "sha256": [
+          "6bf33ca48d0b7a6a0dcb659efefd5ed43a50e24dc9f8632a45057a1daa20a673"
+        ],
+        "url_observed": [
+          "hxxps://ldr[.]dl[.]well1[.]site",
+          "hxxps://oob-worker[.]cf/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf/pkg/package",
+          "hxxps://oob-worker[.]cf/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf/pkg/package[.]exe",
+          "hxxps://tin[.]dl[.]well1[.]site",
+          "hxxps://tina[.]dl[.]well1[.]site",
+          "hxxps://win[.]dl[.]well1[.]site"
+        ]
+      }
+    }
+  }
+}
