@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7455",
+  "modified": "2026-08-02T15:29:53Z",
+  "published": "2026-08-02T15:28:16Z",
+  "summary": "Malicious code in sme-foundation-frame-manager (npm)",
+  "details": "On require(), the package immediately executes a multi-stage binary downloader. It fingerprints the host platform (OS and architecture), then attempts to download a binary payload from three Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET requests to paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on the platform. If HTTPS fails, it falls back to DNS TXT tunneling through c[.]tin[.]dl[.]well1[.]site (and platform-specific variants tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site) — querying a TXT record for the number of chunks, then fetching base64-encoded data chunks via sequential TXT queries. The downloaded binary is written to /var/tmp/.cache_\u003crandomhex\u003e (Unix) or C:\\Windows\\Temp\\dotnet_diag_\u003chex\u003e.exe (Windows) and spawned as a detached background process using cmd.exe /c start /b (Windows) or /bin/sh -c \"\u003cpath\u003e \u0026\" (Unix). The package has no lifecycle hooks; the payload runs on module import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-foundation-frame-manager",
+        "purl": "pkg:npm/sme-foundation-frame-manager@20.7.8"
+      },
+      "versions": [
+        "20.7.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-foundation-frame-manager/v/20.7.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7455"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:28:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "37f02fe1f66e2db200371ddb1e343fd9f8db6b9a68ab57469a20199eb308ee4b"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
