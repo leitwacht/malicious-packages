@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7540",
+  "modified": "2026-08-02T16:57:23Z",
+  "published": "2026-08-02T16:55:35Z",
+  "summary": "Malicious code in tui-react-tooltip (npm)",
+  "details": "Tui-react-tooltip@20.5.4 is a combosquat package that acts as a multi-stage binary downloader. On require, package/_loader.js fingerprints the host (platform, architecture, hostname, CPU count, total memory) then downloads a second-stage binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET to /pkg/package (or platform-specific paths). If HTTPS fails, it falls back to DNS TXT-record-based retrieval via c[.]tin[.]dl[.]well1[.]site. The downloaded payload is written to /var/tmp/.cache_\u003crandom\u003e on Linux/macOS or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe on Windows, then spawned as a detached background process. The package has no lifecycle scripts — the loader activates on require() via index.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tui-react-tooltip",
+        "purl": "pkg:npm/tui-react-tooltip@20.5.4"
+      },
+      "versions": [
+        "20.5.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tui-react-tooltip/v/20.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7540"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:55:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "7589e3421f8d08a09ff386270129adf28fd8ece301249ea37da3137f4a4db512"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64"
+        ]
+      }
+    }
+  }
+}

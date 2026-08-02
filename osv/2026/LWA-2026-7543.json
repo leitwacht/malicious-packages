@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7543",
+  "modified": "2026-08-02T16:58:17Z",
+  "published": "2026-08-02T16:56:21Z",
+  "summary": "Malicious code in sme-scripts-shared-library-webpack-plugin (npm)",
+  "details": "Sme-scripts-shared-library-webpack-plugin@20.2.9 is a multi-stage binary downloader disguised as a webpack plugin. On require(), it fingerprints the host platform (OS, architecture, CPU count, memory) and downloads a second-stage binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET to /pkg/package. If HTTPS fails, it falls back to a DNS TXT-based chunked payload channel through c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process. A stamp file at /tmp/.analytics_state (Linux) or %TEMP%\\analytics_state (Windows) prevents re-infection within approximately 6.3 hours. The package has no repository, no README, and no lifecycle scripts — the payload runs on plain require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-scripts-shared-library-webpack-plugin",
+        "purl": "pkg:npm/sme-scripts-shared-library-webpack-plugin@20.2.9"
+      },
+      "versions": [
+        "20.2.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-scripts-shared-library-webpack-plugin/v/20.2.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7543"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:56:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "6ff7ea446adc69e32d94e2375277a3b3a0ca228c581f7133aafc66e2c5abf7b7"
+        ]
+      }
+    }
+  }
+}

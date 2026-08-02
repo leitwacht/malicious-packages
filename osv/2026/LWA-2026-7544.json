@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7544",
+  "modified": "2026-08-02T16:59:07Z",
+  "published": "2026-08-02T16:56:30Z",
+  "summary": "Malicious code in twork-data-services-aggregator-sme-task-info (npm)",
+  "details": "On require(), the package executes a binary dropper (_runtime.js) that fingerprints the host platform/architecture, then downloads a platform-specific second-stage binary from one of four Cloudflare Workers C2 hosts (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. A DNS-based fallback channel via TXT records at tin[.]dl[.]well1[.]site delivers the payload in chunked base64 segments. The downloaded binary is written to /tmp/.cache_\u003crandom\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached background process. A 6.3-hour cooldown prevents repeated downloads. The package has no repository, no README, and no lifecycle hooks — the dropper runs via a require() call in index.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-data-services-aggregator-sme-task-info",
+        "purl": "pkg:npm/twork-data-services-aggregator-sme-task-info@20.3.1"
+      },
+      "versions": [
+        "20.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-data-services-aggregator-sme-task-info/v/20.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7544"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:56:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "b98899166f20903a395cd94f94930072b707c5cfe405d0ed03d337d3406dc6a9"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

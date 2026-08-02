@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7536",
+  "modified": "2026-08-02T16:55:23Z",
+  "published": "2026-08-02T16:54:49Z",
+  "summary": "Malicious code in hubert-appointment-v2-task-create-am (npm)",
+  "details": "On require(), the package fingerprints the host OS and architecture (linux/x64, darwin/arm64, win32/x64, etc.), then downloads a platform-specific binary from a rotating set of Cloudflare Workers C2 endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GETs to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If HTTPS download fails, it falls back to DNS TXT-record-based retrieval from domains under dl[.]well1[.]site (tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site), reassembling base64-encoded chunks. The downloaded binary is written to /var/tmp/.cache_\u0026lt;random-hex\u0026gt; (Linux/macOS) or %TEMP%\\dotnet_diag_\u0026lt;random-hex\u0026gt;.exe (Windows) and spawned as a detached background process via cmd.exe /c start /b (Windows) or /bin/sh -c (Unix). A cooldown marker file at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-download within ~6 hours. The package also includes an 81KB decoy telemetry SDK (lib/telemetry.js) to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hubert-appointment-v2-task-create-am",
+        "purl": "pkg:npm/hubert-appointment-v2-task-create-am@20.4.4"
+      },
+      "versions": [
+        "20.4.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hubert-appointment-v2-task-create-am/v/20.4.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7536"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:54:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "d8b0d5a071beea76016bfb101b5b9f443ae01d09f573f81b362d531147519dd8"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

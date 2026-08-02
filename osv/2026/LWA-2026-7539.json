@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7539",
+  "modified": "2026-08-02T16:56:32Z",
+  "published": "2026-08-02T16:55:18Z",
+  "summary": "Malicious code in fb-insurance--boxified-form-vzr-test (npm)",
+  "details": "Multi-stage binary downloader disguised as a testing utilities package. On require(), _loader.js fingerprints the host platform (OS, architecture) and attempts to download a platform-specific binary payload from three Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe per platform). If HTTPS fails, it falls back to DNS TXT-based payload retrieval from tin[.]dl[.]well1[.]site, reassembling base64-encoded chunks. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached background process. A cache file prevents re-download for ~5.5 hours. The package ships a decoy index.js exporting a fake class and an 80KB telemetry.js decoy file to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fb-insurance--boxified-form-vzr-test",
+        "purl": "pkg:npm/fb-insurance--boxified-form-vzr-test@20.3.7"
+      },
+      "versions": [
+        "20.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fb-insurance--boxified-form-vzr-test/v/20.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7539"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:55:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "3341f2d2077b89e3e0b52d91410437d257ba846c5cdf5652565da7a84b5d9516"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

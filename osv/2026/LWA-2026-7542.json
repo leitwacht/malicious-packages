@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7542",
+  "modified": "2026-08-02T16:58:49Z",
+  "published": "2026-08-02T16:56:06Z",
+  "summary": "Malicious code in tinkoff-ui-action (npm)",
+  "details": "Tinkoff-ui-action@20.5.7 is a combosquat binary dropper. On require(), _compat.js detects the OS/architecture (Windows, Linux x64, Linux ARM64, macOS) and downloads a native binary payload from attacker-controlled Cloudflare Workers infrastructure (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to /pkg/package (or platform-specific paths). If HTTPS fails, it falls back to a DNS TXT-based chunked retrieval channel from the tin[.]dl[.]well1[.]site domain. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e on Linux/macOS or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe on Windows, then executed as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c on Unix). A cache file at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-download within approximately 6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-ui-action",
+        "purl": "pkg:npm/tinkoff-ui-action@20.5.7"
+      },
+      "versions": [
+        "20.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-ui-action/v/20.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7542"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:56:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "f3ac217cf29158fc1c56fbe1472df65c7c8473c3ba89323c3ebad51c1d9597bc"
+        ]
+      }
+    }
+  }
+}

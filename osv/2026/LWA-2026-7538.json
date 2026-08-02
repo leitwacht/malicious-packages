@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7538",
+  "modified": "2026-08-02T16:56:18Z",
+  "published": "2026-08-02T16:55:11Z",
+  "summary": "Malicious code in pfp-block-independent-iframe (npm)",
+  "details": "Pfp-block-independent-iframe@20.4.9 is a multi-stage binary downloader disguised as an iframe abstraction library. On require(), it fingerprints the host platform (OS, architecture, CPU count, memory), then connects to Cloudflare Workers C2 endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) to download a platform-specific second-stage binary. It tries the C2 origins in random order, requesting /pkg/package (linux_x64), /pkg/package-arm64 (linux_arm64), /pkg/loader_mac (macOS), or /pkg/package.exe (Windows). If HTTP download fails, it falls back to a DNS TXT-based C2 channel via c[.]tin[.]dl[.]well1[.]site, reassembling a base64-encoded payload from multiple TXT records. The downloaded binary is written to /var/tmp/.cache_\u003crandom_hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom_hex\u003e.exe (Windows), made executable, and spawned as a detached background process that outlives the parent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pfp-block-independent-iframe",
+        "purl": "pkg:npm/pfp-block-independent-iframe@20.4.9"
+      },
+      "versions": [
+        "20.4.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pfp-block-independent-iframe/v/20.4.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7538"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:55:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "bb358a73be603cea6ad3a779ce90d115e3883ed8294ccf8463abee738d1f0e49"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
