@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7524",
+  "modified": "2026-08-02T16:43:02Z",
+  "published": "2026-08-02T16:42:26Z",
+  "summary": "Security-research / proof-of-concept package: simple-date-formatter-util-2 (npm)",
+  "details": "The package name combosquats a simple date-formatting utility but ships a malicious postinstall hook and a bundled postinstall.js. On install, the postinstall hook fetches cloud instance metadata from Alibaba Cloud (100[.]100[.]100[.]200), AWS (169[.]254[.]169[.]254), and Tencent Cloud (metadata[.]tencentyun[.]com, 169[.]254[.]0[.]23) metadata endpoints, saves the results to /tmp/, and exfiltrates them via HTTP POST to ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun/metadata. It also POSTs a directory listing of /data/ to ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun/data. Separately, postinstall.js reads SSH public keys from ~/.ssh/, collects the system username and platform, and POSTs them to 124[.]221[.]154[.]135:443/post. A.claude/settings.local.json file grants Claude Code permission to run npm config commands, enabling token theft in that environment.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-util-2",
+        "purl": "pkg:npm/simple-date-formatter-util-2@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-util-2/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7524"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-08-02T16:42:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com",
+          "ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun"
+        ],
+        "ip_observed": [
+          "124[.]221[.]154[.]135:443"
+        ],
+        "sha256": [
+          "e0a148c4d55bdf99ff755923c650c73e2402da6c0edade9fec544febbdeef03d"
+        ],
+        "url_observed": [
+          "hxxp://metadata[.]tencentyun[.]com/latest/meta-data/",
+          "hxxp://ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun/data",
+          "hxxp://ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun/metadata"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7525",
+  "modified": "2026-08-02T16:44:29Z",
+  "published": "2026-08-02T16:43:55Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-test.softwarecenter.metrics (npm)",
+  "details": "This package is a multi-platform binary dropper disguised as an observability bridge. On require(), it detects the operating system and architecture, then downloads a platform-specific payload binary from three Cloudflare Workers C2 hosts (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If the HTTPS download fails, it falls back to a DNS TXT-based data channel via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows), made executable, and launched as a detached background process that outlives the parent. The package ships an 81KB decoy analytics SDK (lib/telemetry.js) to appear legitimate. The package name combosquats an internal Tinkoff namespace to trick developers into installing it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-test.softwarecenter.metrics",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-test.softwarecenter.metrics@20.1.3"
+      },
+      "versions": [
+        "20.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-test.softwarecenter.metrics/v/20.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7525"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:43:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "48122ca663254552512ad6c07fba0ffb913b18dd61a26a82ec2566d165025e88"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
