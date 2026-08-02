@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7562",
+  "modified": "2026-08-02T17:17:49Z",
+  "published": "2026-08-02T17:16:42Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-investaccounting.events.templatepage.mainpage (npm)",
+  "details": "Package tinkoff-statist-browser-typed-client-investaccounting.events.templatepage.mainpage is a combosquat downloader. On require, _bridge.js fingerprints the OS and architecture, then downloads a platform-specific binary from Cloudflare Workers C2 hosts (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe per platform). If HTTPS fails, it falls back to a DNS TXT-based data channel via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_XXXX (Linux/macOS) or %TEMP%\\dotnet_diag_XXXX.exe (Windows) and executed as a detached background process. The package also ships an 81KB decoy analytics SDK (lib/telemetry.js) to pad its size and appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-investaccounting.events.templatepage.mainpage",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-investaccounting.events.templatepage.mainpage@20.4.5"
+      },
+      "versions": [
+        "20.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-investaccounting.events.templatepage.mainpage/v/20.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7562"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:16:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "510c6eb3edff9deb6af4fb46fd3b0626146ee73362403a09dac9599d5bbffd39"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
