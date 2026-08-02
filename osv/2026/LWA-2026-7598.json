@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7598",
+  "modified": "2026-08-02T19:35:02Z",
+  "published": "2026-08-02T19:33:51Z",
+  "summary": "Malicious code in widget-forge (npm)",
+  "details": "At install time, the preinstall script (callback.js) collects the hostname, username, current working directory, npm registry URL, and a wide range of CI/CD environment variables (GITHUB_REPOSITORY, CI_PROJECT_PATH, BUILD_REPOSITORY_NAME, BITBUCKET_REPO_FULL_NAME, TRAVIS_REPO_SLUG, DRONE_REPO, BUILDKITE_PIPELINE_SLUG, CIRCLE_PROJECT_REPONAME, JOB_NAME) and exfiltrates them via an HTTP GET to 75[.]119[.]137[.]232:31337/depconfuse. The package name is generic and the version is 9999.0.0, consistent with a dependency-confusion attack targeting internal CI build environments.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "widget-forge",
+        "purl": "pkg:npm/widget-forge@9999.0.0"
+      },
+      "versions": [
+        "9999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/widget-forge/v/9999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7598"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-02T19:33:51Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "75[.]119[.]137[.]232:31337"
+        ],
+        "sha256": [
+          "d774fc485796692705fc9b43fd02ac2fc878830e534ee05793db071f9419dbfa"
+        ],
+        "url_observed": [
+          "hxxp://75[.]119[.]137[.]232:31337/depconfuse"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7597",
+  "modified": "2026-08-02T19:32:55Z",
+  "published": "2026-08-02T19:32:25Z",
+  "summary": "Malicious code in appsignal (npm)",
+  "details": "A dependency-confusion package impersonating the real appsignal APM agent. Published at version 9999.0.0 to win dependency resolution. The preinstall hook (callback.js) collects the hostname, username, current working directory, npm registry URL, and a broad set of CI/CD environment variables (GITHUB_REPOSITORY, CI_PROJECT_PATH, TRAVIS_REPO_SLUG, CIRCLE_PROJECT_REPONAME, and others) and exfiltrates them via HTTP GET to 75[.]119[.]137[.]232:31337/depconfuse. This is a reconnaissance implant designed to identify high-value CI build environments for follow-on compromise.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "appsignal",
+        "purl": "pkg:npm/appsignal@9999.0.0"
+      },
+      "versions": [
+        "9999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/appsignal/v/9999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7597"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-02T19:32:25Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "75[.]119[.]137[.]232:31337"
+        ],
+        "sha256": [
+          "19eed55c1698936e5da670d4c02963af6d344e19d6409adbe29ea743528858c9"
+        ],
+        "url_observed": [
+          "hxxp://75[.]119[.]137[.]232:31337/depconfuse"
+        ]
+      }
+    }
+  }
+}
