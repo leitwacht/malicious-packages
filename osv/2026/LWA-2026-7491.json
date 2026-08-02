@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7491",
+  "modified": "2026-08-02T16:04:31Z",
+  "published": "2026-08-02T16:02:43Z",
+  "summary": "Malicious code in digital-interview-digital-interview-core (npm)",
+  "details": "When required, the package downloads and executes a platform-specific second-stage binary from attacker-controlled infrastructure. It fingerprints the host (OS, architecture, hostname, CPU count, memory), then attempts HTTPS GET requests to three Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at paths /pkg/package (Linux x64), /pkg/package-arm64 (Linux ARM64), /pkg/loader_mac (macOS), or /pkg/package.exe (Windows). If HTTPS fails, it falls back to a DNS TXT-based chunked download via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process that outlives the parent. A state marker file at /tmp/.analytics_state (or %TEMP%\\analytics_state) prevents re-downloading for approximately 6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "digital-interview-digital-interview-core",
+        "purl": "pkg:npm/digital-interview-digital-interview-core@20.5.3"
+      },
+      "versions": [
+        "20.5.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/digital-interview-digital-interview-core/v/20.5.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7491"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:02:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "5050e7e2c0ffd37ef46a73ac0050cf18e108c5ce7db369532c03fd8512ff0609"
+        ]
+      }
+    }
+  }
+}

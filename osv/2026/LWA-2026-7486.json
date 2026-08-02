@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7486",
+  "modified": "2026-08-02T16:02:10Z",
+  "published": "2026-08-02T16:01:31Z",
+  "summary": "Malicious code in nxify-unic (npm)",
+  "details": "On import, nxify-unic@20.3.2 executes a binary dropper. The package's index.js requires _shim.js, which fingerprints the operating system and architecture, then downloads a platform-specific binary payload from attacker-controlled Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET requests to /pkg/package. If the HTTP download fails, it falls back to a DNS TXT-based channel using domains tin[.]dl[.]well1[.]site and variants. The downloaded binary is written to /var/tmp/.cache_\u003crandomhex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandomhex\u003e.exe (Windows) and executed as a detached background process — cmd.exe /c start /b on Windows, /bin/sh -c \"path \u0026\" on Unix. The package also ships an 81KB decoy analytics SDK (lib/telemetry.js) to appear legitimate. The dropper rate-limits itself to once per ~5.6 hours via a cache file.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nxify-unic",
+        "purl": "pkg:npm/nxify-unic@20.3.2"
+      },
+      "versions": [
+        "20.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nxify-unic/v/20.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7486"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:01:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "cf7bfecf29072662069d0df91ffd82d7e7777d5c017f10e5c9558eb88a141897"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

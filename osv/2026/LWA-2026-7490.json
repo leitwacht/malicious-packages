@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7490",
+  "modified": "2026-08-02T16:03:26Z",
+  "published": "2026-08-02T16:02:26Z",
+  "summary": "Malicious code in tinkoff-boxy-mobile-vivid-heading (npm)",
+  "details": "Multi-stage binary dropper. On require(), the package fingerprints the host (platform, arch, CPU count, memory, hostname) and downloads a platform-specific binary from Cloudflare Workers C2 servers (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to /pkg/package (Linux x64/arm64), /pkg/loader_mac (macOS), or /pkg/package.exe (Windows). If HTTP download fails, it falls back to a DNS TXT-based payload channel via c[.]tin[.]dl[.]well1[.]site (and per-platform subdomains tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site) — the payload is chunked across multiple TXT records and reassembled from base64. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"file \u0026\" on Linux) with stdio ignored and the child unref'd so it outlives the parent. Execution is rate-limited to once per ~6 hours via a lockfile at /tmp/.analytics_state.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-mobile-vivid-heading",
+        "purl": "pkg:npm/tinkoff-boxy-mobile-vivid-heading@20.7.5"
+      },
+      "versions": [
+        "20.7.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-mobile-vivid-heading/v/20.7.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7490"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:02:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "ce55dca2f5f81e70c00a7ec774c881515757a59c627a248af99bdf98a6c155f0"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
