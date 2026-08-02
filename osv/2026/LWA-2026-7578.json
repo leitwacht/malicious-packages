@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7578",
+  "modified": "2026-08-02T17:39:29Z",
+  "published": "2026-08-02T17:38:51Z",
+  "summary": "Malicious code in sso-tramvai-module-context-auth (npm)",
+  "details": "Combosquat package impersonating the Tramvai framework's auth module. On require(), _vendor.js fingerprints the host (platform/arch), then downloads a platform-specific binary payload from Cloudflare Workers C2 infrastructure (oob-worker.*.workers[.]dev) via HTTPS, with a DNS TXT-based fallback channel (tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows) and executed as a detached background process via cmd.exe /c start /b or /bin/sh -c, with stdio ignored and the parent unref'd. The package has no lifecycle hooks but triggers the dropper synchronously on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sso-tramvai-module-context-auth",
+        "purl": "pkg:npm/sso-tramvai-module-context-auth@20.4.5"
+      },
+      "versions": [
+        "20.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sso-tramvai-module-context-auth/v/20.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7578"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:38:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site",
+          "workers[.]dev"
+        ],
+        "sha256": [
+          "6240f5a8b9c50e1ef538418330505beba17a6df397d0466110e797a053d8d2c6"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}
