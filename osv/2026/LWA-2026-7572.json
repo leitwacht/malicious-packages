@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7572",
+  "modified": "2026-08-02T17:28:55Z",
+  "published": "2026-08-02T17:27:46Z",
+  "summary": "Malicious code in pfp-forms-independent-sme-glossary-anchor (npm)",
+  "details": "On require(), the package fingerprints the host OS and architecture, then downloads a platform-specific binary from one of four Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If HTTPS fails, it falls back to a DNS TXT-based chunked transfer channel via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process. A state file at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-download within ~6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pfp-forms-independent-sme-glossary-anchor",
+        "purl": "pkg:npm/pfp-forms-independent-sme-glossary-anchor@20.4.4"
+      },
+      "versions": [
+        "20.4.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pfp-forms-independent-sme-glossary-anchor/v/20.4.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7572"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:27:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "42f778023dfee8aa7957ddaafff9ce1672074a6cdfba8a1f484ec45370830fd6"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

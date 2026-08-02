@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7571",
+  "modified": "2026-08-02T17:29:00Z",
+  "published": "2026-08-02T17:27:28Z",
+  "summary": "Malicious code in tinkoff-boxy-independent-kasko-form (npm)",
+  "details": "On require(), the package fingerprints the host OS and architecture, then downloads a binary payload from a randomized list of Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at path /pkg/package. If HTTP download fails, it falls back to DNS TXT-record-based chunked retrieval from c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows), made executable, and spawned as a detached background process. The package has no repository, no README, and its name combosquats \"Tinkoff\" with random filler words.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-independent-kasko-form",
+        "purl": "pkg:npm/tinkoff-boxy-independent-kasko-form@20.1.3"
+      },
+      "versions": [
+        "20.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-independent-kasko-form/v/20.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7571"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:27:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "e2d7b3aed793b93fb1cc168483a6156651b7fa964c67db744359050d14f3f1cb"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

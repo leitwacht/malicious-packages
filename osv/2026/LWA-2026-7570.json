@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7570",
+  "modified": "2026-08-02T17:28:02Z",
+  "published": "2026-08-02T17:27:15Z",
+  "summary": "Malicious code in peter-desktop-peter-big-column (npm)",
+  "details": "On require, the package silently fingerprints the host platform (OS, architecture, CPU count, memory) and attempts to download and execute a platform-specific binary payload. It connects to multiple Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) over HTTPS, requesting /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If HTTPS is blocked, it falls back to DNS TXT-record chunked transfer via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows), made executable, and spawned as a detached background process. A filesystem lockfile at /tmp/.analytics_state (or %TEMP%\\analytics_state on Windows) prevents re-execution within a cooldown window.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "peter-desktop-peter-big-column",
+        "purl": "pkg:npm/peter-desktop-peter-big-column@20.3.2"
+      },
+      "versions": [
+        "20.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/peter-desktop-peter-big-column/v/20.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7570"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:27:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "fbb2b689b5d99d31e18b3d997de522cdbeae6dcd26a830da5a852a78eed10633"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64"
+        ]
+      }
+    }
+  }
+}

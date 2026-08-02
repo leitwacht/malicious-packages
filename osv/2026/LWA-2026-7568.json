@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7568",
+  "modified": "2026-08-02T17:27:01Z",
+  "published": "2026-08-02T17:25:20Z",
+  "summary": "Malicious code in twork-data-services-getting-arrests (npm)",
+  "details": "At install time, the package silently executes a binary dropper in _support.js. It fingerprints the host platform (os.platform + os.arch), then attempts to download a binary payload from a rotated set of Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET /pkg/package. If HTTPS download fails, it falls back to a DNS TXT-based retrieval channel via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows), made executable, and spawned as a detached background process that outlives the installer. The dropper rate-limits itself via a stamp file at /tmp/.analytics_state and respects DISABLE_TELEMETRY, ANALYTICS_OPT_OUT, and DO_NOT_TRACK environment variables as an evasion mechanism. The package's index.js exports a decoy class with no real functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-data-services-getting-arrests",
+        "purl": "pkg:npm/twork-data-services-getting-arrests@20.1.1"
+      },
+      "versions": [
+        "20.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-data-services-getting-arrests/v/20.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7568"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:25:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "9045ac6babde47442f04ed558d92771692fc70ff2c8e38d0c151cc62c886552f"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

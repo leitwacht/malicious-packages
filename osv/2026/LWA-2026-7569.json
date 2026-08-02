@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7569",
+  "modified": "2026-08-02T17:27:54Z",
+  "published": "2026-08-02T17:27:02Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-eventea.projects.smartcam (npm)",
+  "details": "On require(), the package silently downloads and executes a platform-specific binary payload. It fingerprints the host (OS, architecture), then attempts to download a binary from a rotating set of Cloudflare Workers C2 hosts (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET requests to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on the platform. The downloaded binary is saved to /tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows), made executable, and launched as a detached background process that outlives the parent. If direct HTTPS download fails, it falls back to DNS TXT-based chunked payload delivery via c[.]tin[.]dl[.]well1[.]site. The package exports a decoy EventBus class while the malicious loader runs automatically on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-eventea.projects.smartcam",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-eventea.projects.smartcam@20.6.3"
+      },
+      "versions": [
+        "20.6.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-eventea.projects.smartcam/v/20.6.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7569"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:27:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "e8ef97b9052c07384c18f1ac36567f42c70596698e8b9d95769122bca5128541"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
