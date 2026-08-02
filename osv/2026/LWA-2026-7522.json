@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7522",
+  "modified": "2026-08-02T16:31:17Z",
+  "published": "2026-08-02T16:29:22Z",
+  "summary": "Malicious code in simple-date-formatter-util-1 (npm)",
+  "details": "A typosquat of the simple-date-formatter-util package. On install, the postinstall hook beacons the victim's hostname and username to hxxp://124[.]221[.]154[.]135/pre via curl. A bundled postinstall.js script reads SSH public key filenames from ~/.ssh/, collects the system username and platform, and POSTs the data as JSON to 124[.]221[.]154[.]135:443/post. The package also ships a.claude/settings.local.json file that grants Claude Code permission to run npm config commands, enabling further credential harvesting if the user runs Claude Code in the project directory. The legitimate index.js is a trivial 4-line date formatter; all malicious behaviour is in the postinstall.js file and the package.json lifecycle hooks. C2 host: 124[.]221[.]154[.]135.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-util-1",
+        "purl": "pkg:npm/simple-date-formatter-util-1@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-util-1/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7522"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:29:22Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "124[.]221[.]154[.]135",
+          "124[.]221[.]154[.]135:443"
+        ],
+        "sha256": [
+          "ef39294915b5f8758b00871f4b0196604dd1841d76ab75d873d4861515def2bb"
+        ],
+        "url_observed": [
+          "hxxp://124[.]221[.]154[.]135/pre",
+          "hxxps://124[.]221[.]154[.]135/post"
+        ]
+      }
+    }
+  }
+}
