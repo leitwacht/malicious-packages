@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7387",
+  "modified": "2026-08-02T10:14:41Z",
+  "published": "2026-08-02T10:13:11Z",
+  "summary": "Malicious code in twork-products-taiga2-products-mobile (npm)",
+  "details": "Twork-products-taiga2-products-mobile@20.6.6 is a multi-platform binary dropper disguised as a native bridge module. On require(), it fingerprints the host OS and architecture, then downloads a platform-specific payload binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS. It also attempts DNS TXT-record-based payload retrieval via c[.]tin[.]dl[.]well1[.]site as a fallback. The downloaded binary is written to /var/tmp/.cache_\u003crandom_hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom_hex\u003e.exe (Windows) and executed as a detached background process. The package has no repository, and the index.js exports a decoy class that silently triggers the dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-products-taiga2-products-mobile",
+        "purl": "pkg:npm/twork-products-taiga2-products-mobile@20.6.6"
+      },
+      "versions": [
+        "20.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-products-taiga2-products-mobile/v/20.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7387"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:13:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "3e9c7bd8cef184fd1d6f41cf484c3e8c28c5b9c86f25973f2b4751a510664fe6"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

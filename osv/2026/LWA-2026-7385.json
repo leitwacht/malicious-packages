@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7385",
+  "modified": "2026-08-02T10:13:36Z",
+  "published": "2026-08-02T10:12:40Z",
+  "summary": "Malicious code in tinkoff-boxy-desktop-two-panel-right-image (npm)",
+  "details": "On require(), the package loads _vendor.js which downloads and executes a second-stage binary payload. It detects the OS/architecture (linux_x64, linux_arm64, darwin, win32) and attempts to fetch a platform-specific binary from three Cloudflare Workers C2 hosts: oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, and oob-worker[.]cf102-baf[.]workers[.]dev, via HTTPS GET to paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If all Workers hosts fail, it falls back to DNS TXT-record-based retrieval from per-platform resolver domains (tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site). The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (or C:\\Windows\\Temp\\dotnet_diag_\u003crandom-hex\u003e.exe on Windows), made executable, and spawned as a detached background process. A cache file at /tmp/.analytics_state (or %TEMP%\\analytics_state on Windows) prevents re-downloading for approximately 6.4 hours. The package has no repository, no README, and its name is nonsensical — it is a trojanized downloader with no legitimate functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-desktop-two-panel-right-image",
+        "purl": "pkg:npm/tinkoff-boxy-desktop-two-panel-right-image@20.4.8"
+      },
+      "versions": [
+        "20.4.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-desktop-two-panel-right-image/v/20.4.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7385"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:12:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "72804158017e21353bcb291062f0450329ad330c0541754a1513362d1473f3e6"
+        ]
+      }
+    }
+  }
+}

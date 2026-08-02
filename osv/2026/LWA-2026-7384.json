@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7384",
+  "modified": "2026-08-02T10:13:37Z",
+  "published": "2026-08-02T10:12:34Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-eventea.projects.finhealthwebmicroblocks (npm)",
+  "details": "This package is a multi-stage binary dropper disguised as a Tinkoff banking library. On require(), it fingerprints the host (platform, architecture, hostname, memory, CPU count) and attempts to download a platform-specific binary from multiple Cloudflare Workers C2 endpoints: oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf100-416[.]workers[.]dev, all fetching /pkg/package (or platform variants /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTP fails, it falls back to DNS TXT record exfiltration via tin[.]dl[.]well1[.]site (and platform-specific subdomains) to reconstruct the binary from chunked base64-encoded TXT records. The downloaded binary is written to /var/tmp/.cache_\u003crandom_hex\u003e on Linux/macOS or %TEMP%\\dotnet_diag_\u003crandom_hex\u003e.exe on Windows, made executable, and spawned as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c on Unix) so it outlives the parent. A stamp file at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-execution within ~6 hours. The package has no repository, no README, and was published by an account address.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-eventea.projects.finhealthwebmicroblocks",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-eventea.projects.finhealthwebmicroblocks@20.4.7"
+      },
+      "versions": [
+        "20.4.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-eventea.projects.finhealthwebmicroblocks/v/20.4.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7384"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:12:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "bc3df22ff2f91efc5ce421074583c67576d1879e026c3b020af0302c8b010da3"
+        ]
+      }
+    }
+  }
+}
