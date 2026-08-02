@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7555",
+  "modified": "2026-08-02T17:12:33Z",
+  "published": "2026-08-02T17:11:21Z",
+  "summary": "Malicious code in checkout-common-tokens (npm)",
+  "details": "Checkout-common-tokens@20.1.6 is a trojanized package that downloads and executes a second-stage binary payload. On require(), the file _ext.js fingerprints the OS/architecture (linux_x64, darwin, win32) and fetches a platform-specific binary via HTTPS GET from Cloudflare Workers C2 infrastructure (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, path /pkg/package). It has a DNS TXT record-based fallback channel via c[.]tin[.]dl[.]well1[.]site for payload delivery. The downloaded binary is written to /tmp/.cache_\u0026lt;random\u0026gt; (or %TEMP%\\dotnet_diag_\u0026lt;random\u0026gt;.exe on Windows) and spawned as a detached background process with stdio ignored. The package's index.js is a decoy in-memory token manager; the malicious loader runs automatically via require('./_ext').",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "checkout-common-tokens",
+        "purl": "pkg:npm/checkout-common-tokens@20.1.6"
+      },
+      "versions": [
+        "20.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/checkout-common-tokens/v/20.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7555"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:11:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "5df613ca48169569a9635234f93d190ffc6cd1ac1069d530c255dd5c8a39ae87"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

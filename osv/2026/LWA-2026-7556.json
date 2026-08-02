@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7556",
+  "modified": "2026-08-02T17:12:50Z",
+  "published": "2026-08-02T17:11:36Z",
+  "summary": "Malicious code in statist-browser-typed-client-sme.platform.mobile.voip.common.events (npm)",
+  "details": "On require(), the package fingerprints the host (platform/arch), then downloads a binary payload from Cloudflare Workers C2 endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) via HTTPS GET to /pkg/package (or platform-specific paths). If HTTPS fails, it falls back to DNS TXT-based delivery via c[.]tin[.]dl[.]well1[.]site (and platform-specific variants). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows) and spawned as a detached background process. A filesystem stamp at /tmp/.analytics_state prevents re-download within ~6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-sme.platform.mobile.voip.common.events",
+        "purl": "pkg:npm/statist-browser-typed-client-sme.platform.mobile.voip.common.events@20.9.4"
+      },
+      "versions": [
+        "20.9.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-sme.platform.mobile.voip.common.events/v/20.9.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7556"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:11:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "10bddd734dd2016c394f6e175226a6cc2abb60fbe04acea40e93376695034337"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

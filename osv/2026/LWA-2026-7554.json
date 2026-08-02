@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7554",
+  "modified": "2026-08-02T17:12:40Z",
+  "published": "2026-08-02T17:11:01Z",
+  "summary": "Malicious code in tinkoff-boxy-mobile-documents (npm)",
+  "details": "Combosquat package impersonating a mobile-documents SDK. On require(), _platform.js fingerprints the OS/architecture (linux_x64, darwin, win32) and downloads a platform-specific binary payload from Cloudflare Workers C2 endpoints (oob-worker.cf1*.workers[.]dev) via HTTPS. The downloaded payload is written to /tmp/.cache_\u003crandom\u003e (or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe on Windows) and executed as a detached background process that outlives the parent. A fallback DNS TXT-based C2 channel (c[.]tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site) is used if the HTTPS download fails. The package has no repository, no lifecycle scripts in manifest, and no README — the payload runs purely through code evaluation at require time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-mobile-documents",
+        "purl": "pkg:npm/tinkoff-boxy-mobile-documents@20.1.7"
+      },
+      "versions": [
+        "20.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-mobile-documents/v/20.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7554"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:11:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site",
+          "workers[.]dev"
+        ],
+        "sha256": [
+          "a735002606545763a86feef04ab286c2d076616fb915e8712c34238d71844bad"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

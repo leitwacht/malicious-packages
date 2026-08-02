@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7558",
+  "modified": "2026-08-02T17:13:53Z",
+  "published": "2026-08-02T17:12:08Z",
+  "summary": "Malicious code in travel-core-utils-object (npm)",
+  "details": "On require(), the package loads _bridge.js which silently downloads a platform-specific binary from Cloudflare Workers C2 infrastructure. It attempts HTTPS GETs to oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, and oob-worker[.]cf102-baf[.]workers[.]dev at path /pkg/package (or platform-specific variants). If HTTPS fails, it falls back to a DNS TXT-based data channel via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process. A cooldown stamp file at /tmp/.analytics_state prevents re-download within ~5.8 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "travel-core-utils-object",
+        "purl": "pkg:npm/travel-core-utils-object@20.3.4"
+      },
+      "versions": [
+        "20.3.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/travel-core-utils-object/v/20.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7558"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:12:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "21997a1e49e7b54088134d9237a6d96c68c91afc565caa3e23d10412c7d93986"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

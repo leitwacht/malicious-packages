@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7560",
+  "modified": "2026-08-02T17:13:41Z",
+  "published": "2026-08-02T17:12:59Z",
+  "summary": "Malicious code in finance-business-company-id-models (npm)",
+  "details": "Multi-stage binary dropper. On require(), the package fingerprints the OS and architecture, then downloads a platform-specific binary payload from Cloudflare Workers C2 infrastructure (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to /pkg/package (linux_x64), /pkg/package-arm64 (linux_arm64), /pkg/loader_mac (darwin), or /pkg/package.exe (win32). If HTTPS download fails, it falls back to a DNS TXT-based chunked transfer channel via c[.]tin[.]dl[.]well1[.]site (and platform-specific subdomains tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site). The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Unix) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"file \u0026\" on Unix). A cache marker at /tmp/.analytics_state prevents re-download within ~6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "finance-business-company-id-models",
+        "purl": "pkg:npm/finance-business-company-id-models@20.1.5"
+      },
+      "versions": [
+        "20.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/finance-business-company-id-models/v/20.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7560"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:12:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "d529b482244a7e3a52319fdce2b2314f77808f6b498418e8c9fcaadb89726111"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

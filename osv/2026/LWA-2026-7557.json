@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7557",
+  "modified": "2026-08-02T17:12:43Z",
+  "published": "2026-08-02T17:11:51Z",
+  "summary": "Malicious code in twork-data-services-eacq-company-service-v2-api-v1-identifiers-crm (npm)",
+  "details": "Package twork-data-services-eacq-company-service-v2-api-v1-identifiers-crm@20.6.7 is a multi-platform binary dropper. On require(), index.js loads setup.js, which fingerprints the OS and architecture, then downloads a platform-specific binary from Cloudflare Workers C2 infrastructure (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GETs to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If HTTP download fails, it falls back to DNS-based exfil: it queries TXT records on c[.]tin[.]dl[.]well1[.]site to reassemble a base64-encoded binary. The downloaded payload is written to /var/tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows) and executed as a detached background process via cmd.exe /c start /b or /bin/sh -c \"path \u0026amp;\". The package has no repository, no README, and no lifecycle scripts — the dropper runs automatically when the module is imported.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-data-services-eacq-company-service-v2-api-v1-identifiers-crm",
+        "purl": "pkg:npm/twork-data-services-eacq-company-service-v2-api-v1-identifiers-crm@20.6.7"
+      },
+      "versions": [
+        "20.6.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-data-services-eacq-company-service-v2-api-v1-identifiers-crm/v/20.6.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7557"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:11:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "59bd4ec460175626694f14a68a0c8f8fcb74bb669dfdb7ad697ab762c02c26bf"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
