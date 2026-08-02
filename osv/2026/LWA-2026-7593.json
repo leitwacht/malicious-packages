@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7593",
+  "modified": "2026-08-02T19:15:42Z",
+  "published": "2026-08-02T19:14:35Z",
+  "summary": "Malicious code in accounts-forms (npm)",
+  "details": "Accounts-forms@0.0.2 is a trojanized package that downloads and executes a remote binary on install. When required, _polyfill.js runs a bootstrap routine that: (1) fingerprints the OS and architecture (linux_x64, linux_arm64, darwin, win32); (2) attempts to fetch a platform-specific binary from one of four Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package, oob-worker[.]cf100-416[.]workers[.]dev/pkg/package, oob-worker[.]cf103-070[.]workers[.]dev/pkg/package, oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package); (3) falls back to DNS TXT-record-based retrieval via c[.]tin[.]dl[.]well1[.]site if HTTP fails; (4) writes the downloaded payload to /var/tmp/.cache_\u003chex\u003e (Linux) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows); and (5) spawns it as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"path \u0026\" on Linux) so it persists after the parent exits. The package has no lifecycle hooks — the payload runs on require() via index.js's try { require('./_polyfill') } catch (_) {}.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "accounts-forms",
+        "purl": "pkg:npm/accounts-forms@0.0.2"
+      },
+      "versions": [
+        "0.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/accounts-forms/v/0.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7593"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T19:14:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "4a63aedc59affd58fa8e6ed27ea6b1651faed94a0a7db62c362b7f27337ea9b9"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7591",
+  "modified": "2026-08-02T19:15:29Z",
+  "published": "2026-08-02T19:14:36Z",
+  "summary": "Malicious code in accounts-card-design-picker (npm)",
+  "details": "Accounts-card-design-picker@0.0.2 is a trojanized npm package that downloads and executes a platform-specific binary payload. On require(), index.js loads _platform.js which: (1) detects the OS and architecture; (2) attempts HTTPS GET requests to three Cloudflare Workers C2 endpoints — oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package, oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package, and oob-worker[.]cf103-070[.]workers[.]dev/pkg/package — to download a binary; (3) falls back to DNS TXT-based binary retrieval via c[.]tin[.]dl[.]well1[.]site if the HTTP downloads fail; (4) writes the downloaded binary to /var/tmp/.cache_\u003crandom_hex\u003e on Linux/macOS or %TEMP%\\dotnet_diag_\u003crandom_hex\u003e.exe on Windows; (5) spawns it as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c on Unix). A marker file at /tmp/.analytics_state prevents repeated downloads within a TTL window. The package also ships an 81KB decoy analytics SDK (lib/telemetry.js) as camouflage. The binary payload is attacker-controlled and can be updated at any time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "accounts-card-design-picker",
+        "purl": "pkg:npm/accounts-card-design-picker@0.0.2"
+      },
+      "versions": [
+        "0.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/accounts-card-design-picker/v/0.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7591"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T19:14:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "b743afc7373af87fcc2d61cf6a30509bc4ea28b7d3dca83e352cd74587f55863"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
