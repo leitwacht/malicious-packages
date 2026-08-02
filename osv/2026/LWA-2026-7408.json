@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7408",
+  "modified": "2026-08-02T10:29:53Z",
+  "published": "2026-08-02T10:27:21Z",
+  "summary": "Malicious code in sme-crm-services-sme-crm-services-core (npm)",
+  "details": "Package sme-crm-services-sme-crm-services-core@20.1.4 is a combosquat binary dropper. On require(), it fingerprints the host (platform, architecture, hostname, CPU count, total memory) and downloads a binary payload from three Cloudflare Workers C2 endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET to /pkg/package, with random-order mirror rotation. If all HTTP downloads fail, it falls back to a DNS TXT-based data channel from c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows) and spawned as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"path \u0026\" on Unix). The package has no repository, no README, and no lifecycle hooks — the dropper activates on module import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-crm-services-sme-crm-services-core",
+        "purl": "pkg:npm/sme-crm-services-sme-crm-services-core@20.1.4"
+      },
+      "versions": [
+        "20.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-crm-services-sme-crm-services-core/v/20.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7408"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:27:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "f390f6ed6dcff305c7335556524cb2dff304c9eb346e899b20cf649e0b62e4cb"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

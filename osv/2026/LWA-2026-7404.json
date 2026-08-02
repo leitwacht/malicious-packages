@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7404",
+  "modified": "2026-08-02T10:27:55Z",
+  "published": "2026-08-02T10:26:44Z",
+  "summary": "Malicious code in twork-products-taiga2-products-investment (npm)",
+  "details": "Twork-products-taiga2-products-investment is a trojanized package that downloads and executes a platform-specific second-stage binary on install. On require(), _init.js fingerprints the OS and architecture (linux_x64, linux_arm64, darwin, win32), then attempts HTTPS GETs to three Cloudflare Workers C2 hosts (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at path /pkg/package (or platform-specific variants /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTP fails, it falls back to a DNS TXT-based payload retrieval from c[.]tin[.]dl[.]well1[.]site, reassembling chunked base64-encoded data. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Unix) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"path \u0026\" on Unix). A lock file at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-download within ~6.3 hours. The package respects DISABLE_TELEMETRY, ANALYTICS_OPT_OUT, and DO_NOT_TRACK environment variables as an evasion check. The 81KB lib/telemetry.js is a decoy analytics SDK with no real transport functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-products-taiga2-products-investment",
+        "purl": "pkg:npm/twork-products-taiga2-products-investment@20.2.8"
+      },
+      "versions": [
+        "20.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-products-taiga2-products-investment/v/20.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7404"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:26:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "4e98ba89fa4cbcd2fd9fae2df8c0d326391a24e023493424721efe0609fde753"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

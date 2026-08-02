@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7401",
+  "modified": "2026-08-02T10:29:02Z",
+  "published": "2026-08-02T10:26:04Z",
+  "summary": "Malicious code in statist-browser-typed-client-sme.platform.web.productsnavigation.events (npm)",
+  "details": "A combosquat/dependency-confusion package that downloads and executes a second-stage binary on install. When required, it fingerprints the host (OS, architecture, hostname, CPU count, memory), then fetches a platform-specific binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET to paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If HTTPS fails, it falls back to DNS TXT-based C2 via domains tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, and win[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process. A cooldown flag file at /tmp/.analytics_state (Linux) or %TEMP%\\analytics_state (Windows) prevents re-execution within ~6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-sme.platform.web.productsnavigation.events",
+        "purl": "pkg:npm/statist-browser-typed-client-sme.platform.web.productsnavigation.events@20.7.2"
+      },
+      "versions": [
+        "20.7.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-sme.platform.web.productsnavigation.events/v/20.7.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7401"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-02T10:26:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "a861d09eb76acb3cb4846cf57adae356097736a986fd6694dc5df94c8209f73d"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

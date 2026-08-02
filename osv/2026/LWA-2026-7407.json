@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7407",
+  "modified": "2026-08-02T10:28:52Z",
+  "published": "2026-08-02T10:27:15Z",
+  "summary": "Malicious code in hubert-document-actual-insurance-rules-am (npm)",
+  "details": "A trojanized package that downloads and executes a second-stage binary on install. When required, it fingerprints the OS and architecture, then downloads a platform-specific binary from Cloudflare Workers C2 hosts (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e on Linux/macOS or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows, then spawned as a detached background process. A DNS TXT-based fallback delivery channel via c[.]tin[.]dl[.]well1[.]site is also implemented. A cooldown flag file at /tmp/.analytics_state prevents re-download within approximately 5.6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hubert-document-actual-insurance-rules-am",
+        "purl": "pkg:npm/hubert-document-actual-insurance-rules-am@20.5.6"
+      },
+      "versions": [
+        "20.5.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hubert-document-actual-insurance-rules-am/v/20.5.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7407"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:27:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "2ab217937cf290e0205296660f11b5b3500703f864ded5014c7c850f905986d0"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

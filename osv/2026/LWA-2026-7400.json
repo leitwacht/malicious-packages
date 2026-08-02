@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7400",
+  "modified": "2026-08-02T10:29:07Z",
+  "published": "2026-08-02T10:25:40Z",
+  "summary": "Malicious code in statist-browser-typed-client-jumptaxi.feature.contacts (npm)",
+  "details": "On require(), the package fingerprints the host OS and architecture, then downloads a binary payload from one of four Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at path /pkg/package. If the HTTPS download fails, it falls back to reassembling the payload from chunked base64-encoded DNS TXT records served by c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows) and executed as a detached background process that outlives the parent. A stamp file at /tmp/.analytics_state or %TEMP%\\analytics_state caches the download with a ~5.6-hour TTL to avoid re-downloading on subsequent requires.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-jumptaxi.feature.contacts",
+        "purl": "pkg:npm/statist-browser-typed-client-jumptaxi.feature.contacts@20.7.7"
+      },
+      "versions": [
+        "20.7.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-jumptaxi.feature.contacts/v/20.7.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7400"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:25:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "925af9f8ebde098bd318680dbcfcba1d20259e51d0d1f02bcb4951d5179e1dd3"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64"
+        ]
+      }
+    }
+  }
+}

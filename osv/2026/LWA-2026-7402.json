@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7402",
+  "modified": "2026-08-02T10:28:00Z",
+  "published": "2026-08-02T10:26:18Z",
+  "summary": "Malicious code in platform-ui-codemods (npm)",
+  "details": "Platform-ui-codemods@20.6.7 is a trojanized package that downloads and executes a second-stage binary payload on installation. When required, _compat.js fingerprints the system (OS, architecture, CPU count, memory), then fetches a platform-specific binary from one of four Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET /pkg/package. If HTTPS download fails, it falls back to reconstructing a payload from DNS TXT records queried against c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Unix) or C:\\Windows\\Temp\\dotnet_diag_\u003chex\u003e.exe (Windows), made executable, and launched as a detached background process. A cooldown file at /tmp/.analytics_state prevents re-download within ~6 hours. The package has no repository, no lifecycle scripts in package.json, and its index.js silently requires the malicious _compat.js module on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "platform-ui-codemods",
+        "purl": "pkg:npm/platform-ui-codemods@20.6.7"
+      },
+      "versions": [
+        "20.6.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/platform-ui-codemods/v/20.6.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7402"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:26:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "0a3aa6b292f1646b54d7968d35940ad43de9d3f29623d2ea3f5d7d8853fb32aa"
+        ]
+      }
+    }
+  }
+}

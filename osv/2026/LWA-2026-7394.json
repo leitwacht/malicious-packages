@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-7394",
-  "modified": "2026-08-02T10:24:54Z",
+  "modified": "2026-08-02T10:25:54Z",
   "published": "2026-08-02T10:24:22Z",
   "summary": "Malicious code in sme-scripts-cli (npm)",
-  "details": "At require time, the package loads _bridge.js which fingerprints the host OS and architecture, then downloads a platform-specific binary payload from Cloudflare Workers C2 endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET requests to paths /pkg/package (Linux x64), /pkg/package-arm64 (Linux arm64), /pkg/loader_mac (macOS), or /pkg/package.exe (Windows). A fallback C2 channel uses DNS TXT queries to c[.]tin[.]dl[.]well1[.]site to retrieve the payload via chunked base64-encoded TXT records. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Unix) or C:\\Windows\\Temp\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process that outlives the parent.",
+  "details": "At require time, the package loads _bridge.js which fingerprints the host OS and architecture, then downloads a platform-specific binary payload from Cloudflare Workers C2 endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET requests to paths /pkg/package (Linux x64), /pkg/package-arm64 (Linux arm64), /pkg/loader_mac (macOS), or /pkg/package.exe (Windows). A fallback C2 channel uses DNS TXT queries to c[.]tin[.]dl[.]well1[.]site to retrieve the payload via chunked base64-encoded TXT records. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Unix) or C:\\Windows\\Temp\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process that outlives the parent. On require(), the package executes a multi-stage remote binary dropper. It fingerprints the OS/architecture, then attempts to download a platform-specific binary payload from a rotating set of Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to /pkg/package (or platform-specific paths). If all HTTP downloads fail, it falls back to a DNS TXT-based exfiltration channel via tin[.]dl[.]well1[.]site, where the payload is reconstructed from base64-encoded TXT records. The downloaded binary is written to /var/tmp (or %TEMP% on Windows) with a randomized name (.cache_\u003chex\u003e or dotnet_diag_\u003chex\u003e.exe), made executable, and spawned as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c... \u0026 on Linux/macOS) that outlives the parent process. The package also performs sandbox/environment detection by querying _leitwacht.attached.local. and respects DISABLE_TELEMETRY/ANALYTICS_OPT_OUT/DO_NOT_TRACK env vars as an evasion mechanism.",
   "affected": [
     {
       "package": {
@@ -53,11 +53,21 @@
         "domain_observed": [
           "c[.]tin[.]dl[.]well1[.]site",
           "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
           "oob-worker[.]cf102-baf[.]workers[.]dev",
-          "oob-worker[.]cf103-070[.]workers[.]dev"
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
         ],
         "sha256": [
           "e072485030e177a1f7604abbe3f31a8dab81700e3980215172b71aa86405defb"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
         ]
       }
     }

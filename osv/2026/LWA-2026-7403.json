@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7403",
+  "modified": "2026-08-02T10:28:07Z",
+  "published": "2026-08-02T10:26:31Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-investing.product.pulse (npm)",
+  "details": "On require(), the package silently executes a multi-stage downloader (_bootstrap.js) that fingerprints the host platform and architecture, then contacts Cloudflare Workers C2 endpoints to download a platform-specific binary payload. The C2 hosts are: oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev — each serving the binary at /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If the HTTPS download fails, it falls back to a DNS TXT-based C2 channel via c[.]tin[.]dl[.]well1[.]site, where TXT records contain base64-encoded payload chunks reassembled client-side. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003chex\u003e.exe (Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"path \u0026\" on Linux) that outlives the parent process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-investing.product.pulse",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-investing.product.pulse@20.4.5"
+      },
+      "versions": [
+        "20.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-investing.product.pulse/v/20.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7403"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:26:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "4e8415f06618e70e03cfc537dae1b710d3511317b5b22a10b91ca6c265c0ccf8"
+        ]
+      }
+    }
+  }
+}
