@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7492",
+  "modified": "2026-08-02T16:10:07Z",
+  "published": "2026-08-02T16:09:32Z",
+  "summary": "Malicious code in statist-browser-typed-client-ddp.mentat.ui.web (npm)",
+  "details": "On require(), the package executes _polyfill.js which fingerprints the host OS and architecture, then downloads a platform-specific binary payload from multiple Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GETs to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If HTTPS fails, it falls back to DNS TXT-based payload retrieval from c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows), made executable, and spawned as a detached background process that outlives the parent. The package has no repository, no README, and its index.js exports a dummy Web class — the entire purpose is the hidden downloader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-ddp.mentat.ui.web",
+        "purl": "pkg:npm/statist-browser-typed-client-ddp.mentat.ui.web@20.9.4"
+      },
+      "versions": [
+        "20.9.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-ddp.mentat.ui.web/v/20.9.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7492"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:09:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "86c810feea05a4f6ad38a0e286243383b30a8255829577bb11b672d557c532dd"
+        ]
+      }
+    }
+  }
+}
