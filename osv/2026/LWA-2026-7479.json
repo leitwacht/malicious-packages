@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7479",
+  "modified": "2026-08-02T15:57:17Z",
+  "published": "2026-08-02T15:56:32Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-dwh.chimera.base (npm)",
+  "details": "This package is a trojanized downloader that runs on require(). It fingerprints the host (platform, architecture, hostname, CPU count, memory), then connects to multiple Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) over HTTPS to download a platform-specific binary payload. It also uses DNS TXT queries to c[.]tin[.]dl[.]well1[.]site as a fallback C2 channel. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process. The package name impersonates a financial services brand (Tinkoff) with a long nonsensical suffix, has no repository or README, and ships a large decoy analytics SDK (lib/telemetry.js) to camouflage the malicious _support.js loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-dwh.chimera.base",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-dwh.chimera.base@20.2.3"
+      },
+      "versions": [
+        "20.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-dwh.chimera.base/v/20.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7479"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:56:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "08906796fd1500f0c333474c326383c53eecb7354dcc1321bdc1ddb109928460"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

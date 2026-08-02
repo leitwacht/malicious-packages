@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7482",
+  "modified": "2026-08-02T16:00:27Z",
+  "published": "2026-08-02T16:00:00Z",
+  "summary": "Malicious code in tinkoff-terminal-kit-datetime (npm)",
+  "details": "Tinkoff-terminal-kit-datetime is a combosquat of the legitimate tinkoff-terminal-kit package. On require(), it fingerprints the host OS and architecture (Windows, Linux, macOS, ARM64), then downloads a platform-specific binary payload from a rotating set of Cloudflare Workers C2 hosts (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If the HTTPS download fails, it falls back to a DNS TXT-based exfiltration channel via tin[.]dl[.]well1[.]site, where the payload is chunked and base64-encoded across multiple TXT records. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Unix) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process. A filesystem-based cooldown mechanism prevents re-downloading within ~6 hours. The package has no repository, no README, and no lifecycle scripts — the payload runs silently on require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-terminal-kit-datetime",
+        "purl": "pkg:npm/tinkoff-terminal-kit-datetime@20.7.2"
+      },
+      "versions": [
+        "20.7.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-terminal-kit-datetime/v/20.7.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7482"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:00:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "730287bcb0f78b39231541ed66662b9fc88b5eb5659fe6928a6ed668e8ee65ea"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
