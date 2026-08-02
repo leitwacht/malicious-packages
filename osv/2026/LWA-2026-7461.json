@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7461",
+  "modified": "2026-08-02T15:31:09Z",
+  "published": "2026-08-02T15:27:43Z",
+  "summary": "Malicious code in twork-data-services-sme-agent-company-relation (npm)",
+  "details": "The package index.js exports a benign-looking class but immediately requires _init.js, which is a second-stage binary downloader. On require, _init.js fingerprints the host platform (OS, architecture), then attempts to download a binary from four attacker-controlled Cloudflare Workers subdomains (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET requests to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on platform. If HTTPS fails, it falls back to a DNS TXT tunnel at tin[.]dl[.]well1[.]site (with platform-specific subdomains tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site) to retrieve the payload. The downloaded binary is written to /var/tmp/.cache_\u0026lt;random_hex\u0026gt; on Linux/macOS or C:\\Windows\\Temp\\dotnet_diag_\u0026lt;random_hex\u0026gt;.exe on Windows, made executable, and spawned as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c on Linux). The package also writes a cache stamp file at /tmp/.analytics_state or %TEMP%\\analytics_state to avoid re-downloading within ~6 hours. The 81KB lib/telemetry.js file is a decoy analytics SDK that is never actually loaded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-data-services-sme-agent-company-relation",
+        "purl": "pkg:npm/twork-data-services-sme-agent-company-relation@20.5.3"
+      },
+      "versions": [
+        "20.5.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-data-services-sme-agent-company-relation/v/20.5.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7461"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:27:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "7f27bb2f27554bd8ce690d124a279750edf3e5a26ed0e8f995bdad7b8f1471b1"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

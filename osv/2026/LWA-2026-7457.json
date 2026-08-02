@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7457",
+  "modified": "2026-08-02T15:31:12Z",
+  "published": "2026-08-02T15:25:45Z",
+  "summary": "Malicious code in react-scroll-disable (npm)",
+  "details": "A combosquat of the legitimate react-remove-scroll package. The dist/index.js files (es5, es2015, es2019) each append an eval(atob(...)) payload after the legitimate export. The payload queries Ethereum JSON-RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) to find the latest block, then searches for a transaction from a hardcoded wallet address. The recipient address from that transaction is split into two IPv4 addresses that become the C2 servers. The implant then makes XOR-encrypted HTTP requests to those C2 IPs on ports 80 and 443, fetching second-stage payloads. One request path (/0x/cls) evals the decrypted response inline; another (/0x/ls) spawns a detached node process to run the decrypted payload. The C2 communication uses XOR encryption with a key derived from the transaction data, and responses carry base64-encoded payloads in the x-payload-b64 header.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-scroll-disable",
+        "purl": "pkg:npm/react-scroll-disable@2.5.2"
+      },
+      "versions": [
+        "2.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-scroll-disable/v/2.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7457"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:25:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "d37166062120c296f3ab25216d1ac9ff6c87aeef6d68ed710a5d58d1a24a4b75"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io/",
+          "hxxps://eth[.]drpc[.]org/",
+          "hxxps://ethereum-rpc[.]publicnode[.]com/"
+        ]
+      }
+    }
+  }
+}
