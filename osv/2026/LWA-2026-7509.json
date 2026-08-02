@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7509",
+  "modified": "2026-08-02T16:26:45Z",
+  "published": "2026-08-02T16:25:07Z",
+  "summary": "Malicious code in tailwindcss-anim (npm)",
+  "details": "Tailwindcss-anim@1.3.3 is a trojanized clone of a Tailwind CSS animation plugin that contains a blockchain-based C2 implant. The package's index.js appends an eval(atob(...)) payload that decodes to a full remote access tool. At runtime, the implant connects to multiple Ethereum JSON-RPC endpoints (eth[.]drpc[.]org, 1rpc[.]io, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) and scans the blockchain for transactions from wallet address 0x8a33245e5f663d331144330e3665f9a44c243439045f661a. It extracts IP addresses from transaction data fields and establishes XOR-encrypted HTTP communication channels to those IPs for command-and-control. The implant spawns detached node processes to maintain proxy listeners and uses custom HTTP headers (X-Payload-B64, Sec-V) for encrypted C2 traffic. The C2 IPs are dynamically resolved from Ethereum blockchain transactions, making the infrastructure mutable and difficult to block.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-anim",
+        "purl": "pkg:npm/tailwindcss-anim@1.3.3"
+      },
+      "versions": [
+        "1.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-anim/v/1.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7509"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:25:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "88795708c3fb9f6fa1a1e6b918ab9d1081bac2bb92a476122435a1e1c4dc34cf"
+        ],
+        "wallet_observed": [
+          "0x8a33245e5f663d331144330e3665f9a44c243439045f661a"
+        ]
+      }
+    }
+  }
+}

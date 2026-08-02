@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7511",
+  "modified": "2026-08-02T16:26:33Z",
+  "published": "2026-08-02T16:25:33Z",
+  "summary": "Malicious code in sme-auth-core (npm)",
+  "details": "Sme-auth-core@20.9.2 is a trojanized package that impersonates an identity-provider client library. When required, it silently loads a hidden dropper (_init.js) that fingerprints the operating system and architecture, then downloads a platform-specific second-stage binary from Cloudflare Workers C2 infrastructure (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at paths /pkg/package (Linux x64), /pkg/package-arm64 (Linux arm64), /pkg/loader_mac (macOS), or /pkg/package.exe (Windows). If the HTTPS download fails, it falls back to a DNS TXT-based channel via tin[.]dl[.]well1[.]site, retrieving the payload in base64-encoded chunks over DNS TXT records. The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (Unix) or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows) and executed as a detached background process. A stamp file at /tmp/.analytics_state (or %TEMP%\\analytics_state) prevents re-execution within approximately 5.7 hours. The package contains a large decoy telemetry.js file (81KB) to obscure the 4.8KB dropper. No repository or documentation is provided.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-auth-core",
+        "purl": "pkg:npm/sme-auth-core@20.9.2"
+      },
+      "versions": [
+        "20.9.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-auth-core/v/20.9.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7511"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:25:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "479f5aa0fdfa13dc2753daaaa5b99e59c3e9514969e0ec69725d7aa272f98482"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

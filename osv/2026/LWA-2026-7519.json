@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7519",
+  "modified": "2026-08-02T16:29:44Z",
+  "published": "2026-08-02T16:27:18Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-sme.platform.web.companyprofile.metrics (npm)",
+  "details": "Combosquat package targeting Tinkoff's internal naming scheme. At require() time, _vendor.js fingerprints the host (platform, arch, hostname, CPU count, memory), then downloads a platform-specific second-stage binary from Cloudflare Workers C2 domains (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) over HTTPS with a node-fetch/2.6 User-Agent. The binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"path \u0026\" on Unix). A stamp file at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-download within ~5.9 hours. If HTTPS download fails, a DNS TXT fallback channel via c[.]tin[.]dl[.]well1[.]site retrieves the payload via base64-encoded TXT records. The package has no lifecycle hooks — execution triggers on require() via index.js's try/catch require(\"./_vendor\").",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-sme.platform.web.companyprofile.metrics",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-sme.platform.web.companyprofile.metrics@20.2.7"
+      },
+      "versions": [
+        "20.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-sme.platform.web.companyprofile.metrics/v/20.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7519"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:27:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "bc9620c52b5388c554bd406fa1dc61d2486c4d2425a354c687e402eae687cdeb"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

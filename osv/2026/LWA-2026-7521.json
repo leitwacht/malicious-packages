@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7521",
+  "modified": "2026-08-02T16:29:59Z",
+  "published": "2026-08-02T16:27:47Z",
+  "summary": "Malicious code in tinkoff-boxy-desktop-icons-horizontal (npm)",
+  "details": "On require(), the package fingerprints the host OS and architecture (linux/x64, darwin/arm64, win32/x64, etc.) and downloads a platform-specific binary from Cloudflare Workers C2 infrastructure (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If the HTTPS download fails, it falls back to a DNS TXT-based chunked download from *.dl[.]well1[.]site domains. The downloaded binary is written to /var/tmp/.cache_\u0026lt;random\u0026gt; (Linux/macOS) or %TEMP%\\dotnet_diag_\u0026lt;random\u0026gt;.exe (Windows) and executed as a detached background process. A cache marker file prevents re-download for approximately 6.3 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-desktop-icons-horizontal",
+        "purl": "pkg:npm/tinkoff-boxy-desktop-icons-horizontal@20.1.8"
+      },
+      "versions": [
+        "20.1.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-desktop-icons-horizontal/v/20.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7521"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:27:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "bc9a9dd115b713639e3bf9af97e42de91551a3215411eef2006ef34ba5dd7908"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

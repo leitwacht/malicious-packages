@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7508",
+  "modified": "2026-08-02T16:26:53Z",
+  "published": "2026-08-02T16:24:54Z",
+  "summary": "Malicious code in scrollbar-hide-plugin (npm)",
+  "details": "Scrollbar-hide-plugin@1.0.1 is a trojanized clone of the legitimate tailwind-scrollbar-hide plugin. The dist/index.js exports the real CSS utility function but appends an eval(atob(...)) payload that implements an Ethereum blockchain-based C2 implant. The payload queries blockchain RPC endpoints for transactions from a hardcoded Ethereum address (0xa332e5f3dd3311d330e6f01...), extracts IP addresses from the transaction 'to' fields (hex-decoded), and uses those IPs as C2 servers on ports 80, 443, and 8080. It communicates via XOR-encrypted HTTP, fetches second-stage payloads, and executes them in detached node processes. The package attempted network egress to C2 infrastructure extracted from the blockchain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "scrollbar-hide-plugin",
+        "purl": "pkg:npm/scrollbar-hide-plugin@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/scrollbar-hide-plugin/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7508"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:24:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "4ab09783793ff363acc3c0ac5bd5a613f42abdcae039e7e128b23493bbf9ade0"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7513",
+  "modified": "2026-08-02T16:28:56Z",
+  "published": "2026-08-02T16:25:59Z",
+  "summary": "Malicious code in pvm-autodoc (npm)",
+  "details": "Pvm-autodoc@20.4.6 is a trojanized package masquerading as a shared autodoc library. On require(), _bridge.js executes a multi-stage binary dropper: it fingerprints the OS/architecture, then attempts to download a second-stage binary from one of four Cloudflare Workers C2 hosts (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET /pkg/package (or platform-specific paths like /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS fails, it falls back to a DNS-based C2 channel using TXT record queries to c[.]tin[.]dl[.]well1[.]site (and platform-specific variants tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site) to reassemble a base64-encoded binary from chunked DNS responses. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe on Windows) and executed as a detached background process that outlives the parent. The package ships a large decoy telemetry SDK (lib/telemetry.js) to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pvm-autodoc",
+        "purl": "pkg:npm/pvm-autodoc@20.4.6"
+      },
+      "versions": [
+        "20.4.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pvm-autodoc/v/20.4.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7513"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:25:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "1463d493939272cf20ed8aa02ee9455724a1fa82a6b3b987212c527a22666498"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

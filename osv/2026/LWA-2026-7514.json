@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7514",
+  "modified": "2026-08-02T16:29:09Z",
+  "published": "2026-08-02T16:26:07Z",
+  "summary": "Malicious code in taiga-ui-proprietary-navigation (npm)",
+  "details": "This package combosquats the legitimate @taiga-ui/* Angular component library. On require(), it fingerprints the OS and architecture, then downloads a platform-specific binary payload from a rotating set of Cloudflare Workers C2 hosts (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET to paths such as /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If HTTPS fails, it falls back to DNS TXT queries to c[.]tin[.]dl[.]well1[.]site to reconstruct a base64-encoded binary. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process that outlives the parent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "taiga-ui-proprietary-navigation",
+        "purl": "pkg:npm/taiga-ui-proprietary-navigation@20.1.2"
+      },
+      "versions": [
+        "20.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/taiga-ui-proprietary-navigation/v/20.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7514"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:26:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "2c9c18f18b6a15a235adec9ccd5945d4de6ea4d4743e50b8c2a9bc0e4595be44"
+        ]
+      }
+    }
+  }
+}

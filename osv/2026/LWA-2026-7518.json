@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7518",
+  "modified": "2026-08-02T16:28:38Z",
+  "published": "2026-08-02T16:27:05Z",
+  "summary": "Malicious code in dolyame-boxy-independent-bnpl-open-api (npm)",
+  "details": "Dolyame-boxy-independent-bnpl-open-api@20.8.9 is a trojanized multi-stage downloader. The package ships a decoy stub (index.js) that immediately loads _helpers.js, which fingerprints the host OS/architecture and downloads a binary payload from Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If the HTTPS download fails, it falls back to DNS TXT steganography via c[.]tin[.]dl[.]well1[.]site, where TXT records encode the payload in base64 chunks. The downloaded binary is written to /var/tmp/.cache_* (Linux/macOS) or %TEMP%\\dotnet_diag_*.exe (Windows) and spawned as a detached background process (cmd.exe /c start /b or /bin/sh -c \"path \u0026\"). A rate-limiting stamp file at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-execution within 20840 seconds. The package has no lifecycle hooks — the payload runs on require() via the main entry point.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-independent-bnpl-open-api",
+        "purl": "pkg:npm/dolyame-boxy-independent-bnpl-open-api@20.8.9"
+      },
+      "versions": [
+        "20.8.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-independent-bnpl-open-api/v/20.8.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7518"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:27:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "fd53c50c20011d53803b08af1c92e7416d703888fe69012d469aff983157fc71"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

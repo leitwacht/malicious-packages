@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7517",
+  "modified": "2026-08-02T16:28:41Z",
+  "published": "2026-08-02T16:26:51Z",
+  "summary": "Malicious code in twork-data-services-counterfree (npm)",
+  "details": "This package is a multi-stage trojanized downloader. When required, it silently fingerprints the system (OS, architecture, CPU count, memory), then attempts to download a platform-specific binary from a rotating set of Cloudflare Workers C2 endpoints: oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, and oob-worker[.]cf99-9b3[.]workers[.]dev (paths: /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS download fails, it falls back to a DNS TXT-based C2 channel via the domain tin[.]dl[.]well1[.]site, retrieving the payload in chunked base64-encoded TXT records. The downloaded binary is written to /tmp/.cache_\u003crandom_hex\u003e (or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe on Windows), made executable, and spawned as a detached background process that outlives the parent. A stamp file at /tmp/.analytics_state prevents re-execution within approximately 5.7 hours. The package has no repository, no README, and no documented purpose — the benign-looking class export in index.js is a decoy.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-data-services-counterfree",
+        "purl": "pkg:npm/twork-data-services-counterfree@20.1.3"
+      },
+      "versions": [
+        "20.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-data-services-counterfree/v/20.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7517"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:26:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "c40fe337ff5f4548b13cbf648b287aa6bd0a4a481a62f29e387c6e9e4442f544"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

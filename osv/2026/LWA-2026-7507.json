@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7507",
+  "modified": "2026-08-02T16:25:26Z",
+  "published": "2026-08-02T16:24:03Z",
+  "summary": "Malicious code in tailwind-custom-forms (npm)",
+  "details": "Tailwind-custom-forms@0.5.2 is a typosquat of the legitimate @tailwindcss/forms plugin. The package ships a cloned copy of the real Tailwind forms CSS code as a decoy, but appends a base64-encoded payload that executes on require(). The payload queries Ethereum JSON-RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) to find a specific on-chain transaction whose `to` field encodes two C2 IP addresses. It then establishes XOR-encrypted HTTP C2 channels to those IPs on ports 80 and 443, and spawns detached node processes running the beacon. It also fetches a second-stage payload from eth[.]blockscout[.]com. At runtime the package was observed making DNS queries and JSON-RPC POST requests to all four RPC endpoints, and attempting egress to eth-mainnet[.]public[.]blastapi[.]io.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-custom-forms",
+        "purl": "pkg:npm/tailwind-custom-forms@0.5.2"
+      },
+      "versions": [
+        "0.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-custom-forms/v/0.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7507"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:24:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "42461e270f5a79f634dba771a79c428ab0644d90291b29335ec83436a1f71f14"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7520",
+  "modified": "2026-08-02T16:29:18Z",
+  "published": "2026-08-02T16:27:31Z",
+  "summary": "Malicious code in statist-browser-typed-client-mb.product.sme.cards (npm)",
+  "details": "On require(), the package loads a hidden module (_ext.js) that fingerprints the host (platform, architecture, hostname, CPU count, memory), then downloads a binary payload from Cloudflare Workers C2 infrastructure. It attempts HTTPS GETs to oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package, oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package, and oob-worker[.]cf103-070[.]workers[.]dev/pkg/package (with platform-specific paths for arm64, macOS, and Windows). If those fail, it falls back to a DNS TXT-based C2 channel via c[.]tin[.]dl[.]well1[.]site, reconstructing a base64-encoded payload from multiple TXT records. The downloaded binary is written to /var/tmp/.cache_\u003crandom_hex\u003e (or %TEMP%\\dotnet_diag_\u003crandom_hex\u003e.exe on Windows) and executed as a detached background process that outlives the parent. A stamp file at /tmp/.analytics_state prevents re-execution within ~6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-mb.product.sme.cards",
+        "purl": "pkg:npm/statist-browser-typed-client-mb.product.sme.cards@20.5.9"
+      },
+      "versions": [
+        "20.5.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-mb.product.sme.cards/v/20.5.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7520"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:27:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "598f6e9799238ff02cd95c9a4cbf8f235999b70862836bd4c8b2b94e4e01c468"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
