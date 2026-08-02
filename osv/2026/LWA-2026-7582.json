@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7582",
+  "modified": "2026-08-02T17:48:36Z",
+  "published": "2026-08-02T17:47:50Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-cardsmobile.events.promotest (npm)",
+  "details": "On require(), the package fingerprints the host OS and architecture, then downloads a platform-specific binary payload from Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET /pkg/package. If the HTTPS download fails, it falls back to a DNS TXT-based chunked data channel via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached background process. A 6-hour cache stamp prevents repeated downloads. The package name impersonates Tinkoff internal naming conventions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-cardsmobile.events.promotest",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-cardsmobile.events.promotest@20.8.7"
+      },
+      "versions": [
+        "20.8.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-cardsmobile.events.promotest/v/20.8.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7582"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T17:47:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "e33d6beb71d8b07b11375cfcd7f109039eb0d9f92e841eb5d87d04d400989442"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
