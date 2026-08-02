@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7500",
+  "modified": "2026-08-02T16:12:24Z",
+  "published": "2026-08-02T16:11:25Z",
+  "summary": "Malicious code in tcb-web-copy-to-clipboard (npm)",
+  "details": "Tcb-web-copy-to-clipboard is a combosquat package impersonating a clipboard SDK. On require(), it fingerprints the host platform and architecture, then downloads a platform-specific binary payload from a set of Cloudflare Workers C2 endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If HTTPS fails, it falls back to DNS-based payload retrieval via TXT record chunked queries to subdomains of dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe on Windows) and executed as a detached background process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tcb-web-copy-to-clipboard",
+        "purl": "pkg:npm/tcb-web-copy-to-clipboard@20.1.2"
+      },
+      "versions": [
+        "20.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tcb-web-copy-to-clipboard/v/20.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7500"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:11:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "9f9fb16f96063cc665f8703e71b991a6c6bb9b18239478360ca5c51d61bd9b9f"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

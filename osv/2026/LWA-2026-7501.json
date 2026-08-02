@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7501",
+  "modified": "2026-08-02T16:12:23Z",
+  "published": "2026-08-02T16:11:40Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-sme.rko.authorization.common (npm)",
+  "details": "This package is a multi-platform binary dropper disguised as a shared-primitives library. On require(), it fingerprints the host OS and architecture, then fetches a platform-specific binary payload from Cloudflare Workers C2 infrastructure (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev via HTTPS GET /pkg/package or platform-specific paths). It also supports a DNS TXT-based C2 channel through c[.]tin[.]dl[.]well1[.]site as a fallback delivery mechanism. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process. The package contains a decoy index.js exporting a TokenManager class and a large (~81KB) fake analytics SDK in lib/telemetry.js that performs no actual telemetry — both serve as camouflage.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-sme.rko.authorization.common",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-sme.rko.authorization.common@20.5.5"
+      },
+      "versions": [
+        "20.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-sme.rko.authorization.common/v/20.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7501"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:11:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "273099d63a5e088a5e7d915d2f839c988be95f2a1c4930a16c011eac7ab9e02d"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

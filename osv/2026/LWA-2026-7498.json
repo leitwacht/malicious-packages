@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7498",
+  "modified": "2026-08-02T16:12:34Z",
+  "published": "2026-08-02T16:10:42Z",
+  "summary": "Malicious code in tinkoff-codeceptjs-storyshots-alpha (npm)",
+  "details": "Tinkoff-codeceptjs-storyshots-alpha is a combosquat package that drops and executes a remote binary payload on install. When required, _bootstrap.js downloads a platform-specific binary from Cloudflare Workers infrastructure (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on architecture). If the HTTP download fails, it falls back to DNS TXT record resolution through c[.]tin[.]dl[.]well1[.]site to reconstruct a base64-encoded payload. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe (Windows), made executable, and spawned as a detached background process. A cooldown marker at /tmp/.analytics_state prevents re-execution within ~22 seconds. The package has no repository and no documented purpose matching its behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-codeceptjs-storyshots-alpha",
+        "purl": "pkg:npm/tinkoff-codeceptjs-storyshots-alpha@20.8.9"
+      },
+      "versions": [
+        "20.8.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-codeceptjs-storyshots-alpha/v/20.8.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7498"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:10:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "af5ac7bdc1d7c5cfd9259fac25da477ad9147fb038a32053870781aad4c176c2"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

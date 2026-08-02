@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7505",
+  "modified": "2026-08-02T16:13:35Z",
+  "published": "2026-08-02T16:12:48Z",
+  "summary": "Malicious code in tinkoff-statist-browser-typed-client-jumptaxi.feature.contacts (npm)",
+  "details": "On require(), the package loads a binary downloader that fingerprints the operating system and CPU architecture, then downloads a platform-specific binary payload from three Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET requests to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If HTTPS download fails, it falls back to DNS TXT record exfiltration via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process that outlives the parent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-statist-browser-typed-client-jumptaxi.feature.contacts",
+        "purl": "pkg:npm/tinkoff-statist-browser-typed-client-jumptaxi.feature.contacts@20.6.6"
+      },
+      "versions": [
+        "20.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-statist-browser-typed-client-jumptaxi.feature.contacts/v/20.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7505"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:12:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev"
+        ],
+        "sha256": [
+          "a60af2e01392188865e6bf1e8e9d07fd05680ec6b9b3db03ac76a2e9d2360129"
+        ]
+      }
+    }
+  }
+}
