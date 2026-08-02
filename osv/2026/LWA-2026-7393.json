@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7393",
+  "modified": "2026-08-02T10:16:26Z",
+  "published": "2026-08-02T10:14:43Z",
+  "summary": "Malicious code in tinkoff-pfp-atom-desktop-carousel (npm)",
+  "details": "Tinkoff-pfp-atom-desktop-carousel@20.8.8 is a trojanized package that downloads and executes a second-stage binary payload. Upon being required, _loader.js determines the victim's platform (Linux x64/arm64, macOS, Windows), then attempts to fetch a platform-specific binary from a rotating set of Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTP fails, it falls back to a DNS TXT-based payload delivery channel via c[.]tin[.]dl[.]well1[.]site, which serves chunked base64-encoded data. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process (cmd.exe /c start /b or /bin/sh -c... \u0026) with stdio discarded. A cache marker at /tmp/.analytics_state or %TEMP%\\analytics_state prevents re-execution within ~20 seconds. The package contains a decoy index.js exporting a dummy class and an 81KB fake analytics SDK (lib/telemetry.js) that is never invoked.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-pfp-atom-desktop-carousel",
+        "purl": "pkg:npm/tinkoff-pfp-atom-desktop-carousel@20.8.8"
+      },
+      "versions": [
+        "20.8.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-pfp-atom-desktop-carousel/v/20.8.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7393"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:14:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "75a6ab24f36bdd9469f60bd1559e1d2440f4f9b94b063a3e69e44a18ca2f0a2e"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
