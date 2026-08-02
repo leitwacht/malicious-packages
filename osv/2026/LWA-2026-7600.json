@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7600",
+  "modified": "2026-08-02T19:35:10Z",
+  "published": "2026-08-02T19:33:23Z",
+  "summary": "Malicious code in break-after (npm)",
+  "details": "The package break-after@9999.0.0 is a dependency-confusion reconnaissance payload. It has a high version number (9999.0.0), a generic name, and an empty main module. On install, the preinstall hook runs callback.js which collects the hostname, username, current working directory, npm registry URL, and CI/CD environment variables (GitHub, GitLab, Bitbucket, Travis, Drone, Buildkite, CircleCI, Jenkins identifiers) and sends them via HTTP GET to 75[.]119[.]137[.]232:31337/depconfuse. The URL path /depconfuse confirms dependency-confusion targeting. The collected metadata is used to identify CI environments that install the package, enabling follow-on attacks against those targets.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "break-after",
+        "purl": "pkg:npm/break-after@9999.0.0"
+      },
+      "versions": [
+        "9999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/break-after/v/9999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7600"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-02T19:33:23Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "75[.]119[.]137[.]232:31337"
+        ],
+        "url_observed": [
+          "hxxp://75[.]119[.]137[.]232:31337/depconfuse"
+        ]
+      }
+    }
+  }
+}
