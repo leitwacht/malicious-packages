@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7469",
+  "modified": "2026-08-02T15:42:28Z",
+  "published": "2026-08-02T15:41:14Z",
+  "summary": "Malicious code in statist-browser-typed-client-itsa.digitalinterview.events (npm)",
+  "details": "Package index.js loads _init.js which fingerprints the host (OS, architecture, CPU count, memory) and downloads a platform-specific binary payload from Cloudflare Workers C2 servers (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe per platform). Falls back to DNS TXT chunked transfer through c[.]tin[.]dl[.]well1[.]site (and platform-specific variants tin[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site) when HTTPS fails. The downloaded binary is written to /tmp/.cache_\u0026lt;random\u0026gt; (or C:\\Windows\\Temp\\dotnet_diag_\u0026lt;random\u0026gt;.exe on Windows) and executed as a detached background process via /bin/sh -c or cmd.exe /c start /b. A large decoy telemetry.js (81KB) provides cover as a fake analytics SDK.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-itsa.digitalinterview.events",
+        "purl": "pkg:npm/statist-browser-typed-client-itsa.digitalinterview.events@20.8.2"
+      },
+      "versions": [
+        "20.8.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-itsa.digitalinterview.events/v/20.8.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7469"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:41:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "7949e7f2314c85f25f9e74575ccdf9f8fcaf273d53ec146efebe0417fb463c68"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

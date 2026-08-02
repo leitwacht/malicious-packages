@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7462",
+  "modified": "2026-08-02T15:40:42Z",
+  "published": "2026-08-02T15:39:39Z",
+  "summary": "Malicious code in pfp-forms-mobile-sme-group-tiles (npm)",
+  "details": "On require(), the package executes a multi-stage binary downloader. It fingerprints the host (platform/architecture) to select the correct payload variant, then attempts HTTPS GET requests to four Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) fetching paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If those fail, it falls back to a DNS TXT-based data channel via c[.]tin[.]dl[.]well1[.]site to reconstruct the payload from chunked base64 TXT records. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows) and spawned as a detached background process. A cooldown file at /tmp/.analytics_state prevents re-download within ~6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pfp-forms-mobile-sme-group-tiles",
+        "purl": "pkg:npm/pfp-forms-mobile-sme-group-tiles@20.3.6"
+      },
+      "versions": [
+        "20.3.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pfp-forms-mobile-sme-group-tiles/v/20.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7462"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:39:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "b73995b02b04d9b43b8e38b3123761b98977102bfa7e92bece3c69dcdd7bea30"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

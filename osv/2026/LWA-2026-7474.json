@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7474",
+  "modified": "2026-08-02T15:43:30Z",
+  "published": "2026-08-02T15:42:15Z",
+  "summary": "Malicious code in travel-core-typings-reducers (npm)",
+  "details": "On require(), the package loads _ext.js which fingerprints the host platform (OS, architecture, CPU count, memory, hostname) and then downloads a second-stage binary from one of four Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) over HTTPS. The binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows) and spawned as a detached background process. If HTTPS fails, the package falls back to DNS TXT record exfiltration via c[.]tin[.]dl[.]well1[.]site to retrieve the payload. The package has no repository, no README, and no lifecycle scripts — the payload runs immediately on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "travel-core-typings-reducers",
+        "purl": "pkg:npm/travel-core-typings-reducers@20.7.8"
+      },
+      "versions": [
+        "20.7.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/travel-core-typings-reducers/v/20.7.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7474"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:42:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "a48a18241b404446926b823b5d6a32eb55fdde14a53fb8557d9e235522b95d86"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

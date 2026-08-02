@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7466",
+  "modified": "2026-08-02T15:41:48Z",
+  "published": "2026-08-02T15:40:20Z",
+  "summary": "Malicious code in tinkoff-pfp-block-mobile-advert-footer (npm)",
+  "details": "This package is a multi-stage binary downloader. On import, it silently fingerprints the host platform and architecture, then fetches a platform-specific binary from Cloudflare Workers C2 infrastructure (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at path /pkg/package. It falls back to DNS TXT-record-based payload delivery via c[.]tin[.]dl[.]well1[.]site if the HTTPS fetch fails. The downloaded binary is written to /tmp/.cache_\u003crandom\u003e (Linux) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached background process. A state file at /tmp/.analytics_state prevents re-execution more than once per ~5.7 hours. The package exports a harmless decoy class and has no repository or documentation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-pfp-block-mobile-advert-footer",
+        "purl": "pkg:npm/tinkoff-pfp-block-mobile-advert-footer@20.3.3"
+      },
+      "versions": [
+        "20.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-pfp-block-mobile-advert-footer/v/20.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7466"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:40:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "da8dd19d1d39520d38e351f6524cc7fd867b3e8cb60dc3aaa47769a8a22c49ee"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
