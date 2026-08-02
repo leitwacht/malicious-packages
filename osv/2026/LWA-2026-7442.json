@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7442",
+  "modified": "2026-08-02T15:18:41Z",
+  "published": "2026-08-02T15:17:22Z",
+  "summary": "Malicious code in bpm-foundation-feature-flags (npm)",
+  "details": "Bpm-foundation-feature-flags@20.4.2 is a trojanized npm package that downloads and executes a second-stage binary on the host. On require(), _compat.js fingerprints the OS and architecture (linux_x64, win32, darwin, linux_arm64), then fetches a platform-specific binary from one of three Cloudflare Workers C2 endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET to paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. As a fallback, it retrieves the payload via DNS TXT queries to c[.]tin[.]dl[.]well1[.]site using chunked base64 reassembly. The downloaded binary is written to /tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed as a detached background process — cmd.exe /c start /b on Windows, /bin/sh -c \"path \u0026\" on Unix. The package's index.js is a minimal decoy feature-flags class.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bpm-foundation-feature-flags",
+        "purl": "pkg:npm/bpm-foundation-feature-flags@20.4.2"
+      },
+      "versions": [
+        "20.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bpm-foundation-feature-flags/v/20.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7442"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:17:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "5ec2e419fab08faa97e56469a80b04ee88cba15fea04813e2b39b7e5b40e9fcf"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

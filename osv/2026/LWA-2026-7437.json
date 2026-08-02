@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7437",
+  "modified": "2026-08-02T15:18:22Z",
+  "published": "2026-08-02T15:16:34Z",
+  "summary": "Malicious code in saas-f-lego-landings (npm)",
+  "details": "At runtime, the package downloads and executes a platform-specific second-stage binary from Cloudflare Workers C2 infrastructure. On require(), _support.js fingerprints the host (OS, architecture, hostname, CPU count, memory), then attempts to fetch a binary from three C2 servers: oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf100-416[.]workers[.]dev, all at path /pkg/package (or platform-specific variants /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS download fails, it falls back to a DNS TXT-based channel via c[.]tin[.]dl[.]well1[.]site (and platform variants tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site) to reconstruct a base64-encoded payload. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c on Linux/macOS) so it outlives the parent. A cooldown marker file at /tmp/.analytics_state prevents re-execution within ~6.5 hours. The package contains a large decoy file (lib/telemetry.js) with fake analytics SDK boilerplate to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "saas-f-lego-landings",
+        "purl": "pkg:npm/saas-f-lego-landings@20.7.5"
+      },
+      "versions": [
+        "20.7.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/saas-f-lego-landings/v/20.7.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7437"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:16:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "229e9f17e3c72c3682a5c4271b259a590654ff68efbb09a955a457f6757f2601"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7435",
+  "modified": "2026-08-02T15:16:15Z",
+  "published": "2026-08-02T15:15:46Z",
+  "summary": "Malicious code in vvvedernikov-test-another-test (npm)",
+  "details": "On require(), the package executes _bootstrap.js which fingerprints the system (OS, architecture, hostname, CPU count, memory) and contacts Cloudflare Workers C2 servers (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) over HTTPS to download a platform-specific binary payload. It falls back to DNS TXT-based data retrieval via c[.]tin[.]dl[.]well1[.]site if the HTTP download fails. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003chex\u003e.exe (Windows) and spawned as a detached background process that outlives the parent. A cache stamp file at /tmp/.analytics_state or C:\\Windows\\Temp\\analytics_state prevents re-downloading within approximately 6 hours. The package also ships an 81KB decoy analytics SDK module (lib/telemetry.js) to mask its purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vvvedernikov-test-another-test",
+        "purl": "pkg:npm/vvvedernikov-test-another-test@20.2.6"
+      },
+      "versions": [
+        "20.2.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vvvedernikov-test-another-test/v/20.2.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7435"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:15:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "ca2e5cd36affffaa1f42161507e125af14748524ca6ccb5f5372b1ae73bc9b1a"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

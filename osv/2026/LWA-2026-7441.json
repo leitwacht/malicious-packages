@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7441",
+  "modified": "2026-08-02T15:18:17Z",
+  "published": "2026-08-02T15:17:15Z",
+  "summary": "Malicious code in pfp-integration-mobile-heading (npm)",
+  "details": "This package is a trojanized downloader. On require(), it fingerprints the host (platform, architecture, hostname, memory, CPU count), then contacts one of four Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET at path /pkg/package to download a second-stage binary. It also attempts DNS TXT-based payload delivery via c[.]tin[.]dl[.]well1[.]site as a fallback. The downloaded payload is written to /var/tmp/.cache_\u0026lt;random\u0026gt; (Linux/macOS) or %TEMP%\\dotnet_diag_\u0026lt;random\u0026gt;.exe (Windows) and executed as a detached background process. A stamp file at /tmp/.analytics_state (or %TEMP%\\analytics_state) prevents re-execution within ~6.4 hours. The package ships a large decoy analytics SDK (lib/telemetry.js, 81KB) to mask the downloader in _bootstrap.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pfp-integration-mobile-heading",
+        "purl": "pkg:npm/pfp-integration-mobile-heading@20.7.1"
+      },
+      "versions": [
+        "20.7.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pfp-integration-mobile-heading/v/20.7.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7441"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:17:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "a234bb491ac294370a8252a9e2d3cb65405cc94b59ef75959f5824f3f17b1159"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

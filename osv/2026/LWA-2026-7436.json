@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7436",
+  "modified": "2026-08-02T15:17:06Z",
+  "published": "2026-08-02T15:16:20Z",
+  "summary": "Malicious code in specials-mvno-client (npm)",
+  "details": "Specials-mvno-client@20.9.8 is a trojanized npm package that downloads and executes a second-stage binary on install. When required, _bootstrap.js fingerprints the host platform (OS, arch), then fetches a binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET to paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on platform. If the HTTP fetch fails, it falls back to DNS TXT-based payload retrieval from tin[.]dl[.]well1[.]site (with platform-specific subdomains). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e on Linux/macOS or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows, made executable, and spawned as a detached background process (spawn with detached:true, unref'd, stdio ignored). The package contains no repository, no README, and the 81KB lib/telemetry.js file is a decoy analytics SDK — the real payload is in _bootstrap.js (5KB).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "specials-mvno-client",
+        "purl": "pkg:npm/specials-mvno-client@20.9.8"
+      },
+      "versions": [
+        "20.9.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/specials-mvno-client/v/20.9.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7436"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:16:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "fb1e894d8c2356d971b3b20d27f59df02f030e435d72cf84841542176336c15b"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}
