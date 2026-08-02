@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7412",
+  "modified": "2026-08-02T10:41:35Z",
+  "published": "2026-08-02T10:40:24Z",
+  "summary": "Malicious code in tinkoff-boxy-mobile-separator (npm)",
+  "details": "On require(), the package collects system information (platform, architecture, hostname, CPU count, memory) and downloads a second-stage binary from Cloudflare Workers C2 infrastructure. It tries up to 4 C2 hosts in random order: oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev — each serving /pkg/package (or platform-specific paths like /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If all HTTPS attempts fail, it falls back to DNS TXT-based payload retrieval from c[.]tin[.]dl[.]well1[.]site (and platform-specific variants tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site). The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows) and executed as a detached background process. A marker file at /tmp/.analytics_state limits re-execution to once per ~20 seconds.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-mobile-separator",
+        "purl": "pkg:npm/tinkoff-boxy-mobile-separator@20.8.8"
+      },
+      "versions": [
+        "20.8.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-mobile-separator/v/20.8.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7412"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:40:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "91427087128074e81b83d8a677f13a00a5d7baad1cd15cf9ac2694226717629a"
+        ]
+      }
+    }
+  }
+}

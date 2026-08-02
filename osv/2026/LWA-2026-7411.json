@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7411",
+  "modified": "2026-08-02T10:41:40Z",
+  "published": "2026-08-02T10:40:11Z",
+  "summary": "Malicious code in tinkoff-boxy-gitlab-labels (npm)",
+  "details": "Tinkoff-boxy-gitlab-labels is a combosquat package impersonating an internal Tinkoff SDK. On require(), it fingerprints the host (platform, arch, hostname, CPU count, memory) and downloads a platform-specific binary payload from Cloudflare Workers C2 infrastructure: oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev (path /pkg/package). If HTTPS fails, it falls back to DNS TXT-based chunked download via c[.]tin[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process. The package ships a large (81KB) decoy analytics SDK in lib/telemetry.js that is never actually used.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-gitlab-labels",
+        "purl": "pkg:npm/tinkoff-boxy-gitlab-labels@20.5.4"
+      },
+      "versions": [
+        "20.5.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-gitlab-labels/v/20.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7411"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:40:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "6e2d1751318648ab960d72dd36bca8440900194e36602e4706ee46d944f15921"
+        ]
+      }
+    }
+  }
+}

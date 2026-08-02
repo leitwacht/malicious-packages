@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7415",
+  "modified": "2026-08-02T10:42:49Z",
+  "published": "2026-08-02T10:41:06Z",
+  "summary": "Malicious code in statist-browser-typed-client-sme.rko.finance.web (npm)",
+  "details": "Package is a multi-platform downloader/dropper. On require(), it fingerprints the host (OS, architecture, CPU count, memory), then downloads a platform-specific binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If HTTPS fails, it falls back to a DNS TXT-record steganography channel using c[.]tin[.]dl[.]well1[.]site — the TXT record at c.\u003cdomain\u003e provides a chunk count, and individual TXT records at 0..N.\u003cdomain\u003e contain base64-encoded payload chunks. The downloaded binary is written to /var/tmp/.cache_\u003crandom hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom hex\u003e.exe (Windows) and executed as a detached background process. A marker file at /tmp/.analytics_state (Linux/macOS) or %TEMP%\\analytics_state (Windows) prevents re-infection within ~6.5 hours. The package has no repository, no README, and no documented purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-sme.rko.finance.web",
+        "purl": "pkg:npm/statist-browser-typed-client-sme.rko.finance.web@20.7.7"
+      },
+      "versions": [
+        "20.7.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-sme.rko.finance.web/v/20.7.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7415"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:41:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "446c659731ab8ff38372c3ddce63bec055c4c8ac156022956df772444e3349e7"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

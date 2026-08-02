@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7421",
+  "modified": "2026-08-02T10:43:51Z",
+  "published": "2026-08-02T10:42:26Z",
+  "summary": "Malicious code in statist-browser-typed-client-mb.product.operations (npm)",
+  "details": "Package disguises itself as an \"Operations SDK\" but on require() executes a binary dropper. It fingerprints the OS and architecture (Windows, Linux x64/arm64, macOS), then downloads a platform-specific second-stage binary from Cloudflare Workers C2 infrastructure (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) over HTTPS. If HTTPS fails, it falls back to a DNS TXT record-based transfer from *.dl[.]well1[.]site domains. The downloaded binary is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (Linux/macOS) or %TEMP%\\dotnet_diag_\u0026lt;hex\u0026gt;.exe (Windows) and spawned as a detached background process. A flag file at /tmp/.analytics_state or %TEMP%\\analytics_state limits re-execution to once per ~5.6 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-mb.product.operations",
+        "purl": "pkg:npm/statist-browser-typed-client-mb.product.operations@20.4.9"
+      },
+      "versions": [
+        "20.4.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-mb.product.operations/v/20.4.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7421"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:42:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "a4e15235c5da29765d9abf88dfbcb6e9e4ad29ac6d6f8081c3ea30e5f1894f16"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7410",
+  "modified": "2026-08-02T10:40:46Z",
+  "published": "2026-08-02T10:39:59Z",
+  "summary": "Malicious code in tinkoff-boxy-form-desktop-sme-registration-ooo (npm)",
+  "details": "When required, the package fingerprints the system (platform, architecture, hostname, CPU count, total memory) and attempts to download a binary payload from multiple Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET requests to /pkg/package (or platform-specific paths). If HTTPS download fails, it falls back to a DNS TXT-based exfiltration channel via c[.]tin[.]dl[.]well1[.]site, retrieving the payload in base64-encoded chunks. The downloaded binary is written to /var/tmp/.cache_\u003crandom_hex\u003e (Linux) or %TEMP%\\dotnet_diag_\u003crandom_hex\u003e.exe (Windows) and executed as a detached background process, outliving the parent Node process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tinkoff-boxy-form-desktop-sme-registration-ooo",
+        "purl": "pkg:npm/tinkoff-boxy-form-desktop-sme-registration-ooo@20.4.5"
+      },
+      "versions": [
+        "20.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tinkoff-boxy-form-desktop-sme-registration-ooo/v/20.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7410"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:39:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "a069a223225e2edb1233f20d9be88253249b811b9d788fdf94b89ab68e49c1e6"
+        ]
+      }
+    }
+  }
+}
