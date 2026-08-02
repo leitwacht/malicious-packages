@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7431",
+  "modified": "2026-08-02T15:12:12Z",
+  "published": "2026-08-02T15:11:27Z",
+  "summary": "Malicious code in pfp-forms-sme-loan (npm)",
+  "details": "Pfp-forms-sme-loan@20.2.1 is a trojanized package that downloads and executes platform-specific second-stage binaries. On require(), _bridge.js fingerprints the host (OS, architecture, CPU count, memory), then attempts to download a binary from one of three Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) via HTTPS GET requests to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on the platform. If direct download fails, it falls back to a DNS TXT-based covert channel using domains tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, or win[.]dl[.]well1[.]site to reassemble a base64-encoded payload. The downloaded binary is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or %TEMP%\\dotnet_diag_\u0026lt;hex\u0026gt;.exe on Windows), made executable, and spawned as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \u0026lt;path\u0026gt; \u0026amp; on Unix) so it outlives the parent. The package also checks for a sandbox marker (_leitwacht.attached.local) and respects DISABLE_TELEMETRY/ANALYTICS_OPT_OUT/DO_NOT_TRACK env vars as evasion countermeasures.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pfp-forms-sme-loan",
+        "purl": "pkg:npm/pfp-forms-sme-loan@20.2.1"
+      },
+      "versions": [
+        "20.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pfp-forms-sme-loan/v/20.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7431"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:11:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "751fc2e27fe36a965402fc99ed3acee25f59bc1da3a14d1eca27d2b893f27793"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

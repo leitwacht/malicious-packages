@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7432",
+  "modified": "2026-08-02T15:14:08Z",
+  "published": "2026-08-02T15:11:44Z",
+  "summary": "Malicious code in tailwind-animationgroup (npm)",
+  "details": "Combosquat package impersonating tailwindcss-animationgroup (missing \"css\" in name). Identical payload to tailwind-animationpack@2.3.7. The src/index.js file contains a benign Tailwind plugin facade followed by eval(atob(...)) that decodes a multi-stage crypto drainer. Stage 1 queries Ethereum RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com) to scan blockchain transactions for a hardcoded wallet address. Stage 2 extracts IP addresses from transaction data to derive C2 infrastructure. Stage 3 spawns a detached node child process that beacons to the C2 over HTTP with XOR-encrypted communication. The payload executes on require() via the eval(atob) in the module body. Combosquat packages impersonating TailwindCSS animation plugins. On require(), the main entry point (src/index.js) executes an obfuscated payload that queries Ethereum blockchain RPC endpoints (eth-mainnet[.]public[.]blastapi[.]io, 1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com) to discover C2 infrastructure. The payload decodes a hardcoded Ethereum address, queries the blockchain for a transaction from that address, extracts IP addresses from the transaction data, and uses those as C2 servers. It then fetches second-stage payloads from the C2 over HTTP, XOR-decrypts them, and executes them via a detached child_process spawn. DNS sinkhole observations from the same crypto drainer payload in tailwind-animationpack@2.3.7 and tailwind-animationgroup@2.3.7. The eval(atob) payload in src/index.js queries Ethereum RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com) to scan blockchain transactions for a hardcoded wallet address, then derives C2 infrastructure from transaction data and spawns a detached node process with XOR-encrypted C2 beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-animationgroup",
+        "purl": "pkg:npm/tailwind-animationgroup@2.3.7"
+      },
+      "versions": [
+        "2.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-animationgroup/v/2.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7432"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:11:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "a134ecd1fb31e30734c4c76dd66e52a5745ca1a18749030c7477b298c2fe7a1f"
+        ]
+      }
+    }
+  }
+}

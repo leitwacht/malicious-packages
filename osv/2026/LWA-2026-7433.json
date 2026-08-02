@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7433",
+  "modified": "2026-08-02T15:14:08Z",
+  "published": "2026-08-02T15:12:16Z",
+  "summary": "Malicious code in tailwind-animationpack (npm)",
+  "details": "Combosquat package impersonating tailwindcss-animationpack (missing \"css\" in name). The src/index.js file contains a benign Tailwind plugin facade followed by eval(atob(...)) that decodes a multi-stage crypto drainer. Stage 1 queries Ethereum RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com) to scan blockchain transactions for a hardcoded wallet address. Stage 2 extracts IP addresses from transaction data to derive C2 infrastructure. Stage 3 spawns a detached node child process that beacons to the C2 over HTTP with XOR-encrypted communication. The package has no lifecycle hooks but the payload executes on require() via the eval(atob) in the module body. Combosquat packages impersonating TailwindCSS animation plugins. On require(), the main entry point (src/index.js) executes an obfuscated payload that queries Ethereum blockchain RPC endpoints (eth-mainnet[.]public[.]blastapi[.]io, 1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com) to discover C2 infrastructure. The payload decodes a hardcoded Ethereum address, queries the blockchain for a transaction from that address, extracts IP addresses from the transaction data, and uses those as C2 servers. It then fetches second-stage payloads from the C2 over HTTP, XOR-decrypts them, and executes them via a detached child_process spawn. The package has no lifecycle hooks — the payload runs synchronously when the module is loaded. DNS sinkhole observations from the same crypto drainer payload in tailwind-animationpack@2.3.7 and tailwind-animationgroup@2.3.7. The eval(atob) payload in src/index.js queries Ethereum RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com) to scan blockchain transactions for a hardcoded wallet address, then derives C2 infrastructure from transaction data and spawns a detached node process with XOR-encrypted C2 beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-animationpack",
+        "purl": "pkg:npm/tailwind-animationpack@2.3.7"
+      },
+      "versions": [
+        "2.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-animationpack/v/2.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7433"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T15:12:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "4b1c6c5f4340b88141bcc4993c851ae40aacbb21919a8a405b7e549dcb0f5599"
+        ]
+      }
+    }
+  }
+}
