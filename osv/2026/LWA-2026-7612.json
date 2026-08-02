@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7612",
+  "modified": "2026-08-02T19:40:58Z",
+  "published": "2026-08-02T19:39:48Z",
+  "summary": "Malicious code in a.poltoradnev-package-b (npm)",
+  "details": "On require(), the package runs a multi-stage binary downloader. It fingerprints the host platform and architecture, then downloads a platform-specific binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS. If that fails, it reassembles a binary from DNS TXT records hosted on well1[.]site domains (tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, win[.]dl[.]well1[.]site). The downloaded payload is written to /tmp/.cache_\u003crandom-hex\u003e (or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe on Windows), made executable, and spawned as a detached background process that outlives the parent. A filesystem stamp at /tmp/.analytics_state prevents re-execution within ~6.3 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "a.poltoradnev-package-b",
+        "purl": "pkg:npm/a.poltoradnev-package-b@33.9.1"
+      },
+      "versions": [
+        "33.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/a.poltoradnev-package-b/v/33.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7612"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T19:39:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "cd75fb0e830ba47b72745a7cff7e8d0be96a99dffecc92abf2193f739e6e6960"
+        ]
+      }
+    }
+  }
+}

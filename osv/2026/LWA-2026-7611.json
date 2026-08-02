@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7611",
+  "modified": "2026-08-02T19:40:33Z",
+  "published": "2026-08-02T19:39:34Z",
+  "summary": "Malicious code in accounts-ddos-shield (npm)",
+  "details": "Accounts-ddos-shield@33.3.8 is a multi-stage binary dropper disguised as a DDoS protection library. On require(), it fingerprints the host (OS, architecture, CPU count, memory) and downloads a platform-specific binary payload from Cloudflare Workers C2 infrastructure (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GETs to /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. It also supports a DNS TXT-record-based fallback delivery channel using domains tin[.]dl[.]well1[.]site, tina[.]dl[.]well1[.]site, ldr[.]dl[.]well1[.]site, and win[.]dl[.]well1[.]site. The downloaded binary is written to /var/tmp/.cache_* (or %TEMP%\\dotnet_diag_*.exe on Windows) and executed as a detached background process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "accounts-ddos-shield",
+        "purl": "pkg:npm/accounts-ddos-shield@33.3.8"
+      },
+      "versions": [
+        "33.3.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/accounts-ddos-shield/v/33.3.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7611"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T19:39:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ldr[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site",
+          "tina[.]dl[.]well1[.]site",
+          "win[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "eb9f8e416d768206ba28d6bc06d10d8f45331c1ab1f70246d9c1ed14d0431120"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}
