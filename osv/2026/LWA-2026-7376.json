@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7376",
+  "modified": "2026-08-02T08:40:37Z",
+  "published": "2026-08-02T08:39:24Z",
+  "summary": "Malicious code in post-css-transfer (npm)",
+  "details": "Post-css-transfer@0.0.1 is a trojanized clone of the legitimate postcss package. On require(), it queries multiple Ethereum RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) to find the latest block, then searches for a transaction from attacker wallet 0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a. The 'to' field of that transaction encodes two C2 IP addresses. The payload fetches XOR-encrypted second-stage payloads from those IPs at paths /0x/cls and /0x/ls, decrypts them with key \"q4FZkxX{!h,Sr3=@\", and executes them via eval() inline and via detached hidden node subprocesses (spawn with detached:true, windowsHide:true, stdio:ignore). This is a blockchain-based C2 implant using Ethereum transactions as a dead-drop for C2 address distribution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "post-css-transfer",
+        "purl": "pkg:npm/post-css-transfer@0.0.1"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/post-css-transfer/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7376"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T08:39:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "c81a81b9ee6cfc5851f55267b4022b7b7fff86011e44c63a8b15bbdd132d12b7"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
