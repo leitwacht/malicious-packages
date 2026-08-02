@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7531",
+  "modified": "2026-08-02T16:46:26Z",
+  "published": "2026-08-02T16:44:55Z",
+  "summary": "Malicious code in twork-data-services-role-app (npm)",
+  "details": "The package is a multi-stage binary dropper. On require(), it fingerprints the platform (OS, architecture), then attempts to download a second-stage binary from three Cloudflare Workers C2 endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS GET to /pkg/package. If HTTPS fails, it falls back to a DNS TXT-based covert channel using *.dl[.]well1[.]site domains to reconstruct a base64-encoded payload. The downloaded binary is written to /tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows), made executable, and spawned as a detached background process that outlives the parent. The package's index.js exports a benign-looking class but silently loads the dropper on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twork-data-services-role-app",
+        "purl": "pkg:npm/twork-data-services-role-app@20.9.6"
+      },
+      "versions": [
+        "20.9.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twork-data-services-role-app/v/20.9.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7531"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T16:44:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "1c25a554d223f4938cf9ca79dfd57afb139ad87d9dba51188938ae5195ac227e"
+        ]
+      }
+    }
+  }
+}
