@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7424",
+  "modified": "2026-08-02T10:56:48Z",
+  "published": "2026-08-02T10:55:08Z",
+  "summary": "Malicious code in statist-browser-typed-client-mb.reliability.android.metrics (npm)",
+  "details": "Package is a trojanized telemetry-impersonation library that downloads and executes a second-stage binary on install. When required, _loader.js determines the platform (linux_x64, darwin, win32), then fetches a platform-specific binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) via HTTPS GET /pkg/package. If the HTTP fetch fails, it falls back to a DNS TXT-based exfil channel at tin[.]dl[.]well1[.]site to retrieve the payload. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows), made executable, and spawned as a detached background process (child_process.spawn with detached:true, unref'd). The package has no repository, no documented purpose beyond a generic \"telemetry exporter\" description, and the C2 hostnames are string-split to evade static analysis.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "statist-browser-typed-client-mb.reliability.android.metrics",
+        "purl": "pkg:npm/statist-browser-typed-client-mb.reliability.android.metrics@20.9.3"
+      },
+      "versions": [
+        "20.9.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/statist-browser-typed-client-mb.reliability.android.metrics/v/20.9.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7424"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:55:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "tin[.]dl[.]well1[.]site"
+        ],
+        "sha256": [
+          "09ace859f00297043630f7b99317156bdde62604904ec24448b886c7effc3379"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

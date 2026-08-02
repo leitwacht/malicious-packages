@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7430",
+  "modified": "2026-08-02T10:57:43Z",
+  "published": "2026-08-02T10:56:14Z",
+  "summary": "Malicious code in bigops-chat-messages (npm)",
+  "details": "Bigops-chat-messages@19.9.8 is a multi-platform binary dropper disguised as a chat-messages interface. On require(), _helpers.js detects the OS and architecture (Linux x64/arm64, macOS, Windows x86/x64), then downloads a platform-specific binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTP download fails, it falls back to a DNS TXT-record-based exfiltration channel via c[.]tin[.]dl[.]well1[.]site, reassembling the binary from base64-encoded TXT records. The downloaded binary is written to /var/tmp/.cache_\u003crandom_hex\u003e (Linux/macOS) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom_hex\u003e.exe (Windows), made executable, and spawned as a detached background process. The package ships a large decoy telemetry SDK (lib/telemetry.js, 81KB) to appear legitimate.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-chat-messages",
+        "purl": "pkg:npm/bigops-chat-messages@19.9.8"
+      },
+      "versions": [
+        "19.9.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-chat-messages/v/19.9.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7430"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-02T10:56:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]tin[.]dl[.]well1[.]site",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "ebd74aec8dee6f8d043a8b24f409cdac4d722c18e08de18599cd9dda3eddea30"
+        ]
+      }
+    }
+  }
+}
