@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7689",
+  "modified": "2026-08-03T19:09:45Z",
+  "published": "2026-08-03T19:00:24Z",
+  "summary": "Malicious code in bigops-auth-interceptor (npm)",
+  "details": "Package \"bigops-auth-interceptor\" is a combosquat binary downloader. When required, it silently downloads and executes a platform-specific binary payload. The downloader in _vendor.js contacts Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) to fetch a binary from paths /pkg/package (Linux x64), /pkg/package-arm64 (Linux arm64), /pkg/loader_mac (macOS), or /pkg/package.exe (Windows). If those fail, it falls back to DNS TXT-record C2 via domains sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process. A marker file at /tmp/.analytics_state (Linux) or %TEMP%\\analytics_state (Windows) prevents re-download within ~6 hours. The package has no repository, no lifecycle hooks, and no documented purpose — the downloader runs immediately on require().",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-auth-interceptor",
+        "purl": "pkg:npm/bigops-auth-interceptor@35.7.2"
+      },
+      "versions": [
+        "35.7.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-auth-interceptor/v/35.7.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7689"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T19:00:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "87a6847263cf9323ebd0af50445e6aa051b0bf2d98c5145213e1c1903af47840"
+        ]
+      }
+    }
+  }
+}

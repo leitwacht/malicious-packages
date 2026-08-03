@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7686",
+  "modified": "2026-08-03T19:08:33Z",
+  "published": "2026-08-03T19:00:26Z",
+  "summary": "Malicious code in bigops-header-tabs (npm)",
+  "details": "Bigops-header-tabs@35.8.2 is a trojanized package that drops and executes a platform-specific binary payload. On require(), it loads _adapter.js which fingerprints the host OS and architecture, then downloads a binary from Cloudflare Workers C2 infrastructure (oob-worker[.]cf10-2-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) with fallback to DNS TXT-based payload retrieval from wel1[.]ru domains (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached process. A lock file at /tmp/.analytics_state prevents re-download within ~6 hours. The package has no repository, no README content beyond boilerplate, and no lifecycle hooks — the payload runs silently at import time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-header-tabs",
+        "purl": "pkg:npm/bigops-header-tabs@35.8.2"
+      },
+      "versions": [
+        "35.8.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-header-tabs/v/35.8.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7686"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T19:00:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf10-2-baf[.]workers[.]dev",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ]
+      }
+    }
+  }
+}

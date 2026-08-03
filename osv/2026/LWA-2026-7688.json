@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7688",
+  "modified": "2026-08-03T19:09:11Z",
+  "published": "2026-08-03T19:00:26Z",
+  "summary": "Malicious code in bigops-create-manifest (npm)",
+  "details": "The package bigops-create-manifest@35.2.4 is a trojanized binary downloader. At require-time, it silently fetches a remote binary from Cloudflare Workers endpoints (oob-worker[.]cf102-baf[.]workers[.]de, oob-worker[.]cf100-416[.]workers[.]de, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) with a fallback to DNS TXT-based payload retrieval from domains (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to /tmp/.cache_\u003crandom\u003e (Linux) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe (Windows), made executable, and spawned as a detached process. The package has no repository, no lifecycle scripts, and its only purpose is to download and execute a remote payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-create-manifest",
+        "purl": "pkg:npm/bigops-create-manifest@35.2.4"
+      },
+      "versions": [
+        "35.2.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-create-manifest/v/35.2.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7688"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T19:00:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]de",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]de",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "a942e042f56811053d14fef8b01547a50ce6f46796bb1137cb5cf39c6ed963a8"
+        ]
+      }
+    }
+  }
+}
