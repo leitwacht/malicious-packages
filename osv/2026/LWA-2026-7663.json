@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7663",
+  "modified": "2026-08-03T17:28:23Z",
+  "published": "2026-08-03T17:27:56Z",
+  "summary": "Malicious code in stellarfixer (npm)",
+  "details": "Stellarfixer@1.0.0 is a trojanized package that drops and executes the XWorm V7.0 remote access trojan (RAT) on Windows systems. The postinstall script (postinstall.js) runs the bundled PE binary bin/stellarfn.exe, which is a full-featured.NET RAT. Capabilities include: Telegram bot API C2 channel (api[.]telegram[.]org), keylogging via Windows hooks, screen capture, webcam capture via avicap32.dll, USB worm propagation to removable drives, persistence via scheduled tasks (schtasks.exe /create /sc minute /mo 1) and HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run registry key, Windows Defender exclusion via Add-MpPreference, DDoS (SYN flood), hosts file hijacking (%drivers%\\etc\\hosts), system information theft (CPU, GPU, RAM, OS version, antivirus products), and remote plugin download/execution. The binary also sets the process as critical (RtlSetProcessIsCritical) to cause a BSOD if terminated.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "stellarfixer",
+        "purl": "pkg:npm/stellarfixer@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/stellarfixer/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7663"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T17:27:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ],
+        "sha256": [
+          "53f3ca3de915eda222d12b5ea4e04329456364fbbb7cfa8315f7bcfd03d5abd2"
+        ]
+      }
+    }
+  }
+}
