@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7651",
+  "modified": "2026-08-03T15:56:27Z",
+  "published": "2026-08-03T15:55:24Z",
+  "summary": "Security-research / proof-of-concept package: simple-date-formatter-util-13 (npm)",
+  "details": "The package \"simple-date-formatter-util-13\" is a combosquat impersonating a date-formatting utility. Its postinstall hook runs a shell command that performs extensive environment reconnaissance: checks for seccomp/NoNewPrivs restrictions, lists /dev entries, probes NFS-mounted directories, probes Kubernetes API servers at 10[.]45[.]196[.]138:6443 and 104[.]16[.]5[.]34:6443, reads /etc/hosts, and checks process capabilities. All collected data is POSTed to the C2 endpoint safjhdvsfwzhieemkdzbgr54r0yjhrmok[.]oast[.]fun/escinfo2. A bundled postinstall.js file additionally reads SSH public keys from ~/.ssh/ and exfiltrates them along with the username and platform to 124[.]221[.]154[.]135:443 via HTTPS POST. A.claude/settings.local.json file grants PowerShell(npm config *) permissions, enabling npm token theft via Claude Code. The main index.js is a 160-byte decoy date formatter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-util-13",
+        "purl": "pkg:npm/simple-date-formatter-util-13@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-util-13/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7651"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-08-03T15:55:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "safjhdvsfwzhieemkdzbgr54r0yjhrmok[.]oast[.]fun"
+        ],
+        "ip_observed": [
+          "104[.]16[.]5[.]34:6443",
+          "124[.]221[.]154[.]135:443"
+        ],
+        "sha256": [
+          "9026a94785bfeaf8b4e6508130d4dc2aaa08c3df50e9e472b01d510905ac71ba"
+        ],
+        "url_observed": [
+          "hxxp://safjhdvsfwzhieemkdzbgr54r0yjhrmok[.]oast[.]fun/escinfo2",
+          "hxxps://124[.]221[.]154[.]135/post"
+        ]
+      }
+    }
+  }
+}
