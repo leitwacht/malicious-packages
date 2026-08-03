@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7673",
+  "modified": "2026-08-03T19:00:08Z",
+  "published": "2026-08-03T18:59:24Z",
+  "summary": "Malicious code in bigops-communication-client (npm)",
+  "details": "On require(), the package resolves the host platform and architecture, then downloads a binary payload from one of several Cloudflare Workers C2 endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev). If the HTTP fetch fails, it falls back to retrieving the payload via DNS TXT record lookups on wel1[.]ru subdomains (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp (or %TEMP% on Windows) with a randomized name, made executable, and spawned as a detached background process. The package has no repository, no lifecycle hooks, and was published at version 35.8.8 with no prior versions — the high version number and name are designed to appear as a legitimate internal SDK update.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-communication-client",
+        "purl": "pkg:npm/bigops-communication-client@35.8.8"
+      },
+      "versions": [
+        "35.8.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-communication-client/v/35.8.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7673"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:59:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ]
+      }
+    }
+  }
+}

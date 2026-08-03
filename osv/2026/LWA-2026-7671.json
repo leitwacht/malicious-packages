@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7671",
+  "modified": "2026-08-03T19:00:27Z",
+  "published": "2026-08-03T18:59:24Z",
+  "summary": "Malicious code in bigops-frontend-bigops-frontend-core (npm)",
+  "details": "On require(), the package executes _vendor.js which downloads a native binary from Cloudflare Workers C2 infrastructure (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) via HTTPS, with DNS TXT-record fallback through sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached process. A cache file at /tmp/.analytics_state (or %TEMP%\\analytics_state) prevents re-download within ~6.35 hours. The package has no repository and no README.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-frontend-bigops-frontend-core",
+        "purl": "pkg:npm/bigops-frontend-bigops-frontend-core@35.1.5"
+      },
+      "versions": [
+        "35.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-frontend-bigops-frontend-core/v/35.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7671"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:59:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

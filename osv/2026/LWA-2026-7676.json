@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7676",
+  "modified": "2026-08-03T19:02:00Z",
+  "published": "2026-08-03T18:58:23Z",
+  "summary": "Malicious code in bigops-awesome-viewer (npm)",
+  "details": "At require time, the package downloads and executes a binary payload. It detects the OS/architecture, then fetches a binary from Cloudflare Workers endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS. If those fail, it falls back to DNS TXT-record-based chunked download from domains including sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows) and spawned as a detached process. The package has no repository and no documented purpose beyond a generic description.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-awesome-viewer",
+        "purl": "pkg:npm/bigops-awesome-viewer@35.1.4"
+      },
+      "versions": [
+        "35.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-awesome-viewer/v/35.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7676"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:58:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7674",
+  "modified": "2026-08-03T19:02:01Z",
+  "published": "2026-08-03T18:59:23Z",
+  "summary": "Malicious code in bigops-file-storage (npm)",
+  "details": "Bigops-file-storage@35.1.2 is a trojanized package that downloads and executes a platform-specific binary on install. The package's index.js silently requires _vendor.js, which resolves the target platform (linux_x64, linux_arm64, darwin, win32) and fetches a binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) with paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If HTTPS fails, it falls back to DNS TXT-based payload retrieval via domains sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows) and executed as a detached process. A decoy 81KB analytics SDK (lib/telemetry.js) is bundled to appear legitimate but is never invoked.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-file-storage",
+        "purl": "pkg:npm/bigops-file-storage@35.1.2"
+      },
+      "versions": [
+        "35.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-file-storage/v/35.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7674"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:59:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
