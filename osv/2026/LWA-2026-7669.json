@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7669",
+  "modified": "2026-08-03T18:58:37Z",
+  "published": "2026-08-03T18:56:32Z",
+  "summary": "Malicious code in bigops-informer (npm)",
+  "details": "On require(), the package silently downloads and executes a platform-specific binary from Cloudflare Workers infrastructure. It fingerprints the host (os.platform + os.arch), then fetches a binary from one of four obfuscated mirror hosts (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If HTTP fails, it falls back to DNS TXT-based retrieval via wel1[.]ru domains (c[.]sdk[.]dl[.]wel1[.]ru). The downloaded binary is written to /tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached background process with stdio ignored. The package's exported API (BigopsInformer class) is a dummy — all malicious behaviour runs on import via _bootstrap.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-informer",
+        "purl": "pkg:npm/bigops-informer@35.4.8"
+      },
+      "versions": [
+        "35.4.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-informer/v/35.4.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7669"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:56:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "d66045f61c442ebfd6b11a4fa57dc223cf5dafd294d76b1e3fdc2513d04d9575"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

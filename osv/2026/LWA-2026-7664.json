@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7664",
+  "modified": "2026-08-03T18:56:10Z",
+  "published": "2026-08-03T18:55:23Z",
+  "summary": "Malicious code in bigops-api-mobile (npm)",
+  "details": "Bigops-api-mobile@35.6.2 is a trojanized REST client wrapper that drops and executes a remote binary on require(). The package's index.js loads _runtime.js, which fingerprints the host OS/architecture, then downloads a platform-specific binary from Cloudflare Workers C2 servers (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) or via DNS TXT records from wel1[.]ru subdomains (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u003crandom\u003e (Linux) or C:\\Windows\\Temp\\dotnet_diag_\u003crandom\u003e.exe (Windows) and executed as a detached background process. A 6-hour cooldown stamp file prevents re-downloading on every require call. No repository, no README, single version published.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-api-mobile",
+        "purl": "pkg:npm/bigops-api-mobile@35.6.2"
+      },
+      "versions": [
+        "35.6.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-api-mobile/v/35.6.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7664"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:55:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "d7069785db9a84371cb5bcd488008c0c659ebe3ef9848b074b9d98b6f032b4b0"
+        ]
+      }
+    }
+  }
+}

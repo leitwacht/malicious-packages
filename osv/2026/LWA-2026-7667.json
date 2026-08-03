@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7667",
+  "modified": "2026-08-03T18:58:19Z",
+  "published": "2026-08-03T18:55:50Z",
+  "summary": "Malicious code in bigops-figma-to-html (npm)",
+  "details": "Bigops-figma-to-html@35.5.5 is a trojanized package that downloads and executes a platform-specific binary payload on install. The package's index.js immediately requires _bootstrap.js, which fingerprints the OS and architecture (linux/x64, darwin/arm64, win32/x64, etc.) and then fetches a binary from one of four Cloudflare Workers C2 endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) via HTTPS GET /pkg/package (or platform-specific paths like /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS fails, it falls back to DNS-based chunked download via TXT records on c[.]sdk[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003crandom-hex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom-hex\u003e.exe (Windows) and spawned as a detached background process. The package also ships a large decoy file (lib/telemetry.js, 81KB) to pad the tarball and disguise the implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-figma-to-html",
+        "purl": "pkg:npm/bigops-figma-to-html@35.5.5"
+      },
+      "versions": [
+        "35.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-figma-to-html/v/35.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7667"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:55:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "50afe4f14567da5efc30014723b78a83b0b7f68a3cc5a0e0183c05b16caac9d0"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

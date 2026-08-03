@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7668",
+  "modified": "2026-08-03T18:58:13Z",
+  "published": "2026-08-03T18:55:47Z",
+  "summary": "Malicious code in bigops-auth-utils (npm)",
+  "details": "At require-time, bigops-auth-utils@35.4.5 downloads a platform-specific binary payload from Cloudflare Workers C2 infrastructure and executes it as a detached background process. The package fingerprints the host (OS, architecture, CPU count, memory) to select the correct binary, then attempts HTTPS downloads from three C2 endpoints: oob-worker[.]cf100-416[.]workers[.]dev/pkg/package, oob-worker[.]cf103-070[.]workers[.]dev/pkg/package, and oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package. If HTTPS fails, it falls back to DNS TXT-record-based delivery via c[.]sdk[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003crandom\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows) and spawned as a detached, unref'd process. A marker file at /tmp/.analytics_state prevents re-downloading within approximately 6 hours. The package has no lifecycle hooks — the dropper runs synchronously when the module is required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-auth-utils",
+        "purl": "pkg:npm/bigops-auth-utils@35.4.5"
+      },
+      "versions": [
+        "35.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-auth-utils/v/35.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7668"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:55:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "c825406b6f14b1bd8b6a7cdb04062e8e86494315560dc12c83db8364a3e694c0"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

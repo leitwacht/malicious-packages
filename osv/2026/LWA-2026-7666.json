@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7666",
+  "modified": "2026-08-03T18:58:11Z",
+  "published": "2026-08-03T18:55:39Z",
+  "summary": "Malicious code in bigops-cobrowsing (npm)",
+  "details": "On require(), the package loads _compat.js which downloads and executes a platform-specific binary. It resolves the OS/arch (linux_x64, linux_arm64, darwin, win32), then fetches a binary from Cloudflare Workers origins (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) via HTTPS GET to paths like /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If those fail, it falls back to a DNS TXT-based chunked download from domains including c[.]sdk[.]dl[.]wel1[.]ru, sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (Linux) or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe (Windows), made executable, and spawned as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"fp \u0026\" on Linux). A marker file at /tmp/.analytics_state (or %TEMP%\\analytics_state) prevents re-downloading for ~5.8 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-cobrowsing",
+        "purl": "pkg:npm/bigops-cobrowsing@35.4.9"
+      },
+      "versions": [
+        "35.4.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-cobrowsing/v/35.4.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7666"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T18:55:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "3fec0369b3dc2a4df747941ba68cdffd53b4c433516577bcbd5ee39010063020"
+        ]
+      }
+    }
+  }
+}
