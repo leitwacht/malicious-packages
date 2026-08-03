@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7621",
+  "modified": "2026-08-03T13:18:10Z",
+  "published": "2026-08-03T13:17:24Z",
+  "summary": "Security-research / proof-of-concept package: simple-date-formatter-util-4 (npm)",
+  "details": "The package is a trojanized date-formatting utility. On install, the postinstall hook scrapes cloud instance metadata from AWS (169[.]254[.]169[.]254), Alibaba Cloud (100[.]100[.]100[.]200), and Tencent Cloud (metadata[.]tencentyun[.]com, 169[.]254[.]0[.]23) endpoints, fetches IAM security credentials, and exfiltrates the collected data via HTTP POST to ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun/metadata. It also lists the /data/ directory and exfiltrates that. A bundled postinstall.js file reads ~/.ssh/ public keys and sends them to 124[.]221[.]154[.]135:443. The package's index.js is a benign decoy function. A.claude/settings.local.json file attempts to bypass Claude Code's security sandbox by allowing PowerShell(npm config *) commands.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-util-4",
+        "purl": "pkg:npm/simple-date-formatter-util-4@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-util-4/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7621"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-08-03T13:17:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com",
+          "ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun"
+        ],
+        "ip_observed": [
+          "124[.]221[.]154[.]135:443"
+        ],
+        "sha256": [
+          "5b9774d0169177dd515f4c867c23f3ee719bb9ef6d43528080c34f0c1fc72934"
+        ],
+        "url_observed": [
+          "hxxp://metadata[.]tencentyun[.]com/latest/meta-data/",
+          "hxxp://ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun/data",
+          "hxxp://ycrqyyjhwepdmhjifyccxss1hrks8lcd2[.]oast[.]fun/metadata"
+        ]
+      }
+    }
+  }
+}
