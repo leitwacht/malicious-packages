@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7653",
+  "modified": "2026-08-03T16:19:09Z",
+  "published": "2026-08-03T16:18:23Z",
+  "summary": "Security-research / proof-of-concept package: simple-date-formatter-util-15 (npm)",
+  "details": "The package's postinstall script performs a container-escape attack: it creates a block device for the host disk (mknod /tmp/vda2 b 252 2), mounts it read-only to /tmp/hostroot, then reads Kubernetes secrets from /etc/kubernetes/, pod manifests from /var/lib/kubelet/pods/, and the Kubernetes serviceaccount token from /var/run/secrets/kubernetes[.]io/serviceaccount/token. It also reads Claude Code agent files from /home/work/skills/canvas-agent/ and the ARP table from /proc/net/arp. All collected data is exfiltrated via curl POST to safjhdvsfwzhieemkdzbgr54r0yjhrmok[.]oast[.]fun/escinfo4. A bundled postinstall.js file additionally reads SSH public keys from ~/.ssh/ and user system info (username, platform), exfiltrating them as JSON via HTTPS POST to 124[.]221[.]154[.]135/post. A.claude/settings.local.json file grants PowerShell(npm config *) permission, enabling npm configuration tampering. The package's main index.js is a trivial decoy date formatter with no relation to the malicious behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-util-15",
+        "purl": "pkg:npm/simple-date-formatter-util-15@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-util-15/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7653"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-08-03T16:18:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io",
+          "safjhdvsfwzhieemkdzbgr54r0yjhrmok[.]oast[.]fun"
+        ],
+        "ip_observed": [
+          "124[.]221[.]154[.]135",
+          "124[.]221[.]154[.]135:443"
+        ],
+        "sha256": [
+          "43338be0e07d56f4a032473eac7e06a05fa843721f43e8b647dcd311c17b4675"
+        ],
+        "url_observed": [
+          "hxxp://safjhdvsfwzhieemkdzbgr54r0yjhrmok[.]oast[.]fun/escinfo4",
+          "hxxps://124[.]221[.]154[.]135/post"
+        ]
+      }
+    }
+  }
+}
