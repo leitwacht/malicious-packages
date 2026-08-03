@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7629",
+  "modified": "2026-08-03T14:43:43Z",
+  "published": "2026-08-03T14:42:24Z",
+  "summary": "Malicious code in simple-date-formatter-util-7 (npm)",
+  "details": "Combosquat package impersonating a date-formatting utility. On install, the postinstall hook executes a reverse shell connecting to 124[.]221[.]154[.]135:4444 via /dev/tcp. Additionally, postinstall.js reads the victim's ~/.ssh/*.pub public keys and system information (username, platform) and exfiltrates them via HTTPS POST to hxxps://124[.]221[.]154[.]135/post. The package also ships a.claude/settings.local.json file that grants permission for PowerShell(npm config *) commands, enabling npm token theft via Claude Code. The main index.js is a benign decoy function.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-util-7",
+        "purl": "pkg:npm/simple-date-formatter-util-7@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-util-7/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7629"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T14:42:24Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "124[.]221[.]154[.]135",
+          "124[.]221[.]154[.]135:443",
+          "124[.]221[.]154[.]135:4444"
+        ],
+        "sha256": [
+          "9e28f23b1f7fd10bd9458dfb688aac43c31bd6c42b45d5d13c4a568a775cf26e"
+        ],
+        "url_observed": [
+          "hxxps://124[.]221[.]154[.]135/post"
+        ]
+      }
+    }
+  }
+}

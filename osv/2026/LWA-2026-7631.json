@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7631",
+  "modified": "2026-08-03T14:44:07Z",
+  "published": "2026-08-03T14:40:41Z",
+  "summary": "Malicious code in entropyeasybots (npm)",
+  "details": "Entropyeasybots@2.0.2 is a reverse shell trojan. On install, the postinstall hook runs install.js which registers a systemd service named 'CustomBot' via the node-linux package for persistence. The main index.js spawns a detached background copy of itself, then opens a TCP reverse shell to 85[.]137[.]253[.]124 on port 1111, piping /bin/sh to give the attacker remote shell access. The C2 IP is base64-encoded in the source. The package also checks the INVOCATION_ID environment variable to detect container/sandbox environments.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "entropyeasybots",
+        "purl": "pkg:npm/entropyeasybots@2.0.2"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/entropyeasybots/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7631"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-03T14:40:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "85[.]137[.]253[.]124",
+          "85[.]137[.]253[.]124:1111"
+        ],
+        "sha256": [
+          "687603d86abf4c8986d320870d344ed177832b4cdaca131b679fde3c0a4954a2"
+        ]
+      }
+    }
+  }
+}
