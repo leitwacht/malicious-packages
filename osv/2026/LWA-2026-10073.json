@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10073",
+  "modified": "2026-08-04T18:13:22Z",
+  "published": "2026-08-04T17:47:19Z",
+  "summary": "Malicious code in vitest-preview-pro (npm)",
+  "details": "Vitest-preview-pro@10.0.3 is a trojanized clone of the nodemailer package. Its preinstall hook (node lib/utils/index.js) spawns a detached background Node process running an obfuscated script at lib/utils/smtp-connection/index.js. That script uses a Function-constructor trick to obtain process and require, reads environment variables, and loads a large hex-encoded payload blob stored in lib/utils/smtp-connection/LICENSE (262KB, not a real license). The obfuscated loader constructs and executes further code from the embedded blob, making this a multi-stage dropper that runs on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vitest-preview-pro",
+        "purl": "pkg:npm/vitest-preview-pro@10.0.3"
+      },
+      "versions": [
+        "10.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vitest-preview-pro/v/10.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10073"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T17:47:19Z",
+      "indicators_observed": {
+        "sha256": [
+          "07fc02d6b7848d5cc89f42fba9a78cb1605754b2b8d9e0b4ae92b73684d018eb"
+        ]
+      }
+    }
+  }
+}
