@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10023",
+  "modified": "2026-08-04T15:55:22Z",
+  "published": "2026-08-04T11:59:08Z",
+  "summary": "Malicious code in @or-sdk/views (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ and uses it to execute a bundled 727KB obfuscated payload (math_init.js). The payload is obfuscated with a large encoded string array and a custom decoder. The package also depends on sibling packages (@or-sdk/base, @or-sdk/data-hub-svc, @or-sdk/tags) that are part of the same malicious campaign. Installing this package executes the obfuscated payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/views",
+        "purl": "pkg:npm/%40or-sdk/views@3.1.7"
+      },
+      "versions": [
+        "3.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/views/v/3.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10023"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:08Z",
+      "indicators_observed": {
+        "sha256": [
+          "2c4d169ed4a8e3abb6fa9640f9398187f0efdf573e669960e61774313b627b0d"
+        ]
+      }
+    }
+  }
+}

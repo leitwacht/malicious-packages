@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10024",
+  "modified": "2026-08-04T15:55:59Z",
+  "published": "2026-08-04T11:58:58Z",
+  "summary": "Malicious code in @or-sdk/api-tokens (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun and uses it to execute a bundled 727KB obfuscated script (math_init.js). The script is obfuscated with a large encoded string array and a custom decoder, and its behaviour is unrelated to the package's declared purpose of managing API tokens. The package also depends on @or-sdk/base, which is a known-malicious package. Installing this package executes the obfuscated payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/api-tokens",
+        "purl": "pkg:npm/%40or-sdk/api-tokens@1.4.4"
+      },
+      "versions": [
+        "1.4.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/api-tokens/v/1.4.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10024"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:58:58Z",
+      "indicators_observed": {
+        "sha256": [
+          "d69173fdc0d13ab3a0e571a8b21b0d68020f79ce5d726a3f0087401ae9f4c428"
+        ]
+      }
+    }
+  }
+}
