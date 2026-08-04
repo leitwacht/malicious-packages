@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10039",
+  "modified": "2026-08-04T16:48:17Z",
+  "published": "2026-08-04T16:14:48Z",
+  "summary": "Malicious code in webdev-conf (npm)",
+  "details": "Webdev-conf@5.0.0 is a trojanized clone of a legitimate config-reading package. index.js contains the real packageConfig code as camouflage with a large base64-encoded payload appended that executes on require. The payload is an Ethereum JSON-RPC client that reads the latest block and watches for a transaction from address 0x0xa3322e5f3d311d30e6f0102106f31065, extracts the transaction's destination address, and splits it into two IPv4 addresses used as the command-and-control host. It then spawns a detached node process that connects to hxxp://\u003cip\u003e:443/0x/cls and hxxp://\u003cip\u003e:443/0x/ls, fetching XOR-encoded second-stage payloads (x-payload-base64 header) and executing them. The C2 endpoint is derived from the blockchain at runtime, so it is not visible in the package source. The payload also sets global variables _V, _H, _H2, _t_s, _t_u pointing at the derived host on ports 80 and 443.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "webdev-conf",
+        "purl": "pkg:npm/webdev-conf@5.0.0"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/webdev-conf/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10039"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T16:14:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "1b2bb45fd44b2268af8265c5f7c2eb57d2030313d09521f194628d8303cd26ca"
+        ],
+        "wallet_observed": [
+          "0x0xa3322e5f3d311d30e6f0102106f31065"
+        ]
+      }
+    }
+  }
+}
