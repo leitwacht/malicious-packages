@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7704",
+  "modified": "2026-08-04T11:12:04Z",
+  "published": "2026-08-04T10:41:14Z",
+  "summary": "Malicious code in @ornikar/eslint-config-node (npm)",
+  "details": "The package @ornikar/eslint-config-node@12.2.2 is a trojanized version of a legitimate ESLint configuration package. The preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases, extracts it, and executes a 727KB obfuscated Bun-compiled blob (math_init.js) at install time. The package had been dormant for approximately 5 years before this version was published, indicating an account takeover of the original maintainer's npm credentials. The payload in math_init.js is heavily obfuscated and compiled for the Bun runtime, making its specific behaviour unreadable from static analysis alone, but the attack pattern is a remote code execution at install time via a compromised package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ornikar/eslint-config-node",
+        "purl": "pkg:npm/%40ornikar/eslint-config-node@12.2.2"
+      },
+      "versions": [
+        "12.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ornikar/eslint-config-node/v/12.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7704"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T10:41:14Z",
+      "indicators_observed": {
+        "sha256": [
+          "106d10e39aa85ce2cb3a03806429666f32b3ac7f844086ec5d6a6621460147ce"
+        ]
+      }
+    }
+  }
+}
