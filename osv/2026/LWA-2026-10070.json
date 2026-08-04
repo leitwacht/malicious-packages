@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10070",
+  "modified": "2026-08-04T17:50:27Z",
+  "published": "2026-08-04T12:01:16Z",
+  "summary": "Malicious code in @or-sdk/base (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and uses it to execute a bundled 727KB obfuscated script (math_init.js) during npm install. The script is obfuscated with a large encoded string array and a custom decoder, so its logic is not readable; it runs automatically on every install. The hook also probes the host (ldd --version, /etc/os-release) to select a platform-specific runtime build before executing the payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/base",
+        "purl": "pkg:npm/%40or-sdk/base@0.44.6"
+      },
+      "versions": [
+        "0.44.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/base/v/0.44.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10070"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:01:16Z",
+      "indicators_observed": {
+        "sha256": [
+          "4ab3a6d7badf2a6554a9304836c12f5a0f66cd529277539d8bd8ae5e1ac0fc70"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

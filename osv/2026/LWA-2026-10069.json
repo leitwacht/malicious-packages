@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10069",
+  "modified": "2026-08-04T17:49:50Z",
+  "published": "2026-08-04T11:58:33Z",
+  "summary": "Malicious code in @onereach/ui-components (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13 and uses it to execute a bundled 727KB obfuscated script (math_init.js). The script is obfuscated with a large encoded string array and a custom decoder, and runs at install time on every machine that installs the package. A Vue UI components library has no legitimate reason to download a runtime and execute a large obfuscated payload during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/ui-components",
+        "purl": "pkg:npm/%40onereach/ui-components@27.0.4"
+      },
+      "versions": [
+        "27.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/ui-components/v/27.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10069"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:58:33Z",
+      "indicators_observed": {
+        "sha256": [
+          "4051c3994391d32267dc49ff79ce6dcd59ebd4fa1b906a646ce983e791952acf"
+        ]
+      }
+    }
+  }
+}
