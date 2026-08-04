@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7695",
+  "modified": "2026-08-04T07:42:34Z",
+  "published": "2026-08-04T07:42:03Z",
+  "summary": "Malicious code in tailwind-anime (npm)",
+  "details": "Tailwind-anime@1.1.0 is a trojanized Tailwind CSS plugin. The package's index.js appends an eval(atob()) payload after a legitimate-looking animation plugin. At runtime, the payload connects to multiple Ethereum JSON-RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) to scan blockchain blocks for transactions involving a hardcoded target address. It extracts IP addresses from transaction data, establishes a XOR-encrypted C2 communication channel, and spawns detached child processes executing eval'd code. The package has no repository and its only purpose is to execute this blockchain-scanning and C2 payload on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-anime",
+        "purl": "pkg:npm/tailwind-anime@1.1.0"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-anime/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7695"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T07:42:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "4ac9c4c122e33c3c64d785fa95a6650364b977d118d6520286d5d9289b7e5713"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ]
+      }
+    }
+  }
+}
