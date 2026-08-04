@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10050",
+  "modified": "2026-08-04T17:13:00Z",
+  "published": "2026-08-04T11:59:07Z",
+  "summary": "Malicious code in @or-sdk/view-templates (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases (bun-v1.3.13) and uses it to execute a bundled 727KB obfuscated payload (math_init.js) at install time. The payload is obfuscated with a custom string-array decoder and is not human-readable. The package also depends on @or-sdk/base and @or-sdk/data-hub-svc, which are known-malicious packages. A legitimate SDK has no reason to download a runtime and run an obfuscated payload during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/view-templates",
+        "purl": "pkg:npm/%40or-sdk/view-templates@2.2.7"
+      },
+      "versions": [
+        "2.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/view-templates/v/2.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10050"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:59:07Z",
+      "indicators_observed": {
+        "sha256": [
+          "2332c38f0ea5ee2f06bcf7e5e8f7d913b5eb04660789b4b9ce987b86668671c7"
+        ]
+      }
+    }
+  }
+}

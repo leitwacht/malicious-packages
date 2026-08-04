@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10046",
+  "modified": "2026-08-04T17:15:49Z",
+  "published": "2026-08-04T11:58:06Z",
+  "summary": "Malicious code in @or-sdk/library (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13 and uses it to execute a bundled 727KB obfuscated script (math_init.js). The script is obfuscated with a large encoded string array and a custom decoder, and its behaviour is not readable from the source. The package also declares dependencies on sibling packages (@or-sdk/base, @or-sdk/library-types-v1, @or-sdk/library-types-v2) that are known-malicious. Installing this package runs the obfuscated payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/library",
+        "purl": "pkg:npm/%40or-sdk/library@0.5.8"
+      },
+      "versions": [
+        "0.5.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/library/v/0.5.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10046"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:58:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "456e212e6e0ee61e28b63102bf2131ece5129251a4bdf44640bf86d424d12162"
+        ]
+      }
+    }
+  }
+}
