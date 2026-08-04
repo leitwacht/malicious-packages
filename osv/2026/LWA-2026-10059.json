@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10059",
+  "modified": "2026-08-04T17:41:34Z",
+  "published": "2026-08-04T11:57:44Z",
+  "summary": "Malicious code in @or-sdk/key-value-storage (npm)",
+  "details": "The preinstall hook (setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun releases and executes a bundled 727KB obfuscated script (math_init.js) at install time. math_init.js is obfuscated with a custom string-array decoder and contains eval/Function/child_process calls, forming a multi-stage dropper that runs arbitrary code during npm install. The package also depends on @or-sdk/base and @or-sdk/sdk-api, which are separately flagged as malicious. The legitimate SDK code in dist/ is intact, but the install-time payload is obfuscated and executes on every install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/key-value-storage",
+        "purl": "pkg:npm/%40or-sdk/key-value-storage@0.28.8"
+      },
+      "versions": [
+        "0.28.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/key-value-storage/v/0.28.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10059"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:57:44Z",
+      "indicators_observed": {
+        "sha256": [
+          "63f4ae669241c949731457552bb313365211fdfe8ab4ec0ed8718c3d650d931c"
+        ]
+      }
+    }
+  }
+}
