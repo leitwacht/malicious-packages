@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7998",
+  "modified": "2026-08-04T14:37:48Z",
+  "published": "2026-08-04T13:01:22Z",
+  "summary": "Malicious code in @onereach/lambda-invocation (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime and executes a bundled 727KB heavily-obfuscated script (math_init.js) at install time. The package ships clean library code for its stated purpose (an AWS Lambda invocation client) alongside this obfuscated install-time payload, which is executed automatically on npm install. The obfuscated payload uses a custom string-array decoder and is not readable statically; installing the package runs it without user interaction.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/lambda-invocation",
+        "purl": "pkg:npm/%40onereach/lambda-invocation@1.2.3"
+      },
+      "versions": [
+        "1.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/lambda-invocation/v/1.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7998"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:01:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "bfaad3fc3ab48bdd1613b15da8ef9402248fb8a623a99689d6de04bb008066ab"
+        ]
+      }
+    }
+  }
+}

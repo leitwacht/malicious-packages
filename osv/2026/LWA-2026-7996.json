@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7996",
+  "modified": "2026-08-04T14:36:08Z",
+  "published": "2026-08-04T12:18:13Z",
+  "summary": "Malicious code in @onereach/phonenumber-interpreter (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime and uses it to execute a 727KB heavily-obfuscated file (math_init.js) at install time. The obfuscated payload uses a custom string-encoding scheme that hides its behavior from static analysis. The package is presented as a libphonenumber wrapper, but the obfuscated install-time payload is unrelated to phone-number parsing. The legitimate libphonenumber code ships separately in lib/index.js; math_init.js is an injected payload executed during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/phonenumber-interpreter",
+        "purl": "pkg:npm/%40onereach/phonenumber-interpreter@0.0.20"
+      },
+      "versions": [
+        "0.0.20"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/phonenumber-interpreter/v/0.0.20"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7996"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:18:13Z",
+      "indicators_observed": {
+        "sha256": [
+          "5a8ca2186781868a99b0bb6e9eeb60b29559344615c1927db23c9964df4d97b5"
+        ]
+      }
+    }
+  }
+}
