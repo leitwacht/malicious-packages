@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10043",
+  "modified": "2026-08-04T16:57:17Z",
+  "published": "2026-08-04T11:59:27Z",
+  "summary": "Malicious code in @or-sdk/graph (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and uses it to execute a 727KB obfuscated script (math_init.js) bundled in the package. The script is obfuscated with a large encoded string array and a custom decoder, and contains eval/Function-constructor and child_process invocations. The obfuscated payload is unrelated to the package's declared purpose as a graph-query SDK client; installing the package triggers this download-and-execute behaviour automatically.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/graph",
+        "purl": "pkg:npm/%40or-sdk/graph@1.10.7"
+      },
+      "versions": [
+        "1.10.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/graph/v/1.10.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10043"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:27Z",
+      "indicators_observed": {
+        "sha256": [
+          "4d4ae5e4cc1cd7de93d012035a2dbf76a7494e093744bd0ccce0542fedfb16fb"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/bun-linux-x64-baseline[.]zip"
+        ]
+      }
+    }
+  }
+}
