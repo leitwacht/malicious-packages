@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8005",
+  "modified": "2026-08-04T15:01:28Z",
+  "published": "2026-08-04T11:57:25Z",
+  "summary": "Malicious code in @onereach/or-file-uploader-next (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB obfuscated payload file (math_init.js) with it at install time. The payload is encoded with a custom obfuscation scheme and contains eval/Function/child_process calls, and is unrelated to the package's declared purpose as a Vue file-uploader component. The package also declares dependencies on the known-malicious packages @onereach/styles and @onereach/ui-components. Installing this package runs an opaque, obfuscated payload on the victim's machine during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/or-file-uploader-next",
+        "purl": "pkg:npm/%40onereach/or-file-uploader-next@0.0.10"
+      },
+      "versions": [
+        "0.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/or-file-uploader-next/v/0.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8005"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:57:25Z",
+      "indicators_observed": {
+        "sha256": [
+          "6398df407254e19dea92381694954d1f492c6512894ba2e78e5cbaf04e60007c"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8009",
+  "modified": "2026-08-04T15:04:20Z",
+  "published": "2026-08-04T11:57:34Z",
+  "summary": "Malicious code in @onereach/or-browser-next (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the bun JavaScript runtime from the official oven-sh/bun GitHub release and executes a 727KB heavily-obfuscated payload (math_init.js) at install time. The payload uses a custom string-encoding obfuscation scheme that hides its behaviour from inspection. The package also depends on @onereach/or-file-uploader-next@0.0.7, a sibling package that is itself malicious. A Vue file-browser component has no legitimate reason to download a runtime and run an obfuscated 727KB script during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/or-browser-next",
+        "purl": "pkg:npm/%40onereach/or-browser-next@0.0.13"
+      },
+      "versions": [
+        "0.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/or-browser-next/v/0.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8009"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:57:34Z",
+      "indicators_observed": {
+        "sha256": [
+          "e2d95726a798c1e6dede090f8c5ac41c74fd080041e01cd4e029b9e6f9390726"
+        ]
+      }
+    }
+  }
+}
