@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-9768",
+  "modified": "2026-08-04T15:51:38Z",
+  "published": "2026-08-04T11:57:30Z",
+  "summary": "Malicious code in @or-sdk/tickets (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime and uses it to execute a 727KB obfuscated script bundled as math_init.js. The script is obfuscated with a large encoded string array and a custom decoder, and contains eval/Function/child_process calls, so its full behavior is not statically readable. The package also depends on @or-sdk/base, which is a known-malicious package. Installing this package runs the obfuscated payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/tickets",
+        "purl": "pkg:npm/%40or-sdk/tickets@1.9.7"
+      },
+      "versions": [
+        "1.9.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/tickets/v/1.9.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-9768"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:57:30Z",
+      "indicators_observed": {
+        "sha256": [
+          "31934cbfb9969b206cb5d349bdfb7f4ed72d96a486e2813d5bbe0a03af622617"
+        ]
+      }
+    }
+  }
+}
