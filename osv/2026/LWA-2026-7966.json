@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7966",
+  "modified": "2026-08-04T14:13:11Z",
+  "published": "2026-08-04T11:17:06Z",
+  "summary": "Malicious code in @servicetitan/html-sketchapp (npm)",
+  "details": "A trojanized fork of the html-sketchapp package executes an obfuscated payload at install time. The package adds a preinstall hook (node setup.mjs) that downloads the Bun JavaScript runtime and runs a 727KB heavily-obfuscated bundle (math_init.js) with it. The bundle uses a custom base64 alphabet and string-table obfuscation, hiding all URLs and strings from static inspection. The package's legitimate HTML-to-Sketch conversion code is present in plaintext, but the install hook runs the opaque obfuscated payload regardless. Installing this package executes unknown remote-downloaded code during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/html-sketchapp",
+        "purl": "pkg:npm/%40servicetitan/html-sketchapp@4.2.11"
+      },
+      "versions": [
+        "4.2.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/html-sketchapp/v/4.2.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7966"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:17:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "b3b2b734fd88620aed4a66c7e82761116999edeb327df18bf849467ce3252aba"
+        ]
+      }
+    }
+  }
+}
