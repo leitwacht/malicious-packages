@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8016",
+  "modified": "2026-08-04T15:09:18Z",
+  "published": "2026-08-04T11:59:17Z",
+  "summary": "Malicious code in @or-sdk/bot-templates (npm)",
+  "details": "The package runs a preinstall hook (node setup.mjs) that downloads the Bun runtime and executes a bundled 727KB obfuscated JavaScript payload (math_init.js) at install time. The payload is protected by a custom string-array obfuscation scheme, making its behaviour opaque to inspection. The package also declares dependencies on @or-sdk/base and @or-sdk/data-hub-svc, which are part of the same malicious dependency chain. Installing this package executes the obfuscated payload on the victim's machine during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/bot-templates",
+        "purl": "pkg:npm/%40or-sdk/bot-templates@2.2.7"
+      },
+      "versions": [
+        "2.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/bot-templates/v/2.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8016"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:17Z",
+      "indicators_observed": {
+        "sha256": [
+          "040e200fb4ad738e30ebbbb7e3e26e7d6916967c44abbaf6311fb81b741fc9d4"
+        ]
+      }
+    }
+  }
+}
