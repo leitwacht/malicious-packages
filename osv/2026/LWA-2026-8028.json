@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8028",
+  "modified": "2026-08-04T15:34:22Z",
+  "published": "2026-08-04T13:16:54Z",
+  "summary": "Malicious code in @onereach/expression-components (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a bundled 727KB script (math_init.js) with it during installation. math_init.js is heavily obfuscated with a custom string-table encoding, making its runtime behavior opaque; it is executed automatically on install with no opt-in. No plaintext C2/exfil endpoint was observed in the readable portion of the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/expression-components",
+        "purl": "pkg:npm/%40onereach/expression-components@9.1.3"
+      },
+      "versions": [
+        "9.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/expression-components/v/9.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8028"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:16:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "11bbc84eb737cf66dafe8186fe42c60d9ce19d1aea44648ccdc5943e3f1fe9a7"
+        ]
+      }
+    }
+  }
+}
