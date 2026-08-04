@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10071",
+  "modified": "2026-08-04T17:58:34Z",
+  "published": "2026-08-04T17:58:03Z",
+  "summary": "Malicious code in @tuluax/errb (npm)",
+  "details": "@tuluax/errb@3.0.1 is a trojanized clone of the legitimate `errno` package with a malicious install hook. The install script spawns a detached background `node index.js` process. That script AES-256-CBC-decrypts an embedded ciphertext to recover a remote URL, fetches it, and executes the returned body via eval() — a remote-code-execution dropper. At install time the process connects to backendapi-ddeaetc6gnfubvbf[.]a02[.]azurefd[.]net:443 and requests /api/health.php, receiving the payload to execute. The C2 host is backendapi-ddeaetc6gnfubvbf[.]a02[.]azurefd[.]net (Azure Front Door).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tuluax/errb",
+        "purl": "pkg:npm/%40tuluax/errb@3.0.1"
+      },
+      "versions": [
+        "3.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tuluax/errb/v/3.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10071"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T17:58:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "backendapi-ddeaetc6gnfubvbf[.]a02[.]azurefd[.]net"
+        ],
+        "sha256": [
+          "aabe46fae58d488896b4531a2e7d941368b946a3fd840ad7964dd3206ae3daba"
+        ],
+        "url_observed": [
+          "hxxps://backendapi-ddeaetc6gnfubvbf[.]a02[.]azurefd[.]net/api/health[.]php"
+        ]
+      }
+    }
+  }
+}
