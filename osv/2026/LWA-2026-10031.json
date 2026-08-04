@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10031",
+  "modified": "2026-08-04T16:06:08Z",
+  "published": "2026-08-04T11:56:36Z",
+  "summary": "Malicious code in @or-sdk/knowledge-models (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun releases and uses it to execute a bundled 727KB obfuscated script (math_init.js) at install time. The script is obfuscated with a large encoded string array and a custom decoder, and contains eval/Function/child_process references. The package also depends on @or-sdk/base, a known-malicious package. Installing this package runs the obfuscated payload on the victim's machine during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/knowledge-models",
+        "purl": "pkg:npm/%40or-sdk/knowledge-models@0.25.7"
+      },
+      "versions": [
+        "0.25.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/knowledge-models/v/0.25.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10031"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:56:36Z",
+      "indicators_observed": {
+        "sha256": [
+          "40cd4fd1736bf422ffcdf8996cb7dac1c4fe74e147e183b80f48618dd544a0f6"
+        ]
+      }
+    }
+  }
+}

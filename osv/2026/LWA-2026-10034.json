@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10034",
+  "modified": "2026-08-04T16:03:36Z",
+  "published": "2026-08-04T11:59:22Z",
+  "summary": "Malicious code in @or-sdk/invitations (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun/releases and uses it to execute a bundled 727KB obfuscated script (math_init.js). The script is obfuscated with a large encoded string array and a custom decoder, and contains eval/Function/child_process calls, forming a multi-stage dropper that runs arbitrary code at install time. The package also depends on the sibling package @or-sdk/users. The legitimate SDK source is present but the injected install-time payload is not part of the documented SDK behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/invitations",
+        "purl": "pkg:npm/%40or-sdk/invitations@1.4.10"
+      },
+      "versions": [
+        "1.4.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/invitations/v/1.4.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10034"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "d3f7f17711fb175a476cc1261dbeb9a295a3ba9d0471a9cc6266225418fb61a2"
+        ]
+      }
+    }
+  }
+}
