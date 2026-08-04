@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8021",
+  "modified": "2026-08-04T15:19:42Z",
+  "published": "2026-08-04T15:06:02Z",
+  "summary": "Malicious code in @servicetitan/grid (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and then executes a bundled 727KB heavily-obfuscated file (math_init.js) with it. The obfuscated payload uses a custom string-decoding scheme over a large dictionary array, concealing its behaviour from static analysis. A React grid component has no legitimate reason to download a runtime and run a large obfuscated payload at install time; this is a multi-stage dropper that executes attacker-controlled code during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/grid",
+        "purl": "pkg:npm/%40servicetitan/grid@0.0.66"
+      },
+      "versions": [
+        "0.0.66"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/grid/v/0.0.66"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8021"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T15:06:02Z",
+      "indicators_observed": {
+        "sha256": [
+          "cff161880b5cd4df4f8d27280b54cddf46f49bd3c8e312730b570823c1e0f3e3"
+        ]
+      }
+    }
+  }
+}
