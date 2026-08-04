@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7982",
+  "modified": "2026-08-04T14:22:32Z",
+  "published": "2026-08-04T11:48:44Z",
+  "summary": "Malicious code in @servicetitan/carto-charts-core (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB heavily-obfuscated script, math_init.js, during npm install. The script is obfuscated with a javascript-obfuscator string-array/decoder pattern that hides its behavior from inspection. The package's declared purpose is an ECharts chart-theming library, and its shipped dist/ code is a normal chart library — the obfuscated install-time payload is unrelated to that purpose and runs automatically on every install. The payload's network and data-access behavior is concealed by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/carto-charts-core",
+        "purl": "pkg:npm/%40servicetitan/carto-charts-core@0.0.6"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/carto-charts-core/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7982"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:48:44Z",
+      "indicators_observed": {
+        "sha256": [
+          "f362b8527d5823db589e4062a7e2e5ef97f54e71645b23f138e2cd2ccc49391d"
+        ]
+      }
+    }
+  }
+}

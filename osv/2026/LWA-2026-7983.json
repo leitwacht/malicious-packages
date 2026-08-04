@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7983",
+  "modified": "2026-08-04T14:21:58Z",
+  "published": "2026-08-04T12:17:29Z",
+  "summary": "Malicious code in @onereach/step-run-snowflake-query (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB heavily-obfuscated bundle (math_init.js, using a custom base64 decoder and dictionary-array obfuscation) at install time. The package declares its module entry as./dist/index.mjs but ships no dist/ directory — the tarball contains only the install hook, the obfuscated bundle, package.json, and README. No actual library code is delivered; the only executed content is the obfuscated install-time payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/step-run-snowflake-query",
+        "purl": "pkg:npm/%40onereach/step-run-snowflake-query@0.1.3"
+      },
+      "versions": [
+        "0.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/step-run-snowflake-query/v/0.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7983"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:17:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "68d2bed6359a95368bc5fc3b6ebd0ad6a907c24a730295f2736bd7171a161e56"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

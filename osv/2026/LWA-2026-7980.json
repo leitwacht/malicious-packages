@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7980",
+  "modified": "2026-08-04T14:24:13Z",
+  "published": "2026-08-04T11:42:29Z",
+  "summary": "Malicious code in @or-sdk/hitl (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a bundled 727KB obfuscated script (math_init.js) at install time. The obfuscated payload is encoded with a custom alphabet and is not readable; its behaviour is opaque. The package already ships normal compiled builds (dist/cjs, dist/esm, dist/types) that constitute the SDK, so the install-time runtime download and opaque payload execution is separate from the SDK's documented function and is not described in the README or changelog. Installing this package runs the obfuscated payload on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/hitl",
+        "purl": "pkg:npm/%40or-sdk/hitl@0.41.2"
+      },
+      "versions": [
+        "0.41.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/hitl/v/0.41.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7980"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:42:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "4ab8f3d52ca74f952444a28133c87b11e5ac2d69c29735568ff958f4276d863f"
+        ]
+      }
+    }
+  }
+}
