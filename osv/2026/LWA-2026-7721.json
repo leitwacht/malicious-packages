@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7721",
+  "modified": "2026-08-04T11:28:15Z",
+  "published": "2026-08-04T11:25:07Z",
+  "summary": "Malicious code in @servicetitan/titan-chatbot-ui (npm)",
+  "details": "The package @servicetitan/titan-chatbot-ui@7.1.7 is a trojanized clone of a legitimate ServiceTitan chatbot UI library. The preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a 728KB heavily obfuscated payload (math_init.js) containing javascript-obfuscator patterns with eval, Function constructor, and child_process calls. The package ships real-looking React component source code and a CHANGELOG referencing ServiceTitan pull requests as camouflage. It depends on three known-malicious packages (@servicetitan/titan-chat-ui, @servicetitan/titan-chat-ui-common, @servicetitan/titan-chatbot-api). The preinstall hook runs automatically on npm install, downloading and executing the obfuscated payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/titan-chatbot-ui",
+        "purl": "pkg:npm/%40servicetitan/titan-chatbot-ui@7.1.7"
+      },
+      "versions": [
+        "7.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/titan-chatbot-ui/v/7.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7721"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:25:07Z",
+      "indicators_observed": {
+        "sha256": [
+          "b5b312f518f82425e7dfb40de8ea110a41b0bcfc544675f742246bbc71ae3b1b"
+        ]
+      }
+    }
+  }
+}

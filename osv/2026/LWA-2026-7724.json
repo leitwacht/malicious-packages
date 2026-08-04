@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7724",
+  "modified": "2026-08-04T11:29:46Z",
+  "published": "2026-08-04T11:26:20Z",
+  "summary": "Malicious code in @servicetitan/micro-frontend (npm)",
+  "details": "The package @servicetitan/micro-frontend@0.0.8 contains a preinstall hook (setup.mjs) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a heavily obfuscated 727KB payload file (math_init.js) through it. The setup.mjs detects the platform and architecture, downloads the appropriate Bun binary, extracts it, and runs the bundled obfuscated script. This is a remote-code-execution-at-install pattern: the attacker ships an obfuscated payload and bootstraps a runtime to execute it. The same payload pattern appears in other packages from the same compromised publisher. The package also depends on @servicetitan/error-boundary, which is known malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/micro-frontend",
+        "purl": "pkg:npm/%40servicetitan/micro-frontend@0.0.8"
+      },
+      "versions": [
+        "0.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/micro-frontend/v/0.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7724"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:26:20Z",
+      "indicators_observed": {
+        "sha256": [
+          "034b41eecb481232b844976871248b68a93f1d9cf1686795465bc338f5650941"
+        ]
+      }
+    }
+  }
+}
