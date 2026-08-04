@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7871",
+  "modified": "2026-08-04T13:01:40Z",
+  "published": "2026-08-04T12:17:22Z",
+  "summary": "Malicious code in @onereach/time-interpreter (npm)",
+  "details": "The preinstall hook (setup.mjs) downloads the Bun JavaScript runtime binary from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ for the target platform, then executes a heavily obfuscated 728KB script (math_init.js) through the downloaded Bun binary. The obfuscated script uses javascript-obfuscator style encoding with a large encoded string array and custom decoder function. The package's main entry point (index.js) is a legitimate time-conversion library using moment-timezone, but the preinstall behaviour is unrelated to the package's stated purpose and is a supply-chain attack pattern. The Bun download failed during analysis so the obfuscated payload's full behaviour could not be observed at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/time-interpreter",
+        "purl": "pkg:npm/%40onereach/time-interpreter@1.0.32"
+      },
+      "versions": [
+        "1.0.32"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/time-interpreter/v/1.0.32"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7871"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:17:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "a4ae0e3073247976267fb0a4e7423e091a65a1d9ba3d79f216da291ad2efd3c6"
+        ]
+      }
+    }
+  }
+}
