@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10051",
+  "modified": "2026-08-04T17:37:05Z",
+  "published": "2026-08-04T11:56:42Z",
+  "summary": "Malicious code in @or-sdk/tables (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun and uses it to execute a bundled 727KB obfuscated script (math_init.js) at install time. The script is obfuscated with a custom string-array decoder and contains eval/Function/child_process usage. The package also depends on @or-sdk/base, a sibling package flagged as malicious. The obfuscated payload's network targets are not statically recoverable; the observable is a multi-stage install-time dropper that fetches a runtime and runs a large obfuscated payload during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/tables",
+        "purl": "pkg:npm/%40or-sdk/tables@0.28.7"
+      },
+      "versions": [
+        "0.28.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/tables/v/0.28.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10051"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:56:42Z",
+      "indicators_observed": {
+        "sha256": [
+          "118e54b6b3728711618d90870e037bff5cb32b9e59cf5fa5631f3a06a7a3295e"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}
