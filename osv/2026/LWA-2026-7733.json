@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7733",
+  "modified": "2026-08-04T11:33:38Z",
+  "published": "2026-08-04T11:22:48Z",
+  "summary": "Malicious code in @servicetitan/anvil-react (npm)",
+  "details": "@servicetitan/anvil-react@0.11.7 is a trojanized React UI library. The preinstall hook (package/setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ and extracts it, then executes a 727KB obfuscated payload (package/math_init.js) through Bun. The payload uses child_process, eval, and Function constructors. The dist/ directory contains a legitimate-looking React component library (Alert, Button, Calendar, etc.) to disguise the malicious behaviour. No repository URL is declared. The package depends on @servicetitan/anvil-icon and @servicetitan/anvil-token, which are also known-malware packages.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/anvil-react",
+        "purl": "pkg:npm/%40servicetitan/anvil-react@0.11.7"
+      },
+      "versions": [
+        "0.11.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/anvil-react/v/0.11.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7733"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:22:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "0c5d41bc0dfcb94ef9b14d07aa149b9b7a5a439eff59755a5ec77c4ee5ff4b07"
+        ]
+      }
+    }
+  }
+}

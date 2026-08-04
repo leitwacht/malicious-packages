@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7728",
+  "modified": "2026-08-04T11:31:16Z",
+  "published": "2026-08-04T11:22:31Z",
+  "summary": "Malicious code in @servicetitan/examples (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and uses it to execute a heavily obfuscated 727KB payload (math_init.js) at install time. The payload is obfuscated with javascript-obfuscator (thousands of _0x-prefixed identifiers, eval, child_process references) to hide its behaviour. The package also depends on 17 sibling @servicetitan/* packages that are known malware. The dist/bundle/ directory contains legitimate ServiceTitan UI component examples as cover content.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/examples",
+        "purl": "pkg:npm/%40servicetitan/examples@1.2.9"
+      },
+      "versions": [
+        "1.2.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/examples/v/1.2.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7728"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:22:31Z",
+      "indicators_observed": {}
+    }
+  }
+}

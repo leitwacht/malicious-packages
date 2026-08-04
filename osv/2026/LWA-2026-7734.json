@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7734",
+  "modified": "2026-08-04T11:34:46Z",
+  "published": "2026-08-04T11:22:29Z",
+  "summary": "Malicious code in @servicetitan/carto-charts-rn (npm)",
+  "details": "The package @servicetitan/carto-charts-rn@0.0.6 is a trojanized React Native chart library. On install, the preinstall hook (setup.mjs) checks if the Bun JavaScript runtime is available; if not, it downloads Bun from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ (platform-specific zip), extracts it, and executes a 727KB heavily obfuscated file (math_init.js) through the downloaded Bun runtime. The math_init.js file uses javascript-obfuscator patterns (thousands of _0x-prefixed identifiers, a custom base64 decoder, and a large constant array) and contains eval, Function constructor, and child_process calls. The package also depends on @servicetitan/carto-charts-core@0.0.1, which is a known malicious dependency. The package has no repository URL and the publisher has no verifiable identity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/carto-charts-rn",
+        "purl": "pkg:npm/%40servicetitan/carto-charts-rn@0.0.6"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/carto-charts-rn/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7734"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:22:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "2fb4534357e34b1344bc2766cca719815d878d8dab3eb18662f7cefc13bb1a9d"
+        ]
+      }
+    }
+  }
+}

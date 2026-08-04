@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7730",
+  "modified": "2026-08-04T11:33:25Z",
+  "published": "2026-08-04T11:24:58Z",
+  "summary": "Malicious code in @servicetitan/marketing-integration-widgets (npm)",
+  "details": "The package @servicetitan/marketing-integration-widgets@1.0.44 is a trojanized version of a legitimate ServiceTitan package. The preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ and executes a 727KB heavily-obfuscated payload file (math_init.js) through it. The sibling package @servicetitan/examples@1.2.8, published by the same compromised account on the same day, was confirmed at runtime to fetch remote content and eval-execute it, and to make DNS queries to a sinkholed domain. The obfuscated payload in math_init.js is consistent with a remote-code-execution dropper that reaches out to attacker-controlled infrastructure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/marketing-integration-widgets",
+        "purl": "pkg:npm/%40servicetitan/marketing-integration-widgets@1.0.44"
+      },
+      "versions": [
+        "1.0.44"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/marketing-integration-widgets/v/1.0.44"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7730"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:24:58Z",
+      "indicators_observed": {
+        "sha256": [
+          "f588c1ad2738cdb17e91507db513b8f842db91804ff6ec619a237ca2d227188b"
+        ]
+      }
+    }
+  }
+}
