@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10029",
+  "modified": "2026-08-04T15:59:52Z",
+  "published": "2026-08-04T11:56:35Z",
+  "summary": "Malicious code in @or-sdk/payments (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime from the official oven-sh/bun GitHub releases and uses it to execute a bundled 727KB script (math_init.js) at install time. The script is heavily obfuscated with a custom encoded string-array decoder, concealing its behavior; no readable logic or network destination is recoverable from the source. The payload executes on every install of the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/payments",
+        "purl": "pkg:npm/%40or-sdk/payments@3.2.7"
+      },
+      "versions": [
+        "3.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/payments/v/3.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10029"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:56:35Z",
+      "indicators_observed": {
+        "sha256": [
+          "aebda737877a8ee0f369f8935be823de52f51927c42d79caec7e127bd5c0ddbb"
+        ]
+      }
+    }
+  }
+}
