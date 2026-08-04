@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7965",
+  "modified": "2026-08-04T14:09:48Z",
+  "published": "2026-08-04T13:55:19Z",
+  "summary": "Malicious code in @onereach/pnpm-audit-junit (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and then executes a 727KB heavily-obfuscated JavaScript bundle (math_init.js) with it. The bundle is obfuscated with a javascript-obfuscator dictionary-array scheme, making its behavior unreadable, and it is unrelated to the package's stated purpose (converting pnpm audit output to JUnit). The actual CLI logic ships separately in clean dist/ files; math_init.js is only invoked by the install hook. Installing this package executes an opaque, obfuscated payload at install time whose behavior cannot be statically determined.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/pnpm-audit-junit",
+        "purl": "pkg:npm/%40onereach/pnpm-audit-junit@1.0.5"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/pnpm-audit-junit/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7965"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:55:19Z",
+      "indicators_observed": {
+        "sha256": [
+          "4596037ef2b22a96a28713aa5e7b6a3206a0a0f2ebe6356569657d492f66f406"
+        ]
+      }
+    }
+  }
+}

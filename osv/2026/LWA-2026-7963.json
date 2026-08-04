@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7963",
+  "modified": "2026-08-04T14:09:43Z",
+  "published": "2026-08-04T12:39:00Z",
+  "summary": "Malicious code in @onereach/si-checkbox (npm)",
+  "details": "@onereach/si-checkbox@0.6.7, a Vue checkbox UI component, ships a preinstall hook (node setup.mjs) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB obfuscated payload (math_init.js) at install time. The payload is heavily obfuscated with a custom base64-style decoder, a large constant array, and eval/Function/child_process usage. A UI checkbox component has no legitimate reason to download a runtime and run an obfuscated payload during installation. The same @onereach namespace also published @onereach/webform@0.3.15 with a matching install-time payload that performs remote fetch-to-exec and DNS beaconing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-checkbox",
+        "purl": "pkg:npm/%40onereach/si-checkbox@0.6.7"
+      },
+      "versions": [
+        "0.6.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-checkbox/v/0.6.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7963"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:39:00Z",
+      "indicators_observed": {
+        "sha256": [
+          "acabbf93a9d01d9fa3c5450fc829ef8e0ca2ec0b0e18ff8ae57d4650d40894d1"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

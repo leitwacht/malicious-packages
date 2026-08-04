@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7960",
+  "modified": "2026-08-04T14:07:54Z",
+  "published": "2026-08-04T12:16:45Z",
+  "summary": "Malicious code in @onereach/si-list (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and then executes a 727KB heavily-obfuscated script (math_init.js) at install time. The obfuscated payload uses javascript-obfuscator-style string-array encoding and contains eval/Function/child_process calls, so its behaviour cannot be inspected statically. A Vue component library has no legitimate need to download a runtime and run an opaque obfuscated script during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-list",
+        "purl": "pkg:npm/%40onereach/si-list@0.7.6"
+      },
+      "versions": [
+        "0.7.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-list/v/0.7.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7960"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:16:45Z",
+      "indicators_observed": {
+        "sha256": [
+          "2d48d0ec6571026d7246a62f0a817e8511ef0ccad47c6fc029b1c7957ad7b58d"
+        ]
+      }
+    }
+  }
+}
