@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7714",
+  "modified": "2026-08-04T11:22:02Z",
+  "published": "2026-08-04T11:16:26Z",
+  "summary": "Malicious code in @ornikar/lerna-config (npm)",
+  "details": "The preinstall hook downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a 727KB obfuscated Bun-compiled bundle (math_init.js) at install time. The package is a trojanized version of the legitimate @ornikar/lerna-config monorepo tooling — the original lerna-config source files are present but the preinstall hook runs before any of them are loaded. The opaque binary payload cannot be statically verified; its execution is triggered automatically on npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ornikar/lerna-config",
+        "purl": "pkg:npm/%40ornikar/lerna-config@11.0.6"
+      },
+      "versions": [
+        "11.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ornikar/lerna-config/v/11.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7714"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:16:26Z",
+      "indicators_observed": {
+        "sha256": [
+          "b54b24c2e5cc3457b598d9e4d214953b3457998f3c8e3a0b2831c1323017248e"
+        ]
+      }
+    }
+  }
+}

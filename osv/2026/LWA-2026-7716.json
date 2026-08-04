@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7716",
+  "modified": "2026-08-04T11:22:42Z",
+  "published": "2026-08-04T11:16:24Z",
+  "summary": "Malicious code in @ornikar/postcss-config (npm)",
+  "details": "The package @ornikar/postcss-config@9.1.7 is a trojanized version of a legitimate postcss configuration library. The preinstall hook (setup.mjs) downloads the Bun JavaScript runtime and executes a heavily obfuscated 727KB payload file (math_init.js) through it. The payload is obfuscated with javascript-obfuscator-style identifier renaming and contains eval, Function constructor, and child_process invocations. The package's index.js exports are clean postcss configuration helpers, but the preinstall hook runs the obfuscated payload on every install. The only observable network destination in the bootstrap code is github[.]com/oven-sh/bun (the official Bun runtime download).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ornikar/postcss-config",
+        "purl": "pkg:npm/%40ornikar/postcss-config@9.1.7"
+      },
+      "versions": [
+        "9.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ornikar/postcss-config/v/9.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7716"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:16:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "f11ca7343ed1f22af3eb238f6a0eabfaeb19dbf7409532a5b1ccba3afb8c6da2"
+        ]
+      }
+    }
+  }
+}

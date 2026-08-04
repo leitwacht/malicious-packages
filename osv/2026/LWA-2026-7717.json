@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7717",
+  "modified": "2026-08-04T11:23:15Z",
+  "published": "2026-08-04T11:16:25Z",
+  "summary": "Malicious code in @ornikar/browserslist-config (npm)",
+  "details": "The legitimate @ornikar/browserslist-config npm package was compromised via account takeover. Version 8.0.8 contains a preinstall hook (setup.mjs) that downloads the Bun JavaScript runtime binary from github[.]com/oven-sh/bun/releases and uses it to execute a 727KB heavily obfuscated payload (math_init.js) at install time. The payload is a large obfuscated Bun bundle containing eval, Function constructor, and child_process calls. The package's legitimate purpose is exporting browserlist configuration strings; the preinstall hook and bundled obfuscated binary are entirely unrelated to its declared functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ornikar/browserslist-config",
+        "purl": "pkg:npm/%40ornikar/browserslist-config@8.0.8"
+      },
+      "versions": [
+        "8.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ornikar/browserslist-config/v/8.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7717"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:16:25Z",
+      "indicators_observed": {
+        "sha256": [
+          "6593a0c16589aa4fea4ea25dd367ece10dcb9cbbe82d6d9cf073ea0c77a973b7"
+        ]
+      }
+    }
+  }
+}
