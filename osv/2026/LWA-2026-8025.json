@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8025",
+  "modified": "2026-08-04T15:20:39Z",
+  "published": "2026-08-04T13:20:10Z",
+  "summary": "Malicious code in @or-sdk/api-tokens-lambda (npm)",
+  "details": "The package ships a preinstall hook (`node setup.mjs`) that downloads the Bun runtime (v1.3.13) from github[.]com/oven-sh/bun and then executes a 727KB heavily-obfuscated JavaScript file `math_init.js` at install time. The payload is obfuscated with javascript-obfuscator (hex-encoded string array with a custom decode routine) and its behavior is opaque; the library's own AWS Lambda client code does not require Bun or this script. Installing the package runs this obfuscated payload on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/api-tokens-lambda",
+        "purl": "pkg:npm/%40or-sdk/api-tokens-lambda@1.4.4"
+      },
+      "versions": [
+        "1.4.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/api-tokens-lambda/v/1.4.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8025"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:20:10Z",
+      "indicators_observed": {
+        "sha256": [
+          "05fecb86e51d877de1d0836f55829359d36b19c06ab4d5aa1710b0413d79d1d8"
+        ]
+      }
+    }
+  }
+}
