@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7756",
+  "modified": "2026-08-04T11:44:34Z",
+  "published": "2026-08-04T11:29:51Z",
+  "summary": "Malicious code in verdaccio-tarball-local-storage (npm)",
+  "details": "Verdaccio-tarball-local-storage is a combosquat of the legitimate @verdaccio/local-storage package. The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB obfuscated file (math_init.js) under it. The obfuscated bundle is unanalyzable and runs at install time via a downloaded binary, delivering an unknown payload. The package's published source code (dist/index.js) is a stub with all methods throwing \"not implemented\" errors — the real behaviour is in the obfuscated preinstall pipeline.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "verdaccio-tarball-local-storage",
+        "purl": "pkg:npm/verdaccio-tarball-local-storage@38.1.12"
+      },
+      "versions": [
+        "38.1.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/verdaccio-tarball-local-storage/v/38.1.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7756"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:29:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "6f8bbf001e295e837b83911a0d04496d20ebf61aa0aeda547a2b0dae79aa0899"
+        ]
+      }
+    }
+  }
+}

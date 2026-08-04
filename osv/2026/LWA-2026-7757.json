@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7757",
+  "modified": "2026-08-04T11:46:11Z",
+  "published": "2026-08-04T11:29:48Z",
+  "summary": "Malicious code in verdaccio-okta-oauth (npm)",
+  "details": "The package is a trojanized clone of the verdaccio-okta-oauth plugin. On npm install, the preinstall hook (setup.mjs) downloads the Bun JavaScript runtime binary from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ (selecting the correct binary for the platform/architecture), extracts it, and executes a 727KB heavily-obfuscated file (math_init.js) through it. The obfuscated payload uses eval, Function constructor, and child_process calls. The legitimate plugin source code is included as cover but the install-time execution of the downloaded runtime and obfuscated payload is the attack vector.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "verdaccio-okta-oauth",
+        "purl": "pkg:npm/verdaccio-okta-oauth@38.1.12"
+      },
+      "versions": [
+        "38.1.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/verdaccio-okta-oauth/v/38.1.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7757"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:29:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "0117100beacae80729d1ecb9102e4163feb6b06e42834691e53775a92f5e39ba"
+        ]
+      }
+    }
+  }
+}
