@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7943",
+  "modified": "2026-08-04T13:50:14Z",
+  "published": "2026-08-04T13:16:38Z",
+  "summary": "Malicious code in @onereach/channel-transformer (npm)",
+  "details": "@onereach/channel-transformer@0.0.68 ships a preinstall hook (setup.mjs) that downloads the bun JavaScript runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ and executes a 727KB heavily-obfuscated payload file (math_init.js) at install time. The payload is a bun-compiled bundle with all strings encoded via a custom obfuscator, so its exact exfiltration/C2 behavior cannot be statically extracted; the install-time execution of an obfuscated payload unrelated to the library's stated purpose (channel data-model conversion) is the malicious behavior. The library's normal dist/ bundles are unchanged; the malicious preinstall hook and payload were added to this version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/channel-transformer",
+        "purl": "pkg:npm/%40onereach/channel-transformer@0.0.68"
+      },
+      "versions": [
+        "0.0.68"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/channel-transformer/v/0.0.68"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7943"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:16:38Z",
+      "indicators_observed": {
+        "sha256": [
+          "a8d228cdff9fc02e9a5f9d4eb59afe935eb2ddfb50945672549700851cfd24a2"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

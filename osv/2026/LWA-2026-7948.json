@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7948",
+  "modified": "2026-08-04T13:56:19Z",
+  "published": "2026-08-04T12:17:06Z",
+  "summary": "Malicious code in @onereach/si-divider (npm)",
+  "details": "The package is a Vue.js UI divider component whose published tarball was trojanized: its preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun releases and then executes a 727KB heavily-obfuscated payload file (math_init.js) with it. The payload is a single-line custom base-N alphabet-decoder blob (javascript-obfuscator style) that hides its actual behaviour; the component itself has no legitimate need to download a runtime or run an obfuscated payload at install time. The install hook runs automatically on npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-divider",
+        "purl": "pkg:npm/%40onereach/si-divider@0.4.13"
+      },
+      "versions": [
+        "0.4.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-divider/v/0.4.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7948"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:17:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "c0c9ea564625b96f71fc527827ea79d4248fe68b68906869ce7e569f12035fb0"
+        ]
+      }
+    }
+  }
+}

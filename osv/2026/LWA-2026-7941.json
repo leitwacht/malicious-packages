@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7941",
+  "modified": "2026-08-04T13:48:18Z",
+  "published": "2026-08-04T13:31:33Z",
+  "summary": "Malicious code in @onereach/content-builder-template-compiler (npm)",
+  "details": "The package runs a preinstall hook (node setup.mjs) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and then executes a bundled 727KB obfuscated script (math_init.js) during installation. The package's declared function is template compilation, which does not require downloading a runtime or executing a large obfuscated script at install time. The obfuscated script's behavior is not visible statically; the install-time download-and-execute of an unrelated obfuscated payload is the risk indicator.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/content-builder-template-compiler",
+        "purl": "pkg:npm/%40onereach/content-builder-template-compiler@0.0.5"
+      },
+      "versions": [
+        "0.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/content-builder-template-compiler/v/0.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7941"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:31:33Z",
+      "indicators_observed": {
+        "sha256": [
+          "07f2b688d51d35b2b710624b286f8637364d10f6a6106a5e902d5de33a4e4284"
+        ]
+      }
+    }
+  }
+}

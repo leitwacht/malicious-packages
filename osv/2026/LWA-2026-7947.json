@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7947",
+  "modified": "2026-08-04T13:59:59Z",
+  "published": "2026-08-04T12:38:42Z",
+  "summary": "Malicious code in @onereach/si-code (npm)",
+  "details": "Dormant-package supply-chain attack. @onereach/si-code was created 2020 and its CHANGELOG ends at 0.6.3 (2021-01-27); this 0.6.6 was republished 2026-08-04 after a ~5-year gap with a completely different structure. The new version adds a `preinstall` hook (setup.mjs) that downloads the Bun runtime from github[.]com/oven-sh/bun/releases and then EXECUTES a 727KB Bun-compiled bundle `math_init.js` at install time. Both setup.mjs and math_init.js are obfuscated — setup.mjs with javascript-obfuscator `_0x` identifiers, and math_init.js with a custom string-encoding table (n7gIxM + hc1jfK9 decoder) whose fragments (\"http\",\"s/\",\"github\",\"on\",\"en\",\"at\",\"id\",\"me\",\"er\",\"ve\",\"se\",\"ch\",\"sh\",\"of\",\"ge\",\"ta\",\"ol\",\"ms\",\"kv\",\"nc\",\"ze\",\"te\",\"FO\",\"nk\",\"rm\",\"es\",\"pe\",\"ex\") mean real URLs/strings are reconstructed at runtime and invisible to static grep — so the first agent's \"no network IOCs\" conclusion is unreliable. A frontend Vue component library has no legitimate reason to download a JS runtime and execute a heavily obfuscated 727KB bundle at install time. The canonical Bun URL is merely the delivery mechanism; the obfuscated payload's behavior is deliberately hidden. This is the textbook dormant-package-takeover + install-time remote-code-execution dropper pattern, with the package's legitimate history used to launder the payload. No credible benign explanation exists.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-code",
+        "purl": "pkg:npm/%40onereach/si-code@0.6.6"
+      },
+      "versions": [
+        "0.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-code/v/0.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7947"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:38:42Z",
+      "indicators_observed": {
+        "sha256": [
+          "110883b9088feb0c415401d26508801c9e5a1e47c95e75bdeae1302d1379ecde"
+        ]
+      }
+    }
+  }
+}

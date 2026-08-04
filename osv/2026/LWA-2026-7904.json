@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7904",
+  "modified": "2026-08-04T13:39:26Z",
+  "published": "2026-08-04T12:39:24Z",
+  "summary": "Malicious code in @onereach/si-radio-group (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime and executes a 727KB heavily-obfuscated script (math_init.js) at install time. The script uses a custom string-encoding obfuscation scheme to hide its behaviour. The package is a dormant UI component (last released 2021) republished with this install-time payload. The same publisher's sibling package in the same scope depends on a known-malicious package and exhibits remote-code-execution and DNS-recon behaviour, indicating this is part of a coordinated malicious republish campaign. Installing this package runs an opaque, obfuscated payload on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-radio-group",
+        "purl": "pkg:npm/%40onereach/si-radio-group@0.3.7"
+      },
+      "versions": [
+        "0.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-radio-group/v/0.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7904"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T12:39:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "5eb074d261e559703aa937948941a259b20d7c3b5be85052464ec17666d14f5d"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7907",
+  "modified": "2026-08-04T13:41:08Z",
+  "published": "2026-08-04T12:38:33Z",
+  "summary": "Malicious code in @onereach/si-dropdown-advanced (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB obfuscated payload (math_init.js) at install time. The payload is obfuscated with a custom base64-style decoder and large string-array constants, hiding its behaviour. A UI dropdown component has no legitimate need to download a runtime and run an obfuscated payload during npm install; this is a trojanized package executing attacker-controlled code on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-dropdown-advanced",
+        "purl": "pkg:npm/%40onereach/si-dropdown-advanced@0.4.7"
+      },
+      "versions": [
+        "0.4.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-dropdown-advanced/v/0.4.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7907"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:38:33Z",
+      "indicators_observed": {
+        "sha256": [
+          "cd5993c9ae31a0c5454cada9276faa14fbf8eb8d06a74c4284b5885a159ca303"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

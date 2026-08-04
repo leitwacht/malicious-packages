@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7950",
+  "modified": "2026-08-04T14:04:56Z",
+  "published": "2026-08-04T12:38:50Z",
+  "summary": "Malicious code in @onereach/si-dropdown-simple (npm)",
+  "details": "Version 0.4.7 of the @onereach/si-dropdown-simple Vue component adds a preinstall hook (setup.mjs) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a bundled 727KB obfuscated payload (math_init.js) with it. The payload is obfuscated with the javascript-obfuscator tool (a large _0x dictionary array plus a custom base64 decoder) and contains eval, Function, and child_process usage, hiding its actual behavior. The package's declared component code is a normal Vue dropdown with no legitimate need to download a runtime or run an obfuscated script at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-dropdown-simple",
+        "purl": "pkg:npm/%40onereach/si-dropdown-simple@0.4.7"
+      },
+      "versions": [
+        "0.4.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-dropdown-simple/v/0.4.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7950"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:38:50Z",
+      "indicators_observed": {
+        "sha256": [
+          "a7449ccae91087150a7dabf95a5d41a48a7fd1f75074ac17e2b25b48e77e73fd"
+        ]
+      }
+    }
+  }
+}

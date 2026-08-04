@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7944",
+  "modified": "2026-08-04T13:50:55Z",
+  "published": "2026-08-04T12:39:12Z",
+  "summary": "Malicious code in @onereach/si-checkbox-group (npm)",
+  "details": "A dormant Vue component package was republished with a preinstall hook (node setup.mjs) that downloads the Bun JavaScript runtime and then executes a 727KB heavily-obfuscated payload (math_init.js) bundled in the package. The payload uses a bespoke obfuscation scheme (a base64-alphabet decoder over a large string table) and its behaviour cannot be statically verified; the package's own lib/ bundles are legitimate Vue/vuelidate/lodash code, so the obfuscated payload is the only executed code of concern. Installing this package runs the obfuscated payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-checkbox-group",
+        "purl": "pkg:npm/%40onereach/si-checkbox-group@0.3.7"
+      },
+      "versions": [
+        "0.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-checkbox-group/v/0.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7944"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:39:12Z",
+      "indicators_observed": {
+        "sha256": [
+          "ef4d37ec6bff8294a5c2daf2043dc71682011f5979430a5556bb47076ea619fb"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7959",
+  "modified": "2026-08-04T14:07:17Z",
+  "published": "2026-08-04T12:37:56Z",
+  "summary": "Malicious code in @onereach/si-step-chooser (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads a runtime binary and executes a bundled, heavily-obfuscated payload (math_init.js, ~727KB) at install time. The payload is obfuscated with a javascript-obfuscator-style _0x array and custom decode routine, hiding its behaviour from static inspection. The same bootstrap-and-obfuscated-payload pattern is used across the @onereach scope, whose sibling packages perform DNS-tunnel exfiltration, fetch-and-execute remote code, and evade sandbox analysis at install. Installing this package runs the obfuscated payload on the victim machine during npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-step-chooser",
+        "purl": "pkg:npm/%40onereach/si-step-chooser@0.4.6"
+      },
+      "versions": [
+        "0.4.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-step-chooser/v/0.4.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7959"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:37:56Z",
+      "indicators_observed": {
+        "sha256": [
+          "c4fad4b7f529de63d9527a568710e8b8f7381a7517bcab60f15b295b4103d47f"
+        ]
+      }
+    }
+  }
+}
