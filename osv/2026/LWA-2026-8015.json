@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8015",
+  "modified": "2026-08-04T15:08:57Z",
+  "published": "2026-08-04T13:03:19Z",
+  "summary": "Malicious code in @onereach/v-event-calendar (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime and then executes a bundled 727KB heavily-obfuscated file (math_init.js) containing a custom string decoder, eval/Function calls, and child_process usage. A Vue event-calendar plugin has no legitimate reason to download a runtime and run an obfuscated payload at install time. The same setup.mjs + math_init.js payload is shipped in @onereach/webform@0.3.15.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/v-event-calendar",
+        "purl": "pkg:npm/%40onereach/v-event-calendar@0.1.24"
+      },
+      "versions": [
+        "0.1.24"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/v-event-calendar/v/0.1.24"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8015"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:03:19Z",
+      "indicators_observed": {
+        "sha256": [
+          "8e404645f2c365664609bb96644e43b4962afd595e379a5f936a03c281ae9f2a"
+        ]
+      }
+    }
+  }
+}
