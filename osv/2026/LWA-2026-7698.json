@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7698",
+  "modified": "2026-08-04T10:41:25Z",
+  "published": "2026-08-04T10:39:27Z",
+  "summary": "Malicious code in @onereach/ts-memoize (npm)",
+  "details": "@onereach/ts-memoize@1.0.2 is a trojanized version of a legitimate TypeScript memoization decorator. The package no longer ships the memoization code; instead, the preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB Bun-compiled payload file (math_init.js) at install time. The package.json exports point to dist/ files that do not exist in the tarball. The payload is a compiled binary blob containing eval, Function-constructor, and child_process invocations with a custom decoder, making the payload's full behaviour opaque to static analysis.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/ts-memoize",
+        "purl": "pkg:npm/%40onereach/ts-memoize@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/ts-memoize/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7698"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T10:39:27Z",
+      "indicators_observed": {
+        "sha256": [
+          "15b4f1e627dc08f3ff5aceb4212d74d89ec82c81f65b7d660618b8ea9c99ea9f"
+        ]
+      }
+    }
+  }
+}
