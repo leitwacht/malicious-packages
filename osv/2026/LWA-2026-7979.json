@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7979",
+  "modified": "2026-08-04T14:20:25Z",
+  "published": "2026-08-04T11:26:52Z",
+  "summary": "Malicious code in @workbench-stack/core (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a bundled 727KB heavily-obfuscated script (math_init.js) with it. The script uses a custom string-encoding/array-rotation obfuscation scheme that hides its runtime behavior, so an installer cannot determine what code runs on their machine during install. The obfuscated payload's network and file activity is not visible in the source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@workbench-stack/core",
+        "purl": "pkg:npm/%40workbench-stack/core@3.9.8"
+      },
+      "versions": [
+        "3.9.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@workbench-stack/core/v/3.9.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7979"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:26:52Z",
+      "indicators_observed": {
+        "sha256": [
+          "dca1ad46508536ae31847704188ccf5c03e76db7fab3e96126788d7293c7792d"
+        ]
+      }
+    }
+  }
+}
