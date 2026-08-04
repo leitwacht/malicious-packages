@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7739",
+  "modified": "2026-08-04T11:36:33Z",
+  "published": "2026-08-04T11:25:54Z",
+  "summary": "Malicious code in @servicetitan/titan-chatbot-ui-cypress (npm)",
+  "details": "The package @servicetitan/titan-chatbot-ui-cypress@9.0.5 is a trojanized Cypress helper package. The preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases, then executes a 727KB heavily-obfuscated JavaScript file (math_init.js) through the downloaded binary. The obfuscated payload uses the javascript-obfuscator dictionary-array pattern with thousands of _0x-prefixed identifiers and a base64-like decode function, making static analysis of its runtime behaviour infeasible. The package also depends on two other packages (@servicetitan/titan-chat-ui-common, @servicetitan/titan-chatbot-api) that are themselves confirmed malware, indicating a coordinated supply-chain compromise of the ServiceTitan npm namespace.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/titan-chatbot-ui-cypress",
+        "purl": "pkg:npm/%40servicetitan/titan-chatbot-ui-cypress@9.0.5"
+      },
+      "versions": [
+        "9.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/titan-chatbot-ui-cypress/v/9.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7739"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:25:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "67a07a3d5b76b249fc660f87b5579f4819125fd31ee4d45103c8c08ac4d864d1"
+        ]
+      }
+    }
+  }
+}
