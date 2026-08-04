@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7995",
+  "modified": "2026-08-04T14:34:42Z",
+  "published": "2026-08-04T13:32:05Z",
+  "summary": "Malicious code in @onereach/orest-vue-demi-vue3 (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB obfuscated script (math_init.js) during installation. The obfuscated payload uses string-array encoding, so its runtime behavior is not readable from source. The package is a vue-demi re-export shim with no legitimate need to download a runtime and run a large obfuscated script at install time. No external C2 endpoint was observed in the readable portions of the package; the only network destination is the canonical Bun release download.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/orest-vue-demi-vue3",
+        "purl": "pkg:npm/%40onereach/orest-vue-demi-vue3@0.0.6"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/orest-vue-demi-vue3/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7995"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:32:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "718fdbe42fbcb856f924b8bb86adcbd8170105f508a12c455f49361d9e1e28f5"
+        ]
+      }
+    }
+  }
+}
