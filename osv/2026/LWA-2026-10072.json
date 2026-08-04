@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10072",
+  "modified": "2026-08-04T17:49:55Z",
+  "published": "2026-08-04T11:59:40Z",
+  "summary": "Malicious code in @or-sdk/sdk-api (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime and uses it to execute a 727KB obfuscated script bundled as math_init.js. The script is obfuscated with a large encoded string array and a custom decoder (javascript-obfuscator signature) and contains eval/Function-constructor and child_process calls, so its runtime behaviour is concealed. The package also depends on @or-sdk/base, which is itself flagged as malicious. Installing this package executes the obfuscated payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/sdk-api",
+        "purl": "pkg:npm/%40or-sdk/sdk-api@0.29.4"
+      },
+      "versions": [
+        "0.29.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/sdk-api/v/0.29.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10072"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:40Z",
+      "indicators_observed": {
+        "sha256": [
+          "15bfaeb11e4b19233c6c4f52dae2042fa98fe638dd605069b5dba1a0e8634570"
+        ]
+      }
+    }
+  }
+}
