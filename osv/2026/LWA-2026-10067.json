@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10067",
+  "modified": "2026-08-04T17:49:03Z",
+  "published": "2026-08-04T11:59:36Z",
+  "summary": "Malicious code in @onereach/ui-components-vue2 (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from the oven-sh/bun GitHub release URL and uses it to execute a bundled 727KB heavily-obfuscated payload (math_init.js) at install time. The payload uses a large encoded string-array with a custom decoder (javascript-obfuscator shape). A Vue components library has no legitimate reason to download a runtime and run an obfuscated 727KB script during installation; the obfuscated payload's network behaviour is not statically recoverable but the install-time runtime-download-and-execute staging is the malicious behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/ui-components-vue2",
+        "purl": "pkg:npm/%40onereach/ui-components-vue2@27.0.4"
+      },
+      "versions": [
+        "27.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/ui-components-vue2/v/27.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10067"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:36Z",
+      "indicators_observed": {
+        "sha256": [
+          "7ffbe53aad0f903edef05744f3712e6f8da57a3df7d2a0749cfec9b9b498e605"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

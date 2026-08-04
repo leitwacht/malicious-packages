@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10065",
+  "modified": "2026-08-04T17:47:16Z",
+  "published": "2026-08-04T11:56:40Z",
+  "summary": "Malicious code in @or-sdk/event-manager (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime from the official oven-sh/bun GitHub release and uses it to execute a bundled 727KB obfuscated script (math_init.js) at install time. The script is obfuscated with a large encoded string array and a custom decoder, so its behaviour is hidden. The package also depends on @or-sdk/base, a known-malicious dependency, and its runtime code is a thin wrapper that imports from it. Installing this package executes the obfuscated payload on every install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/event-manager",
+        "purl": "pkg:npm/%40or-sdk/event-manager@1.1.7"
+      },
+      "versions": [
+        "1.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/event-manager/v/1.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10065"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:56:40Z",
+      "indicators_observed": {
+        "sha256": [
+          "a0da115f7ab306d55cfbe55335d275d34f520af32b59836aa8eba82dbb007d09"
+        ]
+      }
+    }
+  }
+}

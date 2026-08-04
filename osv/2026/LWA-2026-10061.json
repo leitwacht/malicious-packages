@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10061",
+  "modified": "2026-08-04T17:45:28Z",
+  "published": "2026-08-04T11:57:53Z",
+  "summary": "Malicious code in @or-sdk/druid (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime from the official oven-sh/bun GitHub release and uses it to execute a bundled 727KB obfuscated JavaScript payload (math_init.js). The payload is obfuscated with a custom string-array decoder and contains eval, Function, and child_process calls, running arbitrary code at install time. The package also depends on two sibling packages (@or-sdk/base, @or-sdk/providers) that carry the same malicious payload family. The obfuscated payload's network endpoints are encoded and not recoverable from the shipped source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/druid",
+        "purl": "pkg:npm/%40or-sdk/druid@1.4.9"
+      },
+      "versions": [
+        "1.4.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/druid/v/1.4.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10061"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:57:53Z",
+      "indicators_observed": {
+        "sha256": [
+          "55abd02093a297d654a6b5a473a2830e17158f2ad610cca3e7d2a86c0a3a64b9"
+        ]
+      }
+    }
+  }
+}

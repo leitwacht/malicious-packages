@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10063",
+  "modified": "2026-08-04T17:41:24Z",
+  "published": "2026-08-04T11:57:58Z",
+  "summary": "Malicious code in @or-sdk/sku-builder (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and uses it to execute a bundled 727KB obfuscated script (math_init.js) that decodes its logic from a large encoded string array via a custom decoder. The package also declares a dependency on @or-sdk/base, a package in the same namespace that is independently known to be malicious. Installing this package executes the obfuscated payload at install time; its decoded behaviour is not visible in the shipped source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/sku-builder",
+        "purl": "pkg:npm/%40or-sdk/sku-builder@2.5.3"
+      },
+      "versions": [
+        "2.5.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/sku-builder/v/2.5.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10063"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:57:58Z",
+      "indicators_observed": {
+        "sha256": [
+          "4b34a5e5e449ae2fe0dfb465627846f31e5ddd14e7c4254cd2d2501be5739fcb"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10066",
+  "modified": "2026-08-04T17:48:27Z",
+  "published": "2026-08-04T11:59:28Z",
+  "summary": "Malicious code in @or-sdk/providers (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13 and uses it to execute a 727KB obfuscated script bundled as math_init.js. The script is obfuscated with a large encoded string array and a custom decoder, and contains eval, Function, and child_process usage. The package also depends on the sibling packages @or-sdk/base, @or-sdk/discovery, and @or-sdk/event-manager, which are known-malicious. Installing this package runs the obfuscated payload at install time via a downloaded runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/providers",
+        "purl": "pkg:npm/%40or-sdk/providers@0.3.8"
+      },
+      "versions": [
+        "0.3.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/providers/v/0.3.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10066"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:59:28Z",
+      "indicators_observed": {
+        "sha256": [
+          "d56f88ad8b86aacc6a4cd5d2950527a21d901d9b05cee3588cac117e27f045e2"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}
