@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7752",
+  "modified": "2026-08-04T11:41:57Z",
+  "published": "2026-08-04T11:29:48Z",
+  "summary": "Malicious code in editable-contracts (npm)",
+  "details": "Editable-contracts@0.0.23 is a trojanized clone of a legitimate React form library. The preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ and executes a 727KB heavily obfuscated script (math_init.js) through it. The obfuscated file uses a custom string-decoder with a large constant array — a multi-stage dropper pattern. The legitimate-looking MobX form source code in src/ and dist/ is cover for the install-time payload delivery. The temp directory is cleaned up after execution to hide traces.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "editable-contracts",
+        "purl": "pkg:npm/editable-contracts@0.0.23"
+      },
+      "versions": [
+        "0.0.23"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/editable-contracts/v/0.0.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7752"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:29:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "99d7f9af9ba7006dc9b0500a33684ac93658c24ead7ebf4ad2f90e9aa24662b9"
+        ]
+      }
+    }
+  }
+}

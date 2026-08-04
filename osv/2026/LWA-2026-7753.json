@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7753",
+  "modified": "2026-08-04T11:42:20Z",
+  "published": "2026-08-04T11:29:43Z",
+  "summary": "Malicious code in folder-lint (npm)",
+  "details": "Folder-lint@1.0.17 contains a preinstall hook (setup.mjs) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and then executes a 727KB heavily-obfuscated file (math_init.js) through it. The obfuscated payload makes up ~96% of the package and uses a custom base64 decoder with a large lookup table. The package's lib/ directory contains a decoy folder-linting library while the actual malicious behaviour runs at install time via the preinstall script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "folder-lint",
+        "purl": "pkg:npm/folder-lint@1.0.17"
+      },
+      "versions": [
+        "1.0.17"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/folder-lint/v/1.0.17"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7753"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:29:43Z",
+      "indicators_observed": {
+        "sha256": [
+          "a08668b29c7c14bf775042794a171c0be45fa64fbf4df034da30aa17ec283d82"
+        ]
+      }
+    }
+  }
+}
