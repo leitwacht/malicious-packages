@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10041",
+  "modified": "2026-08-04T16:52:14Z",
+  "published": "2026-08-04T11:56:57Z",
+  "summary": "Malicious code in @or-sdk/data-hub (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13 and uses it to execute a bundled 727KB obfuscated script (math_init.js) at install time. The script is obfuscated with a large encoded string array and a custom decoder, hiding its runtime behaviour. The package also declares a dependency on @or-sdk/base, a known-malicious package, indicating a compromised dependency chain. Installing this package executes the obfuscated payload on the victim's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/data-hub",
+        "purl": "pkg:npm/%40or-sdk/data-hub@0.26.7"
+      },
+      "versions": [
+        "0.26.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/data-hub/v/0.26.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10041"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T11:56:57Z",
+      "indicators_observed": {
+        "sha256": [
+          "d487536e98e7c94dd73dd250f4657963a5ba7776dbb858d767b959967b354e74"
+        ]
+      }
+    }
+  }
+}
