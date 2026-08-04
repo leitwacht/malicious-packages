@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8000",
+  "modified": "2026-08-04T14:38:16Z",
+  "published": "2026-08-04T11:59:21Z",
+  "summary": "Malicious code in @onereach/orest-cli (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime from github[.]com/oven-sh/bun and executes a bundled 727KB obfuscated payload (math_init.js) at install time. The payload uses a custom string-array/base64 decoder to hide its logic. The package also declares dependencies on known-malicious packages @or-sdk/files, @or-sdk/library, and @or-sdk/sdk-api. Installing this package runs the obfuscated payload before any of the CLI's legitimate code executes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/orest-cli",
+        "purl": "pkg:npm/%40onereach/orest-cli@2.4.3"
+      },
+      "versions": [
+        "2.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/orest-cli/v/2.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8000"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:21Z",
+      "indicators_observed": {
+        "sha256": [
+          "e55a0404460bf0b631cae9eb3d2c44f086a77b6c812493eb519775cb9248c755"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

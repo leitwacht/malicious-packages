@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8001",
+  "modified": "2026-08-04T14:41:54Z",
+  "published": "2026-08-04T13:02:24Z",
+  "summary": "Malicious code in @onereach/or-sdk-agent-cli (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) is obfuscated. On install it detects the platform/architecture, downloads the Bun JavaScript runtime zip from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/\u0026lt;platform\u0026gt;.zip, extracts it, and executes a bundled 727KB obfuscated script (math_init.js) under that runtime. The install-time code path is deliberately obfuscated and executes an opaque obfuscated bundle, and the package declares dependencies on a large set of @or-sdk/* packages. The obfuscated install-time execution chain is consistent with a multi-stage dropper; the executed bundle's network behaviour could not be statically determined.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/or-sdk-agent-cli",
+        "purl": "pkg:npm/%40onereach/or-sdk-agent-cli@0.0.8"
+      },
+      "versions": [
+        "0.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/or-sdk-agent-cli/v/0.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8001"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:02:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "5d6a9f2907053912024fc989bf88731d74df38be813016510f468d1690ece76a"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}
