@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7897",
+  "modified": "2026-08-04T13:32:20Z",
+  "published": "2026-08-04T12:58:52Z",
+  "summary": "Malicious code in @thiennq/docs-viewer (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the bun runtime and executes a bundled 727KB file (math_init.js) at install time. That file is heavily obfuscated with a custom decoder and rotated string array, and its decoded content is binary/compressed, so its behaviour is hidden from inspection. The payload is unrelated to the package's declared function (a static docs-viewer HTTP server that otherwise uses only built-in Node modules). Installing this package runs an opaque, obfuscated executable payload during install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@thiennq/docs-viewer",
+        "purl": "pkg:npm/%40thiennq/docs-viewer@1.6.3"
+      },
+      "versions": [
+        "1.6.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@thiennq/docs-viewer/v/1.6.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7897"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:58:52Z",
+      "indicators_observed": {
+        "sha256": [
+          "24e9c60b1f67dd58db441b7bd0f24399c69db696a2c458ef5a768ce2cbbab6f6"
+        ]
+      }
+    }
+  }
+}

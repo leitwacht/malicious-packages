@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7899",
+  "modified": "2026-08-04T13:32:18Z",
+  "published": "2026-08-04T13:04:12Z",
+  "summary": "Malicious code in @onereach/idw-contracts (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB heavily-obfuscated bundled script (math_init.js) at install time. A shared contracts/schemas/types library has no legitimate reason to download a runtime and run an opaque obfuscated payload during installation. The obfuscated payload's behaviour is concealed behind javascript-obfuscator-style identifier renaming and a custom string-encoding table, so its network/collection actions cannot be read statically. The same install-time bootstrap pattern is used by the publisher's @onereach/webform package, which fetches remote content and executes it and beacons via DNS TXT queries.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/idw-contracts",
+        "purl": "pkg:npm/%40onereach/idw-contracts@0.1.4"
+      },
+      "versions": [
+        "0.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/idw-contracts/v/0.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7899"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:04:12Z",
+      "indicators_observed": {
+        "sha256": [
+          "09db8e32fe1736b215269f0a8c540082748a0c2d58178a681ee10dc353c6e23a"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}
