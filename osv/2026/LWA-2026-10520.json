@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10520",
+  "aliases": [
+    "MAL-2026-13141"
+  ],
+  "modified": "2026-08-05T17:05:47Z",
+  "published": "2026-08-05T15:35:27Z",
+  "summary": "Malicious code in dolyame-ui-carousel (npm)",
+  "details": "On require(), dolyame-ui-carousel@35.3.3 downloads a platform-specific binary over HTTPS from attacker-controlled Cloudflare Workers hosts (oob-worker[.]cf102-baf[.]work, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev), with a DNS-TXT fallback channel via *.dl[.]wel1[.]ru domains. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched detached via cmd.exe /c start /b or /bin/sh -c '\u003cpath\u003e \u0026'. A stamp file at /tmp/.analytics_state (or %TEMP%\\analytics_state) throttles re-execution. The package's index.js triggers this dropper automatically whenever the module is required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-carousel",
+        "purl": "pkg:npm/dolyame-ui-carousel@35.3.3"
+      },
+      "versions": [
+        "35.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-carousel/v/35.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10520"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T15:35:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]work",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "223cda3be69134d1166f04f9d3a9ed386d9330e6287ad8a6441f0861cdfe65f8"
+        ]
+      }
+    }
+  }
+}
