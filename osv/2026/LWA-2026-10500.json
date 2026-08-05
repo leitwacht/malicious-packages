@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10500",
+  "aliases": [
+    "MAL-2026-12516"
+  ],
+  "modified": "2026-08-05T16:53:28Z",
+  "published": "2026-08-05T14:52:31Z",
+  "summary": "Malicious code in bpm-foundation-testing (npm)",
+  "details": "Bpm-foundation-testing@35.4.3 is a multi-stage binary dropper. Requiring the package (index.js -\u003e _platform.js) triggers setup(), which downloads a platform-specific binary from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If the HTTPS download fails, it falls back to retrieving the payload via DNS TXT records from wel1[.]ru domains (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru), reassembling base64 chunks. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or C:\\Windows\\Temp\\dotnet_diag_\u003chex\u003e.exe on Windows) and executed detached in the background. The package has no legitimate functionality beyond this payload delivery.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bpm-foundation-testing",
+        "purl": "pkg:npm/bpm-foundation-testing@35.4.3"
+      },
+      "versions": [
+        "35.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bpm-foundation-testing/v/35.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10500"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:52:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "4bbd2ef5b9bc3a37623c6760ecb3bd02b8bec6621578929c0233e1c9c4836d6f"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
