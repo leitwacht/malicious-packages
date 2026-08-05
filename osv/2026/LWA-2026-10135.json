@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10135",
+  "modified": "2026-08-05T13:29:23Z",
+  "published": "2026-08-05T13:02:33Z",
+  "summary": "Malicious code in bnpl-blocks-atom-bnpl-news-card (npm)",
+  "details": "On require, the package loads a bundled dropper (_helpers.js) that downloads a platform-specific binary payload over HTTPS from Cloudflare Workers hosts (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe. If the HTTPS fetch fails it reassembles the payload from base64 TXT DNS records at c[.]sdk[.]dl[.]wel1[.]ru (and sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"fp \u0026\" on Unix). A marker file at /tmp/.analytics_state limits re-execution frequency. The package also ships a large decoy analytics-SDK module to disguise the loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-atom-bnpl-news-card",
+        "purl": "pkg:npm/bnpl-blocks-atom-bnpl-news-card@35.6.8"
+      },
+      "versions": [
+        "35.6.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-atom-bnpl-news-card/v/35.6.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10135"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:02:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "bf2178efa89de5cd5864a6a1aeb1777f6346e66e2e73a1d5c52e3feb525e2442"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

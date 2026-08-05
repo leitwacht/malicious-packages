@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10138",
+  "modified": "2026-08-05T13:29:54Z",
+  "published": "2026-08-05T13:03:01Z",
+  "summary": "Malicious code in bnpl-api (npm)",
+  "details": "On load, bnpl-api requires a bundled support module that fingerprints the host platform/architecture and downloads a platform-specific binary from multiple Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS fails it falls back to retrieving the payload via DNS TXT records from c[.]sdk[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in TEMP on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c '... \u0026' on POSIX).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-api",
+        "purl": "pkg:npm/bnpl-api@35.9.5"
+      },
+      "versions": [
+        "35.9.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-api/v/35.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10138"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:03:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "9ac39b287f11aa3cdc718aebacc36508e7c21cadd6d192ac7f3c95123d36af09"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
