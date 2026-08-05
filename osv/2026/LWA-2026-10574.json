@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10574",
+  "modified": "2026-08-05T20:59:48Z",
+  "published": "2026-08-05T20:55:29Z",
+  "summary": "Malicious code in ezdiscordbots (npm)",
+  "details": "Ezdiscordbots@1.0.2 installs a persistent system service and runs an obfuscated background payload. The postinstall hook executes `sudo node install.js`, which uses the node-linux Service API to register a system service that runs the bundled index.js. index.js is obfuscated with javascript-obfuscator: when not already running as a service it spawns a detached, hidden background copy of itself (spawn with detached:true, stdio:'ignore', windowsHide:true) and decodes a base64-embedded payload (Buffer.from(...,'base64')). The package has no legitimate reason to install a system service or spawn hidden background processes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ezdiscordbots",
+        "purl": "pkg:npm/ezdiscordbots@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ezdiscordbots/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10574"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T20:55:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "bbd56b1b25e209bbe176f86c95f8ca2fb7a19d770998caa6e66b13b8d74f2877"
+        ]
+      }
+    }
+  }
+}
