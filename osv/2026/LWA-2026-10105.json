@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10105",
+  "modified": "2026-08-05T10:24:01Z",
+  "published": "2026-08-05T10:20:51Z",
+  "summary": "Malicious code in @simplipayng/checkout (npm)",
+  "details": "The package's bundled dist/index.js and dist/index.esm.js each append a base64-encoded payload that decodes to a remote-code-execution dropper. On load it queries public Ethereum RPC endpoints (rpc[.]ankr[.]com/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) and the eth[.]blockscout[.]com API to read transactions from a hardcoded Ethereum address, extracts an IP address from the transaction data, then spawns detached `node -e` child processes (detached, stdio ignored, windowsHide) that fetch and execute additional remote payloads from that IP over HTTP. Communication with the C2 is XOR-encrypted via an x-payload-b64 header. The C2 endpoint is derived from blockchain transaction data rather than being hardcoded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@simplipayng/checkout",
+        "purl": "pkg:npm/%40simplipayng/checkout@1.4.3"
+      },
+      "versions": [
+        "1.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@simplipayng/checkout/v/1.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10105"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T10:20:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com",
+          "rpc[.]ankr[.]com"
+        ],
+        "sha256": [
+          "e1e5a2e615f1efa8938ff5c53c35b3351d607e960931cfc9eea3bff7766df3cd"
+        ]
+      }
+    }
+  }
+}
