@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10118",
+  "modified": "2026-08-05T13:07:03Z",
+  "published": "2026-08-05T12:59:43Z",
+  "summary": "Malicious code in bigops-ui-kit (npm)",
+  "details": "On require, the package (a UI-kit facade) loads a bundled _compat.js dropper. It fingerprints the host platform/arch and downloads a platform-specific binary over HTTPS from three Cloudflare Workers hosts (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe, with a DNS-TXT fallback resolver under wel1[.]ru (c[.]sdk[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or dotnet_diag_\u0026lt;hex\u0026gt;.exe under the Windows temp dir) and executed detached via /bin/sh -c or cmd.exe /c start /b, so it runs in the background after install/require. A stamp file (/tmp/.analytics_state) throttles re-execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-ui-kit",
+        "purl": "pkg:npm/bigops-ui-kit@35.9.2"
+      },
+      "versions": [
+        "35.9.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-ui-kit/v/35.9.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10118"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T12:59:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "55b5404086675a98d0e9dc1f1e4a334aaf39a43a739bff191c18284e2333f82c"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
