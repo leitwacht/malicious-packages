@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10110",
+  "modified": "2026-08-05T11:16:46Z",
+  "published": "2026-08-05T11:13:02Z",
+  "summary": "Malicious code in @zahlen/checkout-react (npm)",
+  "details": "@zahlen/checkout-react@0.1.1 (a \"React payment modal\" component) executes a hidden payload on import. Its bundled index.esm.js ends with eval(atob(...)) that decodes an Ethereum wallet-drainer / C2 beacon. The payload connects to public Ethereum JSON-RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com), reads the latest block, and searches for a transaction sent to the hardcoded address 0xa322e5f33d311d33080e6f301210636e9adc2490ef1a. It then derives two IP addresses from the first 8 bytes of that transaction's `to` field and spawns detached node processes that beacon to hxxp://\u003cip\u003e:80 and hxxp://\u003cip\u003e:443, using the derived IPs as command-and-control endpoints. The C2 endpoints are thus dynamically derived from blockchain data rather than hardcoded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zahlen/checkout-react",
+        "purl": "pkg:npm/%40zahlen/checkout-react@0.1.1"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zahlen/checkout-react/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10110"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T11:13:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "7c98b4ee25ed4a94411079c0093aeb288f9934d207fb5eedd7fa974eb25bab16"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth"
+        ],
+        "wallet_observed": [
+          "0xa322e5f33d311d33080e6f301210636e9adc2490ef1a"
+        ]
+      }
+    }
+  }
+}
