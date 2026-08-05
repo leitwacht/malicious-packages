@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10413",
+  "aliases": [
+    "MAL-2026-12709"
+  ],
+  "modified": "2026-08-05T16:09:09Z",
+  "published": "2026-08-05T13:32:52Z",
+  "summary": "Malicious code in devplatform-di (npm)",
+  "details": "Devplatform-di@35.5.5 is a multi-stage dropper. On require, lib/_compat.js fingerprints the OS/arch and downloads a second-stage binary over HTTPS from three Cloudflare Workers mirrors (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at /pkg/package (or platform-specific paths /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the mirrors fail, it falls back to retrieving the payload in base64 chunks via DNS TXT queries against *.dl[.]wel1[.]ru domains (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in TEMP on Windows), chmodded 0755, and executed detached via /bin/sh -c \"path \u0026\" or cmd.exe /c start /b. Execution is skipped if DISABLE_TELEMETRY, ANALYTICS_OPT_OUT, or DO_NOT_TRACK env vars are set, and is rate-limited to once per ~5.5 hours via a cache stamp file.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-di",
+        "purl": "pkg:npm/devplatform-di@35.5.5"
+      },
+      "versions": [
+        "35.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-di/v/35.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10413"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:32:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "342e308f85264e092e8d849690cb1ad08048d6cf3421fc7cb9b4510869e2ffe5"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
