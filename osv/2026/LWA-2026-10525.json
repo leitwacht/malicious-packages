@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10525",
+  "aliases": [
+    "MAL-2026-13128"
+  ],
+  "modified": "2026-08-05T17:04:02Z",
+  "published": "2026-08-05T15:52:00Z",
+  "summary": "Malicious code in dolyame-boxy-mobile-bnpl-text-block (npm)",
+  "details": "On require(), this package downloads and executes a remote binary. It fingerprints the OS/architecture, then fetches a platform-specific payload from Cloudflare workers[.]dev mirror hosts (oob-worker[.]cf1-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe. If the HTTP fetch fails, it falls back to assembling the payload from DNS TXT records under the domains sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process via cmd.exe start /b or /bin/sh -c. The package also ships an 81KB telemetry module that is a cloned analytics SDK with no real endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-mobile-bnpl-text-block",
+        "purl": "pkg:npm/dolyame-boxy-mobile-bnpl-text-block@35.1.8"
+      },
+      "versions": [
+        "35.1.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-mobile-bnpl-text-block/v/35.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10525"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T15:52:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf1-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "workers[.]dev"
+        ],
+        "sha256": [
+          "c63676fdfa175822b95b3033620cebc597466da7a9940dca2e2a2fccdbe5ee30"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf1-adf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf1-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf1-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf1-adf[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

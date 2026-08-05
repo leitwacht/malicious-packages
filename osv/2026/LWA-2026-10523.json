@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10523",
+  "aliases": [
+    "MAL-2026-13131"
+  ],
+  "modified": "2026-08-05T17:03:32Z",
+  "published": "2026-08-05T15:51:34Z",
+  "summary": "Malicious code in dolyame-boxy-stories (npm)",
+  "details": "On require, the package downloads a platform-specific second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf103-070[.]workers[.]de, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) with a DNS-TXT fallback channel via wel1[.]ru resolver domains (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to a temp file (/var/tmp/.cache_\u003chex\u003e on Unix, %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process via cmd.exe /c start /b or /bin/sh -c '... \u0026'. A stamp file in /tmp or %TEMP% throttles re-execution. The package ships a large decoy analytics module to pad its size.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-stories",
+        "purl": "pkg:npm/dolyame-boxy-stories@35.9.7"
+      },
+      "versions": [
+        "35.9.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-stories/v/35.9.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10523"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T15:51:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]de",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "7016eb80fb200307fd4bc400f3f07fcf0833e62a0920f50ad3a47fe8a8e63b6f"
+        ]
+      }
+    }
+  }
+}

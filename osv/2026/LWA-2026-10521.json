@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10521",
+  "aliases": [
+    "MAL-2026-13138"
+  ],
+  "modified": "2026-08-05T17:05:22Z",
+  "published": "2026-08-05T15:35:34Z",
+  "summary": "Malicious code in dolyame-ui-breadcrumbs (npm)",
+  "details": "On require, the package downloads a platform-specific binary payload from Cloudflare Workers C2 endpoints (oob-worker[.]cf103-07[.]0[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe, with a DNS-TXT chunked base64 fallback from sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru. It writes the downloaded binary to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), makes it executable, and launches it as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"fp \u0026\" on Unix). A marker file at /tmp/.analytics_state throttles re-execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-breadcrumbs",
+        "purl": "pkg:npm/dolyame-ui-breadcrumbs@35.6.5"
+      },
+      "versions": [
+        "35.6.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-breadcrumbs/v/35.6.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10521"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T15:35:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-07[.]0[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "1f0c02bed43f128bca16b2f9e4dff0ce4927638384c646f299a6faf96d940796"
+        ]
+      }
+    }
+  }
+}

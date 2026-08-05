@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10526",
+  "modified": "2026-08-05T17:05:27Z",
+  "published": "2026-08-05T15:54:46Z",
+  "summary": "Malicious code in dolyame-boxy-mobile-bnpl-card-panel (npm)",
+  "details": "Requiring this package executes a bundled bootstrap that downloads a platform-specific binary and runs it in the background. The bootstrap fetches the payload over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe; if HTTPS fails it falls back to a DNS TXT chunked download from sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp (or the Windows temp dir) under a randomized name (.cache_\u003chex\u003e or dotnet_diag_\u003chex\u003e.exe) and launched detached via cmd.exe /c start /b on Windows or /bin/sh -c on Unix, with stdio ignored so it runs hidden in the background.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-mobile-bnpl-card-panel",
+        "purl": "pkg:npm/dolyame-boxy-mobile-bnpl-card-panel@35.3.4"
+      },
+      "versions": [
+        "35.3.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-mobile-bnpl-card-panel/v/35.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10526"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T15:54:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "b728fab9ecf6df8e0241634ef43bb439e5d93f01b4dee90268a30b3211b3164e"
+        ]
+      }
+    }
+  }
+}
