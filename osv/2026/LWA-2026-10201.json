@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10201",
+  "modified": "2026-08-05T14:09:30Z",
+  "published": "2026-08-05T13:41:52Z",
+  "summary": "Malicious code in dolyame-boxy-atom-bnpl-card (npm)",
+  "details": "On require, this package downloads and executes a remote binary. It fingerprints the OS/architecture and fetches a platform-specific payload over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe. If the HTTPS download fails, it falls back to a DNS TXT-based channel under the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru, c[.]ext[.]dl[.]wel1[.]ru, c[.]pkg[.]dl[.]wel1[.]ru, c[.]net[.]dl[.]wel1[.]ru) that reassembles a base64-encoded payload from chunked TXT records. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp directory on Windows), made executable, and launched as a detached background process via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b. A marker file at /tmp/.analytics_state throttles re-execution. The package's main entry point loads the dropper automatically, so any code that requires the module triggers the download-and-execute.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-atom-bnpl-card",
+        "purl": "pkg:npm/dolyame-boxy-atom-bnpl-card@35.5.5"
+      },
+      "versions": [
+        "35.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-atom-bnpl-card/v/35.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10201"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:41:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]ext[.]dl[.]wel1[.]ru",
+          "c[.]net[.]dl[.]wel1[.]ru",
+          "c[.]pkg[.]dl[.]wel1[.]ru",
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "d34bd39b88e708b46132ddd8a0086f7637a7bd64df186ccc601050feceb0716d"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

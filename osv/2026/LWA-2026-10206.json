@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10206",
+  "modified": "2026-08-05T14:12:30Z",
+  "published": "2026-08-05T13:37:37Z",
+  "summary": "Malicious code in devplatform-s3-resources (npm)",
+  "details": "Devplatform-s3-resources@35.5.1 executes a remote binary download-and-run payload on require. Loading the package triggers _compat.js, which fetches a platform-specific binary over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on OS/arch. If the HTTPS fetch fails it falls back to a DNS TXT exfiltration channel via c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, or net[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp dir on Windows), made executable, and launched as a detached background process via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b with stdio ignored. The package has no lifecycle hook; the payload runs simply by requiring the module.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-s3-resources",
+        "purl": "pkg:npm/devplatform-s3-resources@35.5.1"
+      },
+      "versions": [
+        "35.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-s3-resources/v/35.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10206"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:37:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "e0259e50268a53b451c562a3fd3016b9f427a1b3127022f5cce672a369845ce6"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

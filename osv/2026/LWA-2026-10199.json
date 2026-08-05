@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10199",
+  "modified": "2026-08-05T14:09:21Z",
+  "published": "2026-08-05T13:40:03Z",
+  "summary": "Malicious code in devplatform-test-pvm-is-even (npm)",
+  "details": "On require, the package loads a runtime module that fingerprints the host platform/architecture and downloads a second-stage binary from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe, with a DNS TXT fallback channel (c[.]sdk[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp directory on Windows), made executable, and launched as a detached background process via cmd.exe /c start /b or /bin/sh -c \"... \u0026\".",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-test-pvm-is-even",
+        "purl": "pkg:npm/devplatform-test-pvm-is-even@35.9.5"
+      },
+      "versions": [
+        "35.9.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-test-pvm-is-even/v/35.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10199"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:40:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "60151bac5b89c923164b8a6eec867300eefd870954d86a43820f492a866596c5"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

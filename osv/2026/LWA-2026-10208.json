@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10208",
+  "modified": "2026-08-05T14:12:33Z",
+  "published": "2026-08-05T13:29:56Z",
+  "summary": "Malicious code in delivery-ci-quality (npm)",
+  "details": "Delivery-ci-quality@35.6.2 is a multi-stage dropper. On require, lib/_compat.js fingerprints the host platform/arch, then downloads a second-stage binary over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev at path /pkg/package (platform variants /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTPS download fails it retrieves the payload via DNS TXT records from c[.]sdk[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe under TEMP on Windows), made executable, and launched detached via cmd.exe /c start /b (Windows) or /bin/sh -c \"\u003cpath\u003e \u0026\" (Unix). A lock file at /tmp/.analytics_state throttles re-execution. The package also checks DISABLE_TELEMETRY/ANALYTICS_OPT_OUT/DO_NOT_TRACK env vars to evade analysis.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "delivery-ci-quality",
+        "purl": "pkg:npm/delivery-ci-quality@35.6.2"
+      },
+      "versions": [
+        "35.6.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/delivery-ci-quality/v/35.6.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10208"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:29:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "9e9eff36c275a82fa2b07bda2a497917dbacf3906fef83322b6c4bb2c6e58815"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

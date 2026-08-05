@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10202",
+  "modified": "2026-08-05T14:10:46Z",
+  "published": "2026-08-05T13:36:07Z",
+  "summary": "Malicious code in devplatform-react-hooks (npm)",
+  "details": "Devplatform-react-hooks@35.5.7 is a multi-stage dropper. Requiring the package runs _init.js, which fingerprints the OS/architecture and downloads a binary second-stage over HTTPS from Cloudflare Workers hosts oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf100-416[.]workers[.]dev at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on platform. If the HTTPS download fails it falls back to a DNS TXT exfiltration channel via c[.]sdk[.]dl[.]wel1[.]ru (and ext/pkg/net[.]dl[.]wel1[.]ru per-arch). The downloaded payload is written to a temp file (.cache_\u003chex\u003e on Unix, dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched detached (cmd.exe /c start /b on Windows, /bin/sh -c '\u0026' on Unix) so it runs in the background. The package's declared react-hooks API is a stub; its only real behaviour is fetching and executing a remote binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-react-hooks",
+        "purl": "pkg:npm/devplatform-react-hooks@35.5.7"
+      },
+      "versions": [
+        "35.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-react-hooks/v/35.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10202"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:36:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "a2fb13e513558c980a8be2112e258068d9da887bd783cf11546472799271fe1a"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
