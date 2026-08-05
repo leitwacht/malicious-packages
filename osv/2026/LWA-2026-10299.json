@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10299",
+  "modified": "2026-08-05T15:28:11Z",
+  "published": "2026-08-05T15:05:36Z",
+  "summary": "Malicious code in dp-web-header (npm)",
+  "details": "Dp-web-header is a decoy \"shared web header library\" that, on require(), downloads and executes a remote binary. It fetches a platform-specific payload over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev/pkg/package, oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package, oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package), with a DNS-TXT-chunked fallback that reassembles base64 data from c[.]sdk[.]dl[.]wel1[.]ru / ext[.]dl[.]wel1[.]ru / pkg[.]dl[.]wel1[.]ru / net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the Windows temp dir), made executable, and launched as a detached background process. A state marker at /tmp/.analytics_state throttles re-downloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dp-web-header",
+        "purl": "pkg:npm/dp-web-header@35.3.8"
+      },
+      "versions": [
+        "35.3.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dp-web-header/v/35.3.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10299"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T15:05:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "5a8fb838018d7481fbe8cb8323a667911546f0955badb85533d63280cb325c4b"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
