@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10111",
+  "modified": "2026-08-05T11:20:14Z",
+  "published": "2026-08-05T11:17:07Z",
+  "summary": "Malicious code in @zahlen/checkout-angular (npm)",
+  "details": "The Angular module fesm2022/zahlen-checkout-angular.mjs contains an eval(atob(...)) payload that runs when the module is imported. The payload queries the Ethereum blockchain (via eth[.]blocsout[.]com/api and public RPC endpoints) for a transaction from attacker address 0xa3322E5f33D311D3308065f3012310639aDC2490Ef1a, decodes the transaction's `to` field into an IPv4 address, then connects to that address over HTTP (ports 80/443) and fetches XOR-encrypted second-stage payloads which it executes via eval or by spawning a detached node process. The C2 endpoint is dynamically derived from the attacker's blockchain activity rather than a fixed host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zahlen/checkout-angular",
+        "purl": "pkg:npm/%40zahlen/checkout-angular@0.1.4"
+      },
+      "versions": [
+        "0.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zahlen/checkout-angular/v/0.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10111"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T11:17:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eth[.]blocsout[.]com"
+        ],
+        "sha256": [
+          "e4ce776650ba470abbbdb34978e30d694ac6d6d8a57829a51b35920e68fb62eb"
+        ],
+        "url_observed": [
+          "hxxps://eth[.]blocsout[.]com/api"
+        ],
+        "wallet_observed": [
+          "0xa3322E5f33D311D3308065f3012310639aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
