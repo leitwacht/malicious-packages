@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10533",
+  "aliases": [
+    "MAL-2026-13302"
+  ],
+  "modified": "2026-08-05T17:13:50Z",
+  "published": "2026-08-05T17:12:26Z",
+  "summary": "Malicious code in dolyame-boxy-desktop-bnpl-card-panel (npm)",
+  "details": "On require, the package downloads a platform-specific binary over HTTPS from Cloudflare Workers hosts oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, and oob-worker[.]cf102-baf[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If those fail, it retrieves the payload via DNS TXT records under the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process via /bin/sh -c \"fp \u0026\" or cmd.exe /c start /b.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-desktop-bnpl-card-panel",
+        "purl": "pkg:npm/dolyame-boxy-desktop-bnpl-card-panel@35.6.3"
+      },
+      "versions": [
+        "35.6.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-desktop-bnpl-card-panel/v/35.6.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10533"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T17:12:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "8b32a43f3014cc856954cafdb0ce562981cf081a608a2530a88a6697b94fcdbd"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
