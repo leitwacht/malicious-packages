@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10325",
+  "aliases": [
+    "MAL-2026-12515"
+  ],
+  "modified": "2026-08-05T15:37:49Z",
+  "published": "2026-08-05T14:52:15Z",
+  "summary": "Malicious code in bpm-foundation-test-jest (npm)",
+  "details": "Bpm-foundation-test-jest@35.9.3 is a multi-stage dropper. Requiring the package loads setup.js, which fingerprints the OS/arch and downloads a second-stage binary over HTTPS from Cloudflare Workers hosts oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf99-9b3[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS fails it falls back to DNS TXT-based retrieval from *.dl[.]wel1[.]ru (c[.]sdk[.]dl[.]wel1[.]ru, sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or %TEMP%\\dotnet_diag_\u0026lt;hex\u0026gt;.exe on Windows), made executable, and launched detached via /bin/sh or cmd.exe so it runs in the background. A marker file (.analytics_state / analytics_state) throttles re-execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bpm-foundation-test-jest",
+        "purl": "pkg:npm/bpm-foundation-test-jest@35.9.3"
+      },
+      "versions": [
+        "35.9.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bpm-foundation-test-jest/v/35.9.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10325"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:52:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "b272252bbca36afec01006a9f1569a8ba974d9ff5cc64605e2869367a8ddcb0c"
+        ]
+      }
+    }
+  }
+}

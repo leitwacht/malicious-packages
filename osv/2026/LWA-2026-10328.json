@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10328",
+  "modified": "2026-08-05T15:36:16Z",
+  "published": "2026-08-05T14:57:38Z",
+  "summary": "Malicious code in eacq-api (npm)",
+  "details": "Eacq-api@35.6.1 executes a multi-stage binary dropper when the package is required. On load it downloads a platform-specific payload over HTTPS from randomized Cloudflare Workers hosts (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on OS/arch. If those fetches fail it falls back to a DNS-TXT chunked channel: it reads a chunk count from the TXT record of c[.]sdk[.]dl[.]wel1[.]ru (and c[.]ext[.]dl[.]wel1[.]ru / c[.]pkg[.]dl[.]wel1[.]ru / c[.]net[.]dl[.]wel1[.]ru) and reassembles base64 chunks from numbered subdomains. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp dir on Windows), made executable, and launched detached (cmd.exe /c start /b on Windows, /bin/sh -c '\u003cfile\u003e \u0026' on POSIX). A state stamp at /tmp/.analytics_state (or %TEMP%\\analytics_state) with a ~6-hour cooldown limits repeat runs. The package also probes for sandbox/analysis environments via a DNS TXT lookup before executing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eacq-api",
+        "purl": "pkg:npm/eacq-api@35.6.1"
+      },
+      "versions": [
+        "35.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eacq-api/v/35.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10328"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:57:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]ext[.]dl[.]wel1[.]ru",
+          "c[.]net[.]dl[.]wel1[.]ru",
+          "c[.]pkg[.]dl[.]wel1[.]ru",
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "d1c02b589e8f708ffe1a085c611a769acc49cf067e3124577348e6c058891dcc"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
