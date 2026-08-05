@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10149",
+  "modified": "2026-08-05T13:34:34Z",
+  "published": "2026-08-05T13:01:47Z",
+  "summary": "Malicious code in bnpl-blocks-atom-bnpl-email-form (npm)",
+  "details": "On load, the package executes a multi-stage dropper. It fingerprints the host platform/architecture, then downloads a platform-specific binary payload over HTTPS from the hosts oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the download fails it falls back to a DNS-based channel: TXT queries to c[.]sdk[.]dl[.]wel1[.]ru and base64-decoded chunks fetched from numbered subdomains of sdk[.]dl[.]wel1[.]ru / ext[.]dl[.]wel1[.]ru / pkg[.]dl[.]wel1[.]ru / net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (Linux/macOS) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows), made executable, and launched detached via /bin/sh -c '\u003cpath\u003e \u0026' or cmd.exe /c start /b, so it runs in the background and outlives the parent process. A cooldown marker file (/tmp/.analytics_state or %TEMP%\\analytics_state) limits re-execution. The package also ships an 81KB decoy \"analytics SDK\" module (lib/telemetry.js) that performs no real telemetry transport.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-atom-bnpl-email-form",
+        "purl": "pkg:npm/bnpl-blocks-atom-bnpl-email-form@35.3.9"
+      },
+      "versions": [
+        "35.3.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-atom-bnpl-email-form/v/35.3.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10149"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:01:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "149603e33d308a86a83a56d005ce66576d536bb4f0653029902c1c9053a4fb85"
+        ]
+      }
+    }
+  }
+}
