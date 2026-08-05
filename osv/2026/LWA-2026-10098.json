@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10098",
+  "modified": "2026-08-05T08:41:17Z",
+  "published": "2026-08-05T08:35:00Z",
+  "summary": "Malicious code in eslint-plugin-vitest-ts (npm)",
+  "details": "Eslint-plugin-vitest-ts@1.0.4 is a trojanized clone of the nodemailer library. Its postinstall hook runs lib/utils/index.js, which spawns a detached background Node process executing an obfuscated script (lib/utils/smtp-connection/index.js). That script fetches a remote payload from hxxps://api[.]jsonbin[.]io/v3/b/6a72aa2bda38895dfebb1302, reads the JSON response's \"record.cookie\" field, and executes it as code via new Function('require',...)(require) — a remote-code-execution dropper. The package also ships an AES-256-CBC decryption helper (lib/utils/smtp-connection/parse.js) with a hardcoded key and IV, and two 262KB hex-encrypted payload blobs disguised as LICENSE files (package/LICENSE and package/lib/utils/smtp-connection/LICENSE). Installing this package executes remote attacker-controlled code on the victim machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eslint-plugin-vitest-ts",
+        "purl": "pkg:npm/eslint-plugin-vitest-ts@1.0.4"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eslint-plugin-vitest-ts/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10098"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T08:35:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonbin[.]io"
+        ],
+        "sha256": [
+          "a0bcc59cfe04cefd6c9796c7107836cdddc9ff37a3581b364a4e7b2bff854240"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a72aa2bda38895dfebb1302"
+        ]
+      }
+    }
+  }
+}
