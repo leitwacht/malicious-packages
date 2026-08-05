@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10348",
+  "modified": "2026-08-05T15:47:06Z",
+  "published": "2026-08-05T14:23:41Z",
+  "summary": "Malicious code in bigops-status-selection (npm)",
+  "details": "On require, the package downloads and executes a second-stage binary. It fingerprints the OS/architecture, then fetches a payload over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, and oob-worker[.]cf99-9b3[.]workers[.]dev at path /pkg/package (platform-specific variants /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If those fail it reconstructs the payload from DNS TXT records served under c[.]sdk[.]dl[.]wel1[.]ru (with per-arch domains sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to a temp directory (.cache_\u003chex\u003e on Unix, dotnet_diag_\u003chex\u003e.exe on Windows) and launched detached via cmd.exe start /b on Windows or /bin/sh -c '... \u0026' on Unix.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-status-selection",
+        "purl": "pkg:npm/bigops-status-selection@35.3.2"
+      },
+      "versions": [
+        "35.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-status-selection/v/35.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10348"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:23:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "835127e6591a43fe2c82f74f213869ce990f45f212b5e86dba28afc9629ff2b1"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
