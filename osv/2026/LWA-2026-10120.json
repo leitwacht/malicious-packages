@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10120",
+  "modified": "2026-08-05T13:07:53Z",
+  "published": "2026-08-05T12:59:15Z",
+  "summary": "Malicious code in bigops-telephony-client (npm)",
+  "details": "Bigops-telephony-client@35.7.6 is a trojanized SDK that, on require, downloads and executes a second-stage binary. It fetches a platform-specific payload over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on OS/arch. If the HTTP fetch fails it falls back to a DNS-TXT covert channel using the *.dl[.]wel1[.]ru domain family (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru) to retrieve base64-encoded chunks. The downloaded binary is written to a hidden cache file (.cache_\u003chex\u003e in /var/tmp, or dotnet_diag_\u003chex\u003e.exe in the Windows TEMP dir) and launched detached via cmd.exe /c start /b on Windows or /bin/sh -c \u003cpath\u003e \u0026 on Unix, so it runs in the background. The package ships a stub telephony-client class; its actual behaviour is remote binary download-and-execute.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-telephony-client",
+        "purl": "pkg:npm/bigops-telephony-client@35.7.6"
+      },
+      "versions": [
+        "35.7.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-telephony-client/v/35.7.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10120"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T12:59:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "587a00afd7014fcdc93d40422877aa66ecf16d63dd88f036dee8294a4a166e87"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
