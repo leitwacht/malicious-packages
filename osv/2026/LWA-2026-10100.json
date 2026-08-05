@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10100",
+  "modified": "2026-08-05T10:09:01Z",
+  "published": "2026-08-05T10:02:52Z",
+  "summary": "Malicious code in @vboxdev/common (npm)",
+  "details": "@vboxdev/common@1.0.73 ships an obfuscated eval(atob(...)) payload appended to build/index.js. On load it queries public Ethereum RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) to locate the latest block containing a transaction from hardcoded address 0xa3322e5f33d3311d3308e6f0121063e9aDC2490Ef1a. It reads the transaction's `to` field, whose first 4 bytes encode an IP address, then spawns a detached node process that beacons to hxxp://\u003cip\u003e:80 and hxxp://\u003cip\u003e:443 with XOR-encoded payloads — a blockchain dead-drop command-and-control channel whose C2 IP is derived on-chain. The package also ships a live Firebase service-account private key in build/services/serviceAccountKey.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vboxdev/common",
+        "purl": "pkg:npm/%40vboxdev/common@1.0.73"
+      },
+      "versions": [
+        "1.0.73"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vboxdev/common/v/1.0.73"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10100"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T10:02:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "e45ea38d66d9b68b2a70e368cdcfb83ec1da88fc356585441425c1d0c889d34d"
+        ],
+        "wallet_observed": [
+          "0xa3322e5f33d3311d3308e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
