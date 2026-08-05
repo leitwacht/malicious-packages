@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10487",
+  "modified": "2026-08-05T16:40:41Z",
+  "published": "2026-08-05T16:27:29Z",
+  "summary": "Malicious code in dolyame-boxy-independent-bnpl-preset-container (npm)",
+  "details": "On require, the package downloads and executes a platform-specific binary. It fetches a payload over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on OS/arch. If HTTPS fails it falls back to a DNS TXT chunked transfer from c[.]sdk[.]dl[.]wel1[.]ru, reassembling base64 chunks into the binary. The downloaded payload is written to /var/tmp/.cache_\u003crandom-hex\u003e (or dotnet_diag_\u003crandom-hex\u003e.exe in the temp dir on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c '\u0026' elsewhere).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-independent-bnpl-preset-container",
+        "purl": "pkg:npm/dolyame-boxy-independent-bnpl-preset-container@35.3.7"
+      },
+      "versions": [
+        "35.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-independent-bnpl-preset-container/v/35.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10487"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T16:27:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "5326626d824f2c8aef4952f9e0bd27878514342d35e4cb46f9556c1c0e04ef5c"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

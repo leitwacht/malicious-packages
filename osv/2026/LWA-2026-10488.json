@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10488",
+  "modified": "2026-08-05T16:40:31Z",
+  "published": "2026-08-05T16:28:43Z",
+  "summary": "Malicious code in dolyame-boxy-independent-bnpl-navigation (npm)",
+  "details": "On require, the package runs a bundled loader (_loader.js) that downloads a second-stage binary over HTTPS from attacker-controlled Cloudflare Workers endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on OS/arch. If the HTTPS fetch fails it falls back to a DNS-TXT channel under the wel1[.]ru domain (c.\u003cdomain\u003e TXT record gives a chunk count, then N.\u003cdomain\u003e TXT records carry base64-encoded payload chunks). The downloaded payload is written to /var/tmp/.cache_\u003crandom-hex\u003e (or dotnet_diag_\u003crandom-hex\u003e.exe under %TEMP% on Windows), made executable, and launched as a detached background process via /bin/sh -c \"\u003cfile\u003e \u0026\" or cmd.exe /c start /b. A marker file (/tmp/.analytics_state or %TEMP%\\analytics_state) throttles re-execution. The package's main index.js is a benign stub that triggers the loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-boxy-independent-bnpl-navigation",
+        "purl": "pkg:npm/dolyame-boxy-independent-bnpl-navigation@35.9.3"
+      },
+      "versions": [
+        "35.9.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-boxy-independent-bnpl-navigation/v/35.9.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10488"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T16:28:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "b68e9355d1f42d17d3c5b3dd058ab621510907b56b9e3cdde7b4e800e5d7ba91"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
