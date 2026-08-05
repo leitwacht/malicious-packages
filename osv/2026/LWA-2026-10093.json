@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10093",
+  "modified": "2026-08-05T07:41:04Z",
+  "published": "2026-08-05T07:36:31Z",
+  "summary": "Malicious code in @nasdtickets/common (npm)",
+  "details": "@nasdtickets/common@1.0.23 ships a malicious payload appended to build/index.js inside an otherwise-legitimate TypeScript library. On load it runs an eval(atob(...)) decoder that implements a blockchain-derived command-and-control channel. It queries public Ethereum RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) and the blockscout API (eth-blockscout[.]com/api) to scan blocks for a transaction originating from a hardcoded wallet address. It then reads the transaction's recipient field, splits it into two 4-byte IP octets, and uses those octets to construct C2 hosts (hxxp://{ip}:80 and hxxp://{ip}:443). It fetches XOR-encrypted second-stage payloads from the C2 paths /0x/cls and /0x/ls, decrypts them with embedded keys, and executes the resulting JavaScript either via eval() or by spawning a detached `node -e \u003cpayload\u003e` process. The package contacts these RPC endpoints at runtime to obtain the current block number.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@nasdtickets/common",
+        "purl": "pkg:npm/%40nasdtickets/common@1.0.23"
+      },
+      "versions": [
+        "1.0.23"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@nasdtickets/common/v/1.0.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10093"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T07:36:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-blockscout[.]com",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "944411e9c128f2580e6082a0dea20a2d2204f40f8e082d82334e2f791551f457"
+        ]
+      }
+    }
+  }
+}

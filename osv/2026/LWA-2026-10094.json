@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10094",
+  "modified": "2026-08-05T07:41:24Z",
+  "published": "2026-08-05T07:37:23Z",
+  "summary": "Malicious code in streak-math-calc (npm)",
+  "details": "Streak-math-calc@1.0.0 ships a native ELF binary (dist/math-calc.bin) that is executed automatically on package import via a detached child process. The binary is a remote-access trojan: it beacons to a C2 server at 217[.]60[.]77[.]63 (HTTP paths /Others/ and /SC/ for downloading and executing payloads), provides a reverse shell with memfd injection, SOCKS proxy, port forwarding, and a tunnel. It harvests SSH private keys from ~/.ssh, /root/.ssh, /home/*/.ssh and /etc/ssh; steals browser credentials (Chrome/Chromium/Brave/Edge Login Data, Cookies, Local State and Firefox logins.json/key4.db); enumerates database credentials from mysql/postgres/mongo/redis configs,.pgpass,.my.cnf and DB-related environment variables; dumps environment variables; and exfiltrates collected files to the litterbox.catbox.moe file-upload API. It establishes persistence via cron,.bashrc, and a systemd user service. The package's advertised math functions are implemented in pure JavaScript and do not require the binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-math-calc",
+        "purl": "pkg:npm/streak-math-calc@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-math-calc/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10094"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T07:37:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "597850a730ca2495777cd597c3b4a6974bfc52df4f25f5558cf6611d4f314455"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}

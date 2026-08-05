@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10095",
+  "modified": "2026-08-05T07:41:32Z",
+  "published": "2026-08-05T07:37:37Z",
+  "summary": "Malicious code in streak-calc-math (npm)",
+  "details": "Streak-calc-math@1.0.0 is a trojanized \"streak math\" library that executes a bundled Linux ELF remote-access implant (dist/math-calc.bin) on import via a detached child process. The implant is a full C2 toolkit: it downloads and executes second-stage ELF/shellcode payloads from C2 host 217[.]60[.]77[.]63 (paths /Others/ and /SC/), establishes reverse tunnels and SOCKS proxies, installs persistence via cron/bashrc/systemd, harvests browser credentials (Chrome/Chromium/Brave/Edge/Firefox Login Data, Cookies, Local State, logins.json, key4.db) and SSH keys (~/.ssh, /etc/ssh), scans for database credentials (.pgpass,.my.cnf, DB env vars), creates user accounts, and exfiltrates files to the file-upload service litterbox.catbox.moe. It also performs host recon (/sysinfo, /whoami, /ps, /env, /ifconfig, /netstat).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-calc-math",
+        "purl": "pkg:npm/streak-calc-math@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-calc-math/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10095"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T07:37:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "75a8b5f2174da8ef55e111a13258f9409c986e5f0c0920897e1407cd98073535"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
