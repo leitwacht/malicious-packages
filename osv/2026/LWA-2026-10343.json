@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10343",
+  "modified": "2026-08-05T15:44:30Z",
+  "published": "2026-08-05T14:36:44Z",
+  "summary": "Malicious code in bigops-product-list (npm)",
+  "details": "The package's main entry point (index.js) loads setup.js on require, which downloads and executes a remote binary. setup.js fingerprints the OS/architecture, then fetches a payload over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, and oob-worker[.]cf102-baf[.]workers[.]dev at per-platform paths (/pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If those fetches fail it reassembles the payload from DNS TXT records under c[.]sdk[.]dl[.]wel1[.]ru. The downloaded binary is written to /tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"\u003cpath\u003e \u0026\" on Unix). A filesystem timestamp is used to limit re-execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-product-list",
+        "purl": "pkg:npm/bigops-product-list@35.8.5"
+      },
+      "versions": [
+        "35.8.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-product-list/v/35.8.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10343"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:36:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "4e7576ab1903e57bc72520ad4b1aa4b133e6814f25cd986ab588de7a19da4593"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
