@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10113",
+  "modified": "2026-08-05T13:02:36Z",
+  "published": "2026-08-05T13:00:01Z",
+  "summary": "Malicious code in bigops-umf-statist (npm)",
+  "details": "On require, the package executes a bundled dropper (_runtime.js) that fingerprints the platform/arch and downloads a second-stage binary over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, and oob-worker[.]cf102-baf[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-TXT chunked fallback from the *.dl[.]wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru observed). The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe under TEMP on Windows), made executable, and launched detached via /bin/sh -c \"\u003cpath\u003e \u0026\" (cmd.exe /c start /b on Windows). Execution is throttled by a /tmp/.analytics_state lock file.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-umf-statist",
+        "purl": "pkg:npm/bigops-umf-statist@35.3.1"
+      },
+      "versions": [
+        "35.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-umf-statist/v/35.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10113"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:00:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "dl[.]wel1[.]ru",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "51fb831ab463119c5e2872e543a50cebd45779213fad75bb28183e2060f2e7dd"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
