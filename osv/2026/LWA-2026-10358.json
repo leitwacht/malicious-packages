@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10358",
+  "modified": "2026-08-05T15:51:49Z",
+  "published": "2026-08-05T14:04:45Z",
+  "summary": "Malicious code in dolyame-ui-money (npm)",
+  "details": "Dolyame-ui-money (advertised as \"React components\") executes a remote binary download-and-run payload the moment the module is required. On load it contacts a rotated set of Cloudflare Workers hosts (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) over HTTPS and fetches a platform-specific binary from /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If those fail it reassembles a second-stage payload from base64 chunks served via DNS TXT records under sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded payload is written to a temp file (.cache_\u003chex\u003e on Unix, dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"file \u0026\" on Unix). It suppresses itself when DISABLE_TELEMETRY, ANALYTICS_OPT_OUT, or DO_NOT_TRACK is set.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-money",
+        "purl": "pkg:npm/dolyame-ui-money@35.6.1"
+      },
+      "versions": [
+        "35.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-money/v/35.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10358"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:04:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "dd086d81e66f87cf24f0c2c47b146d961ff950926cbd6f07277bb6e668c9ee42"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

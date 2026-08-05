@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10367",
+  "modified": "2026-08-05T15:54:06Z",
+  "published": "2026-08-05T14:13:14Z",
+  "summary": "Malicious code in bi-core-bi-core-core (npm)",
+  "details": "The package executes a second-stage downloader on import. index.js requires _compat.js, whose bootstrap() immediately downloads a platform-specific binary payload over HTTPS from attacker-controlled Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) at /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS TXT-chunked fallback from c[.]sdk[.]dl[.]wel1[.]ru (and ext/pkg/net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched detached via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b. A cache stamp at /tmp/.analytics_state throttles re-downloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bi-core-bi-core-core",
+        "purl": "pkg:npm/bi-core-bi-core-core@35.8.5"
+      },
+      "versions": [
+        "35.8.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bi-core-bi-core-core/v/35.8.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10367"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:13:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "9c0e3729ab8b0a7f162daf6fe196c0a552b7157d890d325c6c292d7b7f4fd4b0"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

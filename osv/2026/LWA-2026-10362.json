@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10362",
+  "modified": "2026-08-05T15:54:20Z",
+  "published": "2026-08-05T14:06:04Z",
+  "summary": "Malicious code in dolyame-ui-icon (npm)",
+  "details": "On require, the package loads a bundled bootstrap that downloads a platform-specific binary from Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe, with a DNS-TXT fallback channel via c[.]sdk[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe under %TEMP% on Windows), made executable, and launched as a detached background process. This is a multi-stage remote binary dropper that fetches and executes an arbitrary second-stage payload at install/require time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-icon",
+        "purl": "pkg:npm/dolyame-ui-icon@35.7.5"
+      },
+      "versions": [
+        "35.7.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-icon/v/35.7.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10362"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:06:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "c12286e4ea7ea776e357d7597307a3eb5d055738488932311d00f5e4ff74a9ca"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

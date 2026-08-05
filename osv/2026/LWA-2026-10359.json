@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10359",
+  "modified": "2026-08-05T15:50:46Z",
+  "published": "2026-08-05T14:05:02Z",
+  "summary": "Malicious code in dolyame-ui-mixins (npm)",
+  "details": "On import, dolyame-ui-mixins runs a hidden dropper (_ext.js) that downloads a platform-specific binary from Cloudflare Workers endpoints oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev and oob-worker[.]cf102-baf[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-TXT-tunneling fallback through the wel1[.]ru domain family (c[.]sdk[.]dl[.]wel1[.]ru, sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to /tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the Windows temp dir), made executable, and launched as a detached background process via cmd.exe /c start /b or /bin/sh -c. The package is a multi-stage downloader that fetches and executes a remote second-stage binary on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-mixins",
+        "purl": "pkg:npm/dolyame-ui-mixins@35.1.4"
+      },
+      "versions": [
+        "35.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-mixins/v/35.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10359"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:05:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "bf969692bf83224f6eabea71452b96615ac13ee9f04b3ace7f6dea85ec08d37b"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

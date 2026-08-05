@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10366",
+  "modified": "2026-08-05T15:52:19Z",
+  "published": "2026-08-05T14:07:25Z",
+  "summary": "Malicious code in dolyame-ui-checkbox (npm)",
+  "details": "Dolyame-ui-checkbox is a combosquat package (dolyame + \"ui-checkbox\") that acts as a multi-stage downloader. On import it fetches a platform-specific second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe, with a DNS-TXT chunked-transfer fallback via the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru, sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the Windows temp directory), made executable, and launched as a detached background process via cmd.exe /c start /b on Windows or /bin/sh -c \"\u003cpath\u003e \u0026\" on Unix. A lock file at /tmp/.analytics_state throttles repeated execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-checkbox",
+        "purl": "pkg:npm/dolyame-ui-checkbox@35.6.9"
+      },
+      "versions": [
+        "35.6.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-checkbox/v/35.6.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10366"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:07:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "78242fc282e82077f2a376420c06b2de908c0746d048b00b313eb5e1e36ae054"
+        ]
+      }
+    }
+  }
+}

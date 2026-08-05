@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10361",
+  "modified": "2026-08-05T15:52:15Z",
+  "published": "2026-08-05T14:05:46Z",
+  "summary": "Malicious code in dolyame-ui-label (npm)",
+  "details": "Dolyame-ui-label@35.7.8 runs a dropper on load (index.js requires _helpers.js). The dropper fingerprints the platform, downloads a binary over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev at platform-specific paths (/pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), falling back to DNS-TXT chunked base64 transfer from c[.]sdk[.]dl[.]wel1[.]ru / ext[.]dl[.]wel1[.]ru / pkg[.]dl[.]wel1[.]ru / net[.]dl[.]wel1[.]ru. The fetched payload is written to /tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows) and executed detached (cmd.exe /c start /b on Windows, /bin/sh -c \"\u0026\" on Unix). The package also ships an 81KB decoy \"analytics SDK\" (lib/telemetry.js) with no real transport, used to disguise the dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-label",
+        "purl": "pkg:npm/dolyame-ui-label@35.7.8"
+      },
+      "versions": [
+        "35.7.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-label/v/35.7.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10361"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:05:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "25ccbb0b82f768b38311fe78a41e55bb6e2ba78837f953d7d1cbba6290dc7912"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
