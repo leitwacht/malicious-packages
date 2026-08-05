@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10559",
+  "aliases": [
+    "MAL-2026-12658"
+  ],
+  "modified": "2026-08-05T19:11:01Z",
+  "published": "2026-08-05T19:10:27Z",
+  "summary": "Malicious code in cobrowsing-test-utils (npm)",
+  "details": "On require, this package downloads and executes a remote binary. index.js loads _support.js, which fetches a platform-specific payload (linux_x64 /pkg/package, darwin /pkg/loader_mac, win32 /pkg/package.exe) over HTTPS from four Cloudflare Workers hosts: oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev. If the HTTPS fetch fails it reconstructs the payload from base64 chunks served via DNS TXT records under c[.]sdk[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process (cmd.exe start /b or /bin/sh -c \"... \u0026\"). Execution is gated by a filesystem timestamp stamp and can be suppressed by setting DISABLE_TELEMETRY, ANALYTICS_OPT_OUT, or DO_NOT_TRACK.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cobrowsing-test-utils",
+        "purl": "pkg:npm/cobrowsing-test-utils@35.3.4"
+      },
+      "versions": [
+        "35.3.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cobrowsing-test-utils/v/35.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10559"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T19:10:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "e4cb03cf7026a98c094fe42c353ad99d94c3dda56613e56bf3d1d2a3e336d718"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
