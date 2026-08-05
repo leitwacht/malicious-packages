@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10553",
+  "aliases": [
+    "MAL-2026-12662"
+  ],
+  "modified": "2026-08-05T18:27:01Z",
+  "published": "2026-08-05T18:25:35Z",
+  "summary": "Malicious code in constructor-blocks-mailings (npm)",
+  "details": "On require, this package executes a multi-stage dropper. It downloads a platform-specific binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-tunneling fallback that reads a chunk count from a TXT record at c[.]sdk[.]dl[.]wel1[.]ru and reassembles base64 data from numbered subdomains of wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp dir on Windows), made executable, and launched as a detached background process (/bin/sh -c 'file \u0026' or cmd.exe /c start /b).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "constructor-blocks-mailings",
+        "purl": "pkg:npm/constructor-blocks-mailings@35.5.7"
+      },
+      "versions": [
+        "35.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/constructor-blocks-mailings/v/35.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10553"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T18:25:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "16b504b31ef03558aac54144bb35be9a1872f0a4a4af6471c05b7178b43cf3c3"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
