@@ -1,22 +1,22 @@
 {
   "schema_version": "1.6.0",
-  "id": "LWA-2026-10186",
+  "id": "LWA-2026-10258",
   "aliases": [
-    "MAL-2026-12694"
+    "MAL-2026-12751"
   ],
-  "modified": "2026-08-05T14:01:56Z",
-  "published": "2026-08-05T13:31:39Z",
-  "summary": "Malicious code in devplatform-api-v2-endpoint (npm)",
-  "details": "On require, the package downloads and executes a remote binary. It fingerprints the OS/architecture, then fetches a platform-specific payload over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe. If the download fails it reconstructs the payload from DNS TXT records queried against c[.]sdk[.]dl[.]wel1[.]ru (and ext/pkg/net[.]dl[.]wel1[.]ru per platform). The payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the Windows TEMP dir), made executable, and launched detached in the background (cmd.exe /c start /b on Windows, /bin/sh -c \"\u003cpath\u003e \u0026\" on Unix) so it outlives the parent process.",
+  "modified": "2026-08-05T14:46:27Z",
+  "published": "2026-08-05T13:41:53Z",
+  "summary": "Malicious code in devplatform-select-fields (npm)",
+  "details": "On require, the package's _shim.js downloads a platform-specific second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-TXT fallback channel via c[.]sdk[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the Windows temp dir) and executed detached (cmd.exe /c start /b on Windows, /bin/sh -c '\u003cfile\u003e \u0026' on POSIX).",
   "affected": [
     {
       "package": {
         "ecosystem": "npm",
-        "name": "devplatform-api-v2-endpoint",
-        "purl": "pkg:npm/devplatform-api-v2-endpoint@35.6.7"
+        "name": "devplatform-select-fields",
+        "purl": "pkg:npm/devplatform-select-fields@35.2.6"
       },
       "versions": [
-        "35.6.7"
+        "35.2.6"
       ],
       "database_specific": {
         "cwes": [
@@ -32,11 +32,11 @@
   "references": [
     {
       "type": "PACKAGE",
-      "url": "https://www.npmjs.com/package/devplatform-api-v2-endpoint/v/35.6.7"
+      "url": "https://www.npmjs.com/package/devplatform-select-fields/v/35.2.6"
     },
     {
       "type": "REPORT",
-      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10186"
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10258"
     }
   ],
   "credits": [
@@ -51,7 +51,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-08-05T13:31:39Z",
+      "first_seen_at": "2026-08-05T13:41:53Z",
       "indicators_observed": {
         "domain_observed": [
           "c[.]sdk[.]dl[.]wel1[.]ru",
@@ -65,7 +65,7 @@
           "sdk[.]dl[.]wel1[.]ru"
         ],
         "sha256": [
-          "8dd18116cd5f6ed797f9f9673d59fb123cdd2ea04973b4b938f6db83b42e3316"
+          "6c76a149f01e631dd32d3077d18837d03b63c55e78b6d6961b08b55b00f46bd5"
         ],
         "url_observed": [
           "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
