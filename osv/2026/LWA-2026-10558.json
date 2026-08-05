@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10558",
+  "aliases": [
+    "MAL-2026-12660"
+  ],
+  "modified": "2026-08-05T18:56:04Z",
+  "published": "2026-08-05T18:55:30Z",
+  "summary": "Malicious code in constructor-blocks-common (npm)",
+  "details": "On require, the package runs a bootstrap routine that fingerprints the host platform/arch and downloads a second-stage binary over HTTPS from Cloudflare Workers hosts (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, path /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTPS download fails it reconstructs the payload from DNS TXT records under the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or dotnet_diag_\u0026lt;hex\u0026gt;.exe under %TEMP% on Windows), chmod 755, and executed as a detached background process via cmd.exe /c start /b or /bin/sh -c. The package's declared purpose (shared primitives) does not involve downloading or executing remote binaries.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "constructor-blocks-common",
+        "purl": "pkg:npm/constructor-blocks-common@35.5.6"
+      },
+      "versions": [
+        "35.5.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/constructor-blocks-common/v/35.5.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10558"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T18:55:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "99d5981a28195e2e4afa6068a2b344fd5a2322558f7086c6b464649a950c75d8"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
