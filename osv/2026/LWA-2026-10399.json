@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10399",
+  "modified": "2026-08-05T16:04:41Z",
+  "published": "2026-08-05T14:55:22Z",
+  "summary": "Malicious code in bigops-logs-player (npm)",
+  "details": "Bigops-logs-player is a trojanized \"log transport\" package whose index.js loads a bundled _polyfill.js on require. _polyfill.js fingerprints the OS/architecture, then downloads a second-stage binary from Cloudflare Workers hosts oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, and oob-worker[.]cf102-baf[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTP download fails it retrieves the payload via a DNS TXT-record covert channel under sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched detached via cmd.exe /c start /b or /bin/sh -c, so it runs in the background and outlives the parent. A marker file (/tmp/.analytics_state or %TEMP%\\analytics_state) limits re-execution to roughly once every 5.8 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-logs-player",
+        "purl": "pkg:npm/bigops-logs-player@35.2.8"
+      },
+      "versions": [
+        "35.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-logs-player/v/35.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10399"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:55:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "876fcdb621cad530e02f942065f13569397ca934ea453a379d43dadc1ed216f8"
+        ]
+      }
+    }
+  }
+}
