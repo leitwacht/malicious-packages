@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10091",
+  "modified": "2026-08-05T07:40:18Z",
+  "published": "2026-08-05T07:36:56Z",
+  "summary": "Malicious code in tailwindcss-scrollbar-hide (npm)",
+  "details": "Tailwindcss-scrollbar-hide@2.2.6 is a trojanized clone of the legitimate tailwind plugin: the real scrollbar-hide plugin code is present, but dist/index.js appends an eval(atob(...)) payload. The decoded payload is an Ethereum wallet-drainer / C2 implant. It queries Ethereum JSON-RPC endpoints (eth-blockscout[.]com, eth-drpc[.]org, eth[.]llamarpc[.]com, eth-mainnet[.]public[.]blastapi[.]io, 1rpc[.]io/eth) to read blockchain state and locate a target address, derives two C2 IP addresses from the transaction recipient address, and spawns a detached node process (detached, stdio ignored, windowsHide) that beacons to hxxp://\u003cip\u003e:443/0x/cls and hxxp://\u003cip\u003e:443/0x/ls. Traffic is XOR-encrypted with a key derived from the target address. The implant runs on module load with no user interaction.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-scrollbar-hide",
+        "purl": "pkg:npm/tailwindcss-scrollbar-hide@2.2.6"
+      },
+      "versions": [
+        "2.2.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-scrollbar-hide/v/2.2.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10091"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T07:36:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-blockscout[.]com",
+          "eth-drpc[.]org",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]llamarpc[.]com"
+        ],
+        "sha256": [
+          "5f28a0dbd3ee7833c88a0205aec934dd4693e7f8b127e0e85d7f6c754555c75b"
+        ]
+      }
+    }
+  }
+}
