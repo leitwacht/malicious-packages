@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10416",
+  "aliases": [
+    "MAL-2026-12705"
+  ],
+  "modified": "2026-08-05T16:10:52Z",
+  "published": "2026-08-05T13:32:30Z",
+  "summary": "Malicious code in devplatform-confirm-input (npm)",
+  "details": "Devplatform-confirm-input@35.9.8 is a remote binary download-and-execute dropper disguised as an SDK. On require, the package fingerprints the OS/architecture and downloads a binary payload over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on platform. If the HTTPS download fails, it falls back to a DNS-TXT chunked base64 channel via c[.]sdk[.]dl[.]wel1[.]ru and related *.dl[.]wel1[.]ru subdomains. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp directory on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c on Unix). The package's index.js is a stub with no real SDK functionality; all behaviour is in the bundled _ext.js loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-confirm-input",
+        "purl": "pkg:npm/devplatform-confirm-input@35.9.8"
+      },
+      "versions": [
+        "35.9.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-confirm-input/v/35.9.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10416"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:32:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "0a3738c3d44cdb8e666a2d5dd1b95c558732c5e1d334a1db5730ecc4b9085256"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

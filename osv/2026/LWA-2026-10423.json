@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10423",
+  "aliases": [
+    "MAL-2026-12863"
+  ],
+  "modified": "2026-08-05T16:14:24Z",
+  "published": "2026-08-05T13:00:37Z",
+  "summary": "Malicious code in bnpl-blocks-atom-bnpl-anchor-menu (npm)",
+  "details": "The package's index.js requires _loader.js, which acts as a multi-stage dropper. On load it downloads a remote binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) at path /pkg/package (platform-specific variants /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-TXT chunked-retrieval fallback via c[.]sdk[.]dl[.]wel1[.]ru. The downloaded payload is written to a hidden file (.cache_\u003chex\u003e in /var/tmp, or dotnet_diag_\u003chex\u003e.exe in TEMP on Windows) and executed as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c '\u003cpath\u003e \u0026' on Unix). The loader writes an analytics_state stamp file to throttle re-execution. The package is a benign-looking UI module whose real behaviour is remote binary download and execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-atom-bnpl-anchor-menu",
+        "purl": "pkg:npm/bnpl-blocks-atom-bnpl-anchor-menu@35.8.5"
+      },
+      "versions": [
+        "35.8.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-atom-bnpl-anchor-menu/v/35.8.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10423"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:00:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "2e0aee86cd826529947ef7bc60c4f6a70818c7c31bc8a49b74eff26f9a621be8"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10444",
+  "aliases": [
+    "MAL-2026-12884"
+  ],
+  "modified": "2026-08-05T16:20:33Z",
+  "published": "2026-08-05T16:13:13Z",
+  "summary": "Malicious code in bnpl-blocks-atom-bnpl-notification (npm)",
+  "details": "The package is a decoy wrapper whose index.js loads a bundled runtime (lib/telemetry.js, _runtime.js) on require. The runtime downloads a platform-specific binary payload over HTTPS from three Cloudflare Workers hosts (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe, with a fallback that retrieves the payload in base64 chunks via DNS TXT queries to c[.]sdk[.]dl[.]wel1[.]ru (and sdk/ext/pkg/net[.]dl[.]wel1[.]ru per platform). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp dir on Windows), made executable, and launched as a detached background process via /bin/sh -c '... \u0026' or cmd.exe /c start /b. Execution is rate-limited by a timestamp file (/tmp/.analytics_state). This is a remote binary download-and-execute dropper with a DNS-based fallback channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-atom-bnpl-notification",
+        "purl": "pkg:npm/bnpl-blocks-atom-bnpl-notification@35.3.8"
+      },
+      "versions": [
+        "35.3.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-atom-bnpl-notification/v/35.3.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10444"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T16:13:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "fe74f03950a0599411f47e1a6565637dd37ad3faf1549ebde805e7a7ca33af66"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

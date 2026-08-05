@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10451",
+  "aliases": [
+    "MAL-2026-12902"
+  ],
+  "modified": "2026-08-05T16:29:17Z",
+  "published": "2026-08-05T16:16:32Z",
+  "summary": "Malicious code in bnpl-blocks-atom-desktop-bnpl-highlighted-text (npm)",
+  "details": "On require, the package runs a dropper that fingerprints the OS and architecture, then downloads a second-stage binary over HTTPS from Cloudflare Workers hosts (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If the HTTP download fails, it falls back to a DNS-TXT channel via c[.]sdk[.]dl[.]wel1[.]ru that reassembles base64 chunks. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in %TEMP% on Windows), made executable, and launched as a detached background process via cmd.exe /c start /b or /bin/sh -c. A marker file (/tmp/.analytics_state or %TEMP%\\analytics_state) throttles repeat execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-atom-desktop-bnpl-highlighted-text",
+        "purl": "pkg:npm/bnpl-blocks-atom-desktop-bnpl-highlighted-text@35.2.3"
+      },
+      "versions": [
+        "35.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-atom-desktop-bnpl-highlighted-text/v/35.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10451"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T16:16:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "7758d5df74b05cdb9c2edff216e44c8635163f23b3149a17f3096945c49e6ec5"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

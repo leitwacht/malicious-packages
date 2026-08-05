@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10445",
+  "aliases": [
+    "MAL-2026-12888"
+  ],
+  "modified": "2026-08-05T16:21:37Z",
+  "published": "2026-08-05T16:13:58Z",
+  "summary": "Malicious code in bnpl-blocks-atom-bnpl-radio (npm)",
+  "details": "On require, the package runs a hidden loader (_polyfill.js) that fingerprints the OS/architecture and downloads a platform-specific binary payload from Cloudflare Workers endpoints oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf100-416[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTP download fails, it reconstructs the payload from chunked base64 DNS TXT records served from c[.]sdk[.]dl[.]wel1[.]ru (with sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru as per-platform resolvers). The downloaded binary is written to a hidden temp file (.cache_\u0026lt;hex\u0026gt; on Unix, dotnet_diag_\u0026lt;hex\u0026gt;.exe on Windows) and executed as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"\u0026lt;file\u0026gt; \u0026amp;\" on Unix). The package otherwise ships a decoy analytics SDK (lib/telemetry.js) and a benign-looking index.js facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-atom-bnpl-radio",
+        "purl": "pkg:npm/bnpl-blocks-atom-bnpl-radio@35.4.8"
+      },
+      "versions": [
+        "35.4.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-atom-bnpl-radio/v/35.4.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10445"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T16:13:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "45d73d53bc8a23e79d1059dfa98f78d9775bb682aab9e7f480891e0fd8063d95"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

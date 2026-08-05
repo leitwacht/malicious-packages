@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10450",
+  "modified": "2026-08-05T16:27:45Z",
+  "published": "2026-08-05T16:26:08Z",
+  "summary": "Malicious code in app-kst-engine (npm)",
+  "details": "The package's postinstall hook runs a script that scans the filesystem for credential and configuration files (id.json, config.toml,.env, and any patterns fetched from the C2 server) and uploads their contents to hxxp://170[.]205[.]31[.]203:3000/api/v1 and hxxp://170[.]205[.]31[.]203:3001/api/v1. It also fetches an SSH public key from hxxp://170[.]205[.]31[.]203:3001/api/ssh-key and, on Linux, appends it to ~/.ssh/authorized_keys, enables the firewall, and opens port 22, installing a persistent SSH backdoor. The package exfiltrates the installer's credentials and files to the remote host 170[.]205[.]31[.]203.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "app-kst-engine",
+        "purl": "pkg:npm/app-kst-engine@2.1.6"
+      },
+      "versions": [
+        "2.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/app-kst-engine/v/2.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10450"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T16:26:08Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "170[.]205[.]31[.]203",
+          "170[.]205[.]31[.]203:3000",
+          "170[.]205[.]31[.]203:3001"
+        ],
+        "sha256": [
+          "02263fbcba8d3d08bed019756ab3b5e834e16f6cf4ddb47d230e45d363b3813b"
+        ],
+        "url_observed": [
+          "hxxp://170[.]205[.]31[.]203",
+          "hxxp://170[.]205[.]31[.]203:3000/api/v1",
+          "hxxp://170[.]205[.]31[.]203:3001/api/block-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/scan-patterns",
+          "hxxp://170[.]205[.]31[.]203:3001/api/ssh-key",
+          "hxxp://170[.]205[.]31[.]203:3001/api/v1"
+        ]
+      }
+    }
+  }
+}

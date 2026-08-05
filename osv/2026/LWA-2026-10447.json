@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10447",
+  "aliases": [
+    "MAL-2026-12892"
+  ],
+  "modified": "2026-08-05T16:21:14Z",
+  "published": "2026-08-05T16:14:51Z",
+  "summary": "Malicious code in bnpl-blocks-atom-bnpl-search-input (npm)",
+  "details": "The package's index.js is a benign stub that loads _bridge.js, a multi-stage dropper. On require, _bridge.js fingerprints the host platform/arch and downloads a platform-specific second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS fails it falls back to a DNS-over-TXT channel under wel1[.]ru (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru) that reassembles a base64 payload from TXT records. The downloaded binary is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or dotnet_diag_\u0026lt;hex\u0026gt;.exe under Windows TEMP), chmod 755, and executed detached via /bin/sh or cmd.exe /c start /b, so it outlives the parent process. The package also ships a large decoy analytics SDK (lib/telemetry.js) to appear legitimate. The remote binary is fetched and executed on every install/require unless DISABLE_TELEMETRY or ANALYTICS_OPT_OUT is set.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-atom-bnpl-search-input",
+        "purl": "pkg:npm/bnpl-blocks-atom-bnpl-search-input@35.9.7"
+      },
+      "versions": [
+        "35.9.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-atom-bnpl-search-input/v/35.9.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10447"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T16:14:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "0920b867c6238706608937f42aafb5ec77fda9ae202a09fca333ed637139347d"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
