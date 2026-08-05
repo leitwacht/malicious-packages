@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10251",
+  "modified": "2026-08-05T14:41:24Z",
+  "published": "2026-08-05T13:37:11Z",
+  "summary": "Malicious code in devplatform-spa-devtools (npm)",
+  "details": "Devplatform-spa-devtools@35.2.6 is a remote binary downloader disguised as a devtools SDK. On require, lib/telemetry.js (loaded via index.js -\u003e _runtime.js) fetches a binary payload over TLS from oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, and oob-worker[.]cf101-adf[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-over-TXT fallback channel via c[.]sdk[.]dl[.]wel1[.]ru that reassembles base64 chunks from TXT records. The downloaded payload is written to a hidden file (.cache_\u003chex\u003e in /var/tmp, or dotnet_diag_\u003chex\u003e.exe in TEMP on Windows) and executed as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"file \u0026\" on Unix) that outlives the parent. The package's public API is a stub; the download-and-execute behaviour runs automatically on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-spa-devtools",
+        "purl": "pkg:npm/devplatform-spa-devtools@35.2.6"
+      },
+      "versions": [
+        "35.2.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-spa-devtools/v/35.2.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10251"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:37:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "a9588b9f51d09bd88a11a95dc42a71276a1bc5e159b23dde8f3704882758d795"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10246",
+  "modified": "2026-08-05T14:38:48Z",
+  "published": "2026-08-05T13:36:29Z",
+  "summary": "Malicious code in devplatform-react-micro-frontend (npm)",
+  "details": "On require, the package runs a dropper that fingerprints the OS/architecture and downloads a remote binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at path /pkg/package (or platform-specific paths), with a fallback staging channel that reads the payload from DNS TXT records under sdk[.]dl[.]wel1[.]ru / ext[.]dl[.]wel1[.]ru / pkg[.]dl[.]wel1[.]ru / net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in TEMP on Windows), made executable, and launched detached via /bin/sh -c or cmd.exe /c start /b. A state file is written to /tmp/.analytics_state to throttle re-execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-react-micro-frontend",
+        "purl": "pkg:npm/devplatform-react-micro-frontend@35.2.1"
+      },
+      "versions": [
+        "35.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-react-micro-frontend/v/35.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10246"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:36:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "33b11847fa1187a525ea38002f0496b43d41ea4dbe3b52e1cb9dcdff17b50191"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
