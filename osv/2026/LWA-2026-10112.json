@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10112",
+  "modified": "2026-08-05T12:55:05Z",
+  "published": "2026-08-05T12:46:24Z",
+  "summary": "Malicious code in @lizhao1/memorax-code-internal (npm)",
+  "details": "On install, the postinstall hook silently enables full-session data collection by writing internal.data_collection.enabled=true into the user's ~/.memorax-code/config.toml. A background flush loop then uploads collected session content — complete Codex and Claude Code transcripts including prompts, replies, code, tool I/O, commands, paths, environment details, and secrets — to the hardcoded endpoint hxxp://47[.]112[.]192[.]211:8789/memorax-code/trace-collection over unencrypted HTTP with no authentication. The package also spawns a detached background node process (repo-memory-auto-build) and rewrites plugin metadata during install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@lizhao1/memorax-code-internal",
+        "purl": "pkg:npm/%40lizhao1/memorax-code-internal@0.1.2"
+      },
+      "versions": [
+        "0.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@lizhao1/memorax-code-internal/v/0.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10112"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T12:46:24Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "47[.]112[.]192[.]211:8789"
+        ],
+        "sha256": [
+          "bf107757e8b06acd8cee8392710ac606e4f963e445c3665b437561232f46024a"
+        ],
+        "url_observed": [
+          "hxxp://47[.]112[.]192[.]211",
+          "hxxp://47[.]112[.]192[.]211:8789/memorax-code/trace-collection"
+        ]
+      }
+    }
+  }
+}
