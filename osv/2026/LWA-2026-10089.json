@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10089",
+  "modified": "2026-08-05T02:08:21Z",
+  "published": "2026-08-05T02:07:14Z",
+  "summary": "Malicious code in ethers-lib (npm)",
+  "details": "The postinstall hook (postinstall.js) runs automatically on install. It fingerprints the host (hostname, username, timestamp) and harvests credential files from the user's home directory:.env,.env.local,.env.production,.npmrc,.aws/credentials,.ssh/id_rsa,.ssh/id_ed25519,.ssh/id_ecdsa,.config/solana/id.json, and.ethereum/keystore. It also recursively scans all hidden directories for files whose names match wallet, key, secret, seed, mnemonic, keystore, or private, or that end in.json or.pem, reading any under 50KB. All collected data is POSTed as JSON over HTTPS to webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4. This exfiltrates the installer's credentials, SSH keys, and cryptocurrency wallet keys.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ethers-lib",
+        "purl": "pkg:npm/ethers-lib@1.0.3"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ethers-lib/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10089"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:07:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "454c9c565f7a206ce645f8cdbd54cda9bc418e9448a1ab36895545b5aa785129"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

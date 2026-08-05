@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10081",
+  "modified": "2026-08-05T02:06:07Z",
+  "published": "2026-08-05T02:05:31Z",
+  "summary": "Malicious code in ethereum-sign-utils (npm)",
+  "details": "The postinstall hook (postinstall.js) runs on install and exfiltrates the victim's credentials and cryptocurrency wallet keys. It reads ~/.env, ~/.env.local, ~/.npmrc, ~/.aws/credentials, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, ~/.ssh/id_ecdsa, ~/.config/solana/id.json and ~/.ethereum/keystore, then recursively scans every dot-directory in the home folder for files whose names match wallet, key, secret, seed, mnemonic, keystore or private, or that end in.json/.pem. All collected file contents, along with the hostname and username, are POSTed as JSON to hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4. The package's index.js is an empty stub; all behaviour lives in the install hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ethereum-sign-utils",
+        "purl": "pkg:npm/ethereum-sign-utils@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ethereum-sign-utils/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10081"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:05:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "5ea85e4e1c75cbc01041a4379205943bc1122ccace1dd96bc66344123ece1401"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

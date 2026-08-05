@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10087",
+  "modified": "2026-08-05T02:07:24Z",
+  "published": "2026-08-05T02:06:37Z",
+  "summary": "Malicious code in ckcc-protocol (npm)",
+  "details": "The postinstall hook (postinstall.js) runs on install and exfiltrates the victim's credentials. It reads ~/.env, ~/.env.local, ~/.env.production, ~/.npmrc, ~/.aws/credentials, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, ~/.ssh/id_ecdsa, ~/.config/solana/id.json and ~/.ethereum/keystore, then recursively scans every dot-directory in the home folder for files matching wallet|key|secret|seed|mnemonic|keystore|private or ending in.json/.pem (under 50KB). It bundles these file contents together with the hostname and username and POSTs them as JSON to hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ckcc-protocol",
+        "purl": "pkg:npm/ckcc-protocol@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ckcc-protocol/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10087"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:06:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "546689320c71ee60cabb348b6a59291c9573384a188e2776b7d3588d6de63414"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

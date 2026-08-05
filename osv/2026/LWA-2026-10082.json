@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10082",
+  "modified": "2026-08-05T02:06:04Z",
+  "published": "2026-08-05T02:05:45Z",
+  "summary": "Malicious code in mnemonic-utils (npm)",
+  "details": "The postinstall hook (postinstall.js) runs on install and harvests the victim's credentials and crypto wallets. It reads ~/.env, ~/.env.local, ~/.env.production, ~/.npmrc, ~/.aws/credentials, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, ~/.ssh/id_ecdsa, ~/.config/solana/id.json, and ~/.ethereum/keystore, then recursively scans every dot-directory in the home folder for files whose names match wallet, key, secret, seed, mnemonic, keystore, or private, or that end in.json or.pem (files under 50KB). It bundles these contents together with the hostname and username and POSTs them as JSON to hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4. This exfiltrates SSH private keys, cloud credentials, npm tokens, and Solana/Ethereum wallet keys to a third-party webhook endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mnemonic-utils",
+        "purl": "pkg:npm/mnemonic-utils@1.0.1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mnemonic-utils/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10082"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:05:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "4caada7c7b05e3188d625f04ef3c138fd9c48220664e44d7d088c7b9456c84d7"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

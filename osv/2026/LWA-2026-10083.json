@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10083",
+  "modified": "2026-08-05T02:06:45Z",
+  "published": "2026-08-05T02:05:55Z",
+  "summary": "Malicious code in python-bitcoinlib (npm)",
+  "details": "The postinstall hook (postinstall.js) runs automatically on install. It collects the hostname, username, and current timestamp, then reads credential and wallet files from the user's home directory —.env,.env.local,.env.production,.npmrc,.aws/credentials,.ssh/id_rsa,.ssh/id_ed25519,.ssh/id_ecdsa,.config/solana/id.json, and.ethereum/keystore — and recursively scans all hidden directories for files whose names match wallet, key, secret, seed, mnemonic, keystore, or private, or that end in.json or.pem. All collected file contents are POSTed as a JSON payload to hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4 over HTTPS. This exfiltrates the installer's credentials, SSH private keys, and cryptocurrency wallet keys.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "python-bitcoinlib",
+        "purl": "pkg:npm/python-bitcoinlib@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/python-bitcoinlib/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10083"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:05:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "3cc043a824e263c11bbf3e8242e2196112d9a9689ab4668cd9f5df08e31a1e62"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

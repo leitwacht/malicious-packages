@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10085",
+  "modified": "2026-08-05T02:06:49Z",
+  "published": "2026-08-05T02:06:17Z",
+  "summary": "Malicious code in trezor-lib (npm)",
+  "details": "The postinstall hook (postinstall.js) harvests credentials and exfiltrates them. On install it reads the victim's.env,.env.local,.env.production,.npmrc,.aws/credentials, SSH private keys (.ssh/id_rsa, id_ed25519, id_ecdsa), Solana wallet (.config/solana/id.json) and Ethereum keystore (.ethereum/keystore), then recursively scans all hidden directories in the home folder for files matching wallet/key/secret/seed/mnemonic/keystore/private or ending in.json/.pem. All collected file contents, along with the hostname and username, are POSTed as JSON to hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4. The package name impersonates the Trezor hardware-wallet brand.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "trezor-lib",
+        "purl": "pkg:npm/trezor-lib@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/trezor-lib/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10085"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:06:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "fd31f1dff5fbcdf0db4ca61a5da216674158fa1f971a74ca95188ebcf6ad6ae7"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

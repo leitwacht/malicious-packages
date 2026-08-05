@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10088",
+  "modified": "2026-08-05T02:07:35Z",
+  "published": "2026-08-05T02:06:56Z",
+  "summary": "Malicious code in bip32-js (npm)",
+  "details": "Bip32-js@1.0.2 runs a postinstall hook that harvests the installer's credentials and wallet keys and exfiltrates them. On install it reads ~/.env, ~/.env.local, ~/.env.production, ~/.npmrc, ~/.aws/credentials, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, ~/.ssh/id_ecdsa, ~/.config/solana/id.json, and ~/.ethereum/keystore, and recursively scans all dot-directories in the home folder for files whose names match wallet/key/secret/seed/mnemonic/keystore/private or that end in.json/.pem. It bundles these file contents together with the hostname and username and POSTs them as JSON to hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bip32-js",
+        "purl": "pkg:npm/bip32-js@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bip32-js/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10088"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:06:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "dffc3175f68b30b262a74ddec718bcac9b2c2f132fd66806d29da00f79963584"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

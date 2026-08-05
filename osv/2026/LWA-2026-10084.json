@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10084",
+  "modified": "2026-08-05T02:06:47Z",
+  "published": "2026-08-05T02:06:03Z",
+  "summary": "Malicious code in ledger-lib (npm)",
+  "details": "Ledger-lib@1.0.2 runs a postinstall hook that steals the installer's credentials and cryptocurrency wallets. It reads ~/.env, ~/.npmrc, ~/.aws/credentials, ~/.ssh/id_rsa, ~/.config/solana/id.json, and ~/.ethereum/keystore, then recursively scans the home directory for files matching wallet/key/secret/seed/mnemonic/keystore/private or ending in.json/.pem, and POSTs the collected data as JSON to hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4. The package name impersonates the Ledger wallet brand.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ledger-lib",
+        "purl": "pkg:npm/ledger-lib@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ledger-lib/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10084"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:06:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "d59b28fcd0c13940ffb88c3f2d77a4ce1748820c4a786e989cb226db9735f57f"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}

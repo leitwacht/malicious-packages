@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10086",
+  "modified": "2026-08-05T02:07:32Z",
+  "published": "2026-08-05T02:06:31Z",
+  "summary": "Malicious code in hwi-lib (npm)",
+  "details": "Hwi-lib@1.0.2 runs a postinstall hook that harvests the installer's credentials and exfiltrates them. On install it reads ~/.env, ~/.npmrc, ~/.aws/credentials, SSH private keys (~/.ssh/id_rsa, id_ed25519, id_ecdsa), the Solana wallet (~/.config/solana/id.json) and Ethereum keystore (~/.ethereum/keystore), then recursively scans every hidden directory in the home folder for files matching wallet/key/secret/seed/mnemonic/keystore/private or ending in.json/.pem. It bundles the hostname, username, and all collected file contents into a JSON payload and POSTs it over HTTPS to webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4. The package ships no real library code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hwi-lib",
+        "purl": "pkg:npm/hwi-lib@1.0.2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hwi-lib/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10086"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T02:06:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "e1ac7f542f0a0918e3003bb4f4276ea3dd098e2ff2f34b7c39aaf073d78accf6"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5c5ad6cb-62df-4ea5-9dfb-2c447920ddc4"
+        ]
+      }
+    }
+  }
+}
