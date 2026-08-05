@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10575",
+  "aliases": [
+    "MAL-2026-12651"
+  ],
+  "modified": "2026-08-05T21:11:37Z",
+  "published": "2026-08-05T21:10:29Z",
+  "summary": "Malicious code in cobrowsing-cobrowsing-core (npm)",
+  "details": "On module load, cobrowsing-cobrowsing-core requires _polyfill.js, which acts as a multi-stage dropper. It fingerprints the OS/arch and downloads a platform-specific binary over HTTPS from Cloudflare Workers hosts (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe. If the HTTPS download fails it falls back to retrieving the payload via DNS TXT records from *.dl[.]wel1[.]ru (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The fetched binary is written to /tmp/.cache_\u003chex\u003e (Unix) or %TEMP%\\dotnet_diag_\u003chex\u003e.exe (Windows) and executed detached (cmd.exe /c start /b on Windows, /bin/sh -c \"fp \u0026\" on Unix). A state file (/tmp/.analytics_state or %TEMP%\\analytics_state) throttles re-execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cobrowsing-cobrowsing-core",
+        "purl": "pkg:npm/cobrowsing-cobrowsing-core@35.5.8"
+      },
+      "versions": [
+        "35.5.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cobrowsing-cobrowsing-core/v/35.5.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10575"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T21:10:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "f806747399593c1e60af768d3846fdf86a4e8f87343193b7c2f0d081d60d830e"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}
