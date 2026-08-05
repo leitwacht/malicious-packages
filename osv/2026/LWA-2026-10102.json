@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10102",
+  "modified": "2026-08-05T10:05:16Z",
+  "published": "2026-08-05T09:53:06Z",
+  "summary": "Malicious code in streak-calc-metrics (npm)",
+  "details": "Streak-calc-metrics@1.0.0 ships a native Linux ELF (dist/calc.bin) that is executed on package import via a detached child process. The binary is a full remote-access implant (\"redshell\"): it beacons to C2 host 217[.]60[.]77[.]63, downloads and executes remote ELF and shellcode payloads from /Others/ and /SC/ paths over HTTP, provides a port-forward and tunnel facility, and installs persistence by writing a systemd user service (svc-update.service) that runs on login. It also POSTs extracted data to an /api/extract-receive endpoint and resolves the public IP via api[.]ipify[.]org. The JS wrapper (dist/index.mjs) spawns the binary detached with stdio piped to /dev/null on import, so merely importing the package launches the implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-calc-metrics",
+        "purl": "pkg:npm/streak-calc-metrics@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-calc-metrics/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10102"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T09:53:06Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "217[.]60[.]77[.]63",
+          "8[.]8[.]8[.]8"
+        ],
+        "sha256": [
+          "a8fafedc08a74d40dbd308e172e478ee42e15e3d3ab56a01f2d99c0999b8e441"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63:%d/Others/%s",
+          "hxxp://217[.]60[.]77[.]63:%d/SC/%s",
+          "hxxp://api[.]ipify[.]org"
+        ]
+      }
+    }
+  }
+}
