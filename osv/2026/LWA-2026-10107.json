@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10107",
+  "modified": "2026-08-05T10:34:13Z",
+  "published": "2026-08-05T10:24:02Z",
+  "summary": "Malicious code in @diezyyasha/libsignal-node (npm)",
+  "details": "@diezyyasha/libsignal-node@2.2.8 is a trojanized clone of the libsignal-node crypto library. The package ships the genuine libsignal-node source tree but adds an install module that runs when the package is required: it locates the installer's @whiskeysockets/baileys (WhatsApp) package and overwrites lib/Socket/newsletter.js with a modified version. The injected code waits 120 seconds after a Baileys socket is created, then silently issues a newsletter FOLLOW request for the hardcoded channel id 120363407277177688@newsletter using the victim's authenticated WhatsApp session, auto-subscribing the victim's account to that channel without consent. A marker file is written to prevent re-patching. No credentials are exfiltrated; the tampering abuses the victim's own WhatsApp session to inflate a newsletter's follower count.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@diezyyasha/libsignal-node",
+        "purl": "pkg:npm/%40diezyyasha/libsignal-node@2.2.8"
+      },
+      "versions": [
+        "2.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@diezyyasha/libsignal-node/v/2.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10107"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T10:24:02Z",
+      "indicators_observed": {
+        "sha256": [
+          "0d9098d55b671f9df69950ea0008760d1fd0fa544697d3aa3346e232209b96f0"
+        ],
+        "url_observed": [
+          "120363407277177688@newsletter"
+        ]
+      }
+    }
+  }
+}
