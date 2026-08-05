@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10577",
+  "aliases": [
+    "MAL-2026-12649"
+  ],
+  "modified": "2026-08-05T21:41:11Z",
+  "published": "2026-08-05T21:40:27Z",
+  "summary": "Malicious code in clients-structure (npm)",
+  "details": "Clients-structure@35.9.8 is a malicious package that runs a dropper on require. It fingerprints the OS platform and architecture, then downloads a platform-specific second-stage binary over HTTPS from rotating C2 hosts oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe. If those fail it falls back to a DNS TXT exfiltration channel via c[.]sdk[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp dir on Windows), made executable, and launched as a detached background process via /bin/sh or cmd.exe /c start /b. A marker file at /tmp/.analytics_state throttles repeat execution. The package bundles an 81KB decoy telemetry module to disguise the dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "clients-structure",
+        "purl": "pkg:npm/clients-structure@35.9.8"
+      },
+      "versions": [
+        "35.9.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/clients-structure/v/35.9.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10577"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T21:40:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "48fea6d5c7432efa7fda479a652ef5ef80a99b61de7086af5f9efc92de8708a8"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
