@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10290",
+  "modified": "2026-08-05T15:20:17Z",
+  "published": "2026-08-05T15:06:23Z",
+  "summary": "Malicious code in dolyame-ui-types (npm)",
+  "details": "Dolyame-ui-types@35.8.2 is a trojanized package that runs a download-and-execute dropper on require(). It downloads a platform-specific binary from Cloudflare Workers endpoints oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf101-adf[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-TXT fallback channel via c[.]sdk[.]dl[.]wel1[.]ru, c[.]ext[.]dl[.]wel1[.]ru, c[.]pkg[.]dl[.]wel1[.]ru, and c[.]net[.]dl[.]wel1[.]ru. The fetched payload is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched detached via cmd.exe /c start /b or /bin/sh -c \"\u0026\". A state file at /tmp/.analytics_state throttles re-execution. The package ships a large decoy analytics SDK (lib/telemetry.js) as cover.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-types",
+        "purl": "pkg:npm/dolyame-ui-types@35.8.2"
+      },
+      "versions": [
+        "35.8.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-types/v/35.8.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10290"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T15:06:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]ext[.]dl[.]wel1[.]ru",
+          "c[.]net[.]dl[.]wel1[.]ru",
+          "c[.]pkg[.]dl[.]wel1[.]ru",
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "4db12170dbea40d2f8c92997607cd60d33095245680127a9a1a1977347056bab"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
