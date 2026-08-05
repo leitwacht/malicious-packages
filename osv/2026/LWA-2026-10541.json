@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10541",
+  "aliases": [
+    "MAL-2026-12673"
+  ],
+  "modified": "2026-08-05T17:27:26Z",
+  "published": "2026-08-05T17:25:58Z",
+  "summary": "Malicious code in ded-ps-ded-ps-core (npm)",
+  "details": "Ded-ps-ded-ps-core is a multi-stage dropper. On require, its bundled _init.js downloads a binary payload over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at /pkg/package (platform-specific paths for arm64/darwin/windows). If the HTTP download fails it retrieves the payload via DNS TXT records from c[.]sdk[.]dl[.]wel1[.]ru. The payload is written to /var/tmp/.cache_\u003crandom\u003e (or dotnet_diag_\u003crandom\u003e.exe in TEMP on Windows) and executed as a detached background process via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b, with stdio ignored so it runs silently and outlives the parent. The package's index.js is a trivial stub whose only purpose is to trigger this download-and-execute on load.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ded-ps-ded-ps-core",
+        "purl": "pkg:npm/ded-ps-ded-ps-core@35.9.1"
+      },
+      "versions": [
+        "35.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ded-ps-ded-ps-core/v/35.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10541"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T17:25:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "c93a87653c933b5ad7697b9d96166eaa71c1a13ae4150a6836084c70c8b15f50"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

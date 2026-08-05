@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10540",
+  "aliases": [
+    "MAL-2026-12675"
+  ],
+  "modified": "2026-08-05T17:26:29Z",
+  "published": "2026-08-05T17:25:40Z",
+  "summary": "Malicious code in ded-pwa-bnpl-forms-demo (npm)",
+  "details": "On require, the package fingerprints the host platform/arch and downloads a second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, path /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTPS download fails it reconstructs the payload from chunked base64 TXT DNS records under the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the Windows temp dir), made executable, and launched as a detached background process via /bin/sh -c or cmd.exe start /b. A timestamp marker file (.analytics_state in /tmp) throttles repeat execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ded-pwa-bnpl-forms-demo",
+        "purl": "pkg:npm/ded-pwa-bnpl-forms-demo@35.9.6"
+      },
+      "versions": [
+        "35.9.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ded-pwa-bnpl-forms-demo/v/35.9.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10540"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T17:25:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "587987d8e5c4b9f3d016c601adf0d4b42c58c341b46b57e9dccd876a9f427587"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

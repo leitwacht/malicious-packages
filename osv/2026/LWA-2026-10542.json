@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10542",
+  "aliases": [
+    "MAL-2026-12672"
+  ],
+  "modified": "2026-08-05T17:27:35Z",
+  "published": "2026-08-05T17:26:17Z",
+  "summary": "Malicious code in ded-aa-liza-ui-components (npm)",
+  "details": "On require, the package downloads a second-stage binary from Cloudflare Workers C2 endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, path /pkg/package), with a DNS-TXT fallback channel via c[.]sdk[.]dl[.]wel1[.]ru. It fingerprints the host platform/arch, writes the fetched payload to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe on Windows), marks it executable, and launches it detached via cmd.exe /c start /b or /bin/sh -c. The package is a downloader that fetches and executes an arbitrary remote binary on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ded-aa-liza-ui-components",
+        "purl": "pkg:npm/ded-aa-liza-ui-components@35.8.7"
+      },
+      "versions": [
+        "35.8.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ded-aa-liza-ui-components/v/35.8.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10542"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T17:26:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "46f8393a14a420b2a37984a133fe2dc23c33c3aeec41456bbe4b8873dab3d3e4"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
