@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10548",
+  "aliases": [
+    "MAL-2026-12670"
+  ],
+  "modified": "2026-08-05T17:56:01Z",
+  "published": "2026-08-05T17:55:25Z",
+  "summary": "Malicious code in dc-dc-core (npm)",
+  "details": "Dc-dc-core@35.3.3 is a multi-stage dropper. Requiring the package runs _support.js, which fingerprints the OS/architecture and downloads a platform-specific second-stage binary over HTTPS from Cloudflare Workers hosts oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, and oob-worker[.]cf99-9b3[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). A fallback channel reassembles the payload from DNS TXT records under the domains sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, and net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process via /bin/sh -c or cmd.exe start /b. Execution is rate-limited by a state file at /tmp/.analytics_state.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dc-dc-core",
+        "purl": "pkg:npm/dc-dc-core@35.3.3"
+      },
+      "versions": [
+        "35.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dc-dc-core/v/35.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10548"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T17:55:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "ea0bed0bd99fea6e1168e9346b50d71afa9e3b45562a78c6a667345f7f75475c"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}
