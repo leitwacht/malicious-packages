@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10539",
+  "modified": "2026-08-05T17:20:51Z",
+  "published": "2026-08-05T17:17:05Z",
+  "summary": "Malicious code in npm-dc-dev (npm)",
+  "details": "The package's postinstall hook runs `node test.js`, which loads a 170KB heavily-obfuscated JavaScript payload (index.js) built via the Function constructor with custom base64-like string-array decoding and obfuscated control flow. The payload executes at install time. The package also declares the Node core modules `child_process` and `os` as npm dependencies, a supply-chain vector that can pull in malicious packages under those names. The obfuscated payload's network behaviour is not visible from static inspection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "npm-dc-dev",
+        "purl": "pkg:npm/npm-dc-dev@1.1.1"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/npm-dc-dev/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10539"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T17:17:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "2a03672028117d207fde4c7aa371f351860d95b2cf9f215c13c464d545c40882"
+        ]
+      }
+    }
+  }
+}
