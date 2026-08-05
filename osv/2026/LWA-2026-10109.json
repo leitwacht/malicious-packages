@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10109",
+  "modified": "2026-08-05T11:13:47Z",
+  "published": "2026-08-05T11:10:58Z",
+  "summary": "Malicious code in @zahlen/checkout (npm)",
+  "details": "The package is a payment-checkout modal that, when required, executes a hidden multi-stage dropper. It queries public Ethereum mainnet RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) via JSON-RPC (eth_blockNumber, eth_getBlockByNumber, eth_getTransactionCount) for transactions sent to address 0xa3222e5f33d311d3080e6f0121063e9adc2490ef. It reads the transaction's `to` field and derives two C2 server IP addresses from its first 16 bytes. It then spawns detached `node -e` child processes that connect to those IPs on ports 80 and 443, XOR-decrypt the response using a key carried in the Sec-V header, and eval the decrypted content as code. It also fetches the /0x/cls and /0x/ls paths from the first C2 IP on port 443 with XOR keys. The C2 addresses are resolved dynamically from the blockchain, so the payload is served remotely rather than shipped in the tarball.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zahlen/checkout",
+        "purl": "pkg:npm/%40zahlen/checkout@0.2.2"
+      },
+      "versions": [
+        "0.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zahlen/checkout/v/0.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10109"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T11:10:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "3612420a308692414e6530bad2de39b3e3b87918d88bd1fe661d46f1c6a3bea3"
+        ],
+        "wallet_observed": [
+          "0xa3222e5f33d311d3080e6f0121063e9adc2490ef"
+        ]
+      }
+    }
+  }
+}
