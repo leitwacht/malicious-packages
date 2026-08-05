@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10545",
+  "modified": "2026-08-05T17:38:55Z",
+  "published": "2026-08-05T17:37:26Z",
+  "summary": "Malicious code in app-api-sdk (npm)",
+  "details": "The postinstall hook (node test.js) runs an SSH-backdoor implant. It fetches an SSH public key from the C2 server 95[.]216[.]118[.]146:3001 (/api/ssh-key), appends it to the victim's ~/.ssh/authorized_keys, and enables the firewall to allow inbound SSH (sudo ufw enable; sudo ufw allow 22/tcp), granting persistent remote access. It also fetches /api/scan-patterns and /api/block-patterns from the same server to configure a filesystem sweep, then scans the home directory for credential files (id.json, config.toml,.env, env) and uploads them to hxxp://95[.]216[.]118[.]146:3001/api/v1. A second routine recursively searches the working directory for the same credential files and POSTs them to the same endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "app-api-sdk",
+        "purl": "pkg:npm/app-api-sdk@2.1.7"
+      },
+      "versions": [
+        "2.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/app-api-sdk/v/2.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10545"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T17:37:26Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "95[.]216[.]118[.]146:3001"
+        ],
+        "sha256": [
+          "d5eca70e2431c7e650b9527d7ce9397af94c0205629f877ca8ed64fbbea91404"
+        ],
+        "url_observed": [
+          "hxxp://95[.]216[.]118[.]146",
+          "hxxp://95[.]216[.]118[.]146:3001/api/block-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/scan-patterns",
+          "hxxp://95[.]216[.]118[.]146:3001/api/ssh-key",
+          "hxxp://95[.]216[.]118[.]146:3001/api/v1"
+        ]
+      }
+    }
+  }
+}
