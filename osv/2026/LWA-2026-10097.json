@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10097",
+  "modified": "2026-08-05T08:39:06Z",
+  "published": "2026-08-05T08:36:35Z",
+  "summary": "Malicious code in devpack-conf (npm)",
+  "details": "Devpack-conf@5.0.0 is a trojanized config-reading package whose index.js appends an eval(atob(...)) payload. On load it queries public Ethereum JSON-RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) to locate a transaction from address 0x8a3322e5f3d311d30e6f0121063e9aDC24d90e5a, extracts the transaction's `to` field, and splits it into two IPv4 addresses. It then spawns a detached background node process that connects to those addresses on ports 80/443 and sends XOR-encoded requests to the paths /0x/cls and /0x/ls, retrieving and executing second-stage commands. The C2 infrastructure is rotated via the blockchain, so the beacon destinations change with each new transaction from the controlling address.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devpack-conf",
+        "purl": "pkg:npm/devpack-conf@5.0.0"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devpack-conf/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10097"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T08:36:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "28910e0004dededa40da0d988a7223884b23771bd6696a98274b81049e980bf7"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth"
+        ],
+        "wallet_observed": [
+          "0x8a3322e5f3d311d30e6f0121063e9aDC24d90e5a"
+        ]
+      }
+    }
+  }
+}
