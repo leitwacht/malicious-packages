@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10096",
+  "aliases": [
+    "MAL-2026-12116"
+  ],
+  "modified": "2026-08-05T07:56:57Z",
+  "published": "2026-08-05T07:53:45Z",
+  "summary": "Malicious code in tailwind-hide-scrollbar (npm)",
+  "details": "Tailwind-hide-scrollbar@2.1.5 ships a legitimate tailwind plugin in dist/index.js but appends an obfuscated eval(atob(...)) payload that installs a covert command-and-control implant. On import, the payload reads the Ethereum blockchain (via public RPC endpoints 1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io, or the ETH_RPC_URL env var, and the typosquatted API eth-blockscout[.]com/api) to fetch the latest transaction from attacker wallet 0xa322E5f3D31D3080e6f0121063e9aDC2490Ef1a, extracting the transaction's `to` field as a 4-byte IP address that becomes the C2 host. It then connects to hxxp://\u003cip\u003e:443/0x/cls and hxxp://\u003cip\u003e:443/0x/ls, downloads XOR-encrypted second-stage payloads, and executes them either via eval() or by spawning a detached `node -e` child process (child_process.spawn with detached:true, windowsHide:true). All C2 traffic is XOR-encrypted with hardcoded keys. The package's stated purpose (a scrollbar-hiding CSS plugin) is unrelated to this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-hide-scrollbar",
+        "purl": "pkg:npm/tailwind-hide-scrollbar@2.1.5"
+      },
+      "versions": [
+        "2.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-hide-scrollbar/v/2.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10096"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T07:53:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-blockscout[.]com",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "c2318b8186d7ddf55792161a96b32bc25ca31051b4a5935a64e0b19bc6c0d2f4"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-blockscout[.]com/api",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D31D3080e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
