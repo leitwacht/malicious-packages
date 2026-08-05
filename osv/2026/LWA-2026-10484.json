@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10484",
+  "aliases": [
+    "MAL-2026-12759"
+  ],
+  "modified": "2026-08-05T16:44:56Z",
+  "published": "2026-08-05T13:37:56Z",
+  "summary": "Malicious code in devplatform-spa-plugin-ability (npm)",
+  "details": "On require(), the package runs a bundled bootstrap that downloads a second-stage binary over HTTPS from one of four rotated Cloudflare Workers origins (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on platform. If the HTTPS download fails, it falls back to a DNS TXT-based transfer channel under the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru), decoding base64 chunked TXT records into the payload. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in %TEMP% on Windows), chmod 755, and executed detached via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b. Execution is rate-limited to once per ~5.5 hours via a stamp file at /tmp/.analytics_state. The package's index.js exports a benign-looking SDK class but immediately requires the bootstrap, so merely importing the package triggers the download-and-execute.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-spa-plugin-ability",
+        "purl": "pkg:npm/devplatform-spa-plugin-ability@35.5.2"
+      },
+      "versions": [
+        "35.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-spa-plugin-ability/v/35.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10484"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:37:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "948a8357a73e2d024818b7518f719e1478bbd0c54b5af83b56f2454ab9a3b66c"
+        ]
+      }
+    }
+  }
+}
