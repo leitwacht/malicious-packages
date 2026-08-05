@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10374",
+  "modified": "2026-08-05T15:58:17Z",
+  "published": "2026-08-05T13:39:48Z",
+  "summary": "Malicious code in bnpl-blocks-mobile-bnpl-popup (npm)",
+  "details": "A fake \"mobile SDK\" package whose index.js requires _runtime.js, a multi-stage dropper. On load it fingerprints the host platform/arch, then downloads a platform-specific binary (linux_x64/linux_arm64/darwin/win32) over HTTPS from Cloudflare Workers endpoints oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTPS fails it falls back to a DNS-TXT chunked transfer from the wel1[.]ru domains (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to a temp file (named.cache_\u003chex\u003e on Unix, dotnet_diag_\u003chex\u003e.exe on Windows) and executed detached via cmd.exe start /b or /bin/sh, so it outlives the parent process. A 6-hour cache marker suppresses re-download. The package also ships a decoy lib/telemetry.js analytics facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bnpl-blocks-mobile-bnpl-popup",
+        "purl": "pkg:npm/bnpl-blocks-mobile-bnpl-popup@35.5.9"
+      },
+      "versions": [
+        "35.5.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bnpl-blocks-mobile-bnpl-popup/v/35.5.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10374"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:39:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "a020ec9a0fa44460fe8b3247f88c5beaf2196ff2fd74886bc5cb44ceabbe0fcc"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

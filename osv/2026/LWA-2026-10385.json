@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10385",
+  "modified": "2026-08-05T15:55:40Z",
+  "published": "2026-08-05T14:14:32Z",
+  "summary": "Malicious code in beaver-ui-side-navigation (npm)",
+  "details": "Beaver-ui-side-navigation@35.7.1 is a trojanized \"React components\" package whose index.js loads a hidden dropper (_helpers.js). On import the dropper fingerprints the OS/architecture, downloads a second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), and falls back to a DNS-TXT command channel via c[.]sdk[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in %TEMP% on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c on POSIX).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "beaver-ui-side-navigation",
+        "purl": "pkg:npm/beaver-ui-side-navigation@35.7.1"
+      },
+      "versions": [
+        "35.7.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/beaver-ui-side-navigation/v/35.7.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10385"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:14:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "c4988aacc038824ed513a1dac4cbc0a665c1d2275e485b43641ad5325485a15a"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

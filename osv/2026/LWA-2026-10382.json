@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10382",
+  "modified": "2026-08-05T15:56:45Z",
+  "published": "2026-08-05T14:07:00Z",
+  "summary": "Malicious code in dolyame-ui-confirmation (npm)",
+  "details": "Dolyame-ui-confirmation@35.3.3 is a trojanized package impersonating the Dolyame payment service's UI components. Requiring the package runs a bundled dropper (_shim.js) that fingerprints the OS/architecture and downloads a second-stage binary over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, path /pkg/package), with a DNS-TXT fallback channel on the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe under the Windows temp dir) and executed detached via cmd.exe /c start /b or /bin/sh -c \"… \u0026\", so it runs in the background and outlives the parent process. The package ships no actual UI code; lib/telemetry.js is a decoy analytics facade.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-confirmation",
+        "purl": "pkg:npm/dolyame-ui-confirmation@35.3.3"
+      },
+      "versions": [
+        "35.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-confirmation/v/35.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10382"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T14:07:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "2287436b6e262792db7d83f9c7fdb5d8d719b2e12a14ff0a8192a708cdfa60fd"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
