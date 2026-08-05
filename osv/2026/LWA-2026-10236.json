@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10236",
+  "modified": "2026-08-05T14:29:32Z",
+  "published": "2026-08-05T13:45:59Z",
+  "summary": "Malicious code in dolyame-ui-checkable (npm)",
+  "details": "Dolyame-ui-checkable is a trojanized UI-toolkit package whose index.js loads setup.js on require. setup.js fingerprints the host platform/arch and downloads a platform-specific second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a DNS-TXT chunked fallback via c[.]sdk[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or %TEMP%\\dotnet_diag_\u0026lt;hex\u0026gt;.exe on Windows) and executed detached via /bin/sh or cmd.exe, so the remote binary runs in the background and outlives the parent process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-checkable",
+        "purl": "pkg:npm/dolyame-ui-checkable@35.4.1"
+      },
+      "versions": [
+        "35.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-checkable/v/35.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10236"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:45:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "2c3281bdbd85b863a620d5e3e05d2f5b27d57e10245b03ef73a0f9f13293d9ca"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

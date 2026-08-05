@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10240",
+  "modified": "2026-08-05T14:32:10Z",
+  "published": "2026-08-05T13:40:45Z",
+  "summary": "Malicious code in devplatform-vite-plugin-external (npm)",
+  "details": "On require, the package runs setup.js, which downloads a platform-specific binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on OS/arch. If the HTTPS fetch fails, it falls back to retrieving the payload in base64 chunks via DNS TXT queries against wel1[.]ru domains (c[.]sdk[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u003crandom\u003e (or %TEMP%\\dotnet_diag_\u003crandom\u003e.exe on Windows), made executable, and launched as a detached background process via cmd.exe start /b or /bin/sh -c. The package otherwise exports a trivial no-op vite plugin class; its only real behaviour is fetching and executing a remote binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-vite-plugin-external",
+        "purl": "pkg:npm/devplatform-vite-plugin-external@35.3.6"
+      },
+      "versions": [
+        "35.3.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-vite-plugin-external/v/35.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10240"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:40:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "b22e9f60ec25f1ac99c0d61966687fd625ca63b0ffda26a39eb1812c2753c34d"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

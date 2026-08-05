@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10237",
+  "modified": "2026-08-05T14:29:21Z",
+  "published": "2026-08-05T13:34:15Z",
+  "summary": "Malicious code in devplatform-nx-spa (npm)",
+  "details": "On require, the package downloads and executes a remote binary. It resolves the OS/architecture and fetches a platform-specific payload over HTTPS from the mirrors oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe. If the download fails it falls back to a DNS TXT exfiltration channel: it queries c[.]sdk[.]dl[.]wel1[.]ru for a chunk count, then retrieves base64-encoded chunks from N[.]sdk[.]dl[.]wel1[.]ru and decodes them into the payload. The payload is written to a temp file (.cache_\u003chex\u003e on Unix, dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process (/bin/sh -c '\u003cfile\u003e \u0026' or cmd.exe /c start /b).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-nx-spa",
+        "purl": "pkg:npm/devplatform-nx-spa@35.8.7"
+      },
+      "versions": [
+        "35.8.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-nx-spa/v/35.8.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10237"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-05T13:34:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "3b980d233c6aebc0faea64d29fda564f771b880f9a1d937f50be55ead5e66ba7"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
