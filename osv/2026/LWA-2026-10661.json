@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10661",
+  "modified": "2026-08-06T23:24:45Z",
+  "published": "2026-08-06T23:24:12Z",
+  "summary": "Malicious code in weight2loss (npm)",
+  "details": "The postinstall hook (setup.js) is a credential-stealing backdoor. On install it reads the victim's ~/.npmrc (npm token), ~/.ssh/* private keys, ~/.gitconfig, ~/.aws/* credentials, and sensitive environment variables (GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, STRIPE_API_KEY, DATABASE_URL, OPENAI_API_KEY, and others), then exfiltrates them to hxxps://news[.]reimbursor[.]info via POST to /env-json and /env-text and a GET to /stolen/\u003cbase64\u003e. It also emails the stolen data via SMTP. It then downloads and pipes attacker[.]com/miner.sh and attacker[.]com/backdoor.sh to bash, installs a cron persistence job that runs curl hxxp://attacker[.]com/check hourly, and deletes setup.js to hide its traces.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "weight2loss",
+        "purl": "pkg:npm/weight2loss"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/weight2loss/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10661"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T23:24:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "attacker[.]com",
+          "news[.]reimbursor[.]info"
+        ],
+        "sha256": [
+          "16165de06bdd0c25bac0ad9c94d98cdee2d3a6567d059fa593de73fb96a49822"
+        ],
+        "url_observed": [
+          "hxxp://attacker[.]com/backdoor[.]sh",
+          "hxxp://attacker[.]com/check",
+          "hxxp://attacker[.]com/miner[.]sh",
+          "hxxps://news[.]reimbursor[.]info",
+          "hxxps://news[.]reimbursor[.]info/env-json",
+          "hxxps://news[.]reimbursor[.]info/env-text",
+          "hxxps://news[.]reimbursor[.]info/stolen/"
+        ]
+      }
+    }
+  }
+}
