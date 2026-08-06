@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10625",
+  "modified": "2026-08-06T14:18:37Z",
+  "published": "2026-08-06T14:17:48Z",
+  "summary": "Malicious code in tailwindcss-hide-scrollbar (npm)",
+  "details": "Tailwindcss-hide-scrollbar@2.5.4 is a trojanized clone of the legitimate tailwind scrollbar-hide plugin. The package's main entry dist/index.js appends an obfuscated payload (encoded string array with a custom decoder) to the genuine plugin code. On module load the payload executes an Ethereum RPC client that connects to blockchain endpoints (drpc[.]org, stapi[.]io, blockscout, herum-rpc, h.blockcso, pc[.]io/eth, ut[.]com/api, h-mainnet) and issues eth_getBalance, eth_getTransactionCount, eth_getCode, eth_getStorageAt, eth_blockNumber and eth_getBlockByNumber queries, using an 'x-payload-' HTTP header and ':443/0x/cl' and ':443/0x/ls' request paths. The payload also uses child_process and zlib gunzip/base64 decoding stages, consistent with a wallet-drainer / blockchain-recon implant that reads on-chain wallet state and exfiltrates it over HTTP/HTTPS.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-hide-scrollbar",
+        "purl": "pkg:npm/tailwindcss-hide-scrollbar"
+      },
+      "versions": [
+        "2.5.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-hide-scrollbar/v/2.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10625"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T14:17:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "blockscout[.]com",
+          "drpc[.]org",
+          "h-mainnet",
+          "h[.]blockcso",
+          "herum-rpc",
+          "pc[.]io",
+          "pc[.]io/eth",
+          "stapi[.]io",
+          "ut[.]com",
+          "ut[.]com/api"
+        ],
+        "sha256": [
+          "36d2e8a059c7540f6299e5addc433da9b1ee51bcc5fef3570f1610066b7c16a3"
+        ],
+        "url_observed": [
+          ":443/0x/cl",
+          ":443/0x/ls"
+        ]
+      }
+    }
+  }
+}
