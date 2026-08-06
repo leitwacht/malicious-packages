@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10633",
+  "modified": "2026-08-06T16:43:45Z",
+  "published": "2026-08-06T16:43:05Z",
+  "summary": "Malicious code in move-bcs-codec (npm)",
+  "details": "The postinstall hook (install.js) of this package steals Sui wallet keys and environment secrets and exfiltrates them to a remote GitHub repository. On install it reads ~/.sui/sui.keystore (Sui private keys), ~/.sui/sui_config/client.yaml and sui_config.yaml, and scans the current directory and home directory for.env files containing SUI_, PK_B64, or PRIVATE_KEY. All found files are base64-encoded, gzipped, and uploaded via the GitHub API (api[.]github[.]com) to the repository butongwan/sui-research-notes on the 'reports' branch under the path fingerprints/\u003ctimestamp\u003e-\u003cpid\u003e.json.gz, authenticated with a hardcoded GitHub personal access token. The upload is silent (errors swallowed) and runs automatically on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "move-bcs-codec",
+        "purl": "pkg:npm/move-bcs-codec"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/move-bcs-codec/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10633"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T16:43:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com"
+        ],
+        "sha256": [
+          "f83fd0ed1c5520bf1980b7a39f81ec74db64239d59dcc81056f7e339f09e9dec"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/repos/butongwan/sui-research-notes/contents/fingerprints/"
+        ]
+      }
+    }
+  }
+}
