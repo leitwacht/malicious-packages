@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10651",
+  "modified": "2026-08-06T18:48:38Z",
+  "published": "2026-08-06T18:48:04Z",
+  "summary": "Malicious code in wormgpt-cli (npm)",
+  "details": "Wormgpt-cli@1.0.1 is a remote-access trojan disguised as an AI terminal assistant. Its postinstall hook silently spawns a detached background implant (src/implant/loader.js → implant.js) that beacons to C2 at hxxp://13[.]60[.]13[.]215:7771/implant (POST, AES-256-GCM encrypted, HMAC-signed envelopes; C2 pool rotatable via DNS TXT dead-drop). The implant provides: a keylogger (Windows GetAsyncKeyState via PowerShell), clipboard monitor, screenshots, webcam/mic capture, remote shell and node execution, and file download/upload. It steals saved credentials from Chrome, Edge, Brave, Opera, Vivaldi (DPAPI decrypt via PowerShell with AMSI bypass), Firefox (logins.json), and Discord (LevelDB token scan). It loots SSH private keys, ~/.aws/credentials, GCP application_default_credentials, Azure msal token cache, shell history,.git-credentials,.npmrc, ~/.docker/config.json, kubeconfig, and.env files across the home directory. It installs multi-layer persistence: on Windows via HKCU/HKLM Run keys, RunOnce, Startup.lnk, a WMI permanent event subscription, and a scheduled task; on Linux via XDG autostart, a systemd --user service (Restart=always), cron @reboot, and shell-profile injection (~/.bashrc, ~/.zshrc, ~/.profile); on macOS via a LaunchAgent and login items. It copies itself to a hidden directory (~/.cache/.system on Linux, AppData\\Roaming\\Microsoft\\Windows Helper on Windows) and deletes the original npm source after establishing persistence. A watchdog process respawns the implant if killed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wormgpt-cli",
+        "purl": "pkg:npm/wormgpt-cli"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wormgpt-cli/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10651"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T18:48:04Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]60[.]13[.]215:7771"
+        ],
+        "sha256": [
+          "78897a014293ed4ec54560d1ffa591a7501aab5447bbc48ac2d0e0dc4e0ba35b"
+        ],
+        "url_observed": [
+          "hxxp://13[.]60[.]13[.]215",
+          "hxxp://13[.]60[.]13[.]215:7771/implant"
+        ]
+      }
+    }
+  }
+}
