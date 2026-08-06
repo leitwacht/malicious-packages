@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10654",
+  "modified": "2026-08-06T19:11:36Z",
+  "published": "2026-08-06T19:10:57Z",
+  "summary": "Malicious code in gpt-terminal-cli (npm)",
+  "details": "Gpt-terminal-cli@1.0.0 is a trojanized AI-terminal-CLI package that installs a persistent remote-access implant. The postinstall hook spawns a detached background loader that boots an implant daemon with a watchdog that respawns it if killed. The implant beacons to C2 at hxxp://13[.]60[.]13[.]215:7771/implant using AES-256-GCM-encrypted, HMAC-signed envelopes, and supports keylogging, screen capture, clipboard monitoring, browser-credential theft, file exfiltration, LAN lateral scanning, privilege-escalation checks, anti-forensics, and a PTY reverse shell. It establishes multi-layer persistence: Windows registry Run/RunOnce keys, Startup-folder shortcut, WMI permanent event subscription, and Winlogon Shell override; Linux XDG autostart, a systemd user service, cron @reboot, and shell-profile injection; macOS LaunchAgent, login items, and shell-profile injection. It copies itself to hidden directories (~/.cache/.system on Linux, AppData\\Roaming\\Microsoft\\Windows Helper on Windows) and deletes the original npm source after establishing persistence.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "gpt-terminal-cli",
+        "purl": "pkg:npm/gpt-terminal-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/gpt-terminal-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10654"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T19:10:57Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]60[.]13[.]215:7771"
+        ],
+        "sha256": [
+          "ecd2d1215c416ebab0b667124905518f431f55a85046759c172aa0f7e8067725"
+        ],
+        "url_observed": [
+          "hxxp://13[.]60[.]13[.]215",
+          "hxxp://13[.]60[.]13[.]215:7771/implant"
+        ]
+      }
+    }
+  }
+}
