@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10627",
+  "aliases": [
+    "MAL-2026-13404"
+  ],
+  "modified": "2026-08-06T14:32:49Z",
+  "published": "2026-08-06T14:31:52Z",
+  "summary": "Malicious code in tsihealth-client (npm)",
+  "details": "Tsihealth-client is a heavily-obfuscated remote-control agent. When the exported provider(url) function is called, it POSTs host metadata (CPU, RAM, process list) to the supplied server URL and spawns a shell (node:child_process) that executes commands pushed from that server, keeping the connection alive. The entire index.js payload is obfuscated with the javascript-obfuscator tool (encoded string-array + custom decoder) and opens with a comment instructing readers not to inspect it. The server endpoint is user-supplied (e.g. a Cloudflare tunnel URL); the package provides no authentication or consent boundary, acting as a remote shell backdoor on the host that imports it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tsihealth-client",
+        "purl": "pkg:npm/tsihealth-client"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tsihealth-client/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10627"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T14:31:52Z",
+      "indicators_observed": {
+        "sha256": [
+          "156976f74ec0a44e946308fa1738034c58124488d0ce5cdaa170d5c0c9ba61a1"
+        ]
+      }
+    }
+  }
+}
