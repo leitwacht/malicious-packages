@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10578",
+  "modified": "2026-08-06T07:56:51Z",
+  "published": "2026-08-06T07:55:23Z",
+  "summary": "Malicious code in streak-cache-map (npm)",
+  "details": "The package ships a 63KB Linux ELF binary (dist/internal/calc-cache.bin) that is a remote-access trojan. On import, dist/index.mjs chmods and spawns the binary as a detached background process under a fake \"native accelerator\" cover story. The binary implements a reverse shell and shellcode/ELF downloader that fetches and executes payloads from hxxp://217[.]60[.]77[.]63/Others/ and hxxp://217[.]60[.]77[.]63/SC/, plus port-forwarding, SOCKS proxy, and tunnel modules. It harvests SSH private keys and authorized_keys from ~/.ssh and /etc/ssh, browser credentials (Chrome/Edge/Brave Login Data, Cookies, Local State; Firefox logins.json and key4.db), and database credentials (.pgpass,.my.cnf, DB config files, DB-related env vars). It installs persistence via cron,.bashrc, and a systemd user service (svc-update.service). It exfiltrates collected files by POSTing them to hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php and to a POST /api/extract-receive endpoint. C2 host 217[.]60[.]77[.]63.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-cache-map",
+        "purl": "pkg:npm/streak-cache-map@1.0.0"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ],
+        "leitwacht": {}
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-cache-map/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10578"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T07:55:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "171aae3329880d35b0e459f895987c5db6f2bdd6e35872aa82bedadfa8dac8fc"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
