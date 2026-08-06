@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10656",
+  "modified": "2026-08-06T19:46:26Z",
+  "published": "2026-08-06T19:46:04Z",
+  "summary": "Malicious code in nice-utils-helper (npm)",
+  "details": "The package's postinstall hook runs probe.js, which performs cloud-metadata reconnaissance. It sends HTTP GET requests to the /latest/meta-data/ endpoint of cloud metadata services (AWS 169[.]254[.]169[.]254, Aliyun 100[.]100[.]100[.]200, Tencent metadata[.]tencentyun[.]com and 169[.]254[.]0[.]23) and records each endpoint's reachability status (HTTP status code, timeout, or connection error) to local files named NCODE_META.txt and NCODE_POC_MARKER.txt written into the working directory and parent directories. This probes whether the host is a cloud instance with a reachable metadata service — a reconnaissance step that precedes cloud IAM-credential harvesting.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nice-utils-helper",
+        "purl": "pkg:npm/nice-utils-helper"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nice-utils-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10656"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T19:46:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com"
+        ],
+        "sha256": [
+          "34ea9c7d7d87561e1cf34c6b1fa3ac3d39228cf2e0dfe0b452e3a04415c07bbc"
+        ]
+      }
+    }
+  }
+}
