@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10630",
+  "modified": "2026-08-06T15:24:53Z",
+  "published": "2026-08-06T15:24:03Z",
+  "summary": "Malicious code in streak-map-cache (npm)",
+  "details": "Streak-map-cache@1.0.0 is a trojanized utility package. On import, dist/index.mjs chmods and spawns a bundled ELF binary (dist/internal/calc-map.bin) as a detached background process. That binary is a REDSHELL C2 implant: it beacons to a remote controller (SECURE_BEACON format), provides a reverse shell (/bin/sh, /bin/bash), SOCKS/port-forward/tunnel, and a command menu (/redshell, /sysinfo, /ps, /env, /download, /upload, /fetch, /stage, /dlopen, /memfd, /shellcode, /socks, /portfwd, /tunnel, /kill, /spawn). It steals credentials: /creds copies Chrome/Chromium/Brave/Edge/Firefox Login Data, Cookies and Local State; /ssh_keys harvests ~/.ssh keys and ssh-agent keys; /dbfind extracts database passwords from configs, ~/.pgpass, ~/.my.cnf and DB env vars. It exfiltrates files via curl POST to litterbox.catbox.moe. It installs persistence via cron, ~/.bashrc, and a systemd user unit (svc-update.service). It downloads and executes second-stage payloads from hxxp://217[.]60[.]77[.]63:%d/Others/%s and stages shellcode via memfd.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-map-cache",
+        "purl": "pkg:npm/streak-map-cache"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-map-cache/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10630"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-06T15:24:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "d41efff0861f9aff46cbcef525b6b910abde89dda50909e13be58be4ec4d5569"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63"
+        ]
+      }
+    }
+  }
+}
