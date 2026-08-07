@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10794",
+  "modified": "2026-08-07T16:56:37Z",
+  "published": "2026-08-07T16:56:15Z",
+  "summary": "Malicious code in ts-utility-plus (npm)",
+  "details": "Ts-utility-plus@1.3.2 is a remote-code-execution dropper. Its main entry point (index.js) fetches a payload from hxxps://31[.]97[.]137[.]157:45000/icons/109 (HTTP header bearrtoken:logo) and executes the response body via the Function constructor with a full Node.js context exposed (require, process, Buffer, global, setTimeout), so the remotely-served code runs with full access to the host. The package is described as a TypeScript utility toolkit but contains no utilities — the entire module is a fetch-and-exec dropper with a retry loop. The C2-served stage is not shipped in the tarball, so its behaviour is determined by the remote server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-utility-plus",
+        "purl": "pkg:npm/ts-utility-plus"
+      },
+      "versions": [
+        "1.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-utility-plus/v/1.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10794"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T16:56:15Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "4403d6c2f9ec1341196729dee8b7166082831afee593c54e3f146eea58b075d9"
+        ],
+        "url_observed": [
+          "hxxps://31[.]97[.]137[.]157",
+          "hxxps://31[.]97[.]137[.]157:45000/icons/109"
+        ]
+      }
+    }
+  }
+}
