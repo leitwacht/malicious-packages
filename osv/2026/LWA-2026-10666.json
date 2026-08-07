@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10666",
+  "modified": "2026-08-07T01:21:38Z",
+  "published": "2026-08-07T01:20:05Z",
+  "summary": "Malicious code in @sqlite-prime/nodesql (npm)",
+  "details": "@sqlite-prime/nodesql@1.0.4 is a trojanized clone of the `buffer` package. Its index.js is the standard buffer v5 source with an injected line at the top that dynamically imports the dependency `@sqlite-prime/createsql` at module load time. That dependency is a known-malicious package, so merely requiring this package executes the malicious dependency's payload. The package ships no repository-verifiable content and its declared purpose (a SQL/node package) does not match the buffer code it contains.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sqlite-prime/nodesql",
+        "purl": "pkg:npm/%40sqlite-prime/nodesql"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sqlite-prime/nodesql/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10666"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T01:20:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "85d81f5712fcb4764a21ec4983c4bb109d19a63d91a090798b2a1d5613f81174"
+        ]
+      }
+    }
+  }
+}
