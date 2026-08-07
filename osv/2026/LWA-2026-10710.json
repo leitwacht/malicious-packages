@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10710",
+  "modified": "2026-08-07T08:11:51Z",
+  "published": "2026-08-07T08:10:08Z",
+  "summary": "Malicious code in streak-kit-map (npm)",
+  "details": "Streak-kit-map@1.0.0 is a trojanized calendar/streak-math library. Importing the package spawns a bundled 63KB ELF binary (dist/internal/map-calc.bin) as a detached background process. The binary is a remote-access trojan / C2 implant that connects to C2 IP 217[.]60[.]77[.]63 and provides a reverse-shell command set (/sysinfo, /whoami, /id, /ps, /env, /ifconfig, /netstat, /redshell, /download, /upload, /dataextract, /ssh_keys, /creds, /dbfind, /memfd, /shellcode, /stage, /dlopen, /socks, /portfwd, /tunnel, /kill, /spawn, /adduser, /persist). It harvests SSH private keys from ~/.ssh, /root/.ssh, /home/*/.ssh and /etc/ssh; steals browser credentials (Chrome/Chromium/Brave/Edge Login Data, Cookies, Local State; Firefox logins.json and key4.db); and discovers database credentials (mysql/postgres/mongo/redis configs, ~/.pgpass, ~/.my.cnf, DB env vars). Stolen data is exfiltrated via curl POST to litterbox.catbox.moe. The implant establishes persistence through cron (@reboot), ~/.bashrc, and a systemd user service, and can download and execute remote payloads, stage shellcode via memfd, and set up SOCKS/port-forward/tunnel channels. The advertised day-math functions are implemented in pure JavaScript and do not use the binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-kit-map",
+        "purl": "pkg:npm/streak-kit-map"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-kit-map/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10710"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T08:10:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "dcda593320fd1552c745168bf7e11ab40419f445979084490289e62ad565275d"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
