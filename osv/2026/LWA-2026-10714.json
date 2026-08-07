@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10714",
+  "modified": "2026-08-07T10:04:21Z",
+  "published": "2026-08-07T10:04:04Z",
+  "summary": "Malicious code in @rbxst/services (npm)",
+  "details": "The package's postinstall hook (scripts/postinstall.js) is a Windows-targeted multi-stage dropper. On Windows installs it downloads a ZIP archive from hxxps://files[.]catbox[.]moe/rp8idk[.]zip into the temp directory, extracts it with PowerShell Expand-Archive, then launches a detached, hidden pythonw.exe process that runs an exec_.py script from the extracted archive, and finally deletes the ZIP. This downloads and executes an unknown remote payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rbxst/services",
+        "purl": "pkg:npm/%40rbxst/services"
+      },
+      "versions": [
+        "1.0.756"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rbxst/services/v/1.0.756"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10714"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T10:04:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "files[.]catbox[.]moe"
+        ],
+        "sha256": [
+          "db656f7b06a03f4273c2f559e66b55a15d97389f2f9daa55b5ec5ee3dcbb2d73"
+        ],
+        "url_observed": [
+          "hxxps://files[.]catbox[.]moe/rp8idk[.]zip"
+        ]
+      }
+    }
+  }
+}
