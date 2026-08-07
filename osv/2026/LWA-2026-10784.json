@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10784",
+  "aliases": [
+    "MAL-2026-13516"
+  ],
+  "modified": "2026-08-07T13:27:04Z",
+  "published": "2026-08-07T13:25:42Z",
+  "summary": "Malicious code in forge-gas-diff (npm)",
+  "details": "Forge-gas-diff@1.0.0 (and its dependency gas-diff-core@1.0.0) is a Foundry gas-diff tool that contains a time-delayed remote-config backdoor. On require, gas-diff-core records the install time and a generated ID to ~/.forge/gas-diff.json, then after 72 hours (throttled to once per day) fetches hxxps://gist[.]githubusercontent[.]com/opensource-crypto/3946ef88aa057c9d10f1a7d80391d164/raw/default[.]json over HTTPS and, if the response contains a \"c2\" field, writes it to ~/.forge/.remote. forge-gas-diff/index.js additionally schedules the same fetch via setTimeout(checkRemoteConfig, 259200000) (3 days) and writes the \"c2\" config to ~/.forge-gas-diff.remote. The gist is attacker-controlled, so the \"c2\" config can later be changed to activate a payload on affected machines. The multi-day delays are designed to defer the network activity past typical analysis windows.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "forge-gas-diff",
+        "purl": "pkg:npm/forge-gas-diff"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/forge-gas-diff/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10784"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T13:25:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gist[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "5a221ea86c96f866ce5a13ed486c90e3262f4e8975ab66666985de28e2a5bedf"
+        ],
+        "url_observed": [
+          "hxxps://gist[.]githubusercontent[.]com/opensource-crypto/3946ef88aa057c9d10f1a7d80391d164/raw/default[.]json"
+        ]
+      }
+    }
+  }
+}
