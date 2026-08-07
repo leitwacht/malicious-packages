@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10735",
+  "modified": "2026-08-07T10:42:46Z",
+  "published": "2026-08-07T10:41:17Z",
+  "summary": "Malicious code in tailwindcss-motion-advanced (npm)",
+  "details": "Tailwindcss-motion-advanced is a combosquat of the tailwindcss-motion plugin. Its index.js loads lib/utils.min.js, which hardcodes Ethereum address 0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a and queries public Ethereum RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com, eth[.]blockscout[.]com/api) for the latest transaction sent from that address. It decodes the first 8 bytes of the transaction's 'to' field into two IPv4 addresses, then fetches XOR-encrypted payloads from hxxp://\u003cip\u003e:443/0x/cls and hxxp://\u003cip\u003e:443/0x/ls, decrypts them with hardcoded keys, and executes the decrypted code both via eval and by spawning a detached `node -e` subprocess. The C2 server addresses are derived at runtime from the blockchain, so the payload's command-and-control infrastructure is not fixed in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-motion-advanced",
+        "purl": "pkg:npm/tailwindcss-motion-advanced"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-motion-advanced/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10735"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T10:41:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "b6acb8a9382358b1af069441daa30a992932dacfd97024a43d1b0b554d3c0575"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10736",
+  "modified": "2026-08-07T10:42:52Z",
+  "published": "2026-08-07T10:41:42Z",
+  "summary": "Malicious code in dolyame-ui-inputtime (npm)",
+  "details": "Dolyame-ui-inputtime@35.8.1 is a multi-stage dropper disguised as a monitoring/observability SDK. On require, index.js loads _loader.js, which fingerprints the platform/arch and downloads a second-stage binary over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at /pkg/package (with platform-specific variants /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTPS download fails, it falls back to DNS TXT-tunneled exfiltration via c[.]sdk[.]dl[.]wel1[.]ru and related wel1[.]ru domains. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe under %TEMP% on Windows), chmod 755, and executed detached via /bin/sh -c or cmd.exe /c start /b, so it outlives the parent process. The bundled lib/telemetry.js is a decoy analytics facade; the real behaviour is remote binary download-and-execute on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-inputtime",
+        "purl": "pkg:npm/dolyame-ui-inputtime"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-inputtime/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10736"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T10:41:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "9c6e0a307ea96e19b009c81c51c7008243f8d5ed46d918b83f7398f105858c04"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

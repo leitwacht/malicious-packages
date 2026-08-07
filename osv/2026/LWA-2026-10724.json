@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10724",
+  "modified": "2026-08-07T10:29:35Z",
+  "published": "2026-08-07T10:28:24Z",
+  "summary": "Malicious code in dolyame-ui-progresscircle (npm)",
+  "details": "On require, the package executes a bundled dropper (_ext.js) that downloads a platform-specific binary from Cloudflare Workers C2 hosts (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) over HTTPS (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), or alternatively via DNS TXT chunked base64 exfil from the wel1[.]ru domains (c[.]sdk[.]dl[.]wel1[.]ru, sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to a hidden cache file (.cache_\u003chex\u003e on Unix, dotnet_diag_\u003chex\u003e.exe on Windows) in /var/tmp or TEMP, made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"\u003cpath\u003e \u0026\" on Unix). A large decoy analytics-SDK module (lib/telemetry.js) masks the dropper. The package can be suppressed by setting DISABLE_TELEMETRY, ANALYTICS_OPT_OUT, or DO_NOT_TRACK.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-progresscircle",
+        "purl": "pkg:npm/dolyame-ui-progresscircle"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-progresscircle/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10724"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T10:28:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "10adb65e2b8ccefee6eca894117778ccbe461b2dab604b1292bea08ec9a6c45c"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

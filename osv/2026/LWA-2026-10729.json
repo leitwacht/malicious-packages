@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10729",
+  "modified": "2026-08-07T10:30:29Z",
+  "published": "2026-08-07T10:29:25Z",
+  "summary": "Malicious code in dolyame-ui-overridestyles (npm)",
+  "details": "On require, the package downloads and executes a remote binary payload. index.js loads _compat.js, which immediately runs a setup routine that selects a platform-specific payload path (/pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe) and fetches it over HTTPS from three Cloudflare Workers endpoints: oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, and oob-worker[.]cf102-baf[.]workers[.]dev. If the HTTP fetch fails, it falls back to retrieving the payload via DNS TXT records from the resolvers c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, or net[.]dl[.]wel1[.]ru (base64-decoded). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c '\u003cpath\u003e \u0026' on POSIX). A marker file /tmp/.analytics_state throttles re-downloads. The package also ships a large decoy analytics-SDK module to disguise the behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-overridestyles",
+        "purl": "pkg:npm/dolyame-ui-overridestyles"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-overridestyles/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10729"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T10:29:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "5abb8118a62a4f96f5b10520ca8643958484c52788dfd3218e2b766af45c7747"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10746",
+  "modified": "2026-08-07T10:56:48Z",
+  "published": "2026-08-07T10:55:16Z",
+  "summary": "Malicious code in eacq-dialog (npm)",
+  "details": "Eacq-dialog ships a loader (setup.js) that runs on require. It downloads a platform-specific binary from Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If HTTP fails it reconstructs the payload from DNS TXT records under c[.]sdk[.]dl[.]wel1[.]ru / c[.]ext[.]dl[.]wel1[.]ru / c[.]pkg[.]dl[.]wel1[.]ru / c[.]net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or %TEMP%\\dotnet_diag_\u0026lt;hex\u0026gt;.exe on Windows), made executable, and launched as a detached background process via cmd.exe start /b or /bin/sh -c \"\u0026amp;\". The package executes this remote payload on install/require.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eacq-dialog",
+        "purl": "pkg:npm/eacq-dialog"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eacq-dialog/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10746"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T10:55:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]ext[.]dl[.]wel1[.]ru",
+          "c[.]net[.]dl[.]wel1[.]ru",
+          "c[.]pkg[.]dl[.]wel1[.]ru",
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "3724897be3bee4dff09e6884969ba1e2f231c6cc8add9db91123a7e5d0fe22e3"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
