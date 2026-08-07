@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10668",
+  "modified": "2026-08-07T04:19:05Z",
+  "published": "2026-08-07T04:17:06Z",
+  "summary": "Malicious code in format-helper-lib (npm)",
+  "details": "The package is named and described as a benign date/number formatting helper, but its postinstall hook (install-cb.js) runs a container-escape reconnaissance probe. On install it fingerprints the host and container runtime (hostname, OS release, kernel cmdline, runc/containerd/cri-o/docker versions), enumerates security posture (seccomp, AppArmor, SELinux, process capabilities, UID/GID maps, namespace links, /dev), checks for container runtime sockets, tests NFS root-squash, and probes NFS server ports 111 and 2049 on 10[.]0[.]128[.]136. Collected results are written to NCODE_RUNTIME.txt and NCODE_POC_MARKER.txt in the install directory and its parents.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "format-helper-lib",
+        "purl": "pkg:npm/format-helper-lib"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/format-helper-lib/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10668"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T04:17:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "f65c3c9e9869bc031a771acf03dd933c9c5b20d7fd70db2d0ed91773517c0af5"
+        ]
+      }
+    }
+  }
+}
