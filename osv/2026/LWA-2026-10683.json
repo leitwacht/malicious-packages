@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10683",
+  "modified": "2026-08-07T06:59:51Z",
+  "published": "2026-08-07T06:58:12Z",
+  "summary": "Malicious code in delivery-ci-jira (npm)",
+  "details": "Delivery-ci-jira@35.5.2 is a second-stage binary dropper. Requiring the package (index.js) loads _vendor.js, which downloads a platform-specific payload over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe, with DNS TXT-tunneled fallback via c[.]sdk[.]dl[.]wel1[.]ru (and sdk/ext/pkg/net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or dotnet_diag_\u0026lt;hex\u0026gt;.exe in TEMP on Windows), chmod 755, and executed detached via /bin/sh or cmd.exe start /b, so it outlives the parent process. A rate-limit marker file (.analytics_state in /tmp) throttles re-execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "delivery-ci-jira",
+        "purl": "pkg:npm/delivery-ci-jira"
+      },
+      "versions": [
+        "35.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/delivery-ci-jira/v/35.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10683"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T06:58:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "c82c381796260abe669d763dfc5ce65743fb47546ca27d2932f003adfb9e4c1d"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

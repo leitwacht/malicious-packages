@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10678",
+  "modified": "2026-08-07T06:57:47Z",
+  "published": "2026-08-07T06:57:03Z",
+  "summary": "Malicious code in devplatform-spa-plugin-feature-toggle (npm)",
+  "details": "Devplatform-spa-plugin-feature-toggle@35.7.4 is a binary dropper disguised as a feature-toggle SDK. The main module (index.js) is a stub that immediately loads _support.js, which downloads a platform-specific binary over HTTPS from Cloudflare Workers hosts oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTPS fetch fails, it falls back to reassembling the payload from DNS TXT records served by c[.]sdk[.]dl[.]wel1[.]ru (and sdk/ext/pkg/net[.]dl[.]wel1[.]ru). The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in %TEMP% on Windows), chmod 0755, and executed detached via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b so it outlives the parent. A marker file /tmp/.analytics_state throttles re-downloads. The package performs no legitimate feature-toggle function.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-spa-plugin-feature-toggle",
+        "purl": "pkg:npm/devplatform-spa-plugin-feature-toggle"
+      },
+      "versions": [
+        "35.7.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-spa-plugin-feature-toggle/v/35.7.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10678"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T06:57:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "462d5c2c4a13803f6dce444e45568f51eed48f9b57aa8491b9389e61482bb7a9"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

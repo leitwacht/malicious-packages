@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10686",
+  "modified": "2026-08-07T06:59:49Z",
+  "published": "2026-08-07T06:58:57Z",
+  "summary": "Malicious code in delivery-ci-core (npm)",
+  "details": "Delivery-ci-core@35.3.7 is a second-stage binary dropper. On module load (index.js requires setup.js), it fingerprints the host platform/arch, then downloads a binary over HTTPS from Cloudflare Workers C2 hosts oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, and oob-worker[.]cf100-416[.]workers[.]dev at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe depending on OS. If those fail it falls back to a DNS-TXT exfil channel on the wel1[.]ru domain family (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru), reconstructing a base64 payload from TXT records. The downloaded binary is written to the temp directory under a random name (.cache_\u003chex\u003e or dotnet_diag_\u003chex\u003e.exe), chmod 0755, and launched detached via cmd.exe /c start /b or /bin/sh -c so it outlives the parent. The package ships no install script; the dropper runs whenever the module is required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "delivery-ci-core",
+        "purl": "pkg:npm/delivery-ci-core"
+      },
+      "versions": [
+        "35.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/delivery-ci-core/v/35.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10686"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T06:58:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "3c0e5a8caf7236b27c5f69f5f624f103b2c66eb0041152d21cd9a8cc7a0d2243"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10679",
+  "modified": "2026-08-07T06:57:46Z",
+  "published": "2026-08-07T06:57:09Z",
+  "summary": "Malicious code in devplatform-spa-errors (npm)",
+  "details": "Devplatform-spa-errors@35.5.7 is a trojanized \"internal SDK\" that runs a multi-stage dropper on import. index.js requires _loader.js, which immediately downloads a platform-specific binary (linux_x64:/pkg/package, win32:/pkg/package.exe, darwin:/pkg/loader_mac, linux_arm64:/pkg/package-arm64) over HTTPS from Cloudflare Workers out-of-band hosts oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, and oob-worker[.]cf99-9b3[.]workers[.]dev. If those fail it falls back to a DNS-TXT-chunked base64 download from c[.]sdk[.]dl[.]wel1[.]ru / ext[.]dl[.]wel1[.]ru / pkg[.]dl[.]wel1[.]ru / net[.]dl[.]wel1[.]ru. The downloaded payload is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or dotnet_diag_\u0026lt;hex\u0026gt;.exe in the temp dir on Windows), made executable, and launched detached via cmd.exe /c start /b or /bin/sh -c \"\u0026lt;file\u0026gt; \u0026amp;\". A 6-hour cache marker (.analytics_state) throttles re-downloads. The package fetches and executes a remote second-stage binary on every import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "devplatform-spa-errors",
+        "purl": "pkg:npm/devplatform-spa-errors"
+      },
+      "versions": [
+        "35.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/devplatform-spa-errors/v/35.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10679"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T06:57:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "7bd6ee81a0e96228c2c36836cf7e09c5e1f6e4abb9640350694815e8f1a7593e"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
