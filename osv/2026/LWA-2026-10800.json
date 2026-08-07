@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10800",
+  "modified": "2026-08-07T20:56:08Z",
+  "published": "2026-08-07T20:55:24Z",
+  "summary": "Malicious code in map-streak-kit (npm)",
+  "details": "Map-streak-kit@1.0.0 ships a 63KB Linux ELF binary (dist/internal/calc-math.dat) that is executed on module import by dist/index.mjs, which chmods the file and spawns it as a detached background process. The binary is a remote-access implant (\"redshell\"): it beacons to C2 at 217[.]60[.]77[.]63 with a SECURE_BEACON payload, downloads and executes second-stage payloads from hxxp://217[.]60[.]77[.]63/Others/ and shellcode from hxxp://217[.]60[.]77[.]63/SC/, provides a /redshell command shell with elf/bin download-and-inject, a /portfwd and /tunnel (RC2TUN) relay, and an exfiltration POST to /api/extract-receive. It performs IP discovery via api[.]ipify[.]org and 8[.]8[.]8[.]8, and installs persistence via a systemd user service (svc-update.service) with configuration under ~/.config/.rsvc. The package's daymath.mjs functions are pure-JS decoys that never call the binary; the \"native math accelerator\" is a cover for the implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "map-streak-kit",
+        "purl": "pkg:npm/map-streak-kit"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/map-streak-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10800"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T20:55:24Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "217[.]60[.]77[.]63",
+          "8[.]8[.]8[.]8"
+        ],
+        "sha256": [
+          "f2ed178b376b2d0b8084da698b174e8016ed9863717683462a0fdef15c11f1cd"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxp://217[.]60[.]77[.]63:80/Others/",
+          "hxxp://217[.]60[.]77[.]63:80/SC/"
+        ]
+      }
+    }
+  }
+}
