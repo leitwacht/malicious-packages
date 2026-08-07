@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10814",
+  "aliases": [
+    "MAL-2026-12004"
+  ],
+  "modified": "2026-08-07T21:45:01Z",
+  "published": "2026-08-07T10:55:08Z",
+  "summary": "Malicious code in vitest-preview-pro (npm)",
+  "details": "A package named vitest-preview-pro (a combosquat of the real vitest-preview) that is actually a trojanized nodemailer clone. Its postinstall hook (node lib/utils/index.js) spawns a detached node child process running lib/utils/smtp-connection/index.js, an obfuscated script that fetches remote code from two jsonbin[.]io buckets (hxxps://api[.]jsonbin[.]io/v3/b/6a709899da38895dfeb3bc72 and hxxps://api[.]jsonbin[.]io/v3/b/698b7468d0ea881f40b029b3) and executes the returned payload via new Function('require', data.record.cookie)(require). This is remote code fetch-and-execute at install time, with the second-stage payload fully attacker-controlled.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vitest-preview-pro",
+        "purl": "pkg:npm/vitest-preview-pro"
+      },
+      "versions": [
+        "10.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vitest-preview-pro/v/10.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10814"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T10:55:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonbin[.]io",
+          "jsonbin[.]io"
+        ],
+        "sha256": [
+          "f2b8254e6d576075c982ebb52f2153685832141e6f11382840505665f96cc8fb"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonbin[.]io/v3/b/698b7468d0ea881f40b029b3",
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a709899da38895dfeb3bc72"
+        ]
+      }
+    }
+  }
+}
