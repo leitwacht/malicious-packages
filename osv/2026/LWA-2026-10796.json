@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10796",
+  "modified": "2026-08-07T19:26:40Z",
+  "published": "2026-08-07T19:22:30Z",
+  "summary": "Malicious code in @rbx-ts/services (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) is a Windows-only dropper. On win32 it downloads a zip archive from a remote URL into %TEMP%, extracts it with PowerShell Expand-Archive, recursively scans the extracted directory, and launches every.exe it finds as a detached process, then deletes the zip. Installing this package on Windows downloads and executes an arbitrary remote binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rbx-ts/services",
+        "purl": "pkg:npm/%40rbx-ts/services"
+      },
+      "versions": [
+        "1.6.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rbx-ts/services/v/1.6.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10796"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T19:22:30Z",
+      "indicators_observed": {
+        "sha256": [
+          "0ad86b7bb64647f544bb20c8a6d89efba8c735141363eb8e97bf32eabbc416a3"
+        ]
+      }
+    }
+  }
+}
