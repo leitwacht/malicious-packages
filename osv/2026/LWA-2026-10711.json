@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10711",
+  "modified": "2026-08-07T08:40:11Z",
+  "published": "2026-08-07T08:39:50Z",
+  "summary": "Malicious code in @fedfub/string-utils (npm)",
+  "details": "The postinstall hook executes a bundled script that acts as a self-propagating implant. On install it harvests environment variables matching KEY/SECRET/TOKEN/PASS/AWS/JWT/STRIPE/PAYPAL/DB_/DATABASE/REDIS/MONGO, recursively reads source files (.js,.ts,.py,.go,.rs,.java,.c,.cpp,.h,.cs,.rb,.php) from the working directory, and reads SSH keys from ~/.ssh, then POSTs all collected data to 73[.]218[.]105[.]44:8080/collect. It self-propagates by publishing a \u003cdependency\u003e-patch package (version 99.0.0) containing the same payload for every dependency of the current project, and injects a dependency into package.json files across the home directory. It installs persistence via a scheduled task (Windows) or a @reboot cron entry (Linux). It beacons every 30 seconds to 73[.]218[.]105[.]44:8080/cmd?id=\u003cid\u003e and executes returned commands, posting command output to /result.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@fedfub/string-utils",
+        "purl": "pkg:npm/%40fedfub/string-utils"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@fedfub/string-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10711"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T08:39:50Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "73[.]218[.]105[.]44:8080"
+        ],
+        "sha256": [
+          "a8c5827e1937d814df6c4381d1921d316a0bed828b2d667dda1a31884a474eb8"
+        ],
+        "url_observed": [
+          "hxxp://73[.]218[.]105[.]44:8080/cmd",
+          "hxxp://73[.]218[.]105[.]44:8080/collect",
+          "hxxp://73[.]218[.]105[.]44:8080/result"
+        ]
+      }
+    }
+  }
+}
