@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10703",
+  "modified": "2026-08-07T07:26:10Z",
+  "published": "2026-08-07T07:25:39Z",
+  "summary": "Malicious code in bigops-telephony-mock (npm)",
+  "details": "Bigops-telephony-mock@35.7.2 is a multi-stage remote binary downloader. On require, index.js loads setup.js, which fingerprints the OS/arch and downloads a binary payload over HTTPS from oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, and oob-worker[.]cf99-9b3[.]workers[.]dev at /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe per platform). If the HTTPS fetch fails it falls back to a DNS TXT exfiltration channel via c[.]sdk[.]dl[.]wel1[.]ru (also sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to a hidden cache file (.cache_\u003chex\u003e or dotnet_diag_\u003chex\u003e.exe) in /var/tmp or the Windows TEMP directory, made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c '... \u0026' on Unix) with stdio ignored. The package ships a large decoy telemetry module to disguise the downloader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bigops-telephony-mock",
+        "purl": "pkg:npm/bigops-telephony-mock"
+      },
+      "versions": [
+        "35.7.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bigops-telephony-mock/v/35.7.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10703"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T07:25:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "44f9b9d305c9be8f59851169097a23cef5baf8128872c0721ad4dfab6ee67c1b"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
