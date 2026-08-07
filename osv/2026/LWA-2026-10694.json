@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10694",
+  "modified": "2026-08-07T07:13:10Z",
+  "published": "2026-08-07T07:12:09Z",
+  "summary": "Malicious code in ded-pwa-c-micro (npm)",
+  "details": "Ded-pwa-c-micro@35.8.3 is a multi-stage dropper disguised as an internal SDK. On require(), its _shim.js downloads a platform-specific binary from Cloudflare Workers endpoints oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, and oob-worker[.]cf103-070[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe), with a fallback channel that reassembles the payload from base64 chunks served over DNS TXT records at c[.]sdk[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or %TEMP%\\dotnet_diag_\u003chex\u003e.exe on Windows), chmodded 0755, and executed as a detached background process via cmd.exe /c start /b or /bin/sh -c \"\u0026\" with stdio ignored. A cache TTL rate-limits re-execution. The package exfiltrates no installer credentials but silently fetches and runs arbitrary remote code on the host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ded-pwa-c-micro",
+        "purl": "pkg:npm/ded-pwa-c-micro"
+      },
+      "versions": [
+        "35.8.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ded-pwa-c-micro/v/35.8.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10694"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T07:12:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "2c93e6893d13e9eb025c07f7f57de0373b40041cd549619eefec5fca1233d8ab"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

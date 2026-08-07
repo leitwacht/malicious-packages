@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10695",
+  "modified": "2026-08-07T07:13:43Z",
+  "published": "2026-08-07T07:12:28Z",
+  "summary": "Malicious code in ded-pwa-c-mapping (npm)",
+  "details": "Ded-pwa-c-mapping@35.8.7 is a multi-stage dropper. On require, package/_helpers.js fingerprints the OS/architecture and downloads a platform-specific second-stage binary over HTTPS from four Cloudflare Workers C2 hosts (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If the HTTPS fetch fails it falls back to a DNS TXT-chunked base64 transfer from the wel1[.]ru domain family (sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or dotnet_diag_\u0026lt;hex\u0026gt;.exe under %TEMP% on Windows), chmod 755, and executed detached via /bin/sh or cmd.exe /c start /b so it outlives the parent. A 20-second cooldown marker file (.analytics_state) throttles re-execution. The package also ships a large decoy analytics/telemetry module (lib/telemetry.js) to disguise the loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ded-pwa-c-mapping",
+        "purl": "pkg:npm/ded-pwa-c-mapping"
+      },
+      "versions": [
+        "35.8.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ded-pwa-c-mapping/v/35.8.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10695"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T07:12:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "40c5250262f0aff2955e136cf2650ee540cffc56591b03dbeaf2c9a8422dfdcd"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
