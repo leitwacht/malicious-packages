@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10770",
+  "modified": "2026-08-07T11:14:29Z",
+  "published": "2026-08-07T11:13:50Z",
+  "summary": "Malicious code in dolyame-ui-carouselline (npm)",
+  "details": "On require, this package downloads and executes a second-stage binary. It fingerprints the platform/arch and fetches a platform-specific payload over HTTPS from Cloudflare Workers C2 hosts oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, and oob-worker[.]cf100-416[.]workers[.]dev at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe. If the HTTP fetch fails it falls back to a DNS TXT exfiltration channel via c[.]sdk[.]dl[.]wel1[.]ru (and sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru), reassembling base64 chunks. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in TEMP on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"\u0026\" on Unix).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-carouselline",
+        "purl": "pkg:npm/dolyame-ui-carouselline"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-carouselline/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10770"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T11:13:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "ffdfb7ca8ad35b9930a2724e99964c66f8b15494f4200848a3945f95c8161e43"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package[.]exe"
+        ]
+      }
+    }
+  }
+}

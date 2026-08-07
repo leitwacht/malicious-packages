@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10765",
+  "modified": "2026-08-07T11:13:47Z",
+  "published": "2026-08-07T11:12:39Z",
+  "summary": "Malicious code in dolyame-ui-contextmenu (npm)",
+  "details": "Dolyame-ui-contextmenu@35.8.1 is a multi-stage dropper. On require, package/_polyfill.js runs a downloader that fetches a binary payload over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev) at path /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform). If those fail, it resolves the payload via DNS TXT records under the wel1[.]ru domain (c[.]sdk[.]dl[.]wel1[.]ru, ext[.]dl[.]wel1[.]ru, pkg[.]dl[.]wel1[.]ru, net[.]dl[.]wel1[.]ru). The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the Windows temp dir), chmod 0o755, and executed as a detached background process via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b. The package also ships a large disguised analytics module (lib/telemetry.js) as a decoy. The package name and description (\"Build and deployment tools\") are unrelated to its actual behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-contextmenu",
+        "purl": "pkg:npm/dolyame-ui-contextmenu"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-contextmenu/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10765"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T11:12:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru",
+          "wel1[.]ru"
+        ],
+        "sha256": [
+          "ababa75df3f8c9dbe47ca433e9629d182a0a4a17cb2d5a280c273f31490d924c"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

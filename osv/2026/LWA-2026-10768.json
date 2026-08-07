@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10768",
+  "modified": "2026-08-07T11:14:36Z",
+  "published": "2026-08-07T11:13:27Z",
+  "summary": "Malicious code in dolyame-ui-clickoutsidehoc (npm)",
+  "details": "On load, the package executes a bundled downloader (_shim.js) that fetches a platform-specific binary over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at /pkg/package, /pkg/package-arm64, /pkg/loader_mac, or /pkg/package.exe. If the HTTPS fetch fails it falls back to retrieving base64 payload chunks via DNS TXT queries against c[.]sdk[.]dl[.]wel1[.]ru and *.dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in the temp dir on Windows), made executable, and launched as a detached background process (cmd.exe /c start /b on Windows, /bin/sh -c \"\u003cpath\u003e \u0026\" on POSIX). A state file (/tmp/.analytics_state) suppresses re-execution for a period. The package also ships a decoy analytics/telemetry module.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-clickoutsidehoc",
+        "purl": "pkg:npm/dolyame-ui-clickoutsidehoc"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-clickoutsidehoc/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10768"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T11:13:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "be8a131016029e04671c06df6bd68921caad6c59c24566c0dba22e474c74de10"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

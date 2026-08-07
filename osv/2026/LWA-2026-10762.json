@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10762",
+  "modified": "2026-08-07T11:12:03Z",
+  "published": "2026-08-07T11:10:57Z",
+  "summary": "Malicious code in dolyame-ui-eventoutside (npm)",
+  "details": "On require, the package executes a bootstrap dropper. It fingerprints the OS/arch, then downloads a platform-specific second-stage binary over HTTPS from a rotating set of Cloudflare Workers endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe. If the HTTP download fails it falls back to a DNS TXT exfiltration channel via c[.]sdk[.]dl[.]wel1[.]ru / ext[.]dl[.]wel1[.]ru / pkg[.]dl[.]wel1[.]ru / net[.]dl[.]wel1[.]ru. The downloaded binary is written to /tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe in %TEMP% on Windows), chmod 0755, and launched detached via /bin/sh -c or cmd.exe /c start /b so it outlives the parent process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-eventoutside",
+        "purl": "pkg:npm/dolyame-ui-eventoutside"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-eventoutside/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10762"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T11:10:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "79fa33de2b11ebc30dc7fe06cd773f71ef76a4cc9498b725f84897f3b2771d30"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

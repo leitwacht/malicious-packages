@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10769",
+  "modified": "2026-08-07T11:14:28Z",
+  "published": "2026-08-07T11:13:37Z",
+  "summary": "Malicious code in dolyame-ui-checkablegroup (npm)",
+  "details": "Dolyame-ui-checkablegroup is a multi-stage binary dropper. On require, index.js loads _helpers.js, which fingerprints the host platform/arch and downloads a second-stage binary over HTTPS from Cloudflare Workers hosts oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev and oob-worker[.]cf103-070[.]workers[.]dev (paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe). If the HTTPS download fails it falls back to a DNS TXT covert channel via c[.]sdk[.]dl[.]wel1[.]ru (and sdk/ext/pkg/net[.]dl[.]wel1[.]ru). The downloaded payload is written to a hidden file (.cache_\u0026lt;hex\u0026gt; on Unix, dotnet_diag_\u0026lt;hex\u0026gt;.exe on Windows) in /var/tmp or TEMP, chmodded 0755, and executed as a detached background process via /bin/sh or cmd.exe. The package has no lifecycle hook; the dropper runs when the module is imported.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dolyame-ui-checkablegroup",
+        "purl": "pkg:npm/dolyame-ui-checkablegroup"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dolyame-ui-checkablegroup/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10769"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T11:13:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "6525bb9328803ea9a4ff5d88b32ab5b879f07a0fb84ed7125de55a70faf2b5dd"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
