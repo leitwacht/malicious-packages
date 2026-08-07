@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10808",
+  "modified": "2026-08-07T21:42:40Z",
+  "published": "2026-08-07T21:41:49Z",
+  "summary": "Malicious code in modern-localization (npm)",
+  "details": "On server-side import, this \"localization helper\" automatically fetches a remote payload and executes it. The package's syncLanguageSystem() function issues an HTTP GET to hxxps://api[.]jsonbin[.]io/v3/b/6a764665da38895dfec7cd5d (a JSON-paste storage host) with an X-Secret-Key header, reads the value from the response, and runs it as arbitrary JavaScript via new Function(\"require\", payload) and by writing it to a temp file and forking a child process to execute it. The fetched payload is fully attacker-controlled, so the package executes arbitrary remote code on any server that imports it. A second staging URL (hxxps://api[.]jsonbin[.]io/v3/b/6a718a58da38895dfeb6e2ed) is also present. The fetch retries up to 5 times.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "modern-localization",
+        "purl": "pkg:npm/modern-localization"
+      },
+      "versions": [
+        "1.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/modern-localization/v/1.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10808"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T21:41:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonbin[.]io"
+        ],
+        "sha256": [
+          "a9b577612335470144c28368dcb564f011b02fa993a84c6c57139f20b2fc9b5a"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a718a58da38895dfeb6e2ed",
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a764665da38895dfec7cd5d"
+        ]
+      }
+    }
+  }
+}

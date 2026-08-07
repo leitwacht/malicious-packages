@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10810",
+  "modified": "2026-08-07T21:43:27Z",
+  "published": "2026-08-07T21:43:00Z",
+  "summary": "Malicious code in sme-rko-finance-front-operations-domain (npm)",
+  "details": "On require, the package downloads a platform-specific binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe, with a DNS-TXT fallback via c[.]sdk[.]dl[.]wel1[.]ru (base64-decoded). The downloaded payload is written to /var/tmp/.cache_\u0026lt;hex\u0026gt; (or dotnet_diag_\u0026lt;hex\u0026gt;.exe in %TEMP% on Windows), chmod 755, and executed detached (cmd.exe /c start /b on Windows, /bin/sh -c on Unix). A lock file at /tmp/.analytics_state throttles re-execution. The package is a remote binary download-and-execute dropper that runs on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-rko-finance-front-operations-domain",
+        "purl": "pkg:npm/sme-rko-finance-front-operations-domain"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-rko-finance-front-operations-domain/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10810"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T21:43:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "c14ab5d24ecc0b7956ceee2e13272ca701277fdfd27c602897d85cfc0fed849f"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

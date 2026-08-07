@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10803",
+  "modified": "2026-08-07T21:41:58Z",
+  "published": "2026-08-07T21:40:36Z",
+  "summary": "Malicious code in sme-rko-finance-front-operations-notifications-models (npm)",
+  "details": "On require, the package's index.js loads _polyfill.js, which immediately downloads a platform-specific binary payload from Cloudflare Workers C2 mirrors (oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev) at paths /pkg/package, /pkg/package-arm64, /pkg/loader_mac, and /pkg/package.exe. If the HTTP download fails, it falls back to a DNS-TXT exfiltration channel via c[.]sdk[.]dl[.]wel1[.]ru that reconstructs a base64 payload from numbered TXT records. The downloaded payload is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe under %TEMP% on Windows), chmod 0755, and executed detached via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b. The bundled lib/telemetry.js is a decoy analytics-SDK facade. The package runs this on every require unless DISABLE_TELEMETRY/ANALYTICS_OPT_OUT/DO_NOT_TRACK is set.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-rko-finance-front-operations-notifications-models",
+        "purl": "pkg:npm/sme-rko-finance-front-operations-notifications-models"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-rko-finance-front-operations-notifications-models/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10803"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T21:40:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "23e2ce31e41a060774ba53bc6ae764f1b32de6b0d5a151e928ac06cf9268b652"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/loader_mac",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package-arm64",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package[.]exe",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

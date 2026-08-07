@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10807",
+  "modified": "2026-08-07T21:42:50Z",
+  "published": "2026-08-07T21:41:08Z",
+  "summary": "Malicious code in sme-rko-finance-front-operations-feed-models (npm)",
+  "details": "On require, the package runs a platform-aware dropper. It fingerprints the OS/architecture, then downloads a second-stage binary over HTTPS from Cloudflare Workers endpoints (oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, path /pkg/package) and, as a fallback, reassembles a payload from DNS TXT records served by c[.]sdk[.]dl[.]wel1[.]ru / ext[.]dl[.]wel1[.]ru / pkg[.]dl[.]wel1[.]ru / net[.]dl[.]wel1[.]ru. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe under TEMP on Windows), made executable, and launched as a detached background process via /bin/sh -c or cmd.exe /c start /b. Execution is rate-limited by a stamp file in /tmp.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-rko-finance-front-operations-feed-models",
+        "purl": "pkg:npm/sme-rko-finance-front-operations-feed-models"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-rko-finance-front-operations-feed-models/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10807"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T21:41:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "ext[.]dl[.]wel1[.]ru",
+          "net[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev",
+          "pkg[.]dl[.]wel1[.]ru",
+          "sdk[.]dl[.]wel1[.]ru"
+        ],
+        "sha256": [
+          "bde43d6c96eaa2acb0f06d50106837480dbda1905072a92d4ba8941ebafbfd06"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

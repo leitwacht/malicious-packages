@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10802",
+  "modified": "2026-08-07T21:40:46Z",
+  "published": "2026-08-07T21:40:21Z",
+  "summary": "Malicious code in sme-rko-finance-front-operations-other (npm)",
+  "details": "On require, the package runs a downloader that fetches a binary over HTTPS from three Cloudflare Workers endpoints (oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf102-baf[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev) at /pkg/package (or /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe depending on platform), with a DNS-TXT fallback channel via c[.]sdk[.]dl[.]wel1[.]ru that base64-decodes chunked TXT records into the payload. The downloaded binary is written to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe on Windows), made executable, and launched as a detached background process via /bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b. A marker file at /tmp/.analytics_state throttles re-execution. This is remote binary download-and-execution at install/require time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-rko-finance-front-operations-other",
+        "purl": "pkg:npm/sme-rko-finance-front-operations-other"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-rko-finance-front-operations-other/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10802"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T21:40:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf102-baf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev"
+        ],
+        "sha256": [
+          "a100ee0dd2f0040816012f99fc177b402ee8ae672275d0efc973b656ff3dc9ba"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf102-baf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}

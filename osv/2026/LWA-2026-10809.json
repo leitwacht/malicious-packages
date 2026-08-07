@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10809",
+  "modified": "2026-08-07T21:42:49Z",
+  "published": "2026-08-07T21:42:05Z",
+  "summary": "Malicious code in sme-rko-finance-front-operations-feed-impl (npm)",
+  "details": "On require, the package downloads a platform-specific binary from Cloudflare Workers endpoints (oob-worker[.]cf101-adf[.]workers[.]dev, oob-worker[.]cf99-9b3[.]workers[.]dev, oob-worker[.]cf103-070[.]workers[.]dev, oob-worker[.]cf100-416[.]workers[.]dev, path /pkg/package, /pkg/package-arm64, /pkg/loader_mac, /pkg/package.exe) and from DNS-TXT channels under c[.]sdk[.]dl[.]wel1[.]ru, writes it to /var/tmp/.cache_\u003chex\u003e (or dotnet_diag_\u003chex\u003e.exe on Windows), and executes it as a detached background process (/bin/sh -c \"\u003cpath\u003e \u0026\" or cmd.exe /c start /b). The bundled lib/telemetry.js is a decoy analytics facade; the real payload is the downloaded and executed binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sme-rko-finance-front-operations-feed-impl",
+        "purl": "pkg:npm/sme-rko-finance-front-operations-feed-impl"
+      },
+      "versions": [
+        "35.8.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sme-rko-finance-front-operations-feed-impl/v/35.8.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10809"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T21:42:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c[.]sdk[.]dl[.]wel1[.]ru",
+          "oob-worker[.]cf100-416[.]workers[.]dev",
+          "oob-worker[.]cf101-adf[.]workers[.]dev",
+          "oob-worker[.]cf103-070[.]workers[.]dev",
+          "oob-worker[.]cf99-9b3[.]workers[.]dev"
+        ],
+        "sha256": [
+          "4dcb2a0b3bf010bd03e70b9d77f43648b93a6c0ddd0473732225ba45ee5730c7"
+        ],
+        "url_observed": [
+          "hxxps://oob-worker[.]cf100-416[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf101-adf[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf103-070[.]workers[.]dev/pkg/package",
+          "hxxps://oob-worker[.]cf99-9b3[.]workers[.]dev/pkg/package"
+        ]
+      }
+    }
+  }
+}
