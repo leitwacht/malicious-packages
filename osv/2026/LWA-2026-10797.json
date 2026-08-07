@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10797",
+  "modified": "2026-08-07T19:37:18Z",
+  "published": "2026-08-07T19:37:04Z",
+  "summary": "Malicious code in @coralxyz/anchor (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) is an obfuscated Windows-only dropper. On Windows it downloads hxxps://files[.]catbox[.]moe/9bppy2[.]zip to %TEMP%/anc_\u003crandom\u003e.zip, extracts it with powershell.exe Expand-Archive, then locates the first.exe in the extracted directory and launches it as a detached process before deleting the zip. The package name impersonates the Anchor Solana framework (@coralxyz/anchor vs the real @coral-xyz/anchor).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@coralxyz/anchor",
+        "purl": "pkg:npm/%40coralxyz/anchor"
+      },
+      "versions": [
+        "0.30.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@coralxyz/anchor/v/0.30.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10797"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T19:37:04Z",
+      "indicators_observed": {
+        "sha256": [
+          "a2ecf6c0c274e20b0a0f24619cf6ea6123a9f2e5498ba811000a9f19ed8ecda2"
+        ],
+        "url_observed": [
+          "hxxps://files[.]catbox[.]moe/9bppy2[.]zip"
+        ]
+      }
+    }
+  }
+}
