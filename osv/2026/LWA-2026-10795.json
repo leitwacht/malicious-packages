@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10795",
+  "modified": "2026-08-07T17:40:49Z",
+  "published": "2026-08-07T17:40:15Z",
+  "summary": "Malicious code in streak-map-kit (npm)",
+  "details": "Streak-map-kit@1.0.0 is a trojanized \"streak math\" library. Importing the package root evaluates dist/index.mjs, which chmods and spawns a bundled 63KB ELF binary (dist/internal/calc-mapping.bin) as a detached background process, disguised as a \"native math accelerator\" behind a fake integrity check. The ELF is a full remote-access implant that connects to C2 host 217[.]60[.]77[.]63. It provides: /redshell and /stage to download and execute second-stage ELF/shellcode payloads from hxxp://217[.]60[.]77[.]63:\u003cport\u003e/Others/\u003cfile\u003e and /SC/\u003cfile\u003e; /creds which copies browser credential stores (Chrome/Chromium/Brave/Edge/Firefox Login Data, Cookies, Local State, logins.json, key4.db); /ssh_keys which harvests SSH private keys and authorized_keys; /dbfind which greps database configs and password files; /persist which installs persistence via cron, ~/.bashrc, and a systemd user service; /tunnel (RC2TUN), /portfwd, and /socks for network pivoting; /memfd and /shellcode for in-memory payload execution; /adduser and /enableuser for creating/enabling local accounts; and recon via /sysinfo, /env, /ps, /ifconfig, /netstat, /users. Stolen data is exfiltrated to litterbox.catbox.moe and via POST /api/extract-receive. The implant also resolves the host's public IP via api[.]ipify[.]org.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "streak-map-kit",
+        "purl": "pkg:npm/streak-map-kit"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/streak-map-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10795"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-07T17:40:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "b1d038a04272a1f0dbf1ece8f8697cd140dc7d9cc93dba1719cb916105fa3a37"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63",
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
