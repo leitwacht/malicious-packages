@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10833",
+  "modified": "2026-08-08T11:37:25Z",
+  "published": "2026-08-08T11:37:05Z",
+  "summary": "Malicious code in @ethers-js/contracts (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) is a Windows-targeted downloader. On win32 only, it creates a hidden directory under LOCALAPPDATA/TEMP named 'Microsoft/\u003crandom\u003e', downloads a ZIP from hxxps://marxl[.]com/bin/wvt/swat/7aX0ci[.]zip, extracts it with powershell (Expand-Archive), then launches pythonw.exe r.py from the extracted contents as a detached background process and deletes the ZIP. The package name impersonates the ethers.js project.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ethers-js/contracts",
+        "purl": "pkg:npm/%40ethers-js/contracts"
+      },
+      "versions": [
+        "6.9.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ethers-js/contracts/v/6.9.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10833"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-08T11:37:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "marxl[.]com"
+        ],
+        "sha256": [
+          "8ab24457f80a1b5566cb5fcbf776c6095e98629d39d8909a799d29cb7ca9a2ae"
+        ],
+        "url_observed": [
+          "hxxps://marxl[.]com/bin/wvt/swat/7aX0ci[.]zip"
+        ]
+      }
+    }
+  }
+}
