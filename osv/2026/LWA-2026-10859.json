@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10859",
+  "modified": "2026-08-08T23:11:32Z",
+  "published": "2026-08-08T23:11:05Z",
+  "summary": "Malicious code in @polymarkets/clob-client-v2 (npm)",
+  "details": "The package `@polymarkets/clob-client-v2` (a combosquat of the legitimate `@polymarket/clob-client`) declares its `inquirer` dependency as a direct tarball URL hosted on `hxxps://registrynpmjs[.]to/inquirer-14[.]0[.]2[.]tgz`. `registrynpmjs.to` is a typosquat of the official npm registry host `registry[.]npmjs[.]org`; installing this package causes npm to download and execute the `inquirer` dependency from that attacker-controlled lookalike registry domain rather than the official registry. The bundled client code itself is a standard Polymarket CLOB API client with no install hooks, but the dependency redirect means the attacker controls the code that runs when the package is installed and used.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@polymarkets/clob-client-v2",
+        "purl": "pkg:npm/%40polymarkets/clob-client-v2"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@polymarkets/clob-client-v2/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10859"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-08T23:11:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "registrynpmjs[.]to"
+        ],
+        "sha256": [
+          "32f590858a82c0d8900f95b7441be5f8b743600792b1960cda11aa118f6d00e6"
+        ],
+        "url_observed": [
+          "hxxps://registrynpmjs[.]to/inquirer-14[.]0[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}
