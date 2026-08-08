@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10828",
+  "modified": "2026-08-08T10:41:21Z",
+  "published": "2026-08-08T10:41:05Z",
+  "summary": "Malicious code in @solana-js/web3 (npm)",
+  "details": "The package impersonates the Solana web3.js SDK. Its postinstall hook (scripts/postinstall.js) runs only on Windows and launches a hidden, detached PowerShell process with a base64-encoded payload. The payload P/Invokes kernel32 VirtualAlloc/CreateThread/WaitForSingleObject, downloads a binary from hxxps://files[.]catbox[.]moe/a3loxy[.]bin, copies it into executable memory, and runs it in a new thread — an in-memory shellcode loader that executes a remote payload on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@solana-js/web3",
+        "purl": "pkg:npm/%40solana-js/web3"
+      },
+      "versions": [
+        "1.91.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@solana-js/web3/v/1.91.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10828"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-08T10:41:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "d89497e7790d1d41b29e43fcde492fa1a080dad1826fdfd8b32c26766ba58d9b"
+        ],
+        "url_observed": [
+          "hxxps://files[.]catbox[.]moe/a3loxy[.]bin"
+        ]
+      }
+    }
+  }
+}
