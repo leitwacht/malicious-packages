@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10845",
+  "modified": "2026-08-08T14:57:20Z",
+  "published": "2026-08-08T14:56:19Z",
+  "summary": "Malicious code in @rblxts/services (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) is a Windows-only dropper. On Windows installs it creates a random directory under %LOCALAPPDATA%\\Microsoft, downloads a ZIP archive from hxxps://maxls[.]catch[.]co/Yarbot/gwgw6ai56aXA, extracts it with PowerShell (Expand-Archive), and launches pythonw.exe exec_.py as a detached background process before deleting the archive. The second-stage payload is fetched from the remote host and executed without the installer's knowledge. All strings in the hook are hex-escaped to hide the download URL and commands.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rblxts/services",
+        "purl": "pkg:npm/%40rblxts/services"
+      },
+      "versions": [
+        "1.6.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rblxts/services/v/1.6.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10845"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-08T14:56:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "maxls[.]catch[.]co"
+        ],
+        "sha256": [
+          "1df867f25e4bb9ad7c53a2b1f5acba439766628750111f9c574f0c9b27bd23ed"
+        ],
+        "url_observed": [
+          "hxxps://maxls[.]catch[.]co/Yarbot/gwgw6ai56aXA"
+        ]
+      }
+    }
+  }
+}
