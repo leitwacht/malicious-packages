@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10866",
+  "modified": "2026-08-09T08:10:54Z",
+  "published": "2026-08-09T08:10:27Z",
+  "summary": "Malicious code in envpack-conf (npm)",
+  "details": "Envpack-conf@1.0.1 is a trojanized package: it presents as a config-reading utility but its module entry (index.js) runs a covert command-and-control dropper on import. It queries public Ethereum RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) and the Blockscout API (eth[.]blockscout[.]com/api) to watch for a transaction from attacker-controlled address 0xa322e5f3d311d3080e6f0121063e9adc2490ef1a. When found, it decodes the transaction's recipient address bytes into two IPv4 C2 server IPs, then fetches XOR-encrypted second-stage payloads from hxxp://\u003cip\u003e:443/0x/cls and hxxp://\u003cip\u003e:443/0x/ls, decrypts them with hardcoded XOR keys, and executes them via eval and a detached `node -e` child process. It also installs global backdoor hooks (global.r=require, global.m=module). The C2 server addresses are delivered covertly through the Ethereum blockchain transaction recipient field.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "envpack-conf",
+        "purl": "pkg:npm/envpack-conf"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/envpack-conf/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10866"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-09T08:10:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "5e892d265a5557fcb755ad8fc7de2d49b244d28557cc7a0793df0ab9414153b8"
+        ],
+        "wallet_observed": [
+          "0xa322e5f3d311d3080e6f0121063e9adc2490ef1a"
+        ]
+      }
+    }
+  }
+}
