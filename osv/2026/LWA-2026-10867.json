@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10867",
+  "modified": "2026-08-09T13:00:34Z",
+  "published": "2026-08-09T13:00:04Z",
+  "summary": "Malicious code in cryptostock (npm)",
+  "details": "Cryptostock@1.0.0 ships a crypto-drainer and C2 implant in its main entry (index.js). On require it registers the host with a command-and-control server at hxxps://badai[.]run[.]place (endpoints /register.php, /cekapppiapi.php?uid=, /fallback.php) using AES-256-ECB-encrypted communications, polls the C2 for shell commands and executes them via child_process, and exfiltrates the output. It scans the filesystem for private keys and wallets — /root/.ssh, /home/*/.ssh, /opt/wallet-keys, /etc/ssl/private, /.ethereum/keystore, /var/lib/ethereum/keystore, /mnt/crypto/wallets, matching.pem,.key, UTC--*, and keystore files — and reads the ETH_PRIVATE_KEY environment variable. Recovered Ethereum private keys are used to sweep any non-zero balances to the drain address 0w4d2d55 via an Infura provider.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cryptostock",
+        "purl": "pkg:npm/cryptostock"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cryptostock/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10867"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-09T13:00:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "badai[.]run.place"
+        ],
+        "sha256": [
+          "a16b8c7af9c0659efd0fbf9a3104b0fc5e5ce78d75f8d5d9e041f42a24d8db57"
+        ],
+        "url_observed": [
+          "hxxps://badai[.]run[.]place",
+          "hxxps://badai[.]run[.]place/cekapppiapi[.]php",
+          "hxxps://badai[.]run[.]place/fallback[.]php",
+          "hxxps://badai[.]run[.]place/register[.]php"
+        ],
+        "wallet_observed": [
+          "0w4d2d55"
+        ]
+      }
+    }
+  }
+}
