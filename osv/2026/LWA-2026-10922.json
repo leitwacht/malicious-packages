@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10922",
+  "modified": "2026-08-10T06:04:39Z",
+  "published": "2026-08-10T06:03:17Z",
+  "summary": "Malicious code in runtimekit (npm)",
+  "details": "Runtimekit@1.1.0 is a TypeScript validation library that embeds a remote-code-execution dropper in lib/index.cjs. On load it queries public Ethereum RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io, or the ETH_RPC_URL env var) for the latest transaction from wallet 0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a, decodes the transaction's `to` field into two IPv4 addresses, and uses those as command-and-control hosts (hxxp://\u0026lt;ip\u0026gt;:80 and :443). It fetches payloads from the C2 at paths /0x/cls and /0x/ls, reading a base64-encoded payload from the x-payload-b64 response header, then executes the fetched code via eval() and by spawning a detached `node -e` process. The C2 addresses are laundered through the attacker's own Ethereum transactions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "runtimekit",
+        "purl": "pkg:npm/runtimekit"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/runtimekit/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10922"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T06:03:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "55ef47c287be3026272f9bc256d66ed12d1de85ffaf9509e3cb2e7878e97c5c6"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
