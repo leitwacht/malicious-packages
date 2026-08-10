@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10915",
+  "modified": "2026-08-10T05:40:26Z",
+  "published": "2026-08-10T05:40:11Z",
+  "summary": "Malicious code in hex-encode-utils (npm)",
+  "details": "The postinstall hook (node runtime.js) of hex-encode-utils@1.0.5 is a multi-stage dropper. On install it POSTs host reconnaissance (hostname, username, OS/platform, Node version) to steel-mere-4155[.]ricardorichp[.]workers[.]dev/report, then fetches an AES-256-GCM-encrypted payload from steel-mere-4155[.]ricardorichp[.]workers[.]dev/e, decrypts it with a hardcoded key, writes the resulting Python module to ~/.cache/hex-encode-utils/modules/runtime.py, and executes it in the background via a detached python subprocess. The remote payload is fetched and executed at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hex-encode-utils",
+        "purl": "pkg:npm/hex-encode-utils"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hex-encode-utils/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10915"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T05:40:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "steel-mere-4155[.]ricardorichp[.]workers[.]dev"
+        ],
+        "sha256": [
+          "8421c2fa8111ba401622d1cf0f21c73a177bd683b1442d971f71e40ec29f9272"
+        ],
+        "url_observed": [
+          "hxxps://steel-mere-4155[.]ricardorichp[.]workers[.]dev/e",
+          "hxxps://steel-mere-4155[.]ricardorichp[.]workers[.]dev/report"
+        ]
+      }
+    }
+  }
+}
