@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10916",
+  "modified": "2026-08-10T05:43:19Z",
+  "published": "2026-08-10T05:42:41Z",
+  "summary": "Malicious code in @noobaihome/amis-simple-area-widget (npm)",
+  "details": "The package's preinstall hook (node./scripts/install.js) performs a server-side request forgery probe and exfiltrates the result. On install it fetches the internal endpoint hxxp://bsrc-ssrf[.]n[.]baidu-int[.]com/bsrc_uid, then base64url-encodes the response body and sends it to the external callback server hxxp://49[.]232[.]169[.]67:43817/bsrc-r255?marker=BSRC_RCE_R255_7e49c2\u0026uid=\u003cencoded\u003e. The package is disguised as a chart widget but runs this network probe automatically during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@noobaihome/amis-simple-area-widget",
+        "purl": "pkg:npm/%40noobaihome/amis-simple-area-widget"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@noobaihome/amis-simple-area-widget/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10916"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T05:42:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bsrc-ssrf[.]n[.]baidu-int[.]com"
+        ],
+        "ip_observed": [
+          "49[.]232[.]169[.]67:43817"
+        ],
+        "sha256": [
+          "060f71dbd26725b2c9fb175579beb2cbf5db0259838f387582e9aeabb61f971d"
+        ],
+        "url_observed": [
+          "hxxp://49[.]232[.]169[.]67",
+          "hxxp://49[.]232[.]169[.]67:43817/bsrc-r255?marker=BSRC_RCE_R255_7e49c2\u0026uid=",
+          "hxxp://bsrc-ssrf[.]n[.]baidu-int[.]com/bsrc_uid"
+        ]
+      }
+    }
+  }
+}
