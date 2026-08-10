@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10935",
+  "modified": "2026-08-10T18:15:38Z",
+  "published": "2026-08-10T18:13:42Z",
+  "summary": "Malicious code in safe-local-env-loader (npm)",
+  "details": "Safe-local-env-loader@1.0.0 is a dotenv clone that bundles a remote-access trojan executed on require. lib/tui-options.js captures the victim's screen (Windows via screenshot-desktop+sharp, macOS via screencapture) and POSTs the compressed image to hxxp://192[.]99[.]204[.]157:5000/upload, sending the computer hostname, platform, and display resolution in request headers. It polls hxxp://192[.]99[.]204[.]157:5000/get_status and /get_buffer every 1-3 seconds to receive remote mouse-move/click and keyboard-press commands, which it executes on the host via the nut-js input library. On Windows it installs persistence by writing a VBS launcher to %APPDATA%\\ScreenCaptureClient\\launch-screen-client.vbs and registering a HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run \"ScreenCaptureClient\" entry so the client relaunches at login. C2: 192[.]99[.]204[.]157:5000 (paths /upload, /get_status, /get_buffer).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "safe-local-env-loader",
+        "purl": "pkg:npm/safe-local-env-loader"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/safe-local-env-loader/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10935"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T18:13:42Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "192[.]99[.]204[.]157:5000"
+        ],
+        "sha256": [
+          "f9c664a90f72698388e953dde58b678e103b83bdee3fe9e25a6bd87c8c1dc8ef"
+        ],
+        "url_observed": [
+          "hxxp://192[.]99[.]204[.]157",
+          "hxxp://192[.]99[.]204[.]157:5000/get_buffer",
+          "hxxp://192[.]99[.]204[.]157:5000/get_status",
+          "hxxp://192[.]99[.]204[.]157:5000/upload"
+        ]
+      }
+    }
+  }
+}
