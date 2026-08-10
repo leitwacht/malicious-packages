@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10902",
+  "modified": "2026-08-10T02:34:38Z",
+  "published": "2026-08-10T02:34:04Z",
+  "summary": "Malicious code in postcss-initial-provider (npm)",
+  "details": "Postcss-initial-provider@3.0.4 is a trojanized clone of the postcss-initial plugin with a blockchain-resolved C2 implant injected into index.js. On module load it queries public Ethereum RPC endpoints (1rpc[.]io, eth[.]drpc[.]org, publicnode, blastapi) and process.env.ETH_RPC_URL to scan blocks for transactions from the attacker's wallet 0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a. It derives two C2 IP addresses from the first 8 bytes of the transaction's `to` address, then fetches XOR-encrypted second-stage payloads from hxxp://{ip}:443/0x/cls and hxxp://{ip}:443/0x/ls, decrypts them, and executes them both via eval and via a detached `node -e` child process. The attacker rotates C2 infrastructure by publishing new Ethereum transactions.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss-initial-provider",
+        "purl": "pkg:npm/postcss-initial-provider"
+      },
+      "versions": [
+        "3.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/postcss-initial-provider/v/3.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10902"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T02:34:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth[.]drpc[.]org"
+        ],
+        "sha256": [
+          "fa035cd3a610a83b55145404c18035c6ce148fe137ac27c4302434dfce963bd9"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
