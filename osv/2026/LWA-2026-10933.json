@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10933",
+  "modified": "2026-08-10T17:26:55Z",
+  "published": "2026-08-10T17:25:47Z",
+  "summary": "Malicious code in chai-as-reformed (npm)",
+  "details": "Chai-as-reformed@1.2.0 is a trojanized logger package that executes remote code on require(). index.js spawns a detached background node process running lib/caller.js, which fetches a payload from hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/f89e8264-86c2-4684-94da-c3f82d59370f (sent with an x-secret-key header) and executes the returned.data.cookie value via the Function constructor with require in scope, giving the remote payload full access to the Node.js runtime. The fetched code is attacker-controlled and can run arbitrary commands, read files, or exfiltrate data on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-reformed",
+        "purl": "pkg:npm/chai-as-reformed"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-reformed/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10933"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T17:25:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]net"
+        ],
+        "sha256": [
+          "3d301744b7805b71e5ea10d257ce11a46fcf2261ccad6afc4e8c19cbb66fbd28"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/f89e8264-86c2-4684-94da-c3f82d59370f"
+        ]
+      }
+    }
+  }
+}
