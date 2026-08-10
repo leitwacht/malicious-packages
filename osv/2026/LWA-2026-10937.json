@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10937",
+  "modified": "2026-08-10T18:27:38Z",
+  "published": "2026-08-10T18:27:05Z",
+  "summary": "Malicious code in @sqlite-labs/nodesql (npm)",
+  "details": "@sqlite-labs/nodesql is a trojanized clone of the npm `buffer` module. The package's index.js is the verbatim buffer source with an injected `require('@sqlite-labs/createsql')` at the top. That dependency's index.js fetches a remote script from hxxps://bdmkaoyijqmqa6bg[.]public[.]blob[.]vercel-storage[.]com/script[.]js and executes it with eval() at require time, giving the remote script arbitrary code execution in the installer's process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sqlite-labs/nodesql",
+        "purl": "pkg:npm/%40sqlite-labs/nodesql"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sqlite-labs/nodesql/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10937"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T18:27:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bdmkaoyijqmqa6bg[.]public[.]blob[.]vercel-storage[.]com"
+        ],
+        "sha256": [
+          "ba27e3658a8f29bc49819368460b8f8b86d89c199a2e47dd257aef3f039870ca"
+        ],
+        "url_observed": [
+          "hxxps://bdmkaoyijqmqa6bg[.]public[.]blob[.]vercel-storage[.]com/script[.]js"
+        ]
+      }
+    }
+  }
+}
