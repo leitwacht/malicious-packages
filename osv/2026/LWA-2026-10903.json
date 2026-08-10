@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10903",
+  "modified": "2026-08-10T02:56:26Z",
+  "published": "2026-08-10T02:56:07Z",
+  "summary": "Malicious code in @noobaihome/amis-uni-area-widget (npm)",
+  "details": "The preinstall hook of @noobaihome/amis-uni-area-widget@1.0.0 performs remote code execution and exfiltration at install time. It fetches a machine identifier from hxxp://bsrc-ssrf[.]n[.]baidu-int[.]com/bsrc_uid, base64-encodes it, and sends it to the C2 endpoint hxxp://49[.]232[.]169[.]67:43817/bsrc-r252?uid=[.][.]. It then downloads a script from hxxp://49[.]232[.]169[.]67:80/slt and pipes it directly to sh, executing arbitrary remote code on the installer's machine, and finally sleeps for 9 days. The package contains no functional widget code (empty dist stubs) and exists solely to run this payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@noobaihome/amis-uni-area-widget",
+        "purl": "pkg:npm/%40noobaihome/amis-uni-area-widget"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@noobaihome/amis-uni-area-widget/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10903"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T02:56:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bsrc-ssrf[.]n[.]baidu-int[.]com"
+        ],
+        "ip_observed": [
+          "49[.]232[.]169[.]67:43817",
+          "49[.]232[.]169[.]67:80"
+        ],
+        "sha256": [
+          "2defde5a9dba158078ce4abe3e68119c005ac558ccc8c7b067790bed37bc0086"
+        ],
+        "url_observed": [
+          "hxxp://49[.]232[.]169[.]67",
+          "hxxp://49[.]232[.]169[.]67:43817/bsrc-r252",
+          "hxxp://49[.]232[.]169[.]67:80/slt",
+          "hxxp://bsrc-ssrf[.]n[.]baidu-int[.]com/bsrc_uid"
+        ]
+      }
+    }
+  }
+}
