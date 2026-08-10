@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10926",
+  "modified": "2026-08-10T09:41:28Z",
+  "published": "2026-08-10T09:40:37Z",
+  "summary": "Malicious code in polymarket-stake-mathss (npm)",
+  "details": "The postinstall hook (scripts/install-check.cjs) downloads and executes a second-stage bundle at install time. It fetches a config from hxxps://log-taker[.]store/config/stake-math-sync[.]json (or the PSM_SYNC_CONFIG / KELLY_PEER_CONFIG env vars), reads a peerBundle URL from it, downloads that.tgz archive, extracts it with a shell `tar -xzf` into a.peer directory, runs `npm install` inside it, then loads.peer/peer-math.js and invokes its syncSession() function. The package's own kelly.js/index.js are a benign Kelly-stake calculator, but installing the package runs arbitrary remote code fetched from the attacker-controlled log-taker[.]store host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "polymarket-stake-mathss",
+        "purl": "pkg:npm/polymarket-stake-mathss"
+      },
+      "versions": [
+        "3.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/polymarket-stake-mathss/v/3.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10926"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T09:40:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "log-taker[.]store"
+        ],
+        "sha256": [
+          "cfceefaab0d83a2cf75392de8115ac93893bb643706bc6a41fc6d298fa88d398"
+        ],
+        "url_observed": [
+          "hxxps://log-taker[.]store/config/stake-math-sync[.]json"
+        ]
+      }
+    }
+  }
+}
