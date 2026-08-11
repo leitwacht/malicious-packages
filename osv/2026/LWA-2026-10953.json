@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10953",
+  "modified": "2026-08-11T06:08:26Z",
+  "published": "2026-08-11T06:08:06Z",
+  "summary": "Malicious code in boring-vault (npm)",
+  "details": "The preinstall and postinstall hooks both run index.js, which harvests the installer's credentials and posts them to a remote endpoint. On install it scans every environment variable whose name matches KEY, TOKEN, SECRET, PASS, PRIVATE, MNEMONIC, RPC, AWS, GITHUB, NPM, KUBE, VAULT, AUTH, PGP, GPG, SEED or WALLET and captures their values; reads ~/.npmrc and ~/.gitconfig; and lists the contents of ~/.ssh, ~/.foundry/keystores, ~/.config/hardhat and ~/.config/gcloud. All of this (hostname, username, cwd, env secrets, npm/git config, wallet keystore and cloud credential directory listings) is POSTed as JSON to hxxps://webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09. The hook swallows all errors so installs never fail. The package name mirrors the Boring Vault DeFi protocol and the payload specifically targets crypto wallet keystores and cloud/SSH credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "boring-vault",
+        "purl": "pkg:npm/boring-vault"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/boring-vault/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10953"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T06:08:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "9ea03b2d85200b09bdcb50716a79a9fa3e08674a12a3ef95e2bb01a0345fad33"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09"
+        ]
+      }
+    }
+  }
+}

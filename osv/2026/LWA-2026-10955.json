@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10955",
+  "modified": "2026-08-11T06:08:29Z",
+  "published": "2026-08-11T06:08:06Z",
+  "summary": "Malicious code in @aerodrome-finance/slipstream (npm)",
+  "details": "The preinstall and postinstall hooks both run index.js, which harvests the installer's credentials and environment and exfiltrates them. It collects every environment variable whose name matches KEY/TOKEN/SECRET/PASS/PRIVATE/MNEMONIC/RPC/AWS/GITHUB/NPM/KUBE/VAULT/AUTH/PGP/GPG/SEED/WALLET, reads ~/.npmrc and ~/.gitconfig, and enumerates ~/.ssh, ~/.foundry/keystores (crypto wallet keystores), ~/.config/hardhat and ~/.config/gcloud. The collected data (hostname, username, cwd, platform, env values, npmrc/gitconfig contents, keystore listings) is POSTed as JSON to webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09. The package name impersonates the Aerodrome Finance DeFi protocol.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@aerodrome-finance/slipstream",
+        "purl": "pkg:npm/%40aerodrome-finance/slipstream"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@aerodrome-finance/slipstream/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10955"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T06:08:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "b9ca3bd3f3c3459e6c782266b22a0f9d117a076533e1e17a6c7a92bf02234155"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09"
+        ]
+      }
+    }
+  }
+}
