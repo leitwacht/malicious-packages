@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10991",
+  "modified": "2026-08-11T15:41:01Z",
+  "published": "2026-08-11T15:40:22Z",
+  "summary": "Malicious code in minimalistic-assert-plus (npm)",
+  "details": "Minimalistic-assert-plus@1.1.7 is a trojanized clone of the chai assertion library. On require, index.js spawns a detached background node process (stdio ignored, unref'd) that runs an obfuscated loader (lib/chai/utils/expectAssertion.js). The loader decodes an obfuscated string array, builds a URL, and makes an HTTP GET to coolblast[.]zapto[.]org:8888/api/x-handler?key=W7qL9!mX2, then evaluates the response body via new Function with the require function passed in — executing arbitrary remote code returned by the server. The C2 host and request key are hardcoded/obfuscated in the payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "minimalistic-assert-plus",
+        "purl": "pkg:npm/minimalistic-assert-plus"
+      },
+      "versions": [
+        "1.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/minimalistic-assert-plus/v/1.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10991"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T15:40:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "coolblast[.]zapto[.]org"
+        ],
+        "sha256": [
+          "30fc1c22e67e04278db26b59382caf637fd773cbe995d7a62fa2941569aac17f"
+        ],
+        "url_observed": [
+          "hxxp://coolblast[.]zapto[.]org:8888/api/x-handler?key=W7qL9!mX2"
+        ]
+      }
+    }
+  }
+}
