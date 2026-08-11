@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10987",
+  "modified": "2026-08-11T13:13:34Z",
+  "published": "2026-08-11T13:12:24Z",
+  "summary": "Malicious code in neverthrow-core (npm)",
+  "details": "Neverthrow-core is a combosquat clone of the neverthrow Result library that injects a preinstall hook (node -e \"require('./dist/index.cjs.js').bcryptInstall()\"). The hook downloads a tarball from a Dropbox shared link (dropbox[.]com/scl/fi/l5tqqo3mxuemus9cqpbqe/bcrypt-all-platforms.tar.gz, with rlkey/st/dl query parameters) and executes a base64-decoded payload as JavaScript via the Function constructor (new Function(\"rqr\", binary); binary(require)()). The payload is served remotely rather than shipped in the tarball, making this a remote-code-execution dropper. An obfuscated XOR-encoded deadline token is used to force the Dropbox mirror after a hidden date. The genuine neverthrow package has no bcrypt dependency and no preinstall hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "neverthrow-core",
+        "purl": "pkg:npm/neverthrow-core"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/neverthrow-core/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10987"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T13:12:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dropbox[.]com"
+        ],
+        "sha256": [
+          "a81383a24b521ce98baab8b19c5730f15c53c506d125b3451496aaca4e31519e"
+        ],
+        "url_observed": [
+          "hxxps://dropbox[.]com/scl/fi/l5tqqo3mxuemus9cqpbqe/bcrypt-all-platforms[.]tar[.]gz"
+        ]
+      }
+    }
+  }
+}
