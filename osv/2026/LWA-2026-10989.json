@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10989",
+  "modified": "2026-08-11T13:25:04Z",
+  "published": "2026-08-11T13:24:15Z",
+  "summary": "Malicious code in bs58-33 (npm)",
+  "details": "Bs58-33@6.0.1 is a trojanized clone of the legitimate bs58 base58-encoding library. The package source is copied verbatim from the real cryptocoinjs/bs58, but its runtime dependency is replaced: instead of the legitimate `base-x` library, it depends on `base65-33x`, a malicious package. The package's only code is `import basex from 'base65-33x'`, so any project that installs bs58-33 pulls in and executes the malicious dependency. The package has no repository of its own and no other functionality beyond forwarding to the substituted dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bs58-33",
+        "purl": "pkg:npm/bs58-33"
+      },
+      "versions": [
+        "6.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bs58-33/v/6.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10989"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-11T13:24:15Z",
+      "indicators_observed": {
+        "sha256": [
+          "74088bca6a440fca9fac5c460564c128bd3aa9238acaa2503cd275f6f3d27da3"
+        ]
+      }
+    }
+  }
+}
