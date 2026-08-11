@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10958",
+  "modified": "2026-08-11T08:37:22Z",
+  "published": "2026-08-11T08:37:06Z",
+  "summary": "Malicious code in permit2 (npm)",
+  "details": "The package runs a credential-harvesting payload from both its preinstall and postinstall hooks (`node index.js`). On install it collects every environment variable whose name contains KEY/TOKEN/SECRET/PASS/PRIVATE/MNEMONIC/RPC/AWS/GITHUB/NPM/KUBE/VAULT/AUTH/SEED/WALLET/BEARER/API/INFURA/ALCHEMY/HELIUS/QUICKNODE/ANKR, and reads a wide set of credential files from the user's home directory and working directory, including ~/.aws/credentials, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, ~/.kube/config, ~/.docker/config.json, ~/.netrc, ~/.pgpass, ~/.npmrc, ~/.pypirc, ~/.git-credentials, Google Cloud application-default credentials, Solana/Anchor/Sui/Near/Foundry keystores, and.env files. It then POSTs all harvested data as JSON to hxxps://webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09, along with the hostname, username, cwd, and platform. Errors are silently swallowed so the install always succeeds.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "permit2",
+        "purl": "pkg:npm/permit2"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/permit2/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10958"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T08:37:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "cda3e1814f9e4692ddd1551bebfd5577b631e65a1f9f8702136276c194b0ce81"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09"
+        ]
+      }
+    }
+  }
+}
