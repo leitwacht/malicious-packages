@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10992",
+  "modified": "2026-08-11T17:29:40Z",
+  "published": "2026-08-11T17:26:11Z",
+  "summary": "Malicious code in @dgn-src-click-to-pay-org/srcdcfreleasecert (npm)",
+  "details": "The package's postinstall hook (scripts/check-env.js) runs on install and sends a covert host-metadata beacon to hxxp://16-171-38-148[.]sslip[.]io:8080/api/install (IP 16[.]171[.]38[.]148:8080). The JSON payload contains the package name/version, the installer's operating system platform, CPU architecture, and Node.js version. This network callback is undocumented and unrelated to the package's declared payment-utility purpose (amount formatting, PAN masking, Luhn validation). The endpoint can be redirected via the DGN_SRC_ENDPOINT environment variable.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dgn-src-click-to-pay-org/srcdcfreleasecert",
+        "purl": "pkg:npm/%40dgn-src-click-to-pay-org/srcdcfreleasecert"
+      },
+      "versions": [
+        "999.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dgn-src-click-to-pay-org/srcdcfreleasecert/v/999.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10992"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T17:26:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "16-171-38-148[.]sslip[.]io"
+        ],
+        "ip_observed": [
+          "16[.]171[.]38[.]148:8080"
+        ],
+        "sha256": [
+          "b6e848fd0bd87a622f413774f51fee9b9ceab814b99effe9830d3ee7991ebf8d"
+        ],
+        "url_observed": [
+          "hxxp://16-171-38-148[.]sslip[.]io",
+          "hxxp://16-171-38-148[.]sslip[.]io:8080/api/install"
+        ]
+      }
+    }
+  }
+}
