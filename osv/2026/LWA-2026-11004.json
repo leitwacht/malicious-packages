@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11004",
+  "modified": "2026-08-11T21:10:41Z",
+  "published": "2026-08-11T21:10:14Z",
+  "summary": "Malicious code in node-config-svg-contract (npm)",
+  "details": "Node-config-svg-contract@1.0.0 exports functions (getPlugin, setPlugin, getPluginExten) that fetch remote content from the non-standard host rest-icon-handler[.]store (URLs hxxps://rest-icon-handler[.]store/icons/103 and /icons/389) and execute it via eval(JSON.parse(body)) with automatic retry. Any consumer that calls one of these exported functions downloads and runs arbitrary remote code from the.store host. A separate exported function (setDefaultModule) fetches from legitimate CDN hosts (cdnjs[.]cloudflare[.]com, fastly[.]net, akamai[.]net, cloudfront[.]net) and appears to be a benign facade masking the remote-code loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-config-svg-contract",
+        "purl": "pkg:npm/node-config-svg-contract"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-config-svg-contract/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11004"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T21:10:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "akamai[.]net",
+          "cdnjs[.]cloudflare[.]com",
+          "cloudfront[.]net",
+          "fastly[.]net",
+          "rest-icon-handler[.]store"
+        ],
+        "sha256": [
+          "aae32533f69131b6a8849b7b8513e29bd991f5b424bf9211c7f79ebd5bfd46f8"
+        ],
+        "url_observed": [
+          "hxxps://rest-icon-handler[.]store/icons/103",
+          "hxxps://rest-icon-handler[.]store/icons/389"
+        ]
+      }
+    }
+  }
+}
