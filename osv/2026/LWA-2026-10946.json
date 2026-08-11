@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10946",
+  "modified": "2026-08-11T00:11:09Z",
+  "published": "2026-08-11T00:10:49Z",
+  "summary": "Malicious code in vexium-kit (npm)",
+  "details": "Vexium-kit@2.0.2 executes remote code at require-time. The package's main entry (index.js) exports a function that, when the module is required, fetches hxxps://31[.]97[.]137[.]157:45000/icons/116 and executes the returned JSON's \"credits\" field via the Function constructor with a full Node.js context (require, process, Buffer, module, timers). This gives the remote server arbitrary code execution inside the installer's environment. The package is presented as a lightweight utility toolkit but ships heavy unrelated dependencies (better-sqlite3, sqlite3, express, socket[.]io-client, axios, request). C2: 31[.]97[.]137[.]157:45000, path /icons/116.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vexium-kit",
+        "purl": "pkg:npm/vexium-kit"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vexium-kit/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10946"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T00:10:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "084b63200fb1807b7a2c0261d0572832db93e553d2bf268ecd675dafdd603781"
+        ],
+        "url_observed": [
+          "hxxps://31[.]97[.]137[.]157",
+          "hxxps://31[.]97[.]137[.]157:45000/icons/116"
+        ]
+      }
+    }
+  }
+}
