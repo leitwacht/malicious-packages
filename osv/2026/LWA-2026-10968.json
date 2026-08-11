@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10968",
+  "modified": "2026-08-11T09:10:32Z",
+  "published": "2026-08-11T09:09:56Z",
+  "summary": "Malicious code in @openzeppelin-4/contracts (npm)",
+  "details": "Combosquat of the OpenZeppelin contracts library. The preinstall and postinstall hooks both run index.js, which harvests environment variables whose names match KEY/TOKEN/SECRET/PASS/PRIVATE/MNEMONIC/WALLET/AWS/GITHUB/NPM/etc., reads credential and wallet files from the home directory (~/.aws/credentials, ~/.ssh/id_rsa, ~/.kube/config, ~/.docker/config.json, ~/.npmrc, ~/.git-credentials, Solana/Anchor/Sui/Foundry keystores, gcloud credentials) and.env files in the working directory, then POSTs the collected data as JSON to hxxps://webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09 over TLS. The hook swallows all errors so installs never fail.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@openzeppelin-4/contracts",
+        "purl": "pkg:npm/%40openzeppelin-4/contracts"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@openzeppelin-4/contracts/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10968"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T09:09:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "e67d7ea3fb633215955a292655a4f972e2de438af388a30b029609559ff65464"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/326b0891-2093-4800-a4c1-686ce3e07b09"
+        ]
+      }
+    }
+  }
+}
