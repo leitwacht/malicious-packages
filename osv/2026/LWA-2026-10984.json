@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-10984",
+  "modified": "2026-08-11T12:55:57Z",
+  "published": "2026-08-11T12:55:35Z",
+  "summary": "Malicious code in base65-77x (npm)",
+  "details": "Base65-77x is a trojanized clone of the base-x encoding library. Its decode() function in src/cjs/index.cjs and src/esm/index.js has been modified to POST the string being decoded to hxxp://46[.]250[.]253[.]63:3000/api/log via fetch before returning the result. Any application that uses this library to decode base64/base58 strings silently sends the decoded content to that remote server, exfiltrating whatever data the host application decodes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "base65-77x",
+        "purl": "pkg:npm/base65-77x"
+      },
+      "versions": [
+        "5.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/base65-77x/v/5.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-10984"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-11T12:55:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "46[.]250[.]253[.]63:3000"
+        ],
+        "sha256": [
+          "99bc1f85b61d50c0d2ad1913aa6f91f7a7a90774dfabf8742e9435b9e79fa14c"
+        ],
+        "url_observed": [
+          "hxxp://46[.]250[.]253[.]63",
+          "hxxp://46[.]250[.]253[.]63:3000/api/log"
+        ]
+      }
+    }
+  }
+}
