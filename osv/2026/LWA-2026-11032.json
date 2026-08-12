@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-11032",
-  "modified": "2026-08-12T09:04:45Z",
-  "published": "2026-08-12T09:03:22Z",
-  "summary": "Security-research / proof-of-concept package: @assetshop/verify-cli (npm)",
-  "details": "The package's preinstall hook runs index.js, which executes a curl POST to the interactsh callback host 5f8a1ed70fb7761d678agw9bucryyyyyb[.]oast[.]site at path /verify-cli/$(whoami)/$(hostname)/. The request body is a base64-encoded dump of /etc/passwd, /etc/hosts, the output of `id`, and an attempted read of /etc/shadow, sent with a custom User-Agent. This exfiltrates the installer's system identity and credential files at install time. The package also declares a dependency on the known-malicious package noderedacteddk.",
+  "modified": "2026-08-12T09:40:51Z",
+  "published": "2026-08-12T09:03:07Z",
+  "summary": "Malicious code in @assetshop/verify-cli (npm)",
+  "details": "The package's preinstall hook runs node index.js, which executes a curl POST to the attacker-controlled host 5f8a1ed70fb7761d678agw9bucryyyyyb[.]oast[.]site. The URL path embeds the victim's username and hostname, and the User-Agent header carries base64-encoded contents of /etc/passwd, /etc/hosts, the output of `id`, and /etc/shadow (when readable). This exfiltrates system identity and credential data to the remote host on install. The package also declares a dependency on noderedacteddk@¹.0.2, an invalid version tag that breaks installation. The package's preinstall hook runs index.js, which executes a curl POST to the interactsh callback host 5f8a1ed70fb7761d678agw9bucryyyyyb[.]oast[.]site at path /verify-cli/$(whoami)/$(hostname)/. The request body is a base64-encoded dump of /etc/passwd, /etc/hosts, the output of `id`, and an attempted read of /etc/shadow, sent with a custom User-Agent. This exfiltrates the installer's system identity and credential files at install time. The package also declares a dependency on the known-malicious package noderedacteddk.",
   "affected": [
     {
       "package": {
@@ -14,7 +14,15 @@
       },
       "versions": [
         "99.0.0"
-      ]
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
     }
   ],
   "references": [
@@ -38,8 +46,8 @@
   ],
   "database_specific": {
     "leitwacht": {
-      "category": "research_poc",
-      "first_seen_at": "2026-08-12T09:03:22Z",
+      "category": "malware",
+      "first_seen_at": "2026-08-12T09:03:07Z",
       "indicators_observed": {
         "domain_observed": [
           "5f8a1ed70fb7761d678agw9bucryyyyyb[.]oast[.]site"
