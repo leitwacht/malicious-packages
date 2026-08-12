@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11016",
+  "modified": "2026-08-12T01:44:06Z",
+  "published": "2026-08-12T01:42:50Z",
+  "summary": "Malicious code in kit-map-vim (npm)",
+  "details": "Kit-map-vim@1.0.0 ships a bundled ELF binary (dist/internal/calc-math.dat) that is a full remote-access trojan. Importing the package spawns the binary detached at load time. The implant provides a remote shell with in-memory (memfd) payload execution and shellcode download/execution, a reverse tunnel (RC2TUN), SOCKS/port-forwarding, and persistence via cron,.bashrc, and a systemd user service. It harvests SSH keys (~/.ssh id_*, authorized_keys, known_hosts, config, ssh-agent keys), browser credentials (Chrome/Chromium/Brave/Edge Login Data, Cookies, Local State; Firefox logins.json and key4.db), and database credentials (.pgpass,.my.cnf, DB configs and env vars). It can download and execute arbitrary URLs, load arbitrary shared libraries, create/enable system users, and exfiltrate files to litterbox.catbox.moe. C2 endpoint IP: 217[.]60[.]77[.]63; public-IP discovery via api[.]ipify[.]org.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "kit-map-vim",
+        "purl": "pkg:npm/kit-map-vim"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/kit-map-vim/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11016"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-12T01:42:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "e3876a8a6098c7fdf285e1320872dbf0ee7ddaed466ae938716b52b0c0a2cc00"
+        ],
+        "url_observed": [
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
