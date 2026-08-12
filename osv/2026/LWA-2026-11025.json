@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11025",
+  "modified": "2026-08-12T02:11:04Z",
+  "published": "2026-08-12T02:10:44Z",
+  "summary": "Malicious code in external-process-live-log (npm)",
+  "details": "The package's main module exports a function that, when called, fetches a payload from hxxp://31[.]97[.]137[.]157:45000/icons/107 (with header bearrtoken: logo) and executes the response body's \"credits\" field as JavaScript via the Function constructor, with require, process, Buffer, and timers injected into the execution context. This gives the remote server full code execution inside the importing process, including filesystem, network, and child-process access. The package's stated purpose (a Polymarket SDK / process-logging helper) does not match this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "external-process-live-log",
+        "purl": "pkg:npm/external-process-live-log"
+      },
+      "versions": [
+        "13.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/external-process-live-log/v/13.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11025"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-12T02:10:44Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "ab4d55e6a227b27f75836c6800906c8d061c0d4a7803453f2eaf9cece34eef60"
+        ],
+        "url_observed": [
+          "hxxp://31[.]97[.]137[.]157",
+          "hxxp://31[.]97[.]137[.]157:45000/icons/107"
+        ]
+      }
+    }
+  }
+}
