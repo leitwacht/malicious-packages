@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11079",
+  "modified": "2026-08-12T15:51:38Z",
+  "published": "2026-08-12T15:51:14Z",
+  "summary": "Malicious code in fmt-util-k7x2 (npm)",
+  "details": "The postinstall hook (setup.js) of this package performs network reconnaissance and exfiltration. On install it probes internal Twilio infrastructure endpoints (www[.]stage[.]twilio[.]com, code[.]hq[.]twilio[.]com, twilio[.]jfrog[.]io, artifacts[.]twilio[.]com) and the AWS EC2 instance metadata service (hxxp://169[.]254[.]169[.]254/latest/meta-data/), then sends the reachability results to the attacker-controlled endpoint hxxp://bintool[.]brkd[.]no/compat-check. The AWS metadata probe indicates attempted harvesting of cloud instance credentials. The package's declared purpose (string formatting utilities) is unrelated to this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fmt-util-k7x2",
+        "purl": "pkg:npm/fmt-util-k7x2"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fmt-util-k7x2/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11079"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-12T15:51:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "artifacts[.]twilio[.]com",
+          "bintool[.]brkd[.]no",
+          "code[.]hq[.]twilio[.]com",
+          "twilio[.]jfrog[.]io",
+          "www[.]stage[.]twilio[.]com"
+        ],
+        "sha256": [
+          "f5bcb40b14cf381c2d69e720e5caee5d87f41e29267c6a4c87ddd948f8fc1013"
+        ],
+        "url_observed": [
+          "hxxp://bintool[.]brkd[.]no/compat-check",
+          "hxxps://artifacts[.]twilio[.]com/",
+          "hxxps://code[.]hq[.]twilio[.]com/",
+          "hxxps://twilio[.]jfrog[.]io/",
+          "hxxps://www[.]stage[.]twilio[.]com/"
+        ]
+      }
+    }
+  }
+}
