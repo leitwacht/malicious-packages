@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11206",
+  "modified": "2026-08-13T20:35:18Z",
+  "published": "2026-08-13T20:28:42Z",
+  "summary": "Malicious code in @hzero-front-ui/cfg (npm)",
+  "details": "The package's preinstall and install hooks run on installation: they base64-encode the current username, hostname, and working directory and send them to hxxps://\u003cpackage-name\u003e.callback[.]m0chan[.]co[.]uk/\u003cbase64-payload\u003e via an HTTP GET, and also exfiltrate the package name via a DNS nslookup query to \u003cbase64-package-name\u003e.\u003cpackage-name\u003e.callback[.]m0chan[.]co[.]uk. This is a covert host-metadata beacon that reports the victim's identity and environment to the attacker-controlled domain m0chan[.]co[.]uk on every install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hzero-front-ui/cfg",
+        "purl": "pkg:npm/%40hzero-front-ui/cfg"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@hzero-front-ui/cfg/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11206"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T20:28:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "callback[.]m0chan[.]co[.]uk",
+          "m0chan[.]co[.]uk"
+        ],
+        "sha256": [
+          "7ae33c39c2bba1b75233885ae9201f41982bcc3d100151c2b0d14dd1576730ec"
+        ]
+      }
+    }
+  }
+}
