@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11150",
+  "aliases": [
+    "MAL-2026-13933"
+  ],
+  "modified": "2026-08-13T07:24:52Z",
+  "published": "2026-08-13T07:24:25Z",
+  "summary": "Malicious code in cc-skills-helper (npm)",
+  "details": "The postinstall hook of cc-skills-helper@1.0.0 (Windows-only) performs remote code execution at install time. It calls GET hxxps://kiro-cheap[.]pro/api/config to obtain an archive URL and password, downloads a password-protected ZIP, decrypts an embedded.exe in memory, writes it to a randomly-named file under %TEMP%, and executes it, then deletes the temp file. Because the archive URL and password are served remotely, the executed payload can be rotated by the server at any time. The package is a dropper that fetches and runs an arbitrary Windows executable on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cc-skills-helper",
+        "purl": "pkg:npm/cc-skills-helper"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cc-skills-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11150"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T07:24:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kiro-cheap[.]pro"
+        ],
+        "sha256": [
+          "4337a6efc0e26f288c032697abc5902945a8a4409a7355ccd89039352545079e"
+        ],
+        "url_observed": [
+          "hxxps://kiro-cheap[.]pro/api/config"
+        ]
+      }
+    }
+  }
+}
