@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11178",
+  "modified": "2026-08-13T14:32:23Z",
+  "published": "2026-08-13T14:32:08Z",
+  "summary": "Malicious code in datefmt-util-helper (npm)",
+  "details": "The package's postinstall hook (postinstall.js) opens a reverse shell on install: it connects to 8[.]135[.]48[.]40:4444 and spawns an interactive /bin/bash, using three fallback methods (python3 PTY, python3 subprocess, and a Node net socket). The package otherwise contains only a trivial date-formatting stub; its real behaviour is establishing a remote command shell on the installing machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "datefmt-util-helper",
+        "purl": "pkg:npm/datefmt-util-helper"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/datefmt-util-helper/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11178"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T14:32:08Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "8[.]135[.]48[.]40:4444"
+        ],
+        "sha256": [
+          "aba2bbf4d7588806874ff6befed584cc12315198f50998ec5d9e911db38d1fc6"
+        ]
+      }
+    }
+  }
+}
