@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11133",
+  "modified": "2026-08-13T03:59:44Z",
+  "published": "2026-08-13T03:59:06Z",
+  "summary": "Malicious code in @khaznatech/core (npm)",
+  "details": "The package's preinstall hook runs install-report.js, which performs an outbound HTTPS GET to hxxps://webhook[.]site/93b065ab-227f-4253-b940-361d00e9b870/ appending the machine hostname and the current working directory name. This host-metadata beacon fires on every install, silently, with errors swallowed. The package's actual exported code is trivial string-casing/utility helpers with no network functionality, so the install-time beacon is unrelated to the package's stated purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@khaznatech/core",
+        "purl": "pkg:npm/%40khaznatech/core"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@khaznatech/core/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11133"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T03:59:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "4eedee0c41ee4210cc4d6bdfccea33ddabde45d35a4aff4558e087731e0b0446"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/93b065ab-227f-4253-b940-361d00e9b870/"
+        ]
+      }
+    }
+  }
+}
