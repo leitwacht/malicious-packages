@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11158",
+  "modified": "2026-08-13T08:57:07Z",
+  "published": "2026-08-13T08:55:06Z",
+  "summary": "Malicious code in postcss-initialize-plugin (npm)",
+  "details": "Postcss-initialize-plugin@3.0.4 is a combosquat of the legitimate postcss-initial PostCSS plugin. The real plugin code is present, but a heavily obfuscated payload is injected into the module factory and executes immediately when the package is required (i.e. during any PostCSS build). The payload monitors the Ethereum blockchain for transactions to the attacker-controlled wallet 0xa322E5f3... by querying public RPC endpoints (eth-mainnet[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com, or the ETH_RPC_URL env var) with eth_blockNumber/eth_getBlockByNumber/eth_getTransactionCount. It derives C2 host IPs from the wallet-address bytes (0xa322E5f3 -\u003e 163[.]34[.]229[.]243) and downloads XOR-encrypted second-stage payloads from hxxps://163[.]34[.]229[.]243:443/0x/ls and hxxps://163[.]34[.]229[.]243:443/0x/cl, evaluates them, and spawns detached `node -e` processes. Command/exfil traffic uses ?module=account\u0026action=txlist\u0026address=... query parameters.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss-initialize-plugin",
+        "purl": "pkg:npm/postcss-initialize-plugin"
+      },
+      "versions": [
+        "3.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/postcss-initialize-plugin/v/3.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11158"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T08:55:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eth-mainnet[.]drpc[.]org",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "ip_observed": [
+          "163[.]34[.]229[.]243",
+          "163[.]34[.]229[.]243:443"
+        ],
+        "sha256": [
+          "87131908ddb73f7837ee2b7614b39a55e631df575dd0ecf540399ccbf5499e8b"
+        ],
+        "url_observed": [
+          "hxxps://163[.]34[.]229[.]243",
+          "hxxps://163[.]34[.]229[.]243:443/0x/cl",
+          "hxxps://163[.]34[.]229[.]243:443/0x/ls"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
