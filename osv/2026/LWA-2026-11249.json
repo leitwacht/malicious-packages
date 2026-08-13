@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11249",
+  "modified": "2026-08-13T23:22:04Z",
+  "published": "2026-08-13T23:19:54Z",
+  "summary": "Malicious code in alelo-auth (npm)",
+  "details": "The package's preinstall and postinstall hooks (preinstall.js and index.js) exfiltrate the full process environment to the request-capture host alelo1786663101[.]requestcatcher[.]com, POSTing JSON to /preinstall and /postinstall. The stolen payload includes the installer's credentials — GITHUB_TOKEN, NPM_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, TWILIO_AUTH_TOKEN, SENDGRID_API_KEY, HF_TOKEN, DIGITALOCEAN_TOKEN, CLOUDFLARE_API_TOKEN, NETLIFY_AUTH_TOKEN, VERCEL_TOKEN, GITLAB_TOKEN, CI_JOB_TOKEN, CI_REGISTRY_PASSWORD, DOCKER_PASSWORD, PYPI_TOKEN, CARGO_REGISTRY_TOKEN — along with hostname, username, platform, and working directory. requestcatcher[.]com is a request-capture (oast-style) service, so the collected credentials are delivered to the attacker. The exfiltration runs automatically on npm install via the lifecycle hooks.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alelo-auth",
+        "purl": "pkg:npm/alelo-auth"
+      },
+      "versions": [
+        "99.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alelo-auth/v/99.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11249"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T23:19:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "alelo1786663101[.]requestcatcher[.]com",
+          "requestcatcher[.]com"
+        ],
+        "sha256": [
+          "fbc046a79de32242767557b105a3a41b7518331dbdcd38cc34694ef9c34323fe"
+        ],
+        "url_observed": [
+          "hxxps://alelo1786663101[.]requestcatcher[.]com/postinstall",
+          "hxxps://alelo1786663101[.]requestcatcher[.]com/preinstall"
+        ]
+      }
+    }
+  }
+}

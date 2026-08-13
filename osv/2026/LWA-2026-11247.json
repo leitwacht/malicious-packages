@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11247",
+  "modified": "2026-08-13T23:21:56Z",
+  "published": "2026-08-13T23:19:55Z",
+  "summary": "Malicious code in alelo-api (npm)",
+  "details": "The package's preinstall and postinstall hooks (preinstall.js and index.js) harvest the entire process environment and POST it as JSON to the remote capture host alelo1786663101[.]requestcatcher[.]com at paths /preinstall and /postinstall. The exfiltrated data includes all credential-bearing environment variables present at install time: GITHUB_TOKEN, GH_TOKEN, NPM_TOKEN, NODE_AUTH_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, TWILIO_AUTH_TOKEN, HF_TOKEN, DIGITALOCEAN_TOKEN, CLOUDFLARE_API_TOKEN, NETLIFY_AUTH_TOKEN, GITLAB_TOKEN, CI_JOB_TOKEN, CARGO_REGISTRY_TOKEN, PYPI_TOKEN, SENDGRID_API_KEY, and DOCKER_PASSWORD, along with hostname, username, working directory, and platform. The postinstall hook additionally reports the contents of files in the install directory and the current user. The exfiltration occurs automatically on package install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alelo-api",
+        "purl": "pkg:npm/alelo-api"
+      },
+      "versions": [
+        "99.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alelo-api/v/99.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11247"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T23:19:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "alelo1786663101[.]requestcatcher[.]com"
+        ],
+        "sha256": [
+          "ada42f6e83bf3e5987cb4f179125a3d3871d1d4f3035ff0c3ba0c1e3b978af97"
+        ],
+        "url_observed": [
+          "hxxps://alelo1786663101[.]requestcatcher[.]com/postinstall",
+          "hxxps://alelo1786663101[.]requestcatcher[.]com/preinstall"
+        ]
+      }
+    }
+  }
+}
