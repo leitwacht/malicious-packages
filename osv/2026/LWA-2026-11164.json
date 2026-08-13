@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11164",
+  "modified": "2026-08-13T09:31:52Z",
+  "published": "2026-08-13T09:29:04Z",
+  "summary": "Malicious code in priority-mutex-lane (npm)",
+  "details": "Priority-mutex-lane is a thin wrapper package whose only substantive code requires the dependency mutex-forge. Installing it pulls in mutex-forge, a heavily obfuscated module that fingerprints the host (hostname, platform, CPU count, total memory, uptime), reads private keys, and exfiltrates a \"System Report\" to Telegram (api[.]telegram[.]org /sendMessage) and Slack (slack[.]com /api/chat.postMessage) using hardcoded bot tokens, while also interacting with Ethereum Sepolia RPC endpoints (infura[.]io, alchemy[.]com). The wrapper serves as a delivery vehicle for this malicious dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "priority-mutex-lane",
+        "purl": "pkg:npm/priority-mutex-lane"
+      },
+      "versions": [
+        "2.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/priority-mutex-lane/v/2.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11164"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T09:29:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "alchemy[.]com",
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "infura[.]io",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "80bb46cf0f62b89f35abca2d7d3738ae314ef04a7c907bc43dd7835964e6c082"
+        ]
+      }
+    }
+  }
+}

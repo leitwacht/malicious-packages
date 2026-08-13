@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11165",
+  "modified": "2026-08-13T09:31:45Z",
+  "published": "2026-08-13T09:30:04Z",
+  "summary": "Malicious code in semaphore-job-pool (npm)",
+  "details": "Semaphore-job-pool@2.2.2 is a thin wrapper package whose only real dependency is mutex-forge, which ships an obfuscated implant (lib/withLoad.min.js). On load it collects host fingerprint data (platform, architecture, hostname, CPU count, memory, uptime) and POSTs it to api[.]telegram[.]org/bot\u003ctoken\u003e/sendMessage and slack[.]com/api/chat.postMessage using a hardcoded Telegram bot token (8961878831:...) and Slack bot token (xoxb-...). It generates an X25519 keypair, reads a private key from package.json, and registers the derived public key on the Sepolia testnet via a smart contract (0xE390863Dac96a7118C71227C2b09B50cF602D31) using Alchemy (eth-sepolia[.]g[.]alchemy[.]com/v2/[key-redacted]) and Infura (sepolia[.]infura[.]io/v3/[key-redacted]) RPC endpoints. It then spawns a detached child process running a second obfuscated script (lib/withLoad.min.d.js) that polls the contract for encrypted chunks, decrypts them with AES-GCM, merges them into a binary, chmods it 755, and executes it — a remote code-execution dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "semaphore-job-pool",
+        "purl": "pkg:npm/semaphore-job-pool"
+      },
+      "versions": [
+        "2.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/semaphore-job-pool/v/2.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11165"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T09:30:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "1ef664b25fd3bb1dcc7d4ff8aeb6a8913bba64048bbc14064e1a21b37b632bf0"
+        ],
+        "url_observed": [
+          "hxxps://eth-sepolia[.]g[.]alchemy[.]com/v2/[key-redacted]",
+          "hxxps://sepolia[.]infura[.]io/v3/[key-redacted]"
+        ]
+      }
+    }
+  }
+}
