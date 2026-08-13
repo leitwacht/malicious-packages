@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11169",
+  "modified": "2026-08-13T10:12:12Z",
+  "published": "2026-08-13T10:10:25Z",
+  "summary": "Malicious code in tailwind-custom-templates (npm)",
+  "details": "Tailwind-custom-templates@0.7.2 is a trojanized clone of the tailwindcss-forms plugin. The package's main entry src/index.js contains the genuine plugin source followed by an obfuscated payload that executes when the module is loaded. The payload is an Ethereum wallet drainer: it reads the ETH_RPC_URL environment variable, spawns child processes, and queries Ethereum RPC endpoints (h[.]drpc[.]org, publicnode, stapi[.]io, 1rpc, ethereum-rpc, pc[.]io/eth) and Etherscan API paths (?module=ac, on=txlist\u0026, address=, count\u0026acti, ort=desc\u0026f, ilterby=fr, ffset=20\u0026s, k=0\u0026endblo, ck=9999999) using eth_getTransactionByHash, eth_getBlockByNumber and eth_blockNumber. It embeds a hardcoded Ethereum address 0xa322E5f3 as the drainer destination and spoofs a Chrome browser User-Agent on its HTTP requests.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-custom-templates",
+        "purl": "pkg:npm/tailwind-custom-templates"
+      },
+      "versions": [
+        "0.7.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-custom-templates/v/0.7.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11169"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T10:10:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "ethereum-rpc[.]publicnode[.]com",
+          "h[.]drpc[.]org",
+          "pc[.]io",
+          "stapi[.]io"
+        ],
+        "sha256": [
+          "34aad3b06ee39cabd9d5b7aa012660f2c193ddaf4060d271d677776cdd0244c3"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
