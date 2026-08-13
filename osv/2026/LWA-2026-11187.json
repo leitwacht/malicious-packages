@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11187",
+  "modified": "2026-08-13T19:09:00Z",
+  "published": "2026-08-13T19:08:43Z",
+  "summary": "Malicious code in notafollower (npm)",
+  "details": "The package contains no functional code; its postinstall hook runs an inline Node script that collects the host platform, hostname, username, and the full process environment (all environment variables, including CI/CD tokens such as GITHUB_TOKEN, NPM_TOKEN, NODE_AUTH_TOKEN, AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, TWILIO_AUTH_TOKEN, SENDGRID_API_KEY, DIGITALOCEAN_TOKEN, CLOUDFLARE_API_TOKEN, NETLIFY_AUTH_TOKEN, HF_TOKEN, PYPI_TOKEN, GITLAB_TOKEN, CI_JOB_TOKEN, DOCKER_PASSWORD, CARGO_REGISTRY_TOKEN) and POSTs them as JSON to hxxps://mourner-slot-explicit[.]ngrok-free[.]dev/?cross_os_cloud=1. It additionally fetches the GitHub Actions OIDC token (ACTIONS_ID_TOKEN_REQUEST_URL) and includes it in the exfil. Credential theft occurs at install time via a remote tunnel endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "notafollower",
+        "purl": "pkg:npm/notafollower"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/notafollower/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11187"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T19:08:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mourner-slot-explicit[.]ngrok-free[.]dev"
+        ],
+        "sha256": [
+          "5060afcd88c0daa693a154e731e0c8e7c371be09afc84920d2088f57104a2088"
+        ],
+        "url_observed": [
+          "hxxps://mourner-slot-explicit[.]ngrok-free[.]dev/",
+          "hxxps://mourner-slot-explicit[.]ngrok-free[.]dev/?cross_os_cloud=1"
+        ]
+      }
+    }
+  }
+}
