@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11136",
+  "modified": "2026-08-13T04:42:29Z",
+  "published": "2026-08-13T04:41:37Z",
+  "summary": "Malicious code in mutex-forge (npm)",
+  "details": "Mutex-forge@2.0.1 is a trojanized mutex/semaphore library. Its Mutex.runExclusive method contains injected code that, when a callback carries meta.jobId == \"cross-chain-transfer\", spawns a detached node process (stdio ignored, unref'd) running lib/withLoad.min.js. That agent fingerprints the host (hostname, platform, arch, CPU count, memory, uptime) and posts the report to a Slack workspace and to Telegram via api[.]telegram[.]org /bot\u003ctoken\u003e/sendMessage. It generates an X25519 keypair, registers its public key on an Ethereum Sepolia contract (0xE390863Dac96a7118C71227C2b09B50cF602D31) via RPC endpoints eth-sepolia[.]g[.]alchemy[.]com and sepolia[.]infura[.]io, decrypts a private key, and polls the contract for TData1/TData2 events. When triggered, it merges two hex blobs into a file, chmods it 755, and spawns it detached. It also polls Slack conversations.history every 10 seconds, decrypts AES-GCM-encrypted (PBKDF2-derived key) file chunks posted to the channel, reassembles them, writes the result, chmods 755, and spawns it detached. It self-deletes its own bundled files (withLoad.min.d.js, tryLoad.min.d.js), strips a license marker from the LICENSE file, and kills processes by PID (taskkill on Windows, SIGTERM otherwise).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mutex-forge",
+        "purl": "pkg:npm/mutex-forge"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mutex-forge/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11136"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T04:41:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "b376ef69b0653b1b4e087558b537fbe99be3b1772ca2847cb5985f06c2e2a5ad"
+        ],
+        "url_observed": [
+          "hxxps://eth-sepolia[.]g[.]alchemy[.]com/v2/[key-redacted]",
+          "hxxps://sepolia[.]infura[.]io/v3/[key-redacted]"
+        ],
+        "wallet_observed": [
+          "0xE390863Dac96a7118C71227C2b09B50cF602D31"
+        ]
+      }
+    }
+  }
+}
