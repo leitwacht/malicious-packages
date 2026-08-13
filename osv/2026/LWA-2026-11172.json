@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11172",
+  "modified": "2026-08-13T11:46:52Z",
+  "published": "2026-08-13T11:46:06Z",
+  "summary": "Malicious code in async-lock-queue (npm)",
+  "details": "Async-lock-queue is a thin FIFO-queue wrapper whose sole dependency, mutex-forge, is a heavily-obfuscated implant. On install/require, mutex-forge's lib/withLoad.min.js fingerprints the host (hostname, platform, arch, CPU count, total memory, uptime), reads wallet/private-key files, and exfiltrates the collected data to a Telegram bot (api[.]telegram[.]org /bot\u003ctoken\u003e/sendMessage) and a Slack bot (slack[.]com /api/chat.postMessage) using embedded bot tokens. It also interacts with Ethereum smart contracts (getSPubKey/setCPubKey/getChunk) using embedded Alchemy and Infura RPC keys (eth-sepolia[.]g[.]alchemy[.]com, sepolia[.]infura[.]io), and encrypts its command channel with AES-GCM/PBKDF2/x25519. Installing async-lock-queue pulls in and executes this payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "async-lock-queue",
+        "purl": "pkg:npm/async-lock-queue"
+      },
+      "versions": [
+        "3.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/async-lock-queue/v/3.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11172"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T11:46:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "c379692ea1cf822aa24f5e6ee4f83eb0a1a04be486fa8486c2f28baf8fb288cc"
+        ]
+      }
+    }
+  }
+}
