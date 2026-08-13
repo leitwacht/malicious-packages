@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11143",
+  "modified": "2026-08-13T05:28:35Z",
+  "published": "2026-08-13T05:28:04Z",
+  "summary": "Malicious code in in-install (npm)",
+  "details": "In-install@99.9.1 is an empty package (index.js exports an empty object, no code, no lifecycle hooks) whose only dependency, ltidisafe, is fetched at install time from a non-registry Google Cloud Storage URL: hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]6[.]9[.]tgz. The dependency is not published on the npm registry, so its tarball contents are unverifiable and controlled by the package author. Installing this package pulls and installs an arbitrary, unverifiable tarball from an external CDN host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "in-install",
+        "purl": "pkg:npm/in-install"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/in-install/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11143"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T05:28:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "e28c65fe43e638889e875bef680c043a858d63b2f9424a12c6db2f3f792d9fbf"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]6[.]9[.]tgz"
+        ]
+      }
+    }
+  }
+}

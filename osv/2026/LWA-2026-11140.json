@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11140",
+  "modified": "2026-08-13T05:25:35Z",
+  "published": "2026-08-13T05:25:04Z",
+  "summary": "Malicious code in resolve-audit (npm)",
+  "details": "Resolve-audit@99.9.1 is an empty package (index.js exports an empty object, no install hooks) that declares a single dependency, ltidisafe, fetched from a non-registry CDN URL (hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]6[.]6[.]tgz) rather than the npm registry. Installing the package pulls and executes this off-registry tarball from an attacker-controlled Google Cloud Storage bucket, delivering the payload outside the registry's scanning and integrity controls. The package ships no functional code of its own; its entire purpose is to install the remote dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "resolve-audit",
+        "purl": "pkg:npm/resolve-audit"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/resolve-audit/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11140"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T05:25:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "3c57b0807253dab100c4abfd0b6b11987d1835e0e281bb283d400430d475e7e3"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]6[.]6[.]tgz"
+        ]
+      }
+    }
+  }
+}
