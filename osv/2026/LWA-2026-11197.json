@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11197",
+  "modified": "2026-08-13T20:01:19Z",
+  "published": "2026-08-13T19:59:12Z",
+  "summary": "Malicious code in tailwind-toolkit (npm)",
+  "details": "Tailwind-toolkit@1.3.2 is a combosquat of the tailwindcss package. Its main entry point (index.js) fetches a remote payload from hxxp://31[.]97[.]137[.]157:45000/icons/109 and executes the returned content via the Function constructor with full Node.js access (require, process, Buffer, module), retrying up to 3 times. The actual malicious code is served remotely from the IP 31[.]97[.]137[.]157:45000 rather than shipped in the package, so its behaviour is fully controlled by the remote server. The package also declares dependencies used for credential access and host fingerprinting (@primno/dpapi for Windows DPAPI credential decryption, node-machine-id, sqlite3, socket[.]io-client).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-toolkit",
+        "purl": "pkg:npm/tailwind-toolkit"
+      },
+      "versions": [
+        "1.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-toolkit/v/1.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11197"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T19:59:12Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "1b3a1bc8ba6ae2cfda8581dd4da02fcfbf004786f2abc0648db65900480a4a3f"
+        ],
+        "url_observed": [
+          "hxxp://31[.]97[.]137[.]157",
+          "hxxp://31[.]97[.]137[.]157:45000/icons/109"
+        ]
+      }
+    }
+  }
+}
