@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11160",
+  "modified": "2026-08-13T09:29:28Z",
+  "published": "2026-08-13T09:28:06Z",
+  "summary": "Malicious code in lock-deadline-guard (npm)",
+  "details": "Lock-deadline-guard is a mutex wrapper whose sole dependency, mutex-forge, contains an obfuscated implant (lib/withLoad.min.js). On load it fingerprints the host (hostname, platform, CPU count, total memory, uptime, architecture) and exfiltrates the data to Telegram via api[.]telegram[.]org/bot\u003ctoken\u003e/sendMessage and to Slack via slack[.]com/api/chat.postMessage using a hardcoded xoxb- bot token. It also embeds hardcoded Alchemy and Infura Ethereum RPC endpoints, AES-GCM/PBKDF2/x25519 cryptography, and wallet/private-key handling, and can terminate processes (taskkill/kill). Installing the package pulls in and executes this malicious dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lock-deadline-guard",
+        "purl": "pkg:npm/lock-deadline-guard"
+      },
+      "versions": [
+        "1.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lock-deadline-guard/v/1.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11160"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T09:28:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "ee231a89565f800d6156ed1a4486d4db568fa4251719323c6b0e85f47e0662b4"
+        ],
+        "url_observed": [
+          "hxxps://eth-sepolia[.]g[.]alchemy[.]com/v2/[key-redacted]",
+          "hxxps://sepolia[.]infura[.]io/v3/[key-redacted]"
+        ]
+      }
+    }
+  }
+}

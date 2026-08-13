@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11159",
+  "modified": "2026-08-13T09:27:48Z",
+  "published": "2026-08-13T09:27:04Z",
+  "summary": "Malicious code in async-critical-section (npm)",
+  "details": "Async-critical-section@1.0.0 is a thin wrapper whose only dependency is mutex-forge, which ships an obfuscated implant in lib/withLoad.min.js. On execution the implant fingerprints the host (hostname, platform, arch, CPU count, total/free memory, uptime) and POSTs a system report to Telegram (api[.]telegram[.]org /bot\u003ctoken\u003e/sendMessage) and Slack (slack[.]com /api/chat.postMessage) using hardcoded bot tokens. It also generates x25519 keypairs, performs AES-GCM/PBKDF2 decryption, reads package.json, spawns detached child processes, kills processes (taskkill / process.kill), and interacts with a Sepolia smart contract (getCwPrivatePublic, getTData1/2) to handle wallet/private keys.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "async-critical-section",
+        "purl": "pkg:npm/async-critical-section"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/async-critical-section/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11159"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T09:27:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "01d51cf18526bbc4c5512fc8f1c34aa465b992b36cb95021674028aca0c933e1"
+        ]
+      }
+    }
+  }
+}
