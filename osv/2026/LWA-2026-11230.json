@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11230",
+  "modified": "2026-08-13T23:09:57Z",
+  "published": "2026-08-13T23:09:41Z",
+  "summary": "Malicious code in alelo-core (npm)",
+  "details": "The package's preinstall hook (preinstall.js) collects the hostname, username, platform, working directory, and the full process environment (including any NPM_TOKEN, GITHUB_TOKEN, and cloud credentials present in the installer's environment), serializes them to JSON, and POSTs them to hxxps://209[.]99[.]185[.]109:443/preinstall with TLS certificate verification disabled. The postinstall script references an index.js that is not shipped in the package, so the install fails after the exfiltration has already occurred.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alelo-core",
+        "purl": "pkg:npm/alelo-core"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alelo-core/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11230"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T23:09:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "209[.]99[.]185[.]109:443"
+        ],
+        "sha256": [
+          "a957fbd6f2c2debd0ff0c8fd2f8a70d1839a4da8df1cf8ef22a270c347c64b0a"
+        ],
+        "url_observed": [
+          "hxxps://209[.]99[.]185[.]109",
+          "hxxps://209[.]99[.]185[.]109:443/preinstall"
+        ]
+      }
+    }
+  }
+}
