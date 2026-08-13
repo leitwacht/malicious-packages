@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11170",
+  "modified": "2026-08-13T10:55:37Z",
+  "published": "2026-08-13T10:55:16Z",
+  "summary": "Malicious code in core-js-buffer (npm)",
+  "details": "The postinstall hook (node init.js) of this package, a combosquat of core-js, contacts a Cloudflare Workers C2 at core-js-buffer[.]domaup-com[.]workers[.]dev. It POSTs host metadata (hostname, username, OS/platform, node version, OS release) to /report, then fetches an AES-256-GCM encrypted second-stage payload from /e, decrypts it using a key derived from a hardcoded seed, writes the decrypted Python code to ~/.cache/core-js-buffer/modules/runtime.py, and executes it as a detached background python process. The payload is a Python class named TelemetrySender whose send(load()) method is invoked. The hook only runs on machines with ~/Desktop, ~/Documents, or ~/Downloads present, and caches a marker to avoid re-running within 24 hours.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "core-js-buffer",
+        "purl": "pkg:npm/core-js-buffer"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/core-js-buffer/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11170"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T10:55:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "core-js-buffer[.]domaup-com[.]workers[.]dev"
+        ],
+        "sha256": [
+          "7223c92e3d4419afe42c20a736479afd4a7d31ab90889028126efba711c17bf8"
+        ],
+        "url_observed": [
+          "hxxps://core-js-buffer[.]domaup-com[.]workers[.]dev/e",
+          "hxxps://core-js-buffer[.]domaup-com[.]workers[.]dev/report"
+        ]
+      }
+    }
+  }
+}
