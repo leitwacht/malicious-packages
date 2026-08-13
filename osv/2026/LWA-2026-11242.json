@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11242",
+  "modified": "2026-08-13T23:14:07Z",
+  "published": "2026-08-13T23:13:41Z",
+  "summary": "Malicious code in alelo-payment (npm)",
+  "details": "The package's preinstall and postinstall hooks (preinstall.js and index.js) collect host metadata — hostname, username, home directory, platform, architecture, cwd, and the full process environment — and POST it to 209[.]99[.]185[.]109:443 at paths /preinstall and /postinstall. The postinstall hook additionally reads the contents of.env,.npmrc, package.json,../.env and../../.env (up to 5000 characters each) and runs whoami and id, exfiltrating all of it to the same host. The TLS connection is made with certificate verification disabled. This steals the installer's environment variables and credential files (.npmrc,.env) and sends them to a remote server.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alelo-payment",
+        "purl": "pkg:npm/alelo-payment"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alelo-payment/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11242"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T23:13:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "209[.]99[.]185[.]109:443"
+        ],
+        "sha256": [
+          "99b3faa6b69ea33295bc4ff7ef6e5b7774dc43f5e850bb1ed131ce59981c0785"
+        ],
+        "url_observed": [
+          "hxxps://209[.]99[.]185[.]109/postinstall",
+          "hxxps://209[.]99[.]185[.]109/preinstall"
+        ]
+      }
+    }
+  }
+}

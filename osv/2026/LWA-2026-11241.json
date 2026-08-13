@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11241",
+  "modified": "2026-08-13T23:12:52Z",
+  "published": "2026-08-13T23:12:41Z",
+  "summary": "Malicious code in alelo-sdk (npm)",
+  "details": "Alelo-sdk@99.0.0 runs two install-time hooks that exfiltrate host data and credentials to a hardcoded server. The preinstall hook POSTs the hostname, username, platform, working directory, and the full process environment (including any NPM_TOKEN/GITHUB_TOKEN and other secrets) to hxxps://209[.]99[.]185[.]109:443/preinstall. The postinstall hook additionally reads the contents of.env,.npmrc, and package.json files (including parent-directory variants, up to 5000 characters each), runs whoami and id, and POSTs all collected data to hxxps://209[.]99[.]185[.]109:443/postinstall. Both requests use HTTPS with certificate verification disabled. The package is a fresh \"internal SDK\" name published at version 99.0.0.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alelo-sdk",
+        "purl": "pkg:npm/alelo-sdk"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alelo-sdk/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11241"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T23:12:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "209[.]99[.]185[.]109:443"
+        ],
+        "sha256": [
+          "ecc3c29e6035f190260ae732d3396ae0560c1db7d3c933b917269ae9c277efbf"
+        ],
+        "url_observed": [
+          "hxxps://209[.]99[.]185[.]109",
+          "hxxps://209[.]99[.]185[.]109:443/postinstall",
+          "hxxps://209[.]99[.]185[.]109:443/preinstall"
+        ]
+      }
+    }
+  }
+}

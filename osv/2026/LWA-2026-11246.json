@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11246",
+  "modified": "2026-08-13T23:14:15Z",
+  "published": "2026-08-13T23:13:41Z",
+  "summary": "Malicious code in alelo-utils (npm)",
+  "details": "Alelo-utils@99.0.0 runs two lifecycle hooks on install. The preinstall hook (preinstall.js) and postinstall hook (index.js) collect the hostname, username, home directory, platform, architecture, working directory, the full process environment (including any NPM_TOKEN, GITHUB_TOKEN, and other credentials), and read the contents of.env,.npmrc, and package.json files (up to 5000 characters each), plus the output of whoami and id. All collected data is POSTed as JSON over HTTPS to 209[.]99[.]185[.]109:443 at the /preinstall and /postinstall paths, with TLS certificate verification disabled. The package is a fresh high-version (99.0.0) publish with no legitimate utility functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alelo-utils",
+        "purl": "pkg:npm/alelo-utils"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alelo-utils/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11246"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T23:13:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "209[.]99[.]185[.]109:443"
+        ],
+        "sha256": [
+          "781d319a2bc01a1c7b950bd7502509120d41d5ad95be996835831c3a81f1a241"
+        ]
+      }
+    }
+  }
+}
