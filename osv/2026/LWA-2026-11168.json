@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11168",
+  "modified": "2026-08-13T09:36:53Z",
+  "published": "2026-08-13T09:31:05Z",
+  "summary": "Malicious code in shared-slot-gate (npm)",
+  "details": "Shared-slot-gate is a semaphore wrapper whose only dependency, mutex-forge, is a C2 implant. Installing shared-slot-gate transitively installs mutex-forge, which on execution collects host metadata (hostname, platform, architecture, CPU count, memory, uptime) and exfiltrates it to a Telegram bot (api[.]telegram[.]org/bot\u003ctoken\u003e/sendMessage, chat -1003952553968) and a Slack workspace (slack[.]com/api/chat.postMessage, channel C0B8XPGcKQS). It generates an X25519 keypair, derives a shared secret, and registers a public key on a Sepolia smart contract at 0xE390863Dac96a7118C71227C2b09B50cF602D31 via Alchemy (eth-sepolia[.]g[.]alchemy[.]com) and Infura (sepolia[.]infura[.]io) RPC endpoints. It spawns detached child processes that poll Slack/Telegram for commands, download AES-GCM-encrypted chunks, decrypt them with PBKDF2-derived keys, and execute the resulting payloads. It also terminates processes and self-deletes to evade analysis.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "shared-slot-gate",
+        "purl": "pkg:npm/shared-slot-gate"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/shared-slot-gate/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11168"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T09:31:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "79288b881668b80dd39f04217a46e4ac9f4d4bc11d156e551b9797076309762e"
+        ],
+        "url_observed": [
+          "hxxps://eth-sepolia[.]g[.]alchemy[.]com/v2/[key-redacted]",
+          "hxxps://sepolia[.]infura[.]io/v3/[key-redacted]"
+        ],
+        "wallet_observed": [
+          "0xE390863Dac96a7118C71227C2b09B50cF602D31"
+        ]
+      }
+    }
+  }
+}
