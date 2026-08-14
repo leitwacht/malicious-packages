@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11274",
+  "modified": "2026-08-14T08:08:15Z",
+  "published": "2026-08-14T08:07:43Z",
+  "summary": "Malicious code in biklitool (npm)",
+  "details": "The package's postinstall hook enables Remote Desktop on port 3389, opens inbound firewall rules, disables Network Level Authentication, and enables full RDP shadowing without permission. It then creates a hidden local administrator account (the built-in Administrator, or a new 'admin'/'user' account) using a hardcoded administrator password shipped in the package's config.json, and hides the account from the Windows sign-in screen. The configured credentials are also written to %ProgramData%\\BikliWrapper\\admin-credentials.json. Installing the package leaves the machine with a hidden admin account whose password is publicly known and Remote Desktop exposed with authentication weakened, providing persistent remote access with known credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "biklitool",
+        "purl": "pkg:npm/biklitool"
+      },
+      "versions": [
+        "1.1.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/biklitool/v/1.1.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11274"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-14T08:07:43Z",
+      "indicators_observed": {
+        "sha256": [
+          "8679d9f5fb86648bb2da667e5f5dc5a748a2a1d8c8e3c8e2525300e8a54c3e2d"
+        ]
+      }
+    }
+  }
+}
