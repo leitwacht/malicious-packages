@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11284",
+  "modified": "2026-08-14T19:38:28Z",
+  "published": "2026-08-14T19:37:43Z",
+  "summary": "Security-research / proof-of-concept package: twilio-hackerone-poc-afe6937c (npm)",
+  "details": "The package runs probe.js on install (preinstall and postinstall). Inside a Twilio build-packager container (working directory matching /tmp/AC\u003c32-hex\u003e/), it collects host metadata — the current user id, working directory, parent process command line, AWS Lambda log stream name, and a listing of /var/task — and POSTs it as JSON to webhook[.]site/b520829e-516a-45ff-980c-173aa54fc4bc. It then spawns a detached daemon (copied to /tmp/.h1poc-daemon.js) that every 100ms scans /tmp for Twilio account build directories, reports each discovered account/service/package to the same webhook, and injects a marker package named h1-poc-marker into the node_modules of build directories belonging to a hardcoded account. The daemon sends heartbeats to the webhook every 30 seconds and exits after 15 minutes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "twilio-hackerone-poc-afe6937c",
+        "purl": "pkg:npm/twilio-hackerone-poc-afe6937c"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/twilio-hackerone-poc-afe6937c/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11284"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-08-14T19:37:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "7b69c97afa71df1eb6d17deb6eccdba4337cdefbdf3f46c1ebd2dae6e704f5ba"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/b520829e-516a-45ff-980c-173aa54fc4bc"
+        ]
+      }
+    }
+  }
+}
