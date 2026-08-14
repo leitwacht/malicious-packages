@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11277",
+  "modified": "2026-08-14T12:16:21Z",
+  "published": "2026-08-14T12:13:29Z",
+  "summary": "Malicious code in postcss-initialize-provider (npm)",
+  "details": "Postcss-initialize-provider@3.0.4 is a trojanized clone of the legitimate postcss-initial plugin. The package's index.js contains the real postcss plugin code followed by a large obfuscated payload that executes on require(). The payload spawns child processes, reads the ETH_RPC_URL environment variable, and issues Ethereum JSON-RPC calls (eth_getBlock, eth_getBalance) against a list of RPC endpoints. It beacons to C2 infrastructure reachable via the hosts stapi[.]io and ut[.]com/api, with a command path under :443/0x/cl, and handles transaction/address data (strings 'address=' and 'transactio'). The obfuscated code also performs gzip/deflate/brotli decompression of responses, consistent with a multi-stage crypto-drainer implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss-initialize-provider",
+        "purl": "pkg:npm/postcss-initialize-provider"
+      },
+      "versions": [
+        "3.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/postcss-initialize-provider/v/3.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11277"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-14T12:13:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "stapi[.]io",
+          "ut[.]com"
+        ],
+        "sha256": [
+          "4868964a580eae437b9922385d9ba72f89b34c5d4e0a05c816d22cf679445a92"
+        ],
+        "url_observed": [
+          ":443/0x/cl",
+          "hxxps://stapi[.]io",
+          "hxxps://ut[.]com/api"
+        ]
+      }
+    }
+  }
+}
