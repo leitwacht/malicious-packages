@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11281",
+  "modified": "2026-08-14T16:13:39Z",
+  "published": "2026-08-14T16:12:42Z",
+  "summary": "Malicious code in sbironman (npm)",
+  "details": "The npm postinstall hook requests Windows administrator approval, then silently installs a bundled remote-access tool and configures the host for covert remote access. It installs a WireGuard-based overlay/VPN CLI and RDP Wrapper, then disguises the installed process and Windows service as a native \"Service Host: Network Infrastructure Service\" (svchost.exe) by rewriting the executable's version resources to impersonate Microsoft Corporation, compiling a C# forwarder that spawns the real service binary, renaming the service display name to a generic network-infrastructure description, and removing the application's Start-menu/App-Paths registry entries. It hides all installed folders (Program Files\\Bikli, Program Files\\RDP Wrapper, ProgramData\\BikliWrapper) using hidden+system attributes and ACLs restricted to SYSTEM and Administrators. It enables Remote Desktop on TCP 3389 with Network Level Authentication disabled and full shadow access without permission, unlimited concurrent sessions, and no idle/connection time limits, and opens inbound firewall rules for RDP. It creates or enables a hidden local administrator account (the built-in Administrator, else 'admin' or 'user') with a hardcoded password shipped in the package's config.json, adds it to the Administrators and Remote Desktop Users groups, stores the credentials in C:\\ProgramData\\BikliWrapper\\admin-credentials.json, and hides the account's profile folder. The result is a persistent, disguised remote-access backdoor with a known administrator credential.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sbironman",
+        "purl": "pkg:npm/sbironman"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sbironman/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11281"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-14T16:12:42Z",
+      "indicators_observed": {
+        "sha256": [
+          "1868e40d30bf40794de0a40884d7a06fb6a9b595e4377ec99e18146c8415b316"
+        ]
+      }
+    }
+  }
+}
