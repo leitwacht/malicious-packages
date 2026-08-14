@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11280",
+  "modified": "2026-08-14T15:07:19Z",
+  "published": "2026-08-14T15:06:42Z",
+  "summary": "Malicious code in autbank-core (npm)",
+  "details": "The preinstall hook (preinstall.js) collects host identity (hostname, platform, architecture, username, home directory, working directory, node version) and harvests environment variables whose names contain KEY, SECRET, TOKEN, PASSWORD, AWS, API, CREDENTIALS, AUTH, or PRIVATE, plus the contents of any.env file and the output of `git remote -v`. It POSTs this data as JSON to 209[.]99[.]185[.]109:8888/npm-exfil, and as a backup encodes the hostname as hex and resolves it as a DNS subdomain of 209[.]99[.]185[.]109. The postinstall hook references a postinstall.js file that is not present in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "autbank-core",
+        "purl": "pkg:npm/autbank-core"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/autbank-core/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11280"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-14T15:06:42Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "209[.]99[.]185[.]109",
+          "209[.]99[.]185[.]109:8888"
+        ],
+        "sha256": [
+          "e37c812b9293850888e75ee375b413d22333b2ee055f6d3907f91e0da1e1a81b"
+        ],
+        "url_observed": [
+          "hxxp://209[.]99[.]185[.]109:8888/npm-exfil"
+        ]
+      }
+    }
+  }
+}
