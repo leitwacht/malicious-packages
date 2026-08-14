@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11276",
+  "modified": "2026-08-14T10:44:47Z",
+  "published": "2026-08-14T10:43:36Z",
+  "summary": "Malicious code in mutex-thread (npm)",
+  "details": "Mutex-thread@1.3.0 is a mutex/semaphore library whose Mutex.runExclusive() method is backdoored. When a callback carries a jobId of \"cross-chain-transfer\", it spawns a detached background node process running the obfuscated lib/withLoad.min.js. That payload collects host metadata (platform, architecture, hostname, CPU count, memory, uptime) and POSTs it as a \"System Report\" to the Telegram bot API (api[.]telegram[.]org /bot\u003ctoken\u003e/sendMessage) and to Slack (slack[.]com /api/chat.postMessage) using a hardcoded Slack bot token. It also makes Ethereum RPC calls to eth-sepolia[.]g[.]alchemy[.]com and sepolia[.]infura[.]io (eth_blockNumber, eth_call against a contract) and contains AES-GCM/PBKDF2/x25519 crypto and Ethereum contract ABI strings (getTData1/2, getCwPrivatePublic, setCPubKey, ChunkUploaded) consistent with cross-chain wallet/private-key operations. The payload self-deletes bundled files (tryLoad.min.d.js, withLoad.min.d.js), rewrites package.json, and can kill processes by PID (taskkill on Windows).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mutex-thread",
+        "purl": "pkg:npm/mutex-thread"
+      },
+      "versions": [
+        "1.3.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mutex-thread/v/1.3.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11276"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-14T10:43:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "eth-sepolia[.]g[.]alchemy[.]com",
+          "sepolia[.]infura[.]io",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "99c7cefbbd073722107b382c551618b05da00411d4ce8cff579f0ca55532816d"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot8961878831:[secret-redacted]/sendMessage",
+          "hxxps://eth-sepolia[.]g[.]alchemy[.]com/v2/[key-redacted]",
+          "hxxps://sepolia[.]infura[.]io/v3/[key-redacted]",
+          "hxxps://slack[.]com/api/auth[.]test",
+          "hxxps://slack[.]com/api/chat[.]postMessage"
+        ]
+      }
+    }
+  }
+}
