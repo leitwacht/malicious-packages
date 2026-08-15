@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11313",
+  "modified": "2026-08-15T03:14:46Z",
+  "published": "2026-08-15T03:14:19Z",
+  "summary": "Malicious code in tailwind-utility-kit (npm)",
+  "details": "Tailwind-utility-kit@1.3.2 is a remote-code-execution dropper disguised as a Tailwind CSS utility plugin. On import, index.js fetches a payload from hxxps://31[.]97[.]137[.]157:45000/icons/109 (raw-IP C2, port 45000, custom header \"bearrtoken: logo\") and executes the returned JSON body as JavaScript via the Function constructor, with Node's require, process, Buffer, module and exports injected so the remote payload has full access to the host. The package also bundles credential-decryption and host-fingerprinting dependencies (better-sqlite3, sqlite3, @primno/dpapi, node-machine-id, socket[.]io-client). The README describes a benign Tailwind plugin and does not match the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-utility-kit",
+        "purl": "pkg:npm/tailwind-utility-kit"
+      },
+      "versions": [
+        "1.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-utility-kit/v/1.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11313"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-15T03:14:19Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "afd3e5486968aff3f0546f528e21741cc8905f68ca8db80f78c8527def261eb3"
+        ],
+        "url_observed": [
+          "hxxps://31[.]97[.]137[.]157",
+          "hxxps://31[.]97[.]137[.]157:45000/icons/109"
+        ]
+      }
+    }
+  }
+}
