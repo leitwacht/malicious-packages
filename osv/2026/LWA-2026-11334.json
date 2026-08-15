@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11334",
+  "modified": "2026-08-15T16:28:37Z",
+  "published": "2026-08-15T16:28:05Z",
+  "summary": "Malicious code in @guildai-services/guildai (npm)",
+  "details": "Dependency-confusion stub package. The package ships an empty module (module.exports = {}) with no code of its own, but declares a dependency \"ltidisafe\" that is fetched from a non-registry CDN rather than the npm registry: hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]7[.]7[.]tgz. Installing this package pulls and installs that off-registry tarball from the attacker-controlled Google Cloud Storage host, injecting an unvetted dependency into the install graph. The high version (99.9.1) on a scoped name is the dependency-confusion shape used to trick resolvers into preferring this package over a legitimate one.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@guildai-services/guildai",
+        "purl": "pkg:npm/%40guildai-services/guildai"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@guildai-services/guildai/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11334"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-15T16:28:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "58555cd3cbb8cd8969005d05538b83fd0422d66cd726415bdcb9faa43a68559b"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]7[.]7[.]tgz"
+        ]
+      }
+    }
+  }
+}
