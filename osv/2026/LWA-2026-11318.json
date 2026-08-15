@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11318",
+  "modified": "2026-08-15T09:08:49Z",
+  "published": "2026-08-15T09:07:41Z",
+  "summary": "Malicious code in sbman (npm)",
+  "details": "The package's postinstall hook runs an installer that elevates to administrator and deploys a covert remote-access implant on Windows. It installs the RDP Wrapper tool (bundled RDPWInst.exe and rdpwrap.ini) to enable Remote Desktop with full shadow access without permission (Shadow=2), Network Level Authentication disabled, unlimited concurrent sessions and no session time limits, and adds firewall rules opening TCP/UDP 3389. It creates or enables a hidden built-in Administrator account using a hardcoded password shipped in config.json (\"Hacker@1290\") and hides that account from the Windows sign-in screen. It disguises the installed process and service as svchost.exe / \"Service Host: Network Infrastructure Service\" with Microsoft Corporation version metadata by rewriting the executable's resource section and compiling a C# launcher, and hides the install folders while restricting their ACLs to SYSTEM and Administrators. The configured administrator password is also written to %ProgramData%\\BikliWrapper\\admin-credentials.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sbman",
+        "purl": "pkg:npm/sbman"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sbman/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11318"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-15T09:07:41Z",
+      "indicators_observed": {
+        "sha256": [
+          "e1cee522e88aad58a440c4a4038a51747aceda3e0731c3a7dc8942c64f54442b"
+        ]
+      }
+    }
+  }
+}
