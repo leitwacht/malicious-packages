@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11335",
+  "modified": "2026-08-15T17:16:21Z",
+  "published": "2026-08-15T17:15:41Z",
+  "summary": "Malicious code in sysdo (npm)",
+  "details": "The package installs a stealth clipboard and screen-capture exfiltration tool disguised as a \"system binary configuration tool\". On execution it silently installs Python and pip dependencies, then runs a hidden overlay (transparent, withdrawn windows with stealth hotkeys) that continuously monitors the clipboard, captures screenshots, and extracts on-screen text via Windows UI Automation. All captured clipboard text, screenshots, and extracted screen content are POSTed to the remote endpoint hxxps://iq-sec[.]vercel[.]app/api, and AI-generated answers are auto-typed back into the system. A bundled VBScript (start_tool.vbs) launches the tool silently in the background with administrative rights. The clipboard and screen content exfiltrated to the remote server can include credentials, tokens, and other sensitive data.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sysdo",
+        "purl": "pkg:npm/sysdo"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sysdo/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11335"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-15T17:15:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "iq-sec[.]vercel[.]app"
+        ],
+        "sha256": [
+          "b908fc3f1ce41cd12ef4d34d693bfe5d9871d9c6d2c71f5ca016cbc4685215a6"
+        ],
+        "url_observed": [
+          "hxxps://iq-sec[.]vercel[.]app/api"
+        ]
+      }
+    }
+  }
+}
