@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11332",
+  "modified": "2026-08-15T14:33:03Z",
+  "published": "2026-08-15T14:32:42Z",
+  "summary": "Malicious code in depcruise-wrap-stream-in-html (npm)",
+  "details": "The package is an empty shell (index.js exports an empty object) that declares a dependency named \"ltidisafe\" fetched at install time from a non-registry Google Cloud Storage URL (hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]7[.]5[.]tgz). The package name is a combosquat of the legitimate dependency-cruiser tool, and the off-registry dependency is pulled from a CDN path under \"depenconf\", indicating a dependency-confusion supply-chain attack where the real payload is delivered via the external dependency rather than the package's own code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "depcruise-wrap-stream-in-html",
+        "purl": "pkg:npm/depcruise-wrap-stream-in-html"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/depcruise-wrap-stream-in-html/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11332"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-15T14:32:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "bdf622a87a26a034bf97fadccc85dde5a4ff07559f165ded72cdf953aebb04de"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]7[.]5[.]tgz"
+        ]
+      }
+    }
+  }
+}
