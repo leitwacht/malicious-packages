@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11341",
+  "modified": "2026-08-16T02:49:30Z",
+  "published": "2026-08-16T02:48:42Z",
+  "summary": "Malicious code in chalk-es (npm)",
+  "details": "Chalk-es@1.0.0 (a combosquat of the chalk package) runs a malicious postinstall hook (scripts/postinstall.js) on install. The hook fingerprints the host (platform, WSL detection), POSTs a platform beacon to C2 193[.]70[.]34[.]101:20099 at path /vote, then on Windows/WSL systems downloads a native binary from hxxps://github[.]com/bezbz1/qzM50VKAG0rVlH/releases/download/main[.]exe to %TEMP%\\main.exe and executes it as a detached process. On WSL it instead runs an XOR-decoded bridge-launcher command via exec. Payload URLs and C2 addresses are XOR-obfuscated in the script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chalk-es",
+        "purl": "pkg:npm/chalk-es"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chalk-es/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11341"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:48:42Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "564780dff5fdf5bd0d2ee04fdafc25b703f8bcbf8ccd9b8d34a83e7734696144"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/bezbz1/qzM50VKAG0rVlH/releases/download/main[.]exe"
+        ]
+      }
+    }
+  }
+}
