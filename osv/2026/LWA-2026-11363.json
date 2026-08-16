@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11363",
+  "modified": "2026-08-16T02:29:05Z",
+  "published": "2026-08-16T02:28:41Z",
+  "summary": "Malicious code in testingsmthb1g (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install. It POSTs an install beacon (node version, arch, platform) to 193[.]70[.]34[.]101:20099/vote. On Windows and WSL hosts it downloads a Windows executable main.exe from hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/release/download/null/main[.]exe into %TEMP%\\main.exe and executes it — on native Windows via a detached spawn, on WSL via a hidden PowerShell command (powershell.exe -WindowStyle Hidden -NoProfile -NonInteractive -ExecutionPolicy Bypass) that runs Invoke-WebRequest to fetch and run the binary. The download URL and C2 host are XOR-obfuscated in the script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "testingsmthb1g",
+        "purl": "pkg:npm/testingsmthb1g"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/testingsmthb1g/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11363"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:28:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "7c096766e18f12afd86a3affe25bda35047b5360a8e5ad611488b8d389cfaf88"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/release/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

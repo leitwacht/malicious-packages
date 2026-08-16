@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11370",
+  "modified": "2026-08-16T03:02:34Z",
+  "published": "2026-08-16T02:53:07Z",
+  "summary": "Malicious code in typecript-cli (npm)",
+  "details": "Typecript-cli is a typosquat of the TypeScript CLI. Its postinstall hook (scripts/postinstall.js) XOR-obfuscates its payload strings. On install it POSTs a platform fingerprint to the hardcoded endpoint 193[.]70[.]34[.]101:20099/vote, then on Windows and WSL hosts downloads a binary from hxxps://github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe and executes it as a detached background process, writing it to C:\\Temp\\main.exe. The download URL and C2 host are hidden behind XOR encoding with key 'stf2026'.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typecript-cli",
+        "purl": "pkg:npm/typecript-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typecript-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11370"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:53:07Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "2961e849eb4666e3eee863b57417cb86103bedf2540c19da11826ee4b12e325a"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote",
+          "hxxps://github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11368",
+  "modified": "2026-08-16T02:53:18Z",
+  "published": "2026-08-16T02:51:53Z",
+  "summary": "Malicious code in lodsh-cli (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install and contacts a hardcoded C2 at 193[.]70[.]34[.]101:20099, POSTing host metadata (platform, arch, node version) to the /vote endpoint. On Windows and WSL hosts it additionally XOR-decodes a GitHub URL (github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/...), downloads a binary to C:\\Temp\\main.exe, and launches it as a detached background process; on WSL it also executes a shell bridge command via the system shell. The package name lodsh-cli impersonates lodash.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lodsh-cli",
+        "purl": "pkg:npm/lodsh-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lodsh-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11368"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:51:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "da717818a08a51d22e0cf936da90cd6abb5c4aac7ea15c6e2c3bb19f5a5a82ba"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/"
+        ]
+      }
+    }
+  }
+}

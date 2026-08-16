@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11367",
+  "modified": "2026-08-16T02:55:32Z",
+  "published": "2026-08-16T02:51:05Z",
+  "summary": "Malicious code in commandor-lib (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) beacons the host platform to a remote C2 at 193[.]70[.]34[.]101:20099 via HTTP POST to /vote with a JSON body containing the platform label. It then XOR-decodes (key 'stf2026') an embedded URL for a second-stage binary, downloads it to the temp directory as main.exe, and spawns it detached with windowsHide:true so it runs in the background. On Windows/WSL hosts it instead executes a shell bridge command that downloads and runs the same binary. The package has no functional purpose (empty description, trivial index.js); its only behaviour is the install-time beacon and binary dropper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "commandor-lib",
+        "purl": "pkg:npm/commandor-lib"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/commandor-lib/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11367"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:51:05Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "3f26a72251e8ed472d296ed9321321cbc9404de499bc5e28d8ef8764c4099b48"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote"
+        ]
+      }
+    }
+  }
+}

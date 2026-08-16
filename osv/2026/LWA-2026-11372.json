@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11372",
+  "modified": "2026-08-16T03:00:00Z",
+  "published": "2026-08-16T02:54:32Z",
+  "summary": "Malicious code in typecript-core (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) of this package, which typosquats the name of a popular TypeScript package, performs two actions. First, it POSTs a host fingerprint (node version, architecture, platform) as JSON to the remote endpoint 193[.]70[.]34[.]101:20099/vote. Second, on Windows and WSL hosts it XOR-decodes a GitHub release URL (hxxps://github[.]com/beebraz1/qzM50V1AKG0rVlH/release/download/null/main[.]exe), downloads the binary main.exe into the temp directory, and launches it as a detached background process with stdio ignored. The downloaded binary is executed without user consent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typecript-core",
+        "purl": "pkg:npm/typecript-core"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typecript-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11372"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:54:32Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "d6c7327557132171e28ff0863f1730d1b3041fca39b6ca0316cdfc56659f71b9"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beebraz1/qzM50V1AKG0rVlH/release/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

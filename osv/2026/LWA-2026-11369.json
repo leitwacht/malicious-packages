@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11369",
+  "modified": "2026-08-16T02:57:59Z",
+  "published": "2026-08-16T02:52:56Z",
+  "summary": "Malicious code in typscript-cli (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install. It fingerprints the host (platform, architecture, WSL/virtualization detection via /proc/version and /proc/sys/kernel/osrelease) and POSTs the platform label as JSON to the C2 endpoint hxxp://193[.]70[.]34[.]101:20099/vote. It then XOR-decodes an obfuscated URL and downloads a remote binary, writing it to %TEMP%\\main.exe and launching it detached on Windows, or executing a bridge launcher via the shell on WSL/Linux. The package name typscript-cli is a misspelling of the legitimate typescript-cli.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typscript-cli",
+        "purl": "pkg:npm/typscript-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typscript-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11369"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:52:56Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "1ecb2d99c28259846eb58abcac20e1bbef71ec33875f09dbb858655fef340036"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101",
+          "hxxp://193[.]70[.]34[.]101:20099/vote"
+        ]
+      }
+    }
+  }
+}

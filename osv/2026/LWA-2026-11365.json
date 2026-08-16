@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11365",
+  "modified": "2026-08-16T02:51:01Z",
+  "published": "2026-08-16T02:50:05Z",
+  "summary": "Malicious code in commandor-cli (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install and beacons host information to a remote C2. It fingerprints the host (platform, architecture, Node version, WSL/virtualization detection) and POSTs a JSON body (e.g. {\"platform\":\"Linux\"}) to 193[.]70[.]34[.]101:20099/vote. On Windows/WSL hosts it additionally downloads a native binary main.exe from hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe into the temp directory and executes it as a detached background process (stdio ignored, unref'd). The C2 address and download URL are hidden via XOR encoding with a hardcoded key.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "commandor-cli",
+        "purl": "pkg:npm/commandor-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/commandor-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11365"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:50:05Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "a73cd2b53bb371ef449879996e027b35206e2c17205048abbb2f2b17d54cd92b"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

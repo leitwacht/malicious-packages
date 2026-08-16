@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11371",
+  "modified": "2026-08-16T02:59:49Z",
+  "published": "2026-08-16T02:53:46Z",
+  "summary": "Malicious code in typescirpt-core (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install and performs two actions. First it POSTs host metadata (platform) to the C2 endpoint 193[.]70[.]34[.]101:20099/vote. Second, on Windows and WSL hosts it XOR-decodes a GitHub release URL (hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe), downloads the binary to %TEMP%\\main.exe, and launches it as a detached background process with stdio ignored and the handle unref'd, so it runs hidden and outlives the installer. On WSL it instead builds and executes a bridge command from XOR-encoded script segments. The package name is a combosquat of typescript-core.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typescirpt-core",
+        "purl": "pkg:npm/typescirpt-core"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typescirpt-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11371"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:53:46Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "bfbb50fc858fa713f084e20cabc5fd7fbac6158a992504f2196adc6bc435f4a9"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

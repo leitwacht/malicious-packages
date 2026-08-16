@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11364",
+  "modified": "2026-08-16T02:51:02Z",
+  "published": "2026-08-16T02:50:04Z",
+  "summary": "Malicious code in comand (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) beacons host platform metadata to 193[.]70[.]34[.]101:20099 via HTTP POST to /vote, and on Windows/WSL hosts downloads a native binary from hxxps://github[.]com/beabraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe into the temp directory as main.exe and executes it detached (backgrounded, hidden window). On WSL it runs a decoded bridge command via exec() to install the same addon. The binary URL is XOR-obfuscated in the script. The package performs host fingerprinting (WSL detection via /proc/version and kernel osrelease) before beaconing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "comand",
+        "purl": "pkg:npm/comand"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/comand/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11364"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:50:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "711845c6da800dbfdb4fe3c38eefb15bd6a82b0ca3bc2b7811c7dfdccb9ecad0"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beabraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

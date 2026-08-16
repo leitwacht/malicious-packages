@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11374",
+  "modified": "2026-08-16T03:00:16Z",
+  "published": "2026-08-16T02:55:53Z",
+  "summary": "Malicious code in axois-http (npm)",
+  "details": "Axois-http@1.0.0 is a typosquat of the axios HTTP library. Its postinstall hook (scripts/postinstall.js) runs on install and fingerprints the host (platform, architecture, Node version, WSL detection), then POSTs a JSON beacon containing the platform to the C2 endpoint 193[.]70[.]34[.]101:20099/vote. On Windows and WSL hosts it additionally XOR-decodes a remote URL, downloads a binary addon to the temp directory as main.exe, and spawns it as a detached background process (hidden window, stdio ignored) so it outlives the installer; on WSL it executes the addon through a shell bridge command. The C2 host is 193[.]70[.]34[.]101 on port 20099.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "axois-http",
+        "purl": "pkg:npm/axois-http"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/axois-http/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11374"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:55:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101",
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "20435832ff44055d9ab3cbe3e88f2df48b0f48a0a70fc8481be78652e276b186"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote"
+        ]
+      }
+    }
+  }
+}
