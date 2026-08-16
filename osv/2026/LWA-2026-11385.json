@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11385",
+  "modified": "2026-08-16T22:45:46Z",
+  "published": "2026-08-16T22:43:49Z",
+  "summary": "Malicious code in syjoy (npm)",
+  "details": "The package's bin entry (index.js) installs a Python runtime and a stack of automation libraries, then launches a hidden background process (via wscript.exe, detached, window hidden, elevated) that runs pointer.py. pointer.py continuously monitors the system clipboard and, whenever its contents change, POSTs the copied text to hxxps://new-pointer[.]vercel[.]app/api. It also captures full-screen screenshots (base64 JPEG) and extracts text from on-screen regions via UI-automation, POSTing those to the same endpoint. The tool runs as a stealth overlay with global hotkeys and a panic-exit, and is designed to silently harvest clipboard contents and screen captures from the victim's machine and transmit them to the remote endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "syjoy",
+        "purl": "pkg:npm/syjoy"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/syjoy/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11385"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T22:43:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "new-pointer[.]vercel[.]app"
+        ],
+        "sha256": [
+          "7676d69fb926c51b00267d9445e9916049422eb29b4623345eb3d23dd4d46bff"
+        ],
+        "url_observed": [
+          "hxxps://new-pointer[.]vercel[.]app/api"
+        ]
+      }
+    }
+  }
+}
