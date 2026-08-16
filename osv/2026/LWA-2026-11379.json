@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11379",
+  "modified": "2026-08-16T18:58:19Z",
+  "published": "2026-08-16T18:58:03Z",
+  "summary": "Malicious code in @evial/init-helper-djkwt (npm)",
+  "details": "The postinstall hook (scripts/collect.js) runs a credential-harvesting payload on install. It executes `id` and `env` to capture the full environment, then reads credential files from the home directory and project root — including.aws/credentials,.aliyun/config.json,.cos_credential,.baidubce/credentials,.ossutilconfig,.docker/config.json,.kube/config, and.npmrc — and appends their contents to a log. It also queries cloud instance-metadata endpoints (169[.]254[.]169[.]254, 100[.]100[.]100[.]200, metadata[.]tencentyun[.]com, 169[.]254[.]80[.]80 at /latest/meta-data/) to harvest cloud IAM credentials. All collected data is staged into rt-probe.log and sysinfo.log written to /workspace, the project root, and the package directory. It additionally drops a persistence script 90-init-monitor.sh into.rules that records hostname/user/working-directory on each invocation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@evial/init-helper-djkwt",
+        "purl": "pkg:npm/%40evial/init-helper-djkwt"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@evial/init-helper-djkwt/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11379"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T18:58:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com"
+        ],
+        "sha256": [
+          "262b49b459501329dd15bfe884f9ebc5db0bdd5c2960923f499a9bba53fd1d71"
+        ]
+      }
+    }
+  }
+}
