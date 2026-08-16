@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11357",
+  "modified": "2026-08-16T03:00:15Z",
+  "published": "2026-08-16T02:54:53Z",
+  "summary": "Malicious code in raectjs (npm)",
+  "details": "The postinstall hook (node scripts/postinstall.js) runs on install and beacons to a C2 server at 193[.]70[.]34[.]101:20099, POSTing a JSON body {\"platform\":\"\u003cos\u003e\"} to the /vote endpoint. It then XOR-decodes (key 'stf2026') a second-stage download URL, fetches a Windows executable main.exe from hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe into the temp directory, and launches it as a detached background process (spawn with detached:true, stdio ignored, unref). On Windows/WSL hosts it instead runs a decoded bridge script via exec. The package name 'raectjs' is a typosquat of 'reactjs'. Network IOCs: 193[.]70[.]34[.]101:20099 /vote; second-stage binary hosted at the GitHub release URL above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "raectjs",
+        "purl": "pkg:npm/raectjs"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/raectjs/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11357"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:54:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "99a8de00e5ebafa8df166d71109a231e33e73aee844a72d4c0cecd73fa88b215"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote",
+          "hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11361",
+  "modified": "2026-08-16T03:02:36Z",
+  "published": "2026-08-16T02:54:28Z",
+  "summary": "Malicious code in tyepescript-core (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install. It collects a host profile (node version, architecture, platform) and POSTs it as JSON to 193[.]70[.]34[.]101:20099/vote. On Windows and WSL hosts it then downloads a remote binary main.exe from hxxps://jgithub[.]com/beabraz1/qPzM50V1aKG0rVlH/release/download/main[.]exe and executes it as a detached background process (on WSL via a shell bridge command). The download URL and C2 endpoint are XOR-obfuscated in the script. The package name is a misspelling of typescript-core.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tyepescript-core",
+        "purl": "pkg:npm/tyepescript-core"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tyepescript-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11361"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:54:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jgithub[.]com"
+        ],
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "71474e4a85d24663e14ff2fbf09af9dc8a4426004e292619cc214928b5127360"
+        ],
+        "url_observed": [
+          "hxxps://jgithub[.]com/beabraz1/qPzM50V1aKG0rVlH/release/download/main[.]exe"
+        ]
+      }
+    }
+  }
+}

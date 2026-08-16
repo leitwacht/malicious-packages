@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11358",
+  "modified": "2026-08-16T03:00:29Z",
+  "published": "2026-08-16T02:54:07Z",
+  "summary": "Malicious code in typesript-core (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install and POSTs a host-platform fingerprint (node version, arch, platform) to 193[.]70[.]34[.]101:20099/vote. On Windows and WSL hosts it then downloads a second-stage binary from hxxps://github[.]com/bezbaz1/qPzM50V1AKG0rVlH/release/download/null/main[.]exe, writes it to C:\\Temp\\main.exe, and executes it as a detached background process (windowsHide:true, unref'd). The download URL and C2 address are XOR-obfuscated in the script. The package name is a misspelling of the legitimate typescript-core package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typesript-core",
+        "purl": "pkg:npm/typesript-core"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typesript-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11358"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:54:07Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "8724018abc9d8d2f56bfed0c3246d8d02a37534d1306c4638555d3d0336dac24"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/bezbaz1/qPzM50V1AKG0rVlH/release/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

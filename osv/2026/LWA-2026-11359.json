@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11359",
+  "modified": "2026-08-16T03:01:48Z",
+  "published": "2026-08-16T02:50:46Z",
+  "summary": "Malicious code in comander-lib (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) beacons host information to a remote C2 and, on Windows/WSL hosts, downloads and executes a second-stage binary. It POSTs a JSON payload with the host platform/architecture/node version to 193[.]70[.]34[.]101:20099/vote. On Windows and WSL it XOR-decodes an embedded download URL (key 'stf2026'), fetches a binary into %TEMP%\\main.exe, and launches it as a detached background process (spawn with detached:true, stdio ignored, windowsHide:true); on WSL it also runs a shell bridge command via exec() to install the addon. The dropped main.exe runs independently of the installer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "comander-lib",
+        "purl": "pkg:npm/comander-lib"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/comander-lib/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11359"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:50:46Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "549e3493119884a42c06cc6a0ffd79c6ce3f029bf687c751d32dbd14e9d4f7d9"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote"
+        ]
+      }
+    }
+  }
+}
