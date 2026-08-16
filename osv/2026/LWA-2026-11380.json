@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11380",
+  "modified": "2026-08-16T19:28:57Z",
+  "published": "2026-08-16T19:28:00Z",
+  "summary": "Malicious code in @evial/runtime-health (npm)",
+  "details": "The postinstall hook executes a charcode-obfuscated bootstrap appended to a vendored lodash. On install it harvests cloud credentials from ~/.aws/credentials, ~/.aliyun/config.json, ~/.cos_credential, ~/.baidubce/credentials, ~/.ossutilconfig, ~/.docker/config.json, ~/.kube/config and ~/.npmrc, dumps the full environment and `id` output, and probes cloud metadata endpoints 169[.]254[.]169[.]254, 100[.]100[.]100[.]200, metadata[.]tencentyun[.]com and 169[.]254[.]80[.]80. The collected data is written to rt-probe.log and sysinfo.log in the package directory, /workspace, and parent directories.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@evial/runtime-health",
+        "purl": "pkg:npm/%40evial/runtime-health"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@evial/runtime-health/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11380"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T19:28:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "metadata[.]tencentyun[.]com"
+        ],
+        "sha256": [
+          "b825d3ded66adec55d7c0528914c0d4e8a7cf426fbfea38da84c74619247d337"
+        ]
+      }
+    }
+  }
+}
