@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11353",
+  "modified": "2026-08-16T02:57:44Z",
+  "published": "2026-08-16T02:53:28Z",
+  "summary": "Malicious code in typescriptt-cli (npm)",
+  "details": "The postinstall hook of typescriptt-cli (a typosquat of the typescript package) runs a script that fingerprints the host (platform, architecture, Node version, WSL detection) and POSTs it to 193[.]70[.]34[.]101:20099/vote. It then XOR-decodes a GitHub-hosted binary URL, downloads the binary to the temp directory as main.exe, and spawns it detached so it runs in the background. On WSL/Windows it executes a decoded bridge command to launch the downloaded payload. The package ships no actual CLI functionality; its only behaviour is the install-time download-and-execute of a remote binary and beaconing to the C2 host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typescriptt-cli",
+        "purl": "pkg:npm/typescriptt-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typescriptt-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11353"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:53:28Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "606b9f2107cf0644b51999b89f6cc3844f7eb2ffc4f71ece70e1ee9f825a78ec"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote"
+        ]
+      }
+    }
+  }
+}

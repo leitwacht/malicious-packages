@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11354",
+  "modified": "2026-08-16T02:57:33Z",
+  "published": "2026-08-16T02:53:18Z",
+  "summary": "Malicious code in typesript-cli (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) of this package, a typosquat of typescript-cli, beacons host metadata (platform, architecture, Node version, WSL detection) to 193[.]70[.]34[.]101:20099/vote via HTTP POST. On Windows/WSL hosts it additionally downloads a second-stage binary from hxxps://github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe into the temp directory and executes it as a detached, hidden background process (spawn with detached:true, stdio ignored, windowsHide), or runs a bridge command via child_process.exec. The C2 endpoint and binary URL are XOR-obfuscated in the script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typesript-cli",
+        "purl": "pkg:npm/typesript-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typesript-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11354"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:53:18Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "61b5c6085563dc65b20ffd334c77ccf4b793add347c23706b42af52907beb82c"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote",
+          "hxxps://github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

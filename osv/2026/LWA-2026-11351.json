@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11351",
+  "modified": "2026-08-16T02:57:15Z",
+  "published": "2026-08-16T02:52:56Z",
+  "summary": "Malicious code in tyepescript-cli (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) fingerprints the host (platform, arch, node version, WSL detection via /proc/version) and POSTs the platform to C2 193[.]70[.]34[.]101:20099/vote. On Windows or WSL hosts it then downloads a second-stage binary main.exe from a GitHub release URL (hxxps://github[.]com/be[.][.][.]/releases/download/null/main[.]exe) and executes it detached with stdio ignored and windowsHide, or via an exec bridge on WSL. The package is a typosquat of typescript-cli.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tyepescript-cli",
+        "purl": "pkg:npm/tyepescript-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tyepescript-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11351"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:52:56Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "d2873effc91c4c46403b9614c78f44013962bf3dfab1a00f91c827e34bb9e233"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/be[.][.][.]/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

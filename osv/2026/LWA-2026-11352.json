@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11352",
+  "modified": "2026-08-16T02:57:45Z",
+  "published": "2026-08-16T02:53:07Z",
+  "summary": "Malicious code in typescipt-cli (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) of this package, a typosquat of typescript-cli, XOR-decodes a hardcoded C2 endpoint and a remote binary URL. On install it POSTs host platform information to 193[.]70[.]34[.]101:20099/vote. On Windows and WSL hosts it downloads a binary (main.exe) from github[.]com/beebraz1/qPzM50V1AKG0rVlH/release/download/null/main.exe and executes it as a detached background process, giving the remote operator code execution on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "typescipt-cli",
+        "purl": "pkg:npm/typescipt-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/typescipt-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11352"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:53:07Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "a2e45cccd8ca43d4c421708c5c7e277a8befc666cae94e78d634449d50733ec6"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/release/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}
