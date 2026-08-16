@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11349",
+  "modified": "2026-08-16T02:53:23Z",
+  "published": "2026-08-16T02:50:57Z",
+  "summary": "Malicious code in commandor-core (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install. It fingerprints the host (platform, architecture, Node version, WSL/virtualization detection) and POSTs the result as JSON to 193[.]70[.]34[.]101:20099/vote. It then downloads a remote binary from an XOR-obfuscated URL and executes it as a detached background process (stdio ignored), or on Windows/WSL runs a shell command via exec. The package is a 3-file tarball with no declared functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "commandor-core",
+        "purl": "pkg:npm/commandor-core"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/commandor-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11349"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:50:57Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "3e520d0a8b828479cd4ad9163dd6630305d921184cbee4b7f3418270e86ac514"
+        ],
+        "url_observed": [
+          "hxxp://193[.]70[.]34[.]101:20099/vote"
+        ]
+      }
+    }
+  }
+}

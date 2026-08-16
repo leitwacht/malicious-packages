@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11343",
+  "modified": "2026-08-16T02:51:36Z",
+  "published": "2026-08-16T02:49:54Z",
+  "summary": "Malicious code in comanderjs (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install. It fingerprints the host (platform, architecture, Node version, WSL/virtualization detection via /proc/version) and POSTs the platform label as JSON to 193[.]70[.]34[.]101:20099/vote. On Windows or WSL hosts it then downloads a second-stage binary from hxxps://github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe into the temp directory and executes it as a detached background process (spawn with detached:true, stdio ignored, unref'd), or runs a bridge command via exec. The C2 endpoint is 193[.]70[.]34[.]101:20099.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "comanderjs",
+        "purl": "pkg:npm/comanderjs"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/comanderjs/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11343"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:49:54Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "b845680070bff205f2473361d3b87c9bea99598f03165c2f2c750cc1601caf32"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/bebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

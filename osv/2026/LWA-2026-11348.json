@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11348",
+  "modified": "2026-08-16T02:53:58Z",
+  "published": "2026-08-16T02:52:25Z",
+  "summary": "Malicious code in loadashjs (npm)",
+  "details": "Loadashjs@1.0.0 is a typosquat of lodash whose postinstall hook (scripts/postinstall.js) runs on install. It fingerprints the host (platform, architecture, WSL detection via /proc/version and WSL env vars) and POSTs a JSON platform beacon to 193[.]70[.]34[.]101:20099/vote. On Windows and WSL hosts it additionally downloads a second-stage binary from hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe into the TEMP directory and executes it as a detached background process (or via a shell bridge command on WSL), enabling remote code execution on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "loadashjs",
+        "purl": "pkg:npm/loadashjs"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/loadashjs/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11348"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:52:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "1e0b9ffff10e169501faf2e0c7392fbd1f6dd35307f28e16cb68bf6902919590"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beebraz1/qPzM50V1AKG0rVlH/releases/download/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11344",
+  "modified": "2026-08-16T02:51:11Z",
+  "published": "2026-08-16T02:48:53Z",
+  "summary": "Malicious code in chalk-core (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install. It fingerprints the host (platform, arch, node version, WSL/virtualization detection) and POSTs that telemetry to 193[.]70[.]34[.]101:20099/vote. On Windows and WSL hosts it additionally XOR-decodes a GitHub URL (hxxps://github[.]com/bebrazi1/qPzM50V1AKG0rVlH/release/null/main[.]exe), downloads the binary, and launches it detached into %TEMP%\\main.exe, executing a remote payload outside the install process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chalk-core",
+        "purl": "pkg:npm/chalk-core"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chalk-core/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11344"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:48:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "a1c36a92c94bdbde6c2d926eef83b6c85919f2cbbe51712e4b0ef38e8292d0d8"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/bebrazi1/qPzM50V1AKG0rVlH/release/null/main[.]exe"
+        ]
+      }
+    }
+  }
+}

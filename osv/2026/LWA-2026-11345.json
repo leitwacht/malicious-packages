@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11345",
+  "modified": "2026-08-16T02:53:18Z",
+  "published": "2026-08-16T02:52:04Z",
+  "summary": "Malicious code in ladash-cli (npm)",
+  "details": "The postinstall hook of ladash-cli (a typosquat of lodash) beacons the installer's platform/arch/node-version fingerprint to a hardcoded C2 at 193[.]70[.]34[.]101:20099 via HTTP POST to /vote. On Windows and WSL hosts it additionally downloads a second-stage binary main.exe from hxxps://github[.]com/beabraz1/qPzM50V1AKG0rVlH/release/download/main[.]exe into %TEMP% and launches it as a detached background process. The C2 host, port, and download URL are XOR-obfuscated in the script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ladash-cli",
+        "purl": "pkg:npm/ladash-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ladash-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11345"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:52:04Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "abb8ad768103025843c007d87fa9608ee6f9a8b6032562beb40df9f91910de39"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/beabraz1/qPzM50V1AKG0rVlH/release/download/main[.]exe"
+        ]
+      }
+    }
+  }
+}

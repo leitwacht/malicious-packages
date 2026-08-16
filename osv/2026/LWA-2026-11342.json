@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11342",
+  "modified": "2026-08-16T02:51:07Z",
+  "published": "2026-08-16T02:49:53Z",
+  "summary": "Malicious code in comander-cli (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs on install and beacons host metadata to a remote C2: it POSTs a JSON body {\"platform\":\u003cos\u003e} to 193[.]70[.]34[.]101:20099/vote. It fingerprints the host (node version, architecture, platform, and WSL/virtualization detection via /proc/version and /proc/sys/kernel/osrelease). On Windows and WSL hosts it downloads a second-stage binary from hxxps://github[.]com/bezzaz1/qPzM50V1AKG0rVlH/releases/download/main[.]exe, writes it to C:\\Temp\\main.exe, and launches it as a detached background process (or via a shell bridge command on WSL). The downloaded binary is executed without inspection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "comander-cli",
+        "purl": "pkg:npm/comander-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/comander-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11342"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T02:49:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "ip_observed": [
+          "193[.]70[.]34[.]101:20099"
+        ],
+        "sha256": [
+          "405b0d3f3cc3022c4fcb83eb22ed2f445f5746b2c2b21709f2331474e0cbde24"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/bezzaz1/qPzM50V1AKG0rVlH/releases/download/main[.]exe"
+        ]
+      }
+    }
+  }
+}
