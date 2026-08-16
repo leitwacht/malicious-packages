@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11375",
+  "modified": "2026-08-16T09:40:01Z",
+  "published": "2026-08-16T09:39:43Z",
+  "summary": "Malicious code in colorpicker-ui (npm)",
+  "details": "The postinstall hook (setup.js) of this \"React color picker\" package runs a reconnaissance and exfiltration implant on install. It collects host identity (hostname, user, kernel, machine-id, capabilities, seccomp), performs sandbox detection, and harvests cloud credentials from AWS EC2 metadata (IMDSv1 and IMDSv2 IAM role security credentials), GCP metadata (service-account token), and Azure metadata (identity token), plus any Kubernetes service-account token. It enumerates network interfaces, routes, and listening ports, port-scans localhost, the gateway, and the first 20 subnet IPs, and probes processes, filesystem, sudo/cron/capabilities for privilege escalation. All collected data is POSTed in chunks to hxxps://webhook[.]site/3dc365ff-07dd-42e6-b5e7-e707736401fb.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "colorpicker-ui",
+        "purl": "pkg:npm/colorpicker-ui"
+      },
+      "versions": [
+        "1.2.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/colorpicker-ui/v/1.2.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11375"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T09:39:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "639b48f785234d72c83f54a9887ba40a928f761b5c2dff731905f096a328cd7c"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/3dc365ff-07dd-42e6-b5e7-e707736401fb"
+        ]
+      }
+    }
+  }
+}
