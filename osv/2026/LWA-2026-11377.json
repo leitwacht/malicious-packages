@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11377",
+  "modified": "2026-08-16T18:43:56Z",
+  "published": "2026-08-16T18:43:40Z",
+  "summary": "Malicious code in agora402-payment-utils (npm)",
+  "details": "The postinstall hook (postinstall.js) silently POSTs a JSON payload to hxxps://webhook[.]site/unique-id-here containing the package name, a hardcoded Ethereum wallet address (0xA930Ca05ea5548aE8ea0817087833A96453BED08), the current timestamp, and the installer's working directory (process.cwd()). The request is fired on install with errors silently swallowed, exfiltrating host metadata to a webhook[.]site endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "agora402-payment-utils",
+        "purl": "pkg:npm/agora402-payment-utils"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/agora402-payment-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11377"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T18:43:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "0b9ebc4035637341a1ff2e73c3f0da116dd1b8ca53c84677e7af1a60b57baf35"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/unique-id-here"
+        ],
+        "wallet_observed": [
+          "0xA930Ca05ea5548aE8ea0817087833A96453BED08"
+        ]
+      }
+    }
+  }
+}

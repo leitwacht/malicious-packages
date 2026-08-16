@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11376",
+  "modified": "2026-08-16T18:43:17Z",
+  "published": "2026-08-16T18:43:00Z",
+  "summary": "Malicious code in @evial/runtime-utils (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) runs system-recon commands (id, whoami, hostname, pwd, uname -a) and then dumps the full process environment, including credential-bearing variables and their values, into a log file written to the workspace root and /workspace/runtime-snapshot.log. The package's main module is an inert stub exporting only its name and version, so the sole executable behaviour is this environment/credential harvest. No network exfiltration endpoint is used; the collected environment is written to local log files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@evial/runtime-utils",
+        "purl": "pkg:npm/%40evial/runtime-utils"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@evial/runtime-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11376"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-16T18:43:00Z",
+      "indicators_observed": {
+        "sha256": [
+          "c2f192660a7f29a23bea4dfd2ca3c3d3ca02fded903e789b70d3df81b4343a2f"
+        ]
+      }
+    }
+  }
+}
