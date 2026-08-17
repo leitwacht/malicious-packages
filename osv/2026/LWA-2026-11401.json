@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11401",
+  "modified": "2026-08-17T15:56:55Z",
+  "published": "2026-08-17T15:56:01Z",
+  "summary": "Malicious code in space-items (npm)",
+  "details": "The postinstall hook (scripts/bootstrap.js) executes a multi-stage implant on install. It enumerates sandbox-escape conditions (capabilities, cgroup, mounts, docker/containerd sockets, Kubernetes serviceaccount token, /proc/1/root), then harvests credentials from /run/secrets/zti, ~/.aws, ~/.ssh, /etc/ssl/private, ~/.npmrc, ~/.gitconfig, and /proc/1/environ (filtering for key/token/secret/pass). It establishes a reverse beacon to 159[.]75[.]160[.]206:4444 (with reconnect watchdog) that supports remote command execution, reverse TCP tunneling, and arbitrary file reads. It installs persistence by writing.beacon.js into the project root, rewriting the project's package.json scripts (prepare/prebuild/prelint) to re-run the beacon on every build, adding cron entries and /etc/cron.d/beacon, appending a hook to /root/.bashrc, and spawning a detached setsid watchdog. It also performs an internal network scan of 10[.]100[.]0[.]46, 10[.]201[.]0[.]1, 10[.]100[.]16[.]43, 10[.]100[.]67[.]1, 10[.]100[.]67[.]124 across ports 80/443/5432/5433/8080/8443/3000/3001/9090/6379/2379/6443/10250/22, and brute-forces MCP routes on 10[.]100[.]0[.]46 (Host: mcp[.]miaoda[.]cn) using MIAODA_SANDBOX_MCP_AUTHORIZATION_KEY / INTEGRATIONS_API_KEY from the environment. Probe output is written to rt3-probe.log / sysinfo3.log and beacon status to /tmp/beacon3.status.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "space-items",
+        "purl": "pkg:npm/space-items"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/space-items/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11401"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-17T15:56:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mcp[.]miaoda[.]cn"
+        ],
+        "ip_observed": [
+          "159[.]75[.]160[.]206:22",
+          "159[.]75[.]160[.]206:443",
+          "159[.]75[.]160[.]206:4444",
+          "159[.]75[.]160[.]206:80"
+        ],
+        "sha256": [
+          "7f077fc7bca550a4503abdefa74d18f57b6f90d7a0aebc1ef2b8bf22b1e3abf7"
+        ]
+      }
+    }
+  }
+}
