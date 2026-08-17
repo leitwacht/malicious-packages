@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11387",
+  "modified": "2026-08-17T04:15:56Z",
+  "published": "2026-08-17T04:14:00Z",
+  "summary": "Malicious code in sbirontime (npm)",
+  "details": "The npm postinstall hook (elevated via UAC) installs a bundled VPN client and RDP Wrapper, then configures the host for covert remote access. It enables Remote Desktop on port 3389 with full shadow access without permission and Network Level Authentication disabled, creates or enables a local administrator account using a hardcoded password shipped in config.json, and registers a Windows service. It rewrites the PE version resources of the installed executables to masquerade as 'Service Host: Network Infrastructure Service' (svchost.exe) in Task Manager and Services, hides the installed folders and the created account from the sign-in screen, and stores the admin credentials in %ProgramData%\\BikliWrapper\\admin-credentials.json. No network C2 endpoint is used; access is via the enabled RDP listener and the hidden admin account.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sbirontime",
+        "purl": "pkg:npm/sbirontime"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sbirontime/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11387"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-17T04:14:00Z",
+      "indicators_observed": {
+        "sha256": [
+          "2e3d580c1bc26ee70d91bc31ba9daf287ecc4accdd913f86d56281aef0458fc8"
+        ]
+      }
+    }
+  }
+}
