@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11398",
+  "modified": "2026-08-17T14:32:32Z",
+  "published": "2026-08-17T14:31:39Z",
+  "summary": "Malicious code in core-tailwindcss-utility (npm)",
+  "details": "Core-tailwindcss-utility@3.7.1 is a combosquat of the tailwindcss package whose main entry point (index.js) is a remote-code-execution dropper. On load it fetches hxxps://31[.]97[.]137[.]157:45000/icons/108 and executes the response body's `credits` field via the Function constructor with full Node.js context (require, process, Buffer, module, globalThis), giving the remotely-served code unrestricted access to the host. The package bundles dependencies consistent with a credential-stealing implant: @primno/dpapi (Windows DPAPI credential decryption), node-machine-id (host fingerprinting), socket[.]io-client (command/control channel), and better-sqlite3/sqlite3 (local database access). C2 endpoint: 31[.]97[.]137[.]157:45000, path /icons/.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "core-tailwindcss-utility",
+        "purl": "pkg:npm/core-tailwindcss-utility"
+      },
+      "versions": [
+        "3.7.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/core-tailwindcss-utility/v/3.7.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11398"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-17T14:31:39Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "31[.]97[.]137[.]157:45000"
+        ],
+        "sha256": [
+          "9304c62cd840b12407f9f2763efa4f305453bbd249ec921147561435200d090b"
+        ],
+        "url_observed": [
+          "hxxps://31[.]97[.]137[.]157",
+          "hxxps://31[.]97[.]137[.]157:45000/icons/108"
+        ]
+      }
+    }
+  }
+}
