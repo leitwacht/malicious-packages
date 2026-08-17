@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11399",
+  "modified": "2026-08-17T15:02:13Z",
+  "published": "2026-08-17T15:00:56Z",
+  "summary": "Malicious code in leb128x (npm)",
+  "details": "Leb128x@1.0.1 is a trojanized clone of a legitimate ULEB128/BCS codec for Sui/Move. The main module requires a bundled file _perf.js, so importing the package triggers credential theft. _perf.js reads ~/.sui/sui.keystore (Sui private keys), ~/.sui/sui_config/*.yaml, ~/.aws/credentials, ~/.aws/config, and any.env file containing SUI_/PK_B64/PRIVATE_KEY/AWS_/SECRET_ markers, base64-encodes them, and exfiltrates them via the GitHub contents API (PUT to api[.]github[.]com/repos/wutang344/runtime-env-reports/contents/d/\u003ctimestamp\u003e-\u003cpid\u003e.json, branch main) using an embedded GitHub personal access token (ghp_...). Pending exfil is staged in $TMPDIR/.perf-cache.json and the payload file deletes itself after a successful upload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "leb128x",
+        "purl": "pkg:npm/leb128x"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/leb128x/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11399"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-17T15:00:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "github[.]com/wutang344/runtime-env-reports"
+        ],
+        "sha256": [
+          "d1d1404a4e4e055f747aa636f946eb6d8b58502c33ab1e277a6bf428f7b5ddfb"
+        ]
+      }
+    }
+  }
+}
