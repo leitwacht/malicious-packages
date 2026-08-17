@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11386",
+  "modified": "2026-08-17T02:28:57Z",
+  "published": "2026-08-17T02:28:19Z",
+  "summary": "Malicious code in rand-tx-sdk (npm)",
+  "details": "Rand-tx-sdk@1.0.6 is a disguised remote-code downloader. Its exported getTransactions() function triggers an eval of a base64-encoded blob that downloads a Python script from hxxps://dorians[.]com/assets/exlorians/inform[.]php, writes it to the system temp directory as tmp_20260521, and executes it with python3 (or python on Windows) as a detached background process. The package presents itself as a random ecommerce-transaction data generator, but the download-and-execute of a remote script is its actual behavior.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rand-tx-sdk",
+        "purl": "pkg:npm/rand-tx-sdk"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rand-tx-sdk/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11386"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-17T02:28:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dorians[.]com"
+        ],
+        "sha256": [
+          "a9967f8112660ea5b626723fbafc96450163920138f28127ce3f8b4c367863a4"
+        ],
+        "url_observed": [
+          "hxxps://dorians[.]com/assets/exlorians/inform[.]php"
+        ]
+      }
+    }
+  }
+}
