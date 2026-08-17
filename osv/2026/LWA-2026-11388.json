@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11388",
+  "modified": "2026-08-17T05:32:31Z",
+  "published": "2026-08-17T05:28:05Z",
+  "summary": "Malicious code in mutex-core (npm)",
+  "details": "Mutex-core@2.1.2 embeds a hidden encrypted second-stage payload. When the Mutex.runExclusive() callback carries a meta.jobId whose SHA-256 equals a hardcoded value, the library AES-256-GCM-decrypts the bundled file lib/withMutex.min.js (key derived from the jobId), writes the decrypted script to disk, and launches it as a detached, hidden background node process (stdio ignored, windowsHide set). The decrypted payload performs outbound network activity at runtime. The package otherwise presents as a normal async mutex/semaphore library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mutex-core",
+        "purl": "pkg:npm/mutex-core"
+      },
+      "versions": [
+        "2.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mutex-core/v/2.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11388"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-17T05:28:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "8ad9f53fc580bd941bd8fc8c13df6c9ba4da6d0f1b550f276731a0ab99e6969c"
+        ]
+      }
+    }
+  }
+}
