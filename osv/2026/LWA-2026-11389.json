@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11389",
+  "modified": "2026-08-17T08:47:42Z",
+  "published": "2026-08-17T08:46:07Z",
+  "summary": "Malicious code in runtime-health (npm)",
+  "details": "The postinstall hook (scripts/bootstrap.js) executes a multi-stage attack on install. It enumerates the host for sandbox-escape conditions (capabilities, seccomp, cgroup, mounts, docker/containerd sockets, Kubernetes service-account token), then establishes persistence by writing a reverse-shell beacon to.beacon.js in the project root, rewriting the project's package.json to add prepare/prebuild/prelint hooks that re-run it, installing cron @reboot entries, appending a hook to /root/.bashrc, and spawning a detached setsid watchdog. The beacon opens a reverse shell to 159[.]75[.]160[.]206:4444 (bash -i, reconnect every 10s) and executes arbitrary commands. The payload also scans internal network ranges (10[.]100[.]0[.]46, 10[.]201[.]0[.]1, 10[.]100[.]16[.]43, 10[.]100[.]67[.]1, 10[.]100[.]67[.]124) across ports 80/443/5432/5433/8080/8443/3000/3001/9090/6379/2379/6443/10250/22, and brute-forces MCP endpoints on 10[.]100[.]0[.]46 (Host: mcp[.]miaoda[.]cn) while harvesting the MIAODA_SANDBOX_MCP_AUTHORIZATION_KEY and INTEGRATIONS_API_KEY environment variables. Results are written to rt3-probe.log, sysinfo3.log, and /tmp/beacon3.status.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "runtime-health",
+        "purl": "pkg:npm/runtime-health"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/runtime-health/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11389"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-17T08:46:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mcp[.]miaoda[.]cn"
+        ],
+        "ip_observed": [
+          "159[.]75[.]160[.]206:4444"
+        ],
+        "sha256": [
+          "fbd22d5f376a5411acfc793f94bc0a2434429d4bd304b8458e2367c2a7998307"
+        ]
+      }
+    }
+  }
+}
