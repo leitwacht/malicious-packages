@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11427",
+  "modified": "2026-08-18T20:39:47Z",
+  "published": "2026-08-18T20:39:03Z",
+  "summary": "Malicious code in dev-env-check (npm)",
+  "details": "The postinstall hook of dev-env-check@1.0.3 runs a hidden Windows-only downloader. On win32 it invokes PowerShell (hidden, non-interactive) to download a remote binary from hxxps://updatesetup[.]online/click/update to %TEMP%\\msedge_update.exe and then executes that downloaded file detached. The package's documented purpose is only benign development-environment checks (Node/npm/git version validation); the remote download-and-execute behaviour is concealed behind XOR-obfuscated strings and is not disclosed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dev-env-check",
+        "purl": "pkg:npm/dev-env-check"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dev-env-check/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11427"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-18T20:39:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "updatesetup[.]online"
+        ],
+        "sha256": [
+          "0f5dc32344cd6fcb32dbab6b43253dd882cf53c67b22bb34c8167d04e4dff622"
+        ],
+        "url_observed": [
+          "hxxps://updatesetup[.]online/click/update"
+        ]
+      }
+    }
+  }
+}
