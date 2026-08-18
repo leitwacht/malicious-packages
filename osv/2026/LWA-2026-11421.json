@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11421",
+  "modified": "2026-08-18T17:30:30Z",
+  "published": "2026-08-18T17:29:50Z",
+  "summary": "Malicious code in chai-as-gateway (npm)",
+  "details": "Chai-as-gateway@7.1.5 is a trojanized clone of the pino logger that, when loaded, beacons host metadata to a remote C2 server. It POSTs JSON to hxxp://167[.]88[.]167[.]54:8087/api/log and /api/notify containing a user key, hostname, OS, and username, and POSTs a multipart file named sysinfo.txt to hxxp://167[.]88[.]167[.]54:8085/upload with the hostname, OS, username, platform, and timestamp. The beacon logic is hidden inside a 4.1MB obfuscated lib/config.js (javascript-obfuscator output with hex-escaped method names) so the C2 address is not visible as a literal string. The package impersonates the chai assertion library name while shipping pino's code with the injected beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-gateway",
+        "purl": "pkg:npm/chai-as-gateway"
+      },
+      "versions": [
+        "7.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-gateway/v/7.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11421"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-18T17:29:50Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "4b522c737e43f1728022fbd6ed6449d37f9fece3dcad69d18bcca315c67cf6b0"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54",
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
