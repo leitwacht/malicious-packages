@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11424",
+  "modified": "2026-08-18T19:01:44Z",
+  "published": "2026-08-18T19:00:35Z",
+  "summary": "Malicious code in timed-assess (npm)",
+  "details": "Timed-assess@1.0.0 runs a hidden payload at install. The postinstall hook executes `node apps`, which loads apps/index.js: this reads a bundled file, decrypts it with the hardcoded DES password 'bf497c0b9cee', and pipes the decrypted content into a detached background `node` process (spawn with detached:true, unref) that executes it. The package is presented as a proctoring/assessment tool but its install-time behaviour is decrypt-and-execute of an encrypted blob in a process that outlives the installer. The encrypted payload file is bundled under the package (referenced as public/logo.ico).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "timed-assess",
+        "purl": "pkg:npm/timed-assess"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/timed-assess/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11424"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-18T19:00:35Z",
+      "indicators_observed": {
+        "sha256": [
+          "0fe54f12fb4e3e8175cb6e4122ecdce7c58b2892452caa82d8ec3e397a15c7ad"
+        ]
+      }
+    }
+  }
+}
