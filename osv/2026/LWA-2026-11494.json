@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11494",
+  "modified": "2026-08-18T22:52:21Z",
+  "published": "2026-08-18T22:52:01Z",
+  "summary": "Malicious code in pump-segments-sdk (npm)",
+  "details": "The postinstall hook runs index.js, which collects host information and exfiltrates it to lodvia5r2wvo8xwizrcusy13yu4msd9[.]oastify[.]com:80 over plain HTTP POST. It sends the hostname, full process environment, platform/arch, current working directory, package.json, node_modules listing, output of whoami/uname/id/ps aux, the contents of /etc/passwd and /etc/shadow, npm root -g, and the installer's ~/.npmrc file and recent ~/.npm/_logs entries (harvesting npm credentials). It also searches the filesystem for angular and google[.]com-related files and probes localhost ports 80/443/8080/5000/8000/3000. The package is named and described as a netbsd-x64 esbuild build but contains only this exfiltration script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pump-segments-sdk",
+        "purl": "pkg:npm/pump-segments-sdk"
+      },
+      "versions": [
+        "20.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pump-segments-sdk/v/20.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11494"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-18T22:52:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "lodvia5r2wvo8xwizrcusy13yu4msd9[.]oastify[.]com",
+          "lodvia5r2wvo8xwizrcusy13yu4msdg2[.]oastify[.]com"
+        ],
+        "sha256": [
+          "5f19fa3f6b010b1255fd05c43e8c735074115cd3511fd36474e06530ff74e47c"
+        ]
+      }
+    }
+  }
+}
