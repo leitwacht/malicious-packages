@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11420",
+  "modified": "2026-08-18T17:27:37Z",
+  "published": "2026-08-18T17:27:12Z",
+  "summary": "Malicious code in react-dom-helpers (npm)",
+  "details": "React-dom-helpers@3.3.3 is a trojanized clone of the react-dom package. Its./client entry point (client.js) runs a recon beacon on require: it enumerates the machine's local IPv4 addresses via os.networkInterfaces(), fetches the public IP from api[.]ipify[.]org, and POSTs the collected IP information to a Slack channel via slack[.]com/api/chat.postMessage using a hardcoded Slack bot token. The package exfiltrates host network metadata to an external Slack channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-dom-helpers",
+        "purl": "pkg:npm/react-dom-helpers"
+      },
+      "versions": [
+        "3.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-dom-helpers/v/3.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11420"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-18T17:27:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "slack[.]com"
+        ],
+        "sha256": [
+          "f628459623ddfc14a7928aa9e818aefd30fbd7a31ea69a68b609009f556d2463"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://slack[.]com/api/chat[.]postMessage"
+        ]
+      }
+    }
+  }
+}
