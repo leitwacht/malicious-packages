@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11409",
+  "modified": "2026-08-18T08:34:50Z",
+  "published": "2026-08-18T08:34:26Z",
+  "summary": "Malicious code in fast-glob-fast (npm)",
+  "details": "The package's postinstall hook (scripts/postinstall-test.mjs) runs on install and plants a persistent SSH backdoor. It fingerprints the host (username, hostname, MAC address, platform, architecture) and appends a hardcoded attacker-controlled ssh-ed25519 public key (key comment \"dkhrustalev\") to the user's ~/.ssh/authorized_keys file on macOS, Linux, and Windows, granting the attacker remote SSH access to the machine. If the FAST_GLOB_FAST_EVENT_URL environment variable is set, it additionally POSTs the collected system information and a UUID to that URL. The package name is a combosquat of the legitimate fast-glob library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fast-glob-fast",
+        "purl": "pkg:npm/fast-glob-fast"
+      },
+      "versions": [
+        "8.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fast-glob-fast/v/8.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11409"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-18T08:34:26Z",
+      "indicators_observed": {
+        "sha256": [
+          "c5840857f869f3f2f00e53f6947cba479d7d2f8c28286e5dbbd60f406532de33"
+        ]
+      }
+    }
+  }
+}
