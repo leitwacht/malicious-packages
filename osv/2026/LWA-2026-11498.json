@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11498",
+  "modified": "2026-08-19T04:53:37Z",
+  "published": "2026-08-19T04:51:27Z",
+  "summary": "Malicious code in modsync (npm)",
+  "details": "Modsync@5.0.2 is a trojanized clone of the pino logger that ships a 4.1MB obfuscated lib/config.js. When the module is loaded, the obfuscated code collects the host's hostname, OS version, platform, and username and POSTs them as JSON to 167[.]88[.]167[.]54:8087 at /api/log and /api/notify, and uploads a sysinfo.txt file (containing host, OS, username, platform, timestamp) via multipart/form-data to 167[.]88[.]167[.]54:8085 at /upload. The C2 requests carry a per-install Validation HMAC header and a numeric userkey. The package exfiltrates system information from the machine that installs it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "modsync",
+        "purl": "pkg:npm/modsync"
+      },
+      "versions": [
+        "5.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/modsync/v/5.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11498"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T04:51:27Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "a15a0b9498c3090c41b016a0593a617bab67adfdc3c2a00309b4f4bf77cb998d"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
