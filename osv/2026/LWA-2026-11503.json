@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11503",
+  "aliases": [
+    "MAL-2026-14290"
+  ],
+  "modified": "2026-08-19T09:19:33Z",
+  "published": "2026-08-19T09:15:23Z",
+  "summary": "Malicious code in anhn-cli (npm)",
+  "details": "Anhn-cli@1.1.4 ships an obfuscated crypto wallet drainer appended to bin/install/install.js. The payload builds an HTTP/HTTPS RPC client that queries Ethereum endpoints (h[.]drpc[.]org, h-mainnet[.]pc[.]io, stapi[.]io, 1r...ut[.]com/api, et...e[.]com, plus the ETH_RPC_URL env var) for the attacker-controlled address 0xa322E5f3, issuing eth_blockNumber, eth_getTransactionCount, eth_getBalance, eth_getBlockByNumber and eth_getTransactionByBlockNumberAndIndex calls, and enumerating transactions via block-explorer API query strings (?module=ac, on=txlist\u0026, filterby=fr, ort=desc\u0026f, ck=9999999). It also references C2 paths :443/0x/ls and :443/0x/cl, sends an x-payload- header, and spawns child processes. The package's other commands (git commit helper, Harvest time-entry, open-site) are benign cover for the injected drainer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "anhn-cli",
+        "purl": "pkg:npm/anhn-cli"
+      },
+      "versions": [
+        "1.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/anhn-cli/v/1.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11503"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T09:15:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1r...ut[.]com",
+          "e[.]com",
+          "et...e[.]com",
+          "h-mainnet[.]pc[.]io",
+          "h[.]drpc[.]org",
+          "stapi[.]io",
+          "ut[.]com"
+        ],
+        "sha256": [
+          "23abc46a7b7297020ec905b53295b0b0a587f32e1f4cdc26580ef268f7ca02aa"
+        ],
+        "url_observed": [
+          ":443/0x/cl",
+          ":443/0x/ls",
+          "hxxps://h-mainnet[.]pc[.]io/eth",
+          "hxxps://h[.]drpc[.]org"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}

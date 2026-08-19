@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11500",
+  "aliases": [
+    "MAL-2026-14286"
+  ],
+  "modified": "2026-08-19T09:19:38Z",
+  "published": "2026-08-19T09:15:13Z",
+  "summary": "Malicious code in @wizloft/harness-context (npm)",
+  "details": "@wizloft/harness-context@0.1.1-alpha.3 ships an obfuscated Ethereum drainer in dist/index.js. The module's main entry appends a large obfuscated payload (string-array decoder with 1600+ obfuscated identifiers) that executes on import. The payload connects to public Ethereum JSON-RPC endpoints (eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com, 1rpc[.]io/eth, h[.]drpc[.]org, or process.env.ETH_RPC_URL) and issues eth_getBlockByNumber / eth_getTransactionCount / eth_getTransactionByHash calls, queries block-explorer txlist APIs (params on=txlist, sort=desc, filterby=from, count\u0026action, startblock, endblock, offset=20, ck=9999999, page=1) to enumerate a victim's transactions, and spawns a child process (child_process.spawn with pipe/unref) to sweep funds to a hardcoded destination address 0xa322E5f3.... It sends exfil data with x-payload-, _t_u, _t_s, _H2 headers. Installing or importing this package runs the drainer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wizloft/harness-context",
+        "purl": "pkg:npm/%40wizloft/harness-context"
+      },
+      "versions": [
+        "0.1.1-alpha.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wizloft/harness-context/v/0.1.1-alpha.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11500"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T09:15:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "ethereum-rpc[.]publicnode[.]com",
+          "h[.]drpc[.]org"
+        ],
+        "sha256": [
+          "04121d99520e4f508f52eceb5f8160d9c5c34cc47a0cd3c613b33865361cf481"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}

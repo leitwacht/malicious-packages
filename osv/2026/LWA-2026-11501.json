@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11501",
+  "aliases": [
+    "MAL-2026-14288"
+  ],
+  "modified": "2026-08-19T09:18:42Z",
+  "published": "2026-08-19T09:15:18Z",
+  "summary": "Malicious code in @wizloft/harness-plugin-repository-files (npm)",
+  "details": "@wizloft/harness-plugin-repository-files@0.1.1-alpha.3 ships a benign-looking repository-file plugin, but dist/index.js appends a heavily obfuscated payload (javascript-obfuscator string-array + decoder) that performs Ethereum blockchain monitoring and wallet-drainer activity. On load it smuggles module access (global.i/global.r/global.m), requires child_process spawn with unref (detached process), and connects to Ethereum RPC endpoints including eth-mainnet[.]public[.]blastapi[.]io, eth[.]drpc[.]org, eth[.]llamarpc[.]com, ethereum-rpc[.]publicnode[.]com, and 1rpc[.]io/eth (or process.env.ETH_RPC_URL). It hardcodes the target Ethereum address 0xa322E5f3 and issues Etherscan-style API queries (?module=account\u0026action=txlist\u0026address=0xa322E5f3\u0026sort=desc\u0026filterby=from, startblock=0\u0026endblock=9999999) plus eth_getBlockByNumber / eth_getTransactionByHash / eth_getBalance RPC calls to monitor transactions involving that address, and references C2 paths /0x/ls and /0x/cl on port 443. The payload carries XOR/base64-encoded command chunks and spawns detached child processes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wizloft/harness-plugin-repository-files",
+        "purl": "pkg:npm/%40wizloft/harness-plugin-repository-files"
+      },
+      "versions": [
+        "0.1.1-alpha.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wizloft/harness-plugin-repository-files/v/0.1.1-alpha.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11501"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T09:15:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "1rpc[.]io/eth",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "eth[.]llamarpc[.]com",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "5c2c8e8ba15ff681d640e7af1f8d8ebb56176319bd81bc5f58f41f5977fe1505"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://eth[.]llamarpc[.]com",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}

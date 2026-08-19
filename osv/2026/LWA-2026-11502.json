@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11502",
+  "aliases": [
+    "MAL-2026-14289"
+  ],
+  "modified": "2026-08-19T09:19:29Z",
+  "published": "2026-08-19T09:15:21Z",
+  "summary": "Malicious code in @wizloft/harness-validation (npm)",
+  "details": "@wizloft/harness-validation@0.1.1-alpha.3 ships an obfuscated Ethereum wallet drainer appended to dist/index.js after legitimate validation code. On module import the payload bootstraps global require, spawns child processes, and queries Ethereum RPC endpoints (eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, 1rpc[.]io/eth, plus the ETH_RPC_URL env var) and block-explorer APIs (stapi[.]io, ut[.]com/api) using etherscan-style parameters (?module=account, action=txlist, sort=desc, page=1, offset=20, count=9999999) to enumerate the victim's on-chain transactions and approvals. It uses eth_getTransactionCount, eth_getBlockByNumber, eth_getTransactionByHash and eth_getTransactionReceipt RPC methods and exfiltrates results via an x-payload- header and Telegram-style _t_u/_t_s markers to drain wallet funds to a hardcoded address (0xa322E5f3).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wizloft/harness-validation",
+        "purl": "pkg:npm/%40wizloft/harness-validation"
+      },
+      "versions": [
+        "0.1.1-alpha.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wizloft/harness-validation/v/0.1.1-alpha.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11502"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T09:15:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com",
+          "stapi[.]io",
+          "ut[.]com"
+        ],
+        "sha256": [
+          "2877afa522794fa84ce869ee43e761a2488f002d02cd303ce2e6a85cfe605eee"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
