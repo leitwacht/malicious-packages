@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11504",
+  "aliases": [
+    "MAL-2026-14287"
+  ],
+  "modified": "2026-08-19T09:21:22Z",
+  "published": "2026-08-19T09:15:16Z",
+  "summary": "Malicious code in @wizloft/harness-kernel (npm)",
+  "details": "@wizloft/harness-kernel ships an obfuscated crypto-drainer payload in dist/index.js, appended after the package's legitimate exports. On load it installs global backdoor hooks (global.r=require, global.m=module), spawns child processes, and connects to Ethereum RPC endpoints (eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, 1rpc[.]io/eth, ethereum-rpc[.]publicnode[.]com, or the ETH_RPC_URL env var) to monitor the victim's transactions via eth_getBlockByNumber, eth_getTransactionByHash, eth_getBalance, eth_getTransactionCount and eth_call. It queries block-explorer APIs (?module=ac, on=txlist\u0026, address=, ort=desc\u0026f, ilterby=fr, ut[.]com/api) and reports to C2 endpoints hxxps://1re[.]com/0x/ls and hxxps://1re[.]com/0x/cl, draining funds to wallet 0xa322E5f3. HTTP requests use a spoofed Chrome user-agent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wizloft/harness-kernel",
+        "purl": "pkg:npm/%40wizloft/harness-kernel"
+      },
+      "versions": [
+        "0.1.1-alpha.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wizloft/harness-kernel/v/0.1.1-alpha.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11504"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T09:15:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1re[.]com",
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com",
+          "ut[.]com"
+        ],
+        "sha256": [
+          "c0a07e8dcfadfb307a49866439c1acf38f31203fef0f4229c4e5540766e05fd9"
+        ],
+        "url_observed": [
+          "hxxps://1re[.]com/0x/cl",
+          "hxxps://1re[.]com/0x/ls",
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
