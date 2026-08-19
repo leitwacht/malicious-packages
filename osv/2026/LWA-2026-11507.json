@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11507",
+  "modified": "2026-08-19T15:46:17Z",
+  "published": "2026-08-19T15:45:43Z",
+  "summary": "Malicious code in @oss-core-eng/data-formatter (npm)",
+  "details": "@oss-core-eng/data-formatter@1.0.1 is a crypto wallet drainer disguised as a date-formatting utility. On load it reads PRIVATE_KEY/SECRET/MNEMONIC values from the victim's.env file, queries wallet balances over public RPC endpoints (Ethereum/BNB/Polygon/Avalanche via ethers), splits balances into chunks, and in an infinite loop transfers funds to five hardcoded attacker-controlled multi-chain wallets. It masquerades its process title as \"systemd: [logrotate]\", registers persistence, and uses randomized delays and periodic 3-day pause cycles to evade detection. Attacker wallets include Ethereum 0x70951410C5E9E938D8715288A7229548287a1a62, 0x2B2259cD0B7a4767d7d1caA5D1B15E16438453ba, 0x73D231f43c6952AD320af26605EB097fCE766D93, 0xc530c63C3053455157a82D5175599CdCD5f02587, 0xB565bfd6Fb4154D50C6Eb1888af52BAFd9fEBD6F; Solana 7fxv3Zsr2DKEdZB8erunPq2ZurekwT1Cu2YtS5DwcacU; Bitcoin bc1q4h4a2sjf4k9quhx7xrajfgcsaz082cv5h3g8dt.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@oss-core-eng/data-formatter",
+        "purl": "pkg:npm/%40oss-core-eng/data-formatter"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@oss-core-eng/data-formatter/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11507"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T15:45:43Z",
+      "indicators_observed": {
+        "sha256": [
+          "dfbedb2d5bb127b7359bcc182a14a15c51214504ed1f36aac7ba7e5312aad178"
+        ],
+        "wallet_observed": [
+          "0x2B2259cD0B7a4767d7d1caA5D1B15E16438453ba",
+          "0x70951410C5E9E938D8715288A7229548287a1a62",
+          "0x73D231f43c6952AD320af26605EB097fCE766D93",
+          "0xB565bfd6Fb4154D50C6Eb1888af52BAFd9fEBD6F",
+          "0xc530c63C3053455157a82D5175599CdCD5f02587",
+          "7fxv3Zsr2DKEdZB8erunPq2ZurekwT1Cu2YtS5DwcacU",
+          "bc1q4h4a2sjf4k9quhx7xrajfgcsaz082cv5h3g8dt"
+        ]
+      }
+    }
+  }
+}
