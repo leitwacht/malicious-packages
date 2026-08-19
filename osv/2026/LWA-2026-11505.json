@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11505",
+  "modified": "2026-08-19T11:01:37Z",
+  "published": "2026-08-19T11:00:58Z",
+  "summary": "Malicious code in @oss-core-eng/config-loader (npm)",
+  "details": "The package's main entry point (index.js) is a cryptocurrency wallet drainer that executes on require. It reads private keys and mnemonics from the victim's.env file, queries on-chain balances via public RPC endpoints, and transfers funds in chunks of up to 1500 units to a set of hardcoded attacker-controlled wallets across Bitcoin, Ethereum, BNB, Solana, Tron, Ripple, Cardano, Dogecoin, Polkadot, Cosmos, Algorand, Vechain, Theta, and Filecoin. It runs an infinite loop with randomized delays, a 15-day pause cycle, a 30000 daily transfer limit, and wallet rotation, and it spoofs the process title to \"systemd: [logrotate]\" to evade detection. Primary receiving Ethereum address: 0x70951410C5E9E938D8715288A7229548287a1a62; additional receiving wallets include 0x2B2259cD0B7a4767d7d1caA5D1B15E16438453ba, 0x73D231f43c6952AD320af26605EB097fCE766D93, 0xc530c63C3053455157a82D5175599CdCD5f02587, and 0xB565bfd6Fb4154D50C6Eb1888af52BAFd9fEBD6F.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@oss-core-eng/config-loader",
+        "purl": "pkg:npm/%40oss-core-eng/config-loader"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@oss-core-eng/config-loader/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11505"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-19T11:00:58Z",
+      "indicators_observed": {
+        "sha256": [
+          "04c17454e35b94bb5b5659c73dd6ae1cc76077ee46d57ec8ecc584616e266b86"
+        ],
+        "wallet_observed": [
+          "0x2B2259cD0B7a4767d7d1caA5D1B15E16438453ba",
+          "0x70951410C5E9E938D8715288A7229548287a1a62",
+          "0x73D231f43c6952AD320af26605EB097fCE766D93",
+          "0xB565bfd6Fb4154D50C6Eb1888af52BAFd9fEBD6F",
+          "0xc530c63C3053455157a82D5175599CdCD5f02587",
+          "7fxv3Zsr2DKEdZB8erunPq2ZurekwT1Cu2YtS5DwcacU",
+          "TFwtyDECHnWKtXoFLWiQQYa25fybjWpYUY",
+          "bc1q4h4a2sjf4k9quhx7xrajfgcsaz082cv5h3g8dt"
+        ]
+      }
+    }
+  }
+}
