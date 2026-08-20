@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11531",
+  "modified": "2026-08-20T18:47:46Z",
+  "published": "2026-08-20T18:46:40Z",
+  "summary": "Malicious code in moidevy (npm)",
+  "details": "Moidevy@1.0.0 is a Windows proctoring-evasion and exam-cheat tool disguised as a \"DOM utility / diagnostic bridge\". On launch it copies the bundled Electron binary to a stealth name \"SearchApp.exe\" and spawns a detached watchdog process that respawns itself every 2-15 seconds when killed, writing a log to %LOCALAPPDATA%\\Microsoft\\Windows\\Diagnostics\\boot.log. The Electron app sets the WDA_EXCLUDEFROMCAPTURE window flag and WS_EX_TOOLWINDOW/NOACTIVATE styles to hide its overlay from screen capture and Alt-Tab, actively demotes the proctoring application's window, and toggles its stealth flag off when it detects the proctor's core.exe process. It extracts on-screen exam text via Windows UI Automation (bin/uia_extract.py / uia_extract.exe) and PowerShell screen capture (bin/stealth_capture.ps1). It also ships bin/chrome_cookies.ps1, which decrypts Chrome, Edge, and Brave cookies for openai[.]com and chatgpt[.]com using DPAPI and AES-256-GCM and injects the victim's ChatGPT/Claude/Gemini session tokens into the tool's own AI bridge.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "moidevy",
+        "purl": "pkg:npm/moidevy"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/moidevy/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11531"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-20T18:46:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chatgpt[.]com",
+          "openai[.]com"
+        ],
+        "sha256": [
+          "d745d1080d5033b62e4d0d1191ba3b51b924b2dc54ebb752a742d024512a76d8"
+        ]
+      }
+    }
+  }
+}
