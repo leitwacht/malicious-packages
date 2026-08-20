@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11530",
+  "modified": "2026-08-20T17:33:11Z",
+  "published": "2026-08-20T17:30:58Z",
+  "summary": "Malicious code in @pablo_clueless/sniffr (npm)",
+  "details": "@pablo_clueless/sniffr@0.1.1 is a trojanized API-schema-diffing dev tool whose main entry (dist/index.js) appends an obfuscated payload that executes on import. The payload spawns detached child processes, builds an Ethereum JSON-RPC client against public RPC endpoints (1rpc[.]io/eth, h-mainnet[.]drpc[.]org, publicnode, ethereum-rpc[.]com, stapi[.]io, or the ETHEREUM_RPC_URL env var), and continuously scans blocks via eth_getBlockByNumber / eth_getTransactionByHash / eth_blockNumber for transactions to the address 0xa322E5f3. Matching transactions are POSTed to C2 endpoints at :443/0x/ls and :443/0x/cl with x-payload- headers. This is a crypto wallet-drainer / transaction-frontrunning monitor concealed inside a benign-looking package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pablo_clueless/sniffr",
+        "purl": "pkg:npm/%40pablo_clueless/sniffr"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pablo_clueless/sniffr/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11530"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-20T17:30:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "ethereum-rpc[.]com",
+          "h-mainnet[.]drpc[.]org",
+          "publicnode",
+          "stapi[.]io"
+        ],
+        "sha256": [
+          "d799511d15a63640e7013427fe339ec44c1dd55748eb48d2a9e94af4a01f1d48"
+        ],
+        "url_observed": [
+          ":443/0x/cl",
+          ":443/0x/ls",
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://h-mainnet[.]drpc[.]org"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
