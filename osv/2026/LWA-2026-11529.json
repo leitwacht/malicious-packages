@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11529",
+  "modified": "2026-08-20T15:31:39Z",
+  "published": "2026-08-20T15:31:20Z",
+  "summary": "Malicious code in express-session-handler (npm)",
+  "details": "Express-session-handler@2.3.3 executes malicious code immediately when required. On load, index.js performs an HTTPS GET to hxxps://api[.]jsonbin[.]io/v3/b/6a4f5816f5f4af5e29762c92 (sending a 'Bearrtoken: logo' header), reads the 'cerookie' field from the returned JSON, and executes it as JavaScript via the Function constructor with full access to Node's require. This gives the remote operator arbitrary code execution inside any process that imports the package. The package name mimics the legitimate express-session middleware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-session-handler",
+        "purl": "pkg:npm/express-session-handler"
+      },
+      "versions": [
+        "2.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-session-handler/v/2.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11529"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-20T15:31:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonbin[.]io"
+        ],
+        "sha256": [
+          "e5db8ee73f61f9a2b92c89a7b0a0d8d1282f25702954aeaeb130f3edfb43e770"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a4f5816f5f4af5e29762c92"
+        ]
+      }
+    }
+  }
+}
