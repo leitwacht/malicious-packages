@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11532",
+  "modified": "2026-08-20T19:17:14Z",
+  "published": "2026-08-20T19:16:06Z",
+  "summary": "Malicious code in mcq-session (npm)",
+  "details": "Mcq-session is a malicious npm package disguised as a coding-exam session helper. On import it executes a top-level routine that reads a file (public/logo.ico), decrypts it with a hardcoded DES password, and spawns a detached background node process, piping the decrypted code into that process's stdin so it runs outliving the parent. The README falsely claims the package runs nothing on import. The decrypted payload file is not shipped in the tarball, indicating a staged external payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mcq-session",
+        "purl": "pkg:npm/mcq-session"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mcq-session/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11532"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-20T19:16:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "031b199f9543e718ff19a36a54d2368930615791c0d7b55fb35505303ffa5c86"
+        ]
+      }
+    }
+  }
+}
