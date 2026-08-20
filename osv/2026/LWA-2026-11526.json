@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11526",
+  "modified": "2026-08-20T14:16:40Z",
+  "published": "2026-08-20T14:16:08Z",
+  "summary": "Malicious code in chai-as-soul (npm)",
+  "details": "Chai-as-soul@2.3.6 is a trojanized pino logging-library clone (combosquat of the \"chai\" package name) that ships a 4MB obfuscated lib/config.js. On load it beacons host metadata to a remote C2 at 167[.]88[.]167[.]54 (ports 8085/8087): it POSTs JSON containing hostname, OS, and username to /api/log and /api/notify, and uploads a multipart sysinfo.txt file (host, OS, username, platform, timestamp) to /upload. It also performs DNS TXT beaconing. The implant uses axios and a per-request Validation HMAC header.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-soul",
+        "purl": "pkg:npm/chai-as-soul"
+      },
+      "versions": [
+        "2.3.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-soul/v/2.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11526"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-20T14:16:08Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]167[.]54",
+          "167[.]88[.]167[.]54:8085",
+          "167[.]88[.]167[.]54:8087"
+        ],
+        "sha256": [
+          "c195de55d023de399863ea01bbf6420385677dd578068fc89f40d832d93db19e"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]167[.]54:8085/upload",
+          "hxxp://167[.]88[.]167[.]54:8087/api/log",
+          "hxxp://167[.]88[.]167[.]54:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
