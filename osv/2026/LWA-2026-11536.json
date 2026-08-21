@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11536",
+  "modified": "2026-08-21T04:11:32Z",
+  "published": "2026-08-21T04:11:02Z",
+  "summary": "Malicious code in @next-fonts/font (npm)",
+  "details": "@next-fonts/font is a combosquat of Next.js's next/fonts. Its Inter() export, which should return font style metadata, instead spawns a detached node process running a base64-encoded loader. The loader fetches an encrypted payload from blockchain RPC endpoints (bsc-dataseed[.]binance[.]org, bsc-rpc[.]publicnode[.]com, api[.]trongrid[.]io, api[.]fullnode[.]mainnet[.]aptoslabs[.]com), XOR-decrypts it with a hardcoded key, and executes it via eval. The remote code is fetched from a BSC transaction and decrypted at runtime, so the executed payload is attacker-controlled and not present in the package itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@next-fonts/font",
+        "purl": "pkg:npm/%40next-fonts/font"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@next-fonts/font/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11536"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-21T04:11:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fullnode[.]mainnet[.]aptoslabs[.]com",
+          "api[.]trongrid[.]io",
+          "bsc-dataseed[.]binance[.]org",
+          "bsc-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "1d44812cefdc3a2de0103af91f625a4b475fde7cfd5e6765f699955b9cfa4f5e"
+        ]
+      }
+    }
+  }
+}
