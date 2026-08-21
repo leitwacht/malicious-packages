@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11541",
+  "modified": "2026-08-21T13:31:42Z",
+  "published": "2026-08-21T13:31:04Z",
+  "summary": "Malicious code in spf-analytics (npm)",
+  "details": "Spf-analytics is a browser-side checkout-data skimmer. Loaded on a storefront page, it reads the customer's checkout data (name, email, phone, full address, city, state, country, pincode), order line items, order total, and payment method from the page's window state, computes a SHA-256 fingerprint of the address fields, encrypts the payload with AES-256-GCM and RSA-OAEP using an embedded public key, and POSTs it to hxxps://connector[.]internalwebhooks[.]com/spf-analytics. It deduplicates submissions via a localStorage cache keyed shopify_analytics_cache_7f4c91d8b2e64a0f9c37d5ab81e26f43 and retries transient failures. The encryption ensures only the remote key holder can read the exfiltrated customer data.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "spf-analytics",
+        "purl": "pkg:npm/spf-analytics"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/spf-analytics/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11541"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-21T13:31:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "connector[.]internalwebhooks[.]com"
+        ],
+        "sha256": [
+          "b6b04a1ee6cb395c12b9bbe71808137a921ed38e27144c26d428758524d6e784"
+        ],
+        "url_observed": [
+          "hxxps://connector[.]internalwebhooks[.]com/spf-analytics"
+        ]
+      }
+    }
+  }
+}
