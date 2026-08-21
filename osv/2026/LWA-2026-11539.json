@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11539",
+  "modified": "2026-08-21T12:20:29Z",
+  "published": "2026-08-21T12:20:01Z",
+  "summary": "Malicious code in totp-utils (npm)",
+  "details": "Totp-utils@1.4.3 is a trojanized TOTP utility whose postinstall hook (node./index.js --setup) runs a credential stealer. It harvests Discord authentication tokens from the local Discord, Chrome, Edge, Brave and Opera storage (decrypting encrypted tokens via DPAPI and the browser os_crypt master key), validates them against the Discord API, and also steals Minecraft tokens from Vanilla, Lunar Client and Modrinth launchers. All stolen tokens are exfiltrated to a hardcoded Discord webhook (discord[.]com/api/webhooks/1532429233769419004/...). The exported TOTP functions are a decoy; calling validateSecret() also triggers the collection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "totp-utils",
+        "purl": "pkg:npm/totp-utils"
+      },
+      "versions": [
+        "1.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/totp-utils/v/1.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11539"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-21T12:20:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ],
+        "sha256": [
+          "619f82ba4a4c02caa4aa598534b68536189ba09fc2f6d37755cde4b47d8b29cb"
+        ],
+        "url_observed": [
+          "hxxps://discord[.]com/api/webhooks/1532429233769419004/[secret-redacted]"
+        ]
+      }
+    }
+  }
+}
