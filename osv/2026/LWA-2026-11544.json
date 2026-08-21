@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11544",
+  "modified": "2026-08-21T23:31:57Z",
+  "published": "2026-08-21T23:31:34Z",
+  "summary": "Malicious code in rust-testing-utils (npm)",
+  "details": "Rust-testing-utils@2.3.0 is a trojanized logger-style package whose main module spawns a detached background node subprocess (lib/caller.js) on require. That subprocess base64-decodes a hardcoded URL (hxxps://api[.]jsonstorage[.]io/v1/json/2ef8c758-a96f-4592-b036-2b5b5f9c9c5f/f89e8264-86c2-4680-94d9-c3f5c59370f), fetches it with header x-secret-key: X, reads the response's \"cookie\" field, and executes it as JavaScript via the Function constructor with full require access, retrying up to 5 times. This is a remote-code-execution loader: the package downloads and runs arbitrary code from a remote JSON-storage endpoint at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rust-testing-utils",
+        "purl": "pkg:npm/rust-testing-utils"
+      },
+      "versions": [
+        "2.3.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rust-testing-utils/v/2.3.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11544"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-21T23:31:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]io"
+        ],
+        "sha256": [
+          "c60d47d990a0cef98e707daaf1895883f5bb7b439a96ce39652d4d4ba9c54d34"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonstorage[.]io/v1/json/2ef8c758-a96f-4592-b036-2b5b5f9c9c5f/f89e8264-86c2-4680-94d9-c3f5c59370f",
+          "hxxps://api[.]jsonstorage[.]io/v2/json/2ef8c758-a96f-4592-b2c5b5f9c9c5f/f89e8264-86c2-4680-94d9-c3f5c59370f"
+        ]
+      }
+    }
+  }
+}
