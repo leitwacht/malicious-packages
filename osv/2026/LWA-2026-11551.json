@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11551",
+  "modified": "2026-08-22T10:48:17Z",
+  "published": "2026-08-22T10:46:18Z",
+  "summary": "Malicious code in @syncraft-labs/core (npm)",
+  "details": "The package's ESM entry (dist/index.js) is an obfuscated two-stage dropper disguised as a state-sync library. On import it queries public Ethereum RPC endpoints (drpc[.]org, publicnode, ethereum-rpc) to scan blocks for transactions sent to the hardcoded address 0xa0a322E5F3, then derives two command-and-control host IPs from the transaction's recipient address bytes. It fetches a second-stage payload from those hosts over HTTP (paths /0x/ls and /0x/cl on port 443), XOR/base64-decodes it, and executes it both via eval and by spawning a detached `node -e \u003cpayload\u003e` process with stdio ignored and windowsHide enabled. The C2 requests carry x-payload- headers and a version marker. The require/CJS entry and README describe a legitimate local-first state-sync engine, so the malicious code only runs when the module is imported as ESM.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@syncraft-labs/core",
+        "purl": "pkg:npm/%40syncraft-labs/core"
+      },
+      "versions": [
+        "0.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@syncraft-labs/core/v/0.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11551"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-22T10:46:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "drpc[.]org"
+        ],
+        "sha256": [
+          "e7ce9f06633e0523d1deb8c8000096a1815859af36a4eb6cd0936139ee76676b"
+        ]
+      }
+    }
+  }
+}

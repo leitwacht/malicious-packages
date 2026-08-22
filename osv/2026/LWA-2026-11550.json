@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11550",
+  "modified": "2026-08-22T10:48:20Z",
+  "published": "2026-08-22T10:46:13Z",
+  "summary": "Malicious code in @syncraft-labs/react (npm)",
+  "details": "The ESM build (dist/index.js) of this React hooks package contains an obfuscated crypto-drainer payload that executes inside a useEffect hook. It connects to Ethereum JSON-RPC endpoints (eth[.]drpc[.]org, 1rpc[.]io/eth, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]publicnode[.]com, plus the ETH_RPC_URL env var) and issues eth_getBlockByNumber, eth_getTransactionByHash, and eth_getBalance calls, and queries api[.]etherscan[.]io/api?module=account\u0026action=txlist to enumerate transactions. It monitors for deposits to a hardcoded wallet address (0x219f322.../0xa322E5f3...) and reports balances and transaction data to command-and-control endpoints at :443/0x/ls and :443/0x/cl using x-payload- HTTP headers. It also spawns child processes via child_process. The CJS build is clean; only the ESM entry is trojanized.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@syncraft-labs/react",
+        "purl": "pkg:npm/%40syncraft-labs/react"
+      },
+      "versions": [
+        "0.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@syncraft-labs/react/v/0.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11550"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-22T10:46:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "api[.]etherscan[.]io",
+          "eth-mainnet[.]publicnode[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "1ac0a95f356f01f5f2d0ec249b5201a96e593617fb969122c4e199645c4b9d2f"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://api[.]etherscan[.]io/api?module=account\u0026action=txlist",
+          "hxxps://eth-mainnet[.]publicnode[.]com",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}

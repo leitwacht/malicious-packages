@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11549",
+  "modified": "2026-08-22T10:47:54Z",
+  "published": "2026-08-22T10:46:10Z",
+  "summary": "Malicious code in @syncraft-labs/vue (npm)",
+  "details": "@syncraft-labs/vue@0.4.1 ships an obfuscated wallet-drainer payload in its ESM build (dist/index.js) that executes when the module is imported. The payload queries Ethereum RPC endpoints (eth[.]drpc[.]org, eth-mainnet[.]publicnode[.]com, ethereum-rpc[.]public[.]blastapi[.]io, 1rpc[.]io/eth, api[.]etherscan[.]io) to locate a transaction involving the victim's wallet, then derives a C2 host IP from the victim's transaction recipient-address bytes and fetches XOR-encrypted second-stage payloads from hxxp://\u003cip\u003e/0x/ls and hxxp://\u003cip\u003e/0x/cl. The decrypted payload is executed via eval() and also spawned as a detached 'node -e' child process (stdio ignored, windowsHide). A hardcoded attacker-controlled Ethereum address 0xa322E5f3... is embedded as the drain destination. The C2 host is computed from the victim's own address, so it varies per victim.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@syncraft-labs/vue",
+        "purl": "pkg:npm/%40syncraft-labs/vue"
+      },
+      "versions": [
+        "0.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@syncraft-labs/vue/v/0.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11549"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-22T10:46:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "api[.]etherscan[.]io",
+          "eth-mainnet[.]publicnode[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]public[.]blastapi[.]io"
+        ],
+        "sha256": [
+          "13fb153b4cdc631f00789be20b8a2dc1f03b6ef6fcf1928b3fdb0e3c18e3891f"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
