@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11545",
+  "modified": "2026-08-22T00:47:17Z",
+  "published": "2026-08-22T00:46:45Z",
+  "summary": "Malicious code in solidity-testing-utils (npm)",
+  "details": "Solidity-testing-utils@1.2.0 is a trojanized clone of the pino logger that installs a remote-code-execution dropper. The package's index.js spawns a detached background node process running lib/caller.js. That script base64-decodes a hardcoded jsonstorage[.]net URL (hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-4e9e-b036-b3b90379a165/f2f8264-86c2-4684-94da-c3f52f5d70f) and fetches it with header x-secret-key: _, then executes the returned payload via the Function constructor with the require function in scope, retrying up to 5 times. The fetched payload is arbitrary attacker-controlled code executed with full Node.js module access.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solidity-testing-utils",
+        "purl": "pkg:npm/solidity-testing-utils"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solidity-testing-utils/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11545"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-22T00:46:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]net",
+          "jsonstorage[.]net"
+        ],
+        "sha256": [
+          "3f9c02a09c27de04ec7e8d0cf396d0f3ce2fe1299f38786f89178bbe7ee06f07"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-4e9e-b036-b3b90379a165/f2f8264-86c2-4684-94a-c3f5f5d70f",
+          "hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-4e9e-b036-b3b90379a165/f2f8264-86c2-4684-94da-c3f52f5d70f"
+        ]
+      }
+    }
+  }
+}
