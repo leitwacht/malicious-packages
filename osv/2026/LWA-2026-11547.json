@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11547",
+  "modified": "2026-08-22T04:31:54Z",
+  "published": "2026-08-22T04:31:39Z",
+  "summary": "Malicious code in hatdhat-testkit (npm)",
+  "details": "Hatdhat-testkit@3.2.14 is a trojanized logger package. When its exported middleware is invoked, it spawns a detached background node process (stdio ignored) that runs lib/caller.js. That script base64-decodes a remote URL (hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/f89e8264-86c2-4684-94da-c3f82d59370f), fetches it with the header x-secret-key: _, reads the.data.cookie field of the returned JSON, and executes that content as JavaScript via the Function constructor with require in scope — downloading and running arbitrary remote code on the host. The package ships cloned pino logger source (docs/, pino.js, worker.js) to disguise the payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hatdhat-testkit",
+        "purl": "pkg:npm/hatdhat-testkit"
+      },
+      "versions": [
+        "3.2.14"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hatdhat-testkit/v/3.2.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11547"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-22T04:31:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonstorage[.]net"
+        ],
+        "sha256": [
+          "310609c0536378b2e3d5a8ea23d2379617f964ea7511bef0ec33e4d6e3dd0d32"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonstorage[.]net/v1/json/2ef8c758-a96f-459e-b036-b3b90379a165/f89e8264-86c2-4684-94da-c3f82d59370f"
+        ]
+      }
+    }
+  }
+}
