@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11548",
+  "modified": "2026-08-22T07:21:48Z",
+  "published": "2026-08-22T07:15:27Z",
+  "summary": "Malicious code in @fyxzpediaa/baileys (npm)",
+  "details": "@fyxzpediaa/baileys is a trojanized clone of the legitimate @whiskeysockets/baileys WhatsApp WebSocket library. On socket connect, injected code in lib/Socket/socket.js decodes an obfuscated URL and fetches a remote JSON list of WhatsApp newsletter IDs from hxxps://raw[.]githubusercontent[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]json. After a 200-second delay it sends w:mex newsletter-follow queries (query_id 7871414976211147) to @s[.]whatsapp[.]net for each ID, forcing the victim's WhatsApp account to subscribe to attacker-controlled newsletters. A second injected function decodes a hardcoded newsletter JID (120363302042233203@newsletter) via XOR/base64 and follows it as well. The payloads are hidden with char-code-array and XOR/base64 obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@fyxzpediaa/baileys",
+        "purl": "pkg:npm/%40fyxzpediaa/baileys"
+      },
+      "versions": [
+        "8.0.15"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@fyxzpediaa/baileys/v/8.0.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11548"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-22T07:15:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "s[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "0ff35e7f4733a9c30b6816beb8b928e23f4cb9a8e469ae3df978df415db5c596"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]json"
+        ]
+      }
+    }
+  }
+}
