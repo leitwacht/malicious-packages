@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11573",
+  "modified": "2026-08-23T18:30:37Z",
+  "published": "2026-08-23T18:30:02Z",
+  "summary": "Malicious code in sm-cart (npm)",
+  "details": "The package's preinstall and postinstall hooks each run `curl -s hxxp://16[.]192[.]173[.]5/sm-cart/pre` and `curl -s hxxp://16[.]192[.]173[.]5/sm-cart/post` respectively, making an outbound network callback to the raw IP 16[.]192[.]173[.]5 on every install. The package contains no functional code — its only module logs a message and exports an empty object — so the sole purpose of the install hooks is the network callback to 16[.]192[.]173[.]5.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sm-cart",
+        "purl": "pkg:npm/sm-cart"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sm-cart/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11573"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-23T18:30:02Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "16[.]192[.]173[.]5"
+        ],
+        "sha256": [
+          "c49d5ca244acf7f67cded695ce7403da9d5eeaaf62e7d82d4509a62b417948a4"
+        ],
+        "url_observed": [
+          "hxxp://16[.]192[.]173[.]5/sm-cart/post",
+          "hxxp://16[.]192[.]173[.]5/sm-cart/pre"
+        ]
+      }
+    }
+  }
+}
