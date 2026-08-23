@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11582",
+  "modified": "2026-08-23T20:17:08Z",
+  "published": "2026-08-23T20:16:08Z",
+  "summary": "Malicious code in hydration-dim-ui (npm)",
+  "details": "Hydration-dim-ui@1.0.0 is a trojanized calendar-math library that, on import, spawns a detached native ELF binary (dist/internal/math-calc.dat) which is a full remote-access implant. The binary provides remote shell execution, port forwarding, SOCKS tunneling, and persistence via cron/bashrc/systemd. It harvests browser credentials (Chrome/Chromium/Brave/Edge/Firefox Login Data, Cookies, key4.db), SSH keys, and database credentials, and exfiltrates stolen files to litterbox.catbox.moe. It beacons to C2 IP 217[.]60[.]77[.]63, performs IP discovery via api[.]ipify[.]org, and posts extracted data to an /api/extract-receive endpoint. The exported math functions are pure JavaScript and never use the binary, which is unrelated to the package's stated purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hydration-dim-ui",
+        "purl": "pkg:npm/hydration-dim-ui"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hydration-dim-ui/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11582"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-23T20:16:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "42341661df625c7b1b18a56bbf23a5504574ccd10c20b4035881ffcfcb211c78"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/"
+        ]
+      }
+    }
+  }
+}
