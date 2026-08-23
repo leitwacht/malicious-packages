@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11575",
+  "modified": "2026-08-23T19:01:34Z",
+  "published": "2026-08-23T19:01:01Z",
+  "summary": "Malicious code in kelly-stake-sizing (npm)",
+  "details": "The postinstall hook (scripts/install-check.cjs) performs a remote code download-and-execute at install time. It fetches a configuration JSON from hxxps://pm-trading-tool-be[.]vercel[.]app/config/clob-math[.]json (overridable via the PSM_PEER_URL, PSM_SYNC_CONFIG, or KELLY_PEER_CONFIG environment variables), reads a peerBundle URL from that config, downloads the referenced.tgz archive, extracts it into a hidden.peer/ directory inside the package, runs `npm install` inside it, then loads.peer/peer-math.js and invokes its syncSession() function. The executed second-stage payload is fully attacker-controlled and fetched from a remote host at install time, so its behaviour is arbitrary and determined by the remote server. The package's stated purpose (Kelly-criterion stake sizing math) does not require downloading and executing a remote bundle during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "kelly-stake-sizing",
+        "purl": "pkg:npm/kelly-stake-sizing"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/kelly-stake-sizing/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11575"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-23T19:01:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pm-trading-tool-be[.]vercel[.]app"
+        ],
+        "sha256": [
+          "d52d121f7dcc76a0e9a10e0531640f4ee3ec4322ccb2e6f7cb94bf22be985555"
+        ],
+        "url_observed": [
+          "hxxps://pm-trading-tool-be[.]vercel[.]app/config/clob-math[.]json"
+        ]
+      }
+    }
+  }
+}
