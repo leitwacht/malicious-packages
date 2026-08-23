@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11571",
+  "modified": "2026-08-23T16:55:18Z",
+  "published": "2026-08-23T16:55:02Z",
+  "summary": "Security-research / proof-of-concept package: message-compiler (npm)",
+  "details": "The package's preinstall hook runs vishu.js, which on install exfiltrates host and CI metadata to attacker-controlled endpoints. It fetches the machine's public IP from api[.]ipify[.]org, sends an HTTPS request to hxxps://webhook[.]site/32113f06-42ab-454b-a58f-5a8ea6333c6d with the IP and CI environment variables (CI, GITHUB_ACTIONS, GITHUB_WORKFLOW, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, GITHUB_RUN_ATTEMPT) appended as query parameters, and performs a DNS lookup against ping-\u003chostname\u003e.your-collab-domain[.]oastify[.]com (a Burp Collaborator interaction domain). The package has no legitimate function requiring network access on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "message-compiler",
+        "purl": "pkg:npm/message-compiler"
+      },
+      "versions": [
+        "9.2.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/message-compiler/v/9.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11571"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-08-23T16:55:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site",
+          "your-collab-domain[.]oastify[.]com"
+        ],
+        "sha256": [
+          "599460775f4576087d1a64f0504dd897754048c60d67bcd7cfbb746dbce05e25"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://webhook[.]site/32113f06-42ab-454b-a58f-5a8ea6333c6d"
+        ]
+      }
+    }
+  }
+}
