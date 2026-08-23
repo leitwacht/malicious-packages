@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11560",
+  "modified": "2026-08-23T11:17:18Z",
+  "published": "2026-08-23T11:16:21Z",
+  "summary": "Malicious code in hydration-dim-kit (npm)",
+  "details": "Hydration-dim-kit@1.0.0 is a trojanized calendar/streak-math library that ships a native Linux ELF remote-access implant as dist/internal/calc.dat. Importing the package root (dist/index.mjs) chmods and spawns this binary detached on every load. The implant provides a remote shell (/redshell), HTTP command-and-control to host 217[.]60[.]77[.]63 with second-stage payload download from hxxp://217[.]60[.]77[.]63:\u003cport\u003e/Others/\u003cfile\u003e, SOCKS/port-forward/tunnel proxying, and persistence via cron, ~/.bashrc, and a systemd user service (svc-update.service). It harvests browser credentials (Chrome/Chromium/Brave/Edge Login Data, Cookies, Local State; Firefox logins.json and key4.db), SSH keys, and database credentials, and exfiltrates collected files to litterbox.catbox.moe and a POST /api/extract-receive endpoint. It can also create/enable local user accounts and stage/execute additional payloads via memfd and shellcode.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hydration-dim-kit",
+        "purl": "pkg:npm/hydration-dim-kit"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hydration-dim-kit/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11560"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-23T11:16:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "f12a6e3568e5f5ad3b7f687e8d8ee623613529bd06087252b899c7dc44f9dc19"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
