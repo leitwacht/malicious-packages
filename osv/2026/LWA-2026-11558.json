@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11558",
+  "modified": "2026-08-23T06:07:55Z",
+  "published": "2026-08-23T06:07:06Z",
+  "summary": "Malicious code in fetch-page-assets (npm)",
+  "details": "Fetch-page-assets@1.2.13 ships a JavaScript C2 implant disguised as a font file (public/fonts/fa-solid-400.woff2) and an obfuscated copy appended to babel.config.cjs. A bundled.vscode/tasks.json task with runOn:\"folderOpen\" executes the payload via `node./public/fonts/fa-solid-400.woff2` whenever the project folder is opened in VS Code; babel.config.cjs is also auto-loaded during build/test. The payload queries Ethereum RPC endpoints (eth[.]drpc[.]org, 1rpc[.]io, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io, eth[.]blockscout[.]com/api) for transactions from wallet 0xa322E5f3D1D3060e0a0121064e9a1DC2490Ef1a, derives two C2 IP addresses from the transaction `to` field bytes, then downloads XOR-encoded second-stage payloads from hxxp://\u0026lt;ip\u0026gt;:443/0x/cls and hxxp://\u0026lt;ip\u0026gt;:443/0x/ls and executes them via eval and a detached `node -e` child process (windowsHide:true). The C2 addresses are rotated via Ethereum transactions, making them dynamic.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fetch-page-assets",
+        "purl": "pkg:npm/fetch-page-assets"
+      },
+      "versions": [
+        "1.2.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fetch-page-assets/v/1.2.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11558"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-23T06:07:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "efb3020e224e9124fda0afd079fc1a1480f7fb1c525a828677e74f14902f1bb3"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]blockscout[.]com/api",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D1D3060e0a0121064e9a1DC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
