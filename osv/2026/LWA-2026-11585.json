@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11585",
+  "modified": "2026-08-24T05:03:21Z",
+  "published": "2026-08-24T05:02:52Z",
+  "summary": "Malicious code in hydration-ui-dim (npm)",
+  "details": "Hydration-ui-dim@1.0.0 is a trojanized \"calendar math\" library. Importing the package root evaluates dist/index.mjs, which chmods and spawns a bundled ELF (dist/internal/calc-math.dat) as a detached background process. The ELF is a full remote-access implant with a command set including: /redshell (download and memfd-exec an ELF from the C2), /portfwd (port forwarding), /tunnel (RC2TUN relay), /persist (cron/bashrc/systemd/XDG-autostart persistence), /creds (copies Chrome/Chromium/Brave/Edge/Firefox Login Data, Cookies, Local State, logins.json and key4.db), /ssh_keys (harvests ~/.ssh keys and agent list), /dbfind (locates DB configs and passwords), /dataextract /download /upload /fetch (exfiltrates files via litterbox.catbox.moe), /sysinfo /whoami /id /ps /env /ifconfig /netstat (recon), /adduser /enableuser (account creation), /socks, /memfd, /shellcode, /stage, /dlopen. It beacons to C2 host 217[.]60[.]77[.]63 and POSTs extracted data to /api/extract-receive, and resolves the victim's public IP via api[.]ipify[.]org. The package's exported day-math functions are pure JavaScript and never use the binary; the binary exists solely as the implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hydration-ui-dim",
+        "purl": "pkg:npm/hydration-ui-dim"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hydration-ui-dim/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11585"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-24T05:02:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "litterbox[.]catbox[.]moe"
+        ],
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "b11851bb2b1a57eb5f374304a4f4cc57ffd7fce4d13da8b1213c40d56640de79"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxp://api[.]ipify[.]org",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
