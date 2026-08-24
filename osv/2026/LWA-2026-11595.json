@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11595",
+  "modified": "2026-08-24T12:49:37Z",
+  "published": "2026-08-24T12:48:06Z",
+  "summary": "Malicious code in auth-otp (npm)",
+  "details": "Auth-otp@1.0.5 is a credential-stealing infostealer disguised as a TOTP/HOTP library. Its postinstall hook runs lib/core.js, which harvests Minecraft account tokens (access tokens, MSA refresh tokens, Modrinth PATs) from Vanilla/Lunar/Essential/CurseForge/Modrinth launcher files, and Discord tokens from Discord/Chrome/Edge/Brave/Opera local storage (decrypting encrypted tokens via DPAPI + AES-GCM). All stolen credentials are exfiltrated to a Discord webhook at discord[.]com/api/webhooks/1532429233769419004/[secret-redacted]. The hook also downloads and installs a jar from github[.]com/ghysghqgHUJ/.jar/releases/download/v1.0.0/fabric-api-boost-1.0.0.jar into Minecraft mods folders. The code checks for CI/sandbox/audit environments and exits without running there.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "auth-otp",
+        "purl": "pkg:npm/auth-otp"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/auth-otp/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11595"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-24T12:48:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ],
+        "sha256": [
+          "c7ecf8a9528ec87d7ae6dc3ed3e69cc7762c1f1348357af5c91976552509fb8e"
+        ],
+        "url_observed": [
+          "hxxps://discord[.]com/api/webhooks/1532429233769419004/[secret-redacted]",
+          "hxxps://github[.]com/ghysghqgHUJ/[.]jar/releases/download/v1[.]0[.]0/fabric-api-boost-1[.]0[.]0[.]jar"
+        ]
+      }
+    }
+  }
+}
