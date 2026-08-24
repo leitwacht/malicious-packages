@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11603",
+  "modified": "2026-08-24T15:19:55Z",
+  "published": "2026-08-24T15:19:01Z",
+  "summary": "Malicious code in dims-hydration-ui (npm)",
+  "details": "Dims-hydration-ui@1.0.0 is a decoy \"calendar streak computation\" library that ships an ELF binary at dist/internal/calc.dat disguised as a native math accelerator. Importing the package spawns this binary detached. The binary is a red-team C2 implant: it provides a remote shell (/redshell elf \u003cfile\u003e | elf -inject \u003cpid\u003e \u003cfile\u003e) with process injection, port forwarding (/portfwd start \u003clport\u003e \u003crhost\u003e \u003crport\u003e), and tunneling (/tunnel open|relay|clo). It downloads and executes second-stage payloads from hxxp://217[.]60[.]77[.]63:\u003cport\u003e/Others/\u003cname\u003e and hxxp://217[.]60[.]77[.]63:\u003cport\u003e/SC/\u003cname\u003e, performs external-IP discovery via api[.]ipify[.]org, uses DNS 8[.]8[.]8[.]8, and communicates over TLS. It drops hidden files under /tmp/.sk, /tmp/.cr, and /tmp/.elf_XXXXXX and supports memfd-based shellcode execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dims-hydration-ui",
+        "purl": "pkg:npm/dims-hydration-ui"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dims-hydration-ui/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11603"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-24T15:19:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "217[.]60[.]77[.]63",
+          "8[.]8[.]8[.]8"
+        ],
+        "sha256": [
+          "43c3d8deb4133546317aec88b6d9e7fa0e7faf9054745a53a6eb0a5b95b258c8"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63",
+          "hxxp://217[.]60[.]77[.]63/Others/",
+          "hxxp://217[.]60[.]77[.]63/SC/",
+          "hxxp://api[.]ipify[.]org"
+        ]
+      }
+    }
+  }
+}

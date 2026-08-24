@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11599",
+  "modified": "2026-08-24T15:15:58Z",
+  "published": "2026-08-24T15:15:28Z",
+  "summary": "Malicious code in @atfm/atfm-material-ui (npm)",
+  "details": "The package is a dependency-confusion stub (scoped name, version 99.99.99, no real code) whose preinstall and install hooks exfiltrate installer host metadata. On install, the hook base64-encodes the current username, hostname, and working directory together with the package name and sends it via HTTP GET to hxxps://\u003cpackage-subdomain\u003e.callback[.]m0chan[.]co[.]uk/\u003cbase64-payload\u003e, and additionally performs a DNS lookup of the base64-encoded package name against \u003cpackage-subdomain\u003e.callback[.]m0chan[.]co[.]uk. The callback domain m0chan[.]co[.]uk receives the installer's username, hostname, and working directory over both HTTP and DNS channels.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@atfm/atfm-material-ui",
+        "purl": "pkg:npm/%40atfm/atfm-material-ui"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@atfm/atfm-material-ui/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11599"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-24T15:15:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "callback[.]m0chan[.]co[.]uk",
+          "m0chan[.]co[.]uk"
+        ],
+        "sha256": [
+          "e5150077e1cd11368b79f7b7a32f505f1f44b888f9c553f37046acc6aabc9ebe"
+        ]
+      }
+    }
+  }
+}
