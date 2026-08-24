@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11607",
+  "modified": "2026-08-24T17:50:37Z",
+  "published": "2026-08-24T17:48:55Z",
+  "summary": "Malicious code in mham-js (npm)",
+  "details": "Mham-js@1.0.4 executes a second-stage payload at import time. Importing the package's main entry triggers code in src/api/session-api.js that reads a bundled file (public/logo.ico), decrypts it with a hardcoded DES key (password 'bf497c0b9cee'), and spawns a detached background 'node' process to which the decrypted content is piped via stdin and executed. The package's README states it runs nothing on import, which is false. The bundled encrypted payload file is not shipped in this version, so the loader fails at runtime, but the decrypt-and-execute loader structure is present in the source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mham-js",
+        "purl": "pkg:npm/mham-js"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mham-js/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11607"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-24T17:48:55Z",
+      "indicators_observed": {
+        "sha256": [
+          "1b946b3e87d6785d34160da8a27f0950ec753ccb3664d559809ad0274ed1cdab"
+        ]
+      }
+    }
+  }
+}
