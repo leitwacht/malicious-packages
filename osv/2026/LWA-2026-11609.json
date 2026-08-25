@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11609",
+  "modified": "2026-08-25T04:03:42Z",
+  "published": "2026-08-25T04:03:01Z",
+  "summary": "Malicious code in hydration-cls-ui (npm)",
+  "details": "Hydration-cls-ui@1.0.0 is a trojanized package disguised as a calendar/streak-math library. Importing the package root runs an IIFE that spawns a bundled ELF binary (dist/internal/calc.dat) as a detached background process. That binary is a full remote-access implant: it connects to C2 at 217[.]70[.]77[.]63, and exposes commands to download and execute second-stage ELF payloads (including via memfd), steal browser credentials (Chrome/Chromium/Brave/Edge Login Data, Cookies, Local State; Firefox logins.json and key4.db), harvest SSH keys from ~/.ssh and /etc/ssh, hunt database credentials (MySQL/PostgreSQL/MongoDB/Redis configs,.pgpass,.my.cnf, DB env vars), exfiltrate files and directories to litterbox.catbox.moe, establish SOCKS/port-forward/tunnel proxies, load arbitrary shared libraries, spawn shells, create/enable system users, and persist via cron,.bashrc, and a systemd user unit (svc-update.service). It also performs host recon (uname, id, ps, env, network interfaces, netstat) and checks the public IP via api[.]ipify[.]org.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hydration-cls-ui",
+        "purl": "pkg:npm/hydration-cls-ui"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hydration-cls-ui/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11609"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-25T04:03:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "217[.]70[.]77[.]63"
+        ],
+        "sha256": [
+          "1f1459418db8027f3d38db2df8b0b22be0dcf7251efa3d3a173cfb0cbe9cd705"
+        ],
+        "url_observed": [
+          "hxxp://api[.]ipify[.]org",
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
