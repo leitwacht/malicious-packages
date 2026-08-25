@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11612",
+  "modified": "2026-08-25T13:53:23Z",
+  "published": "2026-08-25T13:50:01Z",
+  "summary": "Malicious code in tsrml612 (npm)",
+  "details": "Tsrml612 is a heavily-obfuscated \"logging\" library whose default transport connects to a remote MongoDB using an AES-encrypted connection string embedded in the package and decrypted at runtime. Its checkEnv() API enumerates every environment variable in process.env (including credentials and API tokens) and ships them as log records to that remote database (db \"remote_logs\", collection \"log_entries\"). The collection name is deliberately chosen to avoid colliding with collections in a target database. Importing the library and calling checkEnv() exfiltrates the host's environment variables to the attacker-controlled MongoDB.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tsrml612",
+        "purl": "pkg:npm/tsrml612"
+      },
+      "versions": [
+        "1.14.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tsrml612/v/1.14.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11612"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-25T13:50:01Z",
+      "indicators_observed": {
+        "sha256": [
+          "277d555db0372da983f7f332bfef8f8d15d873990059254b1a64296aebf1be8a"
+        ]
+      }
+    }
+  }
+}
