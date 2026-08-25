@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11616",
+  "modified": "2026-08-25T18:33:25Z",
+  "published": "2026-08-25T18:32:42Z",
+  "summary": "Malicious code in bamru (npm)",
+  "details": "Bamru@1.0.0 is a covert clipboard and screen-capture exfiltration tool disguised as a \"system binary configuration tool\". On execution it auto-installs Python and a set of automation libraries, then launches a hidden background process (via a VBScript run with admin rights) that runs a transparent on-screen overlay. The overlay continuously monitors the system clipboard and, whenever the copied text changes, POSTs the clipboard contents to hxxps://new-pointer[.]vercel[.]app/api. It also captures full-screen screenshots (base64 JPEG) and extracts on-screen text via Windows UI Automation, sending those to the same endpoint. It then types the remote server's response back into the clipboard. The process runs detached and hidden, with stealth hotkeys (caps-lock to hide, 9+q to exit) and no visible window. Network IOC: hxxps://new-pointer[.]vercel[.]app/api (POST of clipboard text and screen images).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bamru",
+        "purl": "pkg:npm/bamru"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bamru/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11616"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-25T18:32:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "new-pointer[.]vercel[.]app"
+        ],
+        "sha256": [
+          "860a7fcd6459d38f5b1ab2d13ccf5e852874995b162c0d2f8abd5d819f111391"
+        ],
+        "url_observed": [
+          "hxxps://new-pointer[.]vercel[.]app/api"
+        ]
+      }
+    }
+  }
+}
