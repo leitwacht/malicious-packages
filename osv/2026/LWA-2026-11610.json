@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11610",
+  "modified": "2026-08-25T09:39:30Z",
+  "published": "2026-08-25T09:39:06Z",
+  "summary": "Malicious code in spotify-url-infos (npm)",
+  "details": "Spotify-url-infos is a trojanized package whose name is unrelated to its function: it is a \"server backup\" tool that zips the current working directory (including hidden files such as.env) and uploads the archive to a hardcoded Telegram chat every hour. A Telegram bot token and chat ID are hardcoded in src/config.js, so the exfiltrated files (source code, credentials, secrets) are delivered to an attacker-controlled destination rather than the user. The upload runs automatically on start via index.js's hourly loop.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "spotify-url-infos",
+        "purl": "pkg:npm/spotify-url-infos"
+      },
+      "versions": [
+        "3.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/spotify-url-infos/v/3.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11610"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-25T09:39:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "528c8c3da15242f96f66d614efd0d15d1986fcafd7014503b686e740a1d5e39a"
+        ]
+      }
+    }
+  }
+}
