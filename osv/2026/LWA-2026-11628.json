@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11628",
+  "modified": "2026-08-26T01:02:35Z",
+  "published": "2026-08-26T01:00:30Z",
+  "summary": "Malicious code in hydration-vli-ui (npm)",
+  "details": "Hydration-vli-ui@1.0.0 is a trojanized package disguised as calendar/streak math primitives. Importing it spawns a detached native ELF implant (dist/internal/math.mjs) that acts as a remote-access trojan. The implant provides a command-and-control menu including: a reverse shell (/redshell); system recon (/sysinfo, /whoami, /ps, /env, /ifconfig, /netstat); SSH credential harvesting (/ssh_keys — copies ~/.ssh, /root/.ssh, /home/*/.ssh and /etc/ssh id_* keys, authorized_keys, known_hosts, config, and ssh-agent keys); browser credential theft (/creds — Chrome/Chromium/Brave/Edge Login Data, Cookies, Local State, and Firefox logins.json/key4.db); database credential discovery (/dbfind — greps DB configs, ~/.pgpass, ~/.my.cnf, DB env vars); in-memory shellcode execution (/memfd, /shellcode); remote payload download-and-execute (/stage); arbitrary shared-library loading (/dlopen); SOCKS/port-forward/tunnel proxying; persistence via cron,.bashrc, and a systemd user service (/persist); and user account creation (/adduser, /enableuser). Files are exfiltrated to the litterbox.catbox.moe file-upload API (hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hydration-vli-ui",
+        "purl": "pkg:npm/hydration-vli-ui"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hydration-vli-ui/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11628"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-26T01:00:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "litterbox[.]catbox[.]moe"
+        ],
+        "sha256": [
+          "33b14047feca9176cf97e32238afff6325043fbd91d1408cc4d6ee31916205d3"
+        ],
+        "url_observed": [
+          "hxxps://litterbox[.]catbox[.]moe/resources/internals/api[.]php"
+        ]
+      }
+    }
+  }
+}
