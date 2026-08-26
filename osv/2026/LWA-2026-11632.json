@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11632",
+  "modified": "2026-08-26T03:41:38Z",
+  "published": "2026-08-26T03:40:52Z",
+  "summary": "Malicious code in moidevz (npm)",
+  "details": "The package is a proctored-exam cheating tool. Its bin entry launches a detached Electron watchdog that clones the Electron binary as \"SearchApp.exe\" into %LOCALAPPDATA%\\Microsoft\\Windows\\Diagnostics and respawns it if killed. It extracts and decrypts the victim's Chrome/Edge cookies for openai[.]com, chatgpt[.]com, claude[.]ai, and gemini[.]google[.]com (DPAPI + AES-256-GCM), injects those session tokens into hidden off-screen Electron windows, captures the foreground screen via GDI, sends exam questions to the AI services, and displays answers in a stealth overlay hidden from screen capture and proctoring software. It actively evades proctoring (Testpad/SEB) by manipulating window display affinity and z-order.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "moidevz",
+        "purl": "pkg:npm/moidevz"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/moidevz/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11632"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-26T03:40:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chatgpt[.]com",
+          "claude[.]ai",
+          "openai[.]com"
+        ],
+        "sha256": [
+          "c61843463ac0f2620f49925043c6109e7ad34a771d1cd4ed820b479abbbda209"
+        ]
+      }
+    }
+  }
+}
