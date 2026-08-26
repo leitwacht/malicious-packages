@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11644",
+  "modified": "2026-08-26T15:56:27Z",
+  "published": "2026-08-26T15:55:39Z",
+  "summary": "Malicious code in supersignaturenature (npm)",
+  "details": "Supersignaturenature@1.0.5 is a trojanized clone of the Theta blockchain SDK. On import/require it decrypts an embedded token (DES, hardcoded password \"password\") — sourced from the `manager-thedate` dependency in the ESM build, or from `node_modules/tchain-api/apps/docs/app/rsa.db` in the CJS/UMD builds — and pipes the decrypted string into a detached `node` subprocess via stdin, executing it as code. The detached child runs with stdio ['pipe','ignore','ignore'] and is unref'd so it outlives the parent. The decrypted payload's contents are not visible statically, but the staging mechanism executes attacker-controlled code in a background node process on every import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "supersignaturenature",
+        "purl": "pkg:npm/supersignaturenature"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/supersignaturenature/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11644"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-26T15:55:39Z",
+      "indicators_observed": {
+        "sha256": [
+          "78c14f5a60d240b67f6393871dd4968a7611816a9dcc6f983a64e04c20634350"
+        ]
+      }
+    }
+  }
+}
