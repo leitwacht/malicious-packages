@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11663",
+  "modified": "2026-08-27T17:19:36Z",
+  "published": "2026-08-27T17:18:06Z",
+  "summary": "Malicious code in discord-mfa (npm)",
+  "details": "On Windows systems, the package drops a second-stage payload and installs persistence. It creates the directory %APPDATA%\\Microsoft\\Windows\\WinSxS\\Backup, downloads a script from hxxps://limbomail[.]com/attachment/yl8ulfsxnzrV[.]p9VNqox-hxFRxKJEnv20ByL1bUqiVp3- to winsvc.js, and executes it with node.exe as a detached process. It registers persistence via the registry Run key WinSvcHost, the HKCU\\Environment UserInitMprLogonScript value, a Startup-folder VBScript (wsvc.vbs), and a scheduled task (schtasks /sc onlogon), and hides the dropped files with attrib +h +s. The package also functions as a Discord account-takeover tool that takes a victim's Discord token and password to mint an MFA token for vanity-URL sniping. C2/download host: limbomail[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "discord-mfa",
+        "purl": "pkg:npm/discord-mfa"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/discord-mfa/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11663"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T17:18:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "limbomail[.]com"
+        ],
+        "sha256": [
+          "45d2580e30ee78dc5f05720fcce8cbc04760622b0c25eae9f657b742df92d366"
+        ],
+        "url_observed": [
+          "hxxps://limbomail[.]com/attachment/yl8ulfsxnzrV[.]p9VNqox-hxFRxKJEnv20ByL1bUqiVp3-"
+        ]
+      }
+    }
+  }
+}
