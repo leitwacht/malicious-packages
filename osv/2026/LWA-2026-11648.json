@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11648",
+  "modified": "2026-08-27T09:21:38Z",
+  "published": "2026-08-27T09:19:21Z",
+  "summary": "Malicious code in htps-provider (npm)",
+  "details": "Htps-provider (a Cosmos chain-registry package) re-exports its HTTP provider from the dependency supersignaturenature. That dependency decrypts an embedded encrypted blob (CryptoJS AES, hardcoded password \"password\") sourced from the manager-thedate package (apps/docs/app/des.db) and pipes the decrypted payload to a detached `node` subprocess via stdin (spawn('node', [], {detached:true}); stdin.write(decrypted); stdin.end(); unref()). The CJS/UMD builds read an RSA blob from node_modules/tchain-api/apps/docs/app/rsa.db and execute the same decrypt-and-pipe-to-detached-node pattern. This is a multi-stage dropper: an encrypted second-stage payload is embedded in the dependency tree and executed in a detached process on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "htps-provider",
+        "purl": "pkg:npm/htps-provider"
+      },
+      "versions": [
+        "1.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/htps-provider/v/1.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11648"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T09:19:21Z",
+      "indicators_observed": {
+        "sha256": [
+          "0c4168854df4dc2c1a38dc23992950f0f884bd7f39411e7708d0dc7c6472093f"
+        ]
+      }
+    }
+  }
+}
