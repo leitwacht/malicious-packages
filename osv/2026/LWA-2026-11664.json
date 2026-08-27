@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11664",
+  "modified": "2026-08-27T19:00:20Z",
+  "published": "2026-08-27T19:00:02Z",
+  "summary": "Malicious code in 2fa-secretkey (npm)",
+  "details": "The postinstall hook of this TOTP helper package downloads a script from hxxp://185[.]14[.]92[.]233:7777/p[.]js over plain HTTP and executes it immediately via the JavaScript Function constructor. The package's main index.js is a decoy TOTP wrapper that references a lib/core module which is not shipped in the tarball. Installing the package runs the remote downloader, giving the remote host arbitrary code execution on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "2fa-secretkey",
+        "purl": "pkg:npm/2fa-secretkey"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/2fa-secretkey/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11664"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T19:00:02Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]14[.]92[.]233:7777"
+        ],
+        "sha256": [
+          "f32c02157d6fbf15e028f0e089dfb6975ab23a99e901dcbd743d1864b2c99007"
+        ],
+        "url_observed": [
+          "hxxp://185[.]14[.]92[.]233",
+          "hxxp://185[.]14[.]92[.]233:7777/p[.]js"
+        ]
+      }
+    }
+  }
+}
