@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11658",
+  "modified": "2026-08-27T09:44:12Z",
+  "published": "2026-08-27T09:39:49Z",
+  "summary": "Malicious code in eth-pino (npm)",
+  "details": "Eth-pino@2.0.3, a combosquat of the pino logger, exfiltrates the installer's environment and executes remote code on load. Requiring the package runs lib/initializeCaller.js, which base64-decodes the URL hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df and POSTs the entire process.env (all environment variables, including credentials and tokens) to it. It then takes the HTTP response body and executes it as JavaScript via the Function constructor with require in scope, enabling arbitrary remote second-stage code execution on the victim machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eth-pino",
+        "purl": "pkg:npm/eth-pino"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eth-pino/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11658"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T09:39:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "sha256": [
+          "7b75bb7f5f5aa5cd6e976a0868cf0f2bb1d291277570fead18781a858f419b0e"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df"
+        ]
+      }
+    }
+  }
+}
