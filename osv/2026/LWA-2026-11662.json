@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11662",
+  "modified": "2026-08-27T16:50:04Z",
+  "published": "2026-08-27T16:47:39Z",
+  "summary": "Malicious code in vitest-chalk-pro (npm)",
+  "details": "Vitest-chalk-pro@10.0.7 is a trojanized clone of the nodemailer library with an injected remote-code-execution payload. Its postinstall hook (node lib/utils/index.js) spawns a detached background child process that runs lib/utils/smtp-connection/index.js, which fetches a payload from hxxps://api[.]jsonbin[.]io/v3/b/6a62bc86da38895dfe879659 and executes the returned record.cookie field via the Function constructor with require in scope, giving the remote payload full access to the Node.js runtime. The fetched code is attacker-controlled and runs on every install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vitest-chalk-pro",
+        "purl": "pkg:npm/vitest-chalk-pro"
+      },
+      "versions": [
+        "10.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vitest-chalk-pro/v/10.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11662"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T16:47:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonbin[.]io"
+        ],
+        "sha256": [
+          "06049c70f2f19e8ccd840fe4884ec2e6b0251b4aaa57c9fa78134952ee775769"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a62bc86da38895dfe879659"
+        ]
+      }
+    }
+  }
+}
