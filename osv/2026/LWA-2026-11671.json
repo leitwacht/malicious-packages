@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11671",
+  "modified": "2026-08-27T20:43:44Z",
+  "published": "2026-08-27T20:43:02Z",
+  "summary": "Malicious code in 2fasecretkey (npm)",
+  "details": "The postinstall hook of this package downloads a JavaScript payload from hxxp://185[.]14[.]92[.]233:7777/p[.]js and executes it on the installer's machine. It writes the fetched payload to a random temp file (_vc\u003crandom\u003e.js), creates a VBS launcher (_r.vbs) that invokes wscript.exe to run the payload hidden and detached, and spawns it with the node executable path and payload path passed via environment variables. The package is advertised as a two-factor-authentication helper but performs this remote code download-and-execute at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "2fasecretkey",
+        "purl": "pkg:npm/2fasecretkey"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/2fasecretkey/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11671"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T20:43:02Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]14[.]92[.]233:7777"
+        ],
+        "sha256": [
+          "9013f429937f90129bbac56da7636c7b31c99a542ac6ee6e29f3af83745f02a2"
+        ],
+        "url_observed": [
+          "hxxp://185[.]14[.]92[.]233",
+          "hxxp://185[.]14[.]92[.]233:7777/p[.]js"
+        ]
+      }
+    }
+  }
+}
