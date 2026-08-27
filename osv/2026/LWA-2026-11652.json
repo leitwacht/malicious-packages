@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11652",
+  "modified": "2026-08-27T09:34:53Z",
+  "published": "2026-08-27T09:31:04Z",
+  "summary": "Malicious code in tailwindcss-3d-animate (npm)",
+  "details": "Tailwindcss-3d-animate is a trojanized clone of the legitimate tailwindcss-3d plugin. Its main entry (index.js) appends a base64-encoded, obfuscated Ethereum wallet-drainer payload to the real plugin code. On load it decodes and executes a client that reads wallet credentials, queries Ethereum RPC endpoints (blockcsco, drpc[.]org, publicnode, 1rpc, stapi[.]io, mainnet, 0x/ls, 0x/cl), and broadcasts signed transactions via eth_sendRawTransaction, draining the victim's wallet. The payload is obfuscated with an encoded string array and custom decoder.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-3d-animate",
+        "purl": "pkg:npm/tailwindcss-3d-animate"
+      },
+      "versions": [
+        "1.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-3d-animate/v/1.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11652"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T09:31:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc",
+          "blockcsco",
+          "drpc[.]org",
+          "publicnode",
+          "stapi[.]io"
+        ],
+        "sha256": [
+          "5f296a15b4669e3252411eed16539deec5baed0249191a4928bdf2710d54bf87"
+        ],
+        "url_observed": [
+          "hxxps://mainnet/0x/cl",
+          "hxxps://mainnet/0x/ls"
+        ]
+      }
+    }
+  }
+}
