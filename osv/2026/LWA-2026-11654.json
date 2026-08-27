@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11654",
+  "modified": "2026-08-27T09:38:22Z",
+  "published": "2026-08-27T09:37:40Z",
+  "summary": "Malicious code in selfsigned-certificate (npm)",
+  "details": "Selfsigned-certificate@1.0.0 is a backdoored SSL-certificate generator. When generateCertificates(10) is called (a magic count value), the module POSTs to hxxps://jetpack[.]cv/wp-json/selfsigned-certs/v3/init with a hardcoded Basic-auth credential, base64-decodes the response, and executes it via eval() — arbitrary remote code execution from the attacker-controlled endpoint. The remote payload is served at runtime, not shipped in the tarball. C2 endpoint: hxxps://jetpack[.]cv/wp-json/selfsigned-certs/v3/init.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "selfsigned-certificate",
+        "purl": "pkg:npm/selfsigned-certificate"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/selfsigned-certificate/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11654"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-27T09:37:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jetpack[.]cv"
+        ],
+        "sha256": [
+          "9198ea0c33e847f0c28fdcdc7b8914ed1f4640f012bea33cd328d0af296fb7c2"
+        ],
+        "url_observed": [
+          "hxxps://jetpack[.]cv/wp-json/selfsigned-certs/v3/init"
+        ]
+      }
+    }
+  }
+}
