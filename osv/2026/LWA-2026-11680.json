@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11680",
+  "modified": "2026-08-28T16:04:29Z",
+  "published": "2026-08-28T16:03:08Z",
+  "summary": "Malicious code in mfa-js (npm)",
+  "details": "Mfa-js is a Windows-targeting backdoor disguised as a Discord MFA/TOTP library. On Windows, the cache module decodes base64 constants to build the path %APPDATA%\\Microsoft\\Windows\\WinSxS\\Backup\\winsvc.js, downloads a remote payload from hxxps://limbomail[.]com/api/attachment/r_Ea6rT_kGfT[.]o7nh0aBVvDQWmOG47NPBQ3pUjd_uHeiw (TLS verification disabled), and launches it detached via wscript.exe. The TOTP module installs persistence for the dropped script through four mechanisms: a registry Run key (WinSvcHost), the UserInitMprLogonScript registry value, a VBS file in the Startup folder, and a scheduled task (schtasks /sc onlogon). A two-hour update loop re-downloads and relaunches the payload. All strings are hex/base64-escaped to hide the behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mfa-js",
+        "purl": "pkg:npm/mfa-js"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mfa-js/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11680"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T16:03:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "limbomail[.]com"
+        ],
+        "sha256": [
+          "dd79638d1d4fec9a845bf793e69c8e62bc18797725659ed8131dcdccab5c9741"
+        ],
+        "url_observed": [
+          "hxxps://limbomail[.]com/api/attachment/r_Ea6rT_kGfT[.]o7nh0aBVvDQWmOG47NPBQ3pUjd_uHeiw"
+        ]
+      }
+    }
+  }
+}
