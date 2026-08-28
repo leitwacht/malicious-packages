@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11683",
+  "modified": "2026-08-28T20:04:56Z",
+  "published": "2026-08-28T20:03:02Z",
+  "summary": "Malicious code in @7nohe/openapi-react-query-codegen (npm)",
+  "details": "The package's preinstall hook (a first-ever install hook on this otherwise legitimate codegen library) downloads the Bun runtime and then attempts to run a script `is_it_this_simple.js` with environment variables WORKFLOW_ID=release.yml, REPO_ID_SUFFIX=7nohe/openapi-react-query-codegen, and TARGET_PACKAGES=@7nohe/openapi-react-query-codegen. This is a GitHub Actions workflow-dispatch attack: the payload is designed to trigger the release.yml workflow on the target repository to publish a malicious version of the package. The referenced script is not bundled in the tarball, so the attack step does not complete, but the install-time hook is malicious and unrelated to the package's code-generation function.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@7nohe/openapi-react-query-codegen",
+        "purl": "pkg:npm/%407nohe/openapi-react-query-codegen"
+      },
+      "versions": [
+        "0.0.0-365d4eb738d3146583431948d3ba6e27a32556be"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@7nohe/openapi-react-query-codegen/v/0.0.0-365d4eb738d3146583431948d3ba6e27a32556be"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11683"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T20:03:02Z",
+      "indicators_observed": {
+        "sha256": [
+          "c555a1ab1a2e0425d6d7f965bae55af83b5aceab2177494a00ec43451c863c63"
+        ]
+      }
+    }
+  }
+}
