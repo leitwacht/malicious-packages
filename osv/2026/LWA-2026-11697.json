@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11697",
+  "modified": "2026-08-28T22:49:12Z",
+  "published": "2026-08-28T22:49:01Z",
+  "summary": "Malicious code in grafeno-config (npm)",
+  "details": "The preinstall hook of grafeno-config@1.0.0 downloads and executes a remote shell script from 216[.]126[.]236[.]46/x.sh via `curl -s... | sh`, then installs a crontab entry that re-runs the same download-and-execute every 30 minutes (after removing any prior crontab lines referencing 216.126). Installing the package therefore runs arbitrary remote code immediately and establishes persistent re-execution on the host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-config",
+        "purl": "pkg:npm/grafeno-config"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-config/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11697"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T22:49:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46"
+        ],
+        "sha256": [
+          "d39891a57df5db4873b9badd0e59b97cf5b9d5c874c39fc3c3084f4fdbed1a56"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46/x[.]sh"
+        ]
+      }
+    }
+  }
+}

