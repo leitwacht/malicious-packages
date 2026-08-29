@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11708",
+  "modified": "2026-08-29T02:43:20Z",
+  "published": "2026-08-29T02:43:01Z",
+  "summary": "Malicious code in spc_login (npm)",
+  "details": "The preinstall hook (preinstall.js) harvests the installer's environment variables matching AWS, TOKEN, KEY, SECRET, PASS, API, GITHUB, NPM, DOCKER, DB, MONGO, REDIS, POSTGRES, or MYSQL, truncates each value to 100 characters, and base64-encodes them together with the hostname, username, and working directory. It then exfiltrates this data via curl to hxxp://216[.]126[.]236[.]46/r[.]php?d=\u003cencoded\u003e. On Linux/macOS it additionally launches a reverse shell to 216[.]126[.]236[.]46:4444 using bash /dev/tcp, nc -e /bin/sh, or a python3 socket fallback. The hook swallows all errors (|| true) to hide failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "spc_login",
+        "purl": "pkg:npm/spc_login"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/spc_login/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11708"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-29T02:43:01Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46",
+          "216[.]126[.]236[.]46:4444"
+        ],
+        "sha256": [
+          "60181ea863cf17b34b8a263ae53296ba3692b5a219ac940630e853fb5ed8dcaf"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46/r[.]php"
+        ]
+      }
+    }
+  }
+}

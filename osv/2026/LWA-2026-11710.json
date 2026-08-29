@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11710",
+  "modified": "2026-08-29T02:44:18Z",
+  "published": "2026-08-29T02:44:02Z",
+  "summary": "Malicious code in grafeno-billing (npm)",
+  "details": "The preinstall hook runs a script that harvests the installer's environment variables whose names match AWS/TOKEN/KEY/SECRET/PASS/API (values truncated to 80 chars), along with the hostname and username, base64-encodes them, and exfiltrates them to hxxp://216[.]126[.]236[.]46/r[.]php via curl. On non-Windows systems it also opens a reverse shell to 216[.]126[.]236[.]46:4444. The hook swallows all errors to hide failures.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "grafeno-billing",
+        "purl": "pkg:npm/grafeno-billing"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/grafeno-billing/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11710"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-29T02:44:02Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "216[.]126[.]236[.]46",
+          "216[.]126[.]236[.]46:4444"
+        ],
+        "url_observed": [
+          "hxxp://216[.]126[.]236[.]46/r[.]php"
+        ]
+      }
+    }
+  }
+}
