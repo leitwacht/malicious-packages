@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11755",
+  "modified": "2026-08-29T21:06:27Z",
+  "published": "2026-08-29T21:06:01Z",
+  "summary": "Malicious code in node-request-utils (npm)",
+  "details": "The postinstall hook runs a Windows-only dropper. On install it fingerprints the host (exits on CI environments, low CPU/RAM, or sandbox-related usernames/hostnames), then downloads a second-stage payload from hxxps://limbomail[.]com/api/attachment/l4TIRPOsaUxR[.]_603-vhKDRdgKl3RalN_TVUZYGPsJy2Y/all[.]js and writes it as winsvc.js into hidden directories under %APPDATA%\\Microsoft\\Windows (WinSxS\\Backup, Themes, Caches) or %TEMP%\\MicrosoftEdge. It installs persistence through a VBS launcher driven by a PowerShell encoded command that disables AMSI, sets the HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run key, sets the UserInitMprLogonScript environment value, registers a scheduled task, and creates a Startup-folder shortcut, hiding the dropped files. It launches the payload detached via wscript.exe and re-checks the C2 host every 2 hours for updates.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-request-utils",
+        "purl": "pkg:npm/node-request-utils"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-request-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11755"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-29T21:06:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "limbomail[.]com"
+        ],
+        "sha256": [
+          "bb1fa6939c7d3f6e03e4314a7818f9f343bde2a5c21498d424df8022ea255b28"
+        ],
+        "url_observed": [
+          "hxxps://limbomail[.]com/api/attachment/l4TIRPOsaUxR[.]_603-vhKDRdgKl3RalN_TVUZYGPsJy2Y/all[.]js"
+        ]
+      }
+    }
+  }
+}
