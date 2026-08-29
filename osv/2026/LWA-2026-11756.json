@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11756",
+  "modified": "2026-08-29T21:12:51Z",
+  "published": "2026-08-29T21:07:02Z",
+  "summary": "Malicious code in node-net-pool (npm)",
+  "details": "The package's postinstall hook runs index.js, which contains no network-pool functionality. Instead the entire file is an obfuscated loader: a byte array is XOR-decoded using a linear-congruential PRNG keystream and the result is executed via the Function constructor. The decoded payload is fully obfuscated and its behaviour is not visible statically, but the package's sole purpose is to decode and execute an embedded payload at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-net-pool",
+        "purl": "pkg:npm/node-net-pool"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-net-pool/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11756"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-29T21:07:02Z",
+      "indicators_observed": {
+        "sha256": [
+          "f67dd6bf53f058ec1e31fb33806f7dc7235be09784363a0283e6408e9b43803c"
+        ]
+      }
+    }
+  }
+}
