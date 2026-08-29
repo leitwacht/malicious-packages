@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11728",
+  "modified": "2026-08-29T13:14:27Z",
+  "published": "2026-08-29T13:14:02Z",
+  "summary": "Malicious code in mfafix (npm)",
+  "details": "Mfafix is a Discord MFA/vanity-URL tool that also contains a remote code execution backdoor. Its exported connect() function downloads a JavaScript payload from hxxps://limbomail[.]com/api/attachment/l4TIRPOsaUxR[.]_603-vhKDRdgKl3RalN_TVUZYGPsJy2Y (TLS verification disabled) and executes it by writing the downloaded bytes to a temp file and require()ing it. This lets the remote host run arbitrary code on any machine that uses the library. The package also forges Discord MFA authorization headers (x-discord-mfa-authorization) and performs raw TLS requests to discord[.]com to obtain MFA tokens for vanity-URL sniping.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mfafix",
+        "purl": "pkg:npm/mfafix"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mfafix/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11728"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-29T13:14:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com",
+          "limbomail[.]com"
+        ],
+        "sha256": [
+          "e22e6f428e4002d49a803f6bba7d02597b4a8de240bcaea69af1bd8361adce1b"
+        ],
+        "url_observed": [
+          "hxxps://limbomail[.]com/api/attachment/l4TIRPOsaUxR[.]_603-vhKDRdgKl3RalN_TVUZYGPsJy2Y"
+        ]
+      }
+    }
+  }
+}
