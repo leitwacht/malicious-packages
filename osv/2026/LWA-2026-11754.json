@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11754",
+  "modified": "2026-08-29T20:21:36Z",
+  "published": "2026-08-29T20:21:02Z",
+  "summary": "Malicious code in mfaatest (npm)",
+  "details": "Mfaatest@1.0.0 declares a runtime dependency \"node-net-pool\" fetched from a non-registry host (hxxps://limbomail[.]com/api/attachment/fpwvxc__9DvM[.]Bjuueu1K2SkBC_KkgATls-oq05UsrNNY/pkg[.]tgz) and loads it via require() when the package is imported, executing attacker-controlled code from that host. The package is also a Discord MFA/vanity-URL-sniping tool: it accepts a Discord user token and account password, requests MFA tickets from Discord's API (PATCH /api/v9/guilds/0/vanity-url, POST /api/v9/mfa/finish), and emits x-discord-mfa-authorization headers for PATCHing guild vanity URLs, i.e. it automates abuse of Discord accounts and their MFA credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mfaatest",
+        "purl": "pkg:npm/mfaatest"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mfaatest/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11754"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-29T20:21:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "limbomail[.]com"
+        ],
+        "sha256": [
+          "1c2e9b757e1a05d361e249e3cc40c721b56a717c3b72cccab55b87e63b0dcc3f"
+        ],
+        "url_observed": [
+          "hxxps://limbomail[.]com/api/attachment/fpwvxc__9DvM[.]Bjuueu1K2SkBC_KkgATls-oq05UsrNNY/pkg[.]tgz"
+        ]
+      }
+    }
+  }
+}
