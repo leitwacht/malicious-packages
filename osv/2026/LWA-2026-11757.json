@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11757",
+  "modified": "2026-08-29T21:38:36Z",
+  "published": "2026-08-29T21:36:01Z",
+  "summary": "Malicious code in discord-mfa-solver (npm)",
+  "details": "Discord-mfa-solver@1.0.2 installs a dependency named node-net-pool from a non-registry GitHub tarball URL (github[.]com/trktgq0wbre1/node-net-pool/archive/refs/heads/main.tar.gz) and requires it at module load in lib/cache.js, so the dependency's code executes on import. The dependency is a known-malicious package. The package's own code automates Discord MFA ticket generation and vanity-URL PATCH requests against discord[.]com (raw TLS 1.3 sockets with certificate validation disabled, rotating across discord[.]com/canary/ptb hosts).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "discord-mfa-solver",
+        "purl": "pkg:npm/discord-mfa-solver"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/discord-mfa-solver/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11757"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-29T21:36:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ],
+        "sha256": [
+          "b696f17005f069d57c7d4ac0af620fff1bf8b6ba2d18b8b569526784dac10941"
+        ]
+      }
+    }
+  }
+}
