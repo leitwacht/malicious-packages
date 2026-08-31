@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11781",
+  "modified": "2026-08-31T02:46:52Z",
+  "published": "2026-08-31T02:45:54Z",
+  "summary": "Malicious code in opiumisbest (npm)",
+  "details": "The package ships an SVG (index.svg) that embeds an HTML page. When the SVG is opened in a browser, an inline script fetches a remote loader.js from a jsDelivr-hosted GitHub repository (TongSherbet/storage) and injects it as a script tag, executing attacker-controlled code in the page context. A bundled service worker (sw.js) performs the same remote-code load via importScripts from the same CDN. The remote payload is fetched fresh each hour (cache-busted with a timestamp query) from the following CDN mirrors: hxxps://cdn[.]jsdelivr[.]net/gh/TongSherbet/storage/, hxxps://quantil[.]jsdelivr[.]net/gh/TongSherbet/storage/, hxxps://fastly[.]jsdelivr[.]net/gh/TongSherbet/storage/, hxxps://testingcf[.]jsdelivr[.]net/gh/TongSherbet/storage/, hxxps://gcore[.]jsdelivr[.]net/gh/TongSherbet/storage/, hxxps://originfastly[.]jsdelivr[.]net/gh/TongSherbet/storage/, hxxps://jsdelivr[.]b-cdn[.]net/gh/TongSherbet/storage/. The package has no install-time lifecycle hooks; the malicious behaviour is the browser-side remote script injection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "opiumisbest",
+        "purl": "pkg:npm/opiumisbest"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/opiumisbest/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11781"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T02:45:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cdn[.]jsdelivr[.]net",
+          "fastly[.]jsdelivr[.]net",
+          "gcore[.]jsdelivr[.]net",
+          "jsdelivr[.]b-cdn[.]net",
+          "originfastly[.]jsdelivr[.]net",
+          "quantil[.]jsdelivr[.]net",
+          "testingcf[.]jsdelivr[.]net"
+        ],
+        "sha256": [
+          "7245ec760291eb82adf6d4d03b601b2d3044b157ae608609fe6c987a38c8cc21"
+        ],
+        "url_observed": [
+          "hxxps://cdn[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://cdn[.]jsdelivr[.]net/gh/TongSherbet/storage/loader[.]js",
+          "hxxps://fastly[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://fastly[.]jsdelivr[.]net/gh/TongSherbet/storage/loader[.]js",
+          "hxxps://gcore[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://gcore[.]jsdelivr[.]net/gh/TongSherbet/storage/loader[.]js",
+          "hxxps://jsdelivr[.]b-cdn[.]net/gh/TongSherbet/storage/",
+          "hxxps://jsdelivr[.]b-cdn[.]net/gh/TongSherbet/storage/loader[.]js",
+          "hxxps://originfastly[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://originfastly[.]jsdelivr[.]net/gh/TongSherbet/storage/loader[.]js",
+          "hxxps://quantil[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://quantil[.]jsdelivr[.]net/gh/TongSherbet/storage/loader[.]js",
+          "hxxps://testingcf[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://testingcf[.]jsdelivr[.]net/gh/TongSherbet/storage/loader[.]js"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11780",
+  "modified": "2026-08-31T02:47:44Z",
+  "published": "2026-08-31T02:47:03Z",
+  "summary": "Malicious code in redis-cookie-server (npm)",
+  "details": "Redis-cookie-server@1.0.0 is a renamed copy of the supertest HTTP-testing library (its code is verbatim supertest, and its manifest points at the supertest repository) that declares a dependency on the malicious package eslint-prettier-js@^0.0.1. Installing redis-cookie-server transitively installs and executes eslint-prettier-js, which carries the malicious payload. The package name and description are unrelated to the actual code, and the malicious behaviour is delivered through the injected dependency rather than the bundled source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "redis-cookie-server",
+        "purl": "pkg:npm/redis-cookie-server"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/redis-cookie-server/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11780"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-31T02:47:03Z",
+      "indicators_observed": {
+        "sha256": [
+          "efe0df05c5327f11f655d814b291c8efbcb30c63840766aa18c37e510f101a97"
+        ]
+      }
+    }
+  }
+}

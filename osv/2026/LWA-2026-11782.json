@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11782",
+  "modified": "2026-08-31T02:47:01Z",
+  "published": "2026-08-31T02:45:56Z",
+  "summary": "Malicious code in classroomlearning (npm)",
+  "details": "Classroomlearning@1.1.0 ships an SVG and JavaScript that, when loaded in a browser, act as a remote-code dropper. The script reverse+base64-decodes an obfuscated list of CDN base URLs and fetches 'loader.js' from each (Promise.any with per-hour cache-busting), then injects the returned code into the page via document.createElement('script'). A bundled service worker (sw.js) imports a remote 'sw.js' from the same CDN list. The loader pulls its payload from jsdelivr CDN paths under the GitHub repo TongSherbet/storage (cdn[.]jsdelivr[.]net/gh/TongSherbet/storage/loader.js and /sw.js, with fastly/gcore/testingcf/originfastly/b-cdn mirrors). The endpoint URLs are deliberately obfuscated (reversed base64) and the loader falls back across multiple CDN mirrors, consistent with a resilient browser-side payload delivery mechanism.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "classroomlearning",
+        "purl": "pkg:npm/classroomlearning"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/classroomlearning/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11782"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T02:45:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cdn[.]jsdelivr[.]net"
+        ],
+        "sha256": [
+          "5867436169ba2b74db90c83536d6fc0a2af2f351a9eb909b043dc51c820d0966"
+        ],
+        "url_observed": [
+          "hxxps://cdn[.]jsdelivr[.]net/gh/TongSherbet/storage/loader[.]js",
+          "hxxps://cdn[.]jsdelivr[.]net/gh/TongSherbet/storage/sw[.]js",
+          "hxxps://fastly[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://gcore[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://jsdelivr[.]b-cdn[.]net/gh/TongSherbet/storage/",
+          "hxxps://originfastly[.]jsdelivr[.]net/gh/TongSherbet/storage/",
+          "hxxps://testingcf[.]jsdelivr[.]net/gh/TongSherbet/storage/"
+        ]
+      }
+    }
+  }
+}
