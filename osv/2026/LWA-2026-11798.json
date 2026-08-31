@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11798",
+  "modified": "2026-08-31T10:45:17Z",
+  "published": "2026-08-31T10:45:01Z",
+  "summary": "Malicious code in fuels-versions (npm)",
+  "details": "The package's bin script (bin/cli.js, exposed as generate-schema-ethers) runs when invoked via npx and acts as a host-metadata beacon. It collects the local username (via whoami with a fallback to os.userInfo()), the machine hostname, and the OS platform, then POSTs them as JSON to the out-of-band callback endpoint hxxps://oobme[.]kunalsharma0553[.]workers[.]dev/r/7bq6fz3l15r9 (a Cloudflare Workers URL), also sending the package name in the X-Package-Name header and request body. The package description openly states it \"POSTs package name and whoami to an OOB callback.\"",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fuels-versions",
+        "purl": "pkg:npm/fuels-versions"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fuels-versions/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11798"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T10:45:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oobme[.]kunalsharma0553[.]workers[.]dev"
+        ],
+        "sha256": [
+          "0877cc0203e1e8a02e201efd9b51f7f41f974dbb9513a95167afaa5919fa1152"
+        ],
+        "url_observed": [
+          "hxxps://oobme[.]kunalsharma0553[.]workers[.]dev/r/7bq6fz3l15r9"
+        ]
+      }
+    }
+  }
+}
