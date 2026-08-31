@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11808",
+  "modified": "2026-08-31T21:06:21Z",
+  "published": "2026-08-31T21:06:03Z",
+  "summary": "Malicious code in quartz-core (npm)",
+  "details": "The preinstall hook (node index.js) runs a DNS-based host-identity beacon on install. It reads the installer's username, hostname, and current working directory, encodes them into subdomains, and sends a DNS query of the form selftest.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz to the attacker-controlled domain oob[.]algamil7x[.]xyz. The host metadata is exfiltrated out-of-band over DNS, evading HTTP-based detection. The package has no repository and no declared purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "quartz-core",
+        "purl": "pkg:npm/quartz-core"
+      },
+      "versions": [
+        "99.1.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/quartz-core/v/99.1.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11808"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T21:06:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "97861cba1592d6907a50c9afb8670283055ef14985c62c150e7d8ec9f21bb474"
+        ]
+      }
+    }
+  }
+}
