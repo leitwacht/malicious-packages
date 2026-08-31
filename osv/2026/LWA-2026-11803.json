@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11803",
+  "modified": "2026-08-31T18:18:47Z",
+  "published": "2026-08-31T18:18:00Z",
+  "summary": "Malicious code in @divineubg/divine (npm)",
+  "details": "The package is a browser game launcher that also opens a command-and-control channel over the public ntfy.sh pub/sub service. On load it generates a client id, POSTs a connection beacon to hxxps://ntfy[.]sh/dv-141u30-admin-status-\u003cid\u003e, and subscribes to hxxps://ntfy[.]sh/dv-141u30-admin-cmd-\u003cid\u003e/sse. Any message published to that topic with action \"EVAL_CODE\" is executed in the browser via eval() or new Function(), and the result is POSTed back to ntfy.sh. Because ntfy.sh topics are public and unauthenticated, any third party can publish commands to a victim's topic and run arbitrary JavaScript in the victim's browser. The topic names embed the literal prefix dv-141u30-admin-cmd- and dv-141u30-admin-status-.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@divineubg/divine",
+        "purl": "pkg:npm/%40divineubg/divine"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@divineubg/divine/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11803"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T18:18:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ntfy[.]sh"
+        ],
+        "sha256": [
+          "e1b594a65dea968047952d8e75984da43e2749e7c0b0f9bbcd53dfeb6941662e"
+        ],
+        "url_observed": [
+          "hxxps://ntfy[.]sh/dv-141u30-admin-cmd-",
+          "hxxps://ntfy[.]sh/dv-141u30-admin-status-"
+        ]
+      }
+    }
+  }
+}
