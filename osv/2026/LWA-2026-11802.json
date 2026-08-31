@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11802",
+  "modified": "2026-08-31T15:55:08Z",
+  "published": "2026-08-31T15:54:11Z",
+  "summary": "Malicious code in tailwind-minanimated (npm)",
+  "details": "Tailwind-minanimated@2.3.7 is a trojanized Tailwind CSS plugin. Its main entry src/index.js appends an eval(atob(...)) payload that runs on require. The decoded payload is an Ethereum drainer: it builds an RPC client against public endpoints (1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io), queries the Blockscout indexer at hxxps://eth[.]blockscout[.]com/api, binary-searches chain blocks for the last transaction from the hardcoded address 0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a, decodes the recipient address, fetches and XOR-decodes code, and spawns child processes. The payload executes whenever the package is imported.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-minanimated",
+        "purl": "pkg:npm/tailwind-minanimated"
+      },
+      "versions": [
+        "2.3.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-minanimated/v/2.3.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11802"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T15:54:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "61585d54571819613aa00882de0262d556132fdb45e1a8e82f76e5d91aba1777"
+        ],
+        "url_observed": [
+          "hxxps://eth[.]blockscout[.]com/api"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
