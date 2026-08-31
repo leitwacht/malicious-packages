@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11804",
+  "modified": "2026-08-31T18:33:38Z",
+  "published": "2026-08-31T18:32:45Z",
+  "summary": "Malicious code in tailwindcss-3d-styles (npm)",
+  "details": "Tailwindcss-3d-styles@1.2.2 ships an obfuscated Ethereum-drainer/C2 implant inside css-utilities/transform.js. The module's eval(atob(...)) decodes a payload that hardcodes attacker address 0xa322e5f3d311d3080e6f0121063e9adc2490ef1a, queries public Ethereum RPC endpoints (1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io) and the Blockscout API (hxxps://eth[.]blockscout[.]com/api) to locate the attacker's most recent outgoing transaction, then decodes the transaction's destination address into two IPv4 addresses used as C2 endpoints (hxxp://{ip}:80 and :443). The payload spawns detached `node -e` processes that fetch and eval a second-stage payload from the C2, and self-deletes the eval(atob(...)) block from its own source file after running. The implant executes when the package is required (index.js loads./css-utilities).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-3d-styles",
+        "purl": "pkg:npm/tailwindcss-3d-styles"
+      },
+      "versions": [
+        "1.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-3d-styles/v/1.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11804"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T18:32:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "94f282c0d795ed2505227333d764a1247fa6ad1ebdff2ba971ccb081931aaa9d"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]blockscout[.]com/api",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322e5f3d311d3080e6f0121063e9adc2490ef1a"
+        ]
+      }
+    }
+  }
+}
