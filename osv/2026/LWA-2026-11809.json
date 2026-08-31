@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11809",
+  "modified": "2026-08-31T20:41:03Z",
+  "published": "2026-08-31T20:40:01Z",
+  "summary": "Malicious code in chromatitle (npm)",
+  "details": "Chromatitle@1.0.0, a terminal banner/color CLI, executes a hidden download-and-execute payload automatically when the module is imported. Its bundled src/utils/bootstrap.js is heavily obfuscated (encoded string array with a custom decoder) and imports child_process execFile, http/https get, and fs write/chmod/unlink/mkdir. On import it fetches a remote file from an obfuscated URL (with a query parameter), writes it to the OS temp directory, chmods it executable, and executes it via execFile. The remote host is encoded inside the obfuscated string array.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chromatitle",
+        "purl": "pkg:npm/chromatitle"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chromatitle/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11809"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T20:40:01Z",
+      "indicators_observed": {
+        "sha256": [
+          "f6f2d5464e85c288768f27617c40be757afc8fb3c79be2c592444738fbd59ab4"
+        ]
+      }
+    }
+  }
+}
