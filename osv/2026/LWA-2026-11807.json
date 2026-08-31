@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11807",
+  "modified": "2026-08-31T21:00:02Z",
+  "published": "2026-08-31T20:59:04Z",
+  "summary": "Malicious code in chromatitle-js (npm)",
+  "details": "Chromatitle-js is a terminal-color library that runs a hidden bootstrap on import. Its main entry point (src/index.js) calls _bootstrap() from src/utils/bootstrap.js, a 58KB obfuscated script that imports child_process, https/http, fs, os, path and stream. On import it downloads a remote payload to the OS temporary directory, chmods it executable, and spawns it via child_process. The download URL is concealed inside an obfuscated string array. A color-formatting library has no legitimate reason to download and execute remote binaries.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chromatitle-js",
+        "purl": "pkg:npm/chromatitle-js"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chromatitle-js/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11807"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T20:59:04Z",
+      "indicators_observed": {
+        "sha256": [
+          "4e91945100bdc2b7c91f724a0e11378353585c4eba240c1e4f768955c51ffb74"
+        ]
+      }
+    }
+  }
+}
