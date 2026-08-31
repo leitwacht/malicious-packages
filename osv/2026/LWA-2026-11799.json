@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11799",
+  "modified": "2026-08-31T10:46:34Z",
+  "published": "2026-08-31T10:46:01Z",
+  "summary": "Malicious code in telegramxjm (npm)",
+  "details": "The package ships a FileSaver.js client-side library with an injected userscript beacon appended to the bundle. The injected code reads the running script's metadata and issues a GET request to hxxps://s[.]jtm[.]pub/api/sp/lib (with author/name/version/namespace/updateURL query parameters), then executes the response body via eval(), i.e. a remote code fetch-and-exec loader. It also maintains a daily request counter in persistent storage. The beacon is written against Greasemonkey/Tampermonkey userscript APIs (GM_xmlhttpRequest, GM_getValue, GM_setValue, GM_info).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "telegramxjm",
+        "purl": "pkg:npm/telegramxjm"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/telegramxjm/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11799"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-31T10:46:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]jtm[.]pub"
+        ],
+        "sha256": [
+          "aebf9cd09a93dbe9aa0033b615415e42179b167dfcc870350dd5937e6058d59e"
+        ],
+        "url_observed": [
+          "hxxps://s[.]jtm[.]pub/api/sp/lib"
+        ]
+      }
+    }
+  }
+}
