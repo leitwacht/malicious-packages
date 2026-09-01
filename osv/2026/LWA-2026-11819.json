@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11819",
+  "modified": "2026-09-01T16:42:32Z",
+  "published": "2026-09-01T16:41:05Z",
+  "summary": "Malicious code in order-package-saas (npm)",
+  "details": "The postinstall hook executes a credential-harvesting payload. After a randomized 5-15 second delay, it reads a broad set of victim credentials from disk — ~/.npmrc, ~/.yarnrc, ~/.git-credentials, SSH private keys, ~/.aws/credentials and AWS SSO cache, gcloud application_default_credentials.json, Azure accessTokens.json, ~/.kube/config, ~/.docker/config.json, Terraform credentials, GitHub CLI hosts.yml, ~/.netrc, Vercel/Netlify/Supabase/Firebase auth files, ~/.pgpass, ~/.my.cnf, ~/.mongorc.js, VSCode settings, and gem/pypi/cargo credentials — and harvests every environment variable whose name contains TOKEN, KEY, SECRET, PASSWORD, API, AUTH, CREDENTIAL, or similar. The collected data is base64-encoded and exfiltrated to a hardcoded Telegram bot (via sendMessage/sendDocument to a fixed chat_id) and also POSTed to hxxp://2[.]26[.]82[.]63:8888/collect. The payload skips execution when NODE_ENV=test, CI=true, JEST_WORKER_ID, VITEST, or /.dockerenv is present.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "order-package-saas",
+        "purl": "pkg:npm/order-package-saas"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/order-package-saas/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11819"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-01T16:41:05Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "2[.]26[.]82[.]63:8888"
+        ],
+        "sha256": [
+          "20dc8e332b6f11ef52540242fb6ef15ec180661d9a64e34a1fee0e7e39b22c51"
+        ],
+        "url_observed": [
+          "hxxp://2[.]26[.]82[.]63",
+          "hxxp://2[.]26[.]82[.]63:8888/collect"
+        ]
+      }
+    }
+  }
+}

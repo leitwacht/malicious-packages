@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11818",
+  "modified": "2026-09-01T16:42:31Z",
+  "published": "2026-09-01T16:41:04Z",
+  "summary": "Malicious code in bt2-api-gateway-node-js (npm)",
+  "details": "The postinstall hook runs index.js, which after a short delay harvests the installer's credentials and exfiltrates them. It reads ~/.npmrc, ~/.yarnrc, ~/.git-credentials, SSH private keys, AWS credentials and SSO cache, GCP application_default_credentials.json, Azure accessTokens.json, Anthropic/OpenAI/the model API keys, k8s config, docker config.json, terraform credentials, GitHub CLI hosts.yml,.netrc, Vercel/Netlify/Supabase/Firebase tokens, database password files, and every environment variable whose name contains TOKEN/KEY/SECRET/PASSWORD/API/AUTH/CREDENTIAL. The collected data is base64-encoded and POSTed to a Telegram bot (api[.]telegram[.]org, chat 8814152665) and to hxxp://2[.]26[.]82[.]63:8888/collect. The package exports only a stub API module and contains no real gateway functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bt2-api-gateway-node-js",
+        "purl": "pkg:npm/bt2-api-gateway-node-js"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bt2-api-gateway-node-js/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11818"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-01T16:41:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ],
+        "ip_observed": [
+          "2[.]26[.]82[.]63:8888"
+        ],
+        "sha256": [
+          "677c85f68b60d37fb9b5beb1c51bb1d177e5126dd61cbadcc8bdc01fde082205"
+        ],
+        "url_observed": [
+          "hxxp://2[.]26[.]82[.]63",
+          "hxxp://2[.]26[.]82[.]63:8888/collect"
+        ]
+      }
+    }
+  }
+}
