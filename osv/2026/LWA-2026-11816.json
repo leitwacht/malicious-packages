@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11816",
+  "modified": "2026-09-01T16:18:51Z",
+  "published": "2026-09-01T16:18:26Z",
+  "summary": "Malicious code in vitest-cli-pro (npm)",
+  "details": "Vitest-cli-pro@10.0.7 is a trojanized clone of the nodemailer library. Its postinstall hook (node lib/utils/index.js) spawns a detached background process that runs lib/utils/smtp-connection/index.js, which performs an HTTP GET to hxxps://api[.]jsonbin[.]io/v3/b/6a62bc86da38895dfe879659 and executes the returned record.cookie value via new Function(\"require\",...) with full require access — a remote second-stage payload download-and-execute at install time. The C2/staging endpoint is api[.]jsonbin[.]io (bin 6a62bc86da38895dfe879659).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vitest-cli-pro",
+        "purl": "pkg:npm/vitest-cli-pro"
+      },
+      "versions": [
+        "10.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vitest-cli-pro/v/10.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11816"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-01T16:18:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]jsonbin[.]io"
+        ],
+        "sha256": [
+          "38e49016f2f4ee73adcb5b4600f674c629c223231c5ec733f1aa6f8cee9710c0"
+        ],
+        "url_observed": [
+          "hxxps://api[.]jsonbin[.]io/v3/b/6a62bc86da38895dfe879659"
+        ]
+      }
+    }
+  }
+}
