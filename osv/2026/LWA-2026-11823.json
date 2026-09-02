@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11823",
+  "modified": "2026-09-02T01:46:27Z",
+  "published": "2026-09-02T01:46:04Z",
+  "summary": "Security-research / proof-of-concept package: line-through (npm)",
+  "details": "The package's preinstall hook (node vishu.js) runs a covert host-metadata beacon on install. It fetches the machine's public IP from api[.]ipify[.]org, then sends a GET request to hxxps://webhook[.]site/66059630-2030-4b44-b2df-d37e02be0a7d with the IP and CI environment metadata (CI, GITHUB_ACTIONS, GITHUB_WORKFLOW, GITHUB_RUN_ID, GITHUB_RUN_NUMBER, GITHUB_RUN_ATTEMPT) appended as query parameters. It also performs a DNS lookup to ping-\u003chostname\u003e.your-collab-domain[.]oastify[.]com, leaking the hostname via DNS. The package's stated purpose is a dependency test utility, which does not explain this outbound beaconing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "line-through",
+        "purl": "pkg:npm/line-through"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/line-through/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11823"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-09-02T01:46:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site",
+          "your-collab-domain[.]oastify[.]com"
+        ],
+        "sha256": [
+          "3ca877570722a1ae507b4262f69da92797c4499417fddfe842a6b927b76e4d61"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://webhook[.]site/66059630-2030-4b44-b2df-d37e02be0a7d"
+        ]
+      }
+    }
+  }
+}
