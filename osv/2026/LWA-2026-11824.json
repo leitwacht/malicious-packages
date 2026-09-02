@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11824",
+  "modified": "2026-09-02T03:25:07Z",
+  "published": "2026-09-02T03:24:02Z",
+  "summary": "Malicious code in tuxcmdfhjkw (npm)",
+  "details": "This npm package ships a single HTML file that impersonates a Cloudflare \"Just a moment...\" Turnstile verification page. When a visitor completes the fake challenge, an obfuscated script runs that reconstructs a host key and an AES encryption key from an encoded string array and executes a payload via the Function constructor. The payload harvests the Turnstile token and page context and transmits them to a remote server using the embedded host key and AES key for encrypted exfiltration. The package has no legitimate function: it is a credential/token-harvesting phishing page distributed through the npm registry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tuxcmdfhjkw",
+        "purl": "pkg:npm/tuxcmdfhjkw"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tuxcmdfhjkw/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11824"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-02T03:24:02Z",
+      "indicators_observed": {
+        "sha256": [
+          "38fc1f96d2f522aa784390ccfc38b3b68bd39fc7f66665ef94a6dd996ea14e8c"
+        ]
+      }
+    }
+  }
+}
