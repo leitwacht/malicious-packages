@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11833",
+  "modified": "2026-09-02T13:00:51Z",
+  "published": "2026-09-02T12:59:02Z",
+  "summary": "Malicious code in @stellarshift/evm-address-kit (npm)",
+  "details": "The package's postinstall hook (scripts/postinstall.js) is a multi-stage dropper. On macOS/Windows hosts that have both Lark/Feishu and FortiClient installed, it downloads and executes a remote stage-1 payload from hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon via `curl -fsSL... | bash` (or `powershell -NoProfile -c \"iwr... | iex\"` on Windows), running silently in the background with errors suppressed so the install appears normal. The payload URL is a Tencent Cloud COS object-storage endpoint hosting a beacon/stage-1 script. The dropper also supports a binary mode that writes the downloaded payload to a temp file (~/.cache_worker) and executes it. The main index.js is a benign EVM address utility; the malicious behaviour is entirely in the install hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@stellarshift/evm-address-kit",
+        "purl": "pkg:npm/%40stellarshift/evm-address-kit"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@stellarshift/evm-address-kit/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11833"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-02T12:59:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com"
+        ],
+        "sha256": [
+          "a74d2b4389eb2cd305e10d7b6ea518223d3272f4485796f80fbfaf753ad1f0ef"
+        ],
+        "url_observed": [
+          "hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon"
+        ]
+      }
+    }
+  }
+}

