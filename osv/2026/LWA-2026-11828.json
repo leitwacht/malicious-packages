@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11828",
+  "modified": "2026-09-02T12:34:49Z",
+  "published": "2026-09-02T12:31:09Z",
+  "summary": "Malicious code in tailwindcss-fluid-styles (npm)",
+  "details": "The tailwindcss-fluid-styles package (a Tailwind plugin) ships a base64-encoded payload in src/index.js that executes on require. The payload queries the Ethereum blockchain (via eth[.]blockscout[.]com and several public RPC endpoints) for the latest transaction sent from wallet 0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a, decodes the transaction recipient address into an IP address, then fetches XOR-encrypted second-stage payloads from that IP over HTTP (paths /0x/cls and /0x/ls) and executes them by spawning a detached `node -e` subprocess. The code also rewrites its own source file to remove the embedded payload after execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-fluid-styles",
+        "purl": "pkg:npm/tailwindcss-fluid-styles"
+      },
+      "versions": [
+        "2.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-fluid-styles/v/2.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11828"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-02T12:31:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "eth[.]blockscout[.]com"
+        ],
+        "sha256": [
+          "2abc039b0f31b09a8c2bd2d1955a5a37d7b1f12c71f43a8389099c9e9e6199a5"
+        ],
+        "url_observed": [
+          "hxxps://eth[.]blockscout[.]com/api"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3D311D3080e6f0121063e9aDC2490Ef1a"
+        ]
+      }
+    }
+  }
+}
