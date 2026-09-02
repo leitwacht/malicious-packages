@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11826",
+  "modified": "2026-09-02T07:06:09Z",
+  "published": "2026-09-02T07:05:07Z",
+  "summary": "Malicious code in caphsmgiwy (npm)",
+  "details": "Caphsmgiwy@1.0.0 is a package with no declared purpose that ships a single index.html disguised as a Cloudflare Turnstile \"Performing security verification\" challenge page. When a visitor completes the fake challenge, the onTurnstileComplete callback executes a heavily-obfuscated payload (javascript-obfuscator-style _0x identifiers, string-array shuffling, base64 decoding, an AES key, and Function-constructor execution) that decodes and runs encrypted strings. The page is a credential-harvesting/phishing lure: the fake challenge is social engineering to get the victim to interact, after which the obfuscated payload executes. The exfiltration destination is concealed inside the AES-encrypted, base64-encoded strings and is not visible in the plaintext source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "caphsmgiwy",
+        "purl": "pkg:npm/caphsmgiwy"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/caphsmgiwy/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11826"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-02T07:05:07Z",
+      "indicators_observed": {
+        "sha256": [
+          "6fca4d3eb25620bab46d1f92e535e6bf917a704d58e203ca2a6582c7315a0580"
+        ]
+      }
+    }
+  }
+}
