@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11870",
+  "modified": "2026-09-03T18:01:14Z",
+  "published": "2026-09-03T18:00:47Z",
+  "summary": "Malicious code in easypanel-cli (npm)",
+  "details": "The preinstall hook (preinstall.js) runs on install and silently collects the host's hostname, username, current working directory, and the names of CI environment variables (GITHUB_, GITLAB_, BUILD_, JENKINS, CIRCLE, TF_BUILD, BITBUCKET, DRONE, AWS_CODEBUILD). This data is base64url-encoded and exfiltrated to the attacker-controlled domain oob[.]lyomeri[.]com via both a DNS lookup (easypanel-cli.\u003cdata\u003edaco3v4q6f49egu1ds1gwjnsjb88s5kcp[.]oob[.]lyomeri[.]com) and an HTTP POST to /npm/\u003cpayload\u003e on the same host. The hook always exits 0 so the install appears to succeed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "easypanel-cli",
+        "purl": "pkg:npm/easypanel-cli"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/easypanel-cli/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11870"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-03T18:00:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "daco3v4q6f49egu1ds1gwjnsjb88s5kcp[.]oob[.]lyomeri[.]com",
+          "easypanel-cli[.]daco3v4q6f49egu1ds1gwjnsjb88s5kcp[.]oob[.]lyomeri[.]com",
+          "oob[.]lyomeri[.]com"
+        ],
+        "sha256": [
+          "6e210e87ac752b9df98b1386959e3838e90f9b0c60fef138ae4db1fec10bf924"
+        ]
+      }
+    }
+  }
+}
