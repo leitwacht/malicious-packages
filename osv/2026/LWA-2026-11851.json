@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11851",
+  "modified": "2026-09-03T08:43:09Z",
+  "published": "2026-09-03T08:42:48Z",
+  "summary": "Malicious code in @quantixfinance/auth (npm)",
+  "details": "The package's preinstall hook (preinstall.js) harvests the installer's environment variables whose names match credential patterns (key, secret, token, password, wallet, mnemonic, seed, database, API, RPC, infura, alchemy, quicknode, ankr, vercel, railway, supabase, deploy, contract, tron), along with the hostname, working directory, and Node version, and POSTs them as a JSON body to a remote host at 45[.]61[.]177[.]246:61289 (path /0471e9cef36a6718b0f2bfdbec06bd82/47acfe667ff0162697f4af03/54c960d45ce346f9/r). The remote host address is encoded as the integer 759017974. This exfiltrates the victim's credentials and secrets at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@quantixfinance/auth",
+        "purl": "pkg:npm/%40quantixfinance/auth"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@quantixfinance/auth/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11851"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-03T08:42:48Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "45[.]61[.]177[.]246:61289"
+        ],
+        "sha256": [
+          "7c2816bb97a9a4b40a9160f906c4f17f591602ea5235696415dc195cb303c600"
+        ],
+        "url_observed": [
+          "hxxp://45[.]61[.]177[.]246:61289/0471e9cef36a6718b0f2bfdbec06bd82/47acfe667ff0162697f4af03/54c960d45ce346f9/r"
+        ]
+      }
+    }
+  }
+}
