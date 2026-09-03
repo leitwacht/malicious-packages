@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11849",
+  "modified": "2026-09-03T08:17:51Z",
+  "published": "2026-09-03T08:16:41Z",
+  "summary": "Malicious code in tailwind-contact-forms (npm)",
+  "details": "Tailwind-contact-forms is a combosquat of the tailwindcss-forms plugin. Its src/index.js bundles the genuine plugin code as a decoy and appends an obfuscated Ethereum drainer that executes when the module is loaded. The payload builds an Ethereum JSON-RPC client that contacts hardcoded endpoints (hxxps://1rpc[.]io/eth, hxxps://ethereum-rpc[.]publicnode[.]com, hxxps://eth-mainnet[.]public[.]blastapi[.]io, hxxps://eth[.]drpc[.]org, or the ETH_RPC_URL env var), hardcodes the attacker wallet 0xa322E5f39aDC2490EfD311D3080e6f0121063e, scans blockchain history (including the Etherscan txlist API) to derive nonce state for that address, spawns a node child process, and fakes a browser User-Agent. Installing and loading this package runs the drainer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-contact-forms",
+        "purl": "pkg:npm/tailwind-contact-forms"
+      },
+      "versions": [
+        "0.5.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-contact-forms/v/0.5.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11849"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-03T08:16:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "731f0fba17627f1b45b3295255d71d64ff146e56234c137e0489dd8a73565e66"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://api[.]etherscan[.]io/api",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://ethereum-rpc[.]publicnode[.]com"
+        ],
+        "wallet_observed": [
+          "0xa322E5f39aDC2490EfD311D3080e6f0121063e"
+        ]
+      }
+    }
+  }
+}
