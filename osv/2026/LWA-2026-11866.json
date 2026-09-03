@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11866",
+  "modified": "2026-09-03T18:03:04Z",
+  "published": "2026-09-03T18:02:47Z",
+  "summary": "Malicious code in easypanel-deploy (npm)",
+  "details": "The package's preinstall hook (preinstall.js) runs on install and collects host fingerprint data — hostname, username, current working directory, and the names of CI-related environment variables present (GITHUB_, GITLAB_, BUILD_, JENKINS, CIRCLE, TF_BUILD, BITBUCKET, DRONE, AWS_CODEBUILD). It base64url-encodes this and exfiltrates it to the attacker-controlled host easypanel-deploy[.]daco3v4q6f49egu1ds1gwjnsjb88s5kcp[.]oob[.]lyomeri[.]com via both a DNS lookup and an HTTP GET to /npm/\u003cencoded-data\u003e. The exfiltration is wrapped in try/catch and always exits 0 so the install appears to succeed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "easypanel-deploy",
+        "purl": "pkg:npm/easypanel-deploy"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/easypanel-deploy/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11866"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-03T18:02:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "easypanel-deploy[.]daco3v4q6f49egu1ds1gwjnsjb88s5kcp[.]oob[.]lyomeri[.]com",
+          "oob[.]lyomeri[.]com"
+        ],
+        "sha256": [
+          "6c3182b52ca64e53e61a7284947218cbe674338dcfb494cc36088e38a4139ae3"
+        ]
+      }
+    }
+  }
+}
