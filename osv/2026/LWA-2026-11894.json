@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11894",
+  "modified": "2026-09-04T03:55:17Z",
+  "published": "2026-09-04T03:53:47Z",
+  "summary": "Malicious code in afhmxiewpsf (npm)",
+  "details": "The package ships a single index.html that impersonates a Cloudflare Turnstile \"Performing security verification\" bot-check page. When a visitor completes the fake challenge, the onTurnstileComplete callback — obfuscated with a base64 string-array decoder, a Function-constructor string builder, and embedded AES key material — assembles a remote URL beginning with hxxps://ap[.][.]. and transmits the Turnstile token and page data to that remote endpoint. The page is a credential/token-harvesting phishing page: it presents a legitimate-looking Cloudflare challenge solely to capture the token and exfiltrate it to the attacker-controlled host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "afhmxiewpsf",
+        "purl": "pkg:npm/afhmxiewpsf"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/afhmxiewpsf/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11894"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-04T03:53:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "6f868851cc2028ec9944207b5fa67240cda1614c110972a46f5e328dd35397b6"
+        ],
+        "url_observed": [
+          "hxxps://ap"
+        ]
+      }
+    }
+  }
+}
