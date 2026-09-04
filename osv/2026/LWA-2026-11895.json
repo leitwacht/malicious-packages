@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11895",
+  "modified": "2026-09-04T08:29:34Z",
+  "published": "2026-09-04T08:23:32Z",
+  "summary": "Malicious code in ulid-intel (npm)",
+  "details": "Ulid-intel@2.12.3 is a trojanized clone of the legitimate `ulid` identifier library. Its postinstall hook runs dist/node/utils.js, which checks the host has at least 4 CPU cores, then spawns dist/node/payload.js (a 466KB bundled agent) as a detached background process. The agent connects over WebSocket to C2 ws://95[.]216[.]232[.]162:8010/ (HTTP fallback hxxp://95[.]216[.]232[.]162:8010/), sends a hello/heartbeat containing the hostname, username, platform, and a machine ID, and accepts remote commands: get_system_info, list_drives, list_dir, deploy_binary (downloads and executes arbitrary JS on the host), and remove_agent. It registers persistence via Windows Task Scheduler (schtasks), the HKCU Run registry key, a macOS launchd LaunchAgent (com.launchkeeper.pkg-agent), a Linux systemd user service, and an XDG autostart.desktop entry, all under the unit name pkg-agent, with a lock file at $TMPDIR/.pkg-agent.lock.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ulid-intel",
+        "purl": "pkg:npm/ulid-intel"
+      },
+      "versions": [
+        "2.12.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ulid-intel/v/2.12.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11895"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-04T08:23:32Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "95[.]216[.]232[.]162:8010"
+        ],
+        "sha256": [
+          "0b9ca7174b2524468609a7866aaa18c0ce62b284f6fe3b1156c5046d46a7b454"
+        ],
+        "url_observed": [
+          "hxxp://95[.]216[.]232[.]162",
+          "hxxp://95[.]216[.]232[.]162:8010/",
+          "ws://95[.]216[.]232[.]162:8010/"
+        ]
+      }
+    }
+  }
+}
