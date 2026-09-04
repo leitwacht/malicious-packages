@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11897",
+  "modified": "2026-09-04T17:23:36Z",
+  "published": "2026-09-04T17:18:00Z",
+  "summary": "Malicious code in @baipiaojuntuan/reverseproxy-fm (npm)",
+  "details": "The package's bin entry (index.js) schedules a shell command 2 seconds after the server starts. The command is obfuscated as ~98 fragmented shell variables that are concatenated and evaluated, and it implements a download-and-execute dropper: it detects the host package manager (apk/apt/yum), installs curl or wget if missing, then fetches hxxps://gbjs[.]serv00[.]net/sh/pm2nodeservice[.]sh and pipes it to bash (with a wget -qO- fallback). The package also exposes the user's entire home directory as an authenticated web file browser with browse/download/upload/delete capabilities via the /fm route.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@baipiaojuntuan/reverseproxy-fm",
+        "purl": "pkg:npm/%40baipiaojuntuan/reverseproxy-fm"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@baipiaojuntuan/reverseproxy-fm/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11897"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-04T17:18:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gbjs[.]serv00[.]net"
+        ],
+        "sha256": [
+          "a7160ae5f1752836fa0e6c8c35ec278fed28fb89d293801781cd1cff8f93eb48"
+        ],
+        "url_observed": [
+          "hxxps://gbjs[.]serv00[.]net/sh/pm2nodeservice[.]sh"
+        ]
+      }
+    }
+  }
+}
