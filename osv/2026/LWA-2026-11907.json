@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11907",
+  "modified": "2026-09-05T19:41:31Z",
+  "published": "2026-09-05T19:40:47Z",
+  "summary": "Malicious code in array-scala (npm)",
+  "details": "Array-scala@1.2.5 is a trojanized clone of the legitimate array-scala utility. Its main module is obfuscated and, when required, acts as a multi-stage dropper: it creates a cache directory under the OS temp dir, writes an obfuscated payload into a node_modules subdirectory, and installs dependencies including axios, better-sqlite3, node-machine-id, socket[.]io-client, and (on Windows) koffi. It then spawns the Node.js runtime to execute the payload; on Windows it also writes a main.vbs file and runs it via wscript.exe with cmd /d /s /c. The bundled dependency set indicates hardware fingerprinting (node-machine-id), a socket[.]io command-and-control channel, HTTP exfiltration (axios), and local database access (better-sqlite3). The package also declares a dependency on itself (array-scala ^1.2.4).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "array-scala",
+        "purl": "pkg:npm/array-scala"
+      },
+      "versions": [
+        "1.2.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/array-scala/v/1.2.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11907"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-05T19:40:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "40367df41cc44430d878f3b60158c78b62874e17462a929be9eb6589bf680e72"
+        ]
+      }
+    }
+  }
+}
