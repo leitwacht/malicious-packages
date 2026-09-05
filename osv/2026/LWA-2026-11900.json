@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11900",
+  "modified": "2026-09-05T08:20:26Z",
+  "published": "2026-09-05T08:20:10Z",
+  "summary": "Malicious code in tailwindcss-ratio-styles (npm)",
+  "details": "Tailwindcss-ratio-styles@0.3.2 is a trojanized clone of the legitimate tailwindcss-aspect-ratio plugin. Its main entry point src/index.js appends a remote-code downloader to the genuine plugin code: on module load it fetches hxxp://23[.]27[.]245[.]100/index[.]js over plain HTTP, writes the response to./inout.js in the current directory, and executes it via require(). This runs arbitrary remote code on any project that imports the package. C2/download host: 23[.]27[.]245[.]100 (port 80), path /index.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-ratio-styles",
+        "purl": "pkg:npm/tailwindcss-ratio-styles"
+      },
+      "versions": [
+        "0.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-ratio-styles/v/0.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11900"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-05T08:20:10Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "23[.]27[.]245[.]100"
+        ],
+        "sha256": [
+          "dc6c55c0fdcbd6581ee50652a6cd7b7148931f09be8a6750c793a499999fe443"
+        ],
+        "url_observed": [
+          "hxxp://23[.]27[.]245[.]100/index[.]js"
+        ]
+      }
+    }
+  }
+}
