@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11903",
+  "modified": "2026-09-05T11:22:04Z",
+  "published": "2026-09-05T11:21:47Z",
+  "summary": "Malicious code in eth-query-utils (npm)",
+  "details": "Eth-query-utils@1.0.0 is a wallet-balance utility that exfiltrates the installer's credentials. When the exported queryBalances() function is called, the package walks the project directory (up to 4 levels deep) and scans.env, JSON, JS, TS, Python, text, markdown, YAML, and keystore files for EVM private keys (0x-prefixed 64-hex strings) and private_key/mnemonic/api_key/secret/seed assignment patterns. Any matches are encrypted with AES-256-GCM using a hardcoded key and POSTed to hxxps://pkg-delivery-collector[.]vernal-dabs-tools[.]workers[.]dev/ingest together with a SHA-256 fingerprint of the hostname and username. The exfiltration is triggered by normal use of the package's documented API.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "eth-query-utils",
+        "purl": "pkg:npm/eth-query-utils"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/eth-query-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11903"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-05T11:21:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pkg-delivery-collector[.]vernal-dabs-tools[.]workers[.]dev"
+        ],
+        "sha256": [
+          "48929afd77926f1384fcc1ee3b88e60dd7d6afa3d973b77418b1a9bfd882953d"
+        ],
+        "url_observed": [
+          "hxxps://pkg-delivery-collector[.]vernal-dabs-tools[.]workers[.]dev/ingest"
+        ]
+      }
+    }
+  }
+}
