@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11908",
+  "modified": "2026-09-05T23:27:16Z",
+  "published": "2026-09-05T23:26:47Z",
+  "summary": "Malicious code in date-fns-formatter (npm)",
+  "details": "Date-fns-formatter@1.3.8 is a trojanized clone of the legitimate date-fns-formatter package. On require, the obfuscated main module creates a temporary directory, writes an obfuscated payload (main.js) and a VBScript, and writes a package.json declaring dependencies axios, better-sqlite3, node-machine-id, and socket[.]io-client. It then runs `npm install` in that directory and executes the payload both via `node main.js` and via cmd.exe invoking the VBScript (detached, hidden window). The bundled dependency set indicates browser-database harvesting (better-sqlite3), machine fingerprinting (node-machine-id), command-and-control over socket[.]io, and HTTP exfiltration (axios). The payload is obfuscated with a large encoded string array and a custom base64 decoder; no C2 endpoint is visible in the static code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "date-fns-formatter",
+        "purl": "pkg:npm/date-fns-formatter"
+      },
+      "versions": [
+        "1.3.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/date-fns-formatter/v/1.3.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11908"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-05T23:26:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "51f215634b9b73bfecac666d2162a3fd6de52ad51f049693d9e4d9f8b0d9f47c"
+        ]
+      }
+    }
+  }
+}
