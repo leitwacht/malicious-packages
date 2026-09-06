@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11909",
+  "modified": "2026-09-05T23:58:04Z",
+  "published": "2026-09-05T23:57:47Z",
+  "summary": "Malicious code in node-helper (npm)",
+  "details": "Node-helper@1.5.4 is a trojanized clone of the legitimate node-helper utility. The package declares a self-dependency on itself, and its main entry file (node-helper.js) contains an obfuscated payload that executes on require. The payload locates the npm binary and spawns a detached `npm install`, drops a VBScript (main.vbs) that runs a PowerShell command, and writes a package.json that installs axios, better-sqlite3, node-machine-id, socket[.]io-client, and (on Windows) @microsoft/office-js/office/dpap. It then spawns the VBScript detached. The implant targets Windows, uses DPAPI to decrypt stored credentials, fingerprints the host via node-machine-id, and establishes a socket[.]io-client command-and-control channel. The self-dependency causes the package to reinstall itself during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-helper",
+        "purl": "pkg:npm/node-helper"
+      },
+      "versions": [
+        "1.5.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-helper/v/1.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11909"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-05T23:57:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "d07354cfd66bb105ec877cd50eb88fb1120e2980f72652ccafb877c6344da485"
+        ]
+      }
+    }
+  }
+}
