@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11910",
+  "modified": "2026-09-06T03:51:00Z",
+  "published": "2026-09-06T03:50:47Z",
+  "summary": "Malicious code in rojo-rbx (npm)",
+  "details": "The install hook (scripts/install.js) is a Windows-only downloader and persistence implant. On install it fetches a remote VBS payload from hxxps://l81[.]me/updater[.]vbs (a URL shortener), writes it to %APPDATA%\\Rojo\\rojo-sync.vbs, registers a Run-key entry (HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run, value name RojoClientSync) that executes the dropped script via wscript.exe, and launches it hidden and detached. The payload is fetched and executed at install time with no user interaction.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rojo-rbx",
+        "purl": "pkg:npm/rojo-rbx"
+      },
+      "versions": [
+        "1.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rojo-rbx/v/1.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11910"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-06T03:50:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "l81[.]me"
+        ],
+        "sha256": [
+          "608eaed17d1ee50a41786d728f01093d706f57ee2745fda676ad0fdac642aea0"
+        ],
+        "url_observed": [
+          "hxxps://l81[.]me/updater[.]vbs"
+        ]
+      }
+    }
+  }
+}
