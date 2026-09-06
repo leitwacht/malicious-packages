@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11912",
+  "modified": "2026-09-05T23:20:18Z",
+  "published": "2026-09-05T23:19:47Z",
+  "summary": "Malicious code in multicore-kit (npm)",
+  "details": "Multicore-kit@1.1.5 is a multi-stage dropper disguised as an array-utility library. Requiring the package executes an obfuscated payload that creates a hidden directory under the OS temp dir (node_modules), writes a second-stage obfuscated script to a hidden.vs_cache file, and writes a package.json that pulls in axios, better-sqlite3, node-machine-id, socket[.]io-client, and (on Windows) @azure/msal-node/dpapi. It then spawns node (or cmd.exe on Windows) to run the second-stage script, re-launching it on exit. The dependency set indicates host fingerprinting (node-machine-id), a command/control channel (socket[.]io-client/axios), and Windows DPAPI credential decryption (msal-node/dpapi). The package's stated purpose (array flattening) is unrelated to this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "multicore-kit",
+        "purl": "pkg:npm/multicore-kit"
+      },
+      "versions": [
+        "1.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/multicore-kit/v/1.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11912"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-05T23:19:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "7c0d92714cb7aead13f1afd35a9402058a12e0b46a6d70bda7644d68512ad46c"
+        ]
+      }
+    }
+  }
+}

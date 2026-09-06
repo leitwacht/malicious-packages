@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11911",
+  "modified": "2026-09-05T23:05:12Z",
+  "published": "2026-09-05T23:04:47Z",
+  "summary": "Malicious code in jwt-logger (npm)",
+  "details": "Jwt-logger@2.1.9 is a trojanized clone of the legitimate jwt-logger package. Its main entry point (jwt-logger.js) is a heavily obfuscated multi-stage dropper. On require, it creates a hidden working directory under the system temp dir, writes a second-stage obfuscated payload and a package.json there, and runs `npm install` to pull in axios, better-sqlite3, node-machine-id, socket[.]io-client, and koffi (koffi@3.1.2 on Windows). It then spawns detached child processes (windowsHide, detached) to execute the second stage, and on Windows invokes wscript.exe with a main.vbs script. The installed dependencies indicate machine fingerprinting (node-machine-id), browser/credential database access (better-sqlite3), a socket[.]io command-and-control channel (socket[.]io-client), and HTTP exfiltration (axios). The package also declares a self-dependency on a non-existent version (jwt-logger@^2.3.7).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "jwt-logger",
+        "purl": "pkg:npm/jwt-logger"
+      },
+      "versions": [
+        "2.1.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/jwt-logger/v/2.1.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11911"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-05T23:04:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "e4edf7604ecb0505add197aa91e30635ac7db9e20da60ac082e550c540d79c70"
+        ]
+      }
+    }
+  }
+}
