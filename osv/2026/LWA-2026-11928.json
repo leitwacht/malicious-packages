@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11928",
+  "modified": "2026-09-07T09:26:53Z",
+  "published": "2026-09-07T09:25:48Z",
+  "summary": "Malicious code in bmc-translate-utils (npm)",
+  "details": "The package's preinstall hook runs a 499KB obfuscated script (index.js) that harvests the installer's GitHub token and validates it against the GitHub API. The script reads a GitHub token, sends it as an `Authorization: token \u003cvalue\u003e` header to the GitHub API endpoints /user and /user/orgs, and checks whether the token has repo/workflow scopes and enumerates the account's organizations — reconnaissance for a token-harvesting worm. This behaviour is unrelated to the package's declared purpose as a translation library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bmc-translate-utils",
+        "purl": "pkg:npm/bmc-translate-utils"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bmc-translate-utils/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11928"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-07T09:25:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "4bb5afcdbf3567ef0f4744a2765cda428fec73304e005e92284861fda513d282"
+        ]
+      }
+    }
+  }
+}
