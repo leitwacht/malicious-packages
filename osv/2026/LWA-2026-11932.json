@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11932",
+  "modified": "2026-09-07T19:36:44Z",
+  "published": "2026-09-07T19:35:32Z",
+  "summary": "Malicious code in open-item-validator (npm)",
+  "details": "On require, this package silently spawns a detached background daemon (node lib/check-items.js) that fetches a code payload over plain HTTP from hxxp://itemx[.]servegame[.]com:8888/api/x-realtime and executes it via new Function('require','module', code) after verifying an RSA-SHA256 signature against a bundled public key. The signature only authenticates the publisher's own server, so the publisher retains arbitrary remote code execution on every machine that requires the package. The daemon runs automatically on require with no opt-in, and the fetched code is obfuscated (dictionary-array / _0x-style).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "open-item-validator",
+        "purl": "pkg:npm/open-item-validator"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/open-item-validator/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11932"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-07T19:35:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "itemx[.]servegame[.]com"
+        ],
+        "sha256": [
+          "0c4f9146935d3714117cb4925445fd97740a9593af8d216ca7740bebbfa7e68a"
+        ],
+        "url_observed": [
+          "hxxp://itemx[.]servegame[.]com",
+          "hxxp://itemx[.]servegame[.]com:8888/api/x-realtime"
+        ]
+      }
+    }
+  }
+}
