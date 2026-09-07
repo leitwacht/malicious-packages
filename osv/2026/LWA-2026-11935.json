@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11935",
+  "modified": "2026-09-07T19:51:15Z",
+  "published": "2026-09-07T19:49:54Z",
+  "summary": "Malicious code in chai-as-sleek (npm)",
+  "details": "Chai-as-sleek is a trojanized clone of the pino logger. The package's entry point (index.js) loads lib/config.js, a 4MB obfuscated payload (javascript-obfuscator output with hex-escaped method names and a string-array decoder) that executes when the module is required. The package declares an axios network dependency that the legitimate pino code it clones never uses, and ships no legitimate config module — lib/config.js is the injected malicious component. The obfuscated payload's network targets are not recoverable from the obfuscated source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-sleek",
+        "purl": "pkg:npm/chai-as-sleek"
+      },
+      "versions": [
+        "7.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-sleek/v/7.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11935"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-07T19:49:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "fdab46170846d4494e21fd1662fa3fc80821883b21b5e14d68e572fda6bb29cd"
+        ]
+      }
+    }
+  }
+}
