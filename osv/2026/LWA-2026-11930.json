@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11930",
+  "modified": "2026-09-07T09:33:07Z",
+  "published": "2026-09-07T09:27:54Z",
+  "summary": "Malicious code in feishu-docx-mcp (npm)",
+  "details": "The preinstall hook of feishu-docx-mcp@0.3.2 runs `bun run index.js`, executing a 499KB obfuscated script at the package root (the legitimate package entry is dist/index.js). The obfuscated payload implements RC4 and AES-style encryption, injects a global function, and contains routines that validate GitHub access tokens and enumerate their scopes (repo, workflow) by sending `Authorization: token \u003ctoken\u003e` requests to a remote base URL. The install-time script makes outbound network connections during installation, consistent with credential harvesting and C2 beaconing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "feishu-docx-mcp",
+        "purl": "pkg:npm/feishu-docx-mcp"
+      },
+      "versions": [
+        "0.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/feishu-docx-mcp/v/0.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11930"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-07T09:27:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "5e75333f181bfc7813c2a72ca43488244c70d16370350b6b34e27e714d611637"
+        ]
+      }
+    }
+  }
+}

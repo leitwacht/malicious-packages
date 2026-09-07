@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11929",
+  "modified": "2026-09-07T09:30:54Z",
+  "published": "2026-09-07T09:29:45Z",
+  "summary": "Malicious code in bmc-i18n-extract-cli (npm)",
+  "details": "The package's preinstall hook runs a 499KB obfuscated JavaScript payload (package/index.js) that harvests the installer's GitHub credentials and uses them to self-propagate. The payload validates the stolen token against the GitHub API, checks that it has `repo` and `workflow` scopes, and enumerates the user's organizations and token expiry — the reconnaissance needed to re-publish malicious packages to repositories the victim can write to. The payload is obfuscated with a large encoded string array and a custom RC4/PBKDF2 decoder, and its command-and-control base URL is decoded at runtime from that array. The legitimate CLI code ships separately under dist/; the root index.js is an unrelated malicious install-time payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bmc-i18n-extract-cli",
+        "purl": "pkg:npm/bmc-i18n-extract-cli"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bmc-i18n-extract-cli/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11929"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-07T09:29:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com"
+        ],
+        "sha256": [
+          "6dd53c259c78359722304ffb5ca700fc224dd94f67853e5edc83d09e6b5d244e"
+        ]
+      }
+    }
+  }
+}
