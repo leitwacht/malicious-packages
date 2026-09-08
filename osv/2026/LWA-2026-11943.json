@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11943",
+  "modified": "2026-09-08T10:11:05Z",
+  "published": "2026-09-08T10:09:54Z",
+  "summary": "Malicious code in punypump (npm)",
+  "details": "On require, the package's library.js fetches an encrypted payload from the JSON-paste host hxxps://www[.]jsonkeeper[.]com/b/V6NBX (request carries a hardcoded x-secret-key header), decrypts it with AES-256-CBC using a key derived via scrypt from a hardcoded credential, and executes the decrypted content with eval. The remote content is fully attacker-controlled, so any install or require of the package runs arbitrary code supplied by the remote host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "punypump",
+        "purl": "pkg:npm/punypump"
+      },
+      "versions": [
+        "1.2.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/punypump/v/1.2.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11943"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-08T10:09:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "www[.]jsonkeeper[.]com"
+        ],
+        "sha256": [
+          "82c1b8c69f16281f8b55f2e6024836223b392f01a6113ca89837fe8acaa14284"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/V6NBX"
+        ]
+      }
+    }
+  }
+}
