@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11950",
+  "modified": "2026-09-09T05:20:30Z",
+  "published": "2026-09-09T05:18:24Z",
+  "summary": "Malicious code in @umschool/platform (npm)",
+  "details": "The postinstall hook (postinstall.js) of @umschool/platform@999.0.0 is a credential harvester. On install it reads the Kubernetes service-account token, namespace, and CA from /var/run/secrets/kubernetes[.]io/serviceaccount/, fetches AWS and Yandex cloud metadata credentials from the 169[.]254[.]169[.]254 metadata endpoints (IAM security-credentials and computeMetadata token paths), enumerates the full process environment for variables matching token/secret/key/pass/auth/db/url/host/api/aws/yc/k8s/kube, reads.env files up five directory levels, reads /etc/hosts and /etc/resolv.conf, and queries the Kubernetes API using the stolen service-account token. All collected data is base64-encoded and POSTed to the callback host akko[.]requestcatcher[.]com over HTTPS with certificate verification disabled. The package self-describes as a dependency-confusion proof-of-concept but actually exfiltrates credentials, tokens, environment variables, and files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@umschool/platform",
+        "purl": "pkg:npm/%40umschool/platform"
+      },
+      "versions": [
+        "999.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@umschool/platform/v/999.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11950"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-09T05:18:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "akko[.]requestcatcher[.]com",
+          "kubernetes[.]io"
+        ],
+        "sha256": [
+          "3ef404bb01779afba04a4fdfca94b0e80a776a3deaf5a57f30a56eda18211bc2"
+        ]
+      }
+    }
+  }
+}
