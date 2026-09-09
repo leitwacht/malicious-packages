@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11955",
+  "modified": "2026-09-09T09:20:25Z",
+  "published": "2026-09-09T09:18:55Z",
+  "summary": "Malicious code in @staticj/cropperxmjs (npm)",
+  "details": "@staticj/cropperxmjs@1.6.0 is a trojanized clone of the Cropper.js image-cropping library. Both cropper.min.js and cropper.test.min.js contain an injected block inside the cropMove handler that reads userscript metadata (author, name, version, namespace, updateURL) and sends an HTTP GET to hxxps://u[.]myquickcash[.]shop/api/spt/upgrade?author=[.][.][.]\u0026name=[.][.][.]\u0026version=[.][.][.]\u0026namespace=[.][.][.]\u0026updateURL=[.][.][.]\u0026timestamp=[.][.]. The response body is passed to eval(), executing arbitrary remote code supplied by the server. The beacon is rate-limited to 15 requests per day via GM_getValue/GM_setValue storage. This is a remote-code-execution / second-stage loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@staticj/cropperxmjs",
+        "purl": "pkg:npm/%40staticj/cropperxmjs"
+      },
+      "versions": [
+        "1.6.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@staticj/cropperxmjs/v/1.6.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11955"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-09T09:18:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "u[.]myquickcash[.]shop"
+        ],
+        "sha256": [
+          "83c616be11d5c5947e81d2d4c80b7da7ce46db58418e258ac65bbcae05771a46"
+        ],
+        "url_observed": [
+          "hxxps://u[.]myquickcash[.]shop/api/spt/upgrade"
+        ]
+      }
+    }
+  }
+}
