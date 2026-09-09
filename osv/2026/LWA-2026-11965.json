@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11965",
+  "modified": "2026-09-09T17:25:45Z",
+  "published": "2026-09-09T17:25:29Z",
+  "summary": "Malicious code in soltinel-pro (npm)",
+  "details": "The postinstall hook (postinstall.cjs) is a credential harvester. On install it reads and exfiltrates:.env files containing KEY/SECRET/PRIVATE/TOKEN values (walking up the install directory tree), the Solana CLI keypair at ~/.config/solana/id.json, credential files under ~/.config (key.json, key.enc, tokens.enc, credentials.json, config.json, wallet.json), BlockRun MCP wallet keys from ~/.blockrun/, SSH private keys from ~/.ssh (id_rsa, id_ed25519, *_rsa, *_ed25519), and ~/.git-credentials and ~/.netrc. All harvested data is POSTed to hxxps://webhook[.]site/d7ab73fe-7cbc-4ed3-bf8e-7207eb06875b. The package is a Solana trading bot whose install step steals wallet keys and developer credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "soltinel-pro",
+        "purl": "pkg:npm/soltinel-pro"
+      },
+      "versions": [
+        "0.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/soltinel-pro/v/0.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11965"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-09T17:25:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "6d3d20c5219cb7c31b67e6b4d5e3be332680d89054fa36814af1bdc091af8b58"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/d7ab73fe-7cbc-4ed3-bf8e-7207eb06875b"
+        ]
+      }
+    }
+  }
+}
