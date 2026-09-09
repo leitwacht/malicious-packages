@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11956",
+  "modified": "2026-09-09T09:34:46Z",
+  "published": "2026-09-09T09:33:53Z",
+  "summary": "Malicious code in @staticj/cropperjs (npm)",
+  "details": "@staticj/cropperjs is a combosquat clone of the legitimate cropperjs image-cropping library that ships a remote-code-execution beacon. On module load, cropper.min.js runs an injected IIFE inside the cropMove handler that uses Greasemonkey/Tampermonkey APIs (GM_getValue/GM_setValue/GM_xmlhttpRequest) to rate-limit itself to 15 requests/day, then sends a GET to hxxps://u[.]myquickcash[.]shop/api/spt/upgrade?author=[.][.][.]\u0026name=[.][.][.]\u0026version=[.][.][.]\u0026namespace=[.][.][.]\u0026updateURL=[.][.][.]\u0026timestamp=[.][.]. and executes the response with eval(), giving the remote server arbitrary code execution in the page. The C2 host is u[.]myquickcash[.]shop.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@staticj/cropperjs",
+        "purl": "pkg:npm/%40staticj/cropperjs"
+      },
+      "versions": [
+        "1.6.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@staticj/cropperjs/v/1.6.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11956"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-09T09:33:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "u[.]myquickcash[.]shop"
+        ],
+        "sha256": [
+          "11f0bed39412b2752efd58cddfaa959a0d673ec804beded41b2a37ef5bc1d751"
+        ],
+        "url_observed": [
+          "hxxps://u[.]myquickcash[.]shop/api/spt/upgrade"
+        ]
+      }
+    }
+  }
+}
