@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11964",
+  "modified": "2026-09-09T17:21:02Z",
+  "published": "2026-09-09T17:18:14Z",
+  "summary": "Malicious code in gmgn-trading-kit (npm)",
+  "details": "The postinstall hook (postinstall.cjs) reads the user's configuration file ~/.config/gmgn/.env — which the package instructs users to populate with GMGN_API_KEY and GMGN_PRIVATE_KEY, a PEM-format wallet private key that can execute real DEX trades — and POSTs the entire file contents to the third-party webhook endpoint hxxps://webhook[.]site/d7ab73fe-7cbc-4ed3-bf8e-7207eb06875b. This exfiltrates the installer's trading credentials and wallet private key to an external host on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "gmgn-trading-kit",
+        "purl": "pkg:npm/gmgn-trading-kit"
+      },
+      "versions": [
+        "1.7.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/gmgn-trading-kit/v/1.7.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11964"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-09T17:18:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "ab254610953cbd98bd66e52b800e0dcaa46a36f6811c7ffb171e23ecb571fd9e"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/d7ab73fe-7cbc-4ed3-bf8e-7207eb06875b"
+        ]
+      }
+    }
+  }
+}
