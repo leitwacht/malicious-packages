@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11958",
+  "modified": "2026-07-15T00:55:07Z",
+  "published": "2026-07-15T00:46:15Z",
+  "summary": "Malicious code in btree-order-book (npm)",
+  "details": "Btree-order-book is a limit-order-book matching engine that depends on indexed-btree, a package previously identified as malicious. Installing btree-order-book transitively installs the known-malicious indexed-btree dependency. The package code itself is a straightforward TypeScript trading engine with no obfuscation or exfiltration, but its dependency chain introduces a supply-chain risk: any malicious behaviour in indexed-btree (postinstall payload, token theft, etc.) would execute in the context of the installer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "btree-order-book",
+        "purl": "pkg:npm/btree-order-book"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/btree-order-book/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11958"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-15T00:46:15Z",
+      "indicators_observed": {
+        "sha256": [
+          "c67cc403376c1d07c289c610e2fe48eb7fa653ff994a8f8f6ed78a62defaa4f8"
+        ]
+      }
+    }
+  }
+}
