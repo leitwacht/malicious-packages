@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-11992",
+  "modified": "2026-09-10T12:49:43Z",
+  "published": "2026-09-10T12:48:52Z",
+  "summary": "Malicious code in tailwindcss-contact-forms (npm)",
+  "details": "Tailwindcss-contact-forms is a trojanized clone of the legitimate @tailwindcss/forms plugin. The package's main entry src/index.js ships the real plugin code but appends an obfuscated implant that runs when the module is loaded. The implant queries Ethereum mainnet RPC endpoints to locate a specific sender's latest on-chain transaction, decodes the transaction recipient address into a C2 host:port, then connects to that host over HTTP and fetches a payload that it XOR-decodes and base64-decodes before executing. The C2 endpoint is thus hidden inside an on-chain transaction rather than in the package itself. The implant also imports child_process spawn and maintains keep-alive HTTP/HTTPS connection pools for the C2 channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-contact-forms",
+        "purl": "pkg:npm/tailwindcss-contact-forms"
+      },
+      "versions": [
+        "0.5.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-contact-forms/v/0.5.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-11992"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-10T12:48:52Z",
+      "indicators_observed": {
+        "sha256": [
+          "05ea6cce50010e988fac501e5fc10a335325f6a1dc95f712a600e8108a18fbb0"
+        ]
+      }
+    }
+  }
+}
