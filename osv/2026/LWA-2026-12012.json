@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12012",
+  "modified": "2026-09-11T09:32:25Z",
+  "published": "2026-09-11T09:31:48Z",
+  "summary": "Malicious code in cr-bot-common (npm)",
+  "details": "Cr-bot-common@1.0.0 ships preinstall and postinstall hooks that harvest secrets and exfiltrate them to a remote host. On install, preinstall.js and postinstall.js collect system information (hostname, platform, user, cwd, node/npm versions), read.env files (including../.env, /app/.env, /opt/.env), read config/database/wallet/keys/secrets/credentials files, search the home directory and /root,/home,/opt,/app,/var/lib for private-key, wallet, keystore, and mnemonic files, and harvest environment variables whose names match KEY, SECRET, TOKEN, PASSWORD, DATABASE, AWS, PRIVATE, JWT, SESSION, ENCRYPTION, MONGO, POSTGRES, MYSQL, or TON. The collected data is POSTed as JSON to attacker[.]com/collect and attacker[.]com/exfiltrate. The package is presented as a CryptoBot TON wallet integration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cr-bot-common",
+        "purl": "pkg:npm/cr-bot-common"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cr-bot-common/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12012"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-11T09:31:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "attacker[.]com"
+        ],
+        "sha256": [
+          "70af16ce1f78e3136466a25b090b21d27d45762be4957c261c0f711031413ecb"
+        ],
+        "url_observed": [
+          "hxxps://attacker[.]com/collect",
+          "hxxps://attacker[.]com/exfiltrate"
+        ]
+      }
+    }
+  }
+}
