@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12066",
+  "modified": "2026-09-11T19:25:17Z",
+  "published": "2026-09-11T13:37:48Z",
+  "summary": "Malicious code in etoro-analytics (npm)",
+  "details": "The preinstall hook (node preinstall.js) collects the hostname, username, working directory, and platform of the installing machine and sends them to 209[.]126[.]81[.]147 at /etoro-nuget-verify1f8eaa57a875/npm/v2/{host}/{user}/{platform}/{cwd}. It then runs `whoami` (or `whoami /all` on Windows) plus `id` and `hostname -f`, and POSTs the output to the same host at /etoro-nuget-verify1f8eaa57a875/npm/v2/whoami/{host}. The package exfiltrates the installer's identity and environment to a hardcoded remote IP on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "etoro-analytics",
+        "purl": "pkg:npm/etoro-analytics"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/etoro-analytics/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12066"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-11T13:37:48Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "209[.]126[.]81[.]147",
+          "209[.]126[.]81[.]147:80"
+        ],
+        "sha256": [
+          "320a36cd5fc9113a6fbc4b07e39f71893f240b5e7f0efb7f48bdcc749c4000e0"
+        ],
+        "url_observed": [
+          "hxxp://209[.]126[.]81[.]147/etoro-nuget-verify1f8eaa57a875/npm/v2/"
+        ]
+      }
+    }
+  }
+}
