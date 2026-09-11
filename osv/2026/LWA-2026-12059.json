@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12059",
+  "modified": "2026-09-11T18:17:20Z",
+  "published": "2026-09-11T18:16:54Z",
+  "summary": "Malicious code in hatcher-utility-dev (npm)",
+  "details": "The package's postinstall hook (scripts/postinstall.js) runs on every install and serializes the installer's entire process environment (including any NPM_TOKEN, GITHUB_TOKEN, AWS credentials, and other secrets present at install time) into KEY=VALUE lines, writing them to./env.hat in the package install directory with mode 0600. The README claims the hook is gated to Linux hosts with an existing /home/hatch directory, but the code performs no such check: it writes the environment dump unconditionally. The harvested file is not the file the package's own CLI reads, so the write serves no functional purpose other than collecting the installer's environment into a file.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hatcher-utility-dev",
+        "purl": "pkg:npm/hatcher-utility-dev"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hatcher-utility-dev/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12059"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-11T18:16:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "e2f832d48cb6a7f16fcd460e6af004c5da2911b030c4b525fa85524009587418"
+        ]
+      }
+    }
+  }
+}
