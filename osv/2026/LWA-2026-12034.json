@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12034",
+  "modified": "2026-09-11T15:56:43Z",
+  "published": "2026-09-11T15:55:49Z",
+  "summary": "Malicious code in greensaver (npm)",
+  "details": "Greensaver is a trojanized clone of the micromatch glob library. Its preinstall and postinstall hooks run lib/greensaver.js, which decodes two base64-encoded payloads (lib/parse.ts.map and lib/init.ts.map) into temporary JS files, executes them, then deletes the artifacts. The decoded payload fetches an AES-256-CBC-encrypted session from an anonymous[.]com endpoint (authenticating with an x-service-token header), decrypts it using a key derived from the hardcoded passphrase 'myPassword123' with salt 'salt', and executes the decrypted content via eval — a remote code execution / C2 channel that runs at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "greensaver",
+        "purl": "pkg:npm/greensaver"
+      },
+      "versions": [
+        "1.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/greensaver/v/1.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12034"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-11T15:55:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "anonymous[.]com"
+        ],
+        "sha256": [
+          "d58d3e1612aa88385b9fd044d3d20aec5eabed3f5fc832aca8e9d50fe37fa9a6"
+        ]
+      }
+    }
+  }
+}
