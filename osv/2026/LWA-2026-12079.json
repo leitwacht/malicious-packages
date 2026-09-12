@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12079",
+  "modified": "2026-09-12T17:43:36Z",
+  "published": "2026-09-12T17:41:10Z",
+  "summary": "Malicious code in @biz44/id95-client (npm)",
+  "details": "Remote-code-execution dropper. Importing the package auto-spawns a detached background `node loader.js` process (PID persisted to a.pid file). loader.js fetches a remote JSON config from hxxps://api[.]npoint[.]io/24c12c4b66a29747764f, base64-decodes the `code` field, and executes it via the Function constructor with full require/__dirname/__filename access — arbitrary remote code execution on the installer's machine. It also monkey-patches Node's Module.prototype.require to intercept child_process calls and force hidden windows on Windows. The remote payload is served at runtime, not shipped in the tarball.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@biz44/id95-client",
+        "purl": "pkg:npm/%40biz44/id95-client"
+      },
+      "versions": [
+        "1.1.96"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@biz44/id95-client/v/1.1.96"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12079"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-12T17:41:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "9875811ffe17aaa8fc1bcc567e431bbf2722117d3cb8790c55d5036cfb53c641"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/24c12c4b66a29747764f"
+        ]
+      }
+    }
+  }
+}

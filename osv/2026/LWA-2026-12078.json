@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12078",
+  "modified": "2026-09-12T17:41:41Z",
+  "published": "2026-09-12T17:39:22Z",
+  "summary": "Malicious code in @biz44/id79-client (npm)",
+  "details": "On import, the package auto-spawns a detached background `node loader.js` process (stdio ignored, PID persisted to a.pid file). The loader makes an HTTPS request to hxxps://api[.]npoint[.]io/24c12c4b66a29747764f, base64-decodes a `code` field from the JSON response, and executes it via `new Function(\"require\",...)` with full module access — arbitrary remote code execution from a server-controlled payload. It also globally monkey-patches Node's `Module.prototype.require` to intercept `child_process` spawn/execSync calls made by the host application, forcing windowsHide and re-routing execSync through cmd.exe on Windows.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@biz44/id79-client",
+        "purl": "pkg:npm/%40biz44/id79-client"
+      },
+      "versions": [
+        "1.1.80"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@biz44/id79-client/v/1.1.80"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12078"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-12T17:39:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "6d29f5a1ccdfa776840e3b86b4f86ee8b7909bfc9016998f4104353c6e7d7ba2"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/24c12c4b66a29747764f"
+        ]
+      }
+    }
+  }
+}
