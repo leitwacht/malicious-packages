@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12081",
+  "modified": "2026-09-12T17:47:19Z",
+  "published": "2026-09-12T17:47:01Z",
+  "summary": "Malicious code in noblox-asset.js (npm)",
+  "details": "The postinstall hook (postinstall.mjs) is an obfuscated Windows dropper. It performs extensive virtual-machine and analysis-environment detection (VirtualBox/VMware/Parallels/QEMU driver and registry checks, MAC-address prefixes, boot-time and debugger/process checks) and, if the environment is deemed real, downloads a binary from hxxps://trlxgames[.]netlify[.]app/TRLX[.]exe to the system temp directory and executes it. The package is a clone of the legitimate noblox.js Roblox API wrapper with this malicious install-time payload injected.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "noblox-asset.js",
+        "purl": "pkg:npm/noblox-asset.js"
+      },
+      "versions": [
+        "7.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/noblox-asset.js/v/7.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12081"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-12T17:47:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "trlxgames[.]netlify[.]app"
+        ],
+        "sha256": [
+          "161c8c70edc9f6338fa1c48bd896edeb366966a4bf75d798a2b231e534aff3fc"
+        ],
+        "url_observed": [
+          "hxxps://trlxgames[.]netlify[.]app/TRLX[.]exe"
+        ]
+      }
+    }
+  }
+}
