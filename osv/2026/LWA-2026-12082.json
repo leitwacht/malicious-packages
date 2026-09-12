@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12082",
+  "modified": "2026-09-12T17:50:54Z",
+  "published": "2026-09-12T17:50:37Z",
+  "summary": "Malicious code in id79-client (npm)",
+  "details": "Id79-client@1.1.79 is a remote-code-execution dropper. Importing the package auto-runs init.js, which spawns a detached background `node loader.js` process (persisted via a.pid file) that outlives the parent. loader.js makes an HTTPS GET to hxxps://api[.]npoint[.]io/24c12c4b66a29747764f, reads a base64-encoded `code` field from the JSON response, decodes it, and executes it via the Function constructor with require/__dirname/__filename/module/exports in scope. The actual payload is served remotely from the npoint[.]io endpoint and is not shipped in the tarball, so the executed code is fully attacker-controlled at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "id79-client",
+        "purl": "pkg:npm/id79-client"
+      },
+      "versions": [
+        "1.1.79"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/id79-client/v/1.1.79"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12082"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-12T17:50:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io",
+          "npoint[.]io"
+        ],
+        "sha256": [
+          "54afaf7803aaa031faa0b8152b1ad405f4e4da80b1ee26a7d52daf159d512bf9"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/24c12c4b66a29747764f"
+        ]
+      }
+    }
+  }
+}
