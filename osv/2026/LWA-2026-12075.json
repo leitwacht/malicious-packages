@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12075",
+  "modified": "2026-09-12T17:35:03Z",
+  "published": "2026-09-12T17:32:58Z",
+  "summary": "Malicious code in @biz44/id10-client (npm)",
+  "details": "Remote-code-execution dropper. Importing the package auto-spawns a detached background 'node loader.js' process (PID persisted to a.pid file) that fetches a remote configuration from hxxps://api[.]npoint[.]io/24c12c4b66a29747764f, base64-decodes the 'code' field, and executes it via the Function constructor with require/__dirname/__filename/module/exports supplied — so the actual payload is served remotely and never shipped in the tarball. The loader also monkey-patches Module.prototype.require to intercept child_process spawn/execSync calls. The remote endpoint is the command-and-control channel; the executed payload is fully attacker-controlled.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@biz44/id10-client",
+        "purl": "pkg:npm/%40biz44/id10-client"
+      },
+      "versions": [
+        "1.1.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@biz44/id10-client/v/1.1.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12075"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-12T17:32:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "47c651072f7e0864fc84871d5c1a9bc8e5ca17e7b34905a0ea0a5b1b51887669"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/24c12c4b66a29747764f"
+        ]
+      }
+    }
+  }
+}
