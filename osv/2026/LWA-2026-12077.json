@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12077",
+  "modified": "2026-09-12T17:39:50Z",
+  "published": "2026-09-12T17:36:47Z",
+  "summary": "Malicious code in @biz44/id44-client (npm)",
+  "details": "@biz44/id44-client@1.1.44 is a remote-code-execution dropper. Importing the package immediately spawns a detached background `node loader.js` process (init.js, detached:true, unref'd, PID tracked in a.pid file). loader.js fetches a JSON document from hxxps://api[.]npoint[.]io/24c12c4b66a29747764f, reads the `code` field, base64-decodes it, and executes it via `new Function(\"require\",\"__dirname\",\"__filename\",\"module\",\"exports\", decodedCode)`, giving the remotely-served payload full Node.js require/module access. The executed payload is served remotely and is not present in the package, so its behaviour is fully attacker-controlled at runtime. The package auto-starts this on import with no opt-in.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@biz44/id44-client",
+        "purl": "pkg:npm/%40biz44/id44-client"
+      },
+      "versions": [
+        "1.1.44"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@biz44/id44-client/v/1.1.44"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12077"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-12T17:36:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "d08ad79c033bf741390659baaba0e16d3655bf7f15e6d6b429fd12b3507e4d7e"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/24c12c4b66a29747764f"
+        ]
+      }
+    }
+  }
+}
