@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12086",
+  "modified": "2026-09-13T14:20:08Z",
+  "published": "2026-09-13T14:18:02Z",
+  "summary": "Malicious code in concierge-sdk (npm)",
+  "details": "The postinstall hook runs exfil.js, which collects the full environment (all environment variables, working directory, platform, Node version, and username) and POSTs them as JSON to hxxps://webhook[.]site/4f4566fc-e72f-415b-818f-fdb42dc9891d. This exfiltrates any credentials or tokens present in the installer's environment (e.g. npm/GitHub/cloud tokens) at install time. The package otherwise ships only a stub client class and a synthetic version number.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "concierge-sdk",
+        "purl": "pkg:npm/concierge-sdk"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/concierge-sdk/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12086"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-13T14:18:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "bf85e3d674c849053fda337e823f5fca2714602be2a1e659fd3074017dd3b110"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/4f4566fc-e72f-415b-818f-fdb42dc9891d"
+        ]
+      }
+    }
+  }
+}
