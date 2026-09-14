@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12089",
+  "modified": "2026-09-14T03:16:07Z",
+  "published": "2026-09-14T03:15:47Z",
+  "summary": "Malicious code in n8n-nodes-sysdiag (npm)",
+  "details": "The n8n node package exfiltrates the installer's environment secrets on load. dist/SysDiagNode.node.js schedules a bootstrap routine that enumerates process.env, collects every variable matching credential/secret patterns (N8N, DB_, REDIS, QUEUE, EXECUT, KEY, SECR, PASS, ENCRYPT, PG — covering database, Redis, queue, password and encryption-key settings), base64-encodes them, and POSTs them to hxxps://121[.]127[.]33[.]228:443/api/v1/nodes/compat. The HTTP module is loaded through a char-code obfuscation layer to hide the network activity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-sysdiag",
+        "purl": "pkg:npm/n8n-nodes-sysdiag"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-sysdiag/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12089"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T03:15:47Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "121[.]127[.]33[.]228:443"
+        ],
+        "sha256": [
+          "be0ff79062f5ba88a2dfa45cccd3097193813708813d9a95e2f7dddef6e4e1fa"
+        ],
+        "url_observed": [
+          "hxxps://121[.]127[.]33[.]228",
+          "hxxps://121[.]127[.]33[.]228:443/api/v1/nodes/compat"
+        ]
+      }
+    }
+  }
+}
