@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12088",
+  "modified": "2026-09-14T02:07:21Z",
+  "published": "2026-09-14T02:05:48Z",
+  "summary": "Malicious code in kamafhbnowct (npm)",
+  "details": "The package ships a single obfuscated index.html that is a fake Cloudflare Turnstile challenge page. It loads the real Cloudflare Turnstile API, collects the visitor's URL query parameters, generates a fabricated ray ID, and renders a fake \"Performing security verification\" interstitial. The page embeds an AES encryption key and a host key, and the collected visitor/browser data is encrypted before being sent to a remote host. The script is obfuscated with a large encoded string array and custom decoder, hiding the exact collection and exfiltration logic. This is a Turnstile phishing kit designed to harvest Turnstile tokens and visitor data from anyone who loads the page.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "kamafhbnowct",
+        "purl": "pkg:npm/kamafhbnowct"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/kamafhbnowct/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12088"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T02:05:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "698f494e2e61498f2f4c2027d92128b5c93667429abf0184ca525c77d3dfc1a8"
+        ]
+      }
+    }
+  }
+}
