@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12103",
+  "modified": "2026-09-14T05:28:26Z",
+  "published": "2026-09-14T05:27:47Z",
+  "summary": "Malicious code in discord-players (npm)",
+  "details": "Discord-players@3.4.2 is a Telegram-based data exfiltration tool disguised as a Discord package. On require, it zips the entire current working directory (including.env, source, and config files) and uploads the archive to a hardcoded Telegram chat via a hardcoded bot token. The bundled note.txt instructs the attacker to require() the package from their code, at which point it silently copies all host files and sends them to Telegram. The zip is created from process.cwd() with dot:true (includes hidden files) and sent through the Telegram Bot API to a hardcoded chat ID.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "discord-players",
+        "purl": "pkg:npm/discord-players"
+      },
+      "versions": [
+        "3.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/discord-players/v/3.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12103"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T05:27:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "7fb6536ff5cbb4ddfa038eec34d3664f81513756d8a0d121ad453fb563dfd03f"
+        ]
+      }
+    }
+  }
+}
