@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12129",
+  "modified": "2026-09-14T17:20:44Z",
+  "published": "2026-09-14T17:18:18Z",
+  "summary": "Malicious code in @railone/image-utils (npm)",
+  "details": "@railone/image-utils is a remote-code-execution dropper disguised as an image utility. Importing the package auto-starts a detached background process (node loader.js) that fetches a remote configuration from hxxps://api[.]npoint[.]io/641d37178a880b1e8b8f, base64-decodes a 'code' field from the response, and executes it via the Function constructor with require/__dirname/__filename/module/exports in scope. The actual payload is served remotely and is not shipped in the tarball, so the package can run arbitrary code on the installer's machine. The loader also patches child_process.spawn/execSync to force windowsHide on Windows. The package's stated purpose (image utilities) does not match this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@railone/image-utils",
+        "purl": "pkg:npm/%40railone/image-utils"
+      },
+      "versions": [
+        "1.1.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@railone/image-utils/v/1.1.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12129"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T17:18:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "cda2717c16676b8374ec49e2bf6292e26bf0cce3060bd63dff9a5c94f2b5a2fd"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/641d37178a880b1e8b8f"
+        ]
+      }
+    }
+  }
+}
