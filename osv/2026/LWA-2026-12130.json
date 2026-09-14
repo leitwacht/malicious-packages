@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12130",
+  "modified": "2026-09-14T18:50:31Z",
+  "published": "2026-09-14T18:48:11Z",
+  "summary": "Malicious code in @consts/links (npm)",
+  "details": "The package's install hook (node index.js) runs a hidden beacon in lib/core.js. On install it reads the victim's OS username, hostname, and current working directory, then encodes them into a DNS query of the form links.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz and performs a DNS lookup against that domain, exfiltrating host identity to the attacker-controlled domain oob[.]algamil7x[.]xyz. The runtime modules (os, dns, process) are loaded through module.constructor._load to bypass require hooks, and the domain is stored as byte arrays in lib/b02e30.js to hide it from string scans.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@consts/links",
+        "purl": "pkg:npm/%40consts/links"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@consts/links/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12130"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T18:48:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "40c5edce9ad40e21d6b7d30e7f9816665b907d480b61cf543328b63fb7774917"
+        ]
+      }
+    }
+  }
+}
