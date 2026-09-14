@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12102",
+  "modified": "2026-09-14T05:20:11Z",
+  "published": "2026-09-14T05:17:59Z",
+  "summary": "Malicious code in @biz44/process-runtime-utils (npm)",
+  "details": "The package auto-executes on import: index.js spawns a detached background `node loader.js` process (PID persisted to a.pid file) that survives the parent. loader.js makes an HTTPS request to hxxps://api[.]npoint[.]io/641d37178a880b1e8b8f, base64-decodes the `code` field from the JSON response, and executes it via the Function constructor with require/__dirname/__filename/module/exports provided — a remote-code-execution dropper whose payload is served remotely rather than shipped in the tarball. loader.js also monkey-patches Node's Module.prototype.require to intercept child_process spawn/execSync calls. The remote payload is fetched and executed at runtime, so its full behaviour is determined by the C2 endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@biz44/process-runtime-utils",
+        "purl": "pkg:npm/%40biz44/process-runtime-utils"
+      },
+      "versions": [
+        "1.1.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@biz44/process-runtime-utils/v/1.1.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12102"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T05:17:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "7203a2cc4ac78988888d0a76980e7d226d1d21842a9a3fbab658405f6eccd3c7"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/641d37178a880b1e8b8f"
+        ]
+      }
+    }
+  }
+}
