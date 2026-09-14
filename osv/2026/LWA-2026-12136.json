@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12136",
+  "modified": "2026-09-14T23:26:21Z",
+  "published": "2026-09-14T23:25:49Z",
+  "summary": "Malicious code in n8n-nodes-buildcheck (npm)",
+  "details": "The postinstall hook (postinstall.js) is a multi-stage implant. It collects environment variables, user identity, hostname, container cgroup, and process capabilities into /tmp/.be and POSTs them to hxxp://121[.]127[.]33[.]228:8443/env2. It then launches a persistent reverse shell that repeatedly connects to 121[.]127[.]33[.]228:443 via netcat (-e /bin/sh). Finally it logs into an internal n8n instance at 10[.]0[.]3[.]2:5678 using hardcoded credentials, installs a second malicious community node (n8n-nodes-sysdiag2) through the n8n REST API, and reports the install result back to the C2 at hxxp://121[.]127[.]33[.]228:8443/chain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-buildcheck",
+        "purl": "pkg:npm/n8n-nodes-buildcheck"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-buildcheck/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12136"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T23:25:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "121[.]127[.]33[.]228:443",
+          "121[.]127[.]33[.]228:8443"
+        ],
+        "sha256": [
+          "a8c5b83b4dc7ec29c6ecabdfa142818a2b68c3af926b1e24fa700cf038a83dd4"
+        ],
+        "url_observed": [
+          "hxxp://121[.]127[.]33[.]228",
+          "hxxp://121[.]127[.]33[.]228:8443/chain",
+          "hxxp://121[.]127[.]33[.]228:8443/env2"
+        ]
+      }
+    }
+  }
+}
