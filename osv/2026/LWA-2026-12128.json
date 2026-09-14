@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12128",
+  "modified": "2026-09-14T15:19:55Z",
+  "published": "2026-09-14T15:18:56Z",
+  "summary": "Malicious code in ultra-ws (npm)",
+  "details": "Ultra-ws@1.0.0 is a Discord-gateway WebSocket client that installs and executes a known-malicious dependency. Its package.json declares the dependency node-net-pool from a non-registry GitHub tarball URL (hxxps://github[.]com/trktgq0wbre1/node-net-pool/archive/refs/heads/main[.]tar[.]gz). The postinstall hook runs `require('node-net-pool')`, and the module entry point also loads node-net-pool at require time, so the malicious dependency is executed both during installation and whenever the package is imported. The dependency is fetched from an arbitrary GitHub repository rather than the npm registry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ultra-ws",
+        "purl": "pkg:npm/ultra-ws"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ultra-ws/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12128"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T15:18:56Z",
+      "indicators_observed": {
+        "sha256": [
+          "2aeee4c96e7cbc9b7761ea5689a31117aa45fc6637f9ecb010d09bf9e8cf1dca"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/trktgq0wbre1/node-net-pool/archive/refs/heads/main[.]tar[.]gz"
+        ]
+      }
+    }
+  }
+}
