@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12134",
+  "modified": "2026-09-14T21:57:10Z",
+  "published": "2026-09-14T21:56:52Z",
+  "summary": "Malicious code in n8n-nodes-sysdiag2 (npm)",
+  "details": "The postinstall hook (postinstall.js) runs three malicious commands on install. It collects environment variables, user identity, hostname, container cgroup, mount table, and process capabilities into /tmp/.be and POSTs them to hxxp://121[.]127[.]33[.]228:8443/env2. It then launches a persistent reverse shell via busybox nc to 121[.]127[.]33[.]228:443 with a 7-second reconnect loop, and downloads a second-stage binary from hxxp://121[.]127[.]33[.]228:8444/mn8n2 to /tmp/.mn2, makes it executable, and runs it detached. Errors are swallowed and the hook ends with || true so installation appears to succeed. The package masquerades as an n8n community node but contains only a stub node file; the real behaviour is the install-time implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-sysdiag2",
+        "purl": "pkg:npm/n8n-nodes-sysdiag2"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-sysdiag2/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12134"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T21:56:52Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "121[.]127[.]33[.]228:443",
+          "121[.]127[.]33[.]228:8443",
+          "121[.]127[.]33[.]228:8444"
+        ],
+        "sha256": [
+          "4da2f8011bf9c949185f0e45945d56d14eb2d72c561130ec66c77d39488fb80b"
+        ],
+        "url_observed": [
+          "hxxp://121[.]127[.]33[.]228",
+          "hxxp://121[.]127[.]33[.]228:8443/env2",
+          "hxxp://121[.]127[.]33[.]228:8444/mn8n2"
+        ]
+      }
+    }
+  }
+}
