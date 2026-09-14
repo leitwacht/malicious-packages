@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12090",
+  "modified": "2026-09-14T03:21:18Z",
+  "published": "2026-09-14T03:20:57Z",
+  "summary": "Malicious code in hardhat-base (npm)",
+  "details": "Hardhat-base@2.2.0 ships a detached background subprocess (index.js spawns `node lib/caller.js` with detached:true and unref) that fetches remote code and executes it. lib/caller.js decodes base64 constants to build the URL hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5, sends a GET with header `x-secret-key: _`, takes the response's `cookie` field, and runs it through the Function constructor with `require` in scope — executing arbitrary attacker-supplied code with full Node module access. The payload retries up to 5 times on failure. The package name impersonates the hardhat Ethereum development framework.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-base",
+        "purl": "pkg:npm/hardhat-base"
+      },
+      "versions": [
+        "2.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-base/v/2.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12090"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-14T03:20:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "sha256": [
+          "3ac56b1d55ca057a4dd7485d53307dbbfa6f764c636f23c02c731f4222d3c924"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5"
+        ]
+      }
+    }
+  }
+}
