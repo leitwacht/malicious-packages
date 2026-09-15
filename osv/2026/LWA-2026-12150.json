@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12150",
+  "modified": "2026-09-15T12:01:25Z",
+  "published": "2026-09-15T11:59:47Z",
+  "summary": "Malicious code in tailwind-forms-styles (npm)",
+  "details": "Tailwind-forms-styles@0.5.2 is a trojanized clone of the Tailwind forms plugin. Its main module (src/index.js) is an obfuscated Ethereum front-running bot that runs when the package is required. It spawns child node processes and continuously scans Ethereum blocks via public RPC endpoints (drpc[.]org, publicnode, blocksco, stapi[.]io, 1rpc[.]io) and an etherscan-style indexer API, searching for transactions sent from a hardcoded wallet address (0xa322E5f3...) in order to race/replace them. It decodes an embedded Ethereum address into a dotted-quad IP used as a covert command-and-control destination, and carries an npm-token theft marker (A10-***npm). The package has no install hook; the malicious code executes on import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-forms-styles",
+        "purl": "pkg:npm/tailwind-forms-styles"
+      },
+      "versions": [
+        "0.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-forms-styles/v/0.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12150"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T11:59:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "blocksco[.]com",
+          "drpc[.]org",
+          "publicnode[.]com",
+          "stapi[.]io"
+        ],
+        "sha256": [
+          "04d71fbf4a7e27df7d261025602efc6aadb4c0fbfd613c2051d901798e14ff0d"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
