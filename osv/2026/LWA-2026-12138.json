@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12138",
+  "modified": "2026-09-15T00:21:18Z",
+  "published": "2026-09-15T00:20:47Z",
+  "summary": "Malicious code in process-tailwind (npm)",
+  "details": "Process-tailwind@1.1.99 is a remote-code-execution backdoor disguised as a system-information utility. Importing the package auto-starts a detached `node loader.js` process (PID persisted to a `.pid` file so it survives the parent). The loader makes an HTTPS request to hxxps://api[.]npoint[.]io/24c25d5f5fcbb0992a4f, reads a base64-encoded `code` field from the JSON response, decodes it, and executes it via `new Function(...)` with `require`, `__dirname`, `__filename`, `module`, and `exports` in scope — giving the remote operator arbitrary code execution on the installer's machine. The bundled child_process patching is a decoy to appear as a Windows-compatibility helper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "process-tailwind",
+        "purl": "pkg:npm/process-tailwind"
+      },
+      "versions": [
+        "1.1.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/process-tailwind/v/1.1.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12138"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T00:20:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "27f05f180078d03e67bbe9e4324704472b1c39b30697937eb2d876d36251395c"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/24c25d5f5fcbb0992a4f"
+        ]
+      }
+    }
+  }
+}
