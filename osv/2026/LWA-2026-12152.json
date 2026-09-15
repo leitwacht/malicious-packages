@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12152",
+  "modified": "2026-09-15T16:08:15Z",
+  "published": "2026-09-15T15:57:20Z",
+  "summary": "Malicious code in chai-as-crack (npm)",
+  "details": "Chai-as-crack is a combosquat of the chai-as-promised assertion plugin. Its main entry (index.js) loads a 4MB heavily-obfuscated script (lib/config.js) at require time and imports child_process.spawn. The obfuscated script uses a javascript-obfuscator-style encoded string-array with a runtime decoder, hiding all of its string constants and network/command targets from static inspection. The package description is unrelated filler text. Because the payload is fully obfuscated, its concrete C2/exfil targets are not recoverable from the source; the package executes its hidden logic whenever the module is required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-crack",
+        "purl": "pkg:npm/chai-as-crack"
+      },
+      "versions": [
+        "7.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-crack/v/7.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12152"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T15:57:20Z",
+      "indicators_observed": {
+        "sha256": [
+          "f25b435e1e7a02df774cde833335d370975440af7de1cf8beb483ce4b6ceffef"
+        ]
+      }
+    }
+  }
+}
