@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12140",
+  "modified": "2026-09-15T01:20:46Z",
+  "published": "2026-09-15T01:20:25Z",
+  "summary": "Malicious code in process-lhpm (npm)",
+  "details": "Process-lhpm@1.1.79 is a remote-code-execution dropper. Importing the package auto-starts a detached background process (node loader.js) that persists via a PID file. The loader fetches remote content from hxxps://api[.]npoint[.]io/33e8d008c334b060adad, base64-decodes the `code` field of the returned JSON, and executes it via the Function constructor with require/__dirname/__filename/module/exports in scope — giving the remote payload full access to the host. The payload is served remotely and is not shipped in the package, so its behaviour is controlled entirely by the remote endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "process-lhpm",
+        "purl": "pkg:npm/process-lhpm"
+      },
+      "versions": [
+        "1.1.79"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/process-lhpm/v/1.1.79"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12140"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T01:20:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "22918e45e09450fe670f279bc0729269cea50a4b197580fd2ae5633bd2a698be"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/33e8d008c334b060adad"
+        ]
+      }
+    }
+  }
+}
