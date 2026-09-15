@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12156",
+  "modified": "2026-09-15T20:51:39Z",
+  "published": "2026-09-15T20:51:12Z",
+  "summary": "Malicious code in chai-as-agile (npm)",
+  "details": "On import, the package executes lib/initializeCaller.js, which base64-decodes the endpoint hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df and POSTs the entire process environment (all environment variables and any credentials/tokens they contain) to it. It then takes the HTTP response body and executes it as JavaScript via the Function constructor, enabling arbitrary remote code execution on the host. The exfiltration and code-execution trigger automatically whenever the module is required.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-agile",
+        "purl": "pkg:npm/chai-as-agile"
+      },
+      "versions": [
+        "2.4.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-agile/v/2.4.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12156"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T20:51:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "sha256": [
+          "3daf5112804c7e2a90d28f7f0da130a433143c0d7cdef83bd63dce6f706b608a"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/6c1d60d35852ef0c05df"
+        ]
+      }
+    }
+  }
+}
