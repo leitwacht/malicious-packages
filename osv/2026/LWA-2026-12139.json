@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12139",
+  "modified": "2026-09-15T00:40:14Z",
+  "published": "2026-09-15T00:39:47Z",
+  "summary": "Malicious code in n8n-nodes-healthmon (npm)",
+  "details": "The package is a trojanized n8n community node that opens an unauthenticated remote command-execution server. On install (postinstall hook) and whenever the node is loaded, index.js starts an HTTP server bound to 0[.]0[.]0[.]0:41111. Any client can POST a JSON body containing a \"c\" field, which is executed as a shell command via child_process.exec(); the command's stdout/stderr and exit code are returned in the HTTP response. No authentication is required, giving any network-reachable client arbitrary command execution on the host. The package ships no actual health-monitoring logic.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-healthmon",
+        "purl": "pkg:npm/n8n-nodes-healthmon"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-healthmon/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12139"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T00:39:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "b2dbf7465cfe51b96495346736476bebdd97185a0882ed19e0b38fcb306ea928"
+        ]
+      }
+    }
+  }
+}
