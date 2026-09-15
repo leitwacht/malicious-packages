@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12154",
+  "modified": "2026-09-15T19:53:05Z",
+  "published": "2026-09-15T19:52:50Z",
+  "summary": "Malicious code in tetotest (npm)",
+  "details": "The package contains no application code — only a package.json whose preinstall and postinstall hooks run during installation and POST host metadata to an attacker-controlled Discord webhook (hxxps://discord[.]com/api/webhooks/1413937656697720862/[.][.][.]). The preinstall hook sends the current working directory ($(pwd)); the postinstall hook sends the device hostname ($(hostname)). Installing this package silently reports the installer's host identity to the remote webhook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tetotest",
+        "purl": "pkg:npm/tetotest"
+      },
+      "versions": [
+        "14.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tetotest/v/14.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12154"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-15T19:52:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "discord[.]com"
+        ],
+        "sha256": [
+          "32e58aff7db80206d679abe534454de13e08ed18047b8dd5f036429688873d44"
+        ],
+        "url_observed": [
+          "hxxps://discord[.]com/api/webhooks/1413937656697720862/",
+          "hxxps://discord[.]com/api/webhooks/1413937656697720862/[secret-redacted]"
+        ]
+      }
+    }
+  }
+}
