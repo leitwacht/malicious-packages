@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12186",
+  "modified": "2026-09-09T15:16:57Z",
+  "published": "2026-09-09T15:14:48Z",
+  "summary": "Malicious code in memfd-secret (npm)",
+  "details": "The registry manifest for memfd-secret@1.0.0 declares an install script that differs from the tarball's package.json. The manifest install script runs `id\u003e/tmp/pwned` (writing the current user and group identity to /tmp/pwned) before running node-gyp rebuild, and embeds a comment instructing scanners to treat the script as malware. The tarball's package.json declares only `node-gyp rebuild`. The mismatch means tooling that executes lifecycle scripts from the registry manifest would run the modified command rather than the clean build step.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "memfd-secret",
+        "purl": "pkg:npm/memfd-secret"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/memfd-secret/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12186"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-09T15:14:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "0c4ef3b48b536adb29e915c4fdc64c62bf694bed13b2bdcccf9e8065bcbaa1c1"
+        ]
+      }
+    }
+  }
+}
