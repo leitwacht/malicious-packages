@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12175",
+  "modified": "2026-09-16T10:10:29Z",
+  "published": "2026-09-16T10:05:39Z",
+  "summary": "Malicious code in confx1789550882 (npm)",
+  "details": "Confx1789550882@1.0.0 ships a single index.js that is a browser-context exfiltration payload. When loaded via \u003cscript src\u003e it beacons the page's location.href and document.cookie to webhook[.]site/04d98207-c947-4938-9f0c-f92feae051cb/, then fetches authenticated pages (/profile, /admin, /dev, /developer, /flag, /me, /dashboard) with credentials:'include' and exfiltrates up to 3000 characters of each page's HTML to the same endpoint. It also regex-scans the fetched page bodies and cookie for a DGA{...} flag pattern and beacons any match. The payload steals cookies and authenticated page content and sends them to the webhook[.]site collector.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "confx1789550882",
+        "purl": "pkg:npm/confx1789550882"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/confx1789550882/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12175"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T10:05:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "4362ebd9531ac8c1dd0b0be179c5784ab02ed306539721c1c71a231f6af249a4"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/04d98207-c947-4938-9f0c-f92feae051cb/"
+        ]
+      }
+    }
+  }
+}
