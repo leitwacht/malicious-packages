@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12169",
+  "modified": "2026-09-16T08:51:43Z",
+  "published": "2026-09-16T08:50:41Z",
+  "summary": "Malicious code in @asenfotech/unplugin-element-plus (npm)",
+  "details": "The postinstall hook (postinstall-run.cjs -\u003e tooling-bootstrap.cjs) runs a base64-encoded remote-access agent. On install it registers the host with the C2 server at hxxps://npmjs[.]it[.]com/ (a typosquat of npmjs[.]com) via POST /api/register, sending hostname, username, and OS. It then polls GET /api/task/{agent_id} for commands and executes arbitrary shell commands on the victim machine via cmd.exe /c or /bin/sh -c, uploading command output to /api/result/{agent_id} and file contents to /api/file/{agent_id}/{task_id}. The agent only activates when the consumer project contains specific sentinel files (src/pages/GameAggregator/GameAggrBusinessPage/index.tsx, src/router/RouterProvider.tsx, src/api-gs/dictionaries.ts), indicating a targeted attack. The package's main index.js is a decoy Element Plus resolver.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@asenfotech/unplugin-element-plus",
+        "purl": "pkg:npm/%40asenfotech/unplugin-element-plus"
+      },
+      "versions": [
+        "2.9.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@asenfotech/unplugin-element-plus/v/2.9.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12169"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T08:50:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npmjs[.]it[.]com"
+        ],
+        "sha256": [
+          "36a4665e16c005c61c04cf873c861e841e393fbe246ca98d03b46199405c1122"
+        ],
+        "url_observed": [
+          "hxxps://npmjs[.]it[.]com/",
+          "hxxps://npmjs[.]it[.]com/api/file/",
+          "hxxps://npmjs[.]it[.]com/api/register",
+          "hxxps://npmjs[.]it[.]com/api/result/",
+          "hxxps://npmjs[.]it[.]com/api/task/"
+        ]
+      }
+    }
+  }
+}

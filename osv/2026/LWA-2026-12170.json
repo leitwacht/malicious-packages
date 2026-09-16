@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12170",
+  "modified": "2026-09-16T08:53:20Z",
+  "published": "2026-09-16T08:52:22Z",
+  "summary": "Malicious code in element-plus-vite-cli (npm)",
+  "details": "Element-plus-vite-cli is a trojanized Vite CLI wrapper. Running its bin (or requiring the package) invokes tooling-bootstrap.cjs, which decodes an embedded base64 payload and drops it as tooling-api-runtime.mjs into ~/.gradle/daemon/, then spawns it as a detached background process that persists after the parent exits. The dropped agent is a remote-access trojan that beacons to the C2 server hxxps://npmjs[.]it[.]com/ (a typosquat of npmjs[.]com). It registers the host (hostname, username, OS, and a persistent agent id stored in ~/.gradle-cache/.aid) via POST /api/register, then polls GET /api/task/{agent_id} for commands. It can execute arbitrary shell commands (cmd.exe or /bin/sh), list directories, read and exfiltrate file contents to /api/file/{agent_id}/{task_id}, write files from base64 data, delete and move files, and list processes, reporting results to /api/result/{agent_id}. The implant only activates when the consuming project contains one of a hardcoded set of sentinel source files (e.g. src/api/cicade.js, src/views/orderCenter/orderCenter.vue).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "element-plus-vite-cli",
+        "purl": "pkg:npm/element-plus-vite-cli"
+      },
+      "versions": [
+        "2.9.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/element-plus-vite-cli/v/2.9.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12170"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T08:52:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npmjs[.]it[.]com"
+        ],
+        "sha256": [
+          "36463c55e80bf9ad9f02e577954d3d4c5365b8087e6bf62c63e0febf15fb96e3"
+        ],
+        "url_observed": [
+          "hxxps://npmjs[.]it[.]com/",
+          "hxxps://npmjs[.]it[.]com/api/register"
+        ]
+      }
+    }
+  }
+}
