@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12188",
+  "modified": "2026-09-16T17:10:32Z",
+  "published": "2026-09-16T17:08:04Z",
+  "summary": "Malicious code in ausitool (npm)",
+  "details": "Ausitool@1.0.1 ships a compiled native executable (a Bun-bundled binary) as its CLI. The package README instructs the user to run the bundled binary at least once, stating it \"will activate the package in our systems\" — a remote-activation / phone-home-on-first-run behaviour. The actual payload is opaque compiled code; the bundled JavaScript entry (src/index.js) is only a decoy dotenv parser reading /home/hatch/test.dat. The declared bin entry points to a bin/cli.js that is not present in the package, so the shipped behaviour is entirely inside the native binary. No network endpoint could be extracted from static strings; the binary's runtime behaviour on execution is the payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ausitool",
+        "purl": "pkg:npm/ausitool"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ausitool/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12188"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T17:08:04Z",
+      "indicators_observed": {
+        "sha256": [
+          "1615863f37f254ffb0e0586cc4cad03d69575e6b6bbd992730846b3146032e94"
+        ]
+      }
+    }
+  }
+}
