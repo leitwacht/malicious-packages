@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12195",
+  "modified": "2026-09-16T23:35:26Z",
+  "published": "2026-09-16T23:33:27Z",
+  "summary": "Malicious code in tailwindcss-contact-form (npm)",
+  "details": "Tailwindcss-contact-form@0.5.1 is a trojanized clone of the legitimate tailwindcss-forms plugin. The package's main entry src/index.js is replaced with a heavily obfuscated payload (javascript-obfuscator) that runs when the module is imported. The payload builds an Ethereum JSON-RPC client that queries public RPC endpoints (h[.]drpc[.]org, publicnode, blocksco, 1rpc[.]io, ethereum-rpc, and the ETH_RPC_URL env var) and implements transaction-locating logic (eth_getBlockByNumber, eth_getTransactionCount, eth_getTransactionByHash, findSenderTx, nonceAtBlocks, lastSenderTx) targeting a hardcoded sender address 0xa322E5f3..., consistent with a wallet-drainer / transaction-frontrunning implant. It also constructs an indexer URL with Etherscan-style query parameters (module=account, action=txlist, address=, startblock, endblock, page, offset, sort=desc) and imports child_process spawn. The payload further contains npm-token-harvesting global pollution: it assigns masked npm-token markers (A10-***npm) and captures require/module via global variables (_t_u, _t_s, _H, _H2, global['r'], global['m']) to enable self-propagation, and uses x-payload- HTTP headers with XOR-encoded payload fragments.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-contact-form",
+        "purl": "pkg:npm/tailwindcss-contact-form"
+      },
+      "versions": [
+        "0.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-contact-form/v/0.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12195"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T23:33:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "blocksco[.]com",
+          "ethereum-rpc[.]com",
+          "h[.]drpc[.]org",
+          "publicnode[.]com"
+        ],
+        "sha256": [
+          "2929438799b3a7e5c012db06e0350db74ad3dde276cf4112eb2094ab33bc0f39"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
