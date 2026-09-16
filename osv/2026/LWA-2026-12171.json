@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12171",
+  "modified": "2026-09-16T09:21:57Z",
+  "published": "2026-09-16T09:20:41Z",
+  "summary": "Malicious code in process-mite (npm)",
+  "details": "Process-mite@1.1.79 executes remote code on import. Importing the package auto-runs an initializer that spawns a detached background `node loader.js` process (persisting its PID to a.pid file). loader.js fetches a JSON document from hxxps://api[.]npoint[.]io/33e8d008c334b060adad, base64-decodes the `code` field, and executes it via the Function constructor with require/__dirname/__filename/module/exports supplied — a remote-code-execution dropper whose payload is served remotely rather than shipped in the package. The package also monkey-patches Module.prototype.require to intercept child_process calls. The remote payload is not present in the tarball, so its full behaviour is determined by the fetched code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "process-mite",
+        "purl": "pkg:npm/process-mite"
+      },
+      "versions": [
+        "1.1.79"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/process-mite/v/1.1.79"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12171"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T09:20:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]npoint[.]io"
+        ],
+        "sha256": [
+          "47d2c7b52d23f448b18f240b1d58753e2a089be789c582971203743d3a42c202"
+        ],
+        "url_observed": [
+          "hxxps://api[.]npoint[.]io/33e8d008c334b060adad"
+        ]
+      }
+    }
+  }
+}
