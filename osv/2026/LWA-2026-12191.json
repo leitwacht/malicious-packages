@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12191",
+  "modified": "2026-09-16T17:42:29Z",
+  "published": "2026-09-16T17:40:44Z",
+  "summary": "Malicious code in farplotzy (npm)",
+  "details": "The package ships opaque native executables (a Go binary and a Bun-compiled binary) alongside a thin React wrapper. The Linux Go binary contains a hardcoded network endpoint catcher1[.]corraldev[.]com:8084. The package's declared bin entry points to bin/cli.js, which is not present in the tarball; the actual executables are native binaries whose behaviour is not visible in the source. The React wrapper posts plot data to api[.]farplotzy[.]dev/v1/render with a Bearer token.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "farplotzy",
+        "purl": "pkg:npm/farplotzy"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/farplotzy/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12191"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T17:40:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]farplotzy[.]dev",
+          "catcher1[.]corraldev[.]com"
+        ],
+        "sha256": [
+          "f10b6c55e37c58e26230ae4a94840472df478cf2d39fd6cdbca9e57a787b982d"
+        ]
+      }
+    }
+  }
+}
