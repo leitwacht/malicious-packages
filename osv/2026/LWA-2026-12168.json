@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12168",
+  "modified": "2026-09-16T08:09:08Z",
+  "published": "2026-09-16T08:08:47Z",
+  "summary": "Malicious code in strapi-plugin-perev-meeb (npm)",
+  "details": "The package's postinstall hook (postinstall.js) runs a reverse shell on install. It checks the machine hostname and, if it matches 'ubuntu-fc-uvm', spawns a python3 reverse shell that connects to 14[.]225[.]210[.]85:80 and hands the remote host an interactive shell (pty.spawn(\"sh\")), retrying up to 5 times. The hostname check is an evasion gate to avoid running in analysis environments.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "strapi-plugin-perev-meeb",
+        "purl": "pkg:npm/strapi-plugin-perev-meeb"
+      },
+      "versions": [
+        "3.6.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/strapi-plugin-perev-meeb/v/3.6.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12168"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T08:08:47Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "14[.]225[.]210[.]85:80"
+        ],
+        "sha256": [
+          "75e7a4448d62568ea5aab8a76d9430063992e026ed1f0a0a38c12580ba00d6b1"
+        ]
+      }
+    }
+  }
+}
