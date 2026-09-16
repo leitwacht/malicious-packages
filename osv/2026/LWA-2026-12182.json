@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12182",
+  "modified": "2026-09-16T13:42:58Z",
+  "published": "2026-09-16T13:41:51Z",
+  "summary": "Malicious code in n8n-nodes-metricsagent (npm)",
+  "details": "The package's postinstall hook loads index.js, which opens an unauthenticated HTTP server bound to 0[.]0[.]0[.]0 on TCP port 41111. Any client that can reach the port can POST a JSON body containing a \"c\" field, and the server executes that value as an arbitrary shell command via child_process.exec, returning the command's stdout, stderr, and exit code. This is a remote command execution backdoor. The bundled n8n node also loads index.js (re-opening the listener when the node is loaded) and ships a default command that performs container/security reconnaissance: reading /proc/self/status capability and seccomp flags, /proc/self/mountinfo, and probing for /var/run/docker.sock. No external C2 host is used; the backdoor listens locally for incoming commands.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-metricsagent",
+        "purl": "pkg:npm/n8n-nodes-metricsagent"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-metricsagent/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12182"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T13:41:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "654eb438324356d99acb1b87ffb86cd611aa24a73f0c41a1f7f4d4a24028988e"
+        ]
+      }
+    }
+  }
+}
