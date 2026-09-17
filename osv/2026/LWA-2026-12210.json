@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12210",
+  "modified": "2026-09-17T15:07:05Z",
+  "published": "2026-09-17T15:06:48Z",
+  "summary": "Malicious code in test89078-auth (npm)",
+  "details": "The preinstall hook (node index.js) collects the machine hostname and the current username via os.hostname() and os.userInfo().username, concatenates them, and exfiltrates them through a DNS lookup to a subdomain of the attacker-controlled domain dnshook[.]site (31ee29fe-db68-4fd3-86a2-2b707b9e95f0[.]dnshook[.]site). The DNS query encodes the host identity data in the subdomain label, silently beaconing the victim's machine identity to the remote server on every install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "test89078-auth",
+        "purl": "pkg:npm/test89078-auth"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/test89078-auth/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12210"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T15:06:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "31ee29fe-db68-4fd3-86a2-2b707b9e95f0[.]dnshook[.]site",
+          "dnshook[.]site"
+        ],
+        "sha256": [
+          "edf508b91fc237ba72a300be862149a906cd748667b958112b12fb76f2b8b4f3"
+        ]
+      }
+    }
+  }
+}
