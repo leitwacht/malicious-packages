@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12197",
+  "modified": "2026-09-17T00:50:39Z",
+  "published": "2026-09-17T00:50:22Z",
+  "summary": "Malicious code in hardhat-core (npm)",
+  "details": "Hardhat-core is a combosquat of the hardhat Ethereum framework that ships a pino-style logger codebase with an injected remote-code-execution dropper. index.js spawns lib/caller.js as a detached background node process (stdio ignored, parent unref'd). caller.js POSTs to hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5 with the header x-secret-key: _, receives a JavaScript payload in the response, and executes it via the Function constructor with full require access — fetching and running arbitrary remote code at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-core",
+        "purl": "pkg:npm/hardhat-core"
+      },
+      "versions": [
+        "2.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-core/v/2.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12197"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T00:50:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "sha256": [
+          "9288ad80f1e589207755a8510e62fcf8682c2504870c99ef09bed2600e9b803f"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5"
+        ]
+      }
+    }
+  }
+}
