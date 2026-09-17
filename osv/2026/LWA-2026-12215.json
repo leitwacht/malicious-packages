@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12215",
+  "modified": "2026-09-17T18:20:31Z",
+  "published": "2026-09-17T18:20:14Z",
+  "summary": "Malicious code in catwrestlingbird (npm)",
+  "details": "The postinstall hook (node install.js) is a command-and-control implant. It beacons to hxxp://192[.]168[.]4[.]216:3000, POSTing host metadata (hostname, username, platform, arch, OS release, network interfaces, directory tree, env vars) and network-recon output (active connections via ss/netstat, ARP cache, routing table) to /api/beacon. It then spawns a detached background process (heartbeat.js) that pings /api/heartbeat every 60 seconds and, when instructed, opens a WebSocket reverse shell at /ws/shell/\u003cbeacon-id\u003e/open that spawns /bin/sh with piped stdin, giving the operator remote command execution. On a kill command it removes itself from package.json/package-lock.json and deletes its own directory.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "catwrestlingbird",
+        "purl": "pkg:npm/catwrestlingbird"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/catwrestlingbird/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12215"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T18:20:14Z",
+      "indicators_observed": {
+        "sha256": [
+          "8f255dcbfec881903aa856710bf565cc085638f420b2d764eed6428675b95ad2"
+        ]
+      }
+    }
+  }
+}
