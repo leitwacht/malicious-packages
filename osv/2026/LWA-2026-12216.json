@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12216",
+  "modified": "2026-09-17T21:52:43Z",
+  "published": "2026-09-17T21:52:00Z",
+  "summary": "Malicious code in hardhat-devkit (npm)",
+  "details": "Hardhat-devkit@2.3.6 is a trojanized clone of the pino logging library. The package ships pino's documentation and type definitions verbatim but replaces lib/config.js — which is loaded when the package is required — with a 4MB obfuscated JavaScript payload (custom string-decoder and array-shuffle bootstrap). The entry point index.js additionally imports child_process.spawn and its exported middleware is a stub that triggers a background process. The package name impersonates the hardhat Ethereum development framework. The obfuscated payload's full behaviour is concealed by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-devkit",
+        "purl": "pkg:npm/hardhat-devkit"
+      },
+      "versions": [
+        "2.3.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-devkit/v/2.3.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12216"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T21:52:00Z",
+      "indicators_observed": {
+        "sha256": [
+          "0a6e831a2bb1cda110f62e89b2b1f73473284de62bcf56f615e7e34af8acdb69"
+        ]
+      }
+    }
+  }
+}
