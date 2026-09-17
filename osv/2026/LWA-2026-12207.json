@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12207",
+  "modified": "2026-09-17T14:56:20Z",
+  "published": "2026-09-17T14:55:54Z",
+  "summary": "Malicious code in pf25133 (npm)",
+  "details": "The package's index.js runs an async IIFE that reads the browser's document.cookie, fetches a list of local paths (/profile, /, /feed, /home, /me, /admin, /flag, /dashboard, /settings, /api/me) and scans each response for a DGA{...} flag pattern, then POSTs the collected cookie and per-path results to hxxps://webhook[.]site/c4e39647-bfb8-47ef-b6d4-a112aacc6cd1. This exfiltrates the victim's session cookie and any captured flag to an attacker-controlled webhook endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pf25133",
+        "purl": "pkg:npm/pf25133"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pf25133/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12207"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T14:55:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "97a1367f9dbb048378ad90b49cabb30ebc04beeeb7144369c1db834299c40578"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/c4e39647-bfb8-47ef-b6d4-a112aacc6cd1"
+        ]
+      }
+    }
+  }
+}

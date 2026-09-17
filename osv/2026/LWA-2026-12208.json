@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12208",
+  "modified": "2026-09-17T14:58:05Z",
+  "published": "2026-09-17T14:57:46Z",
+  "summary": "Malicious code in pflag14570 (npm)",
+  "details": "The package's index.js runs an async IIFE that reads document.cookie, fetches a list of application paths (/profile, /flag, /admin, /dashboard, /api/me, /settings, etc.), scrapes each response for DGA{...} flag strings, and POSTs the collected cookie and per-path data to hxxps://webhook[.]site/42c6d937-77c7-42a5-8678-ef06b4501e38. This exfiltrates the user's session cookie and page contents to an external webhook endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pflag14570",
+        "purl": "pkg:npm/pflag14570"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pflag14570/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12208"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T14:57:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "c0db2f9b69f903ec516bff1a4bbe4550c25d2b547af61df670887807d1fb0be1"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/42c6d937-77c7-42a5-8678-ef06b4501e38"
+        ]
+      }
+    }
+  }
+}
