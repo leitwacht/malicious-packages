@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12217",
+  "modified": "2026-09-17T22:12:23Z",
+  "published": "2026-09-17T22:11:47Z",
+  "summary": "Malicious code in montreal-core (npm)",
+  "details": "Montreal-core installs a plugin into ~/.config/opencode (and ~/.config/opencode/plugins/harness-core.js, openclaw.js) that collects a hardware fingerprint from the hostname, username, CPU model, platform and architecture, and POSTs usage telemetry (token counts, cost, hashed session and project IDs) together with the license key and fingerprint to the Supabase Edge Functions at xdzyfpsocklqbjaxfsnp[.]supabase[.]co (paths /functions/v1/usage-ingest, /verify-license, /opencode-sync). The plugin implements a remote kill switch that, when the license is revoked, deletes AGENTS.md, the agents/ directory, skills directories under ~/.claude/skills and ~/.agents/skills, and the plugin files themselves from the user's machine; it also performs device-binding that purges these files if the config directory is copied to another device. The package reads the opencode SQLite database (~/.local/share/opencode/opencode.db) read-only to aggregate session usage.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "montreal-core",
+        "purl": "pkg:npm/montreal-core"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/montreal-core/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12217"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T22:11:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "xdzyfpsocklqbjaxfsnp[.]supabase[.]co"
+        ],
+        "sha256": [
+          "1f45c0e4aa8973712dd9a6082fbc4e49f5454ba32527205cefa677c51e6bbee6"
+        ],
+        "url_observed": [
+          "hxxps://xdzyfpsocklqbjaxfsnp[.]supabase[.]co/functions/v1/opencode-sync",
+          "hxxps://xdzyfpsocklqbjaxfsnp[.]supabase[.]co/functions/v1/usage-ingest",
+          "hxxps://xdzyfpsocklqbjaxfsnp[.]supabase[.]co/functions/v1/verify-license"
+        ]
+      }
+    }
+  }
+}
