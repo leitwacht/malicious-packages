@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12212",
+  "modified": "2026-09-17T15:37:11Z",
+  "published": "2026-09-17T15:35:29Z",
+  "summary": "Malicious code in tailwindcss-form-utils (npm)",
+  "details": "Tailwindcss-form-utils@0.5.1 is a combosquat of the legitimate tailwindcss-forms plugin. Its main module src/index.js is a heavily obfuscated Ethereum drainer that executes when the package is imported. It connects to Ethereum RPC endpoints (drpc[.]org, 1rpc[.]io/eth, publicnode, ethereum-rpc) and to an indexer API at hxxps://etut[.]com/api (Etherscan-style: ?module=account\u0026action=txlist\u0026address=...\u0026startblock=0\u0026endblock=9999999), scans the blockchain for transactions from the attacker-controlled address 0xa322E5f3..., decodes embedded commands/addresses from those transactions, and spawns a child node process to carry them out. Outbound traffic is masked with browser user-agent strings.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-form-utils",
+        "purl": "pkg:npm/tailwindcss-form-utils"
+      },
+      "versions": [
+        "0.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-form-utils/v/0.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12212"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T15:35:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "drpc[.]org",
+          "etut[.]com",
+          "publicnode[.]com"
+        ],
+        "sha256": [
+          "5bca07f29d645a22866c144ead03f613dcdb56e7005e352b22612714e25797ab"
+        ],
+        "url_observed": [
+          "hxxps://etut[.]com/api",
+          "hxxps://etut[.]com/api?module=account\u0026action=txlist\u0026address=[.][.][.]\u0026startblock=0\u0026endblock=9999999"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12211",
+  "modified": "2026-09-17T15:35:48Z",
+  "published": "2026-09-17T15:35:27Z",
+  "summary": "Malicious code in chai-testing (npm)",
+  "details": "Requiring this package (main entry index.js) spawns a detached background node process that runs lib/caller.js. That script POSTs to hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5 with an HTTP header x-secret-key: _, receives JavaScript source code in the response, and executes it via the Function constructor with the require function in scope — a remote second-stage code downloader that runs arbitrary attacker-supplied code on the installer's machine. The payload retries up to 5 times on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-testing",
+        "purl": "pkg:npm/chai-testing"
+      },
+      "versions": [
+        "1.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-testing/v/1.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12211"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T15:35:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "sha256": [
+          "fb88abb1bb1e96c53efed3f496a9d1a94561b80377386679a2c592f4f519bba6"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5"
+        ]
+      }
+    }
+  }
+}
