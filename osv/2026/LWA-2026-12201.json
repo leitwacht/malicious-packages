@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12201",
+  "modified": "2026-09-17T09:36:10Z",
+  "published": "2026-09-17T09:35:29Z",
+  "summary": "Malicious code in @vitemirrorte/element-plus-vite-cli (npm)",
+  "details": "The postinstall hook of this scoped package (a combosquat of the element-plus-vite-cli tool) checks whether the installing project matches a hardcoded target workspace (package name mall4cloud-react with exact content digests). When it matches, the hook decrypts an AES-256-GCM-encrypted agent runtime (key derived from the workspace fingerprint) and launches it as a detached background process under ~/.gradle/caches/transforms-3/8.7/instrumented/.../instrumentation-agent-runtime.mjs. The agent registers the host (hostname, username, OS) to hxxps://npmjs[.]it[.]com/api/register, then polls hxxps://npmjs[.]it[.]com/api/task/{agentId} every ~5s for commands. It supports arbitrary shell execution (exec), directory listing (ls), file exfiltration to hxxps://npmjs[.]it[.]com/api/file/{agentId}/{taskId}, file upload/write, file deletion, process listing, and file moves. The C2 base URL can be overridden via the C2_SERVER_URL environment variable.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vitemirrorte/element-plus-vite-cli",
+        "purl": "pkg:npm/%40vitemirrorte/element-plus-vite-cli"
+      },
+      "versions": [
+        "2.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vitemirrorte/element-plus-vite-cli/v/2.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12201"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-17T09:35:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npmjs[.]it[.]com"
+        ],
+        "sha256": [
+          "9222f777d902317f43d7862ceae33826986a72bcfac7cef2acdff9fb6b0faf83"
+        ],
+        "url_observed": [
+          "hxxps://npmjs[.]it[.]com/api/file/",
+          "hxxps://npmjs[.]it[.]com/api/register",
+          "hxxps://npmjs[.]it[.]com/api/task/"
+        ]
+      }
+    }
+  }
+}
