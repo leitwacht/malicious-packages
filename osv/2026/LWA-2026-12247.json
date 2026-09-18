@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12247",
+  "modified": "2026-09-18T18:18:55Z",
+  "published": "2026-09-18T18:18:30Z",
+  "summary": "Malicious code in tailwind-form-styles (npm)",
+  "details": "Tailwind-form-styles@0.5.1 is a trojanized clone of the @tailwindcss/forms plugin. Its main entry (src/index.js) is obfuscated and, when the module is loaded, runs an Ethereum-based command-and-control implant. It queries public Ethereum RPC endpoints (eth-mainnet[.]publicnode[.]com, eth[.]drpc[.]org, 1rpc[.]io) and a blockscout indexer to locate the latest transaction from a hardcoded sender address (0xa322E5f3...), then decodes the transaction's recipient field into an IP address that becomes the C2 host. It fetches a payload from that host over HTTP, XOR-decodes it, and executes it both via eval and by spawning a detached `node -e` process, enabling remote code execution. After running, the file rewrites itself to strip the obfuscated payload block, leaving only the benign-looking tailwind plugin code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-form-styles",
+        "purl": "pkg:npm/tailwind-form-styles"
+      },
+      "versions": [
+        "0.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-form-styles/v/0.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12247"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-18T18:18:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]publicnode[.]com",
+          "eth[.]drpc[.]org"
+        ],
+        "sha256": [
+          "0bf1fdf00ed11cba7208124f4d5fbc08b491f3fddbb9146c29200c128dd313d3"
+        ],
+        "wallet_observed": [
+          "0xa322E5f3"
+        ]
+      }
+    }
+  }
+}
