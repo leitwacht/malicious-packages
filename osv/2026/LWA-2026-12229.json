@@ -4,10 +4,10 @@
   "aliases": [
     "MAL-2026-16283"
   ],
-  "modified": "2026-09-18T08:22:06Z",
+  "modified": "2026-09-18T19:06:00Z",
   "published": "2026-09-18T08:21:49Z",
   "summary": "Malicious code in @shared-web/assets (npm)",
-  "details": "The install hook of this package (advertised as an asset-resolution library) runs `node index.js`, which loads lib/core.js. That module collects the local username, hostname, and current working directory, encodes them together with a Unix timestamp into a single DNS query string, and resolves it against the domain oob[.]algamil7x[.]xyz — a DNS beacon that exfiltrates host metadata to a remote server. The strings are hidden behind charcode-array decoding to evade inspection.",
+  "details": "The install hook of this package (advertised as an asset-resolution library) runs `node index.js`, which loads lib/core.js. That module collects the local username, hostname, and current working directory, encodes them together with a Unix timestamp into a single DNS query string, and resolves it against the domain oob[.]algamil7x[.]xyz — a DNS beacon that exfiltrates host metadata to a remote server. The strings are hidden behind charcode-array decoding to evade inspection. The install hook (node index.js) runs an obfuscated beacon. It reads the OS username, hostname, and current working directory basename, then exfiltrates them via a DNS resolve4 query to the attacker-controlled domain oob[.]algamil7x[.]xyz, encoded as \u003cprefix\u003e.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz. The package otherwise presents as a legitimate asset/util library.",
   "affected": [
     {
       "package": {
