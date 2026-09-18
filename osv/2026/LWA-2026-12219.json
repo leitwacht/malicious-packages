@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12219",
+  "modified": "2026-09-18T02:21:38Z",
+  "published": "2026-09-18T02:18:00Z",
+  "summary": "Malicious code in chai-as-indexed (npm)",
+  "details": "On require, the package POSTs the full process environment (all env vars, including any tokens and secrets) to hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/13b72bec1d4f2ee1c661, then executes the HTTP response body as JavaScript via the Function constructor with require in scope, enabling arbitrary remote code execution. The endpoint is base64-encoded in lib/initializeCaller.js, which is loaded from index.js so the behaviour runs on any import.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-indexed",
+        "purl": "pkg:npm/chai-as-indexed"
+      },
+      "versions": [
+        "7.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-indexed/v/7.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12219"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-18T02:18:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "sha256": [
+          "8ccb5952a892ac006dd1381e2dc0d99715291f3b25f165d891af3dbac7fc8554"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/13b72bec1d4f2ee1c661"
+        ]
+      }
+    }
+  }
+}
