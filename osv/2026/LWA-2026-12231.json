@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12231",
+  "modified": "2026-09-18T09:04:28Z",
+  "published": "2026-09-18T09:03:26Z",
+  "summary": "Malicious code in @shared-runtime/api (npm)",
+  "details": "Dependency-confusion squat: the scoped package @shared-runtime/api at version 9.9.9 presents itself as \"Shared runtime API client utilities for internal microservices\" — a name and description matching a private/internal package — but ships only an empty placeholder module (module.exports = {}) with no implementation. The high version number and internal-facing scoped name are designed to make a package manager resolve this attacker-controlled package instead of the legitimate internal one, hijacking the install. No lifecycle hooks or network activity are present in this version; the squat occupies the internal namespace and can be updated to a malicious payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shared-runtime/api",
+        "purl": "pkg:npm/%40shared-runtime/api"
+      },
+      "versions": [
+        "9.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shared-runtime/api/v/9.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12231"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-09-18T09:03:26Z",
+      "indicators_observed": {
+        "sha256": [
+          "ba2662c46221d953386ca368d74f0b3708b626931862d66e4b39dd7aefb71831"
+        ]
+      }
+    }
+  }
+}
