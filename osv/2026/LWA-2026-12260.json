@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12260",
+  "modified": "2026-09-18T21:56:18Z",
+  "published": "2026-09-18T21:55:47Z",
+  "summary": "Malicious code in bulk-add-sdk (npm)",
+  "details": "The install hook runs `node extract.js thd-orangepay`. The script performs host reconnaissance and exfiltrates it to an attacker-controlled domain: it resolves a DNS beacon name of the form `\u003cproject_id\u003e.\u003chostname\u003e.da70vavqatj0sujmhl70w1anmx5ghcr13[.]wallclip[.]me`, fetches the machine's public IP from ifconfig[.]me, then POSTs a JSON payload containing hostname, platform, architecture, current working directory, public IP, and project_id to that wallclip[.]me host over HTTPS (with X-Host, X-Platform, X-Arch, X-CWD, X-IP, X-Project headers). The beacon fires on package install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "bulk-add-sdk",
+        "purl": "pkg:npm/bulk-add-sdk"
+      },
+      "versions": [
+        "1.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/bulk-add-sdk/v/1.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12260"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-18T21:55:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "da70vavqatj0sujmhl70w1anmx5ghcr13[.]wallclip[.]me",
+          "ifconfig[.]me",
+          "wallclip[.]me"
+        ],
+        "sha256": [
+          "568350c75b85c32baebfd13c0ec0b0d2db47bd3f9e419886b1f0784c4ed64136"
+        ]
+      }
+    }
+  }
+}
