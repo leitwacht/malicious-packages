@@ -1,10 +1,13 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-12246",
-  "modified": "2026-09-18T17:01:36Z",
+  "aliases": [
+    "MAL-2026-16290"
+  ],
+  "modified": "2026-09-18T21:11:51Z",
   "published": "2026-09-18T17:00:48Z",
   "summary": "Malicious code in @insiderintelligence/googleadmanager (npm)",
-  "details": "The package's install hook (node index.js) loads lib/core.js, which runs an obfuscated beacon on install. It collects the local username (os.userInfo().username), hostname (os.hostname()), and the current working directory basename (process.cwd()), then encodes them into a DNS query of the form iadgm.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003cunix_timestamp\u003e.oob[.]algamil7x[.]xyz and resolves it via dns.resolve4, exfiltrating host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The README falsely states the package makes no network requests.",
+  "details": "The package's install hook (node index.js) loads lib/core.js, which runs an obfuscated beacon on install. It collects the local username (os.userInfo().username), hostname (os.hostname()), and the current working directory basename (process.cwd()), then encodes them into a DNS query of the form iadgm.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003cunix_timestamp\u003e.oob[.]algamil7x[.]xyz and resolves it via dns.resolve4, exfiltrating host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The README falsely states the package makes no network requests. The package's install script (node index.js) runs an obfuscated beacon on install. It reads the OS username, hostname, and current working directory, then encodes them with a timestamp into a DNS query of the form iadgm.\u003cuser\u003e.\u003chost\u003e.\u003ccwd\u003e.\u003cts\u003e.oob[.]algamil7x[.]xyz and resolves it via dns.resolve4, exfiltrating host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The beacon loads the os and dns modules through module.constructor._load to bypass the standard require chain, and the package bundles benign-looking Google Ad Manager slot components as a decoy.",
   "affected": [
     {
       "package": {

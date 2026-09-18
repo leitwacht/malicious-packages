@@ -1,10 +1,13 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-12228",
-  "modified": "2026-09-18T08:20:31Z",
+  "aliases": [
+    "MAL-2026-16291"
+  ],
+  "modified": "2026-09-18T21:11:26Z",
   "published": "2026-09-18T08:19:50Z",
   "summary": "Malicious code in @shared-runtime/modules (npm)",
-  "details": "The package's install hook runs node index.js, which loads lib/core.js. On install, core.js collects the local username, hostname, current working directory, and a Unix timestamp, encodes them into the DNS query name \"srmods.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz\", and issues a DNS resolution request to that name, exfiltrating host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The package's exported financial-workflow modules (withdraw/orders/payments) are a decoy facade; the real behaviour is the install-time DNS beacon.",
+  "details": "The package's install hook runs node index.js, which loads lib/core.js. On install, core.js collects the local username, hostname, current working directory, and a Unix timestamp, encodes them into the DNS query name \"srmods.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz\", and issues a DNS resolution request to that name, exfiltrating host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The package's exported financial-workflow modules (withdraw/orders/payments) are a decoy facade; the real behaviour is the install-time DNS beacon. The package's install script (node index.js) runs an obfuscated beacon on install. It reads the OS username, hostname, and current working directory, then encodes them with a timestamp into a DNS query of the form srmods.\u003cuser\u003e.\u003chost\u003e.\u003ccwd\u003e.\u003cts\u003e.oob[.]algamil7x[.]xyz and resolves it via dns.resolve4, exfiltrating host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The beacon loads the os and dns modules through module.constructor._load to bypass the standard require chain, and the package bundles benign-looking financial-workflow modules as a decoy.",
   "affected": [
     {
       "package": {
