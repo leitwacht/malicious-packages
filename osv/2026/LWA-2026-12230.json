@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12230",
+  "modified": "2026-09-18T08:51:45Z",
+  "published": "2026-09-18T08:50:47Z",
+  "summary": "Malicious code in lufxchwmxwyps (npm)",
+  "details": "The package ships a single static HTML page that impersonates a Cloudflare \"Just a moment...\" Turnstile verification page. The page's inline JavaScript is obfuscated (encoded string array with a custom base64 decoder, an embedded AES key and host key) and renders a fake Turnstile challenge widget. When the visitor completes the challenge, the script invokes a redirect callback that sends them to an attacker-controlled destination. The page is a phishing-kit component intended to be served to victims to harvest credentials after a fake bot-check; the redirect target is obfuscated inside the script. The package has no install-time lifecycle scripts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lufxchwmxwyps",
+        "purl": "pkg:npm/lufxchwmxwyps"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lufxchwmxwyps/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12230"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-18T08:50:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "500c08c926068f3428615c6b944ebf88a9658ac5a390a3d998b39e44dfb8b6d5"
+        ],
+        "url_observed": [
+          "hxxps://challenges[.]cloudflare[.]com/turnstile/v0/api[.]js"
+        ]
+      }
+    }
+  }
+}
