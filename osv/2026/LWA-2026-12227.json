@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12227",
+  "modified": "2026-09-18T08:20:27Z",
+  "published": "2026-09-18T08:19:54Z",
+  "summary": "Malicious code in @shared-web/utils (npm)",
+  "details": "The package's install hook (package.json \"install\": \"node index.js\") runs a beacon on installation. It collects the installing user's username, hostname, and current working directory, sanitizes them, and encodes them together with a Unix timestamp into a DNS subdomain of oob[.]algamil7x[.]xyz, which it then resolves via dns.resolve4() — exfiltrating host metadata to an attacker-controlled domain on every install. The beacon code is obfuscated as byte-array charcode strings in lib/core.js, lib/f8a2cd.js, and lib/a9b3de.js, while the package's public src/ modules are a benign-looking utilities API. The README falsely states the package makes \"no hidden network calls.\"",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shared-web/utils",
+        "purl": "pkg:npm/%40shared-web/utils"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shared-web/utils/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12227"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-18T08:19:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "algamil7x[.]xyz",
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "e5ec3dec64b63b2e9b598d6ecd1df86b6ed4a3f418522b32a4ab51c2a35355ed"
+        ]
+      }
+    }
+  }
+}

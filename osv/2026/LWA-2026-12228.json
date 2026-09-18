@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12228",
+  "modified": "2026-09-18T08:20:31Z",
+  "published": "2026-09-18T08:19:50Z",
+  "summary": "Malicious code in @shared-runtime/modules (npm)",
+  "details": "The package's install hook runs node index.js, which loads lib/core.js. On install, core.js collects the local username, hostname, current working directory, and a Unix timestamp, encodes them into the DNS query name \"srmods.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz\", and issues a DNS resolution request to that name, exfiltrating host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The package's exported financial-workflow modules (withdraw/orders/payments) are a decoy facade; the real behaviour is the install-time DNS beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shared-runtime/modules",
+        "purl": "pkg:npm/%40shared-runtime/modules"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shared-runtime/modules/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12228"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-18T08:19:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "bac36cc8958499c36b987022ad47270d3d0471c0bdcd0e1d08798a890eb6891f"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12229",
+  "modified": "2026-09-18T08:22:06Z",
+  "published": "2026-09-18T08:21:49Z",
+  "summary": "Malicious code in @shared-web/assets (npm)",
+  "details": "The install hook of this package (advertised as an asset-resolution library) runs `node index.js`, which loads lib/core.js. That module collects the local username, hostname, and current working directory, encodes them together with a Unix timestamp into a single DNS query string, and resolves it against the domain oob[.]algamil7x[.]xyz — a DNS beacon that exfiltrates host metadata to a remote server. The strings are hidden behind charcode-array decoding to evade inspection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shared-web/assets",
+        "purl": "pkg:npm/%40shared-web/assets"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shared-web/assets/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12229"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-18T08:21:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ]
+      }
+    }
+  }
+}
