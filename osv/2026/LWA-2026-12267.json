@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12267",
+  "modified": "2026-09-19T05:46:44Z",
+  "published": "2026-09-19T05:42:10Z",
+  "summary": "Malicious code in testmgkregme (npm)",
+  "details": "The package executes a multi-stage obfuscated payload at install time. Its binding.gyp runs `node index.js` during the node-gyp configure step. index.js is a single 2.9MB obfuscated line that Caesar-decodes a character-code array to reconstruct source, imports node:crypto, and uses AES-128-GCM (createDecipher with a hex key, hex IV, and 16-byte auth tag) to decrypt several embedded base64 blobs, then evals the decrypted result. The decrypted second-stage content is not statically readable; the package's real behaviour is delivered only after this decrypt-and-eval chain runs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "testmgkregme",
+        "purl": "pkg:npm/testmgkregme"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/testmgkregme/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12267"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-19T05:42:10Z",
+      "indicators_observed": {
+        "sha256": [
+          "7fca701688f49888586325da4d147a928e04687393bfaa527655026cf54fae7a"
+        ]
+      }
+    }
+  }
+}
