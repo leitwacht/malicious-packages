@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12271",
+  "modified": "2026-09-20T01:12:19Z",
+  "published": "2026-09-20T01:11:48Z",
+  "summary": "Malicious code in siriusbeyond (npm)",
+  "details": "The package runs a callback script in both its preinstall and postinstall hooks. The script fingerprints the host (hostname, username, platform, working directory, home directory, network IP addresses, process UID/GID/PID), detects the CI/CD environment and cloud provider, enumerates the names of sensitive environment variables (matching token/secret/key/password patterns), and checks for the presence of credential files (.env,.npmrc,.git/config,.docker/config.json). It POSTs the collected data to the Telegram Bot API (api[.]telegram[.]org) using a hardcoded bot token and chat ID, and attempts DNS-based exfiltration to dc-callback[.]example[.]com as a backup channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "siriusbeyond",
+        "purl": "pkg:npm/siriusbeyond"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/siriusbeyond/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12271"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-20T01:11:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "dc-callback[.]example[.]com"
+        ],
+        "sha256": [
+          "3fdd3580253e44d4dbe5281f40fad01bb25dc2bb805ff2ad580b53f232afa9d9"
+        ]
+      }
+    }
+  }
+}
