@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12276",
+  "modified": "2026-09-20T09:28:14Z",
+  "published": "2026-09-20T09:27:49Z",
+  "summary": "Malicious code in @dbbhk/ui-components (npm)",
+  "details": "The package @dbbhk/ui-components (version 99.0.0) impersonates an internal HSBC UI-components package and runs a credential-harvesting payload in both its preinstall and postinstall hooks (node callback.js). The payload reads AWS IMDS metadata and IAM role credentials from 169[.]254[.]169[.]254, ECS task-role credentials from 169[.]254[.]170[.]2, environment variables matching AWS/SECRET/KEY/TOKEN/PASSWORD/CREDENTIAL/AUTH/API/NPM/GITHUB/GITLAB patterns, and credential files including ~/.aws/credentials, ~/.npmrc, /root/.aws/credentials,.env, and the Kubernetes service-account token. It then POSTs the harvested host metadata and credential values (truncated to their first 8-10 characters) to a Telegram bot at api[.]telegram[.]org.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dbbhk/ui-components",
+        "purl": "pkg:npm/%40dbbhk/ui-components"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dbbhk/ui-components/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12276"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-20T09:27:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}
