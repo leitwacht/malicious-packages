@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12306",
+  "aliases": [
+    "MAL-2026-16353"
+  ],
+  "modified": "2026-09-21T18:05:55Z",
+  "published": "2026-09-21T18:02:42Z",
+  "summary": "Malicious code in @insiderintelligence/componentlibrary (npm)",
+  "details": "The package's install hook (package.json \"install\": \"node index.js\") runs a covert DNS beacon. It collects the installer's username, hostname, current working directory, and a timestamp, encodes them into a DNS query string prefixed \"iiclib\", and sends them to the attacker-controlled domain oob[.]algamil7x[.]xyz via a dns.resolve4 lookup. The domain and string constants are charcode-obfuscated, and the code loads Node's os/dns/process modules through module.constructor._load to bypass the standard require chain. The README falsely states the package makes no network requests beyond registry probes. No credentials or tokens are exfiltrated; the payload is host-metadata reconnaissance beaconed to the attacker's domain at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@insiderintelligence/componentlibrary",
+        "purl": "pkg:npm/%40insiderintelligence/componentlibrary"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@insiderintelligence/componentlibrary/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12306"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-21T18:02:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "50ffb5ed9d386049f883abc35c5254aa22a3023c5b46ee6040328c91eac488a7"
+        ]
+      }
+    }
+  }
+}
