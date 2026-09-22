@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12322",
+  "modified": "2026-09-22T12:22:12Z",
+  "published": "2026-09-22T12:19:41Z",
+  "summary": "Malicious code in @user-services/web-components (npm)",
+  "details": "The package's install hook (node index.js) executes a covert host-fingerprinting beacon hidden inside a \"telemetry probe\" module. On install it collects the current OS username, hostname, and working-directory name, encodes them together with a timestamp into the DNS label \"uswc.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz\", and exfiltrates them via a DNS resolve query to the attacker-controlled domain oob[.]algamil7x[.]xyz. The code is charcode-obfuscated and loads the os/dns/process modules through the internal module loader to evade inspection. The README falsely claims the package makes no network requests and uses no eval/Function constructors.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@user-services/web-components",
+        "purl": "pkg:npm/%40user-services/web-components"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@user-services/web-components/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12322"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T12:19:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "89bf664a4293e6c022c741acdeb3f661b8672b15c335480cdc4456986824ac33"
+        ]
+      }
+    }
+  }
+}
