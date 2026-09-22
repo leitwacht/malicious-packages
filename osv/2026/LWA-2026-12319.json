@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12319",
+  "modified": "2026-09-22T10:41:48Z",
+  "published": "2026-09-22T10:40:09Z",
+  "summary": "Malicious code in chai-logger (npm)",
+  "details": "Chai-logger@3.0.2 is a trojanized clone of the pino logger that ships a 4MB heavily-obfuscated module lib/query.js which executes automatically when the package is required (index.js loads it at module load). The module is obfuscated with the javascript-obfuscator string-array decoder pattern: thousands of hex-escaped method names and \\x-escaped string constants, with no readable logic, hiding the payload's behavior. On install the package attempts network resolution and runs slowly. The package also declares an axios dependency with no legitimate use. The obfuscated payload's full behavior is concealed by the encoding.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-logger",
+        "purl": "pkg:npm/chai-logger"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-logger/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12319"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T10:40:09Z",
+      "indicators_observed": {
+        "sha256": [
+          "4a6ca163e1e0457d4265379147333a738590bac6dafb6bffe90b83eeecbe6211"
+        ]
+      }
+    }
+  }
+}
