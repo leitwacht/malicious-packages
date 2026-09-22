@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12314",
+  "modified": "2026-09-22T03:47:32Z",
+  "published": "2026-09-22T03:46:48Z",
+  "summary": "Malicious code in tldriver (npm)",
+  "details": "The package's preinstall and postinstall hooks (scripts/preinstall.js and scripts/postinstall.js) are obfuscated droppers. On install they download hxxps://api[.]imghippo[.]com/files/hOG8244hc[.]png twice, write the received bytes to gldriver_pre_asset.exe and gldriver_pre_core.exe inside the package directory, execute both binaries (via mspaint on Windows, open on macOS, xdg-open on Linux), write a.pre_setup_complete marker file, and then delete the downloaded executables. The package otherwise ships a Google API wrapper library as a cover. The remote binaries are fetched from a non-standard image-hosting host and executed at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tldriver",
+        "purl": "pkg:npm/tldriver"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tldriver/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12314"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T03:46:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]imghippo[.]com"
+        ],
+        "sha256": [
+          "f923985340965ecd239d1587c5c51059e9f0f75dab033864586773d3d076c82d"
+        ],
+        "url_observed": [
+          "hxxps://api[.]imghippo[.]com/files/hOG8244hc[.]png"
+        ]
+      }
+    }
+  }
+}
