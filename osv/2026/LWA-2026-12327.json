@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12327",
+  "modified": "2026-09-22T17:10:32Z",
+  "published": "2026-09-22T17:09:48Z",
+  "summary": "Malicious code in envparse3 (npm)",
+  "details": "Envparse3 is a trojanized dotenv-style environment toolkit that executes a hidden PowerShell payload on load. The package bundles a 287KB image file dist/stest.jpg with a base64-encoded PowerShell command steganographically embedded in a JPEG APP13 (0xED) metadata segment. When the module is required (dist/index.cjs, dist/cli.cjs, dist/decode.js), a function invoked at module load reads the image, extracts the embedded payload, writes a self-deleting VBS relay script (relay_\u003ctimestamp\u003e\u003crandom\u003e.vbs) into the system temp directory, and spawns wscript.exe detached and window-hidden to run powershell.exe -No Profile -Non Interactive -Encoded Command \u003cpayload\u003e. The hidden PowerShell payload executes with the privileges of the installing user; its exact command is base64-encoded inside the image and not visible in the JS source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "envparse3",
+        "purl": "pkg:npm/envparse3"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/envparse3/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12327"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T17:09:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "482e8481cb1b61f62336c581437f1fdf52ad0b826cc511888df8dc7b7e222fee"
+        ]
+      }
+    }
+  }
+}
