@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12317",
+  "modified": "2026-09-22T08:39:45Z",
+  "published": "2026-09-22T08:38:49Z",
+  "summary": "Malicious code in @tesla-insurance/vinless-quote (npm)",
+  "details": "The package's install hook (package.json \"install\": \"node index.js\") executes a hidden telemetry probe at install time. The probe collects the installing user's username, hostname, current working directory basename, and a Unix timestamp, encodes them into a single DNS query string of the form tivq.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz, and resolves it via the DNS resolver, exfiltrating the host metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The beacon logic is obfuscated with character-code arrays in runtime/support/telemetry/probe/f2a8c4.js and a3b9d5.js. The package is otherwise a benign-looking insurance-quote library; the beacon is disguised as \"registry connectivity diagnostics\" but targets a non-registry domain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tesla-insurance/vinless-quote",
+        "purl": "pkg:npm/%40tesla-insurance/vinless-quote"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tesla-insurance/vinless-quote/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12317"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T08:38:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "5e3a9b4bc86afd2a176882c6776adbcffa1300695fe4a4bb5b2384daaeeade4c"
+        ]
+      }
+    }
+  }
+}
