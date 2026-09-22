@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12332",
+  "modified": "2026-09-22T18:40:24Z",
+  "published": "2026-09-22T18:39:52Z",
+  "summary": "Malicious code in @tvg-mar/utils (npm)",
+  "details": "The package's install hook (node index.js) runs a hidden telemetry probe that exfiltrates host metadata over DNS. On install it collects the OS username, hostname, current working directory basename, and a Unix timestamp, concatenates them into a subdomain of oob[.]algamil7x[.]xyz (format: tvgut.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz), and triggers a DNS resolution of that subdomain, transmitting the data to the attacker-controlled domain. The probe is obfuscated with charcode-array decoding and dynamic module loading to hide its behaviour. The package otherwise presents as a benign shared-utilities library.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tvg-mar/utils",
+        "purl": "pkg:npm/%40tvg-mar/utils"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tvg-mar/utils/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12332"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T18:39:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "837a0fe4e706443514368851317be979345024e1c662094e28edb0841d01cd7f"
+        ]
+      }
+    }
+  }
+}
