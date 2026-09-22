@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12328",
+  "modified": "2026-09-22T17:27:58Z",
+  "published": "2026-09-22T17:25:47Z",
+  "summary": "Malicious code in envparse2 (npm)",
+  "details": "Envparse2@1.0.1 is a trojanized environment-configuration package. On require() of the main entry or execution of its dot2env bin, it reads a bundled 287KB file dist/stest.jpg (a JPEG polyglot), extracts an embedded base64-encoded PowerShell command from the JPEG APP13 metadata marker, writes a self-deleting VBScript relay_\u003ctimestamp\u003e\u003crandom\u003e.vbs into the OS temp directory, and spawns wscript.exe detached and hidden to execute the encoded PowerShell payload. The VBScript deletes itself after launching. The PowerShell payload is delivered via -EncodedCommand and its contents are hidden inside the image file.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "envparse2",
+        "purl": "pkg:npm/envparse2"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/envparse2/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12328"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T17:25:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "0c53099a54e13b76004c6843d0270cd32d0ca2bb3897f8fe893d3024f8b0147e"
+        ]
+      }
+    }
+  }
+}
