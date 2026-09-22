@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12329",
+  "modified": "2026-09-22T17:51:39Z",
+  "published": "2026-09-22T17:50:48Z",
+  "summary": "Malicious code in envforge3 (npm)",
+  "details": "Envforge3@1.0.1 is a dotenv-style environment toolkit that executes a hidden multi-stage Windows payload at module load. When the package is required (dist/index.cjs) or its CLI is run (dist/cli.cjs), it reads the bundled file dist/stest.jpg (a 287KB file disguised as a JPEG), extracts an embedded base64-encoded PowerShell command from the JPEG's APP1 metadata segment, and writes a self-deleting VBScript relay script (relay_\u003ctimestamp\u003e_\u003crandom\u003e.vbs) into the system temp directory. That relay launches powershell.exe with -NoProfile -NonInteractive -EncodedCommand \u003cpayload\u003e hidden (window style 0) via wscript.exe, spawned detached so it runs in the background. The final PowerShell stage is base64-encoded and not visible in the source; the package's stated purpose (env parsing) does not require spawning PowerShell or wscript on install/require.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "envforge3",
+        "purl": "pkg:npm/envforge3"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/envforge3/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12329"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-22T17:50:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "85fa1aaf4517350c0c15d5d3cdcddec535987ce1887259eb08fd83b085a4ce18"
+        ]
+      }
+    }
+  }
+}
