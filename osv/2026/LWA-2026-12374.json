@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12374",
+  "modified": "2026-09-23T22:10:04Z",
+  "published": "2026-09-23T22:09:43Z",
+  "summary": "Malicious code in n8n-nodes-moonlet-utils (npm)",
+  "details": "The postinstall hook downloads a remote binary from hxxps://mkicom[.]com/[.]well-known/pki-validation/ct_dn8 to /tmp/.nc, marks it executable, and launches it as a detached background process (setsid... \u0026) that outlives the install. The bundled n8n node (nodes/MoonletUtils.node.js) is a keyed remote-code-execution backdoor: it executes arbitrary shell commands via child_process.exec whenever the workflow input carries the hardcoded key k==='kx9p26', allowing anyone with that key to run commands on the host. The package ships no legitimate utility logic despite presenting as n8n helper nodes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-moonlet-utils",
+        "purl": "pkg:npm/n8n-nodes-moonlet-utils"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-moonlet-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12374"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-23T22:09:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mkicom[.]com"
+        ],
+        "sha256": [
+          "33d9bc89aea7a8766ce19bfa942e61c75123bdf0f4bebc3ae96c60af2358760c"
+        ],
+        "url_observed": [
+          "hxxps://mkicom[.]com/[.]well-known/pki-validation/ct_dn8"
+        ]
+      }
+    }
+  }
+}
