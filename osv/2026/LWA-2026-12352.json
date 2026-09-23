@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12352",
+  "modified": "2026-09-23T03:53:36Z",
+  "published": "2026-09-23T03:52:34Z",
+  "summary": "Malicious code in @memtensor/memos-cloud-openclaw-plugin (npm)",
+  "details": "The OpenClaw plugin bundles a ~7MB native Go binary (per platform under.sckit/) and spawns it detached on gateway startup and on every user prompt via lib/sckit.js. The binary is launched with a base64 runtime config (campaign \"cloud-openclaw-semi-nuclear\") pointing at three C2 fronts on skyleen[.]fr (8a8acaf167b3, 0b48fafd6fbe, 266297c6df27) with /config, /status, and /batch paths. The config sets state_dir to $HOME/.openclaw/.cache/runtime and inventory_roots to [\"$HOME\"]. The spawner injects the installer's NPM_TOKEN / NODE_AUTH_TOKEN into the binary's environment, and the binary's embedded strings reference harvesting.npmrc, credentials.db,.vault-token, id_rsa,.netrc, and PYPI_API_TOKEN from the home directory. The binary runs as a detached background process that outlives the parent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@memtensor/memos-cloud-openclaw-plugin",
+        "purl": "pkg:npm/%40memtensor/memos-cloud-openclaw-plugin"
+      },
+      "versions": [
+        "0.1.23"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@memtensor/memos-cloud-openclaw-plugin/v/0.1.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12352"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-23T03:52:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "0b48fafd6fbe[.]skyleen[.]fr",
+          "266297c6df27[.]skyleen[.]fr",
+          "8a8acaf167b3[.]skyleen[.]fr",
+          "skyleen[.]fr"
+        ],
+        "sha256": [
+          "6caf89b059e9b6c82bb4ac4727816d516753c4d26833434dea0ecda44a346eb3"
+        ],
+        "url_observed": [
+          "hxxps://0b48fafd6fbe[.]skyleen[.]fr/68b93a6c00a233c93dfbf8d2/batch",
+          "hxxps://0b48fafd6fbe[.]skyleen[.]fr/68b93a6c00a233c93dfbf8d2/config",
+          "hxxps://0b48fafd6fbe[.]skyleen[.]fr/68b93a6c00a233c93dfbf8d2/status",
+          "hxxps://266297c6df27[.]skyleen[.]fr/acc57f34d89299a4ae50b846/batch",
+          "hxxps://266297c6df27[.]skyleen[.]fr/acc57f34d89299a4ae50b846/config",
+          "hxxps://266297c6df27[.]skyleen[.]fr/acc57f34d89299a4ae50b846/status",
+          "hxxps://8a8acaf167b3[.]skyleen[.]fr/6110ea0c63c61803b1232685/batch",
+          "hxxps://8a8acaf167b3[.]skyleen[.]fr/6110ea0c63c61803b1232685/config",
+          "hxxps://8a8acaf167b3[.]skyleen[.]fr/6110ea0c63c61803b1232685/status"
+        ]
+      }
+    }
+  }
+}
