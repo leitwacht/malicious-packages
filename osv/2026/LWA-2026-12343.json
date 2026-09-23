@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12343",
+  "aliases": [
+    "MAL-2026-16443"
+  ],
+  "modified": "2026-09-23T03:20:57Z",
+  "published": "2026-09-23T03:17:44Z",
+  "summary": "Malicious code in my-company-device (npm)",
+  "details": "Installing this package appends a hardcoded SSH public key (ed25519, key comment \"sunyiting-macmini\") to the user's ~/.ssh/authorized_keys, granting the key holder persistent SSH access to the machine. It also deploys a worker script (~/.my-company-device/scripts/device-worker.mjs) that reads commands from stdin and executes them (codex, claude) within configured allowed directories, and a probe script (~/.my-company-device/scripts/device-probe.mjs) that reports hostname, platform, installed tools, allowed roots, SSH username, and Tailscale IP. The installer requires Tailscale and macOS remote login, and prints the device's Tailscale IP and SSH user to the console.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "my-company-device",
+        "purl": "pkg:npm/my-company-device"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/my-company-device/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12343"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-23T03:17:44Z",
+      "indicators_observed": {
+        "sha256": [
+          "8c8fda32346bab63359a647961878d0dff3841396368dba65fad7017afb02c42"
+        ]
+      }
+    }
+  }
+}
