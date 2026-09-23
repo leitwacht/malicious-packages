@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12370",
+  "modified": "2026-09-23T18:09:14Z",
+  "published": "2026-09-23T18:06:39Z",
+  "summary": "Malicious code in solidity-lock (npm)",
+  "details": "Solidity-lock@2.21.0 is a trojanized clone of the pino logging library: it ships pino's source tree verbatim under an unrelated package name, with a 4MB obfuscated file lib/config.js injected as the payload. The package's main entry (index.js) requires lib/config, so loading the package executes the obfuscated code. lib/config.js is javascript-obfuscator output: a large hex-escaped string array with a custom decoder and thousands of _0x-style identifiers and escaped method references, making its runtime behaviour unreadable. The obfuscated payload's network destinations and actions could not be recovered from the encoded strings; the staging mechanism is a require-time executed obfuscated module bundled inside a cloned logging package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solidity-lock",
+        "purl": "pkg:npm/solidity-lock"
+      },
+      "versions": [
+        "2.21.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solidity-lock/v/2.21.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12370"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-23T18:06:39Z",
+      "indicators_observed": {
+        "sha256": [
+          "4631e1447ef0b69af990a5c8c23a6c2b3f2393ee98e3d881758c89efabf18797"
+        ]
+      }
+    }
+  }
+}
