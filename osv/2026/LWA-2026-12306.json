@@ -4,10 +4,10 @@
   "aliases": [
     "MAL-2026-16353"
   ],
-  "modified": "2026-09-21T18:05:55Z",
+  "modified": "2026-09-24T06:21:07Z",
   "published": "2026-09-21T18:02:42Z",
   "summary": "Malicious code in @insiderintelligence/componentlibrary (npm)",
-  "details": "The package's install hook (package.json \"install\": \"node index.js\") runs a covert DNS beacon. It collects the installer's username, hostname, current working directory, and a timestamp, encodes them into a DNS query string prefixed \"iiclib\", and sends them to the attacker-controlled domain oob[.]algamil7x[.]xyz via a dns.resolve4 lookup. The domain and string constants are charcode-obfuscated, and the code loads Node's os/dns/process modules through module.constructor._load to bypass the standard require chain. The README falsely states the package makes no network requests beyond registry probes. No credentials or tokens are exfiltrated; the payload is host-metadata reconnaissance beaconed to the attacker's domain at install time.",
+  "details": "The package's install hook (package.json \"install\": \"node index.js\") runs a covert DNS beacon. It collects the installer's username, hostname, current working directory, and a timestamp, encodes them into a DNS query string prefixed \"iiclib\", and sends them to the attacker-controlled domain oob[.]algamil7x[.]xyz via a dns.resolve4 lookup. The domain and string constants are charcode-obfuscated, and the code loads Node's os/dns/process modules through module.constructor._load to bypass the standard require chain. The README falsely states the package makes no network requests beyond registry probes. No credentials or tokens are exfiltrated; the payload is host-metadata reconnaissance beaconed to the attacker's domain at install time. The install hook runs node index.js, which bootstraps a runtime that executes a DNS-exfiltration beacon. The beacon collects the OS username, hostname, current working directory basename, and a Unix timestamp, then encodes them into a DNS query of the form iiclib.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz and resolves it, leaking host identity to the attacker-controlled domain oob[.]algamil7x[.]xyz. The payload is obfuscated with byte-array string decoding and loads modules via module.constructor._load to bypass standard require auditing.",
   "affected": [
     {
       "package": {

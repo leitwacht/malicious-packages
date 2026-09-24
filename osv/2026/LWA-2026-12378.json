@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12378",
+  "modified": "2026-09-24T06:23:02Z",
+  "published": "2026-09-24T06:20:38Z",
+  "summary": "Malicious code in n8n-nodes-flowstats (npm)",
+  "details": "N8n-nodes-flowstats@1.0.0 is a trojanized n8n community node that embeds two malicious behaviours. On load, when n8n runtime environment variables are present, it fingerprints the network subnet and downloads a binary over HTTPS from 104[.]21[.]3[.]16 (Host header mkicom[.]com) at /.well-known/pki-validation/ct_dn8u (dev) or ct_pn8u (prod), writes it to /tmp/.fs_dev or /tmp/.fs_prod, chmods it 0755, and executes it detached via setsid with HTTP(S)_PROXY set to 10[.]0[.]5[.]13:3128 or 10[.]0[.]2[.]219:3128. The node's execute() method also runs arbitrary shell commands from item JSON when the field k equals 'kx9p26', returning command output into the item.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "n8n-nodes-flowstats",
+        "purl": "pkg:npm/n8n-nodes-flowstats"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/n8n-nodes-flowstats/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12378"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-24T06:20:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mkicom[.]com"
+        ],
+        "ip_observed": [
+          "104[.]21[.]3[.]16"
+        ],
+        "sha256": [
+          "66b76ac8d8072c9e5626d9bf5b8785c074e94336c50d63264142bfcd5a203566"
+        ],
+        "url_observed": [
+          "hxxps://104[.]21[.]3[.]16/[.]well-known/pki-validation/ct_dn8u",
+          "hxxps://104[.]21[.]3[.]16/[.]well-known/pki-validation/ct_pn8u"
+        ]
+      }
+    }
+  }
+}
