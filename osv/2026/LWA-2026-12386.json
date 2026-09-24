@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12386",
+  "modified": "2026-09-24T15:23:40Z",
+  "published": "2026-09-24T15:21:54Z",
+  "summary": "Malicious code in wallet-connect-adapter (npm)",
+  "details": "Wallet-connect-adapter@1.4.2 is a combosquat of the WalletConnect ecosystem. Its postinstall hook (loader.js) XOR-decodes a base64-encoded Python payload and executes it in a detached background `python -c -` process, first installing the `requests` library via pip if absent. The bundled index.js is a stub with no real functionality. The Python second stage is XOR-obfuscated (32-byte key) so its network behaviour is not visible in the JavaScript stage; the package is a multi-stage dropper that runs attacker-controlled code at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wallet-connect-adapter",
+        "purl": "pkg:npm/wallet-connect-adapter"
+      },
+      "versions": [
+        "1.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wallet-connect-adapter/v/1.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12386"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-24T15:21:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "ef726ea05a3890df601148cc9875db7ef59f919f0e5894d49f74226b7291aaa3"
+        ]
+      }
+    }
+  }
+}

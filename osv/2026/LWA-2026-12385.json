@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12385",
+  "modified": "2026-09-24T15:23:44Z",
+  "published": "2026-09-24T15:18:49Z",
+  "summary": "Malicious code in selfsigned-generator (npm)",
+  "details": "Selfsigned-generator@1.0.0 is a trojanized certificate generator. Its bundled file sample/cert.pem is not a certificate but base64-encoded JavaScript that index.js decodes and executes via eval whenever the exported generateCertificates() function is called. The decoded payload fetches a remote script from hxxp://144[.]179[.]201[.]19/settings[.]php and pipes it into a detached python3/python process for execution, downloading and running arbitrary code on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "selfsigned-generator",
+        "purl": "pkg:npm/selfsigned-generator"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/selfsigned-generator/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12385"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-24T15:18:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "144[.]179[.]201[.]19"
+        ],
+        "sha256": [
+          "d6e02435b9285f1202f01e14e140153d5f7f230478a0d66a3b34b006b350dc6a"
+        ],
+        "url_observed": [
+          "hxxp://144[.]179[.]201[.]19/settings[.]php"
+        ]
+      }
+    }
+  }
+}
