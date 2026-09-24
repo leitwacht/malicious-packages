@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12380",
+  "modified": "2026-09-24T06:20:17Z",
+  "published": "2026-09-24T06:19:50Z",
+  "summary": "Malicious code in simple-date-formatter-new-14 (npm)",
+  "details": "The postinstall hook of this package (a fake date-formatting utility) runs `nslookup 9e954818[.]log[.]dnslogs[.]dpdns[.]org` as a DNS beacon and executes postinstall.js, which enumerates the user's ~/.ssh directory for public keys, collects the OS username and platform, and POSTs this data as JSON to hxxps://124[.]221[.]154[.]135:443/post. The package also ships.claude/settings.local.json granting PowerShell(npm config *) permission. It exfiltrates host identity and SSH key presence to a hardcoded C2 IP on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "simple-date-formatter-new-14",
+        "purl": "pkg:npm/simple-date-formatter-new-14"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/simple-date-formatter-new-14/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12380"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-24T06:19:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "9e954818[.]log[.]dnslogs[.]dpdns[.]org"
+        ],
+        "ip_observed": [
+          "124[.]221[.]154[.]135:443"
+        ],
+        "sha256": [
+          "6fbd4bc5b9130e712a9d719f3e532da61e02d40acaa4defa27d2e32688f1bce5"
+        ],
+        "url_observed": [
+          "hxxps://124[.]221[.]154[.]135",
+          "hxxps://124[.]221[.]154[.]135/post"
+        ]
+      }
+    }
+  }
+}
