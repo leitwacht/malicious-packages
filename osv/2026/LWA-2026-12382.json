@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12382",
+  "modified": "2026-09-24T09:07:26Z",
+  "published": "2026-09-24T09:05:46Z",
+  "summary": "Malicious code in @nf-addons/am-global-header (npm)",
+  "details": "The package's install hook (node index.js) runs a hidden telemetry probe at install time. The probe reads the installing user's OS username, hostname, and current working directory, then encodes them into a DNS query of the form nfamh.\u003cusername\u003e.\u003chostname\u003e.\u003ccwd\u003e.\u003ctimestamp\u003e.oob[.]algamil7x[.]xyz and resolves it, exfiltrating host identity metadata to the attacker-controlled domain oob[.]algamil7x[.]xyz. The behaviour is obfuscated with character-code arrays and a dynamic module loader, and the package README falsely states it makes no network requests. No credentials or tokens are collected; the payload is a host-metadata beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@nf-addons/am-global-header",
+        "purl": "pkg:npm/%40nf-addons/am-global-header"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@nf-addons/am-global-header/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12382"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-24T09:05:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "algamil7x[.]xyz",
+          "oob[.]algamil7x[.]xyz"
+        ],
+        "sha256": [
+          "9ed34d26a342812881d103d588d3efb629a79f18ada0845b9ca4e9e6375ffdaa"
+        ]
+      }
+    }
+  }
+}
