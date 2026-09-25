@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12393",
+  "modified": "2026-09-25T06:18:20Z",
+  "published": "2026-09-25T06:17:47Z",
+  "summary": "Malicious code in nebulaai-sdk (npm)",
+  "details": "The package's preinstall hook (preinstall.js) embeds a large base64-encoded gzip blob, decompresses it, and writes the resulting binary to %LOCALAPPDATA%\\Microsoft\\Conhost\\conhost.exe — a hidden directory that mimics a Windows system path. It then executes that dropped binary detached and hidden (stdio ignored, windowsHide set). The package's main module (nebula.js) is a decoy AI SDK client that is not the real purpose of the package. Installing this package drops and runs an unknown binary on the host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nebulaai-sdk",
+        "purl": "pkg:npm/nebulaai-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nebulaai-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12393"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-25T06:17:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "40dc3ad637d64c634f0accbcbd2906bbaae40068da75dd738a6012cf64c55891"
+        ]
+      }
+    }
+  }
+}
