@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12501",
+  "aliases": [
+    "MAL-2026-17351"
+  ],
+  "modified": "2026-08-10T16:12:51Z",
+  "published": "2026-08-10T16:11:05Z",
+  "summary": "Malicious code in @bottino/baileys (npm)",
+  "details": "@bottino/baileys is a combosquat of the baileys WhatsApp API library (canonical @whiskeysockets/baileys). Its preinstall hook only checks the Node.js version, but the package's runtime code (lib/Socket/messages-send.js, messages-recv.js, chats.js, index.js, lib/Utils/auth-utils.js) imports the dependency @cacheable/node-cache, which is a known-malware package. Installing this package pulls the compromised dependency into the dependency tree and executes it at runtime.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@bottino/baileys",
+        "purl": "pkg:npm/%40bottino/baileys"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@bottino/baileys/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12501"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-10T16:11:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "65d85212dd6f587a56728c934e187d5731fea704de9c1348461b9d2933eb79d5"
+        ]
+      }
+    }
+  }
+}
