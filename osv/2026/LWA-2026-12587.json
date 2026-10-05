@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12587",
+  "aliases": [
+    "MAL-2026-17560"
+  ],
+  "modified": "2026-10-05T18:26:58Z",
+  "published": "2026-10-04T21:48:10Z",
+  "summary": "Malicious code in hardhat-spack (npm)",
+  "details": "Hardhat-spack@3.0.2 is a trojanized clone of the pino logger: the source tree (index.js, lib/, docs/, favicon.ico, pretty-demo.png) is copied from pino, but index.js and lib/caller.js carry an injected remote-code loader. Requiring the package runs a middleware that spawns a detached, unref'd node process (spawn(\"node\", [\"lib/caller.js\",...], {detached:true, stdio:\"ignore\"})) so the payload executes in the background and outlives the parent process. lib/caller.js shadows the process object with hardcoded base64 blobs and decodes them at runtime: the API key decodes to the C2 URL hxxps://iphub-encrypted[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5, with the header x-secret-key: _. It POSTs to that endpoint via axios, takes the response body, and executes it with new Function.constructor(\"require\", s)(require), giving the fetched second stage full require() access; the request is retried up to 5 times. The same encoded constants are duplicated in lib/const.js. Any environment that installs or requires this package should be treated as compromised: the loader contacts the C2 and runs whatever code the operator returns. IOC: hxxps://iphub-encrypted[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5 (header x-secret-key: _).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-spack",
+        "purl": "pkg:npm/hardhat-spack"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-spack/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12587"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-04T21:48:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "iphub-encrypted[.]vercel[.]app"
+        ],
+        "sha256": [
+          "f784c3e9b03278a2513203f9e9255bb9cdfda903f93c2e387855996ea97800cd"
+        ],
+        "url_observed": [
+          "hxxps://iphub-encrypted[.]vercel[.]app/api/auth/f1f097d93c318c92f0c5"
+        ]
+      }
+    }
+  }
+}

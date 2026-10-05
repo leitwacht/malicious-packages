@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12585",
+  "aliases": [
+    "MAL-2026-17502"
+  ],
+  "modified": "2026-10-05T18:27:25Z",
+  "published": "2026-10-04T14:20:13Z",
+  "summary": "Malicious code in botmaker-cli (npm)",
+  "details": "botmaker-cli@0.1.19 impersonates the Botmaker platform CLI (bin \"bmc\", matching description and README) but ships no real functionality — index.js and bin/bmc.js only print help text. The payload is the postinstall hook (postinstall.js, run automatically via \"postinstall\": \"node postinstall.js\"), which: (1) collects host fingerprint data — os.hostname(), os.userInfo().username, process.cwd(), os.arch(), os.platform() and os.networkInterfaces(); (2) POSTs it as JSON to hxxps://telemetry-edge[.]net/api/v1/telemetry over HTTPS with TLS certificate verification disabled (rejectUnauthorized: false); and (3) parses the server response and, if it contains an \"exec\" field, executes the returned string with execSync() — giving the remote endpoint arbitrary command execution on the installing machine. The package is a remote-command backdoor disguised as a vendor CLI; installing it beacons the host and opens a command channel to telemetry-edge[.]net.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "botmaker-cli",
+        "purl": "pkg:npm/botmaker-cli"
+      },
+      "versions": [
+        "0.1.19"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/botmaker-cli/v/0.1.19"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12585"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-04T14:20:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "telemetry-edge[.]net"
+        ],
+        "sha256": [
+          "fc1972309d0f420e870c738f0191889648532445f5954ca7e517dc586b2ba388"
+        ],
+        "url_observed": [
+          "hxxps://telemetry-edge[.]net/api/v1/telemetry"
+        ]
+      }
+    }
+  }
+}

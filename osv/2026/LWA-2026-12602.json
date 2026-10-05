@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12602",
+  "modified": "2026-10-05T19:01:53Z",
+  "published": "2026-10-05T19:01:18Z",
+  "summary": "Malicious code in solidity-map (npm)",
+  "details": "solidity-map@2.21.0 is a trojanized clone of the pino logging library. Its README, type definitions and docs are copied verbatim from pino, but the package name, description and author metadata are unrelated to that project, and index.js exports a stub Express middleware rather than pino's API. The real payload is lib/config.js (4.37 MB), a heavily obfuscated javascript-obfuscator bundle using a string-array decoder and \\x-escaped constants; it is loaded via require('./lib/config') from index.js, so it executes as soon as the package is imported. On execution it fingerprints the host (hostname, OS, username, platform, timestamp) and beacons it as JSON to hxxp://167[.]88[.]172[.]33:8087/api/log and hxxp://167[.]88[.]172[.]33:8087/api/notify, then uploads a generated sysinfo.txt file via multipart/form-data POST to hxxp://167[.]88[.]172[.]33:8085/upload. Requests carry axios/1.20.0 user agents and custom Userkey/Validation headers. IOCs: C2 167[.]88[.]172[.]33 ports 8085 (/upload) and 8087 (/api/log, /api/notify).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solidity-map",
+        "purl": "pkg:npm/solidity-map"
+      },
+      "versions": [
+        "2.21.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solidity-map/v/2.21.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12602"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-05T19:01:18Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]172[.]33",
+          "167[.]88[.]172[.]33:8085",
+          "167[.]88[.]172[.]33:8087"
+        ],
+        "sha256": [
+          "2f71a1aead0a84e297c0b63b8951236e452cdf74f3ddc5439eb609c72c74d74f"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]172[.]33",
+          "hxxp://167[.]88[.]172[.]33:8085/upload",
+          "hxxp://167[.]88[.]172[.]33:8087/api/log",
+          "hxxp://167[.]88[.]172[.]33:8087/api/notify"
+        ]
+      }
+    }
+  }
+}

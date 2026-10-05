@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12581",
+  "modified": "2026-10-05T12:59:24Z",
+  "published": "2026-10-05T12:28:44Z",
+  "summary": "Malicious code in solidity-gas-watcher (npm)",
+  "details": "Solidity-gas-watcher@2.21.0 is a trojanized clone of the pino logging library. It ships pino's documentation, type definitions and lib/ modules verbatim, but replaces the real entrypoint: index.js is a stub that exports a no-op Express middleware, and the package's actual payload lives in lib/config.js — a 4.37MB javascript-obfuscator bundle (rotating string-array decoder, hex-escaped identifiers) that executes as soon as the module is required. On execution it fingerprints the host and beacons to a hardcoded command-and-control server at 167[.]88[.]172[.]33, using the bundled axios dependency: - POST hxxp://167[.]88[.]172[.]33:8087/api/log — JSON body {\"ukey\":301,\"t\":3,\"host\":\"301_\u003chostname\u003e\",\"os\":\"\u003cos release\u003e\",\"username\":\"\u003cuser\u003e\",\"message\":\"Starting client\",\"level\":\"info\"}, sent repeatedly, with a Validation header.\n- POST hxxp://167[.]88[.]172[.]33:8085/upload — multipart/form-data upload of a generated file named sysinfo.txt containing Host, OS, Username, Platform and Timestamp, with File-Metadata, Hostname, Userkey and Validation headers.\n- POST hxxp://167[.]88[.]172[.]33:8087/api/notify — a second host-metadata JSON beacon. The package declares no install hook; the payload is triggered by requiring the module or running its declared smoke scripts (node./index.js, node./file.js). The /upload endpoint provides a general-purpose channel for pushing files off the host. Indicators: C2 host 167[.]88[.]172[.]33 ports 8085 and 8087, paths /api/log, /api/notify and /upload, user key 301, and the dropped artifact name sysinfo.txt.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "solidity-gas-watcher",
+        "purl": "pkg:npm/solidity-gas-watcher"
+      },
+      "versions": [
+        "2.21.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/solidity-gas-watcher/v/2.21.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12581"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-05T12:28:44Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]172[.]33",
+          "167[.]88[.]172[.]33:8085",
+          "167[.]88[.]172[.]33:8087"
+        ],
+        "sha256": [
+          "67245e4d4ad4b95d176f47cbda7bd8e1939f6db4af7bc6cd39e158f89c30d69a"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]172[.]33",
+          "hxxp://167[.]88[.]172[.]33:8085/upload",
+          "hxxp://167[.]88[.]172[.]33:8087/api/log",
+          "hxxp://167[.]88[.]172[.]33:8087/api/notify"
+        ]
+      }
+    }
+  }
+}

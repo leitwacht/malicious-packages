@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12584",
+  "aliases": [
+    "MAL-2026-17559"
+  ],
+  "modified": "2026-10-05T18:29:29Z",
+  "published": "2026-10-04T18:19:47Z",
+  "summary": "Malicious code in hardhat-kex (npm)",
+  "details": "Hardhat-kex@2.0.1 is a trojanized clone of the pino logger: the README, docs/, index.d.ts and lib/* files are copied verbatim from pino 9.6.0 (lib/meta.js still reports version 9.6.0), but the package's entry point index.js requires./lib/config, which has been replaced with a 4.5MB javascript-obfuscator payload — a hex-escaped string array with a rotating decoder and flattened control flow, accounting for 94% of the 4.77MB tarball. The genuine pino lib/config.js is a ~200-byte constants module, so this file is an injected payload that executes as soon as the package is required or imported. The obfuscated layer hides its strings (URLs, hosts, file paths) behind the decoder, and the payload's initialization is heavy enough that requiring the package does not complete promptly. The package declares no repository, its description is an unrelated vulnerability-disclosure policy sentence, and its only runtime dependencies are axios and parse-json, which the visible code never uses. No plaintext C2 endpoint is exposed in the outer layer; the network destination is recoverable only by deobfuscating lib/config.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-kex",
+        "purl": "pkg:npm/hardhat-kex"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-kex/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12584"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-04T18:19:47Z",
+      "indicators_observed": {
+        "sha256": [
+          "5939b15fae5fd976387431b2c6d67ba2e1ee533c05529d33c65c320fbd0ce0a7"
+        ]
+      }
+    }
+  }
+}

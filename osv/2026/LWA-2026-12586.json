@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12586",
+  "aliases": [
+    "MAL-2026-17549"
+  ],
+  "modified": "2026-10-05T18:27:43Z",
+  "published": "2026-10-04T18:21:04Z",
+  "summary": "Malicious code in css-display-reading-polyfill (npm)",
+  "details": "css-display-reading-polyfill@1.0.0 ships a trojanized copy of the Wix Thunderbolt runtime bundle. The bundled file payload.bundle.min.js executes a top-level IIFE as soon as the module is loaded: it first deletes require.cache entries whose paths contain \"payload\", \"rb_wixui\", \"rb_dsgnsys\" or \"model\" to conceal itself, then runs shell commands through child_process.execSync — `id -un`/`whoami`, `id`, and `uname -a` — and sends the output, together with os.hostname(), process.version, process.platform and process.pid, to the hardcoded endpoint hxxps://webhook[.]site/5e52603d-f802-4a6f-b91b-43c3a5b45b6b using both fetch() and https.get() as fallbacks, tagged with query parameters cmd=, out=, site=, beacon=topology-rce and vector=registryLibrariesTopology. The remainder of the file is a Proxy-based stub factory that exports fake thunderboltRegistry/siteAssetsRegistry/editorRegistry/... hosts so the module appears to be a working Wix runtime. index.js is an empty stub and package.json declares no lifecycle scripts or bin entries, so the payload fires when payload.bundle.min.js is required; the shipped Wix manifests rb_wixui.thunderbolt.manifest.min.json and rb_dsgnsys.thunderbolt.manifest.min.json reference that file as the shared/model bundle and point their baseURL at static[.]parastorage[.]com/unpkg/css-display-reading-polyfill@1.0.0/. No credentials, tokens or local files are read — the exfiltrated data is host, user and OS fingerprinting.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "css-display-reading-polyfill",
+        "purl": "pkg:npm/css-display-reading-polyfill"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/css-display-reading-polyfill/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12586"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-04T18:21:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "static[.]parastorage[.]com",
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "89de1daa54a36842152ec68e0757fd2c82c0975a56bccf4fd1b469f58d3c7a5c"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/5e52603d-f802-4a6f-b91b-43c3a5b45b6b"
+        ]
+      }
+    }
+  }
+}

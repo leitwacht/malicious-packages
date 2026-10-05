@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12601",
+  "aliases": [
+    "MAL-2026-17571"
+  ],
+  "modified": "2026-10-05T18:35:42Z",
+  "published": "2026-10-05T11:57:18Z",
+  "summary": "Malicious code in @subql/common (npm)",
+  "details": "@subql/common@5.8.3 ships a postinstall hook (`node./dist/project/readers/manifest-cache.js`) that executes a concealed payload at install time. The hook file dist/project/readers/manifest-cache.js contains a ~62KB base64 string array that is decoded with a rolling XOR key (seed 0x5a, advanced by each decoded byte plus 0x1d) and gunzipped, then run as JavaScript through `new Function('require','module','exports','__filename','__dirname', src)` with full access to Node's require. The hook spawns a detached, stdio-ignored copy of itself (`spawn(process.execPath, [__filename, '--warm'], {detached: true, stdio: 'ignore'}).unref()`) and exits immediately, so the payload runs as an orphaned background process that outlives the installer. The same detached spawn is also triggered whenever the module is merely imported (`if (require.main !== module) ManifestCacheReader.warm(process.cwd())`), so any package depending on @subql/common executes it. The published source map for this file contains only a placeholder comment where the encoded blob lives, so the shipped source does not correspond to the executed code. The \"manifest cache digest\" framing in the file's comments does not match the behaviour: a digest table would be parsed as data, not decoded and evaluated as code with require access. No cleartext C2 endpoint, credential path, or token reference appears anywhere in the package — the executed payload is contained entirely within the encoded blob, so no network IOC can be enumerated from the published files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@subql/common",
+        "purl": "pkg:npm/%40subql/common"
+      },
+      "versions": [
+        "5.8.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@subql/common/v/5.8.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12601"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-05T11:57:18Z",
+      "indicators_observed": {
+        "sha256": [
+          "031267ee37c5a84c25cb0542cbfeb49f30d5604305b0bdccdeafbedcbbe6849b"
+        ]
+      }
+    }
+  }
+}

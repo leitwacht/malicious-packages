@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12573",
+  "aliases": [
+    "MAL-2026-17572"
+  ],
+  "modified": "2026-10-05T09:59:43Z",
+  "published": "2026-10-05T09:02:08Z",
+  "summary": "Security-research / proof-of-concept package: checkmate-remediation-assistant (npm)",
+  "details": "Checkmate-remediation-assistant@1.0.0 ships a preinstall hook (`node index.js`) that executes automatically on `npm install`. The script performs host reconnaissance — it collects the package name and version, the install directory, the home directory, the hostname, the current username, the configured DNS resolvers and the full package.json — and additionally reads /etc/passwd and /etc/hosts. It then POSTs all of it as a JSON body over HTTPS to the Burp Collaborator collection endpoint 9q0lp9mr6ek7nrnklhzkmbpuglmda4yt[.]oastify[.]com on port 443 at path /. The package contains no other functionality: its sole purpose is install-time exfiltration of host and account data to an attacker-controlled collector. The same payload is shipped as with-cte@1.0.0, differing only in the package name and the collection subdomain. checkmate-remediation-assistant@1.0.0 ships a preinstall hook (`node index.js`) that executes automatically on `npm install`. The hook is the package's entire payload: index.js collects host reconnaissance — package name and install directory, home directory, hostname, username, configured DNS resolvers, package version, the full package.json, and the contents of /etc/passwd and /etc/hosts — and POSTs it as a JSON body over HTTPS to the hardcoded remote endpoint 9q0lp9mr6ek7nrnklhzkmbpuglmda4yt[.]oastify[.]com on port 443 at path \"/\". The package has no repository, no description, and no functionality other than this collection and exfiltration; the collected system data is sent to an out-of-band callback listener controlled by the package author.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "checkmate-remediation-assistant",
+        "purl": "pkg:npm/checkmate-remediation-assistant"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/checkmate-remediation-assistant/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12573"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-05T09:02:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "9q0lp9mr6ek7nrnklhzkmbpuglmda4yt[.]oastify[.]com"
+        ],
+        "ip_observed": [
+          "9q0lp9mr6ek7nrnklhzkmbpuglmda4yt[.]oastify[.]com:443"
+        ],
+        "sha256": [
+          "5cfa1a02f6affc920de778b146e07b1e026943eaa96ab1ac2a10a0d1b85ab8f6"
+        ],
+        "url_observed": [
+          "hxxps://9q0lp9mr6ek7nrnklhzkmbpuglmda4yt[.]oastify[.]com/"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12588",
+  "modified": "2026-10-05T18:27:01Z",
+  "published": "2026-10-05T16:38:10Z",
+  "summary": "Malicious code in @pinecone-experience/messages (npm)",
+  "details": "@pinecone-experience/messages@99.9.1 is a dependency-confusion package: a 363-byte stub (index.js contains only `module.exports = {}`) whose sole function is to pull a payload from outside the npm registry. Its package.json declares a single dependency resolved from an attacker-controlled Google Cloud Storage bucket rather than the registry: \"ltidisafe\": \"hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]8[.]3[.]tgz\". Any `npm install` of this package fetches and installs that remote tarball, executing whatever it contains. The package name combosquats the Pinecone namespace (real scope @pinecone-io) and ships at sentinel version 99.9.1 so that version-range or \"latest\"-preferring resolvers select it. The published stub itself contains no code, no lifecycle hooks, and no bin entries — the payload is entirely in the off-registry tarball. IOC: hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]8[.]3[.]tgz (host ltidi[.]storage[.]googleapis[.]com).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pinecone-experience/messages",
+        "purl": "pkg:npm/%40pinecone-experience/messages"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pinecone-experience/messages/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12588"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-05T16:38:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "f6acde00d1ae3b541880a8c6f97bbff1f6d62d9bed23b057f041a4e867372181"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]8[.]3[.]tgz"
+        ]
+      }
+    }
+  }
+}
