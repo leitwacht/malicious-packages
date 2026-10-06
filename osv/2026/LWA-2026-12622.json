@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12622",
+  "modified": "2026-10-06T16:03:03Z",
+  "published": "2026-10-06T16:01:35Z",
+  "summary": "Malicious code in dotenv-runtime (npm)",
+  "details": "dotenv-runtime@1.0.0 is a combosquat of the dotenv package name that ships a fork of dotenv's code with an injected Windows payload. Both dist/index.cjs and dist/cli.cjs contain a hidden routine (dispatchAnalytics) that runs automatically at module load — including on every invocation of the package's dot2env CLI. It reads a 287 KB binary shipped as dist/stest.jpg, extracts a UTF-16LE PowerShell command hidden in the file's APP13/Photoshop metadata segment, writes a self-deleting VBScript launcher named relay_\u003ctimestamp\u003e\u003crandom\u003e.vbs into the OS temp directory, and spawns it detached and hidden via wscript.exe. The VBScript deletes itself and runs powershell.exe -NoProfile -NonInteractive -EncodedCommand \u003cpayload\u003e; the decoded command downloads a second-stage executable from hxxps://hardwood-studio-obviously-briefing[.]trycloudflare[.]com/download/winhost to %LOCALAPPDATA%\\Temp\\hello.exe and starts it hidden. A second file, dist/decode.js, is an obfuscated loader that RC4-decrypts a base64 blob (key 8iskj0j24hb) and executes it through new Function(...)(require, module, __filename, __dirname). The package's documented purpose (environment configuration) is unrelated to this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dotenv-runtime",
+        "purl": "pkg:npm/dotenv-runtime"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dotenv-runtime/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12622"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T16:01:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "hardwood-studio-obviously-briefing[.]trycloudflare[.]com"
+        ],
+        "sha256": [
+          "e8c47725fb5d99c25e6653ca2bc0f6a43797171fe3a3f8225237a4680f6dd899"
+        ],
+        "url_observed": [
+          "hxxps://hardwood-studio-obviously-briefing[.]trycloudflare[.]com/download/winhost"
+        ]
+      }
+    }
+  }
+}
