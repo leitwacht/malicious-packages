@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12639",
+  "modified": "2026-10-06T22:50:20Z",
+  "published": "2026-10-06T22:46:49Z",
+  "summary": "Malicious code in css-reading-display-polyfill (npm)",
+  "details": "css-reading-display-polyfill@1.0.0 is a trojanized clone of Wix's thunderboltRegistry module that exfiltrates host and environment data on require. The package's index.js is an empty stub; the payload lives in package/thunderboltRegistry.js, which is also aliased by package/registry-manifest.min.json to eight Wix registry module names (thunderboltRegistry, siteAssetsRegistry, documentManagementRegistry, editorRegistry, autoCompleteRegistry, thunderboltBuilderRegistry, thunderboltPreviewRegistry, corvidRegistry, dataBindingRegistry), so any consumer requiring one of those names loads the malicious file. On load the script deletes its own require.cache entry, then uses child_process.execSync to run `id`, `id -un`/`whoami`, `uname -a`, `env | head -100`, `ifconfig`/`ip addr`, and `cat /etc/hosts`, URL-encoding each result and sending it via both fetch() and https.get() to hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418, followed by a beacon containing node version, platform, and pid. The `env` dump exposes CI/registry credentials such as NPM_TOKEN, GITHUB_TOKEN, and cloud keys to the attacker. IOCs: C2 hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418 (host webhook[.]site, port 443); exfiltrated fields cmd=id, cmd=whoami, cmd=uname, cmd=env, cmd=ifconfig, cmd=cat-etc-hosts, beacon=rce-poc.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "css-reading-display-polyfill",
+        "purl": "pkg:npm/css-reading-display-polyfill"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/css-reading-display-polyfill/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12639"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T22:46:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "f6b33ac34a526e1f5af7f3206f0af3976d6b302a42d86bfe976ccc55a46471d2"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418"
+        ]
+      }
+    }
+  }
+}
