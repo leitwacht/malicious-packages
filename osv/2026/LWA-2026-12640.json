@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12640",
+  "modified": "2026-10-06T23:17:50Z",
+  "published": "2026-10-06T23:17:07Z",
+  "summary": "Malicious code in wix-ssr-thunderbolt-grid-polyfill (npm)",
+  "details": "Package wix-ssr-thunderbolt-grid-polyfill@0.1.0 is a combosquat on Wix's real @wix/thunderbolt-* SSR packages. It ships no lifecycle hook; instead dist/poc-model.bundle.min.js and dist/poc-bootstrap.bundle.min.js are self-invoking scripts that execute as soon as the package is required or imported, so simply depending on it triggers the payload. dist/poc-model.bundle.min.js performs host and network reconnaissance: it collects process.version, process.cwd(), HOSTNAME, POD_IP, uid and os.networkInterfaces(); TCP-connects to 38 localhost ports (80, 443, 3000, 3001, 4000, 5000, 5050, 6060, 7070, 8000, 8080, 8081, 8443, 8888, 9090, 9091, 9200, 9229, 9300, 9999, 10000, 10080, 15000, 15001, 15006, 15020, 15021, 15090, 19000, 19001, 20000, 3030, 4040, 4443, 6379, 6443, 8181, 8282, 8383, 8484, 8585); HTTP-GETs every open port and captures the status code, response headers and first 500 bytes of the body; reads /etc/hosts and /etc/resolv.conf; enumerates process.env keys; and resolves bo[.]wix[.]com. The collected JSON is POSTed to hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418?src=ssr-recon-v3. dist/poc-bootstrap.bundle.min.js is a lighter beacon to the same endpoint, using both fetch and an https.request GET with src=ssr-bootstrap / ssr-bootstrap-require. The package also ships rb_wixui.thunderbolt.manifest.min.json and rb_dsgnsys.thunderbolt.manifest.min.json, mimicking Wix Thunderbolt SSR manifest files. No credentials, tokens or wallet keys are read; the exfiltration is host/network reconnaissance and internal service response data.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wix-ssr-thunderbolt-grid-polyfill",
+        "purl": "pkg:npm/wix-ssr-thunderbolt-grid-polyfill"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wix-ssr-thunderbolt-grid-polyfill/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12640"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T23:17:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bo[.]wix[.]com",
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "8e7342332f172fbd1bde63a1f2d8b8ffcb4e898432ec89f4dacbb2972a513eb6"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418",
+          "hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418?src=ssr-bootstrap",
+          "hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418?src=ssr-recon-v3"
+        ]
+      }
+    }
+  }
+}
