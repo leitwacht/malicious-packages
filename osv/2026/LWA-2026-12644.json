@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12644",
+  "modified": "2026-10-07T09:38:31Z",
+  "published": "2026-10-07T09:37:32Z",
+  "summary": "Malicious code in hardhat-option (npm)",
+  "details": "hardhat-option@2.0.1 ships a trojanized copy of the pino logging library (index.js, lib/, docs/ are pino source) with an injected payload in lib/config.js — a 4.5 MB single-line javascript-obfuscator blob using hex-escaped identifiers and an encoded string array. Requiring the package executes the obfuscated payload, which performs host reconnaissance (hostname, OS, username, platform) and beacons over HTTP to a hardcoded command-and-control server at 167[.]88[.]172[.]33: it POSTs a multipart/form-data upload of sysinfo.txt to hxxp://167[.]88[.]172[.]33:8085/upload, and posts JSON telemetry to hxxp://167[.]88[.]172[.]33:8087/api/log and hxxp://167[.]88[.]172[.]33:8087/api/notify containing a numeric user key (ukey 309), host, OS and username, with a \"Validation\" HMAC header, via axios. The requests repeat on a timer (33 scheduled delays of up to 30 seconds). The package declares no source repository and its description is unrelated to its code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-option",
+        "purl": "pkg:npm/hardhat-option"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-option/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12644"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T09:37:32Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]172[.]33",
+          "167[.]88[.]172[.]33:8085",
+          "167[.]88[.]172[.]33:8087"
+        ],
+        "sha256": [
+          "b12ef5fc0b65d42ebdf13fbf53c35077a936df317e0980e0683811a692a0091d"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]172[.]33",
+          "hxxp://167[.]88[.]172[.]33:8085/upload",
+          "hxxp://167[.]88[.]172[.]33:8087/api/log",
+          "hxxp://167[.]88[.]172[.]33:8087/api/notify"
+        ]
+      }
+    }
+  }
+}

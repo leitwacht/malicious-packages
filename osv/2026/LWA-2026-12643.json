@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12643",
+  "modified": "2026-10-07T09:37:15Z",
+  "published": "2026-10-07T09:36:19Z",
+  "summary": "Malicious code in hardhat-deep (npm)",
+  "details": "hardhat-deep@2.0.1 is a trojanized clone of the pino logging library: it ships pino's source tree, README and docs under its own name, but replaces lib/config.js — required by the package's main entry point index.js — with a 4.5 MB javascript-obfuscator payload (hex-escaped string array, _0x identifiers, control-flow flattening) that executes as soon as the package is required. The payload fingerprints the host (hostname, OS, username, platform) and beacons over HTTP to a hardcoded command-and-control server at 167[.]88[.]172[.]33: it POSTs JSON telemetry to hxxp://167[.]88[.]172[.]33:8087/api/log and hxxp://167[.]88[.]172[.]33:8087/api/notify (body includes a user key, host name, OS string and username), and uploads a generated sysinfo.txt file via multipart POST to hxxp://167[.]88[.]172[.]33:8085/upload. Requests are sent with axios and carry custom Userkey, T and Validation headers; beacons are staggered with setTimeout delays of up to 30 seconds. The package declares axios as a runtime dependency solely to carry this traffic and provides no logging functionality. Its metadata is copied from unrelated projects (the description is taken from a vulnerability-management policy document, the bugs URL points to jsonspack[.]com, and there is no repository field).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-deep",
+        "purl": "pkg:npm/hardhat-deep"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-deep/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12643"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T09:36:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonspack[.]com"
+        ],
+        "ip_observed": [
+          "167[.]88[.]172[.]33",
+          "167[.]88[.]172[.]33:8085",
+          "167[.]88[.]172[.]33:8087"
+        ],
+        "sha256": [
+          "0e430b79f155a587e60443841ce0065647b18451d96bc95e064862fe646b1794"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]172[.]33",
+          "hxxp://167[.]88[.]172[.]33:8085/upload",
+          "hxxp://167[.]88[.]172[.]33:8087/api/log",
+          "hxxp://167[.]88[.]172[.]33:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
