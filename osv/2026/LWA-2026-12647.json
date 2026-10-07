@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12647",
+  "modified": "2026-10-07T14:38:34Z",
+  "published": "2026-10-07T14:37:37Z",
+  "summary": "Malicious code in hardhat-bits (npm)",
+  "details": "Hardhat-bits@2.21.0 is a trojanized clone of the pino logging library. It ships pino's README, docs/, index.d.ts and lib/ modules verbatim (lib/meta.js reports pino version 9.6.0) under a combosquat name, but replaces the real lib/config.js with a 4.47 MB obfuscated payload. The entry point index.js requires./lib/config at load time, so the obfuscated code runs as soon as the module is imported — no install hook is needed. The payload uses a large encoded string array with an RC4/base64 decoder, hex-escaped property names, and self-defending regex checks that detect a debugger or reformatted source and abort. Its string table is encoded, so the payload's endpoints are not present as plaintext in the shipped file; the entry point imports child_process.spawn and the package declares axios as a dependency, providing the process-execution and HTTP primitives for the hidden stage. Package metadata is fabricated: author \"Robert King\" \u003can account\u003e, bugs URL hxxps://jsonspack[.]com/issues, and npm scripts smoke:pino / smoke:file that run node./index.js and node./file.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-bits",
+        "purl": "pkg:npm/hardhat-bits"
+      },
+      "versions": [
+        "2.21.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-bits/v/2.21.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12647"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T14:37:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonspack[.]com"
+        ],
+        "sha256": [
+          "bcbed579513fb9e6b63648f569c62894f67ad5a8482dc72567b07058f0149ab4"
+        ],
+        "url_observed": [
+          "hxxps://jsonspack[.]com/issues"
+        ]
+      }
+    }
+  }
+}
