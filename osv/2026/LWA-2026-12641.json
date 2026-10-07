@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12641",
+  "modified": "2026-10-07T00:01:51Z",
+  "published": "2026-10-07T00:01:31Z",
+  "summary": "Malicious code in css-flow-render-shim (npm)",
+  "details": "css-flow-render-shim@1.0.0 ships a bundled payload (package/payload.bundle.min.js) that executes when the module is required. It first deletes matching entries from require.cache (paths containing \"payload\", \"rb_wixui\", \"rb_dsgnsys\") to conceal its presence, then collects host reconnaissance by spawning child processes: whoami, id, uname -a, `env | head -100`, ifconfig / ip addr, and `cat /etc/hosts`. Each command's output is sent as a query string to the hardcoded collector hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418 (via fetch() with an https.get() fallback), together with the hostname, Node version, platform, pid and the package name. The environment dump can carry credentials and tokens present in the installer's environment. The remainder of the file is a Proxy-based stub exporting fake Wix thunderbolt registry names (thunderboltRegistry, corvidRegistry, editorRegistry, etc.) to make the package resemble a CSS/render shim; the declared entry point index.js is an empty module, so the payload is reached by requiring payload.bundle.min.js directly. IOCs: C2 hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418 (host webhook[.]site, port 443).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "css-flow-render-shim",
+        "purl": "pkg:npm/css-flow-render-shim"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/css-flow-render-shim/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12641"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T00:01:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "8815c6959bf38f27a16ae685373dd397b2237181c8b7693265eb05817a828cae"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/69bcd627-1871-4dda-b880-83b37ceac418"
+        ]
+      }
+    }
+  }
+}
