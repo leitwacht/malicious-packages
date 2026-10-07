@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12648",
+  "modified": "2026-10-07T15:23:40Z",
+  "published": "2026-10-07T15:16:04Z",
+  "summary": "Malicious code in hardhat-pack (npm)",
+  "details": "hardhat-pack@2.0.1 is a combosquat name (the real package \"hardhat\" with a \"-pack\" suffix) that ships a trojanized copy of the pino logger: the bundled documentation, type definitions and lib/ tree are cloned from pino, while the entry point index.js is a no-op Express middleware stub that loads a 4.5 MB obfuscated payload at lib/config.js (javascript-obfuscator output with hex/unicode-escaped _0x identifiers). When the package is installed or required, the payload fingerprints the host and beacons it to a hardcoded remote endpoint: a multipart POST of a sysinfo.txt file (hostname, OS version, username, platform, timestamp) to hxxp://167[.]88[.]172[.]33:8085/upload, and JSON POSTs to hxxp://167[.]88[.]172[.]33:8087/api/notify ({\"ukey\":309,\"t\":3,\"host\":\"309_\u003chostname\u003e\",\"os\":...,\"username\":...}) and hxxp://167[.]88[.]172[.]33:8087/api/log (\"Starting client\"). Requests carry an axios user agent and a Validation HMAC header, and repeat on a timer. No credential, token or wallet access was observed; the payload's purpose is covert host reconnaissance and beaconing to attacker-controlled infrastructure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hardhat-pack",
+        "purl": "pkg:npm/hardhat-pack"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hardhat-pack/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12648"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T15:16:04Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "167[.]88[.]172[.]33:8085",
+          "167[.]88[.]172[.]33:8087"
+        ],
+        "sha256": [
+          "83e5792d36ec9e9431ca8e0e3ccf3d40b9e0ed68ae0f6e54e7e48f83be02c982"
+        ],
+        "url_observed": [
+          "hxxp://167[.]88[.]172[.]33",
+          "hxxp://167[.]88[.]172[.]33:8085/upload",
+          "hxxp://167[.]88[.]172[.]33:8087/api/log",
+          "hxxp://167[.]88[.]172[.]33:8087/api/notify"
+        ]
+      }
+    }
+  }
+}
