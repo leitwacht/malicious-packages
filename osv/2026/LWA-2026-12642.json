@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12642",
+  "modified": "2026-10-07T06:47:11Z",
+  "published": "2026-10-07T06:46:24Z",
+  "summary": "Malicious code in random-certs (npm)",
+  "details": "random-certs@0.0.1 presents itself as a random self-signed certificate generator, but index.js hides a remote-code dropper. Its loadSampleCertificate() function reads the bundled file sample/cert.pem, strips the PEM header/footer, base64-decodes the body and passes the result to eval(); generateCertificates() calls this on every invocation, so the hidden code runs as soon as the advertised API is used. The file named sample/cert.pem is not a certificate — it decodes to JavaScript that base64-decodes an embedded URL, fetches it, and pipes the response body into a detached interpreter process: spawn('python3' on POSIX, 'python' on win32, ['-'], {stdio:['pipe','ignore','ignore'], detached:true, windowsHide:true}) followed by stdin.write(body), stdin.end() and unref(), with all errors silently swallowed. The fetched content is only executed if its content-type is not text/html, a guard against Google Drive's HTML interstitial. The staging URL is a Google Drive download link (drive[.]usercontent[.]google[.]com/download?id=1y4LSiUb4PZSgJKBtEVJMDNnl3Sr7kbSy), so the second stage is fetched from a legitimate web service rather than a fixed attacker domain. The encoded_cert and encoded_key constants inside the payload are unused decoys. The package declares no lifecycle scripts, so the payload is triggered by calling generateCertificates() rather than at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "random-certs",
+        "purl": "pkg:npm/random-certs"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/random-certs/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12642"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T06:46:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "drive[.]usercontent[.]google[.]com"
+        ],
+        "sha256": [
+          "40d748135e2f2389f4612cd7e69fbcc94eba4577bdcc368998a5a9b12b4f53da"
+        ],
+        "url_observed": [
+          "hxxps://drive[.]usercontent[.]google[.]com/download?id=1y4LSiUb4PZSgJKBtEVJMDNnl3Sr7kbSy"
+        ]
+      }
+    }
+  }
+}
