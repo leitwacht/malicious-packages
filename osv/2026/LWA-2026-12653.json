@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12653",
+  "modified": "2026-10-08T11:08:17Z",
+  "published": "2026-10-06T21:04:51Z",
+  "summary": "Malicious code in cputil-node (npm)",
+  "details": "Cputil-node@0.6.6 ships the legitimate cputil wrapper with an injected obfuscated payload appended to its entry point. The published tarball's lib/index.js contains the genuine compiled wrapper (require(\"./cputil\"); exports.default = cputil) followed on the same line by an added self-decoding loader: it sets global['_V']='8-npm3' and global['r']=require, defines a custom string-decoder function that permutes a character array using a constant-seeded index scheme, decodes a 30-character key, and then uses that key to decode two large encoded string blobs (roughly 1.2 KB and 2.4 KB) which are reassembled and executed through a dynamically constructed function. The decoded payload carries both HTTP-client and process-execution capability, so requiring the package can run commands and contact a remote endpoint. The loader is not produced by the package's own build (plain tsc + copyfiles) and is not javascript-obfuscator output — it is a bespoke permutation cipher, which is why generic obfuscation heuristics miss it. The rest of the tarball (the bundled.NET cputil runtime under lib/cputil/bin/linux and lib/cputil/bin/macos, including lib/cputil/bin/linux/cputil) is the legitimate Star cputil binary and is not the malicious component. No plaintext network indicator is recoverable from the injected block: the payload's C2 host, IP and URL path are encrypted inside the encoded blobs and are not present as readable strings in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cputil-node",
+        "purl": "pkg:npm/cputil-node"
+      },
+      "versions": [
+        "0.6.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cputil-node/v/0.6.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12653"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T21:04:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "0a6d33a79b795f1f3c23fb1ad9157a05174ee6c4df0587cd6aebee4e66eb49a8"
+        ]
+      }
+    }
+  }
+}

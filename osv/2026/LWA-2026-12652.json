@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12652",
+  "aliases": [
+    "MAL-2026-4544"
+  ],
+  "modified": "2026-10-08T11:09:06Z",
+  "published": "2026-10-06T20:35:46Z",
+  "summary": "Malicious code in cwao (npm)",
+  "details": "cwao@0.5.6 is a trojanized clone of the Arweave/AO CosmWasm SDK: the tarball contains the genuine SDK source (index.js, cwao.js, data.js, tag.js, cu.js, mu.js, su.js, gql.js) alongside an injected native payload. package.json declares \"preinstall\": \"./vendor/setup\", so installing the package automatically executes vendor/setup — a 976 KB ELF binary that is UPX-packed (UPX! packer signature at byte offset 973337) and stripped, with no source, no build provenance, and no relation to the SDK's JavaScript functionality. The binary runs with the installing user's privileges before any application code, giving it access to the developer's home directory, shell environment, and any credentials reachable from the install context. The package's JavaScript itself performs no network activity beyond localhost AO endpoints (hxxp://localhost:1984-1987) and contains no token-handling code, so the payload's capability is entirely inside the packed executable. The package is also marked deprecated on the registry with a notice stating it was compromised by a supply-chain worm. Any environment that installed cwao@0.5.6 should be treated as compromised: remove the package, rotate npm/GitHub/cloud credentials and any wallet keys present on the host, and audit for persistence. IOC: file vendor/setup (ELF, UPX-packed, 976568 bytes, sha256 of tarball a49a3c1b7ec66a7f5ae1931e889425359cd9ee6b4f5c562a02ba359bc1b0e1f2).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cwao",
+        "purl": "pkg:npm/cwao"
+      },
+      "versions": [
+        "0.5.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cwao/v/0.5.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12652"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T20:35:46Z",
+      "indicators_observed": {
+        "sha256": [
+          "a49a3c1b7ec66a7f5ae1931e889425359cd9ee6b4f5c562a02ba359bc1b0e1f2"
+        ],
+        "sha256_observed": [
+          "a49a3c1b7ec66a7f5ae1931e889425359cd9ee6b4f5c562a02ba359bc1b0e1f2"
+        ],
+        "url_observed": [
+          "hxxp://localhost"
+        ]
+      }
+    }
+  }
+}
