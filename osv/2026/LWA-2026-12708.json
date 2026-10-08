@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12708",
+  "modified": "2026-10-08T16:17:57Z",
+  "published": "2026-10-08T16:17:40Z",
+  "summary": "Malicious code in @galicia-toolkit/tag-manager (npm)",
+  "details": "@galicia-toolkit/tag-manager@999.0.6 is a dependency-confusion implant: it publishes a sentinel version (999.0.6) on a scoped name with a 3KB tarball whose only substantive file is postinstall.js, executed via the package's \"postinstall\": \"node postinstall.js || true\" hook. On install the script fingerprints the host (hostname, platform, arch, OS release, Node version, cwd, pid, uptime, memory, CPU model/count, username, home directory, and non-internal network interfaces) and then harvests credentials from the environment: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_REGION, GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_ACTOR, GITHUB_SHA, NPM_TOKEN, NODE_AUTH_TOKEN, and the GitHub Actions OIDC tokens ACTIONS_ID_TOKEN_REQUEST_TOKEN / ACTIONS_RUNTIME_TOKEN, along with CI markers (JENKINS_*, GITLAB_CI, CODEBUILD_BUILD_ID, SYSTEM_TEAMFOUNDATIONCOLLECTIONURI) and the full list of environment variable names. The collected JSON is exfiltrated over HTTP POST to hxxp://oob[.]s4yhii[.]com:9999/dep-confusion, with a secondary DNS-beacon channel that encodes the hostname, username, and platform-arch as hex subdomains under h[.]dc[.]oob[.]s4yhii[.]com, u[.]dc[.]oob[.]s4yhii[.]com, and m[.]dc[.]oob[.]s4yhii[.]com. All errors are swallowed so the install completes silently. The package description claims to be an authorized bug-bounty proof of concept, but the code performs real credential theft against whoever installs it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@galicia-toolkit/tag-manager",
+        "purl": "pkg:npm/%40galicia-toolkit/tag-manager"
+      },
+      "versions": [
+        "999.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@galicia-toolkit/tag-manager/v/999.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12708"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-08T16:17:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "h[.]dc[.]oob[.]s4yhii[.]com",
+          "m[.]dc[.]oob[.]s4yhii[.]com",
+          "oob[.]s4yhii[.]com",
+          "u[.]dc[.]oob[.]s4yhii[.]com"
+        ],
+        "ip_observed": [
+          "oob[.]s4yhii[.]com:9999"
+        ],
+        "sha256": [
+          "f4104f9fe0280d725673383305b4ea39e25f6ec37d2c9a12b8e32c08837d0a00"
+        ],
+        "url_observed": [
+          "hxxp://oob[.]s4yhii[.]com",
+          "hxxp://oob[.]s4yhii[.]com:9999/dep-confusion"
+        ]
+      }
+    }
+  }
+}
