@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12686",
+  "modified": "2026-10-08T12:16:50Z",
+  "published": "2026-10-08T00:17:05Z",
+  "summary": "Malicious code in @devmikets/hyperliquid-sdk (npm)",
+  "details": "@devmikets/hyperliquid-sdk@1.9.5 declares a dependency on \"typescript-eslint\" resolved from the raw URL hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz — a lookalike of the official npm registry host registry[.]npmjs[.]org. Because the dependency is specified as a direct tarball URL rather than a registry version range, npm downloads and unpacks the attacker-controlled archive from registrynpmjs.to during install, executing whatever that archive contains in the installer's environment. The package itself ships no lifecycle hook and no obfuscated code; the entire attack is the dependency redirect, which is easy to miss because the package otherwise presents as a normal Hyperliquid exchange SDK (combosquat on the real Hyperliquid SDK name, with repository and homepage pointing at github[.]com/devmikets/hyperliquid-sdk). Any project that installs this version pulls code from the lookalike registry domain.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@devmikets/hyperliquid-sdk",
+        "purl": "pkg:npm/%40devmikets/hyperliquid-sdk"
+      },
+      "versions": [
+        "1.9.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@devmikets/hyperliquid-sdk/v/1.9.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12686"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T00:17:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "registrynpmjs[.]to"
+        ],
+        "sha256": [
+          "0eafd8e15b4ec36d661475da919faeeca82fa1f03f6528098f048515fff643c2"
+        ],
+        "url_observed": [
+          "hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}

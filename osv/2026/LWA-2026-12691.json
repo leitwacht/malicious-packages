@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12691",
+  "modified": "2026-10-08T12:17:49Z",
+  "published": "2026-10-08T00:31:27Z",
+  "summary": "Malicious code in @polymarkets/clob-client-v2 (npm)",
+  "details": "@polymarkets/clob-client-v2 is a combosquat of the legitimate Polymarket CLOB SDK (@polymarket/clob-client): the scope adds an \"s\" and the name adds a \"-v2\" suffix, while the shipped dist/ is a clone of the real client's source (viem order builders, HMAC request signing, axios HTTP helpers, ClobAuth typed-data signing). The malicious element is in package.json: the dependency \"typescript-eslint\" is pinned to a tarball URL on registrynpmjs.to — hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz — a look-alike of the official registry[.]npmjs[.]org. Installing this package therefore downloads and installs an attacker-controlled tarball from that host, giving the operator arbitrary code execution in the installer's environment and a foothold in the dependency tree. The package itself carries no lifecycle hooks; the payload is delivered through the substituted dependency rather than the package's own code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@polymarkets/clob-client-v2",
+        "purl": "pkg:npm/%40polymarkets/clob-client-v2"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@polymarkets/clob-client-v2/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12691"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T00:31:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "registrynpmjs[.]to"
+        ],
+        "sha256": [
+          "7bb9b5a1a74a812ed6a6c0b62855fceb31771bd3318c3d253d901c2556b4f5bf"
+        ],
+        "url_observed": [
+          "hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}
