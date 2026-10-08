@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12724",
+  "modified": "2026-10-08T19:33:34Z",
+  "published": "2026-10-08T19:18:26Z",
+  "summary": "Malicious code in wie888r (npm)",
+  "details": "wie888r@99.0.1 is a dependency-confusion shim that beacons on install. Its package.json declares \"postinstall\": \"node beacon.cjs\", and beacon.cjs POSTs a JSON body containing the package name, the machine hostname, the install directory (__dirname), the current working directory, and the Node/npm version to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header. The package's index.js also calls the same beacon on require(), so simply importing the module name records the install even if the lifecycle hook is skipped. The package ships no real functionality: index.js exports a Proxy that returns no-op functions for every property access, so a build that imports it completes instead of crashing. The version number (99.0.1) and generic \"Compatibility shim.\" description are chosen to win version resolution against the real dependency of the same name. The beacon is fire-and-forget over plaintext HTTP to a bare IP address, with a 5s timeout and errors swallowed. No credentials, tokens, environment variables, or files are read or transmitted. IOC: hxxp://185[.]158[.]107[.]175:8787/_ah/dc (POST, JSON body, x-beacon-package header).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wie888r",
+        "purl": "pkg:npm/wie888r"
+      },
+      "versions": [
+        "99.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wie888r/v/99.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12724"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-08T19:18:26Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "38357ef1e6030e840f172f355123cf2d574ecfab0b16161e0dd86c24e3593f2d"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
