@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12666",
+  "modified": "2026-10-08T11:32:41Z",
+  "published": "2026-10-06T20:09:21Z",
+  "summary": "Malicious code in @yaszz/bail (npm)",
+  "details": "@yaszz/bail@1.0.0 is a republished fork of the Baileys WhatsApp WebSocket library with a hidden remote-tasking payload injected into lib/Utils/messages-media.js. The file defines an exported function loadBase(n, q) that decodes a base64 string into the URL hxxps://raw[.]githubusercontent[.]com/Yaszz-17/Newsletter/main/id[.]json, waits 80 seconds after the socket is created, then fetches that URL (with a cache-busting ?t=\u003ctimestamp\u003e query) and parses the returned JSON as a list of newsletter IDs. For every entry it calls the caller-supplied newsletter-follow routine (n(i.id, q.FOLLOW)) with a 5-second delay between calls, so the package silently subscribes the victim's WhatsApp account to an attacker-controlled list of channels. The URL is base64-encoded and the whole routine is wrapped in empty catch blocks so it produces no logs or errors. The hook is wired in from lib/Socket/newsletter.js, which imports loadBase and invokes it at module load with the socket's newsletter query function, meaning the behaviour runs automatically for any application that imports the package — no user action required. The package also ships editor-backup sidecars (lib/Defaults/index.js.bak, lib/Socket/Client/websocket.js.bak, lib/Types/Newsletter.js.bak) alongside the live modules, and lib/index.js prints promotional Telegram/YouTube branding for the fork. The remote JSON file is publisher-controlled and can be changed at any time to alter which channels are followed, making it a live command channel rather than a static list.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yaszz/bail",
+        "purl": "pkg:npm/%40yaszz/bail"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yaszz/bail/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12666"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T20:09:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "i[.]id",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "2fe18594e28bac1343eb5221b3e408f34588acba2d676153ab23ee1dbc5fc6f6"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/Yaszz-17/Newsletter/main/id[.]json"
+        ]
+      }
+    }
+  }
+}
