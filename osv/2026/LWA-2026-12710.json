@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12710",
+  "modified": "2026-10-08T18:33:34Z",
+  "published": "2026-10-08T18:32:56Z",
+  "summary": "Malicious code in css-overscroll-contain (npm)",
+  "details": "css-overscroll-contain@1.0.3 presents itself as a CSS overscroll-behavior polyfill, but its declared entry point index.js is an empty stub (module.exports={}) and package.json declares no scripts, bin entries, or dependencies. The tarball instead ships package/thunderboltRegistry.js, a 5.8 KB payload that executes as soon as the module is loaded. It requires child_process, runs shell commands through execSync, and posts the results as HTTP GET requests to hxxps://webhook[.]site/4a7272ce-00ca-48b2-904a-05679b11493b, tagging each request (?tag=info, mknod, fds, mounts, memfd, symlink, kernel, env, procs, done) and truncating the body to 3000 characters. Collected data includes `id`, `uname -a`, the Node version and PID; a /proc/self/fd listing with socket peer credentials; /proc/self/status capability and seccomp flags; namespace listings; and a process list read from a procfs mount. It also harvests credentials by running `env | grep -iE '(key|token|secret|pass|auth|host|port|url|endpoint|service|kube)'` and sending the output to the same endpoint. It then probes for container/sandbox escape: mknod of cuse/fuse/null device nodes via syscall 259 (referenced in the code as CVE-2026-96812), memfd_create (syscall 319) followed by execution of /proc/self/fd, symlink traversal to /proc/1/root, and unshare --user --mount --map-root-user mount attempts of proc, sysfs, tmpfs, devtmpfs, devpts, cgroup, cgroup2, fusectl and overlay. The remainder of the file exports Proxy stubs named thunderboltRegistry, siteAssetsRegistry, documentManagementRegistry, editorRegistry and similar, mimicking a component-registry module so the file resembles ordinary library code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "css-overscroll-contain",
+        "purl": "pkg:npm/css-overscroll-contain"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/css-overscroll-contain/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12710"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T18:32:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "2717e43df590946770a517dd24b6332f09537f7a0ba19bf25785ebfe336d835e"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/4a7272ce-00ca-48b2-904a-05679b11493b"
+        ]
+      }
+    }
+  }
+}
