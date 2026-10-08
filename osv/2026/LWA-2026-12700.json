@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12700",
+  "modified": "2026-10-08T15:26:12Z",
+  "published": "2026-10-08T15:25:41Z",
+  "summary": "Malicious code in @galicia-toolkit/tag-manager (npm)",
+  "details": "@galicia-toolkit/tag-manager@999.0.5 ships a postinstall hook (\"node postinstall.js || true\") that runs on every install and exfiltrates host and build-environment reconnaissance. The script collects hostname, platform, arch, kernel release, Node version, working directory, PID, uptime, CPU count/model, total memory, the current username and home directory, and every non-internal network interface name and address, plus the values of CI/CD environment variables (CI, BUILD_NUMBER, BUILD_ID, JENKINS_URL, JENKINS_HOME, GITHUB_ACTIONS, GITLAB_CI, SYSTEM_TEAMFOUNDATIONCOLLECTIONURI, CODEBUILD_BUILD_ID, npm_config_registry, npm_package_name, NODE_ENV, HOME, COMPUTERNAME, USERDOMAIN, PATH) and the sorted list of all environment variable names present. The JSON payload is POSTed to hxxp://oob[.]s4yhii[.]com:9999/dep-confusion, and three DNS beacons encode the hostname, username and platform/arch as hex-encoded subdomains under h[.]dc[.]oob[.]s4yhii[.]com, u[.]dc[.]oob[.]s4yhii[.]com and m[.]dc[.]oob[.]s4yhii[.]com, giving a fallback channel that works where outbound HTTP is blocked. All errors are swallowed and the hook is suffixed \"|| true\" so the install completes silently. The package carries a sentinel version (999.0.5) on a scoped name so it wins dependency resolution against an internal package of the same name. IOCs: C2 hxxp://oob[.]s4yhii[.]com:9999/dep-confusion; DNS beacon zones h[.]dc[.]oob[.]s4yhii[.]com, u[.]dc[.]oob[.]s4yhii[.]com, m[.]dc[.]oob[.]s4yhii[.]com (parent oob[.]s4yhii[.]com).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@galicia-toolkit/tag-manager",
+        "purl": "pkg:npm/%40galicia-toolkit/tag-manager"
+      },
+      "versions": [
+        "999.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@galicia-toolkit/tag-manager/v/999.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12700"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T15:25:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "h[.]dc[.]oob[.]s4yhii[.]com",
+          "m[.]dc[.]oob[.]s4yhii[.]com",
+          "oob[.]s4yhii[.]com",
+          "u[.]dc[.]oob[.]s4yhii[.]com"
+        ],
+        "sha256": [
+          "c3b8ad475b8d84a2abed21c717761eaba7caae5531e3f4b9d69b02c4c897cf9d"
+        ],
+        "url_observed": [
+          "hxxp://oob[.]s4yhii[.]com",
+          "hxxp://oob[.]s4yhii[.]com:9999/dep-confusion"
+        ]
+      }
+    }
+  }
+}
