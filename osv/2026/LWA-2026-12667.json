@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12667",
+  "aliases": [
+    "MAL-2026-16293"
+  ],
+  "modified": "2026-10-08T12:01:00Z",
+  "published": "2026-10-07T14:18:21Z",
+  "summary": "Malicious code in chai-as-indexed (npm)",
+  "details": "chai-as-indexed@6.0.5 is a trojanized clone of the pino logger: it ships pino's source tree and documentation but injects a remote-code loader. The exported middleware in index.js spawns a detached, unref'd background process running `node lib/caller.js`. That script base64-decodes a hardcoded endpoint and header credentials from lib/const.js, issues an HTTPS GET with axios to hxxps://tomato-erminie-2[.]tiiny[.]site/index[.]json, reads the `cookie` field of the JSON response, and executes it with `new Function.constructor(\"require\", response)(require)` — arbitrary remote code execution with full require access, retried up to five times. The remote host is a free static-site service used as a throwaway payload host, so the executed second stage is attacker-controlled and can change at any time. The package name impersonates the chai-as-* family while the code is a copy of pino.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-indexed",
+        "purl": "pkg:npm/chai-as-indexed"
+      },
+      "versions": [
+        "6.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-indexed/v/6.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12667"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T14:18:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-erminie-2[.]tiiny[.]site"
+        ],
+        "sha256": [
+          "f873aa4906a91d7887474ce286072e2924e143ff9a68f9725c92580549a8a872"
+        ],
+        "url_observed": [
+          "hxxps://tomato-erminie-2[.]tiiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12669",
+  "modified": "2026-10-08T12:01:25Z",
+  "published": "2026-10-08T00:16:51Z",
+  "summary": "Malicious code in @devmikets/hyperliquid-sdk (npm)",
+  "details": "@devmikets/hyperliquid-sdk@1.9.4 is a republished clone of the legitimate Hyperliquid TypeScript SDK whose package.json has been modified to add a dependency resolved from an attacker-controlled registry: \"typescript-eslint\": \"hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz\". The host registrynpmjs.to imitates the official registry[.]npmjs[.]org, so a routine `npm install @devmikets/hyperliquid-sdk` silently downloads and installs an attacker-supplied tarball named typescript-eslint-8.58.2.tgz, which executes in the installer's environment with the privileges of the install. The package ships no lifecycle hooks and no obfuscated code of its own — the entire payload is the off-registry dependency, which makes it invisible to a normal source review of the SDK files. The rest of the tree (src/, esm/, script/, vendored src/deps/jsr[.]io) is copied from the upstream SDK, and the package advertises the upstream repository/homepage while being published under an unrelated scope, so the name and metadata give no indication that the dependency graph has been tampered with. Indicators: dependency URL hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz; host registrynpmjs.to; package @devmikets/hyperliquid-sdk@1.9.4.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@devmikets/hyperliquid-sdk",
+        "purl": "pkg:npm/%40devmikets/hyperliquid-sdk"
+      },
+      "versions": [
+        "1.9.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@devmikets/hyperliquid-sdk/v/1.9.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12669"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T00:16:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsr[.]io",
+          "registrynpmjs[.]to"
+        ],
+        "sha256": [
+          "0dcf429668e043a7fe02234266b3c7b7c740e7f213691c12b1a01b457cfb062c"
+        ],
+        "url_observed": [
+          "hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}

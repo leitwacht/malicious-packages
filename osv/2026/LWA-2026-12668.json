@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12668",
+  "modified": "2026-10-08T12:02:17Z",
+  "published": "2026-10-08T09:53:21Z",
+  "summary": "Malicious code in node-env-resolve (npm)",
+  "details": "node-env-resolve@1.2.3 is a remote-access trojan disguised as an environment-configuration helper. Its postinstall hook (postinstall.js) copies the bundled src/ tree into a hidden per-user directory — ~/.node-gyp-cache on macOS/Linux, %APPDATA%\\node-gyp-cache on Windows — installs persistence, and launches a detached background agent. Persistence is registered on every platform: a HKCU\\Run registry value plus a Startup-folder launcher.vbs on Windows, a LaunchAgent plist loaded with launchctl on macOS, and a ~/.config/autostart/connector.desktop entry on Linux. The agent registers with the operator relay at hxxps://connector-server-xi[.]vercel[.]app (endpoints /api/agent/register, /api/agent/heartbeat, /api/agent/signal, /api/agent/signal/poll), reporting machineId, hostname and public IP, then polls for commands. Bundled modules give the operator file listing/read/write (src/fileScanner.js), browser-history extraction from Chrome/Edge/Firefox SQLite databases (src/browserHistory.js), screen capture (src/screenCapture.js), microphone and system-audio capture via ffmpeg (src/audioCapture.js), remote input control (src/inputHandler.js) and a WebRTC P2P channel (src/p2pManager.js, node-datachannel); captured data is relayed to the server and over the P2P channel. The declared purpose (\"Lightweight environment configuration resolver for Node.js\") does not match any of this behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-env-resolve",
+        "purl": "pkg:npm/node-env-resolve"
+      },
+      "versions": [
+        "1.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-env-resolve/v/1.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12668"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T09:53:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "connector-server-xi[.]vercel[.]app"
+        ],
+        "sha256": [
+          "acf486e3831e2a4f200fc2f01d8f6c71b338db675923d59d2a4c7ba632a57f0e"
+        ],
+        "url_observed": [
+          "hxxps://connector-server-xi[.]vercel[.]app",
+          "hxxps://connector-server-xi[.]vercel[.]app/api/agent/heartbeat",
+          "hxxps://connector-server-xi[.]vercel[.]app/api/agent/register",
+          "hxxps://connector-server-xi[.]vercel[.]app/api/agent/signal",
+          "hxxps://connector-server-xi[.]vercel[.]app/api/agent/signal/poll"
+        ]
+      }
+    }
+  }
+}
