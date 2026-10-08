@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12689",
+  "modified": "2026-10-08T12:24:31Z",
+  "published": "2026-10-08T00:31:20Z",
+  "summary": "Malicious code in @polymarkets/clob-client-v2 (npm)",
+  "details": "@polymarkets/clob-client-v2@1.0.2 impersonates the legitimate Polymarket CLOB client SDK (@polymarket/clob-client) using a combosquat scoped name, and ships a package.json whose dependency list resolves a real dependency from a look-alike registry host instead of the npm registry: \"typescript-eslint\": \"hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz\". Any install of this package fetches and installs an attacker-controlled tarball from registrynpmjs.to (a typosquat of registry[.]npmjs[.]org) as part of the dependency tree, giving the operator arbitrary code execution in the installer's environment at install time. The rest of the package is a near-verbatim copy of the genuine SDK (same description, repository URL, MIT license, viem/axios/@ethersproject dependency set, dist/index.cjs + dist/index.js bundles), so the malicious dependency entry is the only deviation from the upstream code. The package declares no lifecycle hooks and the bundled JS contains no obfuscation, eval/atob, child_process, or credential-harvesting code — the attack is delivered entirely through the substituted dependency URL. IOC: registrynpmjs.to (hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@polymarkets/clob-client-v2",
+        "purl": "pkg:npm/%40polymarkets/clob-client-v2"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@polymarkets/clob-client-v2/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12689"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T00:31:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "registrynpmjs[.]to"
+        ],
+        "sha256": [
+          "14733e5d95521a27771d3df972b8984c09e8bce0f3c16f18737370f321dc3776"
+        ],
+        "url_observed": [
+          "hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}

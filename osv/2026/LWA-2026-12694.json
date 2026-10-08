@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12694",
+  "modified": "2026-10-08T12:19:01Z",
+  "published": "2026-10-07T02:43:38Z",
+  "summary": "Malicious code in neverthrow-js (npm)",
+  "details": "Neverthrow-js is a combosquat impersonation of the legitimate `neverthrow` library (upstream project supermacro/neverthrow). Version 4.5.1 ships a verbatim copy of the upstream source tree — README.md, LICENSE, dist/index.cjs.js, dist/index[.]es.js and dist/index.d.ts are unchanged from the real project, down to the upstream author's sponsorship and wiki links — while the package name, the `author` field and the `repository` field have been swapped. The repository field points at github[.]com/neverthrow-js/neverthrow, an organisation that does not host the genuine project, so the metadata falsely presents the package as the upstream library. The version number 4.5.1 is an old upstream release number, which makes the package look established. Earlier releases published under this name have been used to distribute malicious code. This particular version contains no install-time payload: there is no preinstall/postinstall hook, no bin entry, no child_process or network call, no eval/atob, no environment or credential reads, and no obfuscation. There is therefore no C2 host, IP, URL path or dropped-file artifact to report for 4.5.1 — the risk is the impersonation of a widely used error-handling library and the package name's history, not code executed on install. Consumers who depend on `neverthrow` should install the genuine package from the supermacro/neverthrow repository rather than this lookalike name.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "neverthrow-js",
+        "purl": "pkg:npm/neverthrow-js"
+      },
+      "versions": [
+        "4.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/neverthrow-js/v/4.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12694"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-07T02:43:38Z",
+      "indicators_observed": {
+        "sha256": [
+          "dd4cebcbffabb58d9bfa99dc76667d71948139fc223506c7fc04a5c6e95adb2d"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/neverthrow-js/neverthrow"
+        ]
+      }
+    }
+  }
+}

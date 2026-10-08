@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12690",
+  "modified": "2026-10-08T12:23:04Z",
+  "published": "2026-10-08T00:31:23Z",
+  "summary": "Malicious code in @polymarkets/clob-client-v2 (npm)",
+  "details": "@polymarkets/clob-client-v2@1.0.3 ships a cloned Polymarket CLOB client whose package.json redirects a dependency to an attacker-controlled registry: \"typescript-eslint\" is pinned to the raw tarball URL hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz, a lookalike of the official registry[.]npmjs[.]org. Installing the package causes npm to download and execute that tarball from the non-official host registrynpmjs.to instead of the npm registry, giving whoever controls that host arbitrary code execution in the installer's environment. The bundled dist/ code is otherwise an unmodified build of the legitimate client (it even sends User-Agent \"@polymarket/clob-client\"), so the substitution in the manifest is the entire attack: the package looks like a normal SDK install while silently pulling a dependency from a third-party registry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@polymarkets/clob-client-v2",
+        "purl": "pkg:npm/%40polymarkets/clob-client-v2"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@polymarkets/clob-client-v2/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12690"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T00:31:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "registrynpmjs[.]to"
+        ],
+        "sha256": [
+          "e24a3cc5d01d313d9cb52ed37b5f44ec126a14b8558ee9f0aee42b497cfd636e"
+        ],
+        "url_observed": [
+          "hxxps://registrynpmjs[.]to/typescript-eslint-8[.]58[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}
