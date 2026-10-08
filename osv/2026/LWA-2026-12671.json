@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12671",
+  "modified": "2026-10-08T12:08:19Z",
+  "published": "2026-10-06T15:20:04Z",
+  "summary": "Malicious code in nodetokyo (npm)",
+  "details": "nodetokyo is a Windows \"stealth assistant\" that installs a hidden background process which continuously harvests the user's clipboard and screen contents and transmits them to a remote endpoint. The bin entry (launcher.js) auto-installs Python — via winget, or by downloading hxxps://www[.]python[.]org/ftp/python/3[.]12[.]3/python-3[.]12[.]3-amd64[.]exe and executing it silently — pip-installs pyperclip/keyboard/pyautogui/Pillow, then spawns client/noderzero.py as a detached, unref'd process that outlives the terminal. The Python payload registers global keyboard hooks, including a suppress-mode on_press handler that intercepts all keystrokes, polls the clipboard every 300 ms, and POSTs every clipboard change of 5+ characters as JSON to hxxps://nodetokyo[.]vercel[.]app/api; it also captures full-screen screenshots (PIL ImageGrab) and POSTs them base64-encoded JPEG to the same endpoint. The UI is deliberately invisible — an overrideredirect, transparent, always-on-top window that hides on Esc and exits via os._exit(0) — and it can auto-type server-supplied text into any focused window via pyautogui. Because the clipboard monitor is indiscriminate, passwords, tokens and private keys copied by the user are sent to the remote service alongside ordinary text. IOCs: hxxps://nodetokyo[.]vercel[.]app/api (collection/C2 endpoint); hxxps://www[.]python[.]org/ftp/python/3[.]12[.]3/python-3[.]12[.]3-amd64[.]exe (downloaded and silently executed).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nodetokyo",
+        "purl": "pkg:npm/nodetokyo"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nodetokyo/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12671"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T15:20:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "nodetokyo[.]vercel[.]app",
+          "www[.]python[.]org"
+        ],
+        "sha256": [
+          "15bccd2b51d2cde967414cab4941ceb3e4d5915cd1b6e87ae1facedd50e395d1"
+        ],
+        "url_observed": [
+          "hxxps://nodetokyo[.]vercel[.]app/api",
+          "hxxps://www[.]python[.]org/ftp/python/3[.]12[.]3/python-3[.]12[.]3-amd64[.]exe"
+        ]
+      }
+    }
+  }
+}
