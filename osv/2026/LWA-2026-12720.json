@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12720",
+  "modified": "2026-10-08T19:24:22Z",
+  "published": "2026-10-08T19:18:31Z",
+  "summary": "Malicious code in @wxwxtest/testrrrdd (npm)",
+  "details": "@wxwxtest/testrrrdd ships a postinstall hook (\"postinstall\": \"node beacon.cjs\") that runs on every install and silently POSTs host metadata to a hardcoded remote endpoint. beacon.cjs collects the package name, the machine hostname (os.hostname()), the install directory (__dirname), the current working directory, and the Node/npm version, then sends them as JSON to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an \"x-beacon-package\" header. The request is fire-and-forget: errors and timeouts are swallowed so the install appears to succeed normally, and the package's index.js is an empty compatibility shim, so nothing in the package's visible behaviour hints at the outbound call. The same beacon is present in versions 0.0.1, 1.0.0, 2.0.1 and 3.0.0. The package name is a combosquat of the real \"testrrrd\" package, and the README's claim that this is an \"authorized dependency-confusion test\" is an unverifiable self-assertion that does not change the behaviour: installing the package leaks the installer's hostname and filesystem paths to a third-party IP. IOCs: C2 host 185[.]158[.]107[.]175:8787, POST path /_ah/dc.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wxwxtest/testrrrdd",
+        "purl": "pkg:npm/%40wxwxtest/testrrrdd"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wxwxtest/testrrrdd/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12720"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-08T19:18:31Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "d98647cb86e18e6ebb848f8f984c8cb1b76b626edb5dbe66f68c338aaae24642"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
