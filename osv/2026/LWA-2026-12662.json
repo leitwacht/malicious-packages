@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12662",
+  "aliases": [
+    "MAL-2026-17620"
+  ],
+  "modified": "2026-10-08T11:11:57Z",
+  "published": "2026-10-03T22:03:01Z",
+  "summary": "Malicious code in dzyclutch-baileys (npm)",
+  "details": "Dzyclutch-baileys is a combosquat on the baileys WhatsApp Web API library: it ships a cloned copy of the baileys source tree (same dependency set, same \"Advanced WhatsApp Web API Library\" description, same lib/ layout) under a prefixed name, with an install-time payload added. Its package.json declares a preinstall hook, \"node./engine-requirements.js\", which executes a bundled script as soon as the package is installed — before any application code runs. The dependency tree is also tampered with: the core libsignal dependency is aliased to a same-publisher package (\"libsignal\": \"npm:dzyclutch-libsignal-node\"), pulling attacker-controlled code into the installer's dependency graph. The package also depends on packages previously used in malicious publishes (@cacheable/node-cache, cache-manager). Eleven versions were published in a burst. The published tarballs are no longer retrievable from the registry, so the contents of engine-requirements.js and the aliased libsignal package could not be read; no network endpoint, dropped-file path or credential target can be stated for this version. Installers of any dzyclutch-baileys or @diezyclutch/baileys version should treat the host as potentially compromised and rotate npm and repository credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dzyclutch-baileys",
+        "purl": "pkg:npm/dzyclutch-baileys"
+      },
+      "versions": [
+        "1.1.21"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dzyclutch-baileys/v/1.1.21"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12662"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-03T22:03:01Z",
+      "indicators_observed": {
+        "sha256": [
+          "846600d86d79c8ff3fd9c74df458c9ae24c2146324a929e6b45aba0a1cb8d41c"
+        ]
+      }
+    }
+  }
+}

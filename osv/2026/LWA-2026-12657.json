@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12657",
+  "aliases": [
+    "MAL-2026-17620"
+  ],
+  "modified": "2026-10-08T11:11:38Z",
+  "published": "2026-10-03T18:18:03Z",
+  "summary": "Malicious code in dzyclutch-baileys (npm)",
+  "details": "Dzyclutch-baileys is a repackaged fork of the WhatsApp Web API library \"baileys\" (combosquat: the real name appears intact behind a \"dzyclutch-\" prefix) that adds an install-time execution path. Its package.json declares a preinstall lifecycle hook, `node./engine-requirements.js`, which runs automatically on `npm install` before any application code executes; the upstream library has no such hook. The package also redirects its `libsignal` dependency to a publisher-controlled package, `dzyclutch-libsignal-node`, instead of the upstream `libsignal-node`, so installation pulls code from the same untrusted source rather than the registry's canonical package. The manifest is machine-generated (the `keywords` field is a stringified array), consistent with scripted republishing. The published tarball is no longer retrievable from the registry, so the contents of `engine-requirements.js` and of `dzyclutch-libsignal-node` could not be read; the install-time hook and the substituted dependency are the concrete artifacts observable in the manifest. No network indicator (C2 host, IP, or URL) is present in the metadata, and none is claimed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dzyclutch-baileys",
+        "purl": "pkg:npm/dzyclutch-baileys"
+      },
+      "versions": [
+        "1.1.16"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dzyclutch-baileys/v/1.1.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12657"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-03T18:18:03Z",
+      "indicators_observed": {
+        "sha256": [
+          "3ea4aee147b1f88245ee70ebbf1799873caa89ad6ae6a78e8555f61a5da17fe0"
+        ]
+      }
+    }
+  }
+}
