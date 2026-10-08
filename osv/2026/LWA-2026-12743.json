@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12743",
+  "modified": "2026-10-08T21:17:43Z",
+  "published": "2026-10-08T20:46:43Z",
+  "summary": "Malicious code in xblaxw (npm)",
+  "details": "xblaxw@1.1.0 ships a postinstall hook (\"node beacon.cjs\") that runs automatically on npm install with no opt-in. beacon.cjs collects machine and install metadata — the host hostname, the package install path (__dirname), the current working directory, and the npm/node user-agent string — and POSTs it as JSON to the hardcoded endpoint hxxp://185[.]158[.]107[.]175:8787/_ah/dc with the header X-Beacon-Package: xblaxw. The request is sent over plain HTTP to a raw IP address, is retried, and network errors are silently swallowed so the install appears to succeed. The package's stated purpose (\"Compatibility shim.\") requires no network activity, and the beacon's own comment claims it reports \"only machine/package metadata\" while providing no repository or research provenance. This is an install-time host-fingerprinting beacon phoning home to a hardcoded C2 address.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "xblaxw",
+        "purl": "pkg:npm/xblaxw"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/xblaxw/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12743"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T20:46:43Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "d012bf48c957d58fdf63dfc922f5dc67a56450e7e3bca254176dc2f1e4aa4431"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
