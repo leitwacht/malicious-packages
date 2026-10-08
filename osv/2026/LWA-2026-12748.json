@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12748",
+  "aliases": [
+    "MAL-2026-17708"
+  ],
+  "modified": "2026-10-08T22:03:54Z",
+  "published": "2026-10-08T20:46:32Z",
+  "summary": "Malicious code in xblaxw (npm)",
+  "details": "xblaxw@1.0.1 is a \"compatibility shim\" package whose postinstall hook (\"node beacon.cjs\") beacons host metadata to a hardcoded IP address. beacon.cjs POSTs a JSON body containing the package name, hostname, install path, working directory and npm/node version to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an X-Beacon-Package: xblaxw header. index.js re-fires the same beacon whenever the package is required and exports a Proxy that returns no-op functions for any property access, so a project that merely imports the name silently triggers the callback without breaking the build. The package name is a combosquat-style shim intended to be pulled in as a dependency; the beacon endpoint is a bare IP with no legitimate service behind it. No credential, token or file contents are read or sent — the payload is limited to install/host fingerprinting reported to the remote endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "xblaxw",
+        "purl": "pkg:npm/xblaxw"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/xblaxw/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12748"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-08T20:46:32Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "a2c0de05982aa7602a1393d1a77ad91e4db070f7a2130b4e9b457f972802efdb"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
