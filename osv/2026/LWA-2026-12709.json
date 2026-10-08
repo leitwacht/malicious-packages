@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12709",
+  "modified": "2026-10-08T16:21:15Z",
+  "published": "2026-10-08T16:20:38Z",
+  "summary": "Malicious code in @galicia-toolkit/spa-build-config (npm)",
+  "details": "@galicia-toolkit/spa-build-config@999.0.6 ships a postinstall hook (package.json: \"postinstall\": \"node postinstall.js || true\") that runs on every install and exfiltrates the installer's environment. postinstall.js collects host and CI metadata — hostname, platform, arch, OS release, Node version, cwd, pid, uptime, memory, CPU model, username, home directory, and all non-internal network interfaces — then reads a targeted list of credential-bearing environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_DEFAULT_REGION, GITHUB_TOKEN, GITHUB_REPOSITORY, GITHUB_ACTOR, GITHUB_RUN_ID, GITHUB_REF, GITHUB_SHA, NPM_TOKEN, NODE_AUTH_TOKEN, ACTIONS_ID_TOKEN_REQUEST_TOKEN, ACTIONS_ID_TOKEN_REQUEST_URL, ACTIONS_RUNTIME_TOKEN, plus Jenkins/GitLab/CodeBuild/Azure DevOps CI markers, and the full sorted list of process.env keys. The collected JSON is sent via HTTP POST to hxxp://oob[.]s4yhii[.]com:9999/dep-confusion, and three DNS beacons encode the hostname (hex), username (hex), and platform-arch as subdomains of h[.]dc[.]oob[.]s4yhii[.]com, u[.]dc[.]oob[.]s4yhii[.]com and m[.]dc[.]oob[.]s4yhii[.]com. All network errors are swallowed so the install completes silently. The package is a 3KB stub published at sentinel version 999.0.6 on a scoped name, consistent with a dependency-confusion attack against an internal scope; the payload steals live cloud, source-control and package-registry credentials from any machine or CI runner that installs it. IOCs: HTTP C2 oob[.]s4yhii[.]com:9999 (path /dep-confusion); DNS exfiltration domains h[.]dc[.]oob[.]s4yhii[.]com, u[.]dc[.]oob[.]s4yhii[.]com, m[.]dc[.]oob[.]s4yhii[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@galicia-toolkit/spa-build-config",
+        "purl": "pkg:npm/%40galicia-toolkit/spa-build-config"
+      },
+      "versions": [
+        "999.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@galicia-toolkit/spa-build-config/v/999.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12709"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-08T16:20:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "h[.]dc[.]oob[.]s4yhii[.]com",
+          "m[.]dc[.]oob[.]s4yhii[.]com",
+          "oob[.]s4yhii[.]com",
+          "u[.]dc[.]oob[.]s4yhii[.]com"
+        ],
+        "sha256": [
+          "b8efe86ca434938d3dbbd11c86dc48aa1ecd9f2b88d7ea8866c0765ebe973e30"
+        ],
+        "url_observed": [
+          "hxxp://oob[.]s4yhii[.]com",
+          "hxxp://oob[.]s4yhii[.]com:9999/dep-confusion"
+        ]
+      }
+    }
+  }
+}
