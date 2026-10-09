@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12756",
+  "modified": "2026-10-09T08:51:53Z",
+  "published": "2026-10-09T08:51:09Z",
+  "summary": "Malicious code in @galicia-toolkit-nestjs/paas (npm)",
+  "details": "@galicia-toolkit-nestjs/paas@999.0.3 is a sentinel-version stub (version 999.0.3 on a scoped name, 694-byte tarball, no repository) whose entire payload is a covert out-of-band callback. package/index.js exports inert NestJS shim stubs (forRoot/createLogger no-ops) and then, five seconds after the module is loaded, reads the installer's hostname with os.hostname() and issues a DNS resolution for \"\u003chostname\u003e.p999[.]dc[.]oob[.]s4yhii[.]com\" inside a try/catch. Encoding the victim hostname as a DNS label under an attacker-controlled out-of-band interaction domain confirms the package was installed on the host and leaks the hostname to the operator; the DNS query is the exfiltration channel. No credentials, environment variables, wallet keys, or files are read, and there is no install hook — the beacon fires on require. IOC: DNS domain p999[.]dc[.]oob[.]s4yhii[.]com (base domain s4yhii[.]com).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@galicia-toolkit-nestjs/paas",
+        "purl": "pkg:npm/%40galicia-toolkit-nestjs/paas"
+      },
+      "versions": [
+        "999.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@galicia-toolkit-nestjs/paas/v/999.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12756"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-09T08:51:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "p999[.]dc[.]oob[.]s4yhii[.]com",
+          "s4yhii[.]com"
+        ],
+        "sha256": [
+          "4cad35652411a3fb0cb9d07b5655d750ce4297fb1474c56db198210aa5a5d282"
+        ]
+      }
+    }
+  }
+}

