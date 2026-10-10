@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2534",
+  "modified": "2026-10-10T14:16:04Z",
+  "published": "2026-10-06T20:18:42Z",
+  "summary": "Malicious code in @tonsdk/core (npm)",
+  "details": "The package declares a postinstall hook (node scripts/postinstall.js) that runs on install under a misleading \"Cache validation script\" header. After a short random delay, the script fingerprints the host: hostname, username, platform and CPU architecture, base64-encoded in a query string. It sends this to a hardcoded command-and-control server at 213[.]218[.]160[.]189 (ports 8080, then 80, path /s?q=...) over plain HTTP. On Windows it first checks the process list for analysis tools (wireshark, fiddler, procmon, x64dbg, ida) and aborts if any is running. The server response is treated as JavaScript. If it is prefixed with a 64-character hex key, it is XOR-decrypted with that key and base64-decoded. The code is written to a hidden temp file (/tmp/.node_\u003crandom\u003e.js, or the user's AppData Local Temp directory on Windows). It is executed by the running Node binary as a detached, unreferenced background process with all stdio ignored, and the file is deleted about five seconds later. This gives the operator arbitrary remote code execution on the installing machine, which survives after the install finishes. The rest of the package (dist/index.js) is a harmless TVM arithmetic helper library that serves as cover.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tonsdk/core",
+        "purl": "pkg:npm/%40tonsdk/core"
+      },
+      "versions": [
+        "0.9.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tonsdk/core/v/0.9.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2534"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-06T20:18:42Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "213[.]218[.]160[.]189"
+        ],
+        "sha256": [
+          "6c3d5ce6b896b4c47eff02f5a3e765efaac8120f9c666a27a5b95ea57071ec03"
+        ],
+        "url_observed": [
+          "hxxp://213[.]218[.]160[.]189:80/s?q=",
+          "hxxp://213[.]218[.]160[.]189:8080/s?q="
+        ]
+      }
+    }
+  }
+}
