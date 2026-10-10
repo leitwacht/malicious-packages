@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12928",
+  "modified": "2026-06-08T22:25:49Z",
+  "published": "2026-06-08T22:24:50Z",
+  "summary": "Malicious code in @alleata/types (npm)",
+  "details": "The package masquerades as TypeScript type definitions but ships a postinstall credential harvester (.prepare.cjs). It first runs extensive anti-analysis evasion (sandbox/VM checks on hostname and usernames, CI detection, profiler and mock-CA-path checks) and delays execution 15-45 seconds via setTimeout, then collects the entire process environment (harvesting secrets such as NPM_TOKEN, GITHUB_TOKEN, and AWS keys) plus host metadata and exfiltrates them via HTTPS POST to an attacker-controlled Lark webhook at open[.]larksuite[.]com, with the destination host decoded via reverse+subtract-7 and the path XOR-encoded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@alleata/types",
+        "purl": "pkg:npm/%40alleata/types"
+      },
+      "versions": [
+        "0.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@alleata/types/v/0.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12928"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-08T22:24:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "open[.]larksuite[.]com"
+        ],
+        "sha256": [
+          "d9e429d93e4ef42ca92873ad86b01636869138385d14c51b4ee41d6eee1c4a85"
+        ]
+      }
+    }
+  }
+}
