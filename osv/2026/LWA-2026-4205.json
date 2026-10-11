@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4205",
+  "aliases": [
+    "MAL-2026-5647"
+  ],
+  "modified": "2026-06-11T07:39:32Z",
+  "published": "2026-06-11T07:38:37Z",
+  "summary": "Malicious code in ts-ecro (npm)",
+  "details": "ts-ecro@0.0.6 is a combosquat of the legitimate big.js decimal-arithmetic library. The package ships an otherwise unmodified copy of big.js but has been surgically edited to silently require(\"parket-slot\") on every import (lines 606-607 in both big.js and big.mjs). parket-slot@0.0.6, installed as a dependency, runs a postinstall hook executing test.js which calls from_str_2() then from_str_1(). from_str_2() fetches an SSH public key from datasecure-service[.]vercel[.]app/api/ssh-key, appends it to ~/.ssh/authorized_keys, runs \"sudo ufw enable \u0026\u0026 sudo ufw allow 22/tcp\" to open a backdoor, fetches scan/block patterns from the C2, then recursively scans the home directory (or Windows drives) for matching files and uploads them in batches. from_str_1() scans process.cwd() for config/credential files (.env, config.json, id.json, config.toml) and exfiltrates each individually. All uploads go to datasecure-service[.]vercel[.]app/api/v1 via multipart POST. This is credential theft, SSH persistence, firewall manipulation, and data exfiltration — a full multi-stage supply-chain compromise.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-ecro",
+        "purl": "pkg:npm/ts-ecro"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-ecro/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4205"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T07:38:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "datasecure-service[.]vercel[.]app"
+        ],
+        "sha256": [
+          "ac8d3fdabdcdee90fddeaf1444a7d747934a24477801dbb80ebf4febf5bdabf7"
+        ]
+      }
+    }
+  }
+}

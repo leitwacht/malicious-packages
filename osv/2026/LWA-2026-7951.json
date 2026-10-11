@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7951",
+  "aliases": [
+    "MAL-2026-11634"
+  ],
+  "modified": "2026-08-04T14:04:25Z",
+  "published": "2026-08-04T13:19:57Z",
+  "summary": "Malicious code in @onereach/si-copyable-text (npm)",
+  "details": "@onereach/si-copyable-text@0.4.13, a Vue copyable-text UI component, ships a preinstall hook (`node setup.mjs`) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a bundled 727KB obfuscated payload (`math_init.js`) with it at install time. The payload uses a custom string-encoding obfuscation scheme that hides its behaviour from static analysis. A UI component has no legitimate need to download a runtime and run an opaque obfuscated script during installation; this is an install-time remote code-execution attack shape. The payload's network destinations are hidden by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-copyable-text",
+        "purl": "pkg:npm/%40onereach/si-copyable-text"
+      },
+      "versions": [
+        "0.4.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-copyable-text/v/0.4.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7951"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:19:57Z",
+      "indicators_observed": {
+        "sha256": [
+          "5503d025eac8d1fb0612724ce91ed3d9a8121326be9703771badebdac79a637f"
+        ]
+      }
+    }
+  }
+}

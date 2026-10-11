@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7901",
+  "aliases": [
+    "MAL-2026-11644"
+  ],
+  "modified": "2026-08-04T13:38:39Z",
+  "published": "2026-08-04T12:16:56Z",
+  "summary": "Malicious code in @onereach/si-select (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) runs at install time: it downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases (bun-v1.3.13) and executes a bundled 727KB heavily-obfuscated script (math_init.js) with that runtime. No exfiltration endpoints or credential reads appear in plaintext; the payload's behavior is concealed by the obfuscation. Installing this package executes an opaque, obfuscated payload via a downloaded runtime, unrelated to the package's stated purpose as a UI select component.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-select",
+        "purl": "pkg:npm/%40onereach/si-select"
+      },
+      "versions": [
+        "0.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-select/v/0.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7901"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:16:56Z",
+      "indicators_observed": {
+        "sha256": [
+          "bc0bd55f79e9db44217bbad6c52b20e6aac265219ce4de1875b9143f966e1e30"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

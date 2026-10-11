@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4697",
+  "aliases": [
+    "MAL-2026-6866"
+  ],
+  "modified": "2026-06-12T12:31:37Z",
+  "published": "2026-06-12T12:30:35Z",
+  "summary": "Malicious code in prettier-logger (npm)",
+  "details": "A trojanized npm package posing as a colorized logger. On require(), it collects the OS, IP address, and username, then installs a hardcoded attacker SSH ed25519 public key into ~/.ssh/authorized_keys on Linux for persistent backdoor access. It recursively walks the entire filesystem (/, C:\\, /Users) searching for.env and config.json files, reads their contents, and POSTs them to api[.]fivefingerz[.]dev under the /api/validate/files, /api/validate/system-info, and /api/validate/project-env endpoints. The package manifest impersonates an author named Luke Pammant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "prettier-logger",
+        "purl": "pkg:npm/prettier-logger"
+      },
+      "versions": [
+        "0.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/prettier-logger/v/0.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4697"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T12:30:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fivefingerz[.]dev"
+        ],
+        "sha256": [
+          "22299f91cb0c41d98029447945aa24ea3768cf011503e885521d16d0322ba894"
+        ]
+      }
+    }
+  }
+}

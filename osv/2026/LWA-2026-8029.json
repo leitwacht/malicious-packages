@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8029",
+  "aliases": [
+    "MAL-2026-11821"
+  ],
+  "modified": "2026-08-04T15:33:40Z",
+  "published": "2026-08-04T15:23:44Z",
+  "summary": "Malicious code in @servicetitan/anvil-token (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from the official oven-sh/bun GitHub release and then executes a bundled 727KB file (math_init.js) that is heavily obfuscated with a custom string-decoder and large numeric constant array, making its behavior unreadable. A design-token library has no legitimate reason to download a runtime and run an opaque payload at install time. The executed payload's network/file behavior is hidden by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/anvil-token",
+        "purl": "pkg:npm/%40servicetitan/anvil-token"
+      },
+      "versions": [
+        "0.4.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/anvil-token/v/0.4.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8029"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T15:23:44Z",
+      "indicators_observed": {
+        "sha256": [
+          "8bd56bdce69116fd7ccf8a904937ec4eded305c1cb29138d46f2a5ece46dcddd"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

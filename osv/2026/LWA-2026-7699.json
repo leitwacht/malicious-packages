@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7699",
+  "aliases": [
+    "MAL-2026-11747"
+  ],
+  "modified": "2026-08-04T10:54:08Z",
+  "published": "2026-08-04T10:45:22Z",
+  "summary": "Malicious code in @ornikar/eslint-config-babel-use (npm)",
+  "details": "@ornikar/eslint-config-babel-use@13.2.4 is a trojanized eslint config package. The preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ and executes a heavily obfuscated 727KB Bun-compiled script (math_init.js) with it. The package depends on @ornikar/eslint-config which is a known-malicious package, confirming the @ornikar npm org was compromised. The preinstall hook, remote binary download and obfuscated script execution together form a supply-chain attack pattern.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ornikar/eslint-config-babel-use",
+        "purl": "pkg:npm/%40ornikar/eslint-config-babel-use"
+      },
+      "versions": [
+        "13.2.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ornikar/eslint-config-babel-use/v/13.2.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7699"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-08-04T10:45:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "07eb8c5061cd9c7b0c1113fd9e70fbd0ea2bc0b199ecf3b58ceefbd5d35d202b"
+        ]
+      }
+    }
+  }
+}

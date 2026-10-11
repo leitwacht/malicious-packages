@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2552",
+  "aliases": [
+    "MAL-2026-5565"
+  ],
+  "modified": "2026-06-07T18:27:28Z",
+  "published": "2026-06-07T18:19:42Z",
+  "summary": "Malicious code in ai-sdk-helpers (npm)",
+  "details": "Ai-sdk-helpers@0.4.1 is a data-harvesting package. Its postinstall.js (shared across all 21 published versions) reads ~/.gitconfig, ~/.config/gh/hosts.yml, os.hostname(), os.userInfo().username and process.cwd(), then POSTs this PII to hxxps://npm-package-logger-228835561205[.]europe-west1[.]run[.]app. The README understates the collection scope (claiming only platform/Node/arch), and the declared dist/index.js entry point is absent, so the package is non-functional as a library. The postinstall hook runs scripts/postinstall.js, which is malicious — it reads git config, GitHub CLI config, hostname, username, cwd and POSTs to a Cloud Run endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ai-sdk-helpers",
+        "purl": "pkg:npm/ai-sdk-helpers"
+      },
+      "versions": [
+        "0.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ai-sdk-helpers/v/0.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2552"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:19:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npm-package-logger-228835561205[.]europe-west1[.]run[.]app"
+        ],
+        "sha256": [
+          "0695eead7f010bbc8c362283100251fc697379b393fd68492221b3bc50040be9"
+        ],
+        "url_observed": [
+          "hxxps://npm-package-logger-228835561205[.]europe-west1[.]run[.]app"
+        ]
+      }
+    }
+  }
+}

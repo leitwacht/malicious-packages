@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2271",
+  "aliases": [
+    "MAL-2026-5506"
+  ],
+  "modified": "2026-06-01T14:24:03Z",
+  "published": "2026-06-01T14:15:59Z",
+  "summary": "Malicious code in argoncrypt (npm)",
+  "details": "Argoncrypt@1.2.3 carries plagiarized vulnerability-management boilerplate but is a remote-code-execution dropper. index.js spawns a detached child process (stdio:'ignore', unref'd) running lib/initializeCaller.js, which holds a base64-decoded endpoint hxxps://tomato-brunhilda-40[.]tiinny[.]site/index.json, fetches.data.cookie from it via axios, and executes the server-controlled response via new Function.constructor(\"require\", response). argoncrypt@1.2.3 is a combosquat malware package and multi-stage RCE dropper whose body is lifted from pino. index.js spawns a detached child process (spawn('node',['lib/initializeCaller.js',...],{detached:true,stdio:'ignore'}). That child decodes three base64 strings into a C2 URL (hxxps://tomato-brunhilda-40[.]tiny[.]site/index.json), fetches a payload via HTTP GET, and executes it via new Function.constructor(\"require\", response) — arbitrary remote code execution with a 5x retry loop. argoncrypt@1.2.3 is a stage-2 RCE dropper whose description (\"fast logger\") mismatches its behaviour. index.js spawns a detached child process (detached:true, stdio:'ignore') running lib/initializeCaller.js, which atob-decodes a hardcoded C2 URL (hxxps://tomato-brunhilda-40[.]tiiny[.]site/index.json), fetches JSON via axios with header x-secret-key:X, and executes the response data.cookie via new Function.constructor(\"require\", response) — full Node.js RCE with a 5x retry loop. This package is a remote-code-execution dropper. lib/initializeCaller.js decodes base64-embedded URL \"hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json\", fetches it via axios.get(), extracts.data.cookie, and executes it via new Function.constructor(\"require\", response) — giving the remote payload full Node.js require(). index.js silently spawns this as a detached child process (detached:true, stdio:'ignore', child.unref()) when the Express middleware is imported. Package masquerades as the pino logger (bundles pino docs/internals) under the unrelated name \"argoncrypt\". No lifecycle hook needed — requires only require(). This is an active RCE supply-chain attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "argoncrypt",
+        "purl": "pkg:npm/argoncrypt"
+      },
+      "versions": [
+        "1.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/argoncrypt/v/1.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2271"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T14:15:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tomato-brunhilda-40[.]tiinny[.]site",
+          "tomato-brunhilda-40[.]tiiny[.]site",
+          "tomato-brunhilda-40[.]tiny[.]site"
+        ],
+        "url_observed": [
+          "hxxps://tomato-brunhilda-40[.]tiinny[.]site/index[.]json",
+          "hxxps://tomato-brunhilda-40[.]tiiny[.]site/index[.]json",
+          "hxxps://tomato-brunhilda-40[.]tiny[.]site/index[.]json"
+        ]
+      }
+    }
+  }
+}

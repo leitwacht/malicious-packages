@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7697",
+  "aliases": [
+    "MAL-2026-11752"
+  ],
+  "modified": "2026-08-04T10:21:21Z",
+  "published": "2026-08-04T10:19:35Z",
+  "summary": "Malicious code in @ornikar/eslint-config-typescript-nestjs (npm)",
+  "details": "The package @ornikar/eslint-config-typescript-nestjs@24.0.1 is a trojanized version of a legitimate ESLint configuration package. Version 24.0.1 introduces a preinstall hook (setup.mjs) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases/ and executes a 728KB heavily obfuscated script (math_init.js) through it. The obfuscated script uses custom encoding and function-constructor/eval patterns that prevent static analysis of its true behaviour. An ESLint config package has no legitimate reason to download a JavaScript runtime and run obfuscated code on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ornikar/eslint-config-typescript-nestjs",
+        "purl": "pkg:npm/%40ornikar/eslint-config-typescript-nestjs"
+      },
+      "versions": [
+        "24.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ornikar/eslint-config-typescript-nestjs/v/24.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7697"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T10:19:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "sha256": [
+          "4e4c3a3a2db79fa425d80bce6695808454b0c9d73d8809fb4cb85762d677cdc8"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

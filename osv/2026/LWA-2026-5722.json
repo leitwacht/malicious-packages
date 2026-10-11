@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5722",
+  "aliases": [
+    "MAL-2026-6313"
+  ],
+  "modified": "2026-06-18T12:08:46Z",
+  "published": "2026-06-18T12:07:31Z",
+  "summary": "Malicious code in @zynkit/jwtbytes (npm)",
+  "details": "Postinstall script 'node dist/prelude.cjs' executes heavily obfuscated javascript-obfuscator output. The package wraps a real encoding library (base64, base58, base32, hex, varint codecs) as camouflage, and every require() of the package also triggers the obfuscated payload via require('./prelude.cjs').runPrepare(). The obfuscated prelude.cjs (282KB) uses a custom RC4-like string cipher to hide its runtime behaviour. Obfuscated code running on install has no legitimate purpose for an encoding library and is consistent with a supply-chain trojan. The payload's behaviour is concealed by the obfuscation, and no network IOCs are visible in the source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zynkit/jwtbytes",
+        "purl": "pkg:npm/%40zynkit/jwtbytes"
+      },
+      "versions": [
+        "0.5.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zynkit/jwtbytes/v/0.5.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5722"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-18T12:07:31Z",
+      "indicators_observed": {
+        "sha256": [
+          "a693c060bdab4354abde162340e35a679ae2c12c77d17fad840da4acdf4054ec"
+        ]
+      }
+    }
+  }
+}

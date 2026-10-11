@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7952",
+  "aliases": [
+    "MAL-2026-11623"
+  ],
+  "modified": "2026-08-04T14:05:00Z",
+  "published": "2026-08-04T13:30:45Z",
+  "summary": "Malicious code in @onereach/regex-helper (npm)",
+  "details": "The preinstall hook (node setup.mjs) of this deprecated Vue regex component downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a bundled 727KB obfuscated script (math_init.js) with it at install time. The script uses a custom string-encoding obfuscation scheme that hides its runtime behaviour; a Vue regex helper has no legitimate need to fetch a runtime and run an opaque obfuscated payload during installation. The payload's network and data-access behaviour is hidden by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/regex-helper",
+        "purl": "pkg:npm/%40onereach/regex-helper"
+      },
+      "versions": [
+        "0.5.18"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/regex-helper/v/0.5.18"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7952"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:30:45Z",
+      "indicators_observed": {
+        "sha256": [
+          "631c3c2d879d944817b960b42e61e5bfc292572701fc32263c2e6c689d9c29b0"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

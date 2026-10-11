@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4781",
+  "modified": "2026-06-12T16:07:17Z",
+  "published": "2026-06-12T16:06:10Z",
+  "summary": "Malicious code in protectstraizolib (npm)",
+  "details": "This package is a Discord bot remote administration tool (backdoor/RAT). It ships a hardcoded AES-256-CBC encrypted Discord bot token, user ID, and channel ID in src/webhook/discord.js (vars _0x3m4n5o, _0x4p5q6r, _0x5r6s7t with DECRYPT_KEY/DECRYPT_IV). On initialization it logs into Discord as the author's bot, listens for 'protect' prefixed commands in a specific channel, and can: list all registered bots (exfiltrating their guild/server metadata to the C2 channel), force bots to leave servers (protect leave), and send DMs through registered bots (protect dm). The registerBot() function automatically forwards each bot's server list (server IDs, names, owner IDs) to the author's Discord channel — an information exfiltration channel. No installer credential theft (no NPM_TOKEN/GITHUB_TOKEN/npmrc), and no install-time hook — the malice surfaces when a developer imports the library and calls StartLib() with a bot token.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "protectstraizolib",
+        "purl": "pkg:npm/protectstraizolib"
+      },
+      "versions": [
+        "1.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/protectstraizolib/v/1.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4781"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T16:06:10Z",
+      "indicators_observed": {
+        "sha256": [
+          "c3afc5140a39b7e450a3d3614958546c543398da26ec17f30e571588e80ce367"
+        ]
+      }
+    }
+  }
+}

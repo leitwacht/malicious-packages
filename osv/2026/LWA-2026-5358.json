@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5358",
+  "aliases": [
+    "MAL-2026-6398"
+  ],
+  "modified": "2026-06-15T10:12:38Z",
+  "published": "2026-06-15T10:09:39Z",
+  "summary": "Malicious code in ui-core-system (npm)",
+  "details": "This package is a trojanized fork of nodemailer that deploys a multi-stage encrypted payload. On install, the postinstall hook runs `node lib/utils/index.js`, which spawns a detached background Node.js process executing `lib/utils/smtp-connection/index.js`. That script reads a 262KB hex-encoded AES-256-CBC ciphertext file at `lib/utils/smtp-connection/LICENSE` (not a real license), decodes it through heavily obfuscated JavaScript, and decrypts it using a hardcoded AES-256-CBC key and IV from `lib/utils/smtp-connection/parse.js` (key hex: 1c7631aca0c00365e8a7e68dd11045e1d4475c909885d8dccd881f4dce9d0566, IV hex: cf17723e776e880802357825a8a139d6). The spawned process runs detached (child.unref()) so it persists without blocking the installer. The structure is a complete encrypted-dropper pipeline that decrypts and runs a 262KB payload. The package impersonates the nodemailer author's identity in its metadata.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ui-core-system",
+        "purl": "pkg:npm/ui-core-system"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ui-core-system/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5358"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T10:09:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ui-core-system[.]com"
+        ],
+        "sha256": [
+          "4680202c9abcd6c98b06b45d6b607ef43cf65b3207dc0346329c1365ce58f594"
+        ],
+        "sha256_observed": [
+          "1c7631aca0c00365e8a7e68dd11045e1d4475c909885d8dccd881f4dce9d0566"
+        ]
+      }
+    }
+  }
+}

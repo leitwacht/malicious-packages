@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8003",
+  "aliases": [
+    "MAL-2026-11650"
+  ],
+  "modified": "2026-08-04T14:43:11Z",
+  "published": "2026-08-04T11:59:12Z",
+  "summary": "Malicious code in @onereach/slack-helpers (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime and executes a heavily-obfuscated 727KB bundle (math_init.js) at install time. The obfuscated payload performs host fingerprinting and DNS-tunnel exfiltration: it issues DNS TXT queries to exfiltrate host identity data, and fetches remote content that is eval-executed (remote-code-execution dropper). The payload also delays execution as an evasion technique. Installing this package runs the payload automatically before any dependency is used.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/slack-helpers",
+        "purl": "pkg:npm/%40onereach/slack-helpers"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/slack-helpers/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8003"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:59:12Z",
+      "indicators_observed": {
+        "sha256": [
+          "e4f2e11c0903687656df0544b0023d879e4213dec10455676e26910dd99e1126"
+        ]
+      }
+    }
+  }
+}

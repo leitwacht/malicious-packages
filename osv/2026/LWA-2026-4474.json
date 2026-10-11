@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4474",
+  "aliases": [
+    "MAL-2026-5682"
+  ],
+  "modified": "2026-06-11T23:47:48Z",
+  "published": "2026-06-11T23:46:35Z",
+  "summary": "Malicious code in coral-wraith (npm)",
+  "details": "Supply-chain attack package published as \"coral-wraith ally module\" by user the publisher. The postinstall hook runs node postinstall.js on every install. v1.0.0 unconditionally executes shell commands reading env vars, system files, and HTB flags, then exfiltrates everything via HTTP PUT to 154[.]57[.]164[.]71:30782 (endpoint /api/modules/ECT-472839). The HTTP request body carries all environment variables (including API keys, AWS credentials, CI tokens) to the attacker IP. v1.0.4 is an evolved version: adds hostname-based gating (/^[0-9a-f]{12}$/) as evasion, same C2 IP plus 127[.]0[.]0[.]1:30782 sibling, weaponizes AWS IMDSv2 metadata service to steal IAM credentials and dump AWS Secrets Manager contents, plus same HTB-flag hunting and file exfil.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "coral-wraith",
+        "purl": "pkg:npm/coral-wraith"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/coral-wraith/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4474"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T23:46:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "154[.]57[.]164[.]71:30782"
+        ],
+        "sha256": [
+          "4056dae526704f80169ffd76e2a2c4e97c8a92d6e0a36d5f28e08ae9cd312a5a"
+        ]
+      }
+    }
+  }
+}

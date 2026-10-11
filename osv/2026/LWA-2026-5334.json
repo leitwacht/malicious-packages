@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-5334",
+  "aliases": [
+    "MAL-2026-2883"
+  ],
+  "modified": "2026-06-15T08:11:55Z",
+  "published": "2026-06-15T08:08:39Z",
+  "summary": "Malicious code in ts-lint-builds (npm)",
+  "details": "Package ts-lint-builds@1.0.5 is a typosquat mimicking TypeScript linting tool names. It has no documentation, repository, or actual linting functionality. On install, a postinstall script (node test.js) runs automatically, loading and executing a heavily obfuscated 189KB JavaScript payload. The code uses custom character-set encoding, generator-based control-flow flattening, and Function() constructors to hide its behaviour at rest. The dependency set (axios, form-data, child_process wrapper, os wrapper) provides HTTP POST with multipart upload capability, shell command execution, and OS environment fingerprinting — the standard toolchain for credential theft and data exfiltration. C2 endpoints are encoded inside obfuscated data arrays and resolved at runtime, preventing static extraction.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ts-lint-builds",
+        "purl": "pkg:npm/ts-lint-builds"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ts-lint-builds/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-5334"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-15T08:08:39Z",
+      "indicators_observed": {
+        "sha256": [
+          "86f60a2196c3d1355efdcfee41f1549c30c6081bf6c106d11e44a64691f8ebd3"
+        ]
+      }
+    }
+  }
+}

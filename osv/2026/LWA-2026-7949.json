@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7949",
+  "aliases": [
+    "MAL-2026-11648"
+  ],
+  "modified": "2026-08-04T13:59:45Z",
+  "published": "2026-08-04T13:19:45Z",
+  "summary": "Malicious code in @onereach/si-textinput (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB script (math_init.js) at install time. math_init.js is obfuscated with a custom string-encoding scheme that hides all of its API calls, so its runtime behavior is concealed. A Vue text-input component has no legitimate need to download a runtime and run a large obfuscated payload during installation; the obfuscated install-time code is the malicious behavior.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-textinput",
+        "purl": "pkg:npm/%40onereach/si-textinput"
+      },
+      "versions": [
+        "0.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-textinput/v/0.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7949"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:19:45Z",
+      "indicators_observed": {
+        "sha256": [
+          "fff68e648e355459ca5c6e68bcffedfb28691fde7d7790c74ed6d8c58c2eb9d4"
+        ]
+      }
+    }
+  }
+}

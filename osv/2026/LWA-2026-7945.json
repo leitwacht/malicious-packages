@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7945",
+  "aliases": [
+    "MAL-2026-11628"
+  ],
+  "modified": "2026-08-04T13:53:29Z",
+  "published": "2026-08-04T13:16:22Z",
+  "summary": "Malicious code in @onereach/si-a-button (npm)",
+  "details": "The preinstall hook (node setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB file (math_init.js) at install time. math_init.js is heavily obfuscated with a custom base85 string-table encoder, so its actual behaviour is not readable from source. The package is a Vue button component whose shipped component code (lib/) does not require Bun or any runtime, so the install-time download-and-execute of an opaque obfuscated payload is unrelated to the package's stated purpose. The obfuscated payload's network and file activity is hidden by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-a-button",
+        "purl": "pkg:npm/%40onereach/si-a-button"
+      },
+      "versions": [
+        "0.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-a-button/v/0.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7945"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:16:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "2e73e3211ffa3d0ccae4916dabc23293ba277c5de6d13245c8ea155075889765"
+        ]
+      }
+    }
+  }
+}

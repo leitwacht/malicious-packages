@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7999",
+  "aliases": [
+    "MAL-2026-11682"
+  ],
+  "modified": "2026-08-04T14:38:23Z",
+  "published": "2026-08-04T13:03:48Z",
+  "summary": "Malicious code in @or-sdk/chat (npm)",
+  "details": "@or-sdk/chat@0.3.3, a chat-widget SDK, ships a preinstall hook (node setup.mjs) that downloads the Bun JavaScript runtime and then executes a bundled 727KB heavily-obfuscated script (math_init.js) at install time. The script uses a custom string-encoding scheme so its logic is opaque to inspection; the package's own source (dist/) is a plain chat helper with no lifecycle hook, and the changelog documents no such install behaviour. Installing this version runs an obfuscated payload on the machine with network access. The payload's exact actions are hidden by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@or-sdk/chat",
+        "purl": "pkg:npm/%40or-sdk/chat"
+      },
+      "versions": [
+        "0.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@or-sdk/chat/v/0.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7999"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:03:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "33421a557c90d027e0b26bee9dc519b563705dc1f99e5548a801c55edc93c864"
+        ]
+      }
+    }
+  }
+}

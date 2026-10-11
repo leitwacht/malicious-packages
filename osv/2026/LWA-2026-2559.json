@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2559",
+  "aliases": [
+    "MAL-2026-5565"
+  ],
+  "modified": "2026-06-07T18:40:32Z",
+  "published": "2026-06-07T18:19:56Z",
+  "summary": "Malicious code in ai-sdk-helpers (npm)",
+  "details": "Install-time reconnaissance harvester: ai-sdk-helpers@1.2.1 runs a postinstall script that collects os.hostname(), os.userInfo().username, the git email from ~/.gitconfig, the GitHub login/email from ~/.config/gh/hosts.yml, the current working directory, and CI environment variables, then sends all of it to the Cloud Run endpoint npm-package-logger-228835561205[.]europe-west1[.]run[.]app. The package also ships scripts/publish-versions.sh, which (by its own comment) bulk-publishes fake version history to \"create the appearance of an active, maintained package.\" No token-theft markers in this version; the recon stage stages credentials/identifiers for follow-on theft. The postinstall hook runs scripts/postinstall.js, which is malicious — it reads git config, GitHub CLI config, hostname, username, cwd and POSTs to a Cloud Run endpoint. A postinstall script (scripts/postinstall.js) collects hostname, OS username, git config email, GitHub CLI identity, current working directory, CI provider, and platform/Node/architecture, then POSTs it to a Google Cloud Run endpoint. The README disingenuously claims it only collects platform, Node version, and architecture, while the install-time beacon exfiltrates developer identity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ai-sdk-helpers",
+        "purl": "pkg:npm/ai-sdk-helpers"
+      },
+      "versions": [
+        "1.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ai-sdk-helpers/v/1.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2559"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-07T18:19:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "npm-package-logger-228835561205[.]europe-west1[.]run[.]app"
+        ],
+        "sha256": [
+          "2704f4295c6b2e8062dcee7ad20d29286ef05a61800b895a428a666c8c7503b0"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4414",
+  "aliases": [
+    "MAL-2026-5728"
+  ],
+  "modified": "2026-06-11T21:43:18Z",
+  "published": "2026-06-11T21:38:19Z",
+  "summary": "Malicious code in vite-config-react (npm)",
+  "details": "vite-config-react@1.3.1 combosquats the Vite/React ecosystem as a config generator. While its entry point (src/index.js → createConfig) looks benign, plugins.js contains a side-effect import of './extras/config.js' that executes an IIFE at module-load time. That IIFE fetches a remote payload from jsonkeeper[.]com (hxxps://www[.]jsonkeeper[.]com/b/AAON3) using axios with custom headers and passes the response through new Function('require', code), granting the fetched payload full Node.js module access. This is a second-stage loader — the remote content can perform any action including credential exfiltration, backdoor installation, or worm propagation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vite-config-react",
+        "purl": "pkg:npm/vite-config-react"
+      },
+      "versions": [
+        "1.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vite-config-react/v/1.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4414"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T21:38:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jsonkeeper[.]com",
+          "www[.]jsonkeeper[.]com"
+        ],
+        "sha256": [
+          "912595f8318f29a992c35ec885c9ddd6ce2cbb554cb3f2653d46044197a90162"
+        ],
+        "url_observed": [
+          "hxxps://www[.]jsonkeeper[.]com/b/AAON3"
+        ]
+      }
+    }
+  }
+}

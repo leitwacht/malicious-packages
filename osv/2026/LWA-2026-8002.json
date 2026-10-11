@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8002",
+  "aliases": [
+    "MAL-2026-11659"
+  ],
+  "modified": "2026-08-04T14:42:28Z",
+  "published": "2026-08-04T13:16:46Z",
+  "summary": "Malicious code in @onereach/types-contacts-api (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ and then executes a 727KB heavily-obfuscated payload (math_init.js) at install time. The package is published as a TypeScript types package (pure.d.ts declarations) and has no legitimate need to run arbitrary code during installation. The payload uses a custom string-array obfuscation scheme that defeats static analysis and conceals its behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/types-contacts-api",
+        "purl": "pkg:npm/%40onereach/types-contacts-api"
+      },
+      "versions": [
+        "9.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/types-contacts-api/v/9.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8002"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:16:46Z",
+      "indicators_observed": {
+        "sha256": [
+          "03d148605b14010d3f5cd2b2c87c44c8d61d696adb709ed931c3700b3653a151"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4200",
+  "aliases": [
+    "MAL-2026-6377"
+  ],
+  "modified": "2026-06-11T06:31:33Z",
+  "published": "2026-06-11T06:30:31Z",
+  "summary": "Malicious code in linux-ci-utils (npm)",
+  "details": "linux-ci-utils@1.0.0 is a second-stage dropper. The postinstall script (scripts/postinstall.js) is a decoy — it only logs the platform and Node version. The real payload runs on require() from index.js: it base64-decodes the URL hxxps://api[.]ingress-hub[.]com/cdn/assets/update[.]pkg, downloads the binary to ~/.local/share/.node_cache/.runtime, ensures it's \u003e100KB (filters error pages), makes it executable, and spawns it detached with stdio:ignore + child.unref(). On subsequent loads, the cached binary runs directly. The C2 host (ingress-hub[.]com) has no legitimate connection to CI/CD tooling. The README is inconsistent — refers to the package as \"node-ci-utils\" (copy-paste from a prior template). No token-theft markers were observed, but this is a clean dropper that pulls and executes an arbitrary binary on every Linux host that requires the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "linux-ci-utils",
+        "purl": "pkg:npm/linux-ci-utils"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/linux-ci-utils/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4200"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T06:30:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ingress-hub[.]com",
+          "ingress-hub[.]com"
+        ],
+        "sha256": [
+          "b762383ebfe83525193f7e508259545d14b0793c04c4043e1eecccf300d633d8"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ingress-hub[.]com/cdn/assets/update[.]pkg"
+        ]
+      }
+    }
+  }
+}

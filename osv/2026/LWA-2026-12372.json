@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12372",
+  "aliases": [
+    "MAL-2026-16484"
+  ],
+  "modified": "2026-09-23T20:23:48Z",
+  "published": "2026-09-23T20:20:22Z",
+  "summary": "Malicious code in pino-testkit (npm)",
+  "details": "Injected backdoor. The package is a combosquat of pino (published by someone other than the real maintainers) that ships a heavily obfuscated payload in lib/contract.js and wires it into the module's main entry point. Specifically: (1) lib/contract.js uses a shuffle-based deobfuscator whose OUN resolves to 'constructor', then builds and executes a large payload via Function('',...) with nested Function-constructor invocations (cMp(7746)), a classic obfuscated code-execution pattern; it also sets global['object']=require and global['module']=module to give the payload access to require. (2) pino.js has been modified from the legitimate pino source: it adds `const contract = require('./lib/contract')`, a `chain()` function that calls `contract()`, and critically `module.exports = chain` which OVERRIDES the main export so that `require('pino-testkit')` returns chain — merely invoking the module triggers the obfuscated payload. The real pino package has no lib/contract.js and no chain function. This is a genuine supply-chain backdoor with no credible benign explanation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pino-testkit",
+        "purl": "pkg:npm/pino-testkit"
+      },
+      "versions": [
+        "10.4.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pino-testkit/v/10.4.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12372"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-09-23T20:20:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "5a8ef14c65a359020e9c0dadc1bafc7707d24800a3aa791fc0779e775b481123"
+        ]
+      }
+    }
+  }
+}

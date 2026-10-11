@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7961",
+  "aliases": [
+    "MAL-2026-11629"
+  ],
+  "modified": "2026-08-04T14:10:24Z",
+  "published": "2026-08-04T12:17:56Z",
+  "summary": "Malicious code in @onereach/si-alert (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases and executes a 727KB heavily-obfuscated bundle (math_init.js) at install time. The bundle is encoded with a custom string-obfuscation scheme that hides its behavior from static analysis. A Vue UI component has no legitimate need to download a runtime and run an opaque 727KB payload during installation; the payload's actions are hidden by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-alert",
+        "purl": "pkg:npm/%40onereach/si-alert"
+      },
+      "versions": [
+        "0.4.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-alert/v/0.4.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7961"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T12:17:56Z",
+      "indicators_observed": {
+        "sha256": [
+          "ea723d89acf2ef5ade84d90aa0ca2d3991f1db145f2555d747ca58471819bc89"
+        ]
+      }
+    }
+  }
+}

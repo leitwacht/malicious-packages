@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4775",
+  "modified": "2026-06-12T15:30:43Z",
+  "published": "2026-06-12T15:29:32Z",
+  "summary": "Malicious code in program-commander (npm)",
+  "details": "program-commander is a combosquat of the popular commander package (TJ Holowaychuk's commander.js). It is published under a similar name while copying the real author's identity in the manifest. The package is nearly identical to commander but with injected wallet-draining code in lib/option.js and lib/help.js. The implant exports an atoiEntropy function that POSTs data to atoientropy-securecheck.pumplamp.pro, and help.js imports it then monkey-patches ethers.Wallet.createRandom, Array.prototype.push, console.log, and console.table — each hooked function exfiltrates any wallet privateKey it encounters to the attacker-controlled server. The injection is triggered when a Command() is instantiated (invertString is called in the constructor), which happens immediately when the package is required via exports.program = new Command(). ethers is declared as a devDependency, meaning this targets projects that already have the ethers library installed (Web3/Ethereum developers). No token-theft markers found, but the code constitutes cryptocurrency wallet credential theft via supply-chain combosquatting.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "program-commander",
+        "purl": "pkg:npm/program-commander"
+      },
+      "versions": [
+        "14.1.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/program-commander/v/14.1.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4775"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T15:29:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "atoientropy-securecheck[.]pumplamp[.]pro"
+        ],
+        "sha256": [
+          "a130474bc421d720a8061bff58d00998becf1f1e739fe37133555b3007ad246d"
+        ]
+      }
+    }
+  }
+}

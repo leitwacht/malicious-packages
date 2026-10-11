@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4559",
+  "modified": "2026-06-12T06:15:55Z",
+  "published": "2026-06-12T06:14:59Z",
+  "summary": "Malicious code in period-newline (npm)",
+  "details": "Period-newline@0.1.0 poses as a tiny text formatter (inserts newlines after periods) but ships a malicious postinstall hook (dist/index5_test.js). On install, the hook: (1) self-deletes and overwrites package.json with a dummy — evasion; (2) AES-256-CTR decrypts embedded payload strings revealing a TCP C2 endpoint, credential-target paths, and an AES-GCM encryption key; (3) reads ~/.ssh/id_rsa, ~/.aws/credentials, ~/.docker/config.json, ~/.npmrc, ~/.netrc, Chrome Login Data,.env files, and git history; (4) collects hostname, username, and external IP from api[.]ipify[.]org; (5) encrypts all stolen data with AES-GCM and exfiltrates over TCP to the C2. The legitimate-looking README and CLI are a decoy for a full credential-theft implant.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "period-newline",
+        "purl": "pkg:npm/period-newline"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/period-newline/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4559"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-12T06:14:59Z",
+      "indicators_observed": {
+        "sha256": [
+          "23cf1b292765ded46e6ae4e3db42b78bb51993096b6c5b6a52ab4dedb73b5837"
+        ]
+      }
+    }
+  }
+}

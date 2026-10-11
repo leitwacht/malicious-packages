@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7986",
+  "aliases": [
+    "MAL-2026-11653"
+  ],
+  "modified": "2026-08-04T14:29:08Z",
+  "published": "2026-08-04T13:31:52Z",
+  "summary": "Malicious code in @onereach/step-conversation (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB heavily-obfuscated JavaScript payload (math_init.js) at install time. The payload uses javascript-obfuscator-style string encoding, eval and Function constructors, and child_process, so its behaviour is concealed. The package's actual library code is a plain conversation-step class with no legitimate need to bootstrap a runtime or run obfuscated code during installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/step-conversation",
+        "purl": "pkg:npm/%40onereach/step-conversation"
+      },
+      "versions": [
+        "1.0.43"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/step-conversation/v/1.0.43"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7986"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:31:52Z",
+      "indicators_observed": {
+        "sha256": [
+          "f51618127304fb997d67c4a4e62e79a5da6805d3829dfa0d18098e96c8d63223"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/oven-sh/bun/releases/download/bun-v1[.]3[.]13/"
+        ]
+      }
+    }
+  }
+}

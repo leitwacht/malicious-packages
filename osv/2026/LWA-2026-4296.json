@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-4296",
+  "aliases": [
+    "MAL-2026-6543"
+  ],
+  "modified": "2026-06-11T13:38:19Z",
+  "published": "2026-06-11T13:36:18Z",
+  "summary": "Malicious code in express-initial (npm)",
+  "details": "Package express-initial@12.1.7 is a combosquat of the popular express framework. The postinstall hook runs a heavily obfuscated index.js (javascript-obfuscator style, RC4-like string decryption, opaque numeric constants). The code loads child_process, fs, and path modules, constructs a URL from decoded strings, fetches a payload from a remote host, writes it to disk via writeFileSync, and then spawns the downloaded file via child_process.spawn with windowsHide:true — a classic second-stage dropper pattern. The README claims to be a \"safe wrapper module\" with security notes advising sandboxing, but the package name express-initial does not match the README's module name, and the hidden download-and-spawn behaviour makes this an active supply-chain attack, not research.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "express-initial",
+        "purl": "pkg:npm/express-initial"
+      },
+      "versions": [
+        "12.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/express-initial/v/12.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-4296"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-11T13:36:18Z",
+      "indicators_observed": {
+        "sha256": [
+          "a4594f23c9c33aadc55649e53dfeb4f5b0b9e32175498374dd54458af19d235e"
+        ]
+      }
+    }
+  }
+}

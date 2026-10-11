@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7702",
+  "aliases": [
+    "MAL-2026-11739"
+  ],
+  "modified": "2026-08-04T11:11:15Z",
+  "published": "2026-08-04T10:39:36Z",
+  "summary": "Malicious code in @ornikar/apollo-link-timeout (npm)",
+  "details": "The package @ornikar/apollo-link-timeout@1.4.3 is a trojanized version of the legitimate apollo-link-timeout library. The package.json declares a preinstall hook (node setup.mjs) that downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun/releases/download/bun-v1.3.13/ (platform-specific zip) and executes a heavily obfuscated 727KB bundle (math_init.js) through the downloaded runtime. The legitimate library has no preinstall hook and no Bun dependency. Downloading a runtime and executing obfuscated code at install time is a supply-chain attack pattern.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ornikar/apollo-link-timeout",
+        "purl": "pkg:npm/%40ornikar/apollo-link-timeout"
+      },
+      "versions": [
+        "1.4.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ornikar/apollo-link-timeout/v/1.4.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7702"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T10:39:36Z",
+      "indicators_observed": {
+        "sha256": [
+          "b5cd8408b68d4cb693c38ce53327bb3bc15070fd05ff62c1a0dc382e1c4f3986"
+        ]
+      }
+    }
+  }
+}

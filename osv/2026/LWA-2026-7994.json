@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7994",
+  "aliases": [
+    "MAL-2026-11643"
+  ],
+  "modified": "2026-08-04T14:34:16Z",
+  "published": "2026-08-04T13:03:29Z",
+  "summary": "Malicious code in @onereach/si-root (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a bundled 727KB heavily-obfuscated payload (math_init.js) with it at install time. The payload uses a custom base-91 string-table obfuscation scheme that defeats static inspection, and a Vue component library has no legitimate reason to download a runtime and run an opaque obfuscated script during installation. The payload's behaviour is hidden from the source; it is a multi-stage dropper that runs arbitrary obfuscated code on the installer's machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@onereach/si-root",
+        "purl": "pkg:npm/%40onereach/si-root"
+      },
+      "versions": [
+        "0.9.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@onereach/si-root/v/0.9.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7994"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:03:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "f7c683b0f39eead595cb0846a2ab3ba262bff3ad13e6e1043c2157ff457c9550"
+        ]
+      }
+    }
+  }
+}

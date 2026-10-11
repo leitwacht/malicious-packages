@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7970",
+  "aliases": [
+    "MAL-2026-11911"
+  ],
+  "modified": "2026-08-04T14:17:52Z",
+  "published": "2026-08-04T11:18:40Z",
+  "summary": "Malicious code in @servicetitan/quick-actions (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from the official oven-sh GitHub release and executes a bundled 727KB file (math_init.js) with it. math_init.js is a heavily obfuscated payload: its strings are encoded in a large array and decoded at runtime via a custom base64-style decoder, so its actual behavior is concealed from inspection. The package is a React UI component library and has no legitimate need to download a runtime and run an opaque obfuscated payload during installation. The payload's network destinations and data-handling behavior are hidden behind the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/quick-actions",
+        "purl": "pkg:npm/%40servicetitan/quick-actions"
+      },
+      "versions": [
+        "1.15.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/quick-actions/v/1.15.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7970"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T11:18:40Z",
+      "indicators_observed": {
+        "sha256": [
+          "279c142d0d2e8751e928c3a8ec0d87841393e1977737719ea7956462f059666b"
+        ]
+      }
+    }
+  }
+}

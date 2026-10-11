@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-7977",
+  "aliases": [
+    "MAL-2026-11989"
+  ],
+  "modified": "2026-08-04T13:35:39Z",
+  "published": "2026-08-04T13:19:05Z",
+  "summary": "Malicious code in umadev (npm)",
+  "details": "The package's preinstall hook (setup.mjs) downloads the Bun JavaScript runtime from github[.]com/oven-sh/bun and executes a 727KB heavily-obfuscated JavaScript payload (math_init.js) during npm install. This install-time payload is undocumented and unrelated to the package's stated CLI functionality, which is implemented in separate clean, readable JavaScript. The obfuscated payload runs arbitrary code on the installer's machine at install time; its behavior is concealed by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "umadev",
+        "purl": "pkg:npm/umadev"
+      },
+      "versions": [
+        "1.0.74"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/umadev/v/1.0.74"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-7977"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T13:19:05Z",
+      "indicators_observed": {
+        "sha256": [
+          "1990199f10112b3851f6da4a04bb392bb44b4ef42b2feaa7cc3839eceb07e3c5"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-2355",
+  "aliases": [
+    "MAL-2026-2891"
+  ],
+  "modified": "2026-06-01T16:51:35Z",
+  "published": "2026-06-01T16:44:47Z",
+  "summary": "Malicious code in chai-as-init (npm)",
+  "details": "Chai-as-init@1.4.6 is a combosquat (built on copied pino internals) that combines credential harvesting with an RCE dropper. index.js spawns a detached, unref'd background child running lib/initializeCaller.js, which base64-decodes a Vercel C2 URL, POSTs the full process.env (including NPM_TOKEN, GITHUB_TOKEN) to it, then executes the response via new Function(\"require\", response.data) — remote code execution. chai-as-init@1.4.6 is credential-harvesting malware. index.js spawns lib/initializeCaller.js as a detached background child process. initializeCaller.js base64-decodes a Vercel-hosted C2 URL, POSTs the entire process.env (NPM_TOKEN, GITHUB_TOKEN, AWS creds) to it via axios, then executes arbitrary code from the response via new Function(\"require\", response.data). Package name combosquats the chai assertion library. chai-as-init@1.4.6 is a combosquat of \"chai\" performing credential exfiltration and RCE. lib/initializeCaller.js is an IIFE that sends all of process.env (including NPM_TOKEN, GITHUB_TOKEN) via an axios POST to a base64-obfuscated C2 at hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/b4dadd6a26d820d085963, then executes the server response via new Function(\"require\", response.data). index.js spawns this as a detached child process for stealth. chai-as-init@1.4.6 is a credential-stealing supply-chain attack with remote code execution, combosquatting \"chai\" (ChaiJS) and copied from pino documentation. lib/initializeCaller.js base64-decodes its endpoint (hxxps://ipcheck-hashed[.]vercel[.]app/...) and POSTs all of process.env (including NPM_TOKEN, GITHUB_TOKEN) to it, then executes the server response via new Function(\"require\", response.data). index.js spawns this as a detached subprocess (detached:true, unref'd) for stealth.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chai-as-init",
+        "purl": "pkg:npm/chai-as-init"
+      },
+      "versions": [
+        "1.4.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chai-as-init/v/1.4.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-2355"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-01T16:44:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipcheck-hashed[.]vercel[.]app"
+        ],
+        "sha256": [
+          "819fee3a5cf560cdab9b90aee4631754217192d75b44a0fdde9c738105daf4d4"
+        ],
+        "url_observed": [
+          "hxxps://ipcheck-hashed[.]vercel[.]app/",
+          "hxxps://ipcheck-hashed[.]vercel[.]app/api/auth/b4dadd6a26d820d085963"
+        ]
+      }
+    }
+  }
+}

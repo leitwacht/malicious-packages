@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-8004",
+  "aliases": [
+    "MAL-2026-11887"
+  ],
+  "modified": "2026-08-04T14:58:38Z",
+  "published": "2026-08-04T14:49:39Z",
+  "summary": "Malicious code in @servicetitan/line-item-editor (npm)",
+  "details": "The package's preinstall hook (node setup.mjs) downloads the Bun runtime from the official oven-sh GitHub release and then executes a bundled 727KB heavily-obfuscated script (math_init.js) at install time. The install-time payload is obfuscated with a dictionary-array/string-encoding scheme, so its behavior is not readable. A React UI component library executing a large obfuscated script downloaded-and-run at install is anomalous; the payload's network and file activity is concealed by the obfuscation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@servicetitan/line-item-editor",
+        "purl": "pkg:npm/%40servicetitan/line-item-editor"
+      },
+      "versions": [
+        "1.5.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@servicetitan/line-item-editor/v/1.5.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-8004"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-04T14:49:39Z",
+      "indicators_observed": {
+        "sha256": [
+          "038b294cdf0564b9d66eea6a844d1b441d1247d6397512079933424de4864035"
+        ]
+      }
+    }
+  }
+}
