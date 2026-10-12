@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12942",
+  "modified": "2026-10-12T01:07:56Z",
+  "published": "2026-10-11T16:06:26Z",
+  "summary": "Malicious code in orderly-plugin-liquidity-heatmap (npm)",
+  "details": "Orderly-plugin-liquidity-heatmap@1.0.6 advertises itself as a liquidity-heatmap overlay for Orderly DEX frontends, but its shipped code is a 72-byte no-op (dist/index.js exports registerLiquidityHeatmapPlugin returning an empty function). The real payload is the postinstall hook scripts/setup.js, which runs `node./scripts/setup.js` on every install. The hook is gated on `process.env.CI \u0026\u0026 process.env.GITHUB_WORKSPACE`, so it stays dormant on developer machines and only activates inside GitHub Actions runners. When the gate passes it: fingerprints the runner (hostname, OS, username, cwd, GITHUB_REPOSITORY, GITHUB_WORKFLOW, ImageOS, RUNNER_ENV, and the names of every GITHUB_/ACTIONS_/RUNNER_ environment variable); records whether GITHUB_TOKEN is present and its length, plus whether ACTIONS_ID_TOKEN_REQUEST_TOKEN and ACTIONS_ID_TOKEN_REQUEST_URL exist; probes egress to registry[.]npmjs[.]org, api[.]github[.]com, github[.]com and objects[.]githubusercontent[.]com; enumerates git/node/npm/yarn/python3/docker/gh versions; and mints a GitHub OIDC token by calling ACTIONS_ID_TOKEN_REQUEST_URL with audience=api[.]github[.]com using the runner's bearer token. It then writes the collected snapshot to $GITHUB_WORKSPACE/heatmap-setup-report.json, appends it to $GITHUB_STEP_SUMMARY, and PUTs it to hxxps://api[.]github[.]com/repos/$GITHUB_REPOSITORY/contents/heatmap-setup-report[.]json using the workflow's GITHUB_TOKEN, committing the file into the victim repository. Finally it sets git user[.]name/user[.]email to github-actions[bot] and force-pushes a `heatmap-setup-\u003ctimestamp\u003e` tag to origin using the credentials actions/checkout persisted in.git/config. The package's README describes only a benign \"setup step to detect the build environment and pre-cache asset paths\"; the actual hook harvests CI credentials and repository write access. IOCs: hxxps://api[.]github[.]com/repos/$GITHUB_REPOSITORY/contents/heatmap-setup-report[.]json, hxxps://api[.]github[.]com/repos/$GITHUB_REPOSITORY, ACTIONS_ID_TOKEN_REQUEST_URL (audience=api[.]github[.]com), dropped file heatmap-setup-report.json, git tag prefix heatmap-setup-, trace file $TMPDIR/heatmap-exec-trace.log.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "orderly-plugin-liquidity-heatmap",
+        "purl": "pkg:npm/orderly-plugin-liquidity-heatmap"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/orderly-plugin-liquidity-heatmap/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12942"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-11T16:06:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "github[.]com",
+          "objects[.]githubusercontent[.]com",
+          "registry[.]npmjs[.]org",
+          "user[.]name"
+        ],
+        "sha256": [
+          "36c24c456158bad255c5a6adc83247b02e2cda8561ebfe2860ccd1340472e2a2"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/repos/$GITHUB_REPOSITORY",
+          "hxxps://api[.]github[.]com/repos/$GITHUB_REPOSITORY/contents/heatmap-setup-report[.]json",
+          "hxxps://github[.]com/",
+          "hxxps://objects[.]githubusercontent[.]com/",
+          "hxxps://registry[.]npmjs[.]org/"
+        ]
+      }
+    }
+  }
+}
