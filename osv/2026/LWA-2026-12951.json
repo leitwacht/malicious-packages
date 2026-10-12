@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12951",
+  "modified": "2026-10-12T01:05:12Z",
+  "published": "2026-10-11T22:29:08Z",
+  "summary": "Malicious code in @teamqadeer1/baileys (npm)",
+  "details": "@teamqadeer1/baileys is a combosquat of the WhatsApp Web API library @whiskeysockets/baileys: it keeps the real package's basename and source tree but is published under an unrelated scope, and it republishes upstream dependencies under its own scope (libsignal is aliased to npm:@teamqadeer1/libsignal-node). On top of the cloned library it ships publisher-controlled behaviour the upstream package does not have. lib/Socket/newsletter.js defines autoJoinChannels(), which is wired to the \"connection.update\" event and runs 30 seconds after the WhatsApp connection opens: it fetches hxxps://raw[.]githubusercontent[.]com/Qadeer-Xtech/Qadeer-Xtech/main/follow[.]json and, for every entry ending in \"@newsletter\", issues FOLLOW and MUTE newsletter queries against the victim's authenticated WhatsApp session, sleeping 3s and 10s between actions. Because the instruction list is hosted outside the package, the publisher can change which channels a victim's account is made to follow at any time. lib/Utils/generics.js also rewrites the upstream version check so that fetchLatestBaileysVersion() queries hxxps://registry[.]npmjs[.]org/noxleyss instead of the real baileys package, and internal modules are renamed to \"noxleyss\" (lib/Utils/noxleyss-event-stream, lib/Defaults/noxleyss-version.json). The preinstall hook (node./engine-requirements.js) only verifies the Node major version. The injected behaviour is remote control of the victim's WhatsApp session rather than credential theft: no reads of.npmrc, npm/GitHub tokens, cloud credentials or wallet files are present in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@teamqadeer1/baileys",
+        "purl": "pkg:npm/%40teamqadeer1/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@teamqadeer1/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12951"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-11T22:29:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "registry[.]npmjs[.]org"
+        ],
+        "sha256": [
+          "a04a9dca5003fe37708e9e80fdbf71011c0c9526d18b3320c6ebbfb4ce8d309f"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/Qadeer-Xtech/Qadeer-Xtech/main/follow[.]json",
+          "hxxps://registry[.]npmjs[.]org/noxleyss"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12945",
+  "aliases": [
+    "MAL-2026-17759"
+  ],
+  "modified": "2026-10-12T01:04:04Z",
+  "published": "2026-10-11T02:35:34Z",
+  "summary": "Malicious code in @coopeuch/button (npm)",
+  "details": "@coopeuch/button@1.999.999 ships a postinstall hook (postinstall.js, invoked as \"node./postinstall.js\") that fingerprints the installing machine and sends the result to an external collector. The hook builds a JSON report containing the package name/version, install directory and working directory, hostname, username, home directory, uid/gid, OS platform/arch/release, Node.js version, CPU model and count, total memory, uptime, configured DNS resolver addresses, non-internal network interface addresses with MAC addresses, container detection (via /.dockerenv and /proc/1/cgroup), the name/version/declared dependency range of the consuming project's package.json, and the values of npm's own npm_* lifecycle configuration variables (npm_command, npm_lifecycle_event, npm_package_name, npm_package_version, npm_config_registry, npm_config_user_agent, npm_config_userconfig, npm_config_globalconfig, npm_config_prefix). CI/orchestration markers (CI, GITLAB_CI, CI_PIPELINE_ID, CI_PROJECT_PATH, GITHUB_ACTIONS, RUNNER_NAME and others) are recorded by variable name only. The report is POSTed as JSON over HTTPS to hxxps://collector[.]oob[.]s4yhii[.]com/_npm-poc/beacon, and the hook additionally resolves a DNS name built from the package name under db03o8lag74hsugsg2j091t8mfcf437h3[.]oob[.]s4yhii[.]com, giving a second, DNS-only channel for the same signal. The script reads no credential files, tokens, SSH keys or cloud metadata, spawns no shell, writes no files and installs no persistence, and it swallows network errors so the install is not interrupted. The package name claims the private @coopeuch scope at version 1.999.999, so a build resolving that scope from the public registry will execute the hook. IOCs: hxxps://collector[.]oob[.]s4yhii[.]com/_npm-poc/beacon (HTTPS POST, port 443) and the DNS beacon suffix db03o8lag74hsugsg2j091t8mfcf437h3[.]oob[.]s4yhii[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@coopeuch/button",
+        "purl": "pkg:npm/%40coopeuch/button"
+      },
+      "versions": [
+        "1.999.999"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@coopeuch/button/v/1.999.999"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12945"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-11T02:35:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "collector[.]oob[.]s4yhii[.]com",
+          "db03o8lag74hsugsg2j091t8mfcf437h3[.]oob[.]s4yhii[.]com"
+        ],
+        "sha256": [
+          "958fc732d443c0de09954e22cd57bdc44d5d0bd29693872ddfea6a16867f907f"
+        ],
+        "url_observed": [
+          "hxxps://collector[.]oob[.]s4yhii[.]com/_npm-poc/beacon"
+        ]
+      }
+    }
+  }
+}

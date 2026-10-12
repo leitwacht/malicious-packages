@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12947",
+  "aliases": [
+    "MAL-2026-17761"
+  ],
+  "modified": "2026-10-12T01:03:53Z",
+  "published": "2026-10-11T02:36:00Z",
+  "summary": "Malicious code in @coopeuch/components (npm)",
+  "details": "The package's postinstall hook (postinstall.js, run via \"node./postinstall.js\") collects a fingerprint of the installing host and sends it to a remote collector. The collected data is: package name/version, install directory and working directory, hostname, username, uid/gid, home directory, OS platform/arch/release, Node.js version, CPU model and count, total memory, uptime, configured DNS resolver addresses, non-internal network interface addresses and MACs, the names (not values) of present CI markers (CI, GITLAB_CI, CI_PIPELINE_ID, CI_PROJECT_PATH, GITHUB_ACTIONS, RUNNER_NAME, and others), the consuming project's package.json name/version and the dependency range that pulled the package in, and a fixed allowlist of npm_* lifecycle configuration variables. It is POSTed as JSON to hxxps://collector[.]oob[.]s4yhii[.]com/_npm-poc/beacon with User-Agent \"npm-dependency-confusion-poc (s4yhii___)\", and a second DNS-only beacon is issued for \u003cpackage-name\u003e.db03o8lag74hsugsg2j091t8mfcf437h3[.]oob[.]s4yhii[.]com. The script also reads /.dockerenv and /proc/1/cgroup for container detection and calls dns.reverse() on the primary IPv4 address to recover the host's internal FQDN. It reads no credential files, tokens, wallet data or environment values outside the npm_* allowlist, spawns no shell, writes no files and establishes no persistence; network errors are swallowed so the install is never interrupted. The package describes itself in its description, README and a shipped DISCLOSURE file as a dependency-confusion proof of concept for the @coopeuch namespace and offers to transfer the name to the namespace owner.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@coopeuch/components",
+        "purl": "pkg:npm/%40coopeuch/components"
+      },
+      "versions": [
+        "1.999.999"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@coopeuch/components/v/1.999.999"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12947"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-11T02:36:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "collector[.]oob[.]s4yhii[.]com",
+          "db03o8lag74hsugsg2j091t8mfcf437h3[.]oob[.]s4yhii[.]com",
+          "oob[.]s4yhii[.]com"
+        ],
+        "sha256": [
+          "bcad2aaaa86098978182a70f4155d10b2ee81d577594326d377c2da3fd727476"
+        ],
+        "url_observed": [
+          "hxxps://collector[.]oob[.]s4yhii[.]com/_npm-poc/beacon"
+        ]
+      }
+    }
+  }
+}

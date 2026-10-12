@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12950",
+  "modified": "2026-10-12T01:04:46Z",
+  "published": "2026-10-11T15:13:45Z",
+  "summary": "Malicious code in orderly-plugin-liquidity-heatmap (npm)",
+  "details": "Orderly-plugin-liquidity-heatmap ships a postinstall hook (scripts/setup.js) that harvests CI credentials and writes to the installing repository. The package presents itself as an Orderly DEX orderbook heatmap plugin (dist/index.js is a 72-byte stub), but the hook is the payload: it only proceeds when both CI and GITHUB_WORKSPACE are set, so it stays dormant on developer machines and runs only inside GitHub Actions runners. When it runs it collects hostname, OS/platform, username, working directory, GITHUB_REPOSITORY, GITHUB_WORKFLOW, RUNNER_ENV, ImageOS, the sorted names of every GITHUB_*/ACTIONS_*/RUNNER_* environment variable, whether GITHUB_TOKEN is present and its length, and whether ACTIONS_ID_TOKEN_REQUEST_URL/TOKEN exist; it probes outbound reachability to registry[.]npmjs[.]org, api[.]github[.]com, github[.]com and objects[.]githubusercontent[.]com with curl, reads `npm config get registry`, and enumerates git/node/npm/yarn/python3/docker/gh versions. It then mints a GitHub Actions OIDC token by calling ACTIONS_ID_TOKEN_REQUEST_URL with the runner's bearer token, writes the collected snapshot to heatmap-setup-report.json in $GITHUB_WORKSPACE, appends it to $GITHUB_STEP_SUMMARY, and uses the workflow's GITHUB_TOKEN to PUT that file to the repository contents API (contents:write). Finally it configures git as github-actions[bot] and force-pushes a tag named heatmap-setup-\u003ctimestamp\u003e to origin using the credentials actions/checkout persisted in.git/config, leaving a trace at \u003ctmpdir\u003e/heatmap-exec-trace.log. The README describes this only as a \"small setup step\" that \"detects the build environment and pre-caches asset paths\". No attacker-controlled C2 host is used; the endpoints touched are api[.]github[.]com, registry[.]npmjs[.]org, github[.]com and objects[.]githubusercontent[.]com, and the artifacts are heatmap-setup-report.json, heatmap-exec-trace.log and the heatmap-setup-* git tag.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "orderly-plugin-liquidity-heatmap",
+        "purl": "pkg:npm/orderly-plugin-liquidity-heatmap"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/orderly-plugin-liquidity-heatmap/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12950"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-11T15:13:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "github[.]com",
+          "objects[.]githubusercontent[.]com",
+          "registry[.]npmjs[.]org"
+        ],
+        "sha256": [
+          "d879b4cab94f87086d8091d807436a66437e87451a0d4a0c26366d6f90a3dbfb"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/",
+          "hxxps://objects[.]githubusercontent[.]com/",
+          "hxxps://registry[.]npmjs[.]org/"
+        ]
+      }
+    }
+  }
+}

