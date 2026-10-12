@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12958",
+  "modified": "2026-10-12T08:18:03Z",
+  "published": "2026-10-12T08:17:18Z",
+  "summary": "Security-research / proof-of-concept package: @myorder-frontend-commons/analytics (npm)",
+  "details": "@myorder-frontend-commons/analytics@101.0.0 is a dependency-confusion package: it uses a scoped name and a sentinel version (101.0.0) with a ~3.8 KB tarball whose preinstall, install and postinstall hooks all execute `node poc.js`. That script fingerprints the installing host — hostname, OS username, current working directory, platform/arch/release, Node version, the triggering npm lifecycle event, and the names of any CI environment variables present (CI, JENKINS_URL, GITLAB_CI, GITHUB_ACTIONS, BUILDKITE, TEAMCITY_VERSION, BAMBOO_BUILDKEY, DRONE, CIRCLECI) — and sends the data as an HTTP GET to /beacon/\u003ctoken\u003e on an external collector at db69ak0hu4nqhtf9omnguspxhjk8kuide[.]oast[.]fun, with a fallback host of 80-190-83-27[.]nip[.]io, using the User-Agent \"allegro-dc-poc/1.0 (authorized security test)\". The beacon fires unconditionally on install. index.js is an inert stub returning empty arrays; the package reads no credential files or environment values, writes nothing and registers no persistence. The package describes itself as an authorized security-research proof of concept. IOCs: hxxp://db69ak0hu4nqhtf9omnguspxhjk8kuide[.]oast[.]fun/beacon/594c7180-55fb-48e0-9aa5-32c1278fed3e and hxxp://80-190-83-27[.]nip[.]io/beacon/594c7180-55fb-48e0-9aa5-32c1278fed3e.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@myorder-frontend-commons/analytics",
+        "purl": "pkg:npm/%40myorder-frontend-commons/analytics"
+      },
+      "versions": [
+        "101.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@myorder-frontend-commons/analytics/v/101.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12958"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-12T08:17:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "80-190-83-27[.]nip[.]io",
+          "db69ak0hu4nqhtf9omnguspxhjk8kuide[.]oast[.]fun"
+        ],
+        "sha256": [
+          "0cf496364218d5161fe5395734bd3103b70f906a24afb11bcde1dd03323b2527"
+        ],
+        "url_observed": [
+          "hxxp://80-190-83-27[.]nip[.]io/beacon/594c7180-55fb-48e0-9aa5-32c1278fed3e",
+          "hxxp://db69ak0hu4nqhtf9omnguspxhjk8kuide[.]oast[.]fun/beacon/594c7180-55fb-48e0-9aa5-32c1278fed3e"
+        ]
+      }
+    }
+  }
+}
