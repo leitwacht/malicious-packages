@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-12964",
+  "aliases": [
+    "MAL-2026-17848"
+  ],
+  "modified": "2026-10-13T06:35:10Z",
+  "published": "2026-10-13T06:34:09Z",
+  "summary": "Malicious code in orderly-plugin-liquidity-heatmap (npm)",
+  "details": "The package ships a postinstall hook (scripts/setup.js, run as `node./scripts/setup.js`) that performs CI-runner reconnaissance and attempts to mint a GitHub Actions OIDC token. The advertised plugin is an empty stub — dist/index.js is 72 bytes and registerLiquidityHeatmapPlugin() returns a no-op — while the install hook does the real work. The hook is gated on `process.env.CI \u0026\u0026 process.env.GITHUB_WORKSPACE`: on any non-CI machine it prints a benign \"local environment detected, skipping setup cache\" message and exits 0, so it stays dormant outside a GitHub Actions runner and only executes in CI. When the gate passes it collects: hostname, OS type/release, username, working directory, GITHUB_REPOSITORY, GITHUB_WORKFLOW, RUNNER_ENV, ImageOS, and the sorted list of every environment variable name beginning with GITHUB_, ACTIONS_ or RUNNER_. It records whether GITHUB_TOKEN is set and its length, whether ACTIONS_ID_TOKEN_REQUEST_TOKEN is present, and the ACTIONS_ID_TOKEN_REQUEST_URL. It runs `npm config get registry`, probes outbound connectivity with curl to registry[.]npmjs[.]org, api[.]github[.]com, github[.]com and objects[.]githubusercontent[.]com (recording HTTP status codes), and enumerates versions of git, node, npm, yarn, python3, docker and gh. It then requests a GitHub Actions OIDC token by calling the runner's ACTIONS_ID_TOKEN_REQUEST_URL with `Authorization: Bearer \u003cACTIONS_ID_TOKEN_REQUEST_TOKEN\u003e` and `audience=api[.]github[.]com`, recording the HTTP status. The collected snapshot is written to `heatmap-setup-report.json` in the GITHUB_WORKSPACE checkout, placing the runner fingerprint and token-mint result inside the repository workspace where a later workflow step can read it. No outbound exfiltration endpoint is present in this version: the snapshot is staged to the workspace file rather than transmitted, and the OIDC response body is discarded. The behaviour is install-time host/CI fingerprinting plus an OIDC token-mint attempt, hidden from non-CI environments.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "orderly-plugin-liquidity-heatmap",
+        "purl": "pkg:npm/orderly-plugin-liquidity-heatmap"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/orderly-plugin-liquidity-heatmap/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-12964"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-13T06:34:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "github[.]com",
+          "objects[.]githubusercontent[.]com",
+          "registry[.]npmjs[.]org"
+        ],
+        "sha256": [
+          "89eb1524e2da152750297d220b72be9dbd386c9052681b424c2915d413d49156"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/",
+          "hxxps://github[.]com/",
+          "hxxps://objects[.]githubusercontent[.]com/",
+          "hxxps://registry[.]npmjs[.]org/"
+        ]
+      }
+    }
+  }
+}
