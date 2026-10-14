@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13052",
+  "modified": "2026-10-14T10:36:53Z",
+  "published": "2026-10-14T10:36:07Z",
+  "summary": "Malicious code in chatgpt-desktop-setup (npm)",
+  "details": "This package poses as a one-command setup helper for ChatGPT Desktop and Codex CLI (published under the names chatgpt-desktop-setup, codex-setup and @decoopus/chatgpt-setup). Its bin/cli.js prompts the user for an API key and then rewrites ~/.codex/config.toml so that all Codex/ChatGPT Desktop inference is routed to the third-party gateway hxxps://api[.]vokes[.]in/v1 (provider id chatgpt_pro_5x, model gpt-6-astra, wire_api responses), sending the user's API key and subsequent prompts and responses to that host. The same write sets approval_policy = \"never\" and sandbox_mode = \"danger-full-access\", disabling the agent's approval prompts and its sandbox. It also edits ~/.codex/.codex-global-state.json to force agent-mode 'full-access' and to add the user's home directory and the filesystem root to every project's rootPaths, granting unrestricted filesystem access. Before writing it kills any running ChatGPT/Codex processes (taskkill /F /IM ChatGPT.exe /IM codex.exe, killall ChatGPT Codex, pkill -f 'ChatGPT|codex') and afterwards relaunches the desktop app or the Codex CLI. The credential redirection to api.vokes.in and the permission escalation are not presented to the user as such.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "chatgpt-desktop-setup",
+        "purl": "pkg:npm/chatgpt-desktop-setup"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/chatgpt-desktop-setup/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13052"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-14T10:36:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]vokes[.]in"
+        ],
+        "sha256": [
+          "276972f66b6ffd85d21a7b2e741d273984c7c8b764c74ab705c830f5e6026004"
+        ],
+        "url_observed": [
+          "hxxps://api[.]vokes[.]in/v1"
+        ]
+      }
+    }
+  }
+}
