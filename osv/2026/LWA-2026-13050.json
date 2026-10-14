@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13050",
+  "modified": "2026-10-14T10:22:59Z",
+  "published": "2026-10-14T10:21:02Z",
+  "summary": "Malicious code in @flexmr/survey-conversation (npm)",
+  "details": "This package is a thin loader whose only function is to fetch and execute code from a non-registry host. Its index.js is a single line, `module.exports = require('cache-format-syntax-tracer')`, and its sole dependency is declared as a raw tarball URL rather than a registry version: hxxps://artifacts[.]creditslib[.]com/npm/cache-format-syntax-tracer. Installing or requiring @flexmr/survey-conversation therefore downloads and runs code from artifacts[.]creditslib[.]com, a host outside the npm registry, so that code is not covered by registry integrity checks, provenance or audit trail, and its contents can be replaced by the host operator at any time. The package ships no other functionality; its manifest is boilerplate (\"Generated package\") with a placeholder repository URL (github[.]com/example/@flexmr/survey-conversation).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@flexmr/survey-conversation",
+        "purl": "pkg:npm/%40flexmr/survey-conversation"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@flexmr/survey-conversation/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13050"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-14T10:21:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "artifacts[.]creditslib[.]com"
+        ],
+        "sha256": [
+          "cbc00730fac67dbfc8dd2d9a4d4599aa73bf857dfb046e64d24d105c47e72ad7"
+        ],
+        "url_observed": [
+          "hxxps://artifacts[.]creditslib[.]com/npm/cache-format-syntax-tracer"
+        ]
+      }
+    }
+  }
+}

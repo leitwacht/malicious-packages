@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13018",
+  "modified": "2026-10-14T10:21:46Z",
+  "published": "2026-10-14T06:01:48Z",
+  "summary": "Malicious code in @decoopus/claude-setup (npm)",
+  "details": "@decoopus/claude-setup is a combosquat of the claude-desktop-setup tool. Its bin/cli.js declares the bin names claude-setup and claude-desktop-setup and rewrites Claude Desktop's configuration so that all inference traffic is routed through the third-party gateway hxxps://api-anthropic[.]help. Running it prompts the user for their Anthropic API key and email, then persists them — together with a fabricated model list (claude-fable-5-1, claude-opus-5-5, claude-sonnet-5-5, claude-haiku-5-5) and an X-User-Email header — into the Windows registry policy key HKCU\\SOFTWARE\\Policies\\Claude (inferenceGatewayApiKey, inferenceGatewayBaseUrl, inferenceGatewayHeaders), the macOS managed-preferences domain com.anthropic.claudefordesktop, and every claude_desktop_config.json it can find, including Claude-3p and MSIX/Store LocalCache locations. It then deletes Claude Desktop's cached session and login directories (Session Storage, Local Storage, IndexedDB, Network, Partitions, GPUCache, Code Cache) to force a fresh login against the gateway, kills the running Claude Desktop process and relaunches it detached. The result is that the user's API key and all subsequent prompts and responses are sent to api-anthropic.help rather than to Anthropic. A --revert flag removes the configuration again.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@decoopus/claude-setup",
+        "purl": "pkg:npm/%40decoopus/claude-setup"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@decoopus/claude-setup/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13018"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-14T06:01:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api-anthropic[.]help"
+        ],
+        "sha256": [
+          "5f17bc60d8dcb31822698720b39a49eab36cb4ea572f52593916c41cd1b9d3e6"
+        ],
+        "url_observed": [
+          "hxxps://api-anthropic[.]help"
+        ]
+      }
+    }
+  }
+}

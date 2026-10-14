@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13049",
+  "modified": "2026-10-14T10:23:26Z",
+  "published": "2026-10-14T10:20:59Z",
+  "summary": "Malicious code in @flexmr/survey-client (npm)",
+  "details": "@flexmr/survey-client@10.0.12 is a stub package whose only function is to pull code from outside the npm registry. Its package.json declares a single dependency, marker-index-symbol-schema, as a raw tarball URL — hxxps://artifacts[.]creditslib[.]com/npm/marker-index-symbol-schema — instead of a registry version range, and index.js contains nothing but `module.exports = require('marker-index-symbol-schema')`. Installing the package therefore causes npm to fetch and execute a tarball from a third-party host that is not covered by the npm registry's integrity checks or audit trail, and the fetched code runs with the installer's privileges. The package ships no other code, no lifecycle scripts, no obfuscation and no README beyond a generated template; its declared repository URL points at github[.]com/example/@flexmr/survey-client, which does not host this package. The same non-registry artifact host is referenced by the related stub @flexmr/survey-conversation@1.0.0, which declares a different dependency name (cache-format-syntax-tracer) at the same hxxps://artifacts[.]creditslib[.]com/npm/ path prefix.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@flexmr/survey-client",
+        "purl": "pkg:npm/%40flexmr/survey-client"
+      },
+      "versions": [
+        "10.0.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@flexmr/survey-client/v/10.0.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13049"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-14T10:20:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "artifacts[.]creditslib[.]com"
+        ],
+        "sha256": [
+          "3080b5ddd952c6ef415f2d879b3e9cf8d8c5a4a5d5a06239d0c2934cde056bdc"
+        ],
+        "url_observed": [
+          "hxxps://artifacts[.]creditslib[.]com/npm/",
+          "hxxps://artifacts[.]creditslib[.]com/npm/cache-format-syntax-tracer",
+          "hxxps://artifacts[.]creditslib[.]com/npm/marker-index-symbol-schema"
+        ]
+      }
+    }
+  }
+}
