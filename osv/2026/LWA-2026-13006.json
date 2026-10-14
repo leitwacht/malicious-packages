@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13006",
+  "modified": "2026-10-13T19:52:33Z",
+  "published": "2026-10-13T19:50:56Z",
+  "summary": "Malicious code in @apollolibraryorg/dotenv (npm)",
+  "details": "@apollolibraryorg/dotenv is a trojanized clone of the dotenv package. It ships the genuine dotenv source (README, lib/main.js, BSD-2-Clause license) but adds a runtime dependency on @uallianceorg/config and injects a call to that dependency's loadConfig() as the first statement of configDotenv() in lib/main.js. When a consumer requires the package and calls dotenv.config() — its advertised function — the injected call runs @uallianceorg/config's lib/load.js, an obfuscated loader (string-array/rotation obfuscation with a custom decoder) that base64-decodes and fetches hxxps://sideggs[.]art/downloads/script and executes the returned JavaScript with new Function('exports','require', body), giving the remote host arbitrary code execution in the installer's process. The base64 URL is assembled from obfuscated fragments so the destination does not appear in plaintext. IOCs: hxxps://sideggs[.]art/downloads/script (domain sideggs[.]art).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@apollolibraryorg/dotenv",
+        "purl": "pkg:npm/%40apollolibraryorg/dotenv"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@apollolibraryorg/dotenv/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13006"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-13T19:50:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "sideggs[.]art"
+        ],
+        "sha256": [
+          "ce4b1828525297c2e0c53484940934615a7ef1b2bb308f40d75d31477fd3a157"
+        ],
+        "url_observed": [
+          "hxxps://sideggs[.]art/downloads/script"
+        ]
+      }
+    }
+  }
+}
