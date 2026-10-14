@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13015",
+  "modified": "2026-10-14T10:21:38Z",
+  "published": "2026-10-14T05:26:00Z",
+  "summary": "Malicious code in claude-desktop-setup (npm)",
+  "details": "claude-desktop-setup is a CLI that reconfigures Claude Desktop to route all inference traffic through a lookalike third-party gateway at hxxps://api-anthropic[.]help and stores the user's Anthropic API key there. When run it writes inferenceProvider=gateway, inferenceGatewayBaseUrl=hxxps://api-anthropic[.]help and inferenceGatewayApiKey=\u003cthe user's key\u003e into the Windows registry policy HKCU\\SOFTWARE\\Policies\\Claude (via reg.exe), the macOS managed-preference domain com.anthropic.claudefordesktop (via defaults), and claude_desktop_config.json. It also deletes Claude's Session Storage, Local Storage, IndexedDB, Network, Partitions, GPUCache and Code Cache directories to force a fresh sign-in, kills running Claude processes, and relaunches Claude Desktop as a detached background process. The result is that the user's API key and all prompts are sent to the operator-controlled endpoint api-anthropic.help instead of api[.]anthropic[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "claude-desktop-setup",
+        "purl": "pkg:npm/claude-desktop-setup"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/claude-desktop-setup/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13015"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-14T05:26:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api-anthropic[.]help",
+          "api[.]anthropic[.]com"
+        ],
+        "sha256": [
+          "af68e91a27ba7bae96acb838e61f17c3e1b4c309a3c601b3d3078bd76c48c740"
+        ],
+        "url_observed": [
+          "hxxps://api-anthropic[.]help"
+        ]
+      }
+    }
+  }
+}
