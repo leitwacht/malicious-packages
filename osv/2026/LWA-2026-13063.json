@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13063",
+  "modified": "2026-10-15T20:59:33Z",
+  "published": "2026-10-15T20:58:19Z",
+  "summary": "Potentially-unwanted package (riskware): buyerdashboard (npm)",
+  "details": "This package runs its main script from a preinstall hook, so simply installing it immediately issues an outbound HTTPS GET to a third-party host before any application code runs. The hook executes index.js, which requests hxxps://realwbx[.]com/ip.php?ip=8[.]8[.]8[.]8 with a hardcoded Authorization header token and logs the response. The request originates from the installing machine, disclosing the installer's network address to realwbx[.]com. The script performs no other action: it does not read environment variables, credentials,.npmrc, or any files, does not spawn processes, and does not download or execute a second-stage payload. The package is a three-file stub (index.js, package.json, README.md) whose only behaviour is this install-time callback.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "buyerdashboard",
+        "purl": "pkg:npm/buyerdashboard"
+      },
+      "versions": [
+        "45.3.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/buyerdashboard/v/45.3.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-10-15T20:58:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "realwbx[.]com"
+        ],
+        "ip_observed": [
+          "8[.]8[.]8[.]8"
+        ],
+        "sha256": [
+          "6e75bc727ff26cc4a6905b154c311013da766346d15317ee092933b4948a9b27"
+        ],
+        "url_observed": [
+          "hxxps://realwbx[.]com/ip[.]php",
+          "hxxps://realwbx[.]com/ip[.]php?ip=8[.]8[.]8[.]8"
+        ]
+      }
+    }
+  }
+}

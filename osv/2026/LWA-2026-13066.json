@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13066",
+  "aliases": [
+    "MAL-2026-17871"
+  ],
+  "modified": "2026-10-15T21:00:19Z",
+  "published": "2026-10-15T20:58:24Z",
+  "summary": "Potentially-unwanted package (riskware): @mntv-analysis/workspaces-components (npm)",
+  "details": "This package ships no functional UI code despite its name and description; its only executable content is an install-time beacon. package.json declares a preinstall hook (\"node index.js\"), so the beacon runs automatically on npm install: index.js issues an HTTPS GET to hxxps://realwbx[.]com/ip[.]php?ip=8[.]8[.]8[.]8, sending a hardcoded per-package Authorization token in the request headers, and logs the server response. The same install-time callback to the same host, each with a different hardcoded token, is shipped by other packages in the same campaign, including @mntv-analysis/ui@99.1.1 and web-pixels-manager@76.2.4. The package reads no environment variables, credentials or files, and transmits none; the request carries only a fixed IP literal and the package-specific token. The callback host is not part of the npm registry or any documented service used by the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@mntv-analysis/workspaces-components",
+        "purl": "pkg:npm/%40mntv-analysis/workspaces-components"
+      },
+      "versions": [
+        "65.11.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@mntv-analysis/workspaces-components/v/65.11.3"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-10-15T20:58:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "realwbx[.]com"
+        ],
+        "ip_observed": [
+          "8[.]8[.]8[.]8"
+        ],
+        "sha256": [
+          "d17cf8620052a2dd8e678c2fa5a98580a8c29d9f1034fe077dfe7554b10e58bc"
+        ],
+        "url_observed": [
+          "hxxps://realwbx[.]com/ip[.]php",
+          "hxxps://realwbx[.]com/ip[.]php?ip=8[.]8[.]8[.]8"
+        ]
+      }
+    }
+  }
+}
