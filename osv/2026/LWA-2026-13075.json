@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13075",
+  "modified": "2026-10-19T00:12:42Z",
+  "published": "2026-10-19T00:09:15Z",
+  "summary": "Malicious code in @chatunitycenter/baileys (npm)",
+  "details": "This package re-publishes the widely used baileys WhatsApp Web library under an unofficial scope, keeping the upstream name, README and MIT license while pointing its homepage and repository fields at a different npm package instead of a source repository. It runs a preinstall hook (`node./engine-requirements.js`, a Node version check) and pins its `libsignal` dependency to a git fork, `github:chatunitycenter/libsignal-node`, rather than the published registry package. Two behaviours in the shipped code are not part of the documented library API: - `lib/Utils/generics.js` fetches its client version configuration from `hxxps://github[.]com/realvare/based/lib/Defaults/baileys-version[.]json`, an unrelated third-party GitHub account, instead of the upstream project path. The fetched JSON is used as the WhatsApp client version.\n- `lib/Utils/messages-media.js` contains an upload chain that POSTs user media buffers to anonymous public file hosts — `hxxps://qu[.]ax`, `hxxps://uguu[.]se/upload[.]php` and `hxxps://tmpfiles[.]org/api/v1/upload` — and then uses the returned public URL as the message media. The same file relays video URLs through `hxxps://ezgif[.]com/video-to-jpg` to obtain thumbnails. The package also adds an owner/sudo authorization layer driven by the `WHATSAPP_OWNER_JIDS` and `WHATSAPP_SUDO_JIDS` environment variables (`lib/Utils/whatsapp-identity.js`) and outbound rate-limit tuning via `WHATSAPP_OUTBOUND_MIN_DELAY_MS` and related variables (`lib/Utils/outbound-queue.js`). No obfuscation, encoded payload, credential-file access or hardcoded command-and-control endpoint was found in the shipped files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@chatunitycenter/baileys",
+        "purl": "pkg:npm/%40chatunitycenter/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@chatunitycenter/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13075"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-19T00:09:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ezgif[.]com",
+          "qu[.]ax",
+          "tmpfiles[.]org",
+          "uguu[.]se"
+        ],
+        "sha256": [
+          "2a26a036d871c3e5b57b565fdacf32fc37f69f52fd464d14853a35e78534b582"
+        ],
+        "url_observed": [
+          "hxxps://ezgif[.]com/video-to-jpg",
+          "hxxps://github[.]com/realvare/based/lib/Defaults/baileys-version[.]json",
+          "hxxps://qu[.]ax",
+          "hxxps://tmpfiles[.]org/api/v1/upload",
+          "hxxps://uguu[.]se/upload[.]php"
+        ]
+      }
+    }
+  }
+}
