@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13084",
+  "modified": "2026-10-19T04:40:20Z",
+  "published": "2026-10-19T04:39:20Z",
+  "summary": "Malicious code in @postex/common (npm)",
+  "details": "Dependency-confusion probe published as four scoped packages at the sentinel version 99.9.1: @jm-telefonica/multibrand-components, @postex/common, @futurae-public/adaptive-js and @generic-means/ing-feat-scanner-libs. Each has an empty description, no repository, no lifecycle scripts, and a 35-byte index.js whose entire content is `module.exports = {}`. Each declares one dependency, `ltidisafe`, resolved from a raw tarball URL outside the npm registry on a Google Cloud Storage bucket: hxxps://ltidi[.]storage.googleapis[.]com/depenconf/ltidisafe-3.9.2.tgz, hxxps://ltidi[.]storage.googleapis[.]com/depenconf/ltidisafe-3.9.4.tgz and hxxps://ltidi[.]storage.googleapis[.]com/depenconf/ltidisafe-3.9.5.tgz. Installing any of these packages therefore fetches and installs an externally hosted tarball that bypasses registry audit and provenance, and runs whatever install scripts that tarball carries. The bucket path segment \"depenconf\" indicates the dependency-confusion intent; the targeted scopes are those of real organizations, so a build resolving these names from the public registry at 99.9.1 would pull the external payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@postex/common",
+        "purl": "pkg:npm/%40postex/common"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@postex/common/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13084"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-19T04:39:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "f45906f83444291a72863946f170c48aefa3493ceeab2bc704301ce4d46b7708"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]9[.]2[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]9[.]4[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]9[.]5[.]tgz"
+        ]
+      }
+    }
+  }
+}
