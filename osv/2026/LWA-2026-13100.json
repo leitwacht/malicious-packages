@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13100",
+  "aliases": [
+    "MAL-2026-18091"
+  ],
+  "modified": "2026-10-20T08:21:33Z",
+  "published": "2026-10-20T06:35:07Z",
+  "summary": "Malicious code in @platform-services/hrm-mfe-core (npm)",
+  "details": "@platform-services/hrm-mfe-core@99.9.1 is a dependency-confusion package: a near-empty stub (a single index.js exporting a `hello()` function) published at the sentinel version 99.9.1 whose only dependency is its own package name, @platform-services/hrm-mfe-core, resolved to an off-registry tarball at hxxps://s3[.]amazonaws[.]com/static[.]puffnetwork[.]com/check-network-2.2.1.tgz. Installing the package therefore fetches and installs an attacker-supplied tarball from that S3 bucket instead of the npm registry, outside the registry's audit trail, and places it under the private scope name the stub impersonates. The stub itself contains no lifecycle hooks and no executable payload; the malicious content is the externally hosted dependency it pulls in. The same publish shape (version 99.9.1, ~350-byte stub, off-registry tarball dependency) appears in sibling packages ing-feat-itsme-oidc-authentication@99.9.1, sc-wizard@99.9.1 and ccl-global-shopping@99.9.1, which point at hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-*.tgz.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@platform-services/hrm-mfe-core",
+        "purl": "pkg:npm/%40platform-services/hrm-mfe-core"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@platform-services/hrm-mfe-core/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13100"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-20T06:35:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com",
+          "s3[.]amazonaws[.]com",
+          "static[.]puffnetwork[.]com"
+        ],
+        "sha256": [
+          "e35470f64458ddf5e2a11b7eaa4214b10eed012a84e3a79ec9b021437ed8b946"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]9[.]9[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]1[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]4[.]tgz",
+          "hxxps://s3[.]amazonaws[.]com/static[.]puffnetwork[.]com/check-network-2[.]2[.]1[.]tgz"
+        ]
+      }
+    }
+  }
+}
