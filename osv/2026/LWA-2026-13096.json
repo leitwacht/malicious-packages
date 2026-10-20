@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13096",
+  "modified": "2026-10-20T03:55:13Z",
+  "published": "2026-10-20T03:54:15Z",
+  "summary": "Malicious code in ing-feat-itsme-oidc-authentication (npm)",
+  "details": "This package is a dependency-confusion implant. It ships no code of its own — index.js is an empty stub (`module.exports = {}`) — and its only dependency, ltidisafe, is resolved to an off-registry tarball at hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3.9.9[.]tgz. Installing the package therefore downloads and executes attacker-controlled code from a Google Cloud Storage bucket rather than from the npm registry, bypassing registry integrity and takedown controls. The package is published as version 99.9.1 and its name impersonates an internal ING feature package (ing-feat-itsme-oidc-authentication), so it wins version resolution against the internal package it is imitating; the bucket path \"depenconf\" matches the dependency-confusion technique. The second-stage payload is the external tarball, not part of this package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ing-feat-itsme-oidc-authentication",
+        "purl": "pkg:npm/ing-feat-itsme-oidc-authentication"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ing-feat-itsme-oidc-authentication/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13096"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-20T03:54:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "f07cfce76117a128f4070f6b229e895c5466c2d5ceb40b202f456b8f0e84df4c"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]9[.]9[.]tgz"
+        ]
+      }
+    }
+  }
+}
