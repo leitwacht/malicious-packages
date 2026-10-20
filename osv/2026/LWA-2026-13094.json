@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13094",
+  "modified": "2026-10-20T03:41:51Z",
+  "published": "2026-10-20T03:17:00Z",
+  "summary": "Malicious code in neverthrow-js (npm)",
+  "details": "neverthrow-js is a combosquat of the legitimate `neverthrow` library: it republishes the upstream package's code and README verbatim (upstream supermacro GitHub badges, wiki links and sponsor links are still present) while rewriting the documented install and import instructions from `neverthrow` to `neverthrow-js`, so developers following the docs install the lookalike. The package metadata points its repository, homepage and bugs URLs at a github[.]com/neverthrow-js/neverthrow repository that does not correspond to the upstream project, and it declares an optionalDependency on @rollup/rollup-linux-x64-gnu, a build-time-only package the runtime library never uses. Version 5.5.1 contains no lifecycle hooks and no network, process-execution or environment access; the shipped dist/index.cjs.js and dist/index[.]es.js are unmodified upstream rollup output. The package name has previously been used to distribute malicious code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "neverthrow-js",
+        "purl": "pkg:npm/neverthrow-js"
+      },
+      "versions": [
+        "5.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/neverthrow-js/v/5.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13094"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-20T03:17:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com/neverthrow-js/neverthrow"
+        ],
+        "sha256": [
+          "e84ad8355c03d791a8cf8ca264e86f0f44d28984e0d6570b78f7c23cbfb7d616"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/neverthrow-js/neverthrow",
+          "hxxps://github[.]com/neverthrow-js/neverthrow/issues"
+        ]
+      }
+    }
+  }
+}
