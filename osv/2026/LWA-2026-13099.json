@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13099",
+  "modified": "2026-10-20T04:44:02Z",
+  "published": "2026-10-20T04:14:02Z",
+  "summary": "Malicious code in paychex-pdftron (npm)",
+  "details": "paychex-pdftron@99.9.1 is an empty placeholder package (index.js contains only `module.exports = {}`, no lifecycle scripts, no binaries) whose only purpose is to pull a payload from outside the npm registry: it declares a dependency on the raw tarball hxxps://ltidi[.]storage.googleapis[.]com/depenconf/ltidisafe-4.0.5[.]tgz. Installing the package therefore fetches and installs code hosted on a Google Cloud Storage bucket rather than from the registry, bypassing registry audit and provenance checks; the \"depenconf\" path and the 99.9.1 version on a corporate-looking name are consistent with a dependency-confusion/internal-name-collision lure. The package itself contains no executable logic — the second-stage code is the remote tarball at that URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "paychex-pdftron",
+        "purl": "pkg:npm/paychex-pdftron"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/paychex-pdftron/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13099"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-20T04:14:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "478d2b19988b30023dc8fe05b0a38c204f4127f68538ac52ba85c1a112a47b07"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]5[.]tgz"
+        ]
+      }
+    }
+  }
+}
