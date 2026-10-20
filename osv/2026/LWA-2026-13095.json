@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13095",
+  "modified": "2026-10-20T03:39:39Z",
+  "published": "2026-10-20T03:34:58Z",
+  "summary": "Malicious code in sc-announcer (npm)",
+  "details": "sc-announcer@99.9.1 is a dependency-confusion carrier: the package contains only an empty stub (index.js exports `{}`) and its package.json declares a single dependency, `ltidisafe`, pinned to a raw off-registry tarball at hxxps://ltidi[.]storage.googleapis[.]com/depenconf/ltidisafe-4.0.2[.]tgz. Installing the package causes npm to fetch and execute code from that attacker-controlled Google Cloud Storage bucket instead of the npm registry, bypassing registry review and audit. The package carries the inflated version 99.9.1 typical of dependency-confusion attacks and has no lifecycle hooks or functional code of its own — the manifest is the payload. The same bucket path is used by the related publish fanarena-common@99.9.1 (ltidisafe-3.9.8.tgz).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sc-announcer",
+        "purl": "pkg:npm/sc-announcer"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sc-announcer/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13095"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-20T03:34:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "5a221c7f83b88a855383f5b0af828dbe58d194d1046b737893a45908b8f22c28"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-3[.]9[.]8[.]tgz",
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]2[.]tgz"
+        ]
+      }
+    }
+  }
+}
