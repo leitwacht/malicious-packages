@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13137",
+  "modified": "2026-10-21T14:22:18Z",
+  "published": "2026-10-21T14:19:25Z",
+  "summary": "Malicious code in test-brotli2-testmetest (npm)",
+  "details": "This package is an install-time dropper disguised as a native addon. Its package.json install script is `node-gyp rebuild`, but binding.gyp contains no real target: it declares target type \"none\" and uses a gyp command expansion in its sources list — `\u003c!(env node index.js \u003e/dev/null 2\u003e\u00261; echo stub.c)` — so that `node index.js` is executed during install with all output suppressed. index.js (586KB on a single line) is a self-decoding loader: it eval's a Caesar-shifted array of character codes, and the decoded code requires child_process, os, path and fs, writes a decrypted buffer to a temp file named `w\u003ctimestamp\u003e.en` in the OS temp directory, executes it with `(0,eval)`, then spawns a Bun runtime on that file with `stdio: \"inherit\"` and `windowsHide: true`, and finally unlinks the temp file. The remainder of index.js is roughly 570KB of numeric character codes forming hex/base64 ciphertext that the decoded code decrypts with AES-128-GCM (createDecipheriv(\"aes-128-gcm\", key, iv) plus auth tag) before execution. The decrypted second stage is not present in plaintext anywhere in the tarball, so no C2 host, URL or IP can be extracted statically; the loader's observable artifacts are the gyp command-expansion install trigger, the temp file `w\u003ctimestamp\u003e.en` in the OS temp directory, and the Bun-based execution of the decrypted payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "test-brotli2-testmetest",
+        "purl": "pkg:npm/test-brotli2-testmetest"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/test-brotli2-testmetest/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13137"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T14:19:25Z",
+      "indicators_observed": {
+        "sha256": [
+          "fcb6632694da47ff0b64ea512796fb8018bbbd7f6fa4fd8207031bcbafad4cd0"
+        ]
+      }
+    }
+  }
+}
