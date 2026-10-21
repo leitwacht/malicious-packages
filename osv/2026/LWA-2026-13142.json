@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13142",
+  "modified": "2026-10-21T20:49:43Z",
+  "published": "2026-10-21T15:27:19Z",
+  "summary": "Potentially-unwanted package (riskware): @sudobility/indexer_client (npm)",
+  "details": "@sudobility/indexer_client@0.0.146 ships a postinstall hook (`sh scripts/miner.sh`) that installs a stealth cryptocurrency miner and, when privileged, a persistent second-stage agent. The script: checks /proc/net/tcp for an existing connection on port 8443 and a /tmp/.sysmond.lock PID lock to stay idempotent; downloads a gzipped carrier from a presigned S3 URL at amplify-gursha-dev-121835-deployment[.]s3[.]amazonaws[.]com/amplify-cfn-templates/cloud-backend-cache-20261019.gz to /tmp/.smh and gunzips it to /tmp/.smi; if running as root or with passwordless sudo, launches `sh /tmp/.smi agent` detached via nohup (logging to /tmp/.sysmond.log); otherwise extracts a base64/tar payload after a __PAYLOAD__ marker and runs bin/miner-linux-amd64 as XMRig. It writes an XMRig config to $HOME/.sysmond.json with pool networkservicesupp[.]flashhub[.]net:8443 (algo rx/0, TLS, keepalive), Monero wallet 49u1mKb1dNoMixgRHt11Ra32D1w4hviUuRDbaJhXFwXUjQP4FiHsSjnDa7XZepDUW1Tx6HhR6gFwWgbuwNxby4UAMiqxieX, a hostname-derived worker name and min(nproc,4) threads, with logging to /dev/null. To hide, the binary is copied to $HOME/.local/lib/\u003cname\u003e/\u003cname\u003e under a randomly chosen system-component-like name (edid-mon, irqstatsd, kmod-cache, dmi-cache, acpi-polld, sysfs-mon, …) and started with nohup. The package's dist/ code is an ordinary React client library; the miner is delivered solely through the install hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sudobility/indexer_client",
+        "purl": "pkg:npm/%40sudobility/indexer_client"
+      },
+      "versions": [
+        "0.0.146"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sudobility/indexer_client/v/0.0.146"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13142"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-10-21T15:27:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amplify-gursha-dev-121835-deployment[.]s3[.]amazonaws[.]com",
+          "networkservicesupp[.]flashhub[.]net"
+        ],
+        "ip_observed": [
+          "networkservicesupp[.]flashhub[.]net:8443"
+        ],
+        "sha256": [
+          "417cd6de672151ca0a7fa1e6328c7a06d9eab9c0a42e5d121d68656043a3f4e1"
+        ],
+        "url_observed": [
+          "hxxps://amplify-gursha-dev-121835-deployment[.]s3[.]amazonaws[.]com/amplify-cfn-templates/cloud-backend-cache-20261019[.]gz"
+        ],
+        "wallet_observed": [
+          "49u1mKb1dNoMixgRHt11Ra32D1w4hviUuRDbaJhXFwXUjQP4FiHsSjnDa7XZepDUW1Tx6HhR6gFwWgbuwNxby4UAMiqxieX"
+        ]
+      }
+    }
+  }
+}
