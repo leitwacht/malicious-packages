@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13139",
+  "modified": "2026-10-21T15:05:38Z",
+  "published": "2026-10-21T13:45:11Z",
+  "summary": "Malicious code in suggestedtests (npm)",
+  "details": "suggestedtests@0.1.2 is a Vitest/Jest helper library that ships a Rust-built Node-API addon (prebuilds/\u003cos\u003e-\u003carch\u003e/suggestedtests_native.node, 15 platform variants) and loads it automatically: dist/index.js calls preload() on import, which process.dlopen()s the addon and invokes its onLoad() export, so the native code executes in any project that merely imports the package. The addon contains an undocumented \"gui_helper\" stage that is not exposed through the package's public API. It first fingerprints the host — /proc/cpuinfo, /proc/self/mountinfo, /proc/self/cgroup, /.dockerenv, /run/.containerenv, /sys/class/dmi/id/{sys_vendor,product_name,bios_vendor,chassis_asset_tag,chassis_type}, WSL_DISTRO_NAME/WSL_INTEROP, DISPLAY/WAYLAND_DISPLAY, CI variables (GITHUB_ACTIONS, GITLAB_CI, JENKINS_URL, BUILDKITE, TRAVIS, CIRCLECI, TEAMCITY_VERSION, BITBUCKET_BUILD_NUMBER, APPVEYOR, DRONE, CODEBUILD_BUILD_ID), hypervisor/container markers (vmware, virtualbox, parallels, xen, bhyve, kvm, qemu, docker, podman, lxc, systemd-nspawn, containerd) and Windows BIOS registry keys — and aborts with \"not a GUI desktop/laptop, giving up\" when it does not look like a real desktop. On a qualifying host it resolves a download URL (default hxxps://cloudflared[.]pro/dl/agent, overridable via SUGGESTEDTESTS_GUI_HELPER_URL / SUGGESTEDTESTS_GUI_HELPER_BASE_URL), fetches the binary over HTTPS with a bundled ureq client, writes it to a temp path, and spawns it as a detached child process (\"[gui_helper] downloading and spawning\", \"[gui_helper] spawned \u003cpath\u003e as pid \u003cn\u003e\"). The fetched payload is not included in the package, so its behaviour is determined by the remote server. IOC: hxxps://cloudflared[.]pro/dl/agent (host cloudflared.pro, path /dl/agent).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "suggestedtests",
+        "purl": "pkg:npm/suggestedtests"
+      },
+      "versions": [
+        "0.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/suggestedtests/v/0.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13139"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T13:45:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflared[.]pro"
+        ],
+        "sha256": [
+          "95325cc1e43c42efbc1b2ee223b336aef9bdf0d9632b60bde25e47e847f64ecb"
+        ],
+        "url_observed": [
+          "hxxps://cloudflared[.]pro/dl/agent"
+        ]
+      }
+    }
+  }
+}
