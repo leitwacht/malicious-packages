@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13136",
+  "modified": "2026-10-21T14:07:04Z",
+  "published": "2026-10-21T14:04:24Z",
+  "summary": "Malicious code in event-emitter-testmetest (npm)",
+  "details": "This package executes an obfuscated dropper at install time without declaring any lifecycle script. Its package.json has no preinstall/postinstall hook; instead binding.gyp contains a node-gyp command substitution — \"sources\":[\"\u003c!(env node index.js \u003e/dev/null 2\u003e\u00261; echo stub.c)\"] — which runs index.js during the install/rebuild step. index.js (1.67MB, single line) is wrapped in a Caesar-shift-2 decoder: eval((function(d,k){...})([char codes],2)). The decoded source imports node:zlib, gunzips a base64/hex-encoded second stage embedded in the file, imports node:child_process, and pipes that stage into a Bun interpreter: spawn([process.execPath,\"run\",\"-\"],{stdio:\"pipe\"}) when a bun global is present, otherwise spawn(getBunPath(),[\"run\",\"-\"],{stdio:\"pipe\"}) after obtaining Bun, with a plain eval() of the decoded blob as fallback. The second stage is never shipped as a file — it is assembled in memory at install time, so the package's real payload is not visible in the tarball. The package name is a combosquat of the widely used `event-emitter` package (real name intact plus a \"-testmetest\" suffix), ships no README and no repository, and its only other file is the binding.gyp stub. No network endpoint is hardcoded in the decoded first stage; the C2/payload is delivered through the runtime-assembled second stage.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "event-emitter-testmetest",
+        "purl": "pkg:npm/event-emitter-testmetest"
+      },
+      "versions": [
+        "4.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/event-emitter-testmetest/v/4.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13136"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T14:04:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "7240e477f1acd81b0546e57c03eacecb514df4abca5611ccfb9c3deca2a0d5f9"
+        ]
+      }
+    }
+  }
+}
