@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13138",
+  "modified": "2026-10-21T14:35:39Z",
+  "published": "2026-10-21T14:34:25Z",
+  "summary": "Malicious code in test-brotli-testmetest (npm)",
+  "details": "Test-brotli-testmetest@1.0.0 is an encrypted dropper that executes a hidden second stage at install time. The package declares `\"install\": \"node-gyp rebuild\"` and ships a binding.gyp whose only source entry is `\"\u003c!(env node index.js \u003e/dev/null 2\u003e\u00261; echo stub.c)\"`. node-gyp evaluates `\u003c!(...)` command substitutions during configure, so `node index.js` is executed on every install with stdout/stderr discarded to hide the activity. index.js (586 KB, one line) is a hand-written loader. It decodes a 586 KB array of character codes with a Caesar shift of +1 and passes the result to `eval`. The decoded code imports node:crypto and defines an AES-128-GCM decryptor (`createDecipheriv(\"aes-128-gcm\",...)`, `setAuthTag`, `concat([update, final])`) plus a base64 variant. It then decrypts an embedded blob using a hardcoded 32-hex-character key, 24-hex-character IV and 32-hex-character auth tag, and `eval`s the resulting plaintext. The decrypted stage is written to a file named `a\u003ctimestamp\u003e.js` in the OS temp directory (`os.tmpdir()`) and launched with `child_process.spawn(process.execPath, [file], {stdio:\"ignore\", detached:true})`, followed by `unref()` so the parent install process exits immediately while the payload keeps running. The second-stage payload is stored only as AES-GCM ciphertext, so no plaintext command-and-control host, IP or URL appears anywhere in the package; the destination and capabilities of the dropped stage are determined by the decrypted blob.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "test-brotli-testmetest",
+        "purl": "pkg:npm/test-brotli-testmetest"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/test-brotli-testmetest/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13138"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T14:34:25Z",
+      "indicators_observed": {
+        "sha256": [
+          "01a8f8812c47d1dfa1cba529e0803404ffe66c35e578b825667cbe2d1e5b04bd"
+        ]
+      }
+    }
+  }
+}
