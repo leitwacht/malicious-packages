@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13141",
+  "modified": "2026-10-21T19:05:42Z",
+  "published": "2026-10-21T19:04:24Z",
+  "summary": "Malicious code in pixel-map-testmetest (npm)",
+  "details": "This package is a concealed second-stage loader disguised as a placeholder. Its entry file index.js decodes a Caesar-shifted character-code array and passes the result to eval when the module is loaded; the decoded code reads an AES-128-GCM key, IV and authentication tag from hex string literals, decrypts the bundled 373 KB binary blob package/data.bin, and executes the resulting plaintext. When NODE_ENV is not \"production\" it spawns a detached, unref'd child process with stdio ignored to run the decrypted code; otherwise it writes the plaintext to a file named vug8 in the OS temp directory, runs it with spawnSync, and deletes the file. The package also ships package/binding.gyp whose sources entry is a shell command substitution, \u003c!(env node index.js \u003e/dev/null 2\u003e\u00261; echo stub.c), so the loader is also executed during any node-gyp configure step. package.json declares no scripts, main or bin entry and describes the package as a temporary placeholder, so nothing in the manifest indicates that loading it runs an encrypted payload; it does declare a dependency on the bun runtime (^1.2.18). No plaintext network destination appears in the readable loader — the payload's network behaviour is contained in the encrypted data.bin blob.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "pixel-map-testmetest",
+        "purl": "pkg:npm/pixel-map-testmetest"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/pixel-map-testmetest/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13141"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T19:04:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "fb47741568f09a97828b7b310730450260dd25cb53b1afb423aada2bdd9e8360"
+        ]
+      }
+    }
+  }
+}
