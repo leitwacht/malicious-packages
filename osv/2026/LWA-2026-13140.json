@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13140",
+  "modified": "2026-10-21T15:11:44Z",
+  "published": "2026-10-21T15:11:23Z",
+  "summary": "Malicious code in formatting-subtitles (npm)",
+  "details": "This package impersonates the unicode-title-normalizer library — it declares a bin entry named \"unicode-title-normalizer\" pointing at cli.js, uses that name as its README title, and depends on unicode-title-normalizer@1.1.0 — while shipping a staged shell payload. package.json defines a preinstall hook, \"sh./prepare.js \u0026\u0026 exit 0\", but prepare.js is not included in the tarball; the payload instead sits in the shipped file x.js (listed in package.json \"files\") as a shell block that (1) beacons to hxxps://webhook[.]site/9e8c8742-3102-4716-aa8b-e150e9e84fe7/stats_1 and (2) downloads hxxps://api[.]github[.]com/gists/da04f14c93acbe9a7aef827be0a2e91c, extracts the gistfile1.txt content with jq into a file named x, and executes it with sh — a remote second-stage fetch-and-run. The remaining files (index.js, cli.js) are a functional Unicode/CSS-color title normalizer used as cover. IOCs: webhook[.]site/9e8c8742-3102-4716-aa8b-e150e9e84fe7/stats_1, api[.]github[.]com/gists/da04f14c93acbe9a7aef827be0a2e91c, dropped file \"x\".",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "formatting-subtitles",
+        "purl": "pkg:npm/formatting-subtitles"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/formatting-subtitles/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13140"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T15:11:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "1897120d09e3c7226f7b387323ec72a45839a3bdd7a5f1c22582fd24229cea27"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/gists/da04f14c93acbe9a7aef827be0a2e91c",
+          "hxxps://webhook[.]site/9e8c8742-3102-4716-aa8b-e150e9e84fe7/stats_1"
+        ]
+      }
+    }
+  }
+}
