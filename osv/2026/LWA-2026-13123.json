@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13123",
+  "modified": "2026-10-21T11:15:31Z",
+  "published": "2026-10-21T11:14:12Z",
+  "summary": "Malicious code in data-pipeline-testmetest (npm)",
+  "details": "This package is a staged downloader/loader disguised as a \"Test pipeline utilities\" library. It ships three execution paths that run without any user action: a binding.gyp whose only build target uses node-gyp command substitution to execute `node index.js` during install (with output redirected to /dev/null), and an index.js that is a single 6.3MB line of obfuscated code. index.js rot13-decodes an embedded character-code array and eval()s the result; the decoded source is an AES-128-GCM decryptor (require(\"node:crypto\"), createDecipheriv with a hardcoded key, IV and 16-byte auth tag) that decrypts a ~3MB hex ciphertext blob embedded in the same file. The decrypted plaintext is then either written to the stdin of a spawned interpreter (process.execPath / Bun.spawn with piped stdio) or executed directly via eval. The package also depends on the \"bun\" runtime, consistent with bootstrapping a non-standard JS runtime to run the hidden stage. The payload's URLs, hosts and commands are inside the encrypted blob and are not visible in plaintext; no plaintext C2 host, IP or credential path appears in the shipped files. The package has no functional API, no scripts, no repository, and its unpacked size jumped from 346 bytes in prior versions to 6.35MB.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "data-pipeline-testmetest",
+        "purl": "pkg:npm/data-pipeline-testmetest"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/data-pipeline-testmetest/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13123"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T11:14:12Z",
+      "indicators_observed": {
+        "sha256": [
+          "aca39ebdc03f512b9916ceeab8854dabaac4b9ed26dcec4254a5e6b4adc7f0b1"
+        ]
+      }
+    }
+  }
+}
