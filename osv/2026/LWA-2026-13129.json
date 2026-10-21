@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13129",
+  "modified": "2026-10-21T12:22:34Z",
+  "published": "2026-10-21T12:19:28Z",
+  "summary": "Malicious code in event-emitter-testmetest (npm)",
+  "details": "The package ships a single 689KB one-line index.js that is not an event-emitter library but an obfuscated loader. At module load it builds a source string from a large array of character codes, applies a ROT-style letter shift (key 19) to it, and passes the result directly to eval(). The decoded source references require(\"http\"), require(\"child_process\"), require(\"os\") and process.env, and embeds a very large base64-encoded blob (Buffer.from(..., \"base64\")) that constitutes most of the file and is the staged second-stage payload. package.json declares no dependencies, no scripts and no bin, and the package has no repository or README, so nothing about the package explains the obfuscated eval. No C2 host, IP or URL is present in the outer stage; the network and process-execution capability is reached only after the embedded base64 blob is decoded and run.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "event-emitter-testmetest",
+        "purl": "pkg:npm/event-emitter-testmetest"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/event-emitter-testmetest/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13129"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T12:19:28Z",
+      "indicators_observed": {
+        "sha256": [
+          "fcafedc6aa750a22db4ea3f8d5c5b7d1d126db3099bf140d7891ada20e86da2f"
+        ]
+      }
+    }
+  }
+}

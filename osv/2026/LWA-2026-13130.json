@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13130",
+  "modified": "2026-10-21T12:25:14Z",
+  "published": "2026-10-21T12:19:29Z",
+  "summary": "Malicious code in event-emitter-testmetest (npm)",
+  "details": "event-emitter-testmetest@1.0.7 is a trojanized clone of the `event-emitter` package name. Its package.json is a 71-byte stub with no scripts, dependencies or repository, but its main entry index.js is a single 689KB line that is not an event emitter. On require, index.js builds a large array of character codes, applies a Caesar shift of 19 to the letters, joins it into source text and passes it to eval(). The decoded source is a loader: it calls require(\"crypto\") and defines an AES-256-GCM decryptor (createDecipheriv with an embedded base64 key, IV and 16-byte auth tag) that decrypts a roughly 670KB base64 ciphertext blob stored in the same array. The plaintext is then executed: on non-Windows platforms the loader calls require(\"child_process\").spawn([process.execPath,\"node\",\"-\"],{stdio:\"pipe\",shell:process.platform,env:process.env,detached:true}) and pipes the decrypted payload into the detached Node process's stdin; on Windows it writes the payload to a temporary file and spawns it with the same inherited environment. The second-stage payload is encrypted, so no C2 host, URL or IP is present in readable form anywhere in the package — the only observable artifacts are the eval-based Caesar/char-code decoder in index.js, the embedded AES-256-GCM key/IV/auth-tag/ciphertext literals, and the detached `node -` child process that receives the decrypted stage.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "event-emitter-testmetest",
+        "purl": "pkg:npm/event-emitter-testmetest"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/event-emitter-testmetest/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13130"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-21T12:19:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "4156e52f5b55b22bf2fb0cf519ab53fada78a795286aeec3c0fd37c88f82554c"
+        ]
+      }
+    }
+  }
+}
