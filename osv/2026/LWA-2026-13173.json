@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13173",
+  "modified": "2026-10-22T18:32:29Z",
+  "published": "2026-10-22T18:31:42Z",
+  "summary": "Malicious code in retry-utils-testmetest (npm)",
+  "details": "Retry-utils-testmetest@1.0.3 is a trojanized package that ships no functional utility code — its entire contents are an install-time loader for an encrypted second-stage payload. Execution is triggered two ways. package.json declares no lifecycle scripts, but binding.gyp defines a node-gyp action whose command is `node index.js 1\u003e/dev/null 2\u003e/dev/null`, so the loader runs during `npm install` with its output suppressed. The gyp target is named \"stub\", type \"none\", and the package contains no native source — the build file exists only to execute the loader. index.js is a single obfuscated expression: a character-code array is Caesar-shifted by 10 and passed to eval(). The decoded source:\n- requires node:crypto, node:fs, node:path, node:zlib, node:os and node:child_process\n- decrypts data with createDecipheriv(\"aes-128-gcm\",...) using hardcoded hex key and IV values, with a 16-byte auth tag\n- reads lib_native.dat (319,371 bytes of high-entropy ciphertext) from the package directory, AES-128-GCM-decrypts it, and inflates the result with zlib.inflateSync\n- writes the decrypted stage to a hidden directory created with fs.mkdtempSync(path.join(os.tmpdir(), \".r-\")) as the file rtun.zi\n- executes it with child_process.spawnSync([process.execPath, \"-e\", \u003cdropped file\u003e], {stdio:\"ignore\", windowsHide:true, detached:true, env:process.env}), with a separate branch for win32\n- in a finally block, deletes rtun.zi and removes the temp directory, leaving no artifact on disk The second stage is fully contained in lib_native.dat, so the loader itself carries no network indicator; the payload's behaviour after decryption is not visible in the package. The package is described as a \"Lightweight utility\" and has no repository, no dependencies, and no code implementing any utility function.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "retry-utils-testmetest",
+        "purl": "pkg:npm/retry-utils-testmetest"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/retry-utils-testmetest/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13173"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-22T18:31:42Z",
+      "indicators_observed": {
+        "sha256": [
+          "ca2fc1f2cdcd4ad40e3de7184a0630be54f3a7a315554571ad0167be26cb7cf9"
+        ]
+      }
+    }
+  }
+}
