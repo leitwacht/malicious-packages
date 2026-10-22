@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13157",
+  "modified": "2026-10-22T12:27:09Z",
+  "published": "2026-10-22T12:25:22Z",
+  "summary": "Malicious code in event-bus-lite-testmetest (npm)",
+  "details": "Event-bus-lite-testmetest@0.0.2 is a staged loader disguised as a placeholder package. It ships no lifecycle hook; instead package/binding.gyp contains a node-gyp command substitution in its sources list — \"\u003c!(node index.js 1\u003e/dev/null 2\u003e/dev/null; echo stub.c)\" — so any install that runs node-gyp configure executes package/index.js with its output suppressed. index.js (1.45 MB, one line) is a chain of self-invoking functions that Caesar-shift an array of character codes and pass the result to eval(). The decoded loader requires crypto, fs, os and path, AES-128-CBC-decrypts a hex-encoded payload using hardcoded 16-byte key/IV pairs, writes the plaintext to a hidden file in the OS temp directory (os.tmpdir() + \"/.\" + random hex + \".js\"), launches it as a detached child process with stdio ignored using the current Node executable (or bun when running under Bun), and then deletes the dropped file with fs.unlinkSync. A second variant of the same loader emits the stage as base64. The encrypted second stage is shipped as package/lib_native.dat (320 KB of high-entropy binary); binding.gyp builds no native code, so the file is payload storage, not an addon. No command-and-control host, URL or IP appears in plaintext anywhere in the package — the destination is inside the encrypted blob, so the network indicator is only recoverable by decrypting lib_native.dat with the embedded key material. The package's description and README describe it as a \"temporary placeholder for staged publishing\", which does not account for a build-time eval loader that drops and detaches an encrypted payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "event-bus-lite-testmetest",
+        "purl": "pkg:npm/event-bus-lite-testmetest"
+      },
+      "versions": [
+        "0.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/event-bus-lite-testmetest/v/0.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13157"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-22T12:25:22Z",
+      "indicators_observed": {
+        "sha256": [
+          "95ee4d9b4eaf40ed31e879d3ba821fda195d390305e816f52e3ba0b662e06aba"
+        ]
+      }
+    }
+  }
+}
