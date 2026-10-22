@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13155",
+  "modified": "2026-10-22T09:52:20Z",
+  "published": "2026-10-22T09:49:31Z",
+  "summary": "Malicious code in @cecm-web-sdk/core (npm)",
+  "details": "This package is a dependency-confusion artifact published under a scoped name. Version 99.0.1 declares a postinstall hook, `node beacon.cjs`, and ships beacon.cjs, which sends an HTTP POST of a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc containing the package name, os.hostname(), the install directory (__dirname), process.cwd() and the Node.js version, tagged with an `x-beacon-package` header. index.js invokes the same beacon when the module is required and exports a Proxy that returns a no-op function for every property access, so a build that imports the name completes instead of failing. Version 0.1.0 is an inert placeholder containing only package.json and a one-line README, with no code, no lifecycle hook and no dependencies. The package's README describes it as an authorized dependency-confusion test. The shipped code collects host and install-path metadata only; no environment values, tokens, credential files or file contents are read or transmitted. This package is a dependency-confusion stub: it declares version 99.0.1 on the scoped name @cecm-web-sdk/core and ships a near-empty tarball (four files, ~1.5 KB) whose only real code is an install-time beacon. package.json runs `node beacon.cjs` as a postinstall hook, and index.js calls the same beacon when the module is required, so the callback fires on install and again on import. The beacon sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with a JSON body containing the package name, the machine hostname, the install directory (__dirname), the current working directory and the Node version, plus an `x-beacon-package` header. index.js then exports a catch-all Proxy that returns a no-op function for every property access, so a build that imports the real package name completes instead of crashing. No environment variables, tokens, credential files or file contents are read or transmitted; the payload is limited to install metadata reporting to the hardcoded IP endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@cecm-web-sdk/core",
+        "purl": "pkg:npm/%40cecm-web-sdk/core"
+      },
+      "versions": [
+        "99.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@cecm-web-sdk/core/v/99.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13155"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-22T09:49:31Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "195af4dc7d08c0e8ef76c99171542e73c82af4ccb7731f3f4b94cb2e08271451"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
