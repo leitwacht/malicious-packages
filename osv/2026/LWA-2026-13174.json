@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13174",
+  "modified": "2026-10-22T23:13:34Z",
+  "published": "2026-10-22T18:32:42Z",
+  "summary": "Malicious code in event-bus-lite-testmetest (npm)",
+  "details": "event-bus-lite-testmetest@0.0.6 is a combosquat of \"event-bus-lite\" that executes a hidden payload at install time without declaring any lifecycle script. Its package.json has an empty scripts block, but it ships a binding.gyp whose gyp action runs `node index.js` (with stdout/stderr discarded) — npm performs an implicit node-gyp rebuild whenever binding.gyp is present, so the payload runs on `npm install`. index.js is a single obfuscated line: a Caesar-shifted character-code array is decoded and passed to eval. The decoded code requires node:crypto, node:fs, node:path, node:zlib and child_process, then reads the bundled 319 KB binary blob lib_native.dat, decrypts it with AES-128-GCM (createDecipheriv(\"aes-128-gcm\", key, iv, {authTagLength:16}) with the key, IV and auth tag supplied as obfuscated hex strings), gunzips the plaintext, writes it into a hidden directory under the current working directory (path.join(process.cwd(), \".g-\") plus a random suffix) as \"node.exe\", and launches it with child_process.spawn using stdio \"ignore\", detached: true, windowsHide: true and unref(), then calls process.exit(0) so the install returns cleanly; a finally block removes the dropped file and directory. The decrypted second stage is not present in plaintext, so no C2 host, URL or IP is visible in the package bytes, and the loader itself performs no network request.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "event-bus-lite-testmetest",
+        "purl": "pkg:npm/event-bus-lite-testmetest"
+      },
+      "versions": [
+        "0.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/event-bus-lite-testmetest/v/0.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13174"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-22T18:32:42Z",
+      "indicators_observed": {
+        "sha256": [
+          "cde1dceaaf3cb4ee4d4ab529ea0c089299d3ab2a59aca1b59d8c6a96cb106080"
+        ]
+      }
+    }
+  }
+}
