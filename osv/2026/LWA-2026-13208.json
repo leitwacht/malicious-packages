@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13208",
+  "modified": "2026-10-22T23:58:28Z",
+  "published": "2026-10-22T23:57:20Z",
+  "summary": "Malicious code in @grabcad/user-license (npm)",
+  "details": "This package is a \"compatibility shim\" whose postinstall hook runs beacon.cjs, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with a JSON body containing the package name, the machine hostname, the install directory (__dirname), the working directory and the npm/node user agent, plus an x-beacon-package header. index.js repeats the same callback whenever the module is required and exports a no-op Proxy so that importing code does not crash. The callback is the only behaviour in the package: no environment variables, credentials, tokens or file contents are read or transmitted, and no second-stage payload is downloaded or executed. The README describes the package as an authorized dependency-confusion test that only reports that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@grabcad/user-license",
+        "purl": "pkg:npm/%40grabcad/user-license"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@grabcad/user-license/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13208"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-22T23:57:20Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "579fd3b7152d093e138c85db3bd0cbc7b089708f52109b325d6d11d3d9a17832"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

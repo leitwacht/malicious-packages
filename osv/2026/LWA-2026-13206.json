@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13206",
+  "modified": "2026-10-22T23:59:10Z",
+  "published": "2026-10-22T23:57:03Z",
+  "summary": "Malicious code in @grabcad/grabcad-shop-shared (npm)",
+  "details": "This package is a dependency-confusion implant that beacons to a hardcoded callback host at install time. Its package.json declares a postinstall hook running \"node beacon.cjs\", which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc carrying the header x-beacon-package: @grabcad/grabcad-shop-shared. The JSON body reports the package name, the machine hostname (via os.hostname()), the install path (__dirname), the working directory, the npm/node version string, and the protocol. index.js re-fires the same beacon whenever the module is required, and exports a Proxy that returns a no-op function for every property access so that a project importing this name does not crash — the package is built to survive being consumed as a dependency-confusion target and to report back that it was installed. The README describes the package as part of an authorized dependency-confusion test that reports only that it was installed. The collected data is limited to host and install metadata: no environment variable values, credential files, wallet data or file contents are read or transmitted, and no second-stage payload is downloaded or executed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@grabcad/grabcad-shop-shared",
+        "purl": "pkg:npm/%40grabcad/grabcad-shop-shared"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@grabcad/grabcad-shop-shared/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13206"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-22T23:57:03Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "842e74e5d000510df89fced5b97afb0c48d2364b683ff431172771ccc85d4877"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

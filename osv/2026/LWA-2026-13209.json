@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13209",
+  "modified": "2026-10-23T00:00:09Z",
+  "published": "2026-10-22T23:57:25Z",
+  "summary": "Malicious code in @grabcad/user-license (npm)",
+  "details": "A combosquat of the @grabcad scope that ships an install-time host-fingerprinting beacon. package.json declares \"postinstall\": \"node beacon.cjs\", and index.js additionally calls require('./beacon.cjs').fire() on import, so the beacon fires both at install and whenever the module is loaded. beacon.cjs POSTs JSON to the hardcoded IP-literal endpoint hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header, reporting the package name, os.hostname(), the install directory (__dirname), process.cwd(), and the npm/node user-agent. index.js exports a no-op Proxy so that a build importing the name completes instead of crashing, keeping the callback silent. The package is described only as a \"Compatibility shim\" and contains no functional code beyond the beacon.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@grabcad/user-license",
+        "purl": "pkg:npm/%40grabcad/user-license"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@grabcad/user-license/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13209"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-22T23:57:25Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "13edf41125351341cb6de1688391b42d116f0151abc022e814a5b41c63de754a"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

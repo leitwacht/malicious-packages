@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13207",
+  "modified": "2026-10-22T23:58:32Z",
+  "published": "2026-10-22T23:57:08Z",
+  "summary": "Malicious code in @grabcad/grabcad-shop-shared (npm)",
+  "details": "This package is a dependency-confusion implant that beacons host metadata to a hardcoded IP on install and again on import. Its package.json declares a postinstall hook running beacon.cjs, which HTTP-POSTs a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an X-Beacon-Package header; index.js re-fires the same beacon whenever the module is required and exports a Proxy that returns no-op functions so importing code does not crash. The beaconed body contains the package name, the machine hostname (os.hostname()), the install path (__dirname), the working directory, the npm/node user-agent string and the protocol. The package is a four-file, ~1.5KB \"compatibility shim\" that provides no real functionality, and its README asserts the callback is an authorized dependency-confusion test. The shipped files read no environment values, no npm or GitHub tokens, no.npmrc, no cloud credentials, no SSH/AWS files, no file contents and no wallet data, and spawn no processes or persistence; the collected data is host and install-location metadata sent to a single hardcoded endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@grabcad/grabcad-shop-shared",
+        "purl": "pkg:npm/%40grabcad/grabcad-shop-shared"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@grabcad/grabcad-shop-shared/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13207"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-22T23:57:08Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "207613cd38dcdcb97ce8c90d978e15c74d735449eb192c8362aac0b364621c6c"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
