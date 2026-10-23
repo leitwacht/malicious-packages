@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13235",
+  "modified": "2026-10-23T19:20:22Z",
+  "published": "2026-10-23T19:20:05Z",
+  "summary": "Malicious code in item-validates (npm)",
+  "details": "item-validates@1.0.0 is a remote-code-execution loader. Requiring the package (index.js) immediately spawns a detached background process running lib/check-items.js that outlives the parent application. That daemon performs an HTTPS GET to hxxps://game[.]spawnrealm[.]com/api/item-realtime?key=mykeya1b2c3, parses the JSON response, and executes the returned `code` field with `new Function('require','module', payload.code)`. The package ships an RSA public key in lib/crypto-config.js and checks a signature on the downloaded code before running it, but the corresponding private key is held by the same server operator, so the check does not constrain what code is executed — it only makes the remote fetch-and-exec look like a security feature. The bundled SAMPLE_PAYLOADJS.js shows the shape of the delivered payload: _0x-prefixed identifiers and a 60-second setInterval loop. No npm lifecycle hook is declared; the trigger is require-time, so installing the package as a dependency is enough to start the daemon. Network IOC: game[.]spawnrealm[.]com (port 443), path /api/item-realtime with query key=mykeya1b2c3.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "item-validates",
+        "purl": "pkg:npm/item-validates"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/item-validates/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13235"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-23T19:20:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "game[.]spawnrealm[.]com"
+        ],
+        "sha256": [
+          "8b1b3cb15ab3f87f664c54eb385b6c45923a1eeae625fb6fbfa133989792bb39"
+        ],
+        "url_observed": [
+          "hxxps://game[.]spawnrealm[.]com/api/item-realtime",
+          "hxxps://game[.]spawnrealm[.]com/api/item-realtime?key=mykeya1b2c3"
+        ]
+      }
+    }
+  }
+}
