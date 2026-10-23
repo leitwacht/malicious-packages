@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13195",
+  "modified": "2026-10-22T23:44:42Z",
+  "published": "2026-10-22T23:42:49Z",
+  "summary": "Security-research / proof-of-concept package: @grabcad/preferences-client (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST of host metadata — package name, os.hostname(), install path (__dirname), process.cwd(), and the npm/node version — to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header. index.js re-fires the same beacon when the module is required and exports a no-op Proxy shim so importing code does not crash. No credentials, tokens, environment values, or file contents are collected or transmitted; the beacon is limited to install-host metadata. The README describes the package as part of an authorized dependency-confusion test whose only action is reporting that it was installed. This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc containing the package name, the machine hostname, the install directory, the working directory and the npm user-agent, tagged with an x-beacon-package header. index.js fires the same beacon when the module is required and exports a no-op Proxy so that consumers importing the name do not crash. The beacon collects only host and install metadata; it reads no environment variables, credentials, tokens or files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@grabcad/preferences-client",
+        "purl": "pkg:npm/%40grabcad/preferences-client"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@grabcad/preferences-client/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-22T23:42:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "1e5ff1f4c1040089f580fa7f16d25334cc447b2e2d63d09770f4b684787004f5"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

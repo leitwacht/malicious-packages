@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13192",
+  "modified": "2026-10-22T23:43:48Z",
+  "published": "2026-10-22T23:42:19Z",
+  "summary": "Security-research / proof-of-concept package: @grabcad/grabcad-shop-shared (npm)",
+  "details": "This package is a dependency-confusion proof of concept that beacons host metadata to a callback host at install time. Its package.json declares a postinstall hook running \"node beacon.cjs\", and beacon.cjs sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with the header x-beacon-package set to the package name. The JSON body contains only the package name, the machine hostname, the install directory (__dirname), the current working directory, the npm/node user agent and the protocol. index.js re-fires the same beacon when the module is imported, and exports a Proxy that returns no-op functions for every property so that a bundler importing the name does not crash. No environment variables, credentials, tokens, wallet data or file contents are read or transmitted; the only network destination is the single hardcoded callback address above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@grabcad/grabcad-shop-shared",
+        "purl": "pkg:npm/%40grabcad/grabcad-shop-shared"
+      },
+      "versions": [
+        "2.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@grabcad/grabcad-shop-shared/v/2.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-22T23:42:19Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "614b9584812da05c911db488ce270edde7176a54fc1594bae3b52b2316756074"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

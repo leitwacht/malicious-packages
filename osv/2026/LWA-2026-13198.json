@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13198",
+  "modified": "2026-10-22T23:44:29Z",
+  "published": "2026-10-22T23:43:14Z",
+  "summary": "Security-research / proof-of-concept package: @grabcad/preferences-client (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST of host metadata — package name, os.hostname(), install path (__dirname), process.cwd(), and the npm/node version — to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header. index.js re-fires the same beacon when the module is required and exports a no-op Proxy shim so importing code does not crash. The package collects and transmits no credentials, tokens, environment values, or file contents; the beacon is limited to install-host metadata. The README describes the package as part of an authorized dependency-confusion test whose only action is reporting that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@grabcad/preferences-client",
+        "purl": "pkg:npm/%40grabcad/preferences-client"
+      },
+      "versions": [
+        "3.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@grabcad/preferences-client/v/3.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-22T23:43:14Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "885b2ace8b46e99e5ca23a4972740695cfebd45b6010d36c7799402d012437fd"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

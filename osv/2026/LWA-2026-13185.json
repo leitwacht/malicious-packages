@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13185",
+  "modified": "2026-10-22T23:56:52Z",
+  "published": "2026-10-22T23:34:41Z",
+  "summary": "Malicious code in @blueskydataplatform/shared-ui (npm)",
+  "details": "This package impersonates an internal-looking scoped dependency (@blueskydataplatform/shared-ui) at version 99.0.3 while describing itself only as a \"Compatibility shim\" — the dependency-confusion shape. Its package.json declares \"postinstall\": \"node beacon.cjs\", and beacon.cjs POSTs a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header. The reported fields are the package name, os.hostname(), the install directory (__dirname), process.cwd(), the Node version and the transport protocol, giving the operator a host and location fingerprint of every machine that installs it. index.js additionally calls require('./beacon.cjs').fire() at import time, so the beacon also fires whenever the module is loaded, not only at install. index.js and dist/index.js export catch-all Proxy stubs that return undefined for any property access, and the remaining dist/* modules are no-op stubs, so the package provides no real functionality. No environment variables, credentials, tokens or file contents are read or transmitted by this version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@blueskydataplatform/shared-ui",
+        "purl": "pkg:npm/%40blueskydataplatform/shared-ui"
+      },
+      "versions": [
+        "99.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@blueskydataplatform/shared-ui/v/99.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13185"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-22T23:34:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "6f833a379bbab9caf58433183267fbc8cdec5e12e4f97feecca2ecdb0842ee8a"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
