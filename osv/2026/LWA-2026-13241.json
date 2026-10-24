@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13241",
+  "modified": "2026-10-24T22:51:27Z",
+  "published": "2026-10-24T22:50:57Z",
+  "summary": "Malicious code in jshelperdependenceny (npm)",
+  "details": "This package is a dependency-confusion proof of concept: its name is a near-miss spelling of an internal package and it is published at version 99.0.0 so that public-registry resolution outranks the internal v1.0.0. Its preinstall hook (node preinstall.js, with errors suppressed via \"|| true\") prints a warning banner and POSTs a JSON beacon to a configurable callback URL — default hxxp://127[.]0[.]0[.]1:5656/exfil, overridable via the DC_CALLBACK_URL environment variable, with a commented hxxps://webhook[.]site example in the source. The beacon body contains only the package name and version, hostname, platform, architecture and a timestamp. No environment values, credentials, tokens, files or wallet data are collected or transmitted, and no commands are executed; the remaining module code is a small date/sanitize/id utility.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "jshelperdependenceny",
+        "purl": "pkg:npm/jshelperdependenceny"
+      },
+      "versions": [
+        "99.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/jshelperdependenceny/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13241"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-24T22:50:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "87a295d2218859e5aafca0bd1239256d822469ff58b5037e6616e72b21f124c3"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site",
+          "hxxps://webhook[.]site/YOUR-UNIQUE-ID"
+        ]
+      }
+    }
+  }
+}
