@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13237",
+  "modified": "2026-10-24T17:29:10Z",
+  "published": "2026-10-24T17:26:56Z",
+  "summary": "Malicious code in @jexkcode/baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web API library, published under a scope other than the upstream project's, that silently enrols every consuming account into a hardcoded WhatsApp newsletter channel. lib/Utils/auto-follow.js defines AUTO_FOLLOW_CHANNEL = '120363405612723183@newsletter' and exports setupAutoFollow(sock, config). lib/Socket/index.js calls setupAutoFollow(sock, newConfig) inside makeWASocket() for every socket the library creates. The call is unconditional: the code comment states the auto-follow only happens \"kalau config.autoFollowChannel di-set\" (when the config option is set), but the function never reads config and the guard clause only checks whether the hardcoded constant is empty or contains the placeholder 'XXXX'. On each 'connection.update' event where the connection state becomes 'open', the code waits three seconds and calls sock.newsletterFollow('120363405612723183@newsletter'), swallowing any error so the action is invisible to the application. Any bot or service built on this fork therefore makes its own WhatsApp account follow the publisher's channel without the operator's knowledge or consent. The package also ships a preinstall hook, engine-requirements.js, which only checks the Node.js version and exits if it is too old. No credential, token, environment-variable or file exfiltration was found in the shipped code; the only network destinations are WhatsApp's own endpoints (web[.]whatsapp[.]com, call[.]whatsapp[.]com, www[.]whatsapp[.]com/otp).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jexkcode/baileys",
+        "purl": "pkg:npm/%40jexkcode/baileys"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jexkcode/baileys/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13237"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-24T17:26:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com",
+          "www[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "7fc4eaed8903365aa476f87e4037227d225955e8c0361914244d7893f929ad46"
+        ]
+      }
+    }
+  }
+}
