@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13331",
+  "modified": "2026-10-25T11:37:11Z",
+  "published": "2026-10-25T11:36:30Z",
+  "summary": "Potentially-unwanted package (riskware): lunaaa-baileys (npm)",
+  "details": "This package is a modified WhatsApp/Baileys client library that silently enrols the connecting account into third-party WhatsApp channels. Every socket created with makeWASocket() starts an auto-follow routine by default (autoFollowNewsletterOnConnect defaults to true, with a 90s delay and a hardcoded default channel 120363400911374213@newsletter); it is only suppressed if the caller explicitly passes autoFollowNewsletterOnConnect: false. Once the connection opens, lib/Socket/newsletter.js fetches a JSON array of channel JIDs from hxxps://raw[.]githubusercontent[.]com/noxXza/data/refs/heads/main/noxleys[.]json and, for each entry matching ^\\d+@newsletter$, sends w:mex FOLLOW and MUTE queries to WhatsApp on behalf of the user's account, sleeping 3s and 10s between operations. The target list is remote and can be changed by its author at any time, so the set of channels an account is subscribed to is not fixed in the published code. No credentials, tokens, environment variables or files are read or transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lunaaa-baileys",
+        "purl": "pkg:npm/lunaaa-baileys"
+      },
+      "versions": [
+        "1.1.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lunaaa-baileys/v/1.1.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-10-25T11:36:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "c2570dfb4eb61491d62a29c0687c07e2f8dd18ed3c4a7bdb849bc3b79aa2ea04"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/noxXza/data/refs/heads/main/noxleys[.]json"
+        ]
+      }
+    }
+  }
+}
