@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13262",
+  "aliases": [
+    "MAL-2026-18272"
+  ],
+  "modified": "2026-10-25T14:51:10Z",
+  "published": "2026-10-25T14:50:37Z",
+  "summary": "Security-research / proof-of-concept package: @ppa-web-components/ppa-banner (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its package.json declares a postinstall hook (\"node beacon.cjs\") and its index.js also invokes the same beacon on require, so simply installing or importing the package sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with the header X-Beacon-Package. The JSON body contains only host metadata: the package name, os.hostname(), the install directory (__dirname), process.cwd(), the npm/node user agent string, and the protocol. No environment variables, credentials, tokens, wallet data or file contents are read or transmitted, and the package performs no other operation; index.js exports a no-op Proxy so importing code does not crash. The package describes itself as an authorized dependency-confusion test.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-banner",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-banner"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-banner/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T14:50:37Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "4219a3d22da4a27311bb232c2a8f5502564ea1081063a20274b82e17a0ee000f"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13261",
+  "aliases": [
+    "MAL-2026-18272"
+  ],
+  "modified": "2026-10-25T14:50:51Z",
+  "published": "2026-10-25T14:50:24Z",
+  "summary": "Security-research / proof-of-concept package: @ppa-web-components/ppa-banner (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept. Its postinstall hook runs `node beacon.cjs`, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with a JSON body containing only install metadata: the package name, the machine hostname, the install directory (__dirname), the working directory, the npm/node user agent, and the protocol. The request carries an `X-Beacon-Package` header identifying the package. The package's index.js is a no-op Proxy shim that also fires the same beacon when the module is imported, so a build that resolves the name still reports back. No environment variables, credentials, tokens, SSH/AWS configuration, wallet data, or file contents are read or transmitted, and nothing is written to disk or persisted. The package is a 4-file, ~2.9KB compatibility shim whose only behaviour is the install-time callback.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-banner",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-banner"
+      },
+      "versions": [
+        "0.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-banner/v/0.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T14:50:24Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "598af1d4ee4f0df9b7b2e0d2962bb4878e917c045a7083109831a4583d5b4a19"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

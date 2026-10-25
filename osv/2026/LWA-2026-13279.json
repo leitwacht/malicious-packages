@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13279",
+  "aliases": [
+    "MAL-2026-18275"
+  ],
+  "modified": "2026-10-25T14:55:24Z",
+  "published": "2026-10-25T14:53:41Z",
+  "summary": "Security-research / proof-of-concept package: @ppa-web-components/ppa-hotel-collection (npm)",
+  "details": "This package is a dependency-confusion proof of concept. It ships a sentinel version (99.0.1) under a scoped name with a near-empty tarball, a postinstall hook (\"node beacon.cjs\"), and an index.js that exports a catch-all Proxy no-op shim so a consumer importing the real package does not crash. On install, and again whenever the module is required, beacon.cjs sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an X-Beacon-Package header and a JSON body containing only the package name, hostname, install path, working directory and npm user-agent — a callback proving the package was installed. No credentials, environment values, tokens, wallet data or file contents are read or transmitted, and no second-stage payload is fetched. The package's README self-declares it as an authorized dependency-confusion test that only reports installation metadata. This package is a dependency-confusion proof of concept published under a high major version. Its postinstall hook runs beacon.cjs, which sends a single HTTP POST of JSON host metadata — package name, hostname, install path, working directory and Node version — to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an X-Beacon-Package header. index.js re-fires the same beacon when the module is imported and exports a no-op Proxy so importing code does not crash. No credentials, tokens, environment values or file contents are read or transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-hotel-collection",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-hotel-collection"
+      },
+      "versions": [
+        "99.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-hotel-collection/v/99.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T14:53:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "37c52164b33656534eeea2edf23021c6a921df0f1828560c9dbb5522f57c6049"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
