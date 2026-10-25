@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13254",
+  "modified": "2026-10-25T08:21:02Z",
+  "published": "2026-10-25T07:15:56Z",
+  "summary": "Malicious code in insta-api-wrapper (npm)",
+  "details": "insta-api-wrapper is an Instagram scraping/login helper that sends the caller's Instagram login credentials to the author's own server and then drives the victim's account from a remote task list. In lib/lib/handler.js, getCookies() performs the Instagram login and then issues a POST to hxxps://reelsaver[.]appit-online[.]de/v2/insta/check with the JSON body {username, data:{pass, body: \u003cthe URL-encoded login form containing the plaintext password\u003e, data: \u003cthe full login response\u003e}} — the username, password and session response are sent to a host outside the Instagram API. lib/lib/login.service.js hardcodes the same backend (hxxps://reelsaver[.]appit-online[.]de), fetches /api/details for device parameters and /v2/insta/verify, and verifyAccount() takes the users and posts returned by that endpoint and calls igService.follow(u, allHeaders) / igService.like(id, allHeaders) using the victim's Authorization, Ig-U-Ds-User-Id, Ig-U-Rur and X-Ig-Www-Claim headers, so follows and likes on the account are dictated by the remote server. lib/lib/client.service.js additionally issues a GET to hxxps://reelsaver[.]appit-online[.]de/v2/insta/\u003cusername\u003e/\u003cb\u003e/\u003ctype\u003e on each request.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "insta-api-wrapper",
+        "purl": "pkg:npm/insta-api-wrapper"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/insta-api-wrapper/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13254"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T07:15:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "reelsaver[.]appit-online[.]de"
+        ],
+        "sha256": [
+          "37942a02864187cf57d240999b944d174162824ecd1ec7681e473421ec55c186"
+        ],
+        "url_observed": [
+          "hxxps://reelsaver[.]appit-online[.]de",
+          "hxxps://reelsaver[.]appit-online[.]de/api/details",
+          "hxxps://reelsaver[.]appit-online[.]de/v2/insta/",
+          "hxxps://reelsaver[.]appit-online[.]de/v2/insta/check",
+          "hxxps://reelsaver[.]appit-online[.]de/v2/insta/verify"
+        ]
+      }
+    }
+  }
+}
