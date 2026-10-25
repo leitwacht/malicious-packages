@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13296",
+  "aliases": [
+    "MAL-2026-18287"
+  ],
+  "modified": "2026-10-25T15:53:56Z",
+  "published": "2026-10-25T15:53:27Z",
+  "summary": "Security-research / proof-of-concept package: @ppa-web-components/ppa-searchform (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept. Its package.json declares a postinstall hook running beacon.cjs, and index.js also invokes the same beacon when the module is imported, so merely installing or importing the package triggers a callback. The beacon sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header; the JSON body contains only the package name, the machine hostname, the install directory, the working directory, the npm user the publisher and the protocol. It collects no environment variables, tokens, credentials or file contents, and it does not execute any downloaded code. index.js exports a Proxy that returns no-op functions for every property so that builds importing the real package name complete instead of crashing. The README describes the package as part of an authorized dependency-confusion test and credits a named researcher with a HackerOne contact address.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-searchform",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-searchform"
+      },
+      "versions": [
+        "2.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-searchform/v/2.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T15:53:27Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "8702cff7a58c48c0de201bec9feed6b341d6e45f65aacbea9752886bf323db71"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

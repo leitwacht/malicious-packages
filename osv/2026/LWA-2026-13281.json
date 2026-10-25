@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13281",
+  "aliases": [
+    "MAL-2026-18272"
+  ],
+  "modified": "2026-10-25T15:51:35Z",
+  "published": "2026-10-25T15:50:35Z",
+  "summary": "Malicious code in @ppa-web-components/ppa-banner (npm)",
+  "details": "This package installs a callback beacon. Its package.json declares `\"postinstall\": \"node beacon.cjs\"`, and index.js additionally invokes the same beacon whenever the module is required, so the callback fires both at install time and on import. beacon.cjs POSTs a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with the header X-Beacon-Package: @ppa-web-components/ppa-banner. The body contains the package name, os.hostname(), __dirname (the install path), process.cwd(), the npm/node user agent string and the protocol. The request is fire-and-forget: errors and a 5-second timeout are swallowed so the install never fails or surfaces the callback. index.js exports a defensive Proxy that returns no-op functions for any property access, so a bundler importing the real package name completes its build instead of crashing. The package is a four-file, ~2.9 KB shim whose only function is to report the host and install location of every machine that installs it to a hardcoded IP address over plain HTTP.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-banner",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-banner"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-banner/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13281"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T15:50:35Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "6c7ab211f4afe2b42b72895b6c09ae545d5488b650c630b27ade6f3ded616db1"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

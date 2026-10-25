@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13283",
+  "aliases": [
+    "MAL-2026-18277"
+  ],
+  "modified": "2026-10-25T15:51:57Z",
+  "published": "2026-10-25T15:50:54Z",
+  "summary": "Security-research / proof-of-concept package: @drone-js-ext/vip-badge (npm)",
+  "details": "This package is a dependency-confusion proof of concept. It declares a postinstall hook (`node beacon.cjs`) and its index.js also calls the same beacon on require, so installing or importing it sends a single HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an `X-Beacon-Package` header. The JSON body contains only install metadata: the package name, the machine hostname, the install path (__dirname), the working directory, and the npm/node user agent string. No environment variables, credentials, tokens, files or wallet data are read or transmitted, and no further payload is fetched or executed. The package is published at version 99.0.1 on a scoped name with a ~2.8KB tarball and a catch-all Proxy export that returns no-op functions, so that a build importing the name completes instead of crashing while the callback is recorded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@drone-js-ext/vip-badge",
+        "purl": "pkg:npm/%40drone-js-ext/vip-badge"
+      },
+      "versions": [
+        "99.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@drone-js-ext/vip-badge/v/99.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T15:50:54Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "fd67d9096672d516575bddda192608b987ae9f3925df02a5a00fa9732f90dd92"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

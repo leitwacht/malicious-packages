@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13290",
+  "aliases": [
+    "MAL-2026-18286"
+  ],
+  "modified": "2026-10-25T15:53:18Z",
+  "published": "2026-10-25T15:52:13Z",
+  "summary": "Security-research / proof-of-concept package: @ppa-web-components/ppa-navigation (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST of a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc carrying the package name, the machine hostname, the install directory, the current working directory and the npm user the publisher, tagged with an X-Beacon-Package header. index.js repeats the same beacon whenever the module is required, so a consumer build that imports the name also calls back. The payload is limited to host and install metadata: no credentials, tokens, environment values, wallet data or file contents are read or transmitted, and no further code is downloaded or executed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-navigation",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-navigation"
+      },
+      "versions": [
+        "3.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-navigation/v/3.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T15:52:13Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "86c45eee2fca508741c4c8cdff0772726217579e64b2f542a63ee794e4b1a32b"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13280",
+  "aliases": [
+    "MAL-2026-18252"
+  ],
+  "modified": "2026-10-25T15:51:00Z",
+  "published": "2026-10-25T15:50:34Z",
+  "summary": "Security-research / proof-of-concept package: @eforms/forms-api (npm)",
+  "details": "The package ships a preinstall hook (\"preinstall\": \"node preinstall.js\") that runs on every install and beacons the installing host's identity to two attacker-controlled callback domains. preinstall.js collects os.hostname(), os.userInfo().username, process.cwd(), process.platform/arch, process.version, process.getuid() and a CI yes/no flag, then (1) resolves a DNS name of the form depconf-\u003chostname\u003e-\u003crandom\u003e.\u003cdomain\u003e under rpkfvtsptfrhcgbe62qg11ywjnpij6ma1cfpke[.]oastify[.]com, and (2) issues an HTTPS GET to hxxps://\u003clabel\u003e.f6mk7lyjsuk3u1t49ypp9q2jbah15rtg[.]oastify[.]com/?pkg=...\u0026host=...\u0026who=...\u0026pwd=...\u0026platform=...\u0026node=...\u0026ci=...\u0026uid=... carrying the same identity in the query string. The DNS channel is used specifically so the beacon still fires on networks that block outbound HTTP. The hook swallows all errors and calls process.exit(0) so the install appears to succeed. The package is otherwise empty (index.js is module.exports = {}), is published under a scoped name at version 99.0.0 to maximise the chance of resolving through a private-registry fall-through, and describes itself as a security-research canary. No files are read and no environment values, tokens or credentials are collected.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@eforms/forms-api",
+        "purl": "pkg:npm/%40eforms/forms-api"
+      },
+      "versions": [
+        "99.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@eforms/forms-api/v/99.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13280"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T15:50:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "f6mk7lyjsuk3u1t49ypp9q2jbah15rtg[.]oastify[.]com",
+          "rpkfvtsptfrhcgbe62qg11ywjnpij6ma1cfpke[.]oastify[.]com"
+        ],
+        "sha256": [
+          "6e65041815f632c9e8e49e6fb7170aa017bb501ae6b0e873aa46a0b2bd6f9b5b"
+        ]
+      }
+    }
+  }
+}

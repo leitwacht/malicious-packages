@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13288",
+  "aliases": [
+    "MAL-2026-18286"
+  ],
+  "modified": "2026-10-25T15:53:36Z",
+  "published": "2026-10-25T15:51:50Z",
+  "summary": "Security-research / proof-of-concept package: @ppa-web-components/ppa-navigation (npm)",
+  "details": "This package is a dependency-confusion proof of concept that beacons to a callback host at install time. Its package.json declares a postinstall hook running \"node beacon.cjs\", and beacon.cjs POSTs a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an \"x-beacon-package\" header. The reported fields are limited to the package name, the machine hostname, the install directory (__dirname), the working directory, and an npm/\u003cnode-version\u003e user agent — no environment variables, credentials, tokens, or file contents are read or transmitted. index.js additionally triggers the same beacon when the module is required, and exports a no-op Proxy so that importing the name does not break a build. The package describes itself as an authorized dependency-confusion test that only reports that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-navigation",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-navigation"
+      },
+      "versions": [
+        "2.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-navigation/v/2.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T15:51:50Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "9af458de217a08f812ebac24463c8881b6361d28917c309601bfbd1e42181ff0"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

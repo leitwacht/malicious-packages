@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13284",
+  "aliases": [
+    "MAL-2026-18282"
+  ],
+  "modified": "2026-10-25T15:51:56Z",
+  "published": "2026-10-25T15:51:08Z",
+  "summary": "Security-research / proof-of-concept package: @greenlake/common-context (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which POSTs a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc containing only install metadata: the package name, os.hostname(), the install directory (__dirname), process.cwd(), the npm/node user agent, and the protocol. The request carries an x-beacon-package header. index.js additionally fires the same beacon when the module is required, and exports a catch-all Proxy no-op shim so that a build importing the name completes instead of crashing. No credentials, environment values, tokens, wallet data or file contents are read or transmitted, and there is no second-stage download or persistence. The package self-describes as an authorized dependency-confusion test that only reports that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@greenlake/common-context",
+        "purl": "pkg:npm/%40greenlake/common-context"
+      },
+      "versions": [
+        "99.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@greenlake/common-context/v/99.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T15:51:08Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "d55e355469d8e583263214887cdeab5041c8a91382e978a6f7f19bb3671e5cbb"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

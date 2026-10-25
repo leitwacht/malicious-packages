@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13289",
+  "aliases": [
+    "MAL-2026-18286"
+  ],
+  "modified": "2026-10-25T15:54:04Z",
+  "published": "2026-10-25T15:52:13Z",
+  "summary": "Security-research / proof-of-concept package: @ppa-web-components/ppa-navigation (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST of a JSON body containing the package name, hostname, install path, working directory, npm/node user agent and protocol to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an X-Beacon-Package header. index.js fires the same beacon when the module is required and exports a no-op Proxy shim so that a build importing the real package name completes instead of crashing. The package collects no credentials, tokens, environment values or file contents; the only data transmitted is the install-time host and path metadata listed above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-navigation",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-navigation"
+      },
+      "versions": [
+        "2.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-navigation/v/2.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T15:52:13Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "65722c7bb29c156d57739033c468130ea63437934e927d00026a40e7e151aeed"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
