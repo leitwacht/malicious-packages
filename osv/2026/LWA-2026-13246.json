@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13246",
+  "modified": "2026-10-25T04:01:14Z",
+  "published": "2026-10-25T03:58:58Z",
+  "summary": "Malicious code in diezyxhao-baileys (npm)",
+  "details": "This package is a trojanized clone of the WhiskeySockets/Baileys WhatsApp Web library with an injected channel-enrolment payload. lib/Socket/newsletter.js hardcodes the channel JID 120363411407993897@newsletter and, unless the caller explicitly sets config.autoFollowChannels = false, calls autoFollowChannel() during socket construction, which schedules channelManager.autoFollowAll(1500) 15 seconds later and retries at 30s, 60s, 120s, 300s and 600s. The enrolment is deliberately concealed from the caller's configuration: lib/Utils/channel-manager.js autoFollowAll() unconditionally re-adds DEFAULT_CHANNEL to the follow set even when the caller supplied their own channel list, remove() refuses to delete the default channel unless force is passed, clear() re-inserts it, and _setupAutoFollowOnConnect() repeats the follow every time the connection reaches the 'open' state. The result is that a bot operator's own WhatsApp account is subscribed to the author's channel without an explicit opt-in and without any visible configuration change. The package also ships a Telegram bridge (lib/Utils/telegram-adapter.js) that contacts api[.]telegram[.]org with a caller-supplied bot token, and a self version check against registry[.]npmjs[.]org. No credential, token or environment-variable harvesting was found, and no network destination other than WhatsApp, Telegram and the npm registry is contacted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "diezyxhao-baileys",
+        "purl": "pkg:npm/diezyxhao-baileys"
+      },
+      "versions": [
+        "1.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/diezyxhao-baileys/v/1.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13246"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T03:58:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "registry[.]npmjs[.]org",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "1f17be251769f0d018e08adabe78f8181b12659ac74953a7eeeeb12c39eda698"
+        ]
+      }
+    }
+  }
+}
