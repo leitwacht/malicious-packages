@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13340",
+  "modified": "2026-10-25T23:26:41Z",
+  "published": "2026-10-25T23:20:26Z",
+  "summary": "Security-research / proof-of-concept package: @eforms/forms-api (npm)",
+  "details": "@eforms/forms-api@2.99.0 is a dependency-confusion package: a near-empty tarball (4 files, ~4KB, index.js is `module.exports = {}`) published at a sentinel version 2.99.0 for the scoped name @eforms/forms-api, whose preinstall hook (`node preinstall.js`) beacons the installing host's identity to attacker-controlled callback domains. The hook collects os.hostname(), os.userInfo().username, process.cwd(), platform/arch, Node version, a CI-presence flag and uid, then sends them two ways: a DNS lookup of a runtime-built label `depconf-\u003chostname\u003e-\u003crandom\u003e.\u003ccallback-domain\u003e` (DNS-tunnel style, survives egress filtering that blocks HTTP) and an HTTPS GET to `hxxps://depconf-\u003chostname\u003e-\u003crandom\u003e.\u003ccallback-domain\u003e/?pkg=@eforms/forms-api\u0026ver=2.99.0\u0026host=...\u0026who=...\u0026pwd=...`. Callback domains: rpkfvtsptfrhcgbe62qg11ywjnpij6ma1cfpke[.]oastify[.]com and f6mk7lyjsuk3u1t49ypp9q2jbah15rtg[.]oastify[.]com. The hook reads no files, downloads nothing, spawns nothing, and calls process.exit(0) so the install appears to succeed. The package describes itself as an authorized bug-bounty canary for the @eforms scope; the observed behaviour is host-identity collection and beaconing at install time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@eforms/forms-api",
+        "purl": "pkg:npm/%40eforms/forms-api"
+      },
+      "versions": [
+        "2.99.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@eforms/forms-api/v/2.99.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13340"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T23:20:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "f6mk7lyjsuk3u1t49ypp9q2jbah15rtg[.]oastify[.]com",
+          "rpkfvtsptfrhcgbe62qg11ywjnpij6ma1cfpke[.]oastify[.]com"
+        ],
+        "sha256": [
+          "606f83a7f913f2edd5f25de96e9e18ad214713116dd768f6be96311b0b2f5fbb"
+        ],
+        "url_observed": [
+          "hxxps://depconf-"
+        ]
+      }
+    }
+  }
+}

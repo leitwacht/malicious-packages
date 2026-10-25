@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13339",
+  "modified": "2026-10-25T23:27:22Z",
+  "published": "2026-10-25T23:20:24Z",
+  "summary": "Security-research / proof-of-concept package: @eforms/forms-api (npm)",
+  "details": "@eforms/forms-api@1.99.0 is a dependency-confusion-shaped package (scoped name, sentinel version 1.99.0, 4KB tarball, empty index.js) whose preinstall hook runs node preinstall.js. That hook collects the installing host's identity — os.hostname(), os.userInfo().username, process.cwd(), process.platform/arch, process.version, a CI-presence flag and uid — and exfiltrates it to two attacker-controlled callback domains, both by DNS and by HTTPS: it builds a label from the hostname plus a random id and resolves \u003clabel\u003e.rpkfvtsptfrhcgbe62qg11ywjnpij6ma1cfpke[.]oastify[.]com and \u003clabel\u003e.f6mk7lyjsuk3u1t49ypp9q2jbah15rtg[.]oastify[.]com, then issues GET requests to hxxps://\u003clabel\u003e.rpkfvtsptfrhcgbe62qg11ywjnpij6ma1cfpke[.]oastify[.]com/ and hxxps://\u003clabel\u003e.f6mk7lyjsuk3u1t49ypp9q2jbah15rtg[.]oastify[.]com/ with the collected values in the query string. The DNS path is used so the beacon still fires on networks that block outbound HTTP. The hook suppresses all errors and calls process.exit(0) so the install appears to succeed. The package describes itself as an authorized bug-bounty proof of concept, but its repository field points to example.invalid and no verifiable engagement reference is shipped, so the claim cannot be checked from the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@eforms/forms-api",
+        "purl": "pkg:npm/%40eforms/forms-api"
+      },
+      "versions": [
+        "1.99.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@eforms/forms-api/v/1.99.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13339"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T23:20:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "f6mk7lyjsuk3u1t49ypp9q2jbah15rtg[.]oastify[.]com",
+          "rpkfvtsptfrhcgbe62qg11ywjnpij6ma1cfpke[.]oastify[.]com"
+        ],
+        "sha256": [
+          "ce4f624993c41ac9bd5f98485e062c3aafe49f7ba52aba4e0bd5f6341d5cb568"
+        ]
+      }
+    }
+  }
+}

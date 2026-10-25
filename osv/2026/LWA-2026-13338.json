@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13338",
+  "modified": "2026-10-25T23:24:05Z",
+  "published": "2026-07-02T09:30:06Z",
+  "summary": "Malicious code in react-native-shbib-tools (npm)",
+  "details": "react-native-shbib-tools@2.0.73 ships five JavaScript files that are output of the javascript-obfuscator tool — navigations/helpers/index.js (162 KB, ~4,300 _0x identifiers), form/builder/index.js, form/builder/dependency.js, navigations/builder/index.js and navigations/navigators/index.js — with control-flow flattening, a rotated string array, and identifiers and string-array entries written as \\x hex escapes to defeat literal-string matching. The package manifest is stripped to name, version, main and license: no repository, no dependencies, no build configuration that would explain obfuscating a React Native UI/form/navigation library, and no lifecycle hooks. index.js re-exports a `services` symbol that is never imported, so the entry module is broken. Static inspection of this version found no network, process-execution, filesystem or environment-variable access and no hardcoded URL, host or IP: the obfuscated string arrays contain only property names, module specifiers and obfuscator filler. No network IOC is present in this version; the concern is the unexplained obfuscation of otherwise plain library code under a package name that has previously carried malicious content.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-native-shbib-tools",
+        "purl": "pkg:npm/react-native-shbib-tools"
+      },
+      "versions": [
+        "2.0.73"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-native-shbib-tools/v/2.0.73"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13338"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-02T09:30:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "cbc21204e4afc3a11d675812eee00800f76dc33b8fbc865d6599356e9b470f52"
+        ]
+      }
+    }
+  }
+}
