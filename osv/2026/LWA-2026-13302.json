@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13302",
+  "modified": "2026-10-25T17:50:54Z",
+  "published": "2026-10-25T17:50:25Z",
+  "summary": "Security-research / proof-of-concept package: @capsense/ccx-welcome-page (npm)",
+  "details": "This package is a dependency-confusion probe published under the sentinel version 99.99.100 on the scoped name @capsense/ccx-welcome-page. Its preinstall, install and postinstall hooks all execute `node beacon.js \u003cstage\u003e`, which collects the machine hostname, the local username, the OS platform, the package identifier and the lifecycle stage, joins them into one label, and transmits that label three ways: a DNS lookup of `\u003clabel\u003e.dbf2v9d8dg559apcd93guf6i7uxrn5coo.oast.pro`, an HTTPS GET to `hxxps://\u003clabel\u003e.dbf2v9d8dg559apcd93guf6i7uxrn5coo.oast.pro/`, and an HTTPS GET to `hxxps://webhook[.]site/59675304-bec1-4ca0-8409-8d37b65ec116?x=\u003clabel\u003e`. The script reads no environment variables, files, tokens or credentials, and the package's main module (index.js) is inert. The package presents itself as an authorized responsible-disclosure proof of concept for the unregistered @capsense scope; the effect on any build that resolves the scope from the public registry is that installing it silently reports the build machine's identity to an external callback host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@capsense/ccx-welcome-page",
+        "purl": "pkg:npm/%40capsense/ccx-welcome-page"
+      },
+      "versions": [
+        "99.99.100"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@capsense/ccx-welcome-page/v/99.99.100"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13302"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T17:50:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dbf2v9d8dg559apcd93guf6i7uxrn5coo[.]oast[.]pro",
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "0c8711549c4b7be7a5ca42f3076d5dbee5d2d85b2fa7e9172fc9bfb69287f5fd"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/59675304-bec1-4ca0-8409-8d37b65ec116"
+        ]
+      }
+    }
+  }
+}
