@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13260",
+  "modified": "2026-10-25T14:14:04Z",
+  "published": "2026-10-25T14:07:07Z",
+  "summary": "Malicious code in mocha-ui-themes (npm)",
+  "details": "Mocha-ui-themes@1.0.0 is a trojanized clone of tailwindcss 4.3.3 (the upstream tree is vendored verbatim under vendor/tailwindcss with UPSTREAM.json and NOTICE.md) carrying an injected credential-stealing loader. The package has no install hook; the payload is reached through the documented entry point instead: tokens.mjs imports cache-warm.mjs, and lib.mjs/lib.cjs call getTheme() from the PostCSS plugin's Once hook, so the obfuscated code runs whenever the package is used as a Tailwind/PostCSS plugin. Four files — cache-warm.mjs, cache-sweep.mjs, build-cache.mjs and workspaces.js — are obfuscated with base64 string arrays XOR-decoded with single-byte keys (0xfc, 0xf6, 0xf9), _0x identifier renaming and String.fromCharCode arithmetic. cache-sweep.mjs harvests: the contents of.env files found in up to 16 repository directories (truncated to 4096 bytes each), secret-scanner hits (path, line, matched text, up to 400 results), repository paths, and environment variables selected by name prefix, assembling them into out.code_secrets, out.dotenv and out.aws_env. build-cache.mjs resolves its command-and-control endpoint from the Ethereum blockchain: it POSTs JSON-RPC 2.0 requests over HTTP, reads the latest block number, walks back 30 blocks, matches transaction input data against a selector prefix, and XOR-decrypts 8-byte and 6-byte fields with a key to reconstruct a host, port and path. That reconstructed string is passed to eval() and then executed via child_process.spawn(process.execPath, [...], {detached: true, windowsHide: true}) with a modified environment; cache-warm.mjs and cache-sweep.mjs perform the same detached, window-hidden spawn. The package also ships native/cache-probe.node for win32, linux and darwin on x64 and arm64, a compiled node-vm-detect addon whose symbols include VM::qemu_fw_cfg, VM::systemd_virt, VM::chassis_type, VM::mac_address_check, VM::container_proc_id, VM::podman_file, VM::wsl_proc_subdir, VM::cpu_brand and VM::hw_memsize, used to detect virtualized and containerized environments. There is no static C2 host or IP in the package: the destination is resolved at runtime from a smart contract, so the only network indicator is outbound EVM JSON-RPC traffic.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mocha-ui-themes",
+        "purl": "pkg:npm/mocha-ui-themes"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mocha-ui-themes/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13260"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T14:07:07Z",
+      "indicators_observed": {
+        "sha256": [
+          "c9f58dfd6a3aa6e001fda293f2365b5588e322bd09cdb556b8caa0ea07a246ea"
+        ]
+      }
+    }
+  }
+}
