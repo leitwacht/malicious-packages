@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13243",
+  "modified": "2026-10-25T02:22:19Z",
+  "published": "2026-10-25T02:20:27Z",
+  "summary": "Malicious code in @neodevxsadmd/baileys-api-neko (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp library that ships a dormant account-enrolment routine. In lib/Socket/newsletter.js it contains a commented-out timer block that, 90 seconds after the WhatsApp socket is created, calls the library's newsletter w:mex query with QueryIds.FOLLOW against a hardcoded channel JID decoded from the base64 literal MTIwMzYzMzAzNjU2NzkwMjAxQG5ld3NsZXR0ZXI= — i.e. 120363303656790201@newsletter. If enabled, that silently subscribes the WhatsApp account running the library to that channel without the user's consent; the 90-second delay places the action well after the library has loaded. The package's preinstall hook (node./engine-requirements.js) only checks the Node.js major version and performs no network or file activity. No credential, token or environment-variable access is present in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@neodevxsadmd/baileys-api-neko",
+        "purl": "pkg:npm/%40neodevxsadmd/baileys-api-neko"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@neodevxsadmd/baileys-api-neko/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13243"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T02:20:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363303656790201@newsletter"
+        ],
+        "sha256": [
+          "50a4aac735b3a7bb5efb8197fd4593aa74aea326b2cefc5ac8eb19918956cebb"
+        ]
+      }
+    }
+  }
+}
