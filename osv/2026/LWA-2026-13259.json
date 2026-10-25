@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13259",
+  "modified": "2026-10-25T13:00:06Z",
+  "published": "2026-10-25T12:57:49Z",
+  "summary": "Malicious code in postcss-semantic-themes (npm)",
+  "details": "Postcss-semantic-themes@1.0.0 ships a vendored copy of tailwindcss 4.3.3 plus four heavily obfuscated modules — cache-warm.mjs, cache-sweep.mjs, build-cache.mjs and workspaces.js — and native/cache-probe.node binaries for win32/linux/darwin. The package entry (lib.mjs) imports tokens.mjs, which imports cache-warm.mjs and calls cssVarMap() from getTheme()/cssVars(), so the payload runs during normal use of the theme API. Strings are base64-encoded and XOR-decoded at runtime (single-byte keys 0x50, 0xf6, 0x67) behind thousands of _0x identifiers. When it runs it: collects the OS username, hostname, platform, architecture, Node version, pid, cwd and timestamp; reads.env files from up to 16 directories (cwd, its parent, the home directory, and every drive letter A:–Z: on Windows), truncating each to 4096 bytes; copies every process.env entry whose name begins with the AWS prefix into an \"aws_env\" object; and POSTs the resulting JSON over node:https to a hardcoded remote host on port 8543 at path \"/\" (3000 ms timeout). A second request to the same host:port sends {\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_call\",\"params\":[\"latest\",true]}, i.e. the real command-and-control address is resolved from an EVM smart contract instead of being hardcoded. The host/port and a SHA-256 fingerprint of the harvested data are cached in a JSON file inside the package directory whose name is derived from sha256(cwd).slice(0,8); when the fingerprint changes, the module spawns process.execPath detached (stdio ignored, windowsHide) with environment variables carrying the harvested JSON and the package directory, then unref()s it so the child outlives the parent. IOCs: TCP port 8543 with JSON-RPC eth_call C2 resolution; harvested data includes.env file contents and AWS_*-prefixed environment variables.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "postcss-semantic-themes",
+        "purl": "pkg:npm/postcss-semantic-themes"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/postcss-semantic-themes/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13259"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T12:57:49Z",
+      "indicators_observed": {
+        "sha256": [
+          "2316f26287fc75f3e690f160b794ac6aacf45a0b8129f2c5c34a6e739cddf313"
+        ]
+      }
+    }
+  }
+}
