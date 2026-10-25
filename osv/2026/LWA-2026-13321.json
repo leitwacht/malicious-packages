@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13321",
+  "modified": "2026-10-25T22:54:25Z",
+  "published": "2026-10-25T22:53:10Z",
+  "summary": "Malicious code in @ppa-web-components/ppa-builder (npm)",
+  "details": "This package is a \"compatibility shim\" whose postinstall hook runs beacon.cjs, which sends an HTTP POST of install metadata — package name, os.hostname(), the __dirname install path, process.cwd() and the npm/node user agent — as JSON to hxxp://185[.]158[.]107[.]175:8787/_ah/dc, tagged with an `x-beacon-package` header. The package's index.js re-fires the same beacon whenever the module is imported, and exports a no-op Proxy so that importing code does not crash. The callback destination is a hardcoded IP literal rather than a named service, and the package otherwise contains no functionality matching its stated purpose.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-builder",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-builder"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-builder/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13321"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T22:53:10Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "dec2ef9164450f2a2e4275aeb6c830b1ec22ba10dd4fb9d2cf8b75708b338e72"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

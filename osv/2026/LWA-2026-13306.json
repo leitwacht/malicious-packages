@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13306",
+  "modified": "2026-10-25T22:55:22Z",
+  "published": "2026-10-25T22:50:36Z",
+  "summary": "Malicious code in @drone-js-ext/core (npm)",
+  "details": "This package is a dependency-confusion implant: it uses a scoped name that mimics an internal package and runs a beacon at install time. Its postinstall hook executes beacon.cjs, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header carrying the package name. The request body reports the machine hostname, the install directory, the working directory, the npm/node user agent and the protocol. index.js re-fires the same beacon whenever the package is imported and otherwise exports a no-op Proxy shim so that importing code does not fail. The same beacon code and endpoint appear in @drone-js-ext/core@3.0.0, @drone-js-ext/vip-badge@1.0.1 and 2.0.0, and @ppa-web-components/ppa-builder@1.0.1, 2.0.1 and 3.0.0.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@drone-js-ext/core",
+        "purl": "pkg:npm/%40drone-js-ext/core"
+      },
+      "versions": [
+        "2.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@drone-js-ext/core/v/2.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13306"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-25T22:50:36Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "444f98871f178af465333ab3ce494b11d03d74fc344e6db7805d933a05f79842"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13320",
+  "modified": "2026-10-25T22:53:54Z",
+  "published": "2026-10-25T22:52:57Z",
+  "summary": "Malicious code in @ppa-web-components/ppa-builder (npm)",
+  "details": "This package is a dependency-confusion beacon. Its postinstall hook runs beacon.cjs, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc carrying a JSON body with the package name, the machine hostname, the install path, the working directory and the npm user-agent, plus an x-beacon-package header. index.js re-sends the same beacon whenever the module is required and exports a no-op Proxy so that imports of the real package do not fail. The package collects and transmits only that install metadata; no credentials, environment values, tokens or file contents are read or sent, and no second-stage payload is fetched or executed. The package describes itself as an authorized dependency-confusion test that only reports that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-builder",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-builder"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-builder/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13320"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-25T22:52:57Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "761b0c1a8e9722ab0d86f2ec26b88bc319a60b26d9072c70e994512c98e43f69"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

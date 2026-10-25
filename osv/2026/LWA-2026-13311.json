@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13311",
+  "modified": "2026-10-25T22:53:44Z",
+  "published": "2026-10-25T22:51:26Z",
+  "summary": "Malicious code in @drone-js-ext/vip-badge (npm)",
+  "details": "This package is a republish of a name previously found to carry malicious code. Version 2.0.0 ships a postinstall hook, \"node beacon.cjs\", that sends an HTTP POST to the IP-literal endpoint hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an x-beacon-package header, transmitting the package name, the machine hostname, the install directory (__dirname), the working directory, the npm/node user agent and the protocol. The same beacon is fired again whenever the package's index.js is required, so the callback also occurs at application runtime and not only at install. index.js otherwise exports a Proxy that returns no-op functions for every property access, so importing code does not crash and the callback still completes. The package is a 4-file, ~2.8KB \"compatibility shim\" whose only real function is the outbound callback to that hardcoded IP address.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@drone-js-ext/vip-badge",
+        "purl": "pkg:npm/%40drone-js-ext/vip-badge"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@drone-js-ext/vip-badge/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13311"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-25T22:51:26Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "213b5d07c78e1c1523485161c29f4e78430dd0f5f4603858bd9c8d3fbc98d631"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

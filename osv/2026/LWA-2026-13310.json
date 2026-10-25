@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13310",
+  "modified": "2026-10-25T22:52:17Z",
+  "published": "2026-10-25T22:51:14Z",
+  "summary": "Malicious code in @drone-js-ext/vip-badge (npm)",
+  "details": "@drone-js-ext/vip-badge@1.0.1 is a 4-file, ~1.6KB \"compatibility shim\" whose postinstall hook runs `node beacon.cjs`. beacon.cjs POSTs a JSON body to the IP-literal endpoint hxxp://185[.]158[.]107[.]175:8787/_ah/dc with the header x-beacon-package: @drone-js-ext/vip-badge. The body contains the package name, the machine hostname (os.hostname()), the install path (__dirname), the process working directory, the npm user-agent and the protocol. index.js fires the same beacon again whenever the module is required, so the callback also happens at application load, not only at install. The package exports a Proxy that returns no-op functions for every property access, so an application importing the name does not crash. No credentials, tokens, environment values or file contents are read or transmitted by the code; the only network destination is the single callback endpoint above. The package describes itself as an authorized dependency-confusion test that reports only that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@drone-js-ext/vip-badge",
+        "purl": "pkg:npm/%40drone-js-ext/vip-badge"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@drone-js-ext/vip-badge/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13310"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-25T22:51:14Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "911e02a3ade966f937d186d459c6572d6b39b2d499c537ff73fb4554e6e2e47d"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

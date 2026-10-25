@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13327",
+  "modified": "2026-10-25T22:56:42Z",
+  "published": "2026-10-25T22:54:26Z",
+  "summary": "Security-research / proof-of-concept package: @sxm-web/client-sdk-core (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with the header x-beacon-package and a JSON body containing the package name, the machine hostname, the install directory, the working directory, and the npm/node version. The same beacon is also sent when the package's index.js is required, and index.js exports a no-op Proxy so that imports of the real package's members do not fail. No credentials, environment values, tokens, wallet data or file contents are collected or transmitted; the only data sent is install-time host metadata.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sxm-web/client-sdk-core",
+        "purl": "pkg:npm/%40sxm-web/client-sdk-core"
+      },
+      "versions": [
+        "1.1.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sxm-web/client-sdk-core/v/1.1.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T22:54:26Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "cf1f848cf12dddefa5a84bc5dbb06c6a37f6dd6a2c874e217b8a622c230573c1"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

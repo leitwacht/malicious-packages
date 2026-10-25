@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13330",
+  "modified": "2026-10-25T22:57:04Z",
+  "published": "2026-10-25T22:54:54Z",
+  "summary": "Security-research / proof-of-concept package: @sxm-web/client-sdk-core (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook (`node beacon.cjs`) sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc carrying only install metadata: the package name, the machine hostname, the install path (__dirname), the working directory, and the npm user-agent, tagged with an `x-beacon-package` header. Requiring the package (index.js) fires the same beacon again and exports a no-op Proxy so that imports of the impersonated name do not fail. No credentials, tokens, environment values, wallet data or file contents are read or transmitted, and there is no remote code execution or second-stage download. The package describes itself as an authorized dependency-confusion test.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sxm-web/client-sdk-core",
+        "purl": "pkg:npm/%40sxm-web/client-sdk-core"
+      },
+      "versions": [
+        "3.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sxm-web/client-sdk-core/v/3.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-25T22:54:54Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "b20c3cd14e8e628c6b8712e4585e13087ab39ee624c5f1f943e2fceee1b0d571"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
