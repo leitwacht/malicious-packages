@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13367",
+  "modified": "2026-10-26T15:35:37Z",
+  "published": "2026-10-26T15:35:24Z",
+  "summary": "Security-research / proof-of-concept package: axon-web (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept. Its main entry (index.js) runs on require and performs a DNS-only beacon: it reads os.hostname() and the USER/USERNAME environment variable, sanitises them into a single DNS label, and resolves \"\u003chostname\u003e-\u003cuser\u003e.infpvjkgeazvrvvbtqszbyt7ua3s66fcr[.]oast[.]fun\" — an OAST/interactsh-style callback domain — so host identity is exfiltrated in the query name rather than over HTTP. The same file prints a banner identifying itself as a dependency-confusion PoC loaded from the public npm registry, along with hostname, user, cwd, node version and platform. No credentials, tokens, environment values, wallet data or file contents are read or transmitted; the only data leaving the host is the hostname/username pair in the DNS label. Callback domain: infpvjkgeazvrvvbtqszbyt7ua3s66fcr[.]oast[.]fun.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "axon-web",
+        "purl": "pkg:npm/axon-web"
+      },
+      "versions": [
+        "12.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/axon-web/v/12.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-26T15:35:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "infpvjkgeazvrvvbtqszbyt7ua3s66fcr[.]oast[.]fun"
+        ],
+        "sha256": [
+          "05c288eeba3385e75a69ac6b4adf3b87d9f2fe93356e93739416f3db4f7bc0ac"
+        ]
+      }
+    }
+  }
+}
