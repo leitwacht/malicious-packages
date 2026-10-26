@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13358",
+  "aliases": [
+    "MAL-2026-18273"
+  ],
+  "modified": "2026-10-26T04:07:20Z",
+  "published": "2026-10-26T04:05:29Z",
+  "summary": "Malicious code in @ppa-web-components/ppa-builder (npm)",
+  "details": "This package is a combosquat-style dependency-confusion implant: it declares itself a \"Compatibility shim\" but its package.json postinstall hook runs beacon.cjs, which POSTs install metadata to a hardcoded IP-literal endpoint, hxxp://185[.]158[.]107[.]175:8787/_ah/dc, with an `x-beacon-package` header. The JSON body contains the package name, os.hostname(), __dirname (install path), process.cwd(), the npm/node user agent and the protocol — an install-time host and location fingerprint. index.js fires the same beacon again when the module is imported and exports a no-op Proxy so that importing code does not crash, keeping the install silent. No environment variable values, credentials, tokens, wallet data or file contents are read or transmitted, and no other network destination is contacted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ppa-web-components/ppa-builder",
+        "purl": "pkg:npm/%40ppa-web-components/ppa-builder"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ppa-web-components/ppa-builder/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13358"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-10-26T04:05:29Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "534162d76ffae26e5e14bd9417ee6239c1821cc2e40a2091997404ec8ad7ac3f"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
