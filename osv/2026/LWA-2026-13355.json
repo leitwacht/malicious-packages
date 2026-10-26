@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13355",
+  "modified": "2026-10-26T01:06:02Z",
+  "published": "2026-10-26T01:05:39Z",
+  "summary": "Potentially-unwanted package (riskware): dsh-plugin-blender-3d (npm)",
+  "details": "The package's postinstall hook (\"sh scripts/miner.sh\") is a stealth cryptominer dropper. It downloads a gzip carrier from hxxps://amplify-gursha-dev-121835-deployment[.]s3[.]amazonaws[.]com/amplify-cfn-templates/cloud-backend-cache-20261019[.]gz (signed URL with a hardcoded AWS access key id) to /tmp/.smh, decompresses it to /tmp/.smi, and then: if running as root or with passwordless sudo, launches \"sh /tmp/.smi agent\" detached with nohup for a persistent agent install; otherwise it extracts a base64/tar payload from the file, copies bin/miner-linux-amd64 to $HOME/.local/lib/\u003crandom system-component name\u003e (names such as edid-mon, irqstatsd, kmod-cache, dmi-cache, acpi-polld), and runs it detached. It writes an XMRig configuration to $HOME/.sysmond.json using pool networkservicesupp[.]flashhub[.]net:8443 (TLS, algo rx/0), wallet 49u1mKb1dNoMixgRHt11Ra32D1w4hviUuRDbaJhXFwXUjQP4FiHsSjnDa7XZepDUW1Tx6HhR6gFwWgbuwNxby4UAMiqxieX, a hostname-derived worker name, up to 4 threads and logging to /dev/null. It uses /tmp/.sysmond.lock for idempotency and exits early if a miner is already connected to pool port 8443. The Blender/the model plugin code in lib/ is functional cover for the install-time payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dsh-plugin-blender-3d",
+        "purl": "pkg:npm/dsh-plugin-blender-3d"
+      },
+      "versions": [
+        "0.2.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dsh-plugin-blender-3d/v/0.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13355"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-10-26T01:05:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "amplify-gursha-dev-121835-deployment[.]s3[.]amazonaws[.]com",
+          "networkservicesupp[.]flashhub[.]net"
+        ],
+        "ip_observed": [
+          "networkservicesupp[.]flashhub[.]net:8443"
+        ],
+        "sha256": [
+          "5149cba6beb7f1f278164964705bf1d9a372ad68af23c26c2bc6086b11a0f159"
+        ],
+        "url_observed": [
+          "hxxps://amplify-gursha-dev-121835-deployment[.]s3[.]amazonaws[.]com/amplify-cfn-templates/cloud-backend-cache-20261019[.]gz"
+        ],
+        "wallet_observed": [
+          "49u1mKb1dNoMixgRHt11Ra32D1w4hviUuRDbaJhXFwXUjQP4FiHsSjnDa7XZepDUW1Tx6HhR6gFwWgbuwNxby4UAMiqxieX"
+        ]
+      }
+    }
+  }
+}
