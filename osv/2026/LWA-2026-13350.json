@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13350",
+  "modified": "2026-10-26T00:39:29Z",
+  "published": "2026-10-26T00:37:58Z",
+  "summary": "Security-research / proof-of-concept package: @greenlake/mfe-login-url (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with a JSON body containing the package name, the machine hostname, the install directory, the working directory, the npm user the publisher and the protocol, plus an x-beacon-package header. index.js also fires the same beacon when the module is required, and exports a no-op Proxy so that a build importing the name completes instead of crashing. The beacon collects only host and install metadata: no environment variable values, credentials, tokens, wallet data or file contents are read or transmitted. The README describes the package as part of an authorized dependency-confusion test and credits researcher Kero (@0xWise).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@greenlake/mfe-login-url",
+        "purl": "pkg:npm/%40greenlake/mfe-login-url"
+      },
+      "versions": [
+        "2.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@greenlake/mfe-login-url/v/2.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-26T00:37:58Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "bb481bf6f87462e5ddfb5ee1685ea9c3692aad540bb12a932255e08045c7c56c"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

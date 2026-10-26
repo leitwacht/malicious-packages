@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13348",
+  "modified": "2026-10-26T00:38:09Z",
+  "published": "2026-10-26T00:37:34Z",
+  "summary": "Security-research / proof-of-concept package: @greenlake/context-pane (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTP POST to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an X-Beacon-Package header. The JSON body contains only install metadata: the package name, the machine hostname, the install directory (__dirname), the working directory, and the npm/node user-agent string. The same beacon is also fired when index.js is required, and index.js exports a no-op Proxy so that imports of the real package's members do not fail. No environment variable values, credentials, tokens, SSH/AWS configuration, wallet data or file contents are read or transmitted; the only outbound destination is the single callback endpoint above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@greenlake/context-pane",
+        "purl": "pkg:npm/%40greenlake/context-pane"
+      },
+      "versions": [
+        "3.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@greenlake/context-pane/v/3.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-26T00:37:34Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "6116b425a129c04dcaa9a2321118aceea1c4783e7e4dbaaa3592a46d7f36fb55"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

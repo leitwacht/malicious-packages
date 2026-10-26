@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13342",
+  "modified": "2026-10-23T22:34:47Z",
+  "published": "2026-10-23T22:34:15Z",
+  "summary": "Potentially-unwanted package (riskware): event-emitter-utils-testmetest (npm)",
+  "details": "This package ships a hidden install-time code-execution mechanism with no relation to its stated purpose. Its package.json declares a preinstall hook running setup.js; that script brotli-decompresses a hex-encoded blob and pipes the decoded text into the Bun runtime via child_process.spawn, looking for Bun at /usr/local/bin/bun, $HOME/.bun/bin/bun and $BUN_INSTALL/bin/bun, and exiting silently when Bun is not installed. The package's actual API is a single 34-byte index.js exporting a version string, so the install hook serves no functional purpose. In this version the embedded script is inert — it decodes to a single console.log(\"pkg init\") statement — and the package makes no network requests, reads no environment secrets, tokens or.npmrc, and writes no files. The encoded-payload-plus-alternate-interpreter pattern is nonetheless a ready-made loader channel. No network IOCs were observed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "event-emitter-utils-testmetest",
+        "purl": "pkg:npm/event-emitter-utils-testmetest"
+      },
+      "versions": [
+        "1.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/event-emitter-utils-testmetest/v/1.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-10-23T22:34:15Z",
+      "indicators_observed": {
+        "sha256": [
+          "a80e1d401219f55e903d4d978fe8f1e8375c07aca2247796f8e445ce67fd3013"
+        ]
+      }
+    }
+  }
+}

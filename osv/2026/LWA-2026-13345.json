@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13345",
+  "modified": "2026-10-26T00:38:07Z",
+  "published": "2026-10-26T00:36:57Z",
+  "summary": "Security-research / proof-of-concept package: @greenlake/auth (npm)",
+  "details": "This package is a dependency-confusion proof of concept that sends an install-time beacon to a callback host. Its package.json declares a postinstall hook running beacon.cjs, and index.js also invokes the same beacon when the module is imported. The beacon POSTs a JSON body to hxxp://185[.]158[.]107[.]175:8787/_ah/dc with an X-Beacon-Package header, reporting only the package name, the machine hostname, the install directory (__dirname), the current working directory, and the npm/node user agent. index.js exports a Proxy that returns no-op functions for any property access so that a build importing the package name completes instead of crashing. The package collects no environment values, credentials, tokens or file contents, and performs no other network, process or persistence activity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@greenlake/auth",
+        "purl": "pkg:npm/%40greenlake/auth"
+      },
+      "versions": [
+        "3.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@greenlake/auth/v/3.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-26T00:36:57Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]158[.]107[.]175:8787"
+        ],
+        "sha256": [
+          "9508a58edfcdf21e0cbaa2adbf242c06f1d28fe59cc43c5a264fc2e71a0a3833"
+        ],
+        "url_observed": [
+          "hxxp://185[.]158[.]107[.]175",
+          "hxxp://185[.]158[.]107[.]175:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
