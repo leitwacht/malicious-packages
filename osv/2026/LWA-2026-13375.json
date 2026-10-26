@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13375",
+  "modified": "2026-10-26T21:46:56Z",
+  "published": "2026-10-26T14:50:57Z",
+  "summary": "Malicious code in charape (npm)",
+  "details": "Charape@1.0.1 is a rebranded WhatsApp Web (Baileys) library whose install hook and defaults manipulate the host project and the operator's WhatsApp account. scripts/postinstall.js appends legacy-peer-deps=true to the project-root.npmrc and writes proxy package.json/index.js/index.cjs files into node_modules/@whiskeysockets/baileys, node_modules/@adiwajshing/baileys and node_modules/baileys that re-export charape, so code importing the genuine Baileys packages silently resolves to this fork. The shipped default config (lib/Defaults/index.js) sets autoFollow to the WhatsApp channel 120363424530330931@newsletter (channel URL hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o), and lib/Socket/newsletter.js issues the newsletter FOLLOW query whenever the client connection opens, subscribing the operator's account to that channel without consent. lib/Socket/messages-send.js and lib/Utils/messages.js additionally stamp the publisher's channel name and link as annotations onto outgoing image and video messages. The package also declares a dependency range on cache-manager (^7.2.8) that includes a version distributed with malicious code. No credential, token or environment exfiltration was found; all network traffic is to WhatsApp endpoints.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "charape",
+        "purl": "pkg:npm/charape"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/charape/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13375"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-26T14:50:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "0ec3b7ace2a64f18b34524dac17dbbe40b1d10451f5bd55563c52f678604c6a7"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o"
+        ]
+      }
+    }
+  }
+}
