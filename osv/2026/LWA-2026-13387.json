@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13387",
+  "modified": "2026-10-27T16:22:14Z",
+  "published": "2026-10-27T16:21:54Z",
+  "summary": "Malicious code in @ifasn/mdd-doc-mcp (npm)",
+  "details": "This package is a functional Markdown-tools MCP server that, whenever the server starts, silently interrogates cloud instance metadata services and then reports the results to an external server. On load, index.js unconditionally runs a \"configSync\" routine. It first requests a set of nodes in sequence: hxxp://100[.]100[.]100[.]200/latest/meta-data/ (Alibaba Cloud metadata), hxxp://169[.]254[.]169[.]254/md-doc/v1/config (link-local metadata address), hxxp://127[.]0[.]0[.]1:80/md-doc/v1/config, and hxxp://121[.]199[.]24[.]94[.]nip[.]io/md-doc/v1/config. It then issues cloud-provider metadata \"health probes\", specifically: - hxxp://100[.]100[.]100[.]200/latest/meta-data/ram/security-credentials/ (the Alibaba Cloud endpoint that returns the instance RAM role's STS credentials), plus /hostname, /image-id and /zone-id\n- a PUT to hxxp://169[.]254[.]169[.]254/latest/api/token with header X-aws-ec2-metadata-token-ttl-seconds: 21600 (AWS IMDSv2 token) and a GET of the AWS IMDSv1 meta-data root\n- hxxp://metadata[.]google[.]internal/computeMetadata/v1/ with Metadata-Flavor: Google\n- hxxp://169[.]254[.]169[.]254/metadata/instance?api-version=2021-02-01 with Metadata: true The responses are read only for their HTTP status code and discarded, so the package maps which cloud credential endpoints are reachable from the host. Each node's status is then sent to an attacker-controlled HTTP endpoint: hxxp://121[.]199[.]24[.]94/beacon?stage=report\u0026src=mdd-doc-mcp\u0026nodes=\u003cnode:status,[.][.][.]\u003e with hxxp://121[.]199[.]24[.]94[.]nip[.]io used as a DNS fallback to the same IP, over plain HTTP. The process keeps itself alive at stdin end until this beacon completes, so the call is not opportunistic. None of this relates to the declared Markdown table-of-contents / word-count / table-formatting tools, and the code comments describe it as an \"enterprise configuration sync\" and \"usage statistics\" ping. Indicators: 121[.]199[.]24[.]94 (port 80), 121[.]199[.]24[.]94[.]nip[.]io, hxxp://121[.]199[.]24[.]94/beacon?stage=report, 100[.]100[.]100[.]200 (Alibaba Cloud metadata), 169[.]254[.]169[.]254 (link-local instance metadata), metadata.google.internal.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mdd-doc-mcp"
+      },
+      "versions": [
+        "1.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mdd-doc-mcp/v/1.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13387"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-27T16:21:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "121[.]199[.]24[.]94[.]nip[.]io",
+          "metadata[.]google[.]internal"
+        ],
+        "ip_observed": [
+          "121[.]199[.]24[.]94",
+          "121[.]199[.]24[.]94:80"
+        ],
+        "sha256": [
+          "33bb9189cb442c9f76d450729c1c2a5b4febcf3c486a1332c7bfe65c90ab23bc"
+        ],
+        "url_observed": [
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/md-doc/v1/config",
+          "hxxp://121[.]199[.]24[.]94/beacon",
+          "hxxp://121[.]199[.]24[.]94/beacon?stage=report"
+        ]
+      }
+    }
+  }
+}
