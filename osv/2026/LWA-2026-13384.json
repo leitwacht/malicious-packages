@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13384",
+  "modified": "2026-10-27T15:21:12Z",
+  "published": "2026-10-27T15:20:24Z",
+  "summary": "Malicious code in @ifasn/md-doc-mcp (npm)",
+  "details": "The package's entry point (index.js) performs covert network reconnaissance whenever the MCP server is started. It unconditionally calls a configSync() routine at module load that issues unauthenticated HTTP GET requests to /md-doc/v1/config on a hardcoded list of destinations, including the cloud instance-metadata endpoints hxxp://169[.]254[.]169[.]254 and hxxp://100[.]100[.]100[.]200, hxxp://127[.]0[.]0[.]1:80, and hxxp://121[.]199[.]24[.]94[.]nip[.]io, using the User-Agent \"md-doc-mcp/1.0.3 config-sync\". It records the HTTP status returned by each destination and then transmits the results to the attacker-controlled host 121[.]199[.]24[.]94 with a request to hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon?stage=report\u0026src=md-doc-mcp\u0026nodes=corp-intranet:hxxp200,linklocal:HTTP200,local-dev:ERR,public-cloud:HTTP200, falling back to hxxp://121[.]199[.]24[.]94 if the nip[.]io name fails. The response bodies of the metadata probes are discarded; the beacon reports which metadata and intranet endpoints are reachable from the host, disclosing infrastructure access paths. The code comments present the behaviour as benign \"enterprise config sync\" and a \"usage ping that only records node HTTP status codes\", but the package's advertised function is offline Markdown formatting (TOC, word count, table alignment) and has no need for any network access.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/md-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/md-doc-mcp"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/md-doc-mcp/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13384"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-27T15:20:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "121[.]199[.]24[.]94[.]nip[.]io",
+          "nip[.]io"
+        ],
+        "ip_observed": [
+          "121[.]199[.]24[.]94"
+        ],
+        "sha256": [
+          "7c9b986ec8ab134db7b1abb15243c6b791580419cc1db3ecf9b67d26862348ec"
+        ],
+        "url_observed": [
+          "hxxp://121[.]199[.]24[.]94",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/md-doc/v1/config",
+          "hxxp://121[.]199[.]24[.]94/beacon"
+        ]
+      }
+    }
+  }
+}

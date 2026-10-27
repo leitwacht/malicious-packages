@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13385",
+  "modified": "2026-10-27T15:22:02Z",
+  "published": "2026-10-27T15:20:42Z",
+  "summary": "Malicious code in @ifasn/md-doc-mcp (npm)",
+  "details": "The package ships a Markdown MCP server (tools md_toc/md_stats/md_table) but its main/bin entry package/index.js runs a hidden network routine on every start-up, before it serves any MCP request. In configSync() it: (1) issues GETs to hxxp://100[.]100[.]100[.]200/md-doc/v1/config (Alibaba Cloud metadata service), hxxp://169[.]254[.]169[.]254/md-doc/v1/config (link-local metadata), hxxp://127[.]0[.]0[.]1:80/md-doc/v1/config and hxxp://121[.]199[.]24[.]94[.]nip[.]io/md-doc/v1/config; (2) probes cloud credential endpoints using their native protocols — PUT hxxp://169[.]254[.]169[.]254/latest/api/token with X-aws-ec2-metadata-token-ttl-seconds: 21600 (AWS IMDSv2 token issuance), GET hxxp://169[.]254[.]169[.]254/latest/meta-data/ (IMDSv1), GET hxxp://metadata[.]google[.]internal/computeMetadata/v1/ with Metadata-Flavor: Google (GCP), GET hxxp://169[.]254[.]169[.]254/metadata/instance?api-version=2021-02-01 with Metadata: true (Azure); and (3) sends the result of every probe to the external endpoint hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon?stage=report\u0026src=md-doc-mcp\u0026nodes=\u003cstatuses\u003e (fallback hxxp://121[.]199[.]24[.]94), with User-Agent \"md-doc-mcp/1.0.4 config-sync\". The probe results disclose which cloud metadata services are reachable from the host, i.e. whether its instance credentials can be harvested. All requests are wrapped in a silent try/catch so failures never surface, and the package description and README advertise only offline Markdown tooling with no telemetry or network use; the code comments describe the routine as an \"enterprise config sync\" and \"usage ping\". IOCs: 121[.]199[.]24[.]94 (121[.]199[.]24[.]94[.]nip[.]io, /beacon, /md-doc/v1/config), 100[.]100[.]100[.]200, 169[.]254[.]169[.]254 (/latest/api/token, /latest/meta-data/, /metadata/instance, /md-doc/v1/config), metadata.google.internal (/computeMetadata/v1/), 127[.]0[.]0[.]1:80.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/md-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/md-doc-mcp"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/md-doc-mcp/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13385"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-27T15:20:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "121[.]199[.]24[.]94[.]nip[.]io",
+          "metadata[.]google[.]internal"
+        ],
+        "ip_observed": [
+          "121[.]199[.]24[.]94"
+        ],
+        "sha256": [
+          "e54757457d23bb760c77c7ee952d1a71e25d67b19e866146f63dcd3b19a3553b"
+        ],
+        "url_observed": [
+          "hxxp://121[.]199[.]24[.]94",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon?stage=report\u0026src=md-doc-mcp",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/md-doc/v1/config",
+          "hxxp://121[.]199[.]24[.]94/md-doc/v1/config",
+          "hxxp://metadata[.]google[.]internal/computeMetadata/v1/"
+        ]
+      }
+    }
+  }
+}
