@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13381",
+  "modified": "2026-10-27T11:22:56Z",
+  "published": "2026-10-27T11:22:03Z",
+  "summary": "Malicious code in @azure-growth/signup-ux-components (npm)",
+  "details": "The package is a hollow shell whose only executed code is its preinstall hook, which performs a DNS-based victim-identity callback at install time. package.json declares \"preinstall\": \"node index.js\"; index.js reads the local username (os.userInfo().username) and hostname (os.hostname()), strips non-alphanumeric characters, embeds both into the subdomain of a collaborator host — msrc-poc.\u003cusername\u003e.\u003chostname\u003e.dbg6vplohjpkmtolbi6g18ekofkxjzm4s[.]oast[.]fun — and resolves it with dns.lookup(), discarding the result. Because the host identity travels entirely in a DNS query, the install-time beacon uses no HTTP request at all. The tarball ships no real library code: besides index.js and a minimal package.json it only contains a third-party signup browser bundle under evidence/ and evidence/bundle-grep-output.txt naming @azure-growth/azure-growth-signup-sdk and @azure-growth/signup-ux-components, used to make the package look like part of an Azure signup SDK. The \"msrc-poc\" prefix labels the callback as a proof-of-concept while the actual behaviour is an attacker-controlled DNS callback that leaks the installer's username and hostname. IOC: DNS callback domain dbg6vplohjpkmtolbi6g18ekofkxjzm4s[.]oast[.]fun (subdomain labels oast[.]fun), invoked from index.js via the preinstall lifecycle hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@azure-growth/signup-ux-components",
+        "purl": "pkg:npm/%40azure-growth/signup-ux-components"
+      },
+      "versions": [
+        "2.9.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@azure-growth/signup-ux-components/v/2.9.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13381"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-27T11:22:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dbg6vplohjpkmtolbi6g18ekofkxjzm4s[.]oast[.]fun",
+          "oast[.]fun"
+        ],
+        "sha256": [
+          "c2421823e5fee1f66e264257e7d715bac9463453829f95ca8b71e8bccd39f63d"
+        ]
+      }
+    }
+  }
+}
