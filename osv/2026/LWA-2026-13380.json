@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13380",
+  "modified": "2026-10-27T11:10:33Z",
+  "published": "2026-10-27T11:09:58Z",
+  "summary": "Security-research / proof-of-concept package: @azure-growth/signup-ux-components (npm)",
+  "details": "This package runs a DNS exfiltration beacon at install time. Its package.json declares \"preinstall\": \"node index.js\", and index.js reads the local OS username (os.userInfo().username) and machine hostname (os.hostname()), strips non-alphanumeric characters, and folds both values into a DNS name of the form msrc-poc.\u003cusername\u003e.\u003chostname\u003e.dbg6vplohjpkmtolbi6g18ekofkxjzm4s[.]oast[.]fun, which it resolves with dns.lookup() inside a try/catch that silently swallows errors. No HTTP request is made — the installer's host identity is carried out in the DNS query itself to an OAST-style callback domain, so the beacon is invisible to HTTP traffic inspection. The \"msrc-poc.\" label is a lure suggesting a Microsoft security-response proof of concept. The tarball also ships a 4.49MB copy of the signup[.]azure[.]com production Angular bundle as evidence/signup.azure.com_main-X2UUFOOI.js, which is never required or executed and serves only as padding and pretext. No npm, GitHub or cloud token files are read by the install hook.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@azure-growth/signup-ux-components",
+        "purl": "pkg:npm/%40azure-growth/signup-ux-components"
+      },
+      "versions": [
+        "1.2.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@azure-growth/signup-ux-components/v/1.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13380"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-27T11:09:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "dbg6vplohjpkmtolbi6g18ekofkxjzm4s[.]oast[.]fun",
+          "signup[.]azure[.]com"
+        ],
+        "sha256": [
+          "3ccfc9ba0a35d5770fd600aea5880f57e9d51fe8d37c479823d8c2cf668bbbf1"
+        ],
+        "url_observed": [
+          "evidence/signup[.]azure[.]com_main-X2UUFOOI[.]js"
+        ]
+      }
+    }
+  }
+}
