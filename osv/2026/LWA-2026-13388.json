@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13388",
+  "modified": "2026-10-27T20:06:33Z",
+  "published": "2026-10-27T20:05:24Z",
+  "summary": "Security-research / proof-of-concept package: @webapp-shared/login-vmok (npm)",
+  "details": "This package is a self-declared dependency-confusion proof-of-concept that beacons host metadata when it is installed or imported. Its postinstall hook runs beacon.cjs, and index.js calls the same beacon on require (falling back to a silent no-op if the callback is unreachable). The beacon sends an HTTP POST to hxxp://13[.]140[.]137[.]222:8787/_ah/dc with a JSON body containing the package name, os.hostname(), the install directory (__dirname), the current working directory, and the npm user the publisher string, and identifies itself with an X-Beacon-Package header. It reads no environment variables, credentials, tokens, key material or files, and exfiltrates nothing beyond that host metadata; index.js exports a Proxy of no-op functions so a consumer's build completes even though the package provides no functionality. No credentials, tokens or file contents are collected or transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@webapp-shared/login-vmok",
+        "purl": "pkg:npm/%40webapp-shared/login-vmok"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@webapp-shared/login-vmok/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-27T20:05:24Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]140[.]137[.]222:8787"
+        ],
+        "sha256": [
+          "0af8d1856efc278a338597eade8cbb271a150b2e64c9a0d5c7a33619e4b3f401"
+        ],
+        "url_observed": [
+          "hxxp://13[.]140[.]137[.]222",
+          "hxxp://13[.]140[.]137[.]222:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

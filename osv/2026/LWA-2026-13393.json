@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13393",
+  "modified": "2026-10-27T20:08:50Z",
+  "published": "2026-10-27T20:08:18Z",
+  "summary": "Security-research / proof-of-concept package: @webapp-shared/login-vmok (npm)",
+  "details": "This package is a dependency-confusion proof of concept: a scoped name squatted at sentinel version 99.0.1 whose postinstall hook runs `node beacon.cjs`, and whose index.js fires the same beacon when the module is imported. The beacon POSTs a small JSON body to hxxp://13[.]140[.]137[.]222:8787/_ah/dc (header x-beacon-package) containing only the package name, hostname, install path, working directory and Node version — it reads no environment variables, tokens, credential files or wallet data, drops no files and runs no remote code. The exported module is a catch-all Proxy no-op shim so that builds importing the name complete and the install callback still fires. The README states it is part of an authorized dependency-confusion test, and the callback endpoint is the only network destination the package contacts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@webapp-shared/login-vmok",
+        "purl": "pkg:npm/%40webapp-shared/login-vmok"
+      },
+      "versions": [
+        "99.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@webapp-shared/login-vmok/v/99.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-27T20:08:18Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]140[.]137[.]222:8787"
+        ],
+        "sha256": [
+          "0bd5c2e8dc88c0561cd7b86fb3ae7d88a35d0dd323e1810bde0fd6f2a6ca90f1"
+        ],
+        "url_observed": [
+          "hxxp://13[.]140[.]137[.]222",
+          "hxxp://13[.]140[.]137[.]222:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

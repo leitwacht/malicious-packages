@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13390",
+  "modified": "2026-10-27T20:07:28Z",
+  "published": "2026-10-27T20:06:49Z",
+  "summary": "Security-research / proof-of-concept package: @webapp-shared/login-vmok (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept. Its package.json postinstall hook runs \"node beacon.cjs\", and index.js additionally calls the same beacon when the module is required, wrapped so failures are silent. The beacon sends a single HTTP POST to hxxp://13[.]140[.]137[.]222:8787/_ah/dc with an x-beacon-package header; the JSON body contains only the package name, the host's os.hostname(), the install directory (__dirname), the working directory, the npm/node version string and the protocol. No environment values, credentials, tokens, wallet material or file contents are collected or transmitted, and index.js otherwise exports a no-op Proxy. The scoped name @webapp-shared/login-vmok mimics an internal package scope at version 1.1.0 to trigger installation by dependency confusion; the README states the package was published as an authorized dependency-confusion test and that it only reports that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@webapp-shared/login-vmok",
+        "purl": "pkg:npm/%40webapp-shared/login-vmok"
+      },
+      "versions": [
+        "1.1.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@webapp-shared/login-vmok/v/1.1.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-27T20:06:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]140[.]137[.]222:8787"
+        ],
+        "sha256": [
+          "3b4cfb5e2f05f32c4a84e39af65b0a126b4fcd39b85a01d02fb86c800d9a2e95"
+        ],
+        "url_observed": [
+          "hxxp://13[.]140[.]137[.]222",
+          "hxxp://13[.]140[.]137[.]222:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
