@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13410",
+  "modified": "2026-10-28T18:51:07Z",
+  "published": "2026-10-28T18:50:23Z",
+  "summary": "Malicious code in nodetokyo (npm)",
+  "details": "This package ships a CLI (bin `nodetokyo` → launcher.js) that, when run, silently installs a Python runtime and GUI-automation dependencies and then launches a hidden background process that uploads the user's clipboard and full-screen screenshots to an operator-controlled host. launcher.js: probes for an interpreter (python/py/python3); if none is found it runs `winget install -e --id Python.Python.3.12 --silent --accept-package-agreements --accept-source-agreements`, falling back to downloading hxxps://www[.]python[.]org/ftp/python/3[.]12[.]3/python-3[.]12[.]3-amd64[.]exe into the OS temp directory and executing it with `/quiet InstallAllUsers=0 PrependPath=1`; then runs `pip install pyperclip keyboard requests pillow pyautogui --quiet`; then spawns client/noderzero.py with `detached: true`, `stdio: 'ignore'`, `windowsHide: true` and calls `proc.unref()`, so the Python process outlives the terminal and the command returns immediately. client/noderzero.py is a borderless, always-on-top tkinter window using `overrideredirect(True)` and `-transparentcolor white` with a faint \".\" label, i.e. close to invisible on screen. It:\n- reads the OS clipboard on a 300 ms loop (`pyperclip.paste`) and POSTs the text as JSON to hxxps://nodetokyo[.]vercel[.]app/api (body `{text, mode}`);\n- captures the entire screen with `PIL.ImageGrab.grab()`, JPEG-encodes and base64-encodes it, and POSTs it to the same endpoint (body `{image, mode}`) on hotkey (alt+s / 1+s, alt+t screenshot-select) and, once toggled with alt+a, on a repeating 30-second loop;\n- registers global keyboard hooks via the `keyboard` module (ctrl+c, esc, 1+e, backtick, ctrl+q, ctrl+v, alt+s, 1+s, alt+a, 1+a, alt+t, alt+r, alt+v, alt+x, 1+x, alt+up/down, alt+m, alt+1..alt+5) and can suppress and consume keystrokes in \"mash\" mode (`keyboard.on_press(..., suppress: true)`);\n- types server-returned answers into whatever window has focus using `pyautogui.write`/`keyboard.write`, and hides itself on Esc or 1+e; ctrl+q calls `os._exit(0)` as a panic exit. All collected clipboard text and screen images are sent to the single operator endpoint nodetokyo[.]vercel[.]app; the payload contains no URL filtering and no user-visible disclosure of the capture. IOCs:\n- hxxps://nodetokyo[.]vercel[.]app/api\n- nodetokyo[.]vercel[.]app\n- hxxps://www[.]python[.]org/ftp/python/3.12.3/python-3.12.3-amd64.exe (installer auto-download)\n- files: launcher.js, client/noderzero.py",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nodetokyo",
+        "purl": "pkg:npm/nodetokyo"
+      },
+      "versions": [
+        "1.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nodetokyo/v/1.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13410"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-28T18:50:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "nodetokyo[.]vercel[.]app",
+          "www[.]python[.]org"
+        ],
+        "sha256": [
+          "8eaab8a226c6c1c68543c584d5ec372521dd377cbc38d4fcfecc759d087cc4b3"
+        ],
+        "url_observed": [
+          "hxxps://nodetokyo[.]vercel[.]app/api",
+          "hxxps://www[.]python[.]org/ftp/python/3[.]12[.]3/python-3[.]12[.]3-amd64[.]exe"
+        ]
+      }
+    }
+  }
+}
