@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-13398",
-  "modified": "2026-10-28T09:56:19Z",
-  "published": "2026-10-28T09:55:10Z",
+  "modified": "2026-10-28T10:00:31Z",
+  "published": "2026-10-28T09:54:58Z",
   "summary": "Malicious code in @zmtcdn/components (npm)",
-  "details": "This package is a dependency-confusion implant: a scoped name published at the sentinel version 9999.0.0 in an 852-byte tarball (3 files) whose only code is the lifecycle hook package/postinstall.js, declared as `\"postinstall\": \"node postinstall.js\"`. Installing the package therefore executes the hook, which builds a JSON fingerprint of the build host — os.hostname(), os.platform(), os.userInfo().username, process.cwd(), an ISO timestamp, and Object.keys(process.env), i.e. the complete list of environment variable NAMES present in the install environment (including CI/CD and registry credential variable names such as NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, GITLAB_TOKEN, DOCKER_PASSWORD, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY) — and POSTs it over HTTPS to hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025 (POST, path /f52af355-4783-4acb-9de1-5e44b5963025, port 443, Content-Type application/json, ~1788-byte body). The purpose of the beacon is to confirm that an internal/scoped package name resolves to an externally controlled publish and to inventory which credential-bearing variables the victim's build environment exposes, so the same channel can be followed by targeted theft. The hook is a self-contained 646-byte script with no obfuscation, no second-stage download, no eval/Function use and no file reads; its only outbound destination is the webhook[.]site callback above. Indicator: hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025.",
+  "details": "The scoped package @zmtcdn/components publishes a sentinel version (9999.0.0) containing only package.json, a 21-byte index.js stub and postinstall.js; package.json declares \"postinstall\": \"node postinstall.js\", so the script runs on every install. It builds a JSON payload from the build host — hostname, OS platform, local username, current working directory, ISO timestamp and Object.keys(process.env), i.e. the NAMES of every environment variable, which in CI environments include NPM_TOKEN, GITHUB_TOKEN, GH_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, DOCKER_PASSWORD, CI_JOB_TOKEN, GITLAB_TOKEN and HF_TOKEN — and POSTs it over HTTPS to hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025. The script sends variable names and their presence, not their values, and reads no files. The same postinstall script with the destination hxxps://www[.]hinny[.]shop/api is shipped in the sibling package @zmtcdn/ui@9999.0.7. This package is a dependency-confusion implant: a scoped name published at the sentinel version 9999.0.0 in an 852-byte tarball (3 files) whose only code is the lifecycle hook package/postinstall.js, declared as `\"postinstall\": \"node postinstall.js\"`. Installing the package therefore executes the hook, which builds a JSON fingerprint of the build host — os.hostname(), os.platform(), os.userInfo().username, process.cwd(), an ISO timestamp, and Object.keys(process.env), i.e. the complete list of environment variable NAMES present in the install environment (including CI/CD and registry credential variable names such as NPM_TOKEN, GITHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, GITLAB_TOKEN, DOCKER_PASSWORD, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY) — and POSTs it over HTTPS to hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025 (POST, path /f52af355-4783-4acb-9de1-5e44b5963025, port 443, Content-Type application/json, ~1788-byte body). The purpose of the beacon is to confirm that an internal/scoped package name resolves to an externally controlled publish and to inventory which credential-bearing variables the victim's build environment exposes, so the same channel can be followed by targeted theft. The hook is a self-contained 646-byte script with no obfuscation, no second-stage download, no eval/Function use and no file reads; its only outbound destination is the webhook[.]site callback above. Indicator: hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025.",
   "affected": [
     {
       "package": {
@@ -47,16 +47,18 @@
   "database_specific": {
     "leitwacht": {
       "category": "dependency_confusion",
-      "first_seen_at": "2026-10-28T09:55:10Z",
+      "first_seen_at": "2026-10-28T09:54:58Z",
       "indicators_observed": {
         "domain_observed": [
-          "webhook[.]site"
+          "webhook[.]site",
+          "www[.]hinny[.]shop"
         ],
         "sha256": [
           "9b5b8d3f299f393c8e00e5cdfc84b3e535c441663cfb14cb2e37efef135e6f58"
         ],
         "url_observed": [
-          "hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025"
+          "hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025",
+          "hxxps://www[.]hinny[.]shop/api"
         ]
       }
     }

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13404",
+  "modified": "2026-10-28T10:00:24Z",
+  "published": "2026-10-28T09:58:56Z",
+  "summary": "Malicious code in @zmtcdn/ui (npm)",
+  "details": "The scoped package @zmtcdn/ui publishes a sentinel version (9999.0.7) whose tarball contains only package.json, a 21-byte index.js stub, and postinstall.js, and whose package.json \"postinstall\" hook runs node postinstall.js on every install. That script builds a JSON payload containing the machine hostname, OS platform, local username, current working directory, an ISO timestamp, and Object.keys(process.env) — the NAMES of every environment variable on the build host, which in CI environments include NPM_TOKEN, GITHUB_TOKEN, GH_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, OPENAI_API_KEY, ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, SLACK_TOKEN, DOCKER_PASSWORD, CI_JOB_TOKEN, GITLAB_TOKEN, SENDGRID_API_KEY and HF_TOKEN — and POSTs it over HTTPS to hxxps://www[.]hinny[.]shop/api. The script transmits the variable names and their presence, not their values, and reads no files, so this version is a credential-presence reconnaissance beacon rather than a credential harvester in itself. The same postinstall script pointed at hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025 is shipped in the sibling package @zmtcdn/components@9999.0.0.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zmtcdn/ui",
+        "purl": "pkg:npm/%40zmtcdn/ui"
+      },
+      "versions": [
+        "9999.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zmtcdn/ui/v/9999.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13404"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-28T09:58:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "hinny[.]shop",
+          "webhook[.]site",
+          "www[.]hinny[.]shop"
+        ],
+        "sha256": [
+          "df62e4bfa75502ca99748dbef794625041b9aed4ecd42a19f69308cb03c84da9"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/f52af355-4783-4acb-9de1-5e44b5963025",
+          "hxxps://www[.]hinny[.]shop/api"
+        ]
+      }
+    }
+  }
+}
