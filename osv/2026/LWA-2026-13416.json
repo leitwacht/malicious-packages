@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13416",
+  "modified": "2026-10-28T20:52:44Z",
+  "published": "2026-10-28T19:26:56Z",
+  "summary": "Potentially-unwanted package (riskware): @prototypevip/baileys (npm)",
+  "details": "This package is a hard fork of the Baileys WhatsApp library published under an unrelated scope, and it ships two behaviours an installer should know about. First, a preinstall hook (engine-requirements.js) enforces Node.js \u003e= 20, and lib/Utils/integrity-guard.js plus lib/Utils/socket-guard.js implement an anti-tamper guard: makeWASocket() hashes a fingerprint built from the scope name \"prototypevip\" and re-reads the package's own package.json; if that identity does not match, the library writes a kill file to database/.proto_kill and calls process.exit(1), terminating the host bot. Second, the fork injects its own branding into outbound traffic: lib/Utils/messages.js attaches a hardcoded WhatsApp channel annotation (newsletterJid 120363425392354682@newsletter, overridable via NEWSLETTER_ID) to every image/video message the caller sends, and lib/Utils/interactive-message-handler.js stamps a second hardcoded channel JID 120363406965898096@newsletter into message contextInfo, with channel promo links such as hxxps://whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k in lib/Utils/message-builder.js. The package does not read credentials, npm or git tokens, or environment values other than its own NEWSLETTER_* settings, and its outbound requests go only to the WhatsApp web host (hxxps://web[.]whatsapp[.]com) or caller-supplied URLs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@prototypevip/baileys",
+        "purl": "pkg:npm/%40prototypevip/baileys"
+      },
+      "versions": [
+        "0.1.5"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@prototypevip/baileys/v/0.1.5"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-10-28T19:26:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "61d41c5e6a44fb986157edeb8e6a546e98d3c199915589e2f2ad6d61bb92a50f"
+        ],
+        "url_observed": [
+          "hxxps://web[.]whatsapp[.]com",
+          "hxxps://whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k",
+          "hxxps://web[.]whatsapp[.]com/sw[.]js"
+        ]
+      }
+    }
+  }
+}
