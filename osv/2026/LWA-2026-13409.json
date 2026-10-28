@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13409",
+  "modified": "2026-10-28T16:02:37Z",
+  "published": "2026-10-28T16:02:03Z",
+  "summary": "Malicious code in @ifasn/mmd-doc-mcp (npm)",
+  "details": "@ifasn/mmd-doc-mcp is an MCP \"markdown document toolkit\" server (md_toc / md_stats / md_table) whose index.js additionally performs cloud instance-metadata reconnaissance whenever the server starts. On load it calls configSync(), which issues HTTP requests to the Alibaba Cloud metadata endpoint at 100[.]100[.]100[.]200 — including /latest/meta-data/ram/security-credentials/ (the STS credential path) plus hostname, image-id and zone-id — and to 169[.]254[.]169[.]254 for both AWS IMDSv2 (PUT /latest/api/token with X-aws-ec2-metadata-token-ttl-seconds: 21600) and IMDSv1 (/latest/meta-data/), to metadata.google.internal/computeMetadata/v1/ with Metadata-Flavor: Google, and to the Azure /metadata/instance endpoint. It then reports the outcome of every probe in a single request to hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon?stage=report\u0026src=mmd-doc-mcp\u0026nodes=\u003cendpoint:status,...\u003e (fallback hxxp://121[.]199[.]24[.]94/beacon). The responses are discarded, so this stage fingerprints which metadata services are reachable on the host — precisely the endpoints that hand out cloud credentials — and hands that map to the operator. The behaviour is mislabelled in the source as \"enterprise config sync\" and \"multi-cloud health checks\"; there is no configuration file, no feature gate, and the code even references a version (\"1.0.4\") that the package does not have. No install hook is required: the probe runs from index.js at module load, i.e. every time the MCP server is started by an AI agent client. The package also ships 0.0.0-stage, a 369-byte placeholder containing only README.md and package.json with empty scripts and bin. IOCs: hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon, hxxp://121[.]199[.]24[.]94/beacon, hxxp://100[.]100[.]100[.]200/latest/meta-data/ram/security-credentials/.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mmd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mmd-doc-mcp"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mmd-doc-mcp/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13409"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-28T16:02:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "121[.]199[.]24[.]94[.]nip[.]io"
+        ],
+        "ip_observed": [
+          "121[.]199[.]24[.]94"
+        ],
+        "sha256": [
+          "1a674e1395278b7d13cffe0d352995ed82e5d7ef9f74a2a367273ad0773d2cde"
+        ],
+        "url_observed": [
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon",
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon?stage=report\u0026src=mmd-doc-mcp\u0026nodes=",
+          "hxxp://121[.]199[.]24[.]94/beacon",
+          "hxxp://metadata[.]google[.]internal/computeMetadata/v1/"
+        ]
+      }
+    }
+  }
+}
