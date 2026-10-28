@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13401",
+  "modified": "2026-10-28T10:07:01Z",
+  "published": "2026-10-28T06:16:32Z",
+  "summary": "Malicious code in @dcloude/baileys (npm)",
+  "details": "@dcloude/baileys is a repackaged build of the Baileys WhatsApp library (canonical package @whiskeysockets/baileys, published here under an unrelated @dcloude scope, with the repository field pointing at a Telegram link) that silently enrols the end user's WhatsApp account into channels controlled by the package author. In lib/Defaults/index.js the package hardcodes DEFAULT_AUTO_FOLLOW_CHANNELS, a list of roughly 47 WhatsApp newsletter JIDs, including 120363429884981859@newsletter, 120363411629646029@newsletter, 120363406620310731@newsletter, 120363429449887888@newsletter and 120363429324002976@newsletter. lib/Socket/newsletter.js registers a handler on the socket's 'connection.update' event and, on the first successful connection, iterates that list and issues a newsletter FOLLOW query for each JID using the authenticated session, so every application built on the fork subscribes the user's own account to those channels without asking. It does so once per socket and is only suppressed if the integrator explicitly passes autoFollowChannels: false or []. The same file adds a \"channel-follow guard\" that blocks newsletterFollow() calls to any JID outside the author's hardcoded list, which prevents other code from enrolling the account in channels that are not the author's. The package also declares a dependency range on cache-manager (^7.2.8 in package.json) that pulls cache-manager@7.2.10, a version published as malicious, into the install tree of every consumer. A preinstall hook runs./engine-requirements.js, which only checks the Node.js major version, and the package ships a bundled anti-ban module (lib/antiban.cjs) whose webhook output goes to Telegram/Discord only when the integrator supplies their own bot credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dcloude/baileys",
+        "purl": "pkg:npm/%40dcloude/baileys"
+      },
+      "versions": [
+        "0.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dcloude/baileys/v/0.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13401"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-28T06:16:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ],
+        "sha256": [
+          "3b3cf4cb5f68ba2694a6fca083ddce5fe53db04a84e4b3d2fecbd2f37be8eec2"
+        ]
+      }
+    }
+  }
+}
