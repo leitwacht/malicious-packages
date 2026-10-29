@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13422",
+  "modified": "2026-10-29T04:36:22Z",
+  "published": "2026-10-29T03:26:53Z",
+  "summary": "Malicious code in diezyxhao-baileys (npm)",
+  "details": "This package is a modified copy of the Baileys WhatsApp Web API library that silently enrols the account of anyone who installs it into a WhatsApp channel controlled by the package author. No install hook is used: the enrolment happens at runtime when the library's socket is created. In lib/Socket/newsletter.js the socket factory defines DEFAULT_UPDATE_CHANNEL = \"120363411407993897@newsletter\"; unless the caller explicitly passes config.autoFollowChannels = false or an empty array, the socket schedules channelManager.autoFollowAll(1500) 15 seconds after creation and retries on a 30s/60s/120s/300s/600s backoff. In lib/Utils/channel-manager.js the same channel JID is exported as DEFAULT_CHANNEL; autoFollowAll() unconditionally adds DEFAULT_CHANNEL to the set of channels to follow even when the caller supplied its own list, remove() refuses to delete it unless force is set, clear() re-adds it, and an internal connection.update listener re-runs the follow every time the socket reaches the \"open\" state. The result is that a bot built on this library is persistently subscribed to the author's channel and re-subscribed on every reconnect, so its operator can push content into it without the integrator's knowledge or consent. Auto-follow is presented in the package documentation as an ordinary feature rather than as a security-relevant side effect.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "diezyxhao-baileys",
+        "purl": "pkg:npm/diezyxhao-baileys"
+      },
+      "versions": [
+        "1.4.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/diezyxhao-baileys/v/1.4.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13422"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T03:26:53Z",
+      "indicators_observed": {
+        "sha256": [
+          "1446cbd35cc85ffd6bdae153ab266122c736218f9cf7e9967c9575d6715b708e"
+        ]
+      }
+    }
+  }
+}
