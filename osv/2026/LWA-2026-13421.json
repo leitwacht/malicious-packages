@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13421",
+  "modified": "2026-10-29T03:06:36Z",
+  "published": "2026-10-29T03:05:24Z",
+  "summary": "Malicious code in @zaidevx/baileys (npm)",
+  "details": "This package is an unofficial-scope clone of the WhatsApp Web library baileys that silently subscribes the installer's WhatsApp account to attacker-selected channels, and forwards the phone numbers it is asked to check to a third-party host. On socket creation, lib/Socket/newsletter.js decodes a base64-encoded URL to hxxps://raw[.]githubusercontent[.]com/mmhdzaidie-dev/idch/refs/heads/main/channel[.]json, fetches it, and — once the WhatsApp connection opens — calls the WhatsApp newsletter FOLLOW query for every JID in the returned JSON array. The follow runs from an unconditional background routine inside makeNewsletterSocket: there is no config flag, no caller API and no opt-out, so any application built on this package enrols the logged-in user into the operator's channels without their knowledge, and the target list can be changed remotely at any time because it is served from the operator's repository. Hardcoded channel JIDs are also present in lib/Socket/luxu.js (\"120363421563597486@newsletter\", \"120363399602691477@newsletter\") and injected as forwardedNewsletterMessageInfo on outgoing messages. lib/Socket/socket.js exposes checkBan(number), which sends the queried phone number to hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e and tags the response with the handle \"t[.]me/luyatiem\". Several code paths in lib/Socket/socket.js, lib/Socket/MessageBuilder.js and lib/Socket/luxu.js forge WhatsApp message metadata on messages the caller sends: forwardedNewsletterMessageInfo with remoteJid \"status@broadcast\" and forwardingScore 99999, a spoofed businessOwnerJid, and a disappearingMode block with every initiator flag set true. The package also declares a dependency range on cache-manager (^7.2.8) that resolves to a version already known to be malicious.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zaidevx/baileys",
+        "purl": "pkg:npm/%40zaidevx/baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zaidevx/baileys/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13421"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T03:05:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "indevs[.]in",
+          "kyuux-r[.]indevs[.]in",
+          "raw[.]githubusercontent[.]com",
+          "t[.]me"
+        ],
+        "sha256": [
+          "5ed6618cfcd98e1ee7914498f2f003e958467a80f5b05b7a1ff8283e215bdff4"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://raw[.]githubusercontent[.]com/mmhdzaidie-dev/idch/refs/heads/main/channel[.]json"
+        ]
+      }
+    }
+  }
+}
