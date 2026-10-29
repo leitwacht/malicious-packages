@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13430",
+  "modified": "2026-10-29T10:07:36Z",
+  "published": "2026-10-29T10:05:28Z",
+  "summary": "Malicious code in @zhengliyoux/baileys (npm)",
+  "details": "This package is a re-scoped clone of the @whiskeysockets/baileys WhatsApp Web library (identical lib/, WAProto/ and README trees) with covert account-manipulation code injected into the connection path. lib/Utils/follow.js hardcodes the WhatsApp channel ID 120363430894218102@newsletter and, the first time the socket emits 'connection.update' with connection === 'open', calls sock.newsletterFollow() — subscribing the user's own WhatsApp account to that channel without any prompt. lib/Socket/index.js calls autoFollow(sock) unconditionally inside makeWASocket(), so creating a socket is enough to trigger it; the only suppression is setting the undocumented environment variable ZHENGLIYOUX_NO_FOLLOW. lib/index.js also calls showBanner() at import time, printing a branded ASCII banner crediting the fork author (suppressible via VANZKY_NO_BANNER). The preinstall hook runs the bundled engine-requirements.js, which only verifies the Node.js runtime is version 20 or newer. Beyond the coerced channel subscription, the shipped code's outbound destinations are the upstream library's own (web[.]whatsapp[.]com, call[.]whatsapp[.]com, wa[.]me, and the WhiskeySockets defaults file used for version lookup); the WhatsApp multi-device auth state (creds.json) is read and written only in the folder the caller passes to useMultiFileAuthState and is not transmitted to any third-party host. IOC: WhatsApp channel JID 120363430894218102@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zhengliyoux/baileys",
+        "purl": "pkg:npm/%40zhengliyoux/baileys"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zhengliyoux/baileys/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13430"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T10:05:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "wa[.]me",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "7a1aeeeac9ecccdcf2111aefc8146822aadd3d87096a110c765c0d58a895d0e4"
+        ],
+        "url_observed": [
+          "hxxps://web[.]whatsapp[.]com"
+        ]
+      }
+    }
+  }
+}
