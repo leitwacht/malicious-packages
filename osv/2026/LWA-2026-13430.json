@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-13430",
-  "modified": "2026-10-29T10:07:36Z",
-  "published": "2026-10-29T10:05:28Z",
+  "modified": "2026-10-29T10:21:19Z",
+  "published": "2026-10-29T08:43:59Z",
   "summary": "Malicious code in @zhengliyoux/baileys (npm)",
-  "details": "This package is a re-scoped clone of the @whiskeysockets/baileys WhatsApp Web library (identical lib/, WAProto/ and README trees) with covert account-manipulation code injected into the connection path. lib/Utils/follow.js hardcodes the WhatsApp channel ID 120363430894218102@newsletter and, the first time the socket emits 'connection.update' with connection === 'open', calls sock.newsletterFollow() — subscribing the user's own WhatsApp account to that channel without any prompt. lib/Socket/index.js calls autoFollow(sock) unconditionally inside makeWASocket(), so creating a socket is enough to trigger it; the only suppression is setting the undocumented environment variable ZHENGLIYOUX_NO_FOLLOW. lib/index.js also calls showBanner() at import time, printing a branded ASCII banner crediting the fork author (suppressible via VANZKY_NO_BANNER). The preinstall hook runs the bundled engine-requirements.js, which only verifies the Node.js runtime is version 20 or newer. Beyond the coerced channel subscription, the shipped code's outbound destinations are the upstream library's own (web[.]whatsapp[.]com, call[.]whatsapp[.]com, wa[.]me, and the WhiskeySockets defaults file used for version lookup); the WhatsApp multi-device auth state (creds.json) is read and written only in the folder the caller passes to useMultiFileAuthState and is not transmitted to any third-party host. IOC: WhatsApp channel JID 120363430894218102@newsletter.",
+  "details": "This package is a modified clone of the WhiskeySockets \"Baileys\" WhatsApp Web library that silently enrols the user's WhatsApp account into an operator-controlled channel, and it ships a non-functional dependency pin (lib/Utils/lt-hash.js and lib/Utils/crypto.js import LTHashAntiTampering, expandAppStateKeys, md5 and hkdf from the bundled module \"whatsapp-rust-bridge\") that breaks any consumer of the real library's hash and crypto helpers. lib/Utils/follow.js hardcodes the channel JID 120363430894218102@newsletter and calls sock.newsletterFollow() on the socket's first 'connection.update' event with connection === 'open'; lib/Socket/index.js invokes this helper unconditionally from makeWASocket(), so every application that opens a connection follows the channel with no configuration or user consent. Enrolment is suppressed only by the env var ZHENGLIYOUX_NO_FOLLOW. Installation also runs a preinstall hook (engine-requirements.js) that exits unless Node.js \u003e= 20. Channel-enrolment IOC: 120363430894218102@newsletter. This package is a re-scoped clone of the @whiskeysockets/baileys WhatsApp Web library (identical lib/, WAProto/ and README trees) with covert account-manipulation code injected into the connection path. lib/Utils/follow.js hardcodes the WhatsApp channel ID 120363430894218102@newsletter and, the first time the socket emits 'connection.update' with connection === 'open', calls sock.newsletterFollow() — subscribing the user's own WhatsApp account to that channel without any prompt. lib/Socket/index.js calls autoFollow(sock) unconditionally inside makeWASocket(), so creating a socket is enough to trigger it; the only suppression is setting the undocumented environment variable ZHENGLIYOUX_NO_FOLLOW. lib/index.js also calls showBanner() at import time, printing a branded ASCII banner crediting the fork author (suppressible via VANZKY_NO_BANNER). The preinstall hook runs the bundled engine-requirements.js, which only verifies the Node.js runtime is version 20 or newer. Beyond the coerced channel subscription, the shipped code's outbound destinations are the upstream library's own (web[.]whatsapp[.]com, call[.]whatsapp[.]com, wa[.]me, and the WhiskeySockets defaults file used for version lookup); the WhatsApp multi-device auth state (creds.json) is read and written only in the folder the caller passes to useMultiFileAuthState and is not transmitted to any third-party host. IOC: WhatsApp channel JID 120363430894218102@newsletter.",
   "affected": [
     {
       "package": {
@@ -47,9 +47,10 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-10-29T10:05:28Z",
+      "first_seen_at": "2026-10-29T08:43:59Z",
       "indicators_observed": {
         "domain_observed": [
+          "120363430894218102@newsletter",
           "call[.]whatsapp[.]com",
           "wa[.]me",
           "web[.]whatsapp[.]com"
