@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13455",
+  "modified": "2026-10-29T20:01:21Z",
+  "published": "2026-10-29T14:35:24Z",
+  "summary": "Malicious code in @animebails/baileys (npm)",
+  "details": "@animebails/baileys is a modified fork of the canonical @whiskeysockets/baileys WhatsApp automation library, published under an unrelated scope, whose code silently enrols the operator's WhatsApp account in the author's channels. In lib/Socket/newsletter.js, makeNewsletterSocket schedules a setTimeout of 90000 ms and, when it fires, issues w:mex QueryIds.FOLLOW queries for two hardcoded channel JIDs — 120363421589882800@newsletter and 120363425383414251@newsletter — with every error swallowed. The follow is unconditional, fires on every socket creation rather than at install, and has no configuration switch, so any application built on this fork subscribes its WhatsApp account to those channels; the package's own keywords and description (\"ron-tech whatsapp baileys modification\", Fluxion / fluxcorp) confirm a modified fork rather than an upstream release. The author's channels are advertised at whatsapp[.]com/channel/0029VaranC0KmCPQCHryFs2C and whatsapp[.]com/channel/0029Vb7Lbw76LwHcPKCkvg2S. The package's preinstall hook, engine-requirements.js, only verifies the Node.js major version and exits. No credentials, tokens, environment variables, credential files or wallet data are read or transmitted; the behaviour is unauthorised account-level channel subscription, not exfiltration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@animebails/baileys",
+        "purl": "pkg:npm/%40animebails/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@animebails/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13455"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T14:35:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com",
+          "whatsapp[.]com/channel/0029VaranC0KmCPQCHryFs2C",
+          "whatsapp[.]com/channel/0029Vb7Lbw76LwHcPKCkvg2S"
+        ],
+        "sha256": [
+          "350331bf0e1a1878853b7a9f2ae96a33046c9fd844d58de324ac85322cfbb859"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VaranC0KmCPQCHryFs2C",
+          "hxxps://whatsapp[.]com/channel/0029Vb7Lbw76LwHcPKCkvg2S"
+        ]
+      }
+    }
+  }
+}

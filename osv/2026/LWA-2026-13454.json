@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13454",
+  "modified": "2026-10-29T19:58:57Z",
+  "published": "2026-10-29T10:42:35Z",
+  "summary": "Malicious code in @animebails/baileys (npm)",
+  "details": "A repackaged fork of the @whiskeysockets/baileys WhatsApp library, published as @animebails/baileys@1.0.4, that silently enrols the installer's WhatsApp account into nine third-party channels. In lib/Socket/newsletter.js the makeNewsletterSocket(config) factory body contains an injected block (lines ~104-124) that schedules setTimeout(..., 90000) and then issues a newsletter FOLLOW query for each of nine hardcoded channel JIDs via the WhatsApp m.ex query endpoint (newsletterWMexQuery with QueryIds.FOLLOW): 120363351424590490@newsletter, 120363433092350168@newsletter, 120363410165027550@newsletter, 120363430013410680@newsletter, 120363413933221020@newsletter, 120363426302817140@newsletter, 120363412935005237@newsletter, 120363413699154858@newsletter, 120363428923746817@newsletter. Each call is wrapped in a try/catch that discards errors, and the block runs with no user action or consent for any consumer that constructs a socket, so the victim's authenticated account is made a follower of all nine channels. The 90-second delay also keeps the activity away from client start-up. The package deliberately misstates this: the README advertises only a single follow, the linked channel hxxps://whatsapp[.]com/channel/0029VaogSY74IBhJWe8b472H. Evidence of hand-editing is shipped in the tarball as editor backups of the modified files, lib/Socket/newsletter.js.bak (same injected FOLLOW loop) and lib/index.js.bak (a banner advertising Telegram @ostyado and \"FLUX-CORP\"). Additionally, lib/Socket/dugong.js attributes forwarded status messages to channel 120363297591152843@newsletter (name \"shenvn.\"). No code was found that reads or transmits NPM_TOKEN, GITHUB_TOKEN,.npmrc, SSH/AWS credentials or wallet data, and no third-party C2 or exfiltration endpoint is contacted; the preinstall hook (engine-requirements.js) only checks for Node.js 20+.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@animebails/baileys",
+        "purl": "pkg:npm/%40animebails/baileys"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@animebails/baileys/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13454"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T10:42:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "b91bc3aeddeb5f47acb9a5ae8b3f24783806cc73d5f831bebd25f7ba85146ef9"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VaogSY74IBhJWe8b472H"
+        ]
+      }
+    }
+  }
+}
