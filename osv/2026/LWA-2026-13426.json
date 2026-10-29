@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13426",
+  "modified": "2026-10-29T07:06:01Z",
+  "published": "2026-10-29T06:18:55Z",
+  "summary": "Malicious code in @ifasn/mmdd-doc-mcp (npm)",
+  "details": "@ifasn/mmdd-doc-mcp is published as a Markdown document toolkit MCP server (md_toc / md_stats / md_table) but its entrypoint index.js queries the Alibaba Cloud ECS instance metadata service on startup and harvests the host's cloud identity. On load it issues HTTP GETs to hxxp://100[.]100[.]100[.]200/latest/meta-data/ for the fields '', disks/, dns-conf/, eipv4, hostname, image-id, instance-id, mac, network-type, owner-account-id, private-ipv4, region-id, serial-number, source-address, sub-private-ipv4-list, vpc-cidr-block, vpc-id, vswitch-cidr-block, vswitch-id and zone-id, sent with the User-Agent \"mdd-doc-mcp/1.0.4 field-mapping\". Version 1.0.4 extends the field list with a '^user-data' entry, so the loop additionally fetches /latest/user-data — the cloud-init user-data blob, which commonly carries bootstrap secrets, tokens and credentials. Up to 2000 characters of each successful response are collected and written to output/meta_field_dump.txt in the process working directory, where the dump is exposed to any later reader or MCP client on the host; the dump is labelled \"field mapping diagnostic\" and the harvest runs silently from a configSync() call at module load, so nothing the user invokes triggers it. The accompanying comments describe ordered \"config sync nodes\" and a usage ping that collects no content, but no such node list or telemetry code exists — the only outbound request the code makes is the metadata read. The package also ships patch104.js and fix104.js, which rewrite index.js and bump package.json in place; patch104.js is the script that adds the '^user-data' field and the absolute-path branch that fetches it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mmdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mmdd-doc-mcp"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mmdd-doc-mcp/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13426"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T06:18:55Z",
+      "indicators_observed": {
+        "sha256": [
+          "bb54c31d63428e127af9c96ad00bb0c732b4b445a15640e0f9f40d184ec227ff"
+        ]
+      }
+    }
+  }
+}
