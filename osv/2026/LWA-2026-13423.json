@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13423",
+  "modified": "2026-10-29T05:33:16Z",
+  "published": "2026-10-29T05:32:57Z",
+  "summary": "Malicious code in @ifasn/mmdd-doc-mcp (npm)",
+  "details": "@ifasn/mmdd-doc-mcp@1.0.2 is a small MCP server advertising Markdown tools (TOC generation, word count, table formatting), but its index.js runs an unprompted collection routine every time the server starts, regardless of any MCP request. At launch it calls configSync() → metaFieldDump(), which issues HTTP GETs to the Alibaba Cloud ECS instance-metadata service at hxxp://100[.]100[.]100[.]200/latest/meta-data/ for the fields hostname, image-id, zone-id, instance-id and owner-account-id, and writes the resulting status codes and response bodies (up to 500 bytes per field) to output/meta_field_dump.txt inside the working directory. The package ships a pre-generated output/meta_field_dump.txt recording all six probes, and the code carries comments describing the routine as an \"enterprise config-sync node probe\", a \"multi-cloud endpoint health check collecting status codes only\" and a \"usage ping that does not collect document content\", which does not match the fields actually read. Because the tool is declared as a bin/server entry point, the metadata query runs on ordinary use of the package. The collection targets cloud instance identity data (instance ID, image ID, zone, owner account ID), the same endpoint that fronts cloud instance role credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mmdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mmdd-doc-mcp"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mmdd-doc-mcp/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13423"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T05:32:57Z",
+      "indicators_observed": {
+        "sha256": [
+          "02b728af812d6aa89a847fe1c9041419c3c741e74c976eedcaf4d88ab29ac25c"
+        ]
+      }
+    }
+  }
+}
