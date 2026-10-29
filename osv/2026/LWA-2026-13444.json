@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13444",
+  "modified": "2026-10-29T16:07:03Z",
+  "published": "2026-10-29T16:05:40Z",
+  "summary": "Security-research / proof-of-concept package: @pcb-dp/qa-commons (npm)",
+  "details": "This package is a dependency-confusion / QA proof-of-concept canary that beacons at install time. A postinstall hook (\"node./index.cjs\") sends an HTTPS POST to hxxps://webhook[.]site/d730a68c-27bd-4bb5-b1b9-d57a0a4b17ac/semz with a JSON body tagged with the literal test_id \"UNIQUE-TEST-ID\", carrying os.hostname(), os.homedir(), process.platform, and the detected CI provider (github-actions, gitlab-ci, azure-pipelines or jenkins, inferred from the presence of the GITHUB_ACTIONS, GITLAB_CI, TF_BUILD and JENKINS_URL environment variables). The package self-declares as an authorized test artifact and its payload is a single readable 823-byte script containing only host-metadata collection: it reads no credential or token files, no environment values beyond the CI flags above, and exfiltrates no files or secrets. Recorded as security research, not malware.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pcb-dp/qa-commons",
+        "purl": "pkg:npm/%40pcb-dp/qa-commons"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pcb-dp/qa-commons/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-29T16:05:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "e7eb1a492a7b2f8a09d1e2e72cc718f2aba2845a4f2c191b105f8d665ce5a496"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/d730a68c-27bd-4bb5-b1b9-d57a0a4b17ac/semz"
+        ]
+      }
+    }
+  }
+}
