@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13480",
+  "modified": "2026-10-30T16:04:56Z",
+  "published": "2026-10-30T16:04:02Z",
+  "summary": "Malicious code in @sakataa/baileys (npm)",
+  "details": "This package is an unofficial-scope copy of the Baileys WhatsApp library (@whiskeysockets/baileys) published as @sakataa/baileys, with code added on top of the upstream source tree. Two behaviours matter. First, importing the package runs lib/Store/make-cache-manager-store.js, which calls require(\"cache-manager\") at module load, so the declared dependency range ^7.2.8 — resolving to cache-manager 7.2.10, a release with known malicious behaviour — is loaded as soon as the library is imported, not only when an optional cache store is requested. Second, lib/Socket/socket.js adds an exported helper `checkBan(number)` that sends the queried phone number to hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e with a spoofed desktop-browser User-Agent and returns the response tagged with creator \"t[.]me/luyatiem\"; this endpoint does not exist in the upstream library and is unrelated to WhatsApp. The package also pins whatsapp-rust-bridge 0.5.4 exactly and imports it from lib/Utils/crypto.js, lib/Utils/lt-hash.js and lib/Utils/chat-utils.js, so that third-party WASM bridge is loaded on every import. Installation itself only runs a Node.js version check (preinstall: node./engine-requirements.js); the package advertises itself via \"t[.]me/infobaileys\" and \"t[.]me/sakata_real\" console output. There is no obfuscation, no eval/eval(atob) decoding and no access to.npmrc, ~/.ssh, ~/.aws or cloud tokens in the code examined. IOCs: hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e, t[.]me/luyatiem, t[.]me/infobaileys, t[.]me/sakata_real.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sakataa/baileys",
+        "purl": "pkg:npm/%40sakataa/baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sakataa/baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13480"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-30T16:04:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me"
+        ],
+        "sha256": [
+          "716c964e792b57c5cf523a9cfee0a61a47a51b00be2ec652b98e5da8b73433fa"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp"
+        ]
+      }
+    }
+  }
+}
