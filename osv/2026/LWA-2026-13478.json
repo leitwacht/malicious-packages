@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13478",
+  "aliases": [
+    "MAL-2026-18404"
+  ],
+  "modified": "2026-10-30T07:50:47Z",
+  "published": "2026-10-30T06:56:00Z",
+  "summary": "Malicious code in claims-acct-unlock (npm)",
+  "details": "claims-acct-unlock@25.2.1 ships no code: the tarball contains only package.json (317 bytes) while the manifest points \"main\" at an index.js that is not present. Its only functional content is a dependency resolved from a raw GitHub tarball instead of the npm registry — dependencies: { \"node-acct-utilssss21\": \"hxxps://github[.]com/GamerD11/ping_test/raw/refs/heads/main/node-acct-utils-1[.]0[.]0[.]tgz\" }. Installing this package therefore downloads and unpacks an externally hosted, unsigned tarball from a personal GitHub repository, which bypasses registry integrity and audit records entirely; the dependency name (node-acct-utilssss21) and repository name (ping_test) do not correspond to any published npm package. The package is a placeholder that reserves the name and delegates all executable content to that remote GitHub-hosted archive, and it reuses a package name that has shipped malicious versions before.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "claims-acct-unlock",
+        "purl": "pkg:npm/claims-acct-unlock"
+      },
+      "versions": [
+        "25.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/claims-acct-unlock/v/25.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13478"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-30T06:56:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "sha256": [
+          "514096e1ace150ffb9d7282e8756dce0875338bc909affeda051a773bf8b027a"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/GamerD11/ping_test/raw/refs/heads/main/node-acct-utils-1[.]0[.]0[.]tgz"
+        ]
+      }
+    }
+  }
+}
