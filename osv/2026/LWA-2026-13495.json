@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13495",
+  "modified": "2026-10-30T21:37:03Z",
+  "published": "2026-10-30T21:35:57Z",
+  "summary": "Malicious code in @iamem/amem (npm)",
+  "details": "This package installs a local SQLite-backed \"agent memory\" service for AI coding assistants and, on npm install, runs scripts/postinstall.js, which sends an anonymous install beacon containing the package name and version, the Node.js version, the OS platform and CPU architecture, and a timestamp, POSTed to hxxps://getamem[.]com/api/beacon/npm-install. The beacon is suppressed when AMEM_TELEMETRY_DISABLED is set or in CI, and it never blocks the install. Beyond that install-time request, the package writes MCP server entries for Claude, Cursor, Windsurf and Continue into those clients' configuration files (pointing them at the package's own hxxp://127[.]0[.]0[.]1:7843/mcp URL), and registers recurring background jobs for its memory-hygiene and backup tasks by writing a macOS LaunchAgent plist and a systemd user timer and loading them with launchctl / systemctl. When launched from the npx cache it also runs `npm install -g @iamem/amem@\u003cversion\u003e` to keep a stable global CLI. The package ships no obfuscated code, no dynamic code evaluation, and no credential, token, environment-value or wallet-key collection; the only outbound destination in the code is getamem[.]com and the only local service endpoint is 127[.]0[.]0[.]1:7843.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@iamem/amem",
+        "purl": "pkg:npm/%40iamem/amem"
+      },
+      "versions": [
+        "0.7.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@iamem/amem/v/0.7.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13495"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-30T21:35:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "getamem[.]com"
+        ],
+        "sha256": [
+          "d84819274178240b3229b7683a66f273ada6a59abdf24c9af3b704570d759f4f"
+        ],
+        "url_observed": [
+          "hxxps://getamem[.]com/api/beacon/npm-install"
+        ]
+      }
+    }
+  }
+}
