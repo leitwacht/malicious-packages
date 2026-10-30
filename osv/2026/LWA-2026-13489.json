@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13489",
+  "modified": "2026-10-30T18:06:23Z",
+  "published": "2026-10-30T18:05:24Z",
+  "summary": "Malicious code in @sakataa/baileys (npm)",
+  "details": "This package is a republished copy of the Baileys WhatsApp Web library, published under a scope that differs from the upstream project it imitates, with payload injected into the socket layer. On every session start, lib/Socket/newsletter.js executes a hardcoded list of four base64-encoded WhatsApp channel identifiers (which decode to 120363426470081124@newsletter, 120363408893555851@newsletter, 120363424295522327@newsletter and 120363427718144294@newsletter) and calls the newsletter FOLLLOW query for each of them, staggered with 10s/15s/20s/25s timers. The account of anyone who installs and connects the library is therefore silently subscribed to those channels; errors are swallowed so the follow is invisible. The base64 encoding serves only to hide the identifiers from review. lib/Socket/socket.js adds an undocumented checkBan() helper (also exported on the socket object) which sends any phone number handed to it to a non-WhatsApp HTTP endpoint, hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e, and spreads the server's JSON response into the object returned to the caller. lib/Socket/luxu.js embeds an additional channel identifier, 120363421563597486@newsletter (\"D | 7eppeli-Exloration\"), and stamps it into forwardedNewsletterMessageInfo of event, album and poll messages generated through sendMessage, injecting channel attribution into the user's outgoing messages. Package metadata is arranged to look official while pointing away from the upstream project: the repository field is the non-GitHub string git+hxxps://github[.]com[.]t[.]me/sakata_real and the homepage/author are a Telegram contact. The preinstall hook is only a Node version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sakataa/baileys",
+        "purl": "pkg:npm/%40sakataa/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sakataa/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13489"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-30T18:05:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me/luyatiem",
+          "t[.]me/sakata_real"
+        ],
+        "sha256": [
+          "5b70e3c2f0fd58cfd88a465630c72ed93184875a1ac0ba3d5774615da9b6149b"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone="
+        ]
+      }
+    }
+  }
+}
