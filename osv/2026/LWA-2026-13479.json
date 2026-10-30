@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13479",
+  "modified": "2026-10-30T15:07:29Z",
+  "published": "2026-10-30T15:07:09Z",
+  "summary": "Security-research / proof-of-concept package: hissakdx-wix-ssr-callback-canary (npm)",
+  "details": "This package is a self-described callback canary used to verify where code lands in a Wix server-side-rendering (SSR) pipeline. It performs no install-time hook; the beacon runs when the module is imported. index.js detects its execution context (Node SSR builder vs. browser builder vs. viewer-platform worker) and issues a single out-of-band GET to hxxps://webhook[.]site/27264a2c-7b73-4b9c-99d8-dfc9681cd068/\u003ccontext-label\u003e with credentials:'omit'. worker-canary.js does the same from a worker context and sets an inert marker global (__WIX_VIEWER_PLATFORM_OVERRIDE_CANARY__). media-canary.txt is a script fragment that fetches hxxps://pea7692krk3ua1rcthnr5uifvg[.]ssrf-check[.]wix[.]com/builder-component-media-override-rce for a component-media override / SSRF probe. The only data transmitted is a static context label: the code reads no environment variables, no credentials, no files, no tokens, and sends no request body. Package footprint is four files (~1.8 KB): index.js, worker-canary.js, media-canary.txt, package.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hissakdx-wix-ssr-callback-canary",
+        "purl": "pkg:npm/hissakdx-wix-ssr-callback-canary"
+      },
+      "versions": [
+        "1.0.2"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hissakdx-wix-ssr-callback-canary/v/1.0.2"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-10-30T15:07:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "pea7692krk3ua1rcthnr5uifvg[.]ssrf-check[.]wix[.]com",
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "ad6ec04d5a60bd0b98eadb10af5a110ac111ba91dc8d3daf0f9966a02c9310c6"
+        ],
+        "url_observed": [
+          "hxxps://pea7692krk3ua1rcthnr5uifvg[.]ssrf-check[.]wix[.]com/builder-component-media-override-rce",
+          "hxxps://webhook[.]site/27264a2c-7b73-4b9c-99d8-dfc9681cd068/",
+          "hxxps://webhook[.]site/27264a2c-7b73-4b9c-99d8-dfc9681cd068/wix-builder-browser-canary",
+          "hxxps://webhook[.]site/27264a2c-7b73-4b9c-99d8-dfc9681cd068/wix-builder-ssr-node-canary",
+          "hxxps://webhook[.]site/27264a2c-7b73-4b9c-99d8-dfc9681cd068/wix-viewer-platform-worker-canary"
+        ]
+      }
+    }
+  }
+}
