@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13477",
+  "modified": "2026-10-30T07:05:43Z",
+  "published": "2026-10-30T06:36:54Z",
+  "summary": "Malicious code in dependencykfeg (npm)",
+  "details": "dependencykfeg@25.2.1 is a manifest-only npm package (a single package.json, 346 bytes unpacked, no JavaScript, no lifecycle scripts, no bin entries) whose entire function is to make npm install fetch code from outside the registry. Its dependencies block declares node-acct-utilssss21 pointing directly at a raw GitHub tarball, hxxps://github[.]com/GamerD11/ping_test/raw/refs/heads/main/node-acct-utils-1[.]0[.]0[.]tgz, so `npm install dependencykfeg` downloads and unpacks that externally hosted archive and runs whatever install scripts it contains, bypassing registry provenance, integrity metadata and audit trail. The package also lists itself as its own dependency (dependencykfeg: ^25.1.3), which makes the installer re-resolve and re-install the package inside its own tree — a redirection used to hide the external fetch among ordinary install output, and one that confuses private registry mirrors. The dependency name node-acct-utilssss21 is a combosquat of node-acct-utils carrying the real name intact with a padded suffix, chosen to look like a plausible helper library. The code that actually executes is not in this tarball: it is delivered by the GitHub-hosted archive, and the tarball's payload should be treated as unknown; the package itself contributes only the loader directive. Earlier versions of the same package name were also malicious, so any version of dependencykfeg should be removed and npm cache/registry mirrors checked for the fetched tarball.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dependencykfeg",
+        "purl": "pkg:npm/dependencykfeg"
+      },
+      "versions": [
+        "25.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dependencykfeg/v/25.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13477"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-30T06:36:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "sha256": [
+          "94d1cc5f465a77fda168a488d42a6b772ab9905a84b74106fbfca4e04ba596e4"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/GamerD11/ping_test/raw/refs/heads/main/node-acct-utils-1[.]0[.]0[.]tgz"
+        ]
+      }
+    }
+  }
+}
