@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13507",
+  "modified": "2026-10-31T14:07:42Z",
+  "published": "2026-10-31T13:51:57Z",
+  "summary": "Malicious code in @ifasn/mmdd-doc-mcp (npm)",
+  "details": "This package is a trojanized clone: it advertises a Markdown document toolkit MCP server (md_toc / md_stats / md_table over stdio JSON-RPC), but on startup, before serving any tool, it runs a container-reconnaissance and credential-harvesting routine and writes the results to output/meta_field_dump.txt. The routine in index.js requests the cloud instance metadata service at hxxp://100[.]100[.]100[.]200/latest/meta-data/ for region-id, zone-id, instance-id, owner-account-id, mac, serial-number, vpc-id/vswitch-id and /latest/user-data, and requests /latest/meta-data/ram/security-credentials/ and.../role-name, which returns the host's RAM role credentials; packaged patch scripts show the same loop extended with a PUT to /latest/api/token using the X-aliyun-ecs-metadata-token-ttl-seconds header so token-enforced metadata APIs are answered too. It then probes container-escape and host-access surface: /proc/self/status and /proc/1/status capability masks (CAP_SYS_ADMIN check), /proc/self/mountinfo for docker.sock, containerd.sock, kubelet and hostPath mounts, block devices /dev/vdb, /dev/vda, /dev/sda, /dev/nvme0n1 and /dev/mapper, /proc/1/root, and a hardcoded list of host paths taken from a specific container's mountinfo (including a fixed kubelet pod directory and containerd snapshot path), along with /etc/shadow, /etc/passwd, /var/run/secrets/kubernetes[.]io/serviceaccount/token, /var/www/html/.env, /var/www/html/config.php and /root/.ssh/id_rsa. For those files it records SSH private-key blocks,.env/php config keys and shadow password-hash presence. The package ships output/meta_field_dump.txt, a captured run of that routine. The network IOC is the hardcoded link-local metadata endpoint hxxp://100[.]100[.]100[.]200; there is no other external host or domain in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mmdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mmdd-doc-mcp"
+      },
+      "versions": [
+        "1.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mmdd-doc-mcp/v/1.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13507"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T13:51:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io"
+        ],
+        "sha256": [
+          "08e42eeefd77e2c1e27d8b728371845fdab894d96d3926f038eb434fe375caa8"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13506",
+  "modified": "2026-10-31T14:04:16Z",
+  "published": "2026-10-31T14:02:18Z",
+  "summary": "Malicious code in char-ai-sdk (npm)",
+  "details": "Char-ai-sdk@1.0.0 presents itself as a Character[.]AI persona/memory SDK, but importing the package also executes an undocumented, obfuscated payload chain. Its entry point (index.mjs) loads personas.mjs, which imports \"./cache-warm.mjs\" under the innocuous alias \"cssVarMap as personaCache\" — so any `import \"char-ai-sdk\"` or `require()` runs the payload with no lifecycle hook and no opt-in. The payload consists of four large obfuscated files — cache-warm.mjs (280KB), cache-sweep.mjs (298KB), build-cache.mjs (204KB) and workspaces.js (291KB) — with thousands of _0x identifiers, base64 string tables decoded via atob plus a single-byte XOR (0x52/0x40/0x69), ~1200-entry accessor tables, and blocks of dead-code filler. build-cache.mjs re-reads its own source file and rewrites a sibling file if a sentinel line has changed (a self-integrity/tamper check). What the code does, as read from the package:\n- cache-warm.mjs locates the installed project root, then spawns a bundled script with a detached, unref'd background process (process.execPath, detached: true, windowsHide: true, rewritten env, temp path built from os.tmpdir() plus a random hex suffix) that outlives the process that imported the package.\n- The detached stage iterates every directory in the PATH environment variable and, in each writable one, writes an executable shim and chmods it to 0755 (chmodSync(path, 493)) — shadowing Node/npm executables on the user's PATH.\n- It copies the complete process environment (Object.assign(obj, process.env)) and writes it to a JSON file inside a package cache directory, plus a second file listing the environment-variable names, so the background child can reuse the installer's environment.\n- It issues HTTP/HTTPS requests with a 4-second timeout to a host:port endpoint and a request path that are stored only as obfuscated strings (no plaintext URL appears anywhere in the package).\n- The package ships five prebuilt native addons with no source and no documentation: native/linux/x64/cache-probe.node, native/linux/arm64/cache-probe.node, native/win32/x64/cache-probe.node, native/win32/arm64/cache-probe.node and native/darwin/{x64,arm64}/cache-probe.node. None of this behaviour appears in the package README, ARCHITECTURE, SECURITY or API docs, which describe only persona storage and a local service on localhost:8787. The only network destination visible in the code is stored encoded as a host:port string, so no plaintext C2 URL can be listed; the on-disk indicators are the four obfuscated.mjs/.js files above, a package cache directory written with a JSON dump of the process environment plus an env-variable-name list, and executable 0755 shims written into PATH directories.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "char-ai-sdk",
+        "purl": "pkg:npm/char-ai-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/char-ai-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13506"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T14:02:18Z",
+      "indicators_observed": {
+        "sha256": [
+          "842d2f554f6d04027f65a60a757ec0108546069152646cd98ebb2dd76ed6d139"
+        ]
+      }
+    }
+  }
+}
