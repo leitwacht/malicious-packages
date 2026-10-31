@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13518",
+  "modified": "2026-10-31T21:42:50Z",
+  "published": "2026-10-31T21:41:16Z",
+  "summary": "Malicious code in persona-ai-sdk (npm)",
+  "details": "Persona-ai-sdk@1.0.0 is an AI character SDK that hides a remote-code loader inside heavily obfuscated modules wired into its public entry point. index.mjs imports personas.mjs, which imports \"cssVarMap\" from./cache-warm.mjs; that file, plus sibling modules cache-sweep.mjs, build-cache.mjs and workspaces.js, are javascript-obfuscator output (thousands of _0x identifiers, a shuffled base64 string table, String.fromCharCode constant folding, and XOR decoders) performing no cache work at all. On first use of the persona cache, cache-warm.mjs runs an async loader that imports node:fs, node:path, node:os, node:url and node:child_process and calls a hidden entry function. build-cache.mjs then resolves a hex:IPv4:port token, fetches a script over raw HTTP (node:http POST/GET helpers with a 2.5s timeout), passes the returned body to (0, eval)(...), and re-launches that fetched script as a detached, unref'd node child process with windowsHide set and the installer's complete process.env passed through as its environment. cache-sweep.mjs performs the same detached spawn of a fetched script via process.execPath. The package also ships six platform-specific native addons, native/{win32,linux,darwin}/{x64,arm64}/cache-probe.node, built on the VMAware/node-vm-detect library: embedded strings include \"isVM\", \"brand\", \"Hypervisor (Type 1)\", \"Hypervisor (Type 2)\", \"TPM\", \"MEASURED_BOOT\" and paths under node-vm-detect/VMAware/src/vmaware.hpp, i.e. hypervisor/sandbox detection. cache-warm.mjs additionally walks parent directories reading package.json files and assembles the host project's dependency tree into a string. The second-stage payload is fetched at runtime, so its host and URL are not present in the published files; the delivery uses plain HTTP to a raw hex:IP:port token.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "persona-ai-sdk",
+        "purl": "pkg:npm/persona-ai-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/persona-ai-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13518"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T21:41:16Z",
+      "indicators_observed": {
+        "sha256": [
+          "974621c7a03ad90ecf94b45e68d0d63e25bfb2febc740c65e176bc4e95efbc65"
+        ]
+      }
+    }
+  }
+}
