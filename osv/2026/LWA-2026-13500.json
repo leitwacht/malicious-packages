@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13500",
+  "modified": "2026-10-31T05:39:22Z",
+  "published": "2026-10-31T05:37:56Z",
+  "summary": "Malicious code in agent-bypass (npm)",
+  "details": "This package is an offensive-security \"agent skills\" toolkit that installs AI-agent instructions and ships a credential-harvesting script chain aimed at third-party web hosts. bin/install.js writes skill and prompt-injection files into ~/.pi/agent/skills/agent-bypass, ~/.config/opencode/skills/agent-bypass and ~/.agents/skills/agent-bypass, appends marker-delimited blocks to the global agent instruction files (AGENTS.md, APPEND_SYSTEM.md) and to ~/.dsh/profiles/\u003cprofile\u003e/cordis.patch.yml, and records what it wrote in.agent-bypass-manifest.json. scripts/keystrike.py takes target hosts discovered through the FOFA (hxxps://fofa[.]info/api/v1/search/all) and Shodan (hxxps://api[.]shodan[.]io/shodan/host/search) search APIs and requests roughly 80 credential paths against each target: /.env, /.env.backup, /.npmrc, /.git/HEAD, /.ssh/id_rsa, /.ssh/id_ed25519, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json, /.hermes/auth.json, /.hermes/config.yaml, /.openclaw/openclaw.json, /config.yaml, /.mcp.json, wallet.json, wallet.dat, mnemonic, private.key, binance.json, api_keys.json. It extracts vendor API keys from the responses (AWS, JWT, SMTP, MySQL, Redis, and provider key patterns), writes them to local result files, and validates harvested the model keys against hxxps://api[.]the model to confirm live balances. The bundled skill document ck-hunter.md drives the same hunt with FOFA/Shodan/Quake/Hunter queries against the.hermes,.claude,.codex,.openclaw,.opencode,.npmrc,.ssh,.env, TelegramDesktop, wallet.json, wallet.dat, binance.json,.ethereum, private.key and mnemonic paths. scripts/origin_trace.py resolves domains over DoH (hxxps://1[.]1[.]1[.]1/dns-query, hxxps://dns[.]google/resolve, hxxps://223[.]5[.]5[.]5/resolve), enumerates subdomains from crt.sh, api[.]certspotter[.]com, otx[.]alienvault[.]com, api[.]hackertarget[.]com, jldc[.]me and rapiddns[.]io, and then connects directly to candidate IPs on port 443 with certificate and hostname verification disabled (check_hostname=False, verify_mode=CERT_NONE) to fingerprint origin servers behind a CDN/WAF. The package contains no attacker-owned command-and-control or exfiltration endpoint and no install-time code execution: every outbound destination is one of the public search, certificate-transparency/passive-DNS or the model service APIs listed above, and collected data is written to local files (hunt/unique_hosts.txt, hunt_report.html) under the operator's working directory.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "agent-bypass",
+        "purl": "pkg:npm/agent-bypass"
+      },
+      "versions": [
+        "2.28.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/agent-bypass/v/2.28.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13500"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T05:37:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]certspotter[.]com",
+          "api[.]hackertarget[.]com",
+          "api[.]shodan[.]io",
+          "crt[.]sh",
+          "fofa[.]info",
+          "jldc[.]me",
+          "otx[.]alienvault[.]com",
+          "rapiddns[.]io"
+        ],
+        "ip_observed": [
+          "1[.]1[.]1[.]1",
+          "223[.]5[.]5[.]5"
+        ],
+        "sha256": [
+          "bb8e477a6f776502de86b14bf59964ddba5e5cebc6a0eddf1bc306e482ec41f1"
+        ],
+        "url_observed": [
+          "hxxps://1[.]1[.]1[.]1/dns-query",
+          "hxxps://223[.]5[.]5[.]5/resolve",
+          "hxxps://api[.]shodan[.]io/shodan/host/search",
+          "hxxps://dns[.]google/resolve",
+          "hxxps://fofa[.]info/api/v1/search/all"
+        ]
+      }
+    }
+  }
+}
