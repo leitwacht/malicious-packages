@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13502",
+  "modified": "2026-10-31T07:06:28Z",
+  "published": "2026-10-31T06:41:59Z",
+  "summary": "Malicious code in kevinx-baileys (npm)",
+  "details": "kevinx-baileys@1.2.2 republishes a fork of the Baileys WhatsApp Web library with two behaviours added to the core socket path. In lib/Socket/newsletter.js, the constructor makeNewsletterSocket() unconditionally joins four hardcoded WhatsApp channels that are not the calling application's: the JIDs are hidden as base64 strings in the array named xI (they decode to 120363426470081124@newsletter, 120363408893555851@newsletter, 120363424295522327@newsletter and 120363427718144294@newsletter) and each is submitted to WhatsApp's xwa2_newsletter_follow w:mex query on staggered 10s/15s/20s/25s timers when the socket object is built. This constructor sits in the core makeWASocket() chain (lib/Socket/username.js -\u003e lib/Socket/messages-send.js -\u003e lib/Socket/index.js), so the follows run for every consumer of the library, even though the library's own autoFollowChannels option defaults to an empty list and is implemented elsewhere. Separately, lib/Socket/socket.js exposes sock.checkBan(), which sends a phone number to hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e, an endpoint unrelated to WhatsApp, and stamps a hardcoded attribution handle into the response it returns. The install-time hook (engine-requirements.js) only enforces Node \u003e= 20; the account hijacking and third-party lookup run when the library is imported and a socket is created. IOCs: domain kyuux-r.indevs.in; URL hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=; newsletter JIDs 120363426470081124@newsletter, 120363408893555851@newsletter, 120363424295522327@newsletter, 120363427718144294@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "kevinx-baileys",
+        "purl": "pkg:npm/kevinx-baileys"
+      },
+      "versions": [
+        "1.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/kevinx-baileys/v/1.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13502"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T06:41:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in"
+        ],
+        "sha256": [
+          "ac946caad8ac2770acb02a08242fdff4ce9f9b870b700dae6ebc88d06dd2b24f"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone="
+        ]
+      }
+    }
+  }
+}
