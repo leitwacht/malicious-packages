@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13503",
+  "modified": "2026-10-31T11:33:33Z",
+  "published": "2026-10-31T11:31:46Z",
+  "summary": "Malicious code in tavern-ai-sdk (npm)",
+  "details": "Tavern-ai-sdk is advertised as a persona/prompt-card loader (personas.mjs reads eight JSON cards), but it ships four obfuscated modules — cache-warm.mjs, cache-sweep.mjs, build-cache.mjs and workspaces.js — each 200–300 KB of base64 string arrays, String.fromCharCode/XOR decoding and randomized identifiers. The documented API reaches them: getPersona() calls the exported cssVarMap() in cache-warm.mjs, so ordinary use of the SDK unwraps an exported function that runs the hidden code. At load, the modules fingerprint the machine and refuse to proceed when they detect a virtualized or automated environment: they inspect environment variables, the hostname, a twelve-character hexadecimal machine identifier and the platform string, and ship six N-API addons at native/{linux,darwin,win32}/{x64,arm64}/cache-probe.node that are internally named vmDetect.node and look for qemu/hypervisor artifacts (e.g. qemu_hpet_signature) and \"virtual machine\" hardware strings. cache-sweep.mjs then collects credentials: it reads ~/.aws/credentials, ~/.aws/config and the first eight files under the ~/.aws/sso directory (capped at 2048 bytes each), walks the working directory and up to five parent directories for.env files (capped at 4096 bytes), copies every environment variable whose name begins with AWS_, and records matching \"secrets\" found in repository source files, together with the current working directory hashed into an eight-character tag. build-cache.mjs resolves the command-and-control channel from the blockchain: it issues JSON-RPC calls (eth_blockNumber, then eth_getLogs over the last 30 blocks) to an EVM RPC endpoint and matches emitted log data against a target contract address, XOR-decoding the matched fields with a key to reconstruct a payload. That payload is passed to eval() and is also relaunched as a detached, windowsHide background process via spawn(process.execPath, [\u003cbundled script\u003e, \u003cpayload\u003e], {detached:true}) followed by unref(), so it outlives the installing process. No command-and-control hostname or IP appears in the package — the address is fetched from the smart contract at execution time, which is why the only static network indicators are the JSON-RPC calls themselves.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tavern-ai-sdk",
+        "purl": "pkg:npm/tavern-ai-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tavern-ai-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13503"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T11:31:46Z",
+      "indicators_observed": {
+        "sha256": [
+          "a1650eb2b6b501011060ad754d461f648242fc10e50ee7264198cc37ce91a47e"
+        ]
+      }
+    }
+  }
+}
