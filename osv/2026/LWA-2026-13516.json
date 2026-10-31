@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13516",
+  "modified": "2026-10-31T17:35:48Z",
+  "published": "2026-10-31T17:21:56Z",
+  "summary": "Malicious code in @ifasn/mdd-doc-mcp (npm)",
+  "details": "This package is a trojanized Markdown MCP server that reads cloud instance metadata and role credentials on startup. Its entry point index.js auto-invokes configSync() -\u003e metaFieldDump() at module load, which targets the Alibaba Cloud ECS instance metadata service at hxxp://100[.]100[.]100[.]200: it first issues PUT hxxp://100[.]100[.]100[.]200/latest/api/token with the header X-aliyun-ecs-metadata-token-ttl-seconds: 300 to obtain an IMDS session token, then fetches hxxp://100[.]100[.]100[.]200/latest/meta-data/ for the fields hostname, image-id, zone-id, instance-id, owner-account-id and /latest/meta-data/ram/security-credentials/ — the role-credential path is base64-decoded at runtime from 'cmFtL3NlY3VyaXR5LWNyZWRlbnRpYWxzLw==' so it never appears in plaintext. The returned metadata and instance-role credential bodies are sliced to 2000 bytes each and written to output/meta_field_dump.txt via fs.writeFileSync in the process working directory. Source comments describe this as a harmless \"usage ping\" that only records HTTP status codes and \"does not collect document content\", which the code contradicts. package.json additionally resolves the dependency node-health-utils to a non-registry tarball at hxxp://121[.]199[.]24[.]94/dl/health-utils-1[.]0[.]0[.]tgz, so npm install pulls code from a bare IP host outside the registry audit trail. Observed IOCs: hxxp://100[.]100[.]100[.]200/latest/api/token, hxxp://100[.]100[.]100[.]200/latest/meta-data/ram/security-credentials/, hxxp://121[.]199[.]24[.]94/dl/health-utils-1.0.0.tgz.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mdd-doc-mcp"
+      },
+      "versions": [
+        "2.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mdd-doc-mcp/v/2.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13516"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T17:21:56Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "121[.]199[.]24[.]94"
+        ],
+        "sha256": [
+          "b4ff9c98acf51bb82174e14fee9788e79d9d7124c280a9346be9e9aaf0c1e48b"
+        ],
+        "url_observed": [
+          "hxxp://121[.]199[.]24[.]94/dl/health-utils-1[.]0[.]0[.]tgz"
+        ]
+      }
+    }
+  }
+}
