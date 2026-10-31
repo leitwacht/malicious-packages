@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13501",
+  "modified": "2026-10-31T06:22:03Z",
+  "published": "2026-10-31T06:20:24Z",
+  "summary": "Malicious code in raiden-baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library that silently enrols the operator's WhatsApp account into two channels controlled by the package author, with no opt-in. In lib/Socket/newsletter.js, inside makeNewsletterSocket, a hardcoded timer (setTimeout, 120000 ms) fires roughly two minutes after the socket is created and issues newsletter w:mex FOLLOW queries for the hardcoded JIDs 120363407277177688@newsletter and 120363407702752541@newsletter, swallowing any error. The block sits outside the library's normal opt-in newsletterSubscribe API and runs for every account that loads the module, so any bot built on this fork follows those channels without the operator's knowledge; the 120-second delay keeps the action away from the connect path. The preinstall hook (node./engine-requirements.js) only performs a Node.js version check, and the package pulls its Signal protocol implementation from a third-party fork (github:RahmadTenpoles/libsignal-node) rather than upstream, giving the publisher control of the transitive crypto layer. No credential, token, environment or file exfiltration and no external C2 endpoints were observed; all traffic terminates at wss://web[.]whatsapp[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "raiden-baileys",
+        "purl": "pkg:npm/raiden-baileys"
+      },
+      "versions": [
+        "2.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/raiden-baileys/v/2.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13501"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T06:20:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "979bdbf11bbedfe7341b19b7e87b953f657510b869569c2e7b818e3be94463a7"
+        ]
+      }
+    }
+  }
+}
