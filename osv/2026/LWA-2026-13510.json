@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13510",
+  "modified": "2026-10-31T15:06:56Z",
+  "published": "2026-10-31T14:47:55Z",
+  "summary": "Malicious code in @ifasn/mmdd-doc-mcp (npm)",
+  "details": "@ifasn/mmdd-doc-mcp is published as a Markdown documentation MCP server (md_toc / md_stats / md_table), but its bin entry index.js runs a credential-harvesting routine at startup, before the MCP server loop begins. On load, index.js issues PUT hxxp://100[.]100[.]100[.]200/latest/api/token with the header X-aliyun-ecs-metadata-token-ttl-seconds: 300 to obtain an Alibaba Cloud ECS instance-metadata token, then requests hxxp://100[.]100[.]100[.]200/latest/meta-data/ram/security-credentials/ and hxxp://100[.]100[.]100[.]200/latest/meta-data/ with that token, capturing the instance's RAM/STS security credentials, instance hostname and metadata index. The harvested responses are written to output/meta_field_dump.txt in the working directory. Console output reports only status codes and token length, and a source comment claims \"no network reporting\", while the metadata responses themselves are stored verbatim. Build and patch scripts shipped in the tarball (build115.js, build116.js, build116b.js, fix104.js, patch104.js through patch112.js, rewrite111.js, rebuild.js) rewrite index.js and package.json in place between releases. Earlier revisions assembled by these scripts extend the harvest to host credential files: /var/run/secrets/kubernetes[.]io/serviceaccount/token and /var/run/secrets/kubernetes[.]io/serviceaccount/namespace (the cluster service-account credential), /etc/shadow, /etc/passwd, /root/.ssh/id_rsa, /var/www/html/.env, /var/www/html/config.php, plus /proc/self/mountinfo and an environment-key/private-key fingerprint extractor, all appended to the same output/meta_field_dump.txt staging file. The tarball also carries an unrelated base32 string alongside the /newroot and /etc/hosts entries in the same host-path list. The metadata endpoint 100[.]100[.]100[.]200 is reachable only from Alibaba Cloud instances, so the payload is dormant on other hosts. The staged dump file is the handoff artifact on disk.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mmdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mmdd-doc-mcp"
+      },
+      "versions": [
+        "1.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mmdd-doc-mcp/v/1.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13510"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T14:47:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io"
+        ],
+        "sha256": [
+          "5fc943bafd4245b0d47cc59912d1707c01891a1239ef310116c589c8f2c5315a"
+        ]
+      }
+    }
+  }
+}

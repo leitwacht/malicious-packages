@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13509",
+  "modified": "2026-10-31T15:05:53Z",
+  "published": "2026-10-31T14:56:00Z",
+  "summary": "Malicious code in @ifasn/mmdd-doc-mcp (npm)",
+  "details": "This package is billed as a Markdown MCP server (md_toc / md_stats / md_table) but its entry point index.js runs an unsolicited cloud-infrastructure reconnaissance routine on startup, before any MCP request is served. The routine (v2Probe) issues requests to the Alibaba Cloud instance metadata service at hxxp://100[.]100[.]100[.]200 — a PUT to /latest/api/token with the X-aliyun-ecs-metadata-token-ttl-seconds header, a GET to /latest/meta-data/ram/security-credentials/ (the RAM role credential path), and a GET to /latest/meta-data/ — and reports only the HTTP status of each to the endpoint hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon (IP fallback hxxp://121[.]199[.]24[.]94/beacon) with query parameters stage=v2probe, src=mmdd-doc-mcp and res=\u003cstatus list\u003e. Results are also written to output/meta_field_dump.txt in the working directory. The same package ships in-tree generator scripts (build115.js, build116.js, rewrite111.js, patch1xx.js) whose source shows the fuller payload this routine was reduced from: a metaFieldDump function that enumerates ~35 instance metadata fields (instance-id, hostname, mac, vpc-id, vswitch-id, serial-number, zone-id, owner-account-id, ^user-data, ram/security-credentials/role-name, network/interfaces/), reads /proc/self/status CapEff to test for CAP_SYS_ADMIN, parses /proc/self/mountinfo for docker.sock, containerd.sock, kubelet and hostPath mounts, probes block devices /dev/vdb, /dev/vda, /dev/sda, /dev/nvme0n1, counts processes under /proc, and reads host paths including /var/run/secrets/kubernetes[.]io/serviceaccount/token, /etc/shadow, /etc/passwd, /root/.ssh/id_rsa, /var/www/html/.env and /var/www/html/config.php. Each generator script rewrites index.js and the package's own package.json version in place before publishing, so a post-install inspection of the extracted tree does not reflect what an earlier version executed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mmdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mmdd-doc-mcp"
+      },
+      "versions": [
+        "1.1.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mmdd-doc-mcp/v/1.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13509"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T14:56:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "121[.]199[.]24[.]94[.]nip[.]io",
+          "kubernetes[.]io"
+        ],
+        "ip_observed": [
+          "121[.]199[.]24[.]94"
+        ],
+        "sha256": [
+          "2d01129c37b23c1cdc1a4b9ffdeeabd712c951448080b3824512304722662cd3"
+        ],
+        "url_observed": [
+          "hxxp://121[.]199[.]24[.]94[.]nip[.]io/beacon",
+          "hxxp://121[.]199[.]24[.]94/beacon"
+        ]
+      }
+    }
+  }
+}
