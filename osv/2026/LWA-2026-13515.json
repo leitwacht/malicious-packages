@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13515",
+  "modified": "2026-10-31T16:35:47Z",
+  "published": "2026-10-31T16:11:54Z",
+  "summary": "Malicious code in @ifasn/mmdd-doc-mcp (npm)",
+  "details": "This package is a Markdown-toolkit MCP server whose bundled entry point index.js also performs a hidden cloud-instance metadata probe every time it starts (fieldMapping() invoked at module load, no user action required). The endpoint, paths and HTTP verb are obfuscated to keep them out of static inspection: the host is assembled from a base64 literal that decodes to the link-local Aliyun ECS metadata address hxxp://100[.]100[.]100[.]200, and the paths /latest/api/token and /latest/meta-data/hostname plus the header X-aliyun-ecs-metadata-token-ttl-seconds are each rebuilt from arrays of decimal character codes via String.fromCharCode, with the method \"PUT\" assembled as [\"PU\",\"T\"].join(\"\"). At startup it sends a PUT to hxxp://100[.]100[.]100[.]200/latest/api/token with that TTL header to obtain an instance-metadata token, then GETs hxxp://100[.]100[.]100[.]200/latest/meta-data/hostname and writes the collected responses to output/meta_field_dump.txt, framed in comments as a \"field mapping check\". No attacker-controlled network destination or credential-harvesting code is present in this file; the payload touches the cloud instance metadata API at startup.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/mmdd-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/mmdd-doc-mcp"
+      },
+      "versions": [
+        "2.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/mmdd-doc-mcp/v/2.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13515"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T16:11:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "4de2136924e0d4fcbf97994b2fe835bc3f3a78d09ffe23659fb0d2417eb3c5f5"
+        ]
+      }
+    }
+  }
+}
