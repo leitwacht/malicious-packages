@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13508",
+  "modified": "2026-10-31T14:24:32Z",
+  "published": "2026-10-31T14:22:10Z",
+  "summary": "Malicious code in character-ai-sdk (npm)",
+  "details": "The package ships four heavily obfuscated JavaScript bundles (cache-warm.mjs, cache-sweep.mjs, build-cache.mjs, workspaces.js — 200-300KB each, _0x identifiers, base64+XOR string tables, large blocks of dead arithmetic predicates) alongside an otherwise documented, typed SDK surface. Obfuscated code runs on ordinary use of the package: personas.mjs imports cssVarMap from cache-warm.mjs and calls it from getPersona(); cssVarMap walks up to eight parent directories reading package.json to locate the enclosing project root, then spawns `process.execPath build-cache.mjs` with detached:true, stdio:'ignore', windowsHide:true and a randomised temp path in the environment, and unref()s it — a hidden process that keeps running after the calling application exits. build-cache.mjs writes executable files (chmod 0755) into directories taken from the caller's PATH and into dependency directories, drops a launcher file in the project root, and spawns git and npm with detached:true. The package also ships prebuilt native addons in native/{linux,darwin,win32}/{x64,arm64}/cache-probe.node compiled from the node-vm-detect native host/VM detection project, which no documentation mentions. The hidden bundles contain no network module imports and no cleartext URLs; the decoded string tables hold filesystem and environment-name fragments (e.g. \"scope/manifest/breakpoint….json\", \"_v10\"). No NPM_TOKEN,.npmrc or GitHub token references are present in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "character-ai-sdk",
+        "purl": "pkg:npm/character-ai-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/character-ai-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13508"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T14:22:10Z",
+      "indicators_observed": {
+        "sha256": [
+          "13df476de95b6de0b15709a189c8e342101904374a85031f3ee1e2ed88e9a651"
+        ]
+      }
+    }
+  }
+}
