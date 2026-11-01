@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13531",
+  "modified": "2026-11-01T23:21:26Z",
+  "published": "2026-11-01T23:20:23Z",
+  "summary": "Malicious code in @dcloude/baileys (npm)",
+  "details": "A republished WhatsApp automation library fork that silently enrols the installing user's WhatsApp account into channels controlled by its author. lib/Defaults/index.js ships a hardcoded DEFAULT_AUTO_FOLLOW_CHANNELS array of 22 WhatsApp channel JIDs (e.g. 120363429884981859@newsletter, 120363411629646029@newsletter, 120363406620310731@newsletter, 120363429449887888@newsletter, 120363429324002976@newsletter, 120363413199437385@newsletter, 120363411652204506@newsletter, 120363429559850392@newsletter, 120363411227198037@newsletter, 120363427824447543@newsletter) and sets it as the default value of the autoFollowChannels socket option. lib/Socket/newsletter.js registers a 'connection.update' handler that, on the first successful connection, walks that list and issues a newsletter FOLLOW query (newsletterWMexQuery(jid, QueryIds.FOLLOW)) for every JID, subscribing the developer's own WhatsApp account to those channels. The behaviour is enabled by default and presented as opt-out in code comments; a blockAutoFollowChannels guard that is on by default seeds its allowlist from the same hardcoded JIDs, so it blocks other code from following channels while leaving the author's 22 channels followed. The package also bundles lib/antiban.cjs, a 132KB anti-detection module that inserts zero-width characters (U+200B, U+200C, U+200D, U+FEFF) and swaps words from a synonym table to vary outgoing message content and evade automated abuse detection, and its preinstall hook (node./engine-requirements.js) enforces a Node.js version floor. No network destinations were observed other than WhatsApp/Meta endpoints; there is no credential, token or file exfiltration in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dcloude/baileys",
+        "purl": "pkg:npm/%40dcloude/baileys"
+      },
+      "versions": [
+        "0.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dcloude/baileys/v/0.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13531"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-01T23:20:23Z",
+      "indicators_observed": {
+        "sha256": [
+          "b2235f1be3bd06885a9e589d1c70245daf9e05a585afaa97d3d3e98ba2e4c27a"
+        ]
+      }
+    }
+  }
+}

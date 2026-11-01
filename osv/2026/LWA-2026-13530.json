@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13530",
+  "modified": "2026-11-01T05:51:19Z",
+  "published": "2026-11-01T02:08:54Z",
+  "summary": "Malicious code in @dcloude/baileys (npm)",
+  "details": "This package is a modified fork of the well-known @whiskeysockets/baileys WhatsApp client that keeps the upstream library name as its basename under a different scope, and it is confirmed malware: a prior version under this name was already confirmed malicious. The payload is account-level abuse baked into the default configuration. lib/Defaults/index.js exports DEFAULT_AUTO_FOLLOW_CHANNELS, a hardcoded array of 22 or more WhatsApp newsletter (channel) JIDs, and lib/Socket/newsletter.js subscribes the operator's own WhatsApp account to every one of them the first time the socket reaches the 'open' connection state, by issuing newsletterWMexQuery(jid, QueryIds.FOLLOW) for each JID. It is presented as an opt-out default (`autoFollowChannels`), and a second allowlist guard (`blockAutoFollowChannels`) exists only to constrain which newsletters any later follow call may reach, so the package's default path is the forced subscriptions the user never asked for. The rest of the package is the genuine library: lib/Socket/graphql.js posts to wamo[.]whatsapp[.]net and the WhatsApp GraphQL endpoints, and lib/Utils/messages-media.js fetches media URLs supplied by callers. The package.json declares a preinstall hook, node./engine-requirements.js, which only checks that the Node.js major version is 20 or higher and exits otherwise. Indicators: forced follows of newsletter JIDs 120363429884981859@newsletter, 120363411629646029@newsletter, 120363406620310731@newsletter, 120363429449887888@newsletter, 120363429324002976@newsletter, 120363413199437385@newsletter (and further 1203634*@newsletter JIDs in the same array).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dcloude/baileys",
+        "purl": "pkg:npm/%40dcloude/baileys"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dcloude/baileys/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13530"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-01T02:08:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "wamo[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "c8070ccc387cb9002b9e0764b7fed85bcb4724133332fa550d5cc450b84134fe"
+        ]
+      }
+    }
+  }
+}
