@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13519",
+  "modified": "2026-11-01T17:58:28Z",
+  "published": "2026-11-01T17:57:54Z",
+  "summary": "Malicious code in atlassian-wallboard-plugin (npm)",
+  "details": "Atlassian-wallboard-plugin@10.0.0 contains no executable code — the tarball holds a single 295-byte package.json — and exists purely to force two dependencies into the installing project's tree at install time. The manifest declares: (1) \"node-ac2\", pinned to a raw tarball URL at hxxps://github[.]com/GamerD11/ping_test/raw/main/node-ac2[.]tgz, so npm downloads and unpacks code from a personal GitHub repository instead of the npm registry — the content is unattributed, carries no registry provenance, and cannot be audited or integrity-checked against a published package; and (2) \"claims-ac1\": \"^1.0.0\". The package name impersonates Atlassian vendor branding while its description (\"Account utility library\"), empty author, empty keywords and fabricated 10.0.0 version describe no real Atlassian product, and the package was created and published within the same minute. Installing it silently pulls the two named dependencies into the dependency tree, which is where any install-time behaviour would run; this package itself has no lifecycle hooks and nothing else in the archive. Anyone who has installed atlassian-wallboard-plugin should treat node-ac2 as untrusted code and review claims-ac1's presence in their lockfile. IOC: hxxps://github[.]com/GamerD11/ping_test/raw/main/node-ac2[.]tgz (off-registry tarball dependency); dependency name node-ac2; dependency name claims-ac1.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "atlassian-wallboard-plugin",
+        "purl": "pkg:npm/atlassian-wallboard-plugin"
+      },
+      "versions": [
+        "10.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/atlassian-wallboard-plugin/v/10.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13519"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-01T17:57:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "sha256": [
+          "bb2ca45dc5d9f573c9ec414804502c4a6df411fbdb738afe90f7faa688da082f"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/GamerD11/ping_test/raw/main/node-ac2[.]tgz"
+        ]
+      }
+    }
+  }
+}
