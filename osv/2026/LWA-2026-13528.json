@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13528",
+  "modified": "2026-11-01T22:36:29Z",
+  "published": "2026-07-14T13:01:23Z",
+  "summary": "Potentially-unwanted package (riskware): @ubedsockets/baileys (npm)",
+  "details": "This package is a WhatsApp Web API library distributed under a different scope from the upstream project, and it contains owner-imposed controls that are not documented to the installer. When a socket is created, lib/Socket/socket.js runs an \"IP PROTECTION SYSTEM\" check: it requests the host's public IP from hxxps://api[.]ipify[.]org/?format=json and calls process.exit(1) unless the address equals the hard-coded 20[.]207[.]192[.]84 (it also exits when the lookup fails), so the library kills the consuming process on any other machine. On every successful WhatsApp connection, lib/Socket/newsletter.js silently subscribes the user's own account to the hard-coded channel 120363410154606795@newsletter (newsletter w:mex FOLLOW query) without asking the user. The bundled scraper helpers in lib/Utils/youtube.js, Tiktok.js, instagram.js and facebook.js send caller-supplied URLs through third-party scraping services, e.g. hxxps://api[.]fruatre[.]my[.]id/api/ytplay. No credential, token, environment or file exfiltration was found; there are no install lifecycle hooks.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.7.7"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.7.7"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-07-14T13:01:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fruatre[.]my.id",
+          "api[.]ipify[.]org"
+        ],
+        "ip_observed": [
+          "20[.]207[.]192[.]84"
+        ],
+        "sha256": [
+          "11862328c12a6a5e9842406740f4df13f94dadfcb2f35b09818eb3b050da30a3"
+        ],
+        "url_observed": [
+          "hxxps://api[.]fruatre[.]my[.]id/api/ytplay",
+          "hxxps://api[.]ipify[.]org/",
+          "hxxps://api[.]ipify[.]org?format=json"
+        ]
+      }
+    }
+  }
+}
