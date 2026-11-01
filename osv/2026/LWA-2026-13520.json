@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13520",
+  "modified": "2026-11-01T19:09:33Z",
+  "published": "2026-11-01T19:08:53Z",
+  "summary": "Malicious code in scdn-jquery (npm)",
+  "details": "This package republishes the jQuery library under a \"jQuery v18.2.0\" banner with an injected encoded-code execution stub. In libs/18.2.0.js, inside the UMD wrapper and before the library code, an IIFE calls atob(\"Sluqag==\"), XORs the decoded bytes against a repeating 4-byte key (String.fromCharCode(a.charCodeAt(h)^a.charCodeAt(h\u00263))) starting at offset h=4, and then executes the result as JavaScript via new Function(decodeURIComponent(escape(v)))(); the whole block is wrapped in a try/catch that silently swallows any failure. In version 0.1.7 the embedded base64 blob decodes to only four bytes, shorter than the loop's starting offset, so the loop body never runs and the stub evaluates an empty string: the decode-and-eval stager is installed but dormant, and no second-stage payload is executed in this build. The package declares no install or postinstall lifecycle hooks and contains no URLs, hostnames or IP addresses — the only other decoder-shaped code in the file is jQuery's own unicode-escape handling. The stub is the mechanism by which a future version's payload would run silently at module load; there is no network indicator to report for this version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "scdn-jquery",
+        "purl": "pkg:npm/scdn-jquery"
+      },
+      "versions": [
+        "0.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/scdn-jquery/v/0.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13520"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-01T19:08:53Z",
+      "indicators_observed": {
+        "sha256": [
+          "95176da5aa1ae4a2d78666f7eeb216f8a52efa4b8786a99c5cf0613dd36f6207"
+        ]
+      }
+    }
+  }
+}
