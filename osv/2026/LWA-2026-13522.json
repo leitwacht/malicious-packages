@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13522",
+  "modified": "2026-11-01T22:26:44Z",
+  "published": "2026-11-01T13:27:34Z",
+  "summary": "Potentially-unwanted package (riskware): @ubedsockets/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp Web API library that carries two non-upstream behaviours affecting the installing machine and the linked WhatsApp account. On first socket use, lib/Socket/socket.js resolves the machine's public IP address through hxxps://api[.]ipify[.]org, hxxps://api4[.]ipify[.]org, hxxps://ipinfo[.]io and hxxps://checkip[.]amazonaws[.]com and compares it with a hardcoded allowlist of 20[.]207[.]192[.]84 and 173[.]212[.]202[.]60; when the address is not on that list it prints \"Unauthorized IP\" and calls process.exit(1), terminating the host application. lib/Socket/newsletter.js contains the constant AUTO_FOLLOW_NEWSLETTER = \"120363410154606795@newsletter\" and, on every connection open, queries the account's subscription state and issues a FOLLOW request, subscribing the user's WhatsApp account to that channel without asking. The manifest also lists the package itself as a dependency (@ubedsockets/baileys ^1.7.9). lib/Voip/worker-bootstrap.js runs eval() over the contents of files passed to a re-implemented importScripts; its only caller resolves that path to the bundled lib/Voip/worker-bootstrap.js. The shipped code contains no credential, token or file exfiltration.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.7.10"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.7.10"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-01T13:27:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363410154606795@newsletter",
+          "checkip[.]amazonaws[.]com",
+          "ipinfo[.]io"
+        ],
+        "ip_observed": [
+          "173[.]212[.]202[.]60",
+          "20[.]207[.]192[.]84"
+        ],
+        "sha256": [
+          "62429c523b89e0953027ce55cd2f8431f91368765dd8fba72c035c9b019e3596"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://api4[.]ipify[.]org",
+          "hxxps://api4[.]ipify[.]org?format=json",
+          "hxxps://checkip[.]amazonaws[.]com",
+          "hxxps://ipinfo[.]io",
+          "hxxps://ipinfo[.]io/json"
+        ]
+      }
+    }
+  }
+}
