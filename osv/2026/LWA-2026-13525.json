@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13525",
+  "modified": "2026-11-01T22:06:51Z",
+  "published": "2026-11-01T22:05:24Z",
+  "summary": "Potentially-unwanted package (riskware): @ubedsockets/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web API library published under a different scope than the canonical @whiskeysockets/baileys. At every socket setup it performs an unsolicited network call: lib/Socket/socket.js resolves the host's public IP address via the ipify geolocation/echo service (hxxps://api[.]ipify[.]org?format=json) and then terminates the process with process.exit(1) unless the returned address equals the hardcoded value 20[.]207[.]192[.]84, so installations on any other host are disabled at runtime. lib/Socket/setup.js embeds the hardcoded WhatsApp channel JID 120363423295236859@newsletter in the forwardedNewsletterMessageInfo context of messages it constructs, injecting the author's channel branding into outbound message metadata. Its bundled utility scrapers (lib/Utils/youtube.js, Tiktok.js, instagram.js) forward caller-supplied URLs to third-party API hosts api[.]fruatre[.]my[.]id, api[.]vreden[.]my[.]id and api[.]siputzx[.]my[.]id over HTTPS. The package contains no credential, token or file harvesting, and no install-time scripts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.6.5"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.6.5"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-01T22:05:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fruatre[.]my.id",
+          "api[.]ipify[.]org",
+          "api[.]siputzx[.]my.id",
+          "api[.]vreden[.]my.id"
+        ],
+        "ip_observed": [
+          "20[.]207[.]192[.]84"
+        ],
+        "sha256": [
+          "812d6f09638342b3b777431713a615f6318d528b33a9974eca893a085b44e13f"
+        ],
+        "url_observed": [
+          "hxxps://api[.]fruatre[.]my[.]id/api/ytplay",
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://api[.]siputzx[.]my[.]id/api/d/tiktok/v2",
+          "hxxps://api[.]vreden[.]my[.]id/api/v1/download/instagram",
+          "hxxps://api[.]vreden[.]my[.]id/api/v1/download/tiktok"
+        ]
+      }
+    }
+  }
+}

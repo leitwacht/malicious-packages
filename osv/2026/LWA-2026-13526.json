@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13526",
+  "modified": "2026-11-01T22:10:38Z",
+  "published": "2026-11-01T22:05:26Z",
+  "summary": "Potentially-unwanted package (riskware): @ubedsockets/baileys (npm)",
+  "details": "This package is an unofficial republish of the @whiskeysockets/baileys WhatsApp Web automation library under the @ubedsockets scope, carrying added code that disables itself for every host except one hard-coded address. In lib/Socket/socket.js, the makeSocket() constructor runs an \"IP PROTECTION SYSTEM\" block: it fetches the installing host's public IPv4 address from hxxps://api[.]ipify[.]org?format=json and calls process.exit(1) with the message \"This version of Baileys is locked to \u003cip\u003e\" unless the returned address equals 20[.]207[.]192[.]84. The library therefore terminates immediately on almost every machine, including CI runners, unless the author's gate is satisfied. The publish also ships scraper helpers that forward caller-supplied URLs to third-party services — lib/Utils/youtube.js to hxxps://api[.]fruatre[.]my[.]id/api/ytplay and lib/Utils/Tiktok.js to hxxps://api[.]vreden[.]my[.]id and hxxps://api[.]siputzx[.]my[.]id — and embeds a fixed WhatsApp newsletter reference, JID 120363423295236859@newsletter (\"veyzen\"), into forwarded-message metadata generated in lib/Socket/setup.js. No credential, token, environment-variable or file exfiltration was found, and the WhatsApp WebSocket endpoint remains the stock wss://web[.]whatsapp[.]com/ws/chat.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.6.6"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.6.6"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-01T22:05:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fruatre[.]my.id",
+          "api[.]siputzx[.]my.id",
+          "api[.]vreden[.]my.id",
+          "web[.]whatsapp[.]com"
+        ],
+        "ip_observed": [
+          "20[.]207[.]192[.]84"
+        ],
+        "sha256": [
+          "4d283c374c2738139718f362876e09127a342ad032adc0372942607b3fd21147"
+        ],
+        "url_observed": [
+          "hxxps://api[.]fruatre[.]my[.]id/api/ytplay",
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://api[.]siputzx[.]my[.]id",
+          "hxxps://api[.]siputzx[.]my[.]id/api/d/tiktok/v2",
+          "hxxps://api[.]vreden[.]my[.]id",
+          "hxxps://api[.]vreden[.]my[.]id/api/v1/download/tiktok"
+        ]
+      }
+    }
+  }
+}

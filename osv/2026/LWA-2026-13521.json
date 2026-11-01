@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13521",
+  "modified": "2026-11-01T22:08:26Z",
+  "published": "2026-11-01T22:05:39Z",
+  "summary": "Malicious code in @ubedsockets/baileys (npm)",
+  "details": "@ubedsockets/baileys republishes the Baileys WhatsApp library under an unofficial scope with undisclosed additions. lib/Socket/socket.js installs an \"IP PROTECTION SYSTEM\" whose verifyIP() runs unconditionally from the socket constructor: it requests hxxps://api[.]ipify[.]org?format=json, compares the host's public IP against a hardcoded two-entry allowlist (20[.]207[.]192[.]84 and 173[.]212[.]202[.]60) and, on any mismatch or failed lookup, prints \"[SECURITY] Unauthorized IP Detected\" and calls process.exit(1), terminating the host application. lib/Socket/newsletter.js hardcodes a channel identifier, 120363410154606795@newsletter, and on every WhatsApp connection open event queries that channel's viewer metadata and, when the operator's account is not already subscribed, silently sends a follow request for it; the handler is wrapped in an empty try/catch so nothing is logged. lib/Socket/setup.js further stamps relayed album and event messages with forwardedNewsletterMessageInfo pointing at 120363423295236859@newsletter (\"veyzen\"). No credential, token, file or environment-variable exfiltration and no downloaded second stage was found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.7.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.7.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13521"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-01T22:05:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org"
+        ],
+        "ip_observed": [
+          "173[.]212[.]202[.]60",
+          "20[.]207[.]192[.]84"
+        ],
+        "sha256": [
+          "531c60d59b029ca7eff845a2c233701092874ecf1381429f9d52bff32f6f4685"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://api[.]ipify[.]org?format=json"
+        ]
+      }
+    }
+  }
+}
