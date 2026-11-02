@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13542",
+  "aliases": [
+    "MAL-2026-18442"
+  ],
+  "modified": "2026-11-02T04:53:02Z",
+  "published": "2026-11-02T04:50:26Z",
+  "summary": "Malicious code in litecore-lib-ltc (npm)",
+  "details": "This package poses as a Litecoin wallet helper but its transaction path writes the user's private key to process output. In src/index.js, LitecoinWallet.send() calls console.log(this.privateKey.toString()) before doing anything else, emitting the wallet's WIF private key — the key that controls the funds — into stdout, terminal scrollback and any log pipeline (CI logs, agent transcripts) that captures it. The key is then also used to sign the outgoing transaction. The published tarball cannot work as documented: src/index.js requires './api' while the only api module shipped is named 'src/api,js', so the advertised UTXO lookup and broadcast helpers never load. There is no install hook and no obfuscation; the only outbound hosts referenced in the source are api[.]blockcypher[.]com and api[.]coingecko[.]com, so the key exposure is via console output rather than a third-party endpoint. Applies to versions 1.9.3 through 1.9.7.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "litecore-lib-ltc",
+        "purl": "pkg:npm/litecore-lib-ltc"
+      },
+      "versions": [
+        "1.9.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/litecore-lib-ltc/v/1.9.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13542"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T04:50:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]blockcypher[.]com",
+          "api[.]coingecko[.]com"
+        ],
+        "sha256": [
+          "f79c74b8bd3d8675d7e86af5ce2b572d450797ccac5c0f57fd74e1236bf9bd53"
+        ]
+      }
+    }
+  }
+}
