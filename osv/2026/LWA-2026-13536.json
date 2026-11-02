@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13536",
+  "modified": "2026-11-02T01:22:36Z",
+  "published": "2026-10-31T11:19:55Z",
+  "summary": "Malicious code in @prototypevip/baileys (npm)",
+  "details": "@prototypevip/baileys@0.1.6 is a fork of the Baileys WhatsApp library that covertly injects hardcoded WhatsApp channel attributions into the messages any bot built on it sends. In lib/Utils/messages.js, a module-level `mediaAnnotation` object holds a newsletter JID stored hex-encoded (Buffer.from(\"313230333633343235333932333534363832406e6577736c6574746572\",\"hex\") resolves to 120363425392354682@newsletter, serverMessageId -1, accessibilityText \"@prototypevip/baileys\"); prepareWAMessageMedia assigns `uploadData.annotations = mediaAnnotation` for every image and video, so all media uploaded by the host bot is stamped as forwarded from that channel. The hex form hides the JID from plaintext inspection; it can be overridden only through the NEWSLETTER_ID / NEWSLETTER_NAME / NEWSLETTER_MESSAGE_ID environment variables. A second hardcoded channel, 120363406965898096@newsletter with the display name \"alip clutch.\", is written into contextInfo.forwardedNewsletterMessageInfo on payloads addressed to status@broadcast in lib/Utils/interactive-message-handler.js, presenting them as forwarded from a channel the operator never referenced. The library also carries a tamper kill switch: lib/Utils/socket-guard.js stamps sockets with a hidden non-enumerable symbol derived from base64-encoded \"PROTO[.]VIP\" bytes, and if that mark, the brand fingerprint hash or the package name (lib/Utils/integrity-guard.js) no longer match, it writes a marker file to database/.proto_kill, sends a chat notice and calls process.exit(1), permanently disabling the operator's bot. The same brand fingerprint is used as the AES-256-GCM key for an encrypted store holding owner phone numbers. The preinstall hook (node./engine-requirements.js) only performs a Node.js \u003e=20 version check. Network traffic is limited to user-supplied media URLs and web[.]whatsapp[.]com; no credential, token or environment exfiltration and no external command-and-control endpoint were found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@prototypevip/baileys",
+        "purl": "pkg:npm/%40prototypevip/baileys"
+      },
+      "versions": [
+        "0.1.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@prototypevip/baileys/v/0.1.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13536"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T11:19:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "aa8aaa0ecab0bade72e21c7be895927d3b74b46908b390345d9bb486634a344e"
+        ]
+      }
+    }
+  }
+}
