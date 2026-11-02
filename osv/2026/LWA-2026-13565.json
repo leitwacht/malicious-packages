@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13565",
+  "modified": "2026-11-02T22:55:56Z",
+  "published": "2026-11-02T22:54:36Z",
+  "summary": "Malicious code in ai-persona-sdk (npm)",
+  "details": "Ai-persona-sdk@1.0.0 ships a TypeScript persona/LLM SDK (dist/, docs/, personas/, examples/) alongside roughly 1MB of hidden obfuscated payload in four files that are NOT part of the documented API: cache-warm.mjs, cache-sweep.mjs, build-cache.mjs and workspaces.js. The package's public entry (index.mjs -\u003e personas.mjs) imports \"cssVarMap as personaCache\" from cache-warm.mjs and calls it at module load and on every getPersona() call, so the payload arms as soon as the package is imported, with no lifecycle script involved. The bundles hide all strings in base64 arrays that are decoded with atob() and then XOR'd byte-by-byte with a constant (0x79 in cache-warm.mjs, 0x2a in cache-sweep.mjs, 0x32 in build-cache.mjs), padded with dead arithmetic branches used as decoys. cache-sweep.mjs contains an AWS credential harvester: it builds the path to the user's AWS directory and reads the files \"credentials\", \"config\" and the SSO subdirectory, storing each as {path, raw} (entries truncated to 2048 bytes), then copies every environment variable whose name begins with the AWS_ prefix into an aws_env object. It subsequently walks the process working directory up to five levels collecting files. build-cache.mjs decodes a blob, calls eval() on it, then spawns process.execPath with that blob under {detached:true, windowsHide:true} and unref()s it, so the second stage runs hidden in a Node child process that outlives the parent. cache-warm.mjs and cache-sweep.mjs perform the same trick with a file written into the OS temp directory under a random hex name and a modified environment passed to the child. The tarball also bundles five native addons (native/{linux,darwin,win32}/{x64,arm64}/cache-probe.node, 183KB-512KB) that no documented code loads; their symbols include virtualisation/container detection (podman_file, wsl_proc_subdir, mac_address_check, file_access_history), i.e. anti-analysis checks. No C2 host is recoverable in plaintext - all remote strings are held in the XOR+base64 arrays; every readable URL in the package is a localhost example server or badge image. Installers should treat ai-persona-sdk@1.0.0 and any copy of cache-warm.mjs / cache-sweep.mjs / build-cache.mjs / workspaces.js or native/cache-probe.node as a credential-stealing loader.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ai-persona-sdk",
+        "purl": "pkg:npm/ai-persona-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ai-persona-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13565"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T22:54:36Z",
+      "indicators_observed": {
+        "sha256": [
+          "aee47700cedba2e6510668f7d92b277e0bae7513570d76a15eb1f52d5a70178e"
+        ]
+      }
+    }
+  }
+}
