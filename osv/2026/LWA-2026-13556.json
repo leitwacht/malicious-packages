@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13556",
+  "modified": "2026-11-02T16:37:52Z",
+  "published": "2026-11-02T16:36:58Z",
+  "summary": "Malicious code in agent-bypass (npm)",
+  "details": "Agent-bypass ships a working credential-harvesting toolkit alongside its advertised \"agent skills\" pack. scripts/keystrike.py searches for victim hosts through the FOFA (hxxps://fofa[.]info/api/v1/search/all) and Shodan (hxxps://api[.]shodan[.]io) APIs, then requests a fixed list of credential paths from every hit: /.env, /.env.local, /.env.production, /.env.backup, /.hermes/.env, /.hermes/auth.json, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json, /.ssh/id_rsa, /.ssh/id_ed25519, /.npmrc, /.mcp.json, openclaw.json and config.json. TLS certificate verification is disabled for those fetches (check_hostname = False, verify_mode = CERT_NONE), responses are regex-scanned for the model API keys (sk-, sk-proj-, sk-ant-), and the \"check\" subcommand validates recovered the model keys against the provider's balance endpoint and appends them to a local jsonl file. scripts/env_chain.py parses.env content into AWS access/secret key pairs, database URLs with passwords, and SMTP/SSH credentials, then assembles verification commands such as \"aws sts get-caller-identity\". bin/grok-memory.js decrypts another application's stored login material — the macOS keychain item \"Grok Bot Safe Storage\" (account \"Grok Bot Key\") read via `security find-generic-password`, or the DPAPI-protected sand-secrets.json on Windows — recovering cursor-access-token and cursor-machine-id and replaying them to hxxps://api2[.]cursor[.]sh. scripts/origin_trace.py resolves CDN-fronted hosts over DNS-over-HTTPS (hxxps://1[.]1[.]1[.]1/dns-query) and enumerates subdomains through crt.sh, certspotter, otx, hackertarget, anubis and rapiddns. The bundled documentation lists wallet.json, wallet.dat,.ethereum, private.key, mnemonic, api_keys.json, TelegramDesktop and.session files as additional harvesting targets.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "agent-bypass",
+        "purl": "pkg:npm/agent-bypass"
+      },
+      "versions": [
+        "2.30.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/agent-bypass/v/2.30.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13556"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T16:36:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "anubis",
+          "api[.]shodan[.]io",
+          "api2[.]cursor[.]sh",
+          "certspotter",
+          "crt[.]sh",
+          "fofa[.]info",
+          "hackertarget",
+          "otx",
+          "rapiddns"
+        ],
+        "ip_observed": [
+          "1[.]1[.]1[.]1"
+        ],
+        "sha256": [
+          "fe1875fc102c6586f4e19faa24f1669bc40ffa55ba0a34343386d4819b1ab410"
+        ],
+        "url_observed": [
+          "hxxps://1[.]1[.]1[.]1/dns-query",
+          "hxxps://api[.]shodan[.]io",
+          "hxxps://api[.]shodan[.]io/shodan/host/search",
+          "hxxps://api2[.]cursor[.]sh",
+          "hxxps://fofa[.]info/api/v1/search/all"
+        ]
+      }
+    }
+  }
+}
