@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13559",
+  "modified": "2026-11-02T17:24:22Z",
+  "published": "2026-11-02T17:22:55Z",
+  "summary": "Malicious code in agent-bypass (npm)",
+  "details": "This package ships a credential-harvesting toolkit whose scripts can be run directly from the installed CLI. scripts/keystrike.py drives Shodan and FOFA to enumerate exposed hosts, then fetches well-known secret paths from every host it finds — /.env, /.env.local, /.env.production, /.hermes/.env, /.hermes/auth.json, /.openclaw/openclaw.json, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json, /.ssh/id_rsa, /.ssh/id_ed25519, /.npmrc, /.mcp.json, /config.yaml — saves the bodies to JSONL, and runs regex extraction over them to pull Cloudflare-style 40-character API tokens and other provider keys before validating them in bulk against the providers' billing endpoints. scripts/origin_trace.py resolves candidate origin IPs via public DNS-over-HTTPS providers (1[.]1[.]1[.]1/dns-query, dns.google, 223[.]5[.]5[.]5) and certificate-transparency / passive-DNS services (crt.sh, api[.]certspotter[.]com, otx[.]alienvault[.]com, api[.]hackertarget[.]com, jldc[.]me, rapiddns[.]io), then connects to each candidate IP with TLS certificate verification disabled and Host/SNI set to the target domain to fingerprint the backend. scripts/env_chain.py parses a.env file and emits ready-to-run reuse commands carrying the harvested AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY, Redis and SSH private keys. bin/grok-memory.js reads the local Grok Bot session token — the macOS keychain entry \"Grok Bot Safe Storage\" plus ~/Library/Application Support/Grok Bot/sand-secrets.json, or the Windows Chromium v10 blob decrypted through DPAPI — and POSTs it in an authorization header to hxxps://api2[.]cursor[.]sh to act inside the user's bot account. bin/install.js copies the skill tree into ~/.pi, ~/.config/opencode, ~/.claude/skills, ~/.grok/skills and ~/.dsh, rewrites the agents' AGENTS.md with prompt-override (\"破甲\") instructions that disable their safety behaviour, and can inject a preset into a the model Harness cordis.patch.yml profile. The package declares no install lifecycle hook, so installation alone runs none of this; the behaviour is reached by invoking the agent-bypass CLI or its scripts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "agent-bypass",
+        "purl": "pkg:npm/agent-bypass"
+      },
+      "versions": [
+        "2.30.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/agent-bypass/v/2.30.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13559"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T17:22:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]certspotter[.]com",
+          "api[.]hackertarget[.]com",
+          "api[.]shodan[.]io",
+          "api2[.]cursor[.]sh",
+          "crt[.]sh",
+          "dns[.]google",
+          "fofa[.]info",
+          "jldc[.]me",
+          "otx[.]alienvault[.]com",
+          "rapiddns[.]io"
+        ],
+        "ip_observed": [
+          "1[.]1[.]1[.]1",
+          "223[.]5[.]5[.]5"
+        ],
+        "sha256": [
+          "aaca2e2e577b5c720f7cb0bd1ad05959e746a144d2251608c11bf516288928a8"
+        ],
+        "url_observed": [
+          "hxxps://1[.]1[.]1[.]1/dns-query",
+          "hxxps://223[.]5[.]5[.]5/resolve",
+          "hxxps://api[.]certspotter[.]com/v1/issuances",
+          "hxxps://api[.]hackertarget[.]com/hostsearch/",
+          "hxxps://api[.]shodan[.]io/shodan/host/search",
+          "hxxps://api2[.]cursor[.]sh",
+          "hxxps://crt[.]sh/?q=",
+          "hxxps://dns[.]google/resolve",
+          "hxxps://fofa[.]info/api/v1/search/all",
+          "hxxps://jldc[.]me/anubis/subdomains/",
+          "hxxps://otx[.]alienvault[.]com/api/v1/indicators/domain/",
+          "hxxps://rapiddns[.]io/subdomain/"
+        ]
+      }
+    }
+  }
+}
