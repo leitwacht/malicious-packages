@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13554",
+  "modified": "2026-11-02T13:03:12Z",
+  "published": "2026-11-02T13:01:56Z",
+  "summary": "Malicious code in agent-bypass (npm)",
+  "details": "agent-bypass is an offensive \"skills pack\" that installs a prompt-injection jailbreak into AI coding agents and ships a credential-harvesting toolkit. bin/install.js (declared as the package's bin) copies SYSTEM_PROMPT.md / APPEND_SYSTEM.md and writes an injected marker block (agent-bypass:begin / agent-bypass:dsh-preset-begin) into local AI harness profile configuration at ~/.dsh/profiles/\u003cprofile\u003e/cordis.patch.yml, ~/.agents/skills/agent-bypass and similar skill directories, so the assistant adopts the package's \"Ck mode\" persona on every subsequent run; skills are only removed by the package's own uninstall path. The bundled Python tools do remote credential hunting: scripts/keystrike.py enumerates FoFA/Shodan results and requests 20 sensitive paths per host — /.env, /.env.backup, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json, /.hermes/auth.json, /.npmrc, /.mcp.json, /.ssh/id_rsa and /.ssh/id_ed25519 — then extracts vendor API keys from the responses; scripts/env_chain.py reads AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY out of the local environment and emits aws sts get-caller-identity validation commands; scripts/origin_trace.py and scripts/netdns.py resolve targets over DoH to 1[.]1[.]1[.]1 and dns.google to bypass TUN/fake-IP interception, and query crt.sh, api[.]certspotter[.]com, otx[.]alienvault[.]com, api[.]hackertarget[.]com, rapiddns[.]io and jldc[.]me for subdomains; scripts/fastrecon.py, dirbrute.py, portscan.py and payment_forge.py add brute forcing, port scanning and payment-callback forgery. The package is not a testing utility for its own build — installing it deploys the harvesting toolchain and the prompt injection to the operator's own machine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "agent-bypass",
+        "purl": "pkg:npm/agent-bypass"
+      },
+      "versions": [
+        "2.29.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/agent-bypass/v/2.29.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13554"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T13:01:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]certspotter[.]com",
+          "api[.]hackertarget[.]com",
+          "crt[.]sh",
+          "dns[.]google",
+          "jldc[.]me",
+          "otx[.]alienvault[.]com",
+          "rapiddns[.]io"
+        ],
+        "ip_observed": [
+          "1[.]1[.]1[.]1"
+        ],
+        "sha256": [
+          "bbe052257c13c1644b8584b2862baf92e8a711e263e952a08b51b0b3d8c50c71"
+        ],
+        "url_observed": [
+          "hxxps://1[.]1[.]1[.]1/dns-query",
+          "hxxps://api[.]shodan[.]io/shodan/host/search",
+          "hxxps://dns[.]google/resolve",
+          "hxxps://fofa[.]info/api/v1/search/all"
+        ]
+      }
+    }
+  }
+}
