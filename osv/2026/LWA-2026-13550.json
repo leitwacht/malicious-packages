@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13550",
+  "modified": "2026-11-02T07:37:12Z",
+  "published": "2026-10-31T15:41:54Z",
+  "summary": "Malicious code in character-ai-sdk (npm)",
+  "details": "Character-ai-sdk@1.0.1 is a trojanized AI character/persona SDK: its advertised memory runtime ships four heavily obfuscated bundles (cache-sweep.mjs, cache-warm.mjs, build-cache.mjs, workspaces.js) that are not part of the documented API and harvest the installer's cloud and deployment credentials. Obfuscation: each bundle embeds a base64 string array decoded with atob() and XORed with 0x8e, thousands of _0x-style identifiers, and dead arithmetic code; further strings are built at runtime from String.fromCharCode() over hex arithmetic, so C2 details never appear in plaintext. Credential and secret collection (cache-sweep.mjs): reads $HOME/.aws/credentials and $HOME/.aws/config in full, enumerates $HOME/.aws/sso/cache and returns each entry (capped at 2048 bytes), copies every environment variable whose name begins with the AWS prefix, walks up to five parent directories from the working directory plus git repository roots collecting.env files (capped at 4096 bytes), and scans git remotes and repository content for secret-shaped strings. Execution and concealment: cache-warm.mjs hooks the package's public personas API (exported cssVarMap) so the payload runs on first normal SDK use rather than at install, then builds a randomized script path under the OS temp directory, injects extra variables into a copy of process.env and spawns the helper with detached:true, unref()'ing it so it outlives the parent. build-cache.mjs probes writable directories, writes a platform-specific shell script, sets its mode to 0755 on Unix, launches it detached, and deletes staged files afterwards. Sandbox evasion: six bundled native addons (native/{linux,darwin,win32}/{x64,arm64}/cache-probe.node) check for QEMU firmware config, systemd-detect-virt, DMI chassis type, /.dockerenv, /.dockerinit, dmidecode and dmesg hypervisor strings before the payload acts. No plaintext C2 hostname or IP is recoverable from the package — the HTTPS request target is assembled at runtime from the encoded string tables, so no network indicator can be published; detection should key on the file paths, the exported cssVarMap entry point, and the AWS/SSH/.env collection behaviour above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "character-ai-sdk",
+        "purl": "pkg:npm/character-ai-sdk"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/character-ai-sdk/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13550"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-31T15:41:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "580d45e70b51162f5c5ebc14e1b9ec29e187c63dc96ccb42391d8a151a52d2e6"
+        ]
+      }
+    }
+  }
+}
