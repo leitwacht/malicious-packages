@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13532",
+  "modified": "2026-11-02T00:21:47Z",
+  "published": "2026-11-02T00:20:24Z",
+  "summary": "Malicious code in @chatbridgeworld/baileys (npm)",
+  "details": "This package is a trojanized clone of the Baileys WhatsApp library published under a scope that does not belong to the upstream project. It adds a covert action that the upstream library does not have: when the socket factory is loaded (lib/Socket/newsletter.js is pulled in by lib/Socket/messages-send.js, so any client created through the package's normal entry point triggers it), a module-level timer fires after 90 seconds and sends a follow request for each of nine hardcoded WhatsApp channels on behalf of the signed-in account: 120363351424590490@newsletter, 120363433092350168@newsletter, 120363410165027550@newsletter, 120363430013410680@newsletter, 120363413933221020@newsletter, 120363426302817140@newsletter, 120363412935005237@newsletter, 120363413699154858@newsletter, 120363428923746817@newsletter. The loop swallows all errors, so the account owner sees no failure and no prompt; the caller never asked to follow anything — the only other follow path is the library's explicit newsletterFollow(jid) method. The publish also contains lib/Socket/newsletter.js.bak, an editor backup holding an earlier version of the same injected block with a different channel list (including 120363412411007236@newsletter), which shows the injected list was edited across drafts. The 90-second delay places the follow requests outside short-lived startup checks. The preinstall hook (engine-requirements.js) only checks the Node.js version. No network endpoint other than WhatsApp's own service is contacted. Installers who need a WhatsApp library should use the upstream @whiskeysockets/baileys package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@chatbridgeworld/baileys",
+        "purl": "pkg:npm/%40chatbridgeworld/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@chatbridgeworld/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13532"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T00:20:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "71ec838c93116f38ffaeff5287ff8cff5a1a2faa8790899ae6285f36aa673140"
+        ]
+      }
+    }
+  }
+}
