@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13607",
+  "modified": "2026-11-03T22:06:33Z",
+  "published": "2026-11-03T21:42:02Z",
+  "summary": "Malicious code in tailwind-forms-kit (npm)",
+  "details": "tailwind-forms-kit@0.5.5 is a combosquat of the legitimate @tailwindcss/forms plugin. It ships the upstream Tailwind form-reset code (same description, README, CHANGELOG and repository URL point at tailwindlabs/tailwindcss-forms) but the package's main entry file src/index.js begins with an unpacked dropper: eval(atob(\"\u003cbase64\u003e\")) decodes a javascript-obfuscator payload with a large string array (~0x5c1d/_0x237d6a identifiers) that is executed the moment the module is loaded, i.e. at install/require time. The decoded payload carries EVM JSON-RPC client logic and endpoint strings (1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io, eth[.]blockscout[.]com), hardcoded contract address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3 (\"0x1eEf0849\"), and requests it issues to those hosts: eth_blockNumber / eth_getBlockByNumber against 1rpc[.]io/eth, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com and eth-mainnet[.]public[.]blastapi[.]io, eth_getTransactionCount for the hardcoded address, a blockscout-style account transaction lookup (module=account\u0026action=txlist\u0026address=0x1eef...\u0026sort=desc\u0026filterby=from), and GET requests to /0x/ls and /0x/cls on a host resolved from a variable that the payload leaves undefined, sent with a browser User-Agent and a custom \"Sec-V: A10-(*-*)\" header (the same marker the loader writes to global.i). No lifecycle hook is declared; the network activity is triggered by the module body, so any project that installs and loads the plugin (e.g. as a Tailwind plugin) runs it. IOC list: hosts 1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io, eth[.]blockscout[.]com; wallet/address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3; obfuscator marker \"A10-(*-*)\".",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-forms-kit",
+        "purl": "pkg:npm/tailwind-forms-kit"
+      },
+      "versions": [
+        "0.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-forms-kit/v/0.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13607"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T21:42:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "cee253748d398c76a167b3f2f53c007fea9026d2ccb2c770db093adbd229ce9c"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io/",
+          "hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from",
+          "hxxps://eth[.]drpc[.]org/",
+          "hxxps://ethereum-rpc[.]publicnode[.]com/"
+        ],
+        "wallet_observed": [
+          "0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3"
+        ]
+      }
+    }
+  }
+}
