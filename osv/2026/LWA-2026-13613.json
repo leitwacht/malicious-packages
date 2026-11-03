@@ -2,7 +2,7 @@
   "schema_version": "1.6.0",
   "id": "LWA-2026-13613",
   "modified": "2026-11-03T23:36:41Z",
-  "published": "2026-11-03T22:13:24Z",
+  "published": "2026-11-03T22:12:55Z",
   "summary": "Malicious code in server-hemera-mongo (npm)",
   "details": "server-hemera-mongo@0.0.15 is a trojanized clone of the Hemera/NATS Mongo store example: its dist/main.js carries the original 53 KB webpack demo bundle followed by an appended obfuscated loader that runs as soon as the package is required. The loader executes eval(atob(...)) of a javascript-obfuscator blob (it sets global.i = 'A10-npm_inject'), decodes a large string dictionary, and then uses a blockchain-resolved command-and-control channel: it polls public Ethereum JSON-RPC endpoints with eth_blockNumber and eth_getBlockByNumber, queries a block explorer for transaction history of the fixed address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3 (eth_getTransactionCount, and GET hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from), and requests follow-up paths /0x/ls and /0x/cls with the marker header Sec-V: A10-npm_inject. The real C2 address is resolved from on-chain data, so no C2 hostname appears in the code. A fetched response body is passed to eval or written out and executed as a Node script via node:child_process (the loader contains a spawnNodeScript routine built on node:child_process), with non-200 or header-mismatched responses routed through the same error path, giving the operator remote code execution payload delivery. Endpoints contacted: hxxps://1rpc[.]io/eth, hxxps://eth[.]drpc[.]org/, hxxps://ethereum-rpc[.]publicnode[.]com/, hxxps://eth-mainnet[.]public[.]blastapi[.]io/, hxxps://eth[.]blockscout[.]com/.",
   "affected": [
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-03T22:13:24Z",
+      "first_seen_at": "2026-11-03T22:12:55Z",
       "indicators_observed": {
         "domain_observed": [
           "1rpc[.]io",

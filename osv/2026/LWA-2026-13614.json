@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13614",
+  "modified": "2026-11-03T23:38:34Z",
+  "published": "2026-11-03T23:35:44Z",
+  "summary": "Malicious code in react-contact-forms (npm)",
+  "details": "react-contact-forms@0.5.2 is a trojanized clone of tailwindcss-forms: it borrows the upstream project's description, repository, license and dependencies, but its main file src/index.js is prefixed with an obfuscated loader — eval(atob(\"...\")) decoding a javascript-obfuscator string array (`_0x237d6a` / `_0x5c1d` / `_0xa42d`) — followed by the genuine minified forms plugin so that importing the package still appears to work. When the main entry is required, the loader resolves its next stage from the Ethereum blockchain instead of a hardcoded server: it POSTs {\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\"} then eth_getBlockByNumber to hxxps://eth[.]drpc[.]org/, hxxps://eth-mainnet[.]public[.]blastapi[.]io/, hxxps://ethereum-rpc[.]publicnode[.]com/ and hxxps://1rpc[.]io/eth, and queries hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from. Decoded strings in the payload include the on-chain address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3, 'x-payload-', 'Payload-B6', 'Sec-V', 'createGunz', 'deflate', 'RPC batch:' and a Chrome/131 browser User-Agent, showing the fetched on-chain data is inflated into the next stage. There is no install hook, so execution begins whenever the package is required or bundled. IOC hosts: eth[.]drpc[.]org, eth-mainnet[.]public[.]blastapi[.]io, ethereum-rpc[.]publicnode[.]com, 1rpc[.]io, eth[.]blockscout[.]com. IOC address: 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-contact-forms",
+        "purl": "pkg:npm/react-contact-forms"
+      },
+      "versions": [
+        "0.5.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-contact-forms/v/0.5.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13614"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T23:35:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "317fd6cf97c705cae43f7fbb9a1f15bc6c7831f588f0a0ea2ede023900d7bec3"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io/",
+          "hxxps://eth[.]blockscout[.]com/api",
+          "hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from",
+          "hxxps://eth[.]drpc[.]org/",
+          "hxxps://ethereum-rpc[.]publicnode[.]com/"
+        ],
+        "wallet_observed": [
+          "0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3"
+        ]
+      }
+    }
+  }
+}
