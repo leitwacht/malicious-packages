@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13586",
+  "modified": "2026-11-03T11:07:05Z",
+  "published": "2026-11-03T11:05:24Z",
+  "summary": "Potentially-unwanted package (riskware): @alexiddev/baileys (npm)",
+  "details": "This package is a rebranded fork of the WhiskeySockets baileys WhatsApp Web library whose connect path silently enrols the user's WhatsApp account into the publisher's channel. lib/Socket/index.js calls attachAutoFollow(sock, config) unconditionally from makeWASocket, and lib/Alex/auto-follow.js resolves the hardcoded newsletter JID 120363404367589225@newsletter (hxxps://whatsapp[.]com/channel/0029VbBld4k1NCrLWm9Axo1j) whenever the autoFollowNewsletter option is true, undefined or null — the default. Five seconds after every 'connection: open' event it calls newsletterMetadata() then newsletterFollow() for that JID, so any embedder that does not explicitly pass autoFollowNewsletter: false has the account subscribed to the channel without an interactive prompt (autoFollowDelayMs defaults to 5000). The behaviour is described in the shipped README, so it is an unwanted, opt-out default rather than a hidden payload: the package contains no credential, token, environment-variable or file harvesting, and makes no network calls beyond the WhatsApp endpoints it already uses. No external command-and-control host or exfiltration endpoint was found.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@alexiddev/baileys",
+        "purl": "pkg:npm/%40alexiddev/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@alexiddev/baileys/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-03T11:05:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "43cef7c6566d9ad2ca584487f1d18be40166d460362914bae70de95e06fcfc48"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VbBld4k1NCrLWm9Axo1j"
+        ]
+      }
+    }
+  }
+}

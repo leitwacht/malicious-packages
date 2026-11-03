@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13585",
+  "modified": "2026-11-03T11:06:02Z",
+  "published": "2026-11-03T11:05:26Z",
+  "summary": "Potentially-unwanted package (riskware): @ndikagantengg/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library that silently enrols the linked WhatsApp account into a fixed channel. In lib/Socket/index.js the makeWASocket factory registers a connection.update listener and, the first time the socket reports connection === 'open', waits 3 seconds and calls sock.newsletterFollow('120363428626908481@newsletter'), swallowing any error. The call is unconditional, not configurable, undocumented in the README and executes for every socket the library creates, so any WhatsApp bot built on this package follows that channel on the user's behalf as soon as pairing completes. The package's preinstall hook (engine-requirements.js) only enforces a minimum Node.js version, and the rest of the shipped code contacts only WhatsApp's own endpoints (web[.]whatsapp[.]com, call[.]whatsapp[.]com, media hosts) plus one child_process exec of ffmpeg for media handling; no environment, token, credential file or wallet data access and no third-party network destination were found in the shipped source.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ndikagantengg/baileys",
+        "purl": "pkg:npm/%40ndikagantengg/baileys"
+      },
+      "versions": [
+        "7.0.7"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ndikagantengg/baileys/v/7.0.7"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-03T11:05:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "c4e7ff1bf8c76ec77cbc8729b9e98ad57d27b1766d732a3a603598f107024380"
+        ]
+      }
+    }
+  }
+}
