@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13604",
+  "modified": "2026-11-03T21:36:09Z",
+  "published": "2026-11-03T21:21:22Z",
+  "summary": "Malicious code in tailwindcss-form-utils (npm)",
+  "details": "Tailwindcss-form-utils@0.5.9 is a trojanized clone of the Tailwind CSS forms plugin (it claims the tailwindlabs/tailwindcss-forms repository and description) whose main entry, src/index.js, carries an injected obfuscated payload in front of the genuine plugin code. The file begins with eval(atob(\"...\")) which decodes a base64 blob into a string-table-obfuscated script that uses the self-identifier marker A10-(*-*). On install and require, that payload performs contract-resolved command-and-control over public Ethereum infrastructure:\n- JSON-RPC eth_blockNumber / eth_getBlockByNumber POSTs to hxxps://1rpc[.]io/eth, hxxps://eth[.]drpc[.]org/, hxxps://ethereum-rpc[.]publicnode[.]com/ and hxxps://eth-mainnet[.]public[.]blastapi[.]io/ — no C2 hostname appears in the source, it is read from chain state at runtime.\n- A dead-drop lookup of transaction history for address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3 via hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026sort=desc\u0026filterby=from\n- Stage fetches to the derived paths /0x/cls and /0x/ls carrying the custom header Sec-V: A10-(*-*) together with a spoofed Chrome user agent. The package also carries a lifecycle-free but executed install footprint: the payload runs whenever the module is loaded. Anyone who installed 0.5.9 should treat the host as compromised, remove the package, and rotate credentials available to the process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwindcss-form-utils",
+        "purl": "pkg:npm/tailwindcss-form-utils"
+      },
+      "versions": [
+        "0.5.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwindcss-form-utils/v/0.5.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13604"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T21:21:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "bf40712396453c0a8a286b771bff9bd60fba4ad677bcbdd1bc06ac249c43b854"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io/",
+          "hxxps://eth[.]blockscout[.]com/api",
+          "hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from",
+          "hxxps://eth[.]drpc[.]org/",
+          "hxxps://ethereum-rpc[.]publicnode[.]com/"
+        ],
+        "wallet_observed": [
+          "0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3"
+        ]
+      }
+    }
+  }
+}
