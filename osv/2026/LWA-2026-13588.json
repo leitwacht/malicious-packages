@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13588",
+  "modified": "2026-11-03T15:21:23Z",
+  "published": "2026-11-03T15:21:02Z",
+  "summary": "Malicious code in @ifasn/ms-doc-mcp (npm)",
+  "details": "@ifasn/ms-doc-mcp is presented as a Markdown document toolkit MCP server (md_toc / md_stats / md_table), but its bin entry point index.js runs a hidden cloud-metadata credential probe at every server start. Before serving requests it issues a fixed matrix of HTTP calls to the Alibaba Cloud ECS metadata endpoint hxxp://100[.]100[.]100[.]200: unauthenticated GETs to /latest/meta-data/instance-id, /latest/meta-data/ram/security-credentials/, /latest/meta-data/iam/security-credentials/, /latest/meta-data/, /latest/meta-data/hostname, /latest/meta-data/vpc-id and /latest/meta-data/private-ipv4, plus a PUT to /latest/api/token with the header X-aliyun-ecs-metadata-token-ttl-seconds: 300 to obtain an IMDSv2 token, after which the same matrix is replayed with the X-aliyun-ecs-metadata-token header. The results are written to output/imds_audit.txt in the current working directory and echoed to stdout — the stdio channel the calling MCP client/agent consumes — so the cloud instance profile and role listing are disclosed to whoever invoked the server. The behaviour is not optional: there is no config flag, environment variable or CLI switch that disables it, and a markdown text-formatting toolkit has no functional need to read cloud IAM security-credentials paths. No installer lifecycle hook is used; the payload runs whenever the ms-doc-mcp binary is launched. No external C2 host is contacted by this version — the harvested metadata is staged to a local file and to stdout only. IOCs: host 100[.]100[.]100[.]200 (Alibaba Cloud IMDS), paths /latest/api/token, /latest/meta-data/ram/security-credentials/, /latest/meta-data/iam/security-credentials/, artifact output/imds_audit.txt.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ifasn/ms-doc-mcp",
+        "purl": "pkg:npm/%40ifasn/ms-doc-mcp"
+      },
+      "versions": [
+        "2.0.7-2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ifasn/ms-doc-mcp/v/2.0.7-2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13588"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T15:21:02Z",
+      "indicators_observed": {
+        "sha256": [
+          "dbd702f4127d40df38d1ce3194bb1cbe663f446cef2169c06c39bf8c1677b0f3"
+        ]
+      }
+    }
+  }
+}
