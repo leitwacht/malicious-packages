@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13612",
+  "modified": "2026-11-03T23:21:50Z",
+  "published": "2026-11-03T23:20:41Z",
+  "summary": "Malicious code in tailwind-input-kit (npm)",
+  "details": "tailwind-input-kit@0.5.5 is a trojanized clone of the Tailwind CSS Forms plugin: its entrypoint src/index.js is real plugin code except that the file begins with eval(atob(\"…\")), which decodes an obfuscated string table and builds a hidden second stage that runs as soon as the module is loaded. The decoded payload resolves its command endpoint from public Ethereum JSON-RPC services instead of shipping a hostname in the code. On load it concurrently queries 1rpc[.]io (/eth, eth_blockNumber), eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com and eth-mainnet[.]public[.]blastapi[.]io (eth_getBlockByNumber), and repeatedly calls eth_getTransactionCount for address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3, using multiple providers in parallel so that one blocked RPC host does not stop it. It also queries the Blockscout explorer at eth[.]blockscout[.]com with /api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from to pull that address's transaction history. Its C2 host is assembled only at runtime, so no plaintext hostname appears in the file; it is contacted on TCP/443 with GET requests to /0x/cl and /0x/ls, a spoofed Chrome User-Agent, and a custom header Sec-V: A10-(*-*) whose value is the first assignment in the decoded payload (global.i='A10-(*-*)'); the payload additionally carries an x-payload- request header and deflate handling for the downloaded stage. The decoded table includes the literals \"eth_getTra\", \":443/0x/cl\", \"ilterby=fr\" and \"x-payload-\", confirming the resolver and transport described above. The package declares no web3 dependency and no install hook, and its advertised purpose is form styling, so the chain queries and C2 channel are unrelated to its stated function. IOC summary: EVM RPC hosts 1rpc[.]io, eth[.]drpc[.]org, ethereum-rpc[.]publicnode[.]com, eth-mainnet[.]public[.]blastapi[.]io:443; explorer eth[.]blockscout[.]com; address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3; callback paths /0x/cl and /0x/ls with header Sec-V: A10-(*-*).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-input-kit",
+        "purl": "pkg:npm/tailwind-input-kit"
+      },
+      "versions": [
+        "0.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-input-kit/v/0.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13612"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T23:20:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "ae4055cabae82f6bdc22137ba6a95a3c3fe1d627c33787ef9661552e35f8ab2e"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3"
+        ],
+        "wallet_observed": [
+          "0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13611",
+  "modified": "2026-11-03T23:21:50Z",
+  "published": "2026-11-03T23:20:29Z",
+  "summary": "Malicious code in tailwind-form-core (npm)",
+  "details": "Tailwind-form-core is a combosquat of the Tailwind CSS forms plugin: it reuses that package's description, repository URL, MIT licence, CHANGELOG and the genuine plugin source, but its main file src/index.js is trojanized. Byte 0 of src/index.js is an obfuscated loader — eval(atob(\"\u003cbase64 blob\u003e\")) around a javascript-obfuscator string-array payload — that executes as soon as the package is required; only after the loader does the file contain the real plugin code (ending in module.exports=forms), so the package still behaves as a working Tailwind plugin. The executed payload resolves its control channel through public Ethereum JSON-RPC services. It sends eth_blockNumber and eth_getBlockByNumber to hxxps://1rpc[.]io/eth, hxxps://eth[.]drpc[.]org, hxxps://eth-mainnet[.]public[.]blastapi[.]io and hxxps://ethereum-rpc[.]publicnode[.]com, queries eth_getTransactionCount for the operator address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3, and pulls that address's outgoing transaction list from Blockscout (hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from). It then requests the stage endpoints /0x/ls and /0x/cls on its resolved host using a Chrome 131 user agent and a custom Sec-V: A10-(*-*) header. Decoded strings in the payload show the transport conventions it expects back — 'x-payload-' / 'content-enc' response headers, gzip/deflate via node:zlib, and a global.___d marker — i.e. an encoded second-stage payload delivered over the same channel. The package declares no install hook; the network activity begins when the module is loaded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tailwind-form-core",
+        "purl": "pkg:npm/tailwind-form-core"
+      },
+      "versions": [
+        "0.5.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tailwind-form-core/v/0.5.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13611"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T23:20:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "a136ee0cd5db624aad3422d01c2b2d64cd5041b675682558c0aa7f78ca3f3aa7"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/0x/cls",
+          "hxxps://1rpc[.]io/0x/ls",
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io/",
+          "hxxps://eth[.]blockscout[.]com/api",
+          "hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3\u0026startblock=0\u0026endblock=99999999\u0026page=1\u0026offset=20\u0026sort=desc\u0026filterby=from",
+          "hxxps://eth[.]drpc[.]org",
+          "hxxps://eth[.]drpc[.]org/",
+          "hxxps://ethereum-rpc[.]publicnode[.]com",
+          "hxxps://ethereum-rpc[.]publicnode[.]com/"
+        ],
+        "wallet_observed": [
+          "0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3"
+        ]
+      }
+    }
+  }
+}
