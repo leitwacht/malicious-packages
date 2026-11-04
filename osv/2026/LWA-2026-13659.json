@@ -2,7 +2,7 @@
   "schema_version": "1.6.0",
   "id": "LWA-2026-13659",
   "modified": "2026-11-04T11:36:08Z",
-  "published": "2026-11-04T11:15:58Z",
+  "published": "2026-11-04T11:15:56Z",
   "summary": "Malicious code in @zervonex/baileys (npm)",
   "details": "This package is an unofficial fork of the @whiskeysockets/baileys WhatsApp library published under the @zervonex scope. It carries two behaviours beyond upstream, both active without operator action: 1. Forced channel enrolment. lib/Socket/newsletter.js hardcodes two WhatsApp newsletter JIDs (120363422827915475@newsletter and 120363409522637051@newsletter). On every socket 'open' event it issues the newsletter join query for both on behalf of the linked WhatsApp account, then sets ADMIN_NOTIFICATIONS to false for each channel, and repeats the follow every 30 seconds for the life of the session. lib/Defaults/index.js enables this by default (autoFollowNewsletter: true), so it runs unless the integrator explicitly sets autoFollowNewsletter: false. 2. Author-controlled remote code/definition updates into installed files. WAProto/fetcher.js fetches wa-version.json and WAProto.bundle.js every 24 hours from hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache, a branch controlled by the package author, staging the bundle as WAProto.bundle.tmp. WAProto/index.js then reads that downloaded file, runs it through the acorn/acorn-walk parser in WAProto/parser.js, and writes the resulting output over WAProto/WAProto.proto and WAProto/WAProto.json inside the installed package directory (tmp file + rename). The content that is parsed and persisted is whatever is on that branch at fetch time, outside npm's integrity check. The package also declares dependencies on @cacheable/node-cache (^3.1.1) and cache-manager (^7.2.9), which resolve to versions that are themselves malicious packages, adding a second execution path for every project that installs it. Indicators: hxxps://raw.githubusercontent[.]com/nexustechpro2/baileys/wa-cache (files wa-version.json, WAProto.bundle.js); WhatsApp channel JIDs 120363422827915475@newsletter and 120363409522637051@newsletter; staging file WAProto/WAProto.bundle.tmp.",
   "affected": [
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-04T11:15:58Z",
+      "first_seen_at": "2026-11-04T11:15:56Z",
       "indicators_observed": {
         "domain_observed": [
           "raw[.]githubusercontent[.]com"
