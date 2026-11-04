@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13629",
+  "modified": "2026-11-04T06:06:29Z",
+  "published": "2026-11-04T05:39:27Z",
+  "summary": "Malicious code in tello-huila-colombia-latinoamerica (npm)",
+  "details": "The package ships three minified bundles (db.js, evm.js, index.js) produced by a javascript-obfuscator pass in which every string is written as \\x-escaped hex inside a rotated decoder array; db.js alone contains 1523 such escaped string runs. db.js also assembles source text at runtime and passes it to the Function() constructor (window at byte ~29111: 'const d=Function(a[...](...)+')'), so executable code exists only after the decoder runs and cannot be read statically. package.json declares the package itself as a dependency (\"tello-huila-colombia-latinoamerica\": \"^2.0.0\"), so installing version 3.0.0 also pulls the earlier 2.0.0 build of the same name, which contains the same obfuscated bundles. The package is presented as a blockchain/currency network library whose README instructs users storing a privateAddress/privateKey pair in source constants (GASFEE_WALLET / GASFEE_PRIVATEKEY) and exposes createAccount(), transfer() and getBalance() wallet-key APIs; its real logic is entirely hidden behind the obfuscator and the runtime code generation. No repository field or build scripts are published. No network endpoint literal is visible in the bundles because all strings are encoded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tello-huila-colombia-latinoamerica",
+        "purl": "pkg:npm/tello-huila-colombia-latinoamerica"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tello-huila-colombia-latinoamerica/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13629"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-04T05:39:27Z",
+      "indicators_observed": {
+        "sha256": [
+          "849db7367764b1a48d374d22041ce71d878b7d2b63590f46ab51e34e3dc27973"
+        ]
+      }
+    }
+  }
+}
