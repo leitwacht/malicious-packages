@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13618",
+  "modified": "2026-11-04T00:08:53Z",
+  "published": "2026-11-04T00:06:10Z",
+  "summary": "Malicious code in @adminide-stack/utils (npm)",
+  "details": "@adminide-stack/utils@0.0.16-129 ships a hidden loader appended to the end of its main entry file, lib/index.js. After roughly 50KB of ordinary webpack output, the file runs eval(atob(\"...\")), decoding a second-stage script whose first statement sets the global marker i = 'A10-npm_inject'. That stage is a custom-obfuscated bundle (large base64 string array with a hand-written decoder and _0xNNNN identifier indirection) that resolves its configuration from the Ethereum blockchain instead of from a hardcoded command host. The decoded payload contacts the public Ethereum JSON-RPC endpoints hxxps://ethereum-rpc[.]publicnode[.]com/, hxxps://eth-mainnet[.]public[.]blastapi[.]io/, hxxps://eth[.]drpc[.]org/ and hxxps://1rpc[.]io/eth, issuing eth_blockNumber, eth_getBlockByNumber and eth_getTransactionCount. It also queries the block explorer hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3 to read transaction history for the attacker-controlled address 0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3 (the address is stored split into fragments, e.g. '0x1eEf0849' + 'AD15d87f6' + '4e51C73C84', to defeat string scanning). The on-chain data supplies the next-stage command source, so no fixed C2 hostname appears in the code. The loader then issues GET requests to the paths /0x/cls and /0x/ls carrying the non-standard header Sec-V: A10-npm_inject and a spoofed desktop Chrome User-Agent, and handles gzip/deflate-compressed responses (node:zlib, x-gzip). The retrieved content is executed through eval/Function, with a fallback that spawns a Node child process (node:child_process) running the fetched script. Marker strings used by the payload include 'x-payload-', 'Payload-B6' and 'Sec-V'. The package declares no install hook; the payload sits in the module's main entry (lib/index.js) and therefore executes whenever the library is required by a dependent application. No.npmrc, NPM_TOKEN, GITHUB_TOKEN, ~/.ssh or ~/.aws access was found in the shipped code; the observed malicious behaviour is blockchain-resolved configuration retrieval and remote code execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@adminide-stack/utils",
+        "purl": "pkg:npm/%40adminide-stack/utils"
+      },
+      "versions": [
+        "0.0.16-129"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@adminide-stack/utils/v/0.0.16-129"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13618"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-04T00:06:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "1rpc[.]io",
+          "eth-mainnet[.]public[.]blastapi[.]io",
+          "eth[.]blockscout[.]com",
+          "eth[.]drpc[.]org",
+          "ethereum-rpc[.]publicnode[.]com"
+        ],
+        "sha256": [
+          "5e57897f83fd8db73358c55b6a326a0fcd94ce5bcecd69cb6106f159de0869ef"
+        ],
+        "url_observed": [
+          "hxxps://1rpc[.]io/eth",
+          "hxxps://eth-mainnet[.]public[.]blastapi[.]io/",
+          "hxxps://eth[.]blockscout[.]com/api",
+          "hxxps://eth[.]blockscout[.]com/api?module=account\u0026action=txlist\u0026address=0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3",
+          "hxxps://eth[.]drpc[.]org/",
+          "hxxps://ethereum-rpc[.]publicnode[.]com/"
+        ],
+        "wallet_observed": [
+          "0x1eef0849eda15d87f64e51c73c8442cf3c8bcef3"
+        ]
+      }
+    }
+  }
+}
