@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13649",
+  "aliases": [
+    "MAL-2026-18608"
+  ],
+  "modified": "2026-11-04T09:05:55Z",
+  "published": "2026-11-04T09:05:35Z",
+  "summary": "Malicious code in gugodapis (npm)",
+  "details": "gugodapis@1.0.0 ships no real library functionality. Its only file, gugodapis.js, exports a single function, executeRemoteBatchScript(), that downloads a Windows batch file named anmern.bat from a Discord CDN attachment URL and executes it on the host. The function fetches hxxps://cdn[.]discordapp[.]com/attachments/1230359189717782621/1238125874927108219/anmern[.]bat?[.][.]. with axios (arraybuffer response), writes the response body to path.join(process.env.TEMP || '/tmp', 'anmern.bat'), and immediately runs the written file with child_process.exec(). There is no signature check, hash check or destination allowlist, so whatever the remote attachment contains executes with the caller's privileges. The package declares no bin entry and no install-time lifecycle hook, so the download-and-execute only happens when a consuming application calls the exported function; the dropper is therefore disguised as a utility module (its file header is labelled \"myapi.js\"). The staging host is a Discord attachment (cdn[.]discordapp[.]com), a service commonly abused to host short-lived payloads, and the URL carries expiring signed parameters (ex=/is=/hm=). package.json additionally lists Node built-ins fs, path and child_process as ordinary npm dependencies, which resolves them to unrelated third-party registry packages. The second-stage batch file (anmern.bat) is remote and not part of the package, so its contents are unknown from the package bytes.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "gugodapis",
+        "purl": "pkg:npm/gugodapis"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/gugodapis/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13649"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-04T09:05:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cdn[.]discordapp[.]com"
+        ],
+        "sha256": [
+          "ea725cf1c5c950a7a8f091a717cfd2a76e7dd7b81000afe37b7398c76f3c4e3a"
+        ],
+        "url_observed": [
+          "hxxps://cdn[.]discordapp[.]com/attachments/1230359189717782621/1238125874927108219/anmern[.]bat"
+        ]
+      }
+    }
+  }
+}

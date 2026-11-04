@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13648",
+  "aliases": [
+    "MAL-2026-18607"
+  ],
+  "modified": "2026-11-04T09:06:05Z",
+  "published": "2026-11-04T09:05:34Z",
+  "summary": "Security-research / proof-of-concept package: et_phone_home (npm)",
+  "details": "This package is an install-time callback proof of concept: its package.json declares a postinstall hook running `wget -q hxxp://176[.]31[.]142[.]25/javascript_no_way_you_got_here_randomly`, so any machine that installs it issues a single plain HTTP GET to that hardcoded IP address at install time. The request carries no query string, no body and no data taken from the host, and the retrieved response is never executed (no pipe to a shell, no eval). The package's only other code is a 66-byte index.js that logs a string; it reads no credential files or environment variables (.npmrc, cloud credentials, tokens), ships no dependency or wallet handling, and contains no obfuscation or encoded payloads. Behaviour is limited to the one install-time beacon, the standard shape of a dependency-confusion test package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "et_phone_home",
+        "purl": "pkg:npm/et_phone_home"
+      },
+      "versions": [
+        "0.0.5"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/et_phone_home/v/0.0.5"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-04T09:05:34Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "176[.]31[.]142[.]25"
+        ],
+        "sha256": [
+          "58f9b4c9c26abe6ac52353ce1e0a824fba06c8aa7cefa94d2d4805306053e82c"
+        ],
+        "url_observed": [
+          "hxxp://176[.]31[.]142[.]25/javascript_no_way_you_got_here_randomly"
+        ]
+      }
+    }
+  }
+}
