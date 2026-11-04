@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13634",
+  "aliases": [
+    "MAL-2026-18600"
+  ],
+  "modified": "2026-11-04T06:37:45Z",
+  "published": "2026-11-04T06:35:42Z",
+  "summary": "Malicious code in @ubedsockets/baileys (npm)",
+  "details": "@ubedsockets/baileys is a modified fork of the @whiskeysockets/baileys WhatsApp Web library that silently manipulates the account of whoever installs and connects it. In lib/Socket/newsletter.js the package stores a WhatsApp newsletter JID as a base64 string in an unreadably named constant (VzVzVzVzVzVzVzVzVzVzVzVzVz = \"MTIwMzYzNDIzMTcwNDI0ODI4QG5ld3NsZXR0ZXI=\", decoding to 120363423170424828@newsletter). Inside makeNewsletterSocket it schedules setTimeout(..., 90000) that decodes this constant and issues the WhatsApp FOLLOW query (query_id 7871414976211147) against it, wrapped in an empty catch block. The result: the user's linked WhatsApp account is enrolled into the operator's channel 90 seconds after a socket is created, with no API call from the integrator and no way to opt out. The same file hardcodes AUTO_REACT_NEWSLETTER = true and, on every newsletter message query, sends a 👍 reaction (query to the source newsletter JID) without being asked. package.json's homepage points at the operator's WhatsApp contact link (wa[.]me/6285147777105). lib/Socket/setup.js additionally forges forwarded-newsletter attribution on messages it sends: outgoing album and event messages carry forwardedNewsletterMessageInfo with newsletterJid 120363423295236859@newsletter, newsletterName \"vezyn\"/\"veyzen\", senderName \"vyzen\", forwardingScore 99999, isForwarded true, plus fabricated starred/label/disappearing-mode fields — making operator traffic look like it came from a branded channel. No install lifecycle hook is present; the manipulation happens at require/connect time inside the library's socket layer. IOC: WhatsApp channel 120363423170424828@newsletter (silent follow target).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.4.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.4.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13634"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-04T06:35:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "wa[.]me"
+        ],
+        "sha256": [
+          "2cdf2543a64693325ab5846f29b0b06afb0280a43eb6710f87c50098c21532cb"
+        ],
+        "url_observed": [
+          "hxxps://wa[.]me/6285147777105"
+        ]
+      }
+    }
+  }
+}

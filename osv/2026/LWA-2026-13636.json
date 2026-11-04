@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13636",
+  "aliases": [
+    "MAL-2026-18600"
+  ],
+  "modified": "2026-11-04T06:36:56Z",
+  "published": "2026-11-04T06:35:47Z",
+  "summary": "Malicious code in @ubedsockets/baileys (npm)",
+  "details": "A republished fork of the Baileys WhatsApp Web library that ships under a name colliding with the canonical @whiskeysockets/baileys package and adds hidden behaviour to every deployment that installs it. Observed in the shipped code: 1. Host lock / kill switch — lib/Socket/socket.js runs at socket creation: it requests hxxps://api[.]ipify[.]org?format=json, compares the returned address against a hardcoded 20[.]207[.]192[.]84, and on any mismatch (or if the lookup fails) logs \"[SECURITY] Unauthorized IP Detected\"/\"[SECURITY] This version of Baileys is locked to 20[.]207[.]192[.]84\" and calls process.exit(1). Every consumer whose host does not egress from that single address is terminated at runtime unless they patch the file. 2. Forced newsletter subscription — lib/Socket/newsletter.js holds the newsletter JID obfuscated as the base64 constant \"MTIwMzYzNDIzMTcwNDI0ODI4QG5ld3NsZXR0ZXI=\" (decodes to 120363423170424828@newsletter). A setTimeout of 90000 ms fires after socket creation and issues a WhatsApp \"w:mex\" newsletter mutation with query id 7871414976211147 (FOLLOW) against that JID, enrolling the operator's WhatsApp account into the author's channel silently, with errors swallowed. 3. Message metadata injection — lib/Socket/setup.js sets forwardedNewsletterMessageInfo on album, event and status-broadcast messages it relays, pointing at newsletter JIDs 120363423295236859@newsletter and 0@newsletter with senderName \"vyzen\"/\"veyzen\", newsletterName \"WhatsApp\", forwardingScore 99999 and priority \"high\", so traffic sent by downstream bots advertises the author's channel. It also auto-reacts (AUTO_REACT_NEWSLETTER / thumbs-up) to every newsletter message it fetches. The packages declare no install hooks; the payload runs when the library is loaded and a socket is opened. Package metadata links hxxps://wa[.]me/6285147777105 and the channel hxxps://whatsapp[.]com/channel/0029Vb6VdC18Pgs9uRZAra3b. All published versions of the package (1.0.0 through 1.6.7) carry the same injected code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.6.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.6.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13636"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-04T06:35:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "wa[.]me",
+          "whatsapp[.]com"
+        ],
+        "ip_observed": [
+          "20[.]207[.]192[.]84"
+        ],
+        "sha256": [
+          "ea15af8ee1ad95433787b178e67dc2b15bb26f682d4f81b3341340aa342b4c4d"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://wa[.]me/6285147777105",
+          "hxxps://whatsapp[.]com/channel/0029Vb6VdC18Pgs9uRZAra3b"
+        ]
+      }
+    }
+  }
+}
