@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13623",
+  "aliases": [
+    "MAL-2026-17896"
+  ],
+  "modified": "2026-11-04T04:36:16Z",
+  "published": "2026-11-03T22:35:27Z",
+  "summary": "Potentially-unwanted package (riskware): xapi-lib (npm)",
+  "details": "This package is an install-time beacon: xapi-lib@88.2.5 declares \"preinstall\": \"node index.js\" in package.json, so simply installing it executes index.js on the installer's machine. That script unconditionally issues an HTTPS GET to hxxps://realwbx[.]com/ip.php?ip=8[.]8[.]8[.]8 with a static User-Agent (\"Nodejs v3.17.0\") and a hardcoded 32-character hex Authorization API key, then prints the response. The request runs at install time with no user action and no opt-out, disclosing to the third-party host realwbx[.]com that the package was installed, along with the connecting machine's public IP address, and identifying the install event via the embedded API key. The call is unrelated to the package's stated purpose of looking up an IP's location: the IP parameter is hardcoded to 8[.]8[.]8[.]8, the README is a two-line placeholder and no repository is declared. The script performs no local file or environment reads, spawns no processes, and contains no encoded or obfuscated payload, so no data beyond the install event and source address is transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "xapi-lib",
+        "purl": "pkg:npm/xapi-lib"
+      },
+      "versions": [
+        "88.2.5"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/xapi-lib/v/88.2.5"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-03T22:35:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "realwbx[.]com"
+        ],
+        "ip_observed": [
+          "8[.]8[.]8[.]8"
+        ],
+        "sha256": [
+          "6680e0b4b1e44b1fbe86f830919e11dbccdbc3f01205c1d5b4b1fb4362376e7f"
+        ],
+        "url_observed": [
+          "hxxps://realwbx[.]com/ip[.]php",
+          "hxxps://realwbx[.]com/ip[.]php?ip=8[.]8[.]8[.]8"
+        ]
+      }
+    }
+  }
+}
