@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13643",
+  "aliases": [
+    "MAL-2026-18600"
+  ],
+  "modified": "2026-11-04T06:51:08Z",
+  "published": "2026-07-13T14:44:26Z",
+  "summary": "Potentially-unwanted package (riskware): @ubedsockets/baileys (npm)",
+  "details": "This package is a repackaged copy of the Baileys WhatsApp Web library, published under an unofficial scope, with injected code that forces the installing account to follow a fixed WhatsApp channel. In lib/Socket/newsletter.js the constant AUTO_FOLLOW_NEWSLETTER is hardcoded to the channel JID 120363410154606795@newsletter; a listener on the socket's connection.update event fires whenever the WhatsApp connection reaches state \"open\", checks whether the account is already subscribed to that channel, and if not sends the FOLLOW newsletter mutation to it. Because this runs on every successful connection, any bot built on the library silently subscribes its WhatsApp account to the author's channel without user action or configuration. The package also bundles channel-scraper helpers (lib/Utils/youtube.js, instagram.js, facebook.js) that send caller-supplied URLs to a third-party API at hxxps://api[.]fruatre[.]my[.]id/api/ytplay and return the response. No npm/GitHub tokens,.npmrc contents, environment variables or session credentials are read or transmitted, and there are no install-time lifecycle hooks. IOCs: WhatsApp channel JID 120363410154606795@newsletter; third-party scraper host api[.]fruatre[.]my.id.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.7.5"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.7.5"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-07-13T14:44:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fruatre[.]my.id"
+        ],
+        "sha256": [
+          "b850ac38ca003c1396c6213d06e1b96de752a578daa3a89c2db36f8060a3882d"
+        ],
+        "url_observed": [
+          "hxxps://api[.]fruatre[.]my[.]id/api/ytplay",
+          "hxxps://api[.]fruatre[.]my[.]id/api/ytplay?url="
+        ]
+      }
+    }
+  }
+}

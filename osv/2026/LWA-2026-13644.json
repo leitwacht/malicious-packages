@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13644",
+  "aliases": [
+    "MAL-2026-18600"
+  ],
+  "modified": "2026-11-04T06:51:52Z",
+  "published": "2026-07-13T14:59:44Z",
+  "summary": "Potentially-unwanted package (riskware): @ubedsockets/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web API library that silently manipulates the accounts of anyone who installs it. In lib/Socket/newsletter.js a connection handler runs on every successful socket connection and, if the account is not already subscribed, sends a FOLLOW query for the hardcoded channel 120363410154606795@newsletter, subscribing the user's WhatsApp account to the author's channel without consent. In lib/Socket/setup.js, messages produced through the album and event helpers are stamped with forwardedNewsletterMessageInfo pointing at the channel 120363423295236859@newsletter with the names \"veyzen\"/\"vyzen\", a forwardingScore of 99999 and a status@broadcast context, so outgoing messages from dependent bots are dressed up as forwarded channel posts. The bundled helper modules lib/Utils/youtube.js, instagram.js, facebook.js, Tiktok.js and vid2jpg in lib/Utils/messages-media.js also relay user-supplied URLs to third-party scraping endpoints, including hxxps://api[.]fruatre[.]my[.]id, the vreden and siputzx.my.id API hosts, and hxxps://ezgif[.]com. The package ships no install hooks and does not read npm or cloud credentials.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ubedsockets/baileys",
+        "purl": "pkg:npm/%40ubedsockets/baileys"
+      },
+      "versions": [
+        "1.7.6"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ubedsockets/baileys/v/1.7.6"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-07-13T14:59:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]fruatre[.]my.id",
+          "ezgif[.]com",
+          "my[.]id",
+          "siputzx[.]my.id"
+        ],
+        "sha256": [
+          "ffda68ced618e19cebee031462108d0d2053b8df7d310c6c973a092f6912e89b"
+        ],
+        "url_observed": [
+          "hxxps://api[.]fruatre[.]my[.]id",
+          "hxxps://api[.]fruatre[.]my[.]id/api/ytplay",
+          "hxxps://ezgif[.]com",
+          "hxxps://ezgif[.]com/video-to-jpg"
+        ]
+      }
+    }
+  }
+}
