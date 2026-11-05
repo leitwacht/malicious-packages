@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13698",
+  "modified": "2026-11-05T19:35:03Z",
+  "published": "2026-11-05T19:33:36Z",
+  "summary": "Malicious code in @leonoremods/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library that silently subscribes the installing user's WhatsApp account to channels they never chose, and blocks other code from doing the same. lib/Defaults/index.js hardcodes a list of seven WhatsApp channel JIDs in DEFAULT_AUTO_FOLLOW_CHANNELS: 120363429677187777@newsletter, 120363407849633830@newsletter, 120363412456119539@newsletter, 120363431951214986@newsletter, 120363424810646424@newsletter, 120363409911086003@newsletter, 120363431638412364@newsletter. The list is assigned to autoFollowChannels inside DEFAULT_CONNECTION_CONFIG, so it is active by default for every consumer. In lib/Socket/newsletter.js, on the first connection.update event with connection === 'open', the socket issues a WhatsApp GraphQL newsletter FOLLOW query (newsletterWMexQuery(jid, QueryIds.FOLLOW)) for every JID in that list and logs \"auto-followed channel\". Enrolment therefore happens as a side effect of creating a socket; the account becomes a follower of the author's channels, visible to those channel owners, without the installer requesting it. The same file installs a blockAutoFollowChannels guard that rejects any newsletterFollow(jid) call unless the JID is on an allowlist that is pre-seeded with the same hardcoded JIDs, so third-party follow attempts are blocked and logged while the bundled ones always pass. The package is published under a scope unrelated to the upstream Baileys project, declares no source repository (the \"repository\" field points at a Telegram channel), and its preinstall hook (engine-requirements.js) only checks that Node.js is version 20 or newer. No credentials, tokens, wallet data, environment values or files are read or transmitted; outbound traffic is limited to WhatsApp endpoints (web[.]whatsapp[.]com, graph[.]whatsapp[.]com, acs[.]whatsapp[.]com), a version check against raw[.]githubusercontent[.]com, and an optional user-supplied webhook URL in the antiban helper.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@leonoremods/baileys",
+        "purl": "pkg:npm/%40leonoremods/baileys"
+      },
+      "versions": [
+        "1.10.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@leonoremods/baileys/v/1.10.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13698"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T19:33:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "acs[.]whatsapp[.]com",
+          "graph[.]whatsapp[.]com",
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "c030da960e8b4d128313242c2ae19029b330cc904983527ff7622c7739c8e191"
+        ],
+        "url_observed": [
+          "hxxps://acs[.]whatsapp[.]com/graphql",
+          "hxxps://graph[.]whatsapp[.]com/graphql",
+          "hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts"
+        ]
+      }
+    }
+  }
+}
