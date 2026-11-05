@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13689",
+  "modified": "2026-11-05T15:37:14Z",
+  "published": "2026-11-05T15:17:05Z",
+  "summary": "Malicious code in @axo_cuy/baileyss (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library that silently enrols the user's WhatsApp account into hardcoded channels and brands outgoing messages with forged channel-forwarding metadata. lib/Socket/newsletter.js embeds a base64 channel identifier (\"MTIwMzYzNDEyNDUxOTIyMjA5QG5ld3NsZXR0ZXI=\", decoding to 120363412451922209@newsletter) and, ten seconds after the socket is created, issues a newsletter FOLLOW request (Types.QueryIds.FOLLOW / xwa2_newsletter_follow) for it with no user action, discarding any error. The shipped editor backup lib/Socket/newsletter.js.bak retains an earlier, larger variant of the same block with four further encoded channels (120363424295522327, 120363427718144294, 120363426470081124, 120363408893555851, all @newsletter) followed at 10/15/20/25 second intervals after startup. lib/Socket/luxu.js, imported by lib/Socket/messages-send.js, injects forwardedNewsletterMessageInfo into outgoing messages using channels 120363421563597486@newsletter and 120363399602691477@newsletter (display names \"WhatsApp\", \"D | 7eppeli-Exloration\", sender \"7-Yuukey\") together with status@broadcast forwarding metadata (forwardingScore 99999, isHighlighted, starred, labels), making library-generated messages appear as forwards from those channels. The package additionally depends on cache-manager ^7.2.8, which resolves to the malicious cache-manager@7.2.10 release. Its preinstall hook runs node./engine-requirements.js, a Node.js version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@axo_cuy/baileyss",
+        "purl": "pkg:npm/%40axo_cuy/baileyss"
+      },
+      "versions": [
+        "4.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@axo_cuy/baileyss/v/4.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13689"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T15:17:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363399602691477@newsletter",
+          "120363412451922209@newsletter",
+          "120363421563597486@newsletter"
+        ],
+        "sha256": [
+          "0fa73694dacdba9fe4f22211df8bbc225aac9c0b448e228eecdf34ea5b19e342"
+        ]
+      }
+    }
+  }
+}
