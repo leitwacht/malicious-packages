@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13673",
+  "aliases": [
+    "MAL-2026-18675"
+  ],
+  "modified": "2026-11-05T05:35:01Z",
+  "published": "2026-11-05T05:22:02Z",
+  "summary": "Malicious code in @denzz221/baileys (npm)",
+  "details": "@denzz221/baileys is a fork of the baileys WhatsApp library that covertly manipulates the linking account and the messages it sends, while shipping the rest of the upstream library unchanged (including its 8.4 MB WAProto protobuf bundle). 1. Covert channel auto-follow. In lib/Socket/newsletter.js, inside makeNewsletterSocket(), code that does not exist upstream runs unconditionally: a 90-second timer then sends a newsletter FOLLOW query for the hardcoded channel \"120363400780200098@newsletter\". makeNewsletterSocket() is called by lib/Socket/messages-send.js, so every socket the library creates — not only code that uses newsletter APIs — enrols the linked WhatsApp account as a follower of that channel, with no notification and no configuration flag. 2. Forged attribution injected into outgoing messages. lib/Utils/messages.js injects a hardcoded forwardedNewsletterMessageInfo block into the contextInfo of media messages (\"newsletterName\": \"kyuu ilysm\", \"newsletterJid\": \"120363420249672073@newsletter\", serverMessageId 0, contentType \"UPDATE\"). lib/Socket/dugong.js injects a similar block (\"newsletterName\": \"shenvn.\", \"newsletterJid\": \"120363297591152843@newsletter\", serverMessageId 1) into event messages, so messages the user sends carry a planted channel/forwarding attribution. 3. Replaced crypto dependency built from source. package.json swaps the official libsignal dependency for \"libsignal\": \"github:denzz221/libsignal-node\", a fork fetched from GitHub and compiled during install, and adds a preinstall hook (engine-requirements.js) that only enforces Node \u003e= 20. The E2E session/encryption layer is thus supplied by a fork outside the package contents. All network destinations in the package are web[.]whatsapp[.]com and *.whatsapp[.]net (wss://web[.]whatsapp[.]com/ws/chat); no attacker-operated HTTP host, no credential or wallet file access and no obfuscated payload appear in the shipped code. The malicious behaviour is the hidden account manipulation and message forgery, not exfiltration. IOCs (WhatsApp channel JIDs): 120363400780200098@newsletter (auto-followed 90s after connect), 120363420249672073@newsletter (\"kyuu ilysm\"), 120363297591152843@newsletter (\"shenvn.\"). Referenced repositories: github[.]com/denzz221/Bailey and the libsignal fork github[.]com/denzz221/libsignal-node.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzz221/baileys",
+        "purl": "pkg:npm/%40denzz221/baileys"
+      },
+      "versions": [
+        "8.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzz221/baileys/v/8.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13673"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:22:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com/denzz221/Bailey",
+          "github[.]com/denzz221/libsignal-node",
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]net"
+        ],
+        "sha256": [
+          "dd2a66f7fb3fc9c27281d3dcdb7ef99cd93900d2f4b74b7fe1f6cad8b7ae5fbb"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13680",
+  "aliases": [
+    "MAL-2026-18675"
+  ],
+  "modified": "2026-11-05T05:27:52Z",
+  "published": "2026-11-05T05:23:55Z",
+  "summary": "Potentially-unwanted package (riskware): @denzz221/baileys (npm)",
+  "details": "This package is a modified republication of the WhatsApp Baileys library whose code silently subscribes the user's WhatsApp account to a fixed channel. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules a 90-second timer that unconditionally sends a WhatsApp newsletter FOLLOW request (query_id FOLLOW, xmlns w:mex) for the hardcoded channel JID 120363400780200098@newsletter. No option, config flag or documented setting gates this behaviour, so any application importing the library will follow that channel from the paired account without the operator's knowledge. It also declares a dependency on a forked git repository (git+hxxps://github[.]com/denzz221/libsignal-node[.]git) rather than a registry package. The package reads no credentials, tokens or environment variables and contacts no host other than WhatsApp's own endpoints (wss://web[.]whatsapp[.]com/ws/chat); its preinstall hook is only a Node version check. IOCs: WhatsApp channel JID 120363400780200098@newsletter; forked dependency git+hxxps://github[.]com/denzz221/libsignal-node[.]git.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzz221/baileys",
+        "purl": "pkg:npm/%40denzz221/baileys"
+      },
+      "versions": [
+        "8.1.6"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzz221/baileys/v/8.1.6"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-05T05:23:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "93c9d026a02c726b996e56049c2a9cfd4babff3dc322fa518594d8cb2f7e54f2"
+        ],
+        "url_observed": [
+          "git+hxxps://github[.]com/denzz221/libsignal-node[.]git"
+        ]
+      }
+    }
+  }
+}

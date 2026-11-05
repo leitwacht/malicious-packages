@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13682",
+  "aliases": [
+    "MAL-2026-18679"
+  ],
+  "modified": "2026-11-05T05:27:01Z",
+  "published": "2026-11-05T05:24:43Z",
+  "summary": "Malicious code in @monze1239/baileys (npm)",
+  "details": "This package is an unofficial, rebranded copy of the WhatsApp Web library Baileys published under a personal scope rather than the canonical @whiskeysockets scope, and it adds behaviour beyond the upstream library. lib/Socket/luxu.js hardcodes WhatsApp channel identifiers (120363421563597486@newsletter and 120363399602691477@newsletter) and injects them into forwardedNewsletterMessageInfo on outgoing status and poll messages, so messages sent through this library carry spoofed \"forwarded from D | 7eppeli-Exloration\" attribution promoting the fork author's channel. lib/Socket/socket.js exports an extra checkBan(number) API that sends the supplied phone number to the non-WhatsApp host hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e and stamps the response with the handle t[.]me/luyatiem, giving an operator-controlled third party a feed of target phone numbers. package.json pins the native bridge whatsapp-rust-bridge at an exact version and declares a cache-manager range (^7.2.8) that resolves to a version known to be malicious, pulling a compromised dependency into any install. The lifecycle hook engine-requirements.js only parses the Node.js major version, and no eval/atob call sites or reads of process.env, ~/.npmrc, ~/.ssh or ~/.aws were present in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@monze1239/baileys",
+        "purl": "pkg:npm/%40monze1239/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@monze1239/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13682"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:24:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me"
+        ],
+        "sha256": [
+          "3ca6e6c4bf0a7dfbb2b4bd9163fa7eb86f96380a5a1cacd0104ae3f8c70d382a"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp"
+        ]
+      }
+    }
+  }
+}

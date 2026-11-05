@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13681",
+  "aliases": [
+    "MAL-2026-18675"
+  ],
+  "modified": "2026-11-05T05:32:47Z",
+  "published": "2026-11-05T05:24:22Z",
+  "summary": "Malicious code in @denzz221/baileys (npm)",
+  "details": "@denzz221/baileys is a repackaged copy of the @whiskeysockets/baileys WhatsApp library with code injected into lib/Socket/newsletter.js. Inside makeNewsletterSocket(), a 90-second timer (setTimeout..., 90000) is scheduled that fires a wmex \"FOLLOW\" query for the hardcoded channel 120363400780200098@newsletter; errors are swallowed in an empty catch, so any application constructing the newsletter socket silently enrols the connected WhatsApp account into that channel with no user action and no log entry. The 90-second delay is long enough to sit outside a normal startup window. The package also repoints the libsignal dependency to a non-registry git source (git+hxxps://github[.]com/denzz221/libsignal-node[.]git) and its dev dependency @adiwajshing/eslint-config to git+hxxps://github[.]com/denzz221/eslint-config[.]git; its preinstall hook runs engine-requirements.js, which only checks that Node.js is version 20 or newer. Additional hardcoded newsletter identifiers appear as forwarded-message metadata in lib/Utils/messages.js (120363420249672073@newsletter, named \"kyuu ilysm\") and lib/Socket/dugong.js (120363297591152843@newsletter, named \"shenvn.\").",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzz221/baileys",
+        "purl": "pkg:npm/%40denzz221/baileys"
+      },
+      "versions": [
+        "8.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzz221/baileys/v/8.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13681"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:24:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363297591152843@newsletter",
+          "120363400780200098@newsletter",
+          "120363420249672073@newsletter"
+        ],
+        "sha256": [
+          "f478c674650f701f851e7869ba2f2f5d6db235fb6b4666cd95e5052381a77c3a"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/denzz221/eslint-config[.]git",
+          "hxxps://github[.]com/denzz221/libsignal-node[.]git"
+        ]
+      }
+    }
+  }
+}

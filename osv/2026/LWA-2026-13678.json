@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13678",
+  "aliases": [
+    "MAL-2026-18675"
+  ],
+  "modified": "2026-11-05T05:32:06Z",
+  "published": "2026-11-05T05:23:16Z",
+  "summary": "Malicious code in @denzz221/baileys (npm)",
+  "details": "@denzz221/baileys is a modified fork of the WhatsApp Web API library that silently manipulates the connected user's account and stamps attacker-chosen channel metadata onto their messages. 1) Covert channel auto-follow: lib/Socket/newsletter.js adds an unconditional timer inside makeNewsletterSocket() — which runs whenever a socket is created. 90 seconds after connection it issues a w:mex newsletter FOLLOW query for the hardcoded JID 120363400780200098@newsletter, enrolling the user's WhatsApp account as a follower of that channel. There is no configuration option and no log output; the call is wrapped in an empty try/catch. The 90-second delay keeps it outside short-lived sessions and observation windows. 2) Metadata injection into outgoing media: lib/Utils/messages.js adds a default `annotations` block to outgoing media messages when the caller supplies none, containing newsletterJid \"120363420249672073@newsletter\", newsletterName \"kyuu ilysm\" and fixed polygon vertices, so the author's channel branding is attached to user media. 3) Forged forwarded-channel provenance: lib/Socket/dugong.js forces forwardedNewsletterMessageInfo onto forwarded/status messages with newsletterJid \"120363297591152843@newsletter\" and spoofed channel names (\"kikyy dugonggg\", \"shenvn.\"), making messages appear relayed from a channel they did not come from. The library's traffic otherwise goes only to WhatsApp endpoints (web[.]whatsapp[.]com, g[.]whatsapp[.]net). It does not read or transmit npm/GitHub/cloud tokens, environment variables, or third-party credential files; its only credential handling is the library's own auth-state directory (creds.json). The preinstall hook (node./engine-requirements.js) merely prints a Node.js version warning.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzz221/baileys",
+        "purl": "pkg:npm/%40denzz221/baileys"
+      },
+      "versions": [
+        "8.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzz221/baileys/v/8.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13678"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:23:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "g[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "6ea8edb824db136d9a7fa504be004cc8aaf6da22bd6dda589f18d4e3839982b4"
+        ]
+      }
+    }
+  }
+}

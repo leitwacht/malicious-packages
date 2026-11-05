@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13679",
+  "aliases": [
+    "MAL-2026-18675"
+  ],
+  "modified": "2026-11-05T05:29:45Z",
+  "published": "2026-11-05T05:23:35Z",
+  "summary": "Malicious code in @denzz221/baileys (npm)",
+  "details": "This package is a trojanized clone of the WhiskeySockets Baileys WhatsApp client library, republished under an unrelated scope with injected behaviour in a verbatim-looking source tree. lib/Socket/newsletter.js defines makeNewsletterSocket with an added timer (setTimeout, 90000 ms) that silently issues a newsletter FOLLOW query (query_id from Types.QueryIds.FOLLOW, xmlns w:mex, addressed to S_WHATSAPP_NET) for the hardcoded WhatsApp channel 120363400780200098@newsletter. Because makeNewsletterSocket is used by the normal socket construction path (lib/Socket/messages-send.js), every client built with this package subscribes the operator's WhatsApp account to that channel 90 seconds after connecting, without any call from the application and with all errors swallowed. A second injection in lib/Utils/messages.js replaces the default annotations of media messages with a fixed block containing newsletterJid 120363420249672073@newsletter, newsletterName \"kyuu ilysm\", contentType \"UPDATE\" and fabricated polygonVertices coordinates, so every media message without explicit annotations is tagged with that channel. The manifest also replaces the upstream libsignal dependency with an out-of-tree fork fetched from a personal git repository (github:denzz221/libsignal-node), whose contents are not part of the registry package. A preinstall hook runs engine-requirements.js, which only performs a Node.js version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzz221/baileys",
+        "purl": "pkg:npm/%40denzz221/baileys"
+      },
+      "versions": [
+        "8.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzz221/baileys/v/8.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13679"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:23:35Z",
+      "indicators_observed": {
+        "sha256": [
+          "4d1f4631089c11591e0ce850fdd7b9374b30bdc3def1a126ccf40edaaf7e618e"
+        ]
+      }
+    }
+  }
+}

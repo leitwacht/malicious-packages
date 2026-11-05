@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13684",
+  "aliases": [
+    "MAL-2026-18682"
+  ],
+  "modified": "2026-11-05T05:28:55Z",
+  "published": "2026-11-05T05:26:29Z",
+  "summary": "Malicious code in @wanzforme/bails (npm)",
+  "details": "This package is a WhatsApp automation library (a fork of Baileys) whose message-send path has been covertly modified so that certain messages are rebuilt and branded by the author, and whose API relays caller-supplied phone numbers to an unrelated third-party host. Message rewrite and channel injection: lib/Socket/messages-send.js imports a non-upstream module (lib/Socket/luxu.js, class `imup`) and instantiates it inside sendMessage. Its detectType() classifies the caller's content and the switch in messages-send.js routes PAYMENT, PRODUCT, ALBUM, EVENT, POLL_RESULT, ORDER, GROUP_STATUS and GROUP_LABEL messages into luxu.js handlers that construct the outgoing payload themselves and relay their own proto message instead of the caller's. Every such message carries forwardedNewsletterMessageInfo pointing at the hardcoded WhatsApp channels 120363380357951328@newsletter (newsletterName \"Wanz-Lonely\") and 120363399602691477@newsletter, together with forced-forward metadata (forwardingScore 99999, isForwarded, businessMessageForwardInfo, dataSharingContext.showMmDisclosure), so messages sent by an application using this library appear forwarded from and promote that channel. Phone-number relay: lib/Socket/socket.js adds a `checkBan(number)` method that issues GET hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e, delivering the caller-supplied phone number to a third-party operator outside WhatsApp, and spreads a \"creator\" attribution string from that response into the library's return value. The preinstall hook (engine-requirements.js) only enforces a Node.js version floor and performs no network or shell activity; no token, environment, file or wallet exfiltration was found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wanzforme/bails",
+        "purl": "pkg:npm/%40wanzforme/bails"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wanzforme/bails/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13684"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:26:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in"
+        ],
+        "sha256": [
+          "db619eeaa976bd2e3147911a8db75391a48fd1597fdea22b9fc19bb1ed0180ab"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone="
+        ]
+      }
+    }
+  }
+}

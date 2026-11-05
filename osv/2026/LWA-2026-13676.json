@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13676",
+  "aliases": [
+    "MAL-2026-18675"
+  ],
+  "modified": "2026-11-05T05:25:33Z",
+  "published": "2026-11-05T05:22:54Z",
+  "summary": "Malicious code in @denzz221/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web library published under an unofficial scope, with an injected auto-follow routine in lib/Socket/newsletter.js. When the library is loaded, a 90-second timer fires and sends a WhatsApp newsletter FOLLOW query for the hardcoded channel JID 120363400780200098@newsletter using whatever WhatsApp session the host application is linked with, with errors silently swallowed so the action is invisible to the application. The channel JID appears nowhere else in the package, i.e. it is injected rather than stock code. The package also pulls its libsignal dependency from a raw non-registry URL (hxxps://github:denzz221/libsignal-node) instead of the npm registry, bypassing the registry audit trail; that malformed specifier prevents a normal install. No credential, token or environment-variable exfiltration was found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzz221/baileys",
+        "purl": "pkg:npm/%40denzz221/baileys"
+      },
+      "versions": [
+        "8.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzz221/baileys/v/8.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13676"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:22:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github:denzz221/libsignal-node"
+        ],
+        "sha256": [
+          "8e3f8bdd8849398c6383da1b9cfd8a13d23ffb2fe1520049e7a7414f0ece79fd"
+        ],
+        "url_observed": [
+          "hxxps://github",
+          "hxxps://github:denzz221/libsignal-node"
+        ]
+      }
+    }
+  }
+}

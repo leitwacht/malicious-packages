@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13683",
+  "aliases": [
+    "MAL-2026-18680"
+  ],
+  "modified": "2026-11-05T05:28:26Z",
+  "published": "2026-11-05T05:25:18Z",
+  "summary": "Malicious code in @raffnotdev/baileys (npm)",
+  "details": "This package republishes the @whiskeysockets/baileys WhatsApp Web library under the unofficial scope @raffnotdev/baileys with added behaviour the installer does not expect. lib/Socket/newsletter.js contains four hardcoded base64-encoded WhatsApp channel identifiers — 120363426470081124@newsletter, 120363419110835885@newsletter, 120363429563611349@newsletter and 120363424295522327@newsletter — which makeNewsletterSocket() decodes and follows via a newsletter-follow query on timers at 10, 15, 20 and 25 seconds. Because that factory is chained unconditionally into every consumer (makeNewsletterSocket → makeUsernameSocket → makeMessagesSocket), every account using the library is silently subscribed to those channels on first connect, while the README claims only one follow of the developer's own channel. lib/Socket/socket.js additionally injects a checkBan() helper that sends a phone number to a non-WhatsApp third-party endpoint, hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=..., with a browser User-Agent, and stamps an unrelated author handle (\"t[.]me/luyatiem\") onto the JSON response rather than the package's own. The preinstall hook (engine-requirements.js) only enforces Node.js \u003e= 20; no token or credential exfiltration was found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@raffnotdev/baileys",
+        "purl": "pkg:npm/%40raffnotdev/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@raffnotdev/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13683"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:25:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me"
+        ],
+        "sha256": [
+          "5ed9c78c3b1061f49d330314ff2554749b7786006efea3be3dca1cc63a7203a1"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=",
+          "hxxps://t[.]me/luyatiem",
+          "hxxps://t[.]me/raffnotdev",
+          "hxxps://whatsapp[.]com/channel/0029VbBznRJBfxo2IqrhLD18"
+        ]
+      }
+    }
+  }
+}
