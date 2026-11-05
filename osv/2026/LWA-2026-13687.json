@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13687",
+  "modified": "2026-11-05T06:07:01Z",
+  "published": "2026-11-05T05:50:55Z",
+  "summary": "Malicious code in @ruthless-imperium/baileys (npm)",
+  "details": "This package is a combosquat fork of the @whiskeysockets/baileys WhatsApp automation library (same basename and \"WhatsApp Web API Library\" description) shipped under the unofficial scope @ruthless-imperium, with a covert channel-enrolment payload injected into the socket chain. In lib/Socket/newsletter.js the package hardcodes the WhatsApp channel invite code 0029VbDlfld4yltRwFKFL73X and wraps the newsletter socket factory in an exported makeNewsletterSocket(): on every 'connection.update' event where the connection state is 'open' it waits 5 seconds, resolves the invite via newsletterMetadata('invite',...) and calls sock.newsletterFollow(meta.id), logging \"Berhasil follow channel\" on success. Because lib/Socket/username.js requires that function and lib/Socket/messages-send.js requires username.js, the auto-follow runs for any consumer that opens a normal socket — it is not opt-in and is not described in the README. The fork also stamps outgoing content with the author's channel: lib/Socket/luxu.js sets forwardedNewsletterMessageInfo.newsletterJid to 120363421563597486@newsletter (newsletterName \"D | 7eppeli-Exloration\") on status/event messages and defaults polls to 120363399602691477@newsletter. Its dependencies alias \"libsignal\" to the non-canonical npm:@noxzaid/libsignal-node. The preinstall hook (node./engine-requirements.js) only checks for Node 20+. No credential, token or file exfiltration was found; the package's own network destinations are WhatsApp endpoints (web[.]whatsapp[.]com, graph[.]whatsapp[.]com, wamo[.]whatsapp[.]net) plus media-upload helpers posting files to third-party anonymous hosts catbox.moe, scdn.pdi.moe and qu.ax. IOCs: WhatsApp channel invite 0029VbDlfld4yltRwFKFL73X, channel JIDs 120363421563597486@newsletter and 120363399602691477@newsletter; domains web[.]whatsapp[.]com, graph[.]whatsapp[.]com, wamo[.]whatsapp[.]net, catbox.moe, scdn.pdi.moe, qu.ax.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ruthless-imperium/baileys",
+        "purl": "pkg:npm/%40ruthless-imperium/baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ruthless-imperium/baileys/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13687"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T05:50:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "catbox[.]moe",
+          "graph[.]whatsapp[.]com",
+          "meta[.]id",
+          "qu[.]ax",
+          "scdn[.]pdi[.]moe",
+          "wamo[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "480b23b3eed4d803c5bf8389275a41b7268450d8239bb2f8f274449b624db910"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VbDlfld4yltRwFKFL73X"
+        ]
+      }
+    }
+  }
+}
