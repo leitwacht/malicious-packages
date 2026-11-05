@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13701",
+  "modified": "2026-11-05T22:38:14Z",
+  "published": "2026-11-05T22:36:30Z",
+  "summary": "Malicious code in modelsdesk (npm)",
+  "details": "The published entrypoint of this package, bin/modelsd.js — installed as the `modelsd` binary — contains an injected self-executing payload that is unrelated to the CLI's advertised job of resolving the @modelsdesk/darwin-arm64 binary and exec'ing it. Behind a hand-written, commented 20-line shim sits a single newline-free block that decodes its real property and string names from \\u-escaped literals and two large encoded strings (~1.8KB and ~1.6KB) using RC4-style rotation routines (spin/splitLane/peel with XOR-constant key schedules such as 6912847 and 907388^907539), then parses and runs the decoded source through the Function constructor (nested `Function(...)(...)(677251^678990)`), invoked with the module's `require` and global scope at module load. On the supported platform this block executes on every `modelsd` invocation, before the shim's own spawnSync. No endpoint, host or env-var name appears in plaintext anywhere in the tarball — decoding the file yields only decoder helpers (fromCharCode, substring, charAt, split, join) — so the payload's destination and collection behaviour is hidden behind the encoded blobs. The same insertion also duplicates `import { createRequire } from \"node:module\"` and `const require = createRequire(import.meta.url)`, so the file as published is not valid ESM. Artifacts: bin/modelsd.js (14,307 bytes; obfuscated block at ~byte 1000), bin entry `modelsd`, optionalDependency @modelsdesk/darwin-arm64@0.4.1, no lifecycle scripts. No plaintext network IOC is present in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "modelsdesk",
+        "purl": "pkg:npm/modelsdesk"
+      },
+      "versions": [
+        "0.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/modelsdesk/v/0.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13701"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T22:36:30Z",
+      "indicators_observed": {
+        "sha256": [
+          "63e459921f52ad1c422edc93fd116e8238aed81c13ac48ad49f44d2780a0942c"
+        ]
+      }
+    }
+  }
+}
