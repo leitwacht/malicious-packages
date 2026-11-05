@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13694",
+  "modified": "2026-11-05T19:07:24Z",
+  "published": "2026-11-05T18:39:54Z",
+  "summary": "Malicious code in charape (npm)",
+  "details": "Charape is a renamed fork of the Baileys WhatsApp Web library that enrols the operator's WhatsApp account into an operator-controlled channel and attributes outbound messages to that channel. lib/Defaults/index.js ships DEFAULT_CONNECTION_CONFIG containing autoFollow: ['120363424530330931@newsletter'], newsletterJid '120363424530330931@newsletter', newsletterName 'メ Informasi Store Cԋαɾαρҽ' and channelUrl hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o. lib/Socket/newsletter.js (makeNewsletterSocket) copies config.autoFollow into followList and, once the account is paired, calls mexQuery({newsletter_id: targetJid}) with QueryIds.FOLLOW / xwa2_newsletter_follow up to three times, so every bot built on the package subscribes its account to that channel without consent while the channel retains the ability to push content to it. lib/Socket/messages-send.js (injectNewsletterWatermark) and lib/Utils/messages.js stamp that channel's JID, name and server message id into contextInfo on outgoing messages and media annotations, so the operator's traffic is presented as forwarded from the charape channel. The postinstall hook scripts/postinstall.js (node./scripts/postinstall.js) walks up to the nearest node_modules and, for each of @whiskeysockets/baileys, @adiwajshing/baileys and baileys that is absent, creates the directory and writes a proxy package.json plus index.js/index.cjs that re-export this package, substituting those official module names inside the consumer's project; it also creates or appends legacy-peer-deps=true to the project.npmrc. The preinstall hook engine-requirements.js only enforces Node.js 20+, and the package banner advertises hxxps://charape[.]id and hxxps://t[.]me/nofalycharape.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "charape",
+        "purl": "pkg:npm/charape"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/charape/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13694"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T18:39:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "charape[.]id",
+          "t[.]me",
+          "t[.]me/nofalycharape",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "be40edb2820b9d5a8ff929f323178f6a64841ab672263111f9cc32bd95846882"
+        ],
+        "url_observed": [
+          "hxxps://charape[.]id",
+          "hxxps://t[.]me/nofalycharape",
+          "hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o"
+        ]
+      }
+    }
+  }
+}

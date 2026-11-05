@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13696",
+  "modified": "2026-11-05T19:06:37Z",
+  "published": "2026-11-05T19:05:35Z",
+  "summary": "Malicious code in kampodine (npm)",
+  "details": "kampodine@0.8.0 ships a hidden code loader inside its CLI entrypoint, cli.js, which is the package's `bin` target and therefore runs on every invocation of the `kampodine` command. The file looks like an ordinary command dispatcher until, immediately before its usage/dispatch logic, a ~2.5KB minified block executes at top level: it rebuilds identifiers from character-permuted strings (for example \"c^mejb^tro\" is decoded to the member name \"constructor\", and a further decode yields the literal string \"constructor\", used to reach the JavaScript `Function` constructor), then decrypts two large encoded blobs and compiles and runs them via `Function(\"\", decryptedSource)`. This decrypt-then-execute chain is invoked with `global` and `require` passed into it, so the concealed stage has full CommonJS access to node modules (child_process, fs, http/https), the process environment and the filesystem. A 6-element integer key set, written as xor expressions such as `907388^907539`, is used for the character/byte permutation; the encoded blobs are stored inline after the command table. Every documented feature of this tool is implemented in plainly readable shell scripts under scripts/ (deploy.sh, bluegreen.sh, vm-prepare.sh, etc.), so the encrypted stage serves no part of the advertised functionality, and no plain-text URL, host or IP appears anywhere in the readable code — all outbound logic is confined to the concealed payload, which is decrypted only at run time.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "kampodine",
+        "purl": "pkg:npm/kampodine"
+      },
+      "versions": [
+        "0.8.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/kampodine/v/0.8.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13696"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-05T19:05:35Z",
+      "indicators_observed": {
+        "sha256": [
+          "fbad3ef13663fdaa806c036a4c222e8f04b39f1efc257cf7d2eec77dbacd30c6"
+        ]
+      }
+    }
+  }
+}
