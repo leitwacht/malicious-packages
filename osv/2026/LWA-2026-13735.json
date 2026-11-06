@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13735",
+  "modified": "2026-11-06T17:24:19Z",
+  "published": "2026-11-06T16:57:53Z",
+  "summary": "Malicious code in charape (npm)",
+  "details": "The package is a Baileys-derived WhatsApp automation library whose code covertly enrols the account running it into a third-party channel and forges forwarded-channel metadata on the operator's outgoing messages. lib/Defaults/index.js ships a hardcoded default autoFollow: ['120363424530330931@newsletter'] together with newsletterJid, newsletterName 'メ Informasi Store Cԋαɾαρҽ' and channelUrl hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o. lib/Socket/newsletter.js (makeNewsletterSocket) installs a connection.update listener that, 2.5s and again 7s after the WhatsApp connection reaches 'open' for an authenticated account, issues the newsletter FOLLOW query (xwa2_newsletter_follow) for that JID, retrying up to three times and logging the subscription in green; there is no opt-out in the published configuration beyond editing the default. lib/Socket/messages-send.js (injectNewsletterWatermark) and lib/Utils/messages.js then rewrite contextInfo of every outgoing non-newsletter media message before encryption — setting isForwarded=true and forwardingScore=999 and attaching forwardedNewsletterMessageInfo pointing at the same channel and serverMessageId 1 — and apply annotation polygons carrying that channel's link, so messages the operator sends appear to have been forwarded from the channel. The package also tampers with the host project at install time: scripts/postinstall.js appends 'legacy-peer-deps=true' to the parent project's.npmrc and creates proxy package.json/index.js/index.cjs shims inside node_modules for @whiskeysockets/baileys, @adiwajshing/baileys and baileys, redirecting those package names to its own code without the operator's knowledge. No credentials, tokens, environment values or file contents are read or transmitted by any of this code; the only endpoints contacted are WhatsApp's own services, its media CDN and an upstream version check against raw[.]githubusercontent[.]com/WhiskeySockets/Baileys.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "charape",
+        "purl": "pkg:npm/charape"
+      },
+      "versions": [
+        "1.0.21"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/charape/v/1.0.21"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13735"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T16:57:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "77af067cc133932a2d4cbf7ca60d2b22f82aecc20d3efc92ca060e0c53a68e8e"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o"
+        ]
+      }
+    }
+  }
+}
