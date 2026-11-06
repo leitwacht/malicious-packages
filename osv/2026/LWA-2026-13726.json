@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13726",
+  "modified": "2026-11-06T14:36:50Z",
+  "published": "2026-11-06T14:35:25Z",
+  "summary": "Malicious code in @expo-probe-ff8e2b/snack-probe-c2a16 (npm)",
+  "details": "@expo-probe-ff8e2b/snack-probe-c2a16@1.0.1 is an inert stub — index.js is `module.exports = 1;`, there are no lifecycle scripts and no executable code in the tarball. Its only function is to pull in a dependency from a non-registry source: \"expo-prepare-probe-c2a16db2\": \"git+hxxps://github[.]com/lordseidon/recon-vps[.]git#expo-probe-1106-c2a16db2\". Installing the package therefore makes the package manager clone and build that external GitHub repository at a mutable, per-run ref (date-coded 1106 plus the tag c2a16db2) on a repository named recon-vps, so any code published to that ref executes in the installer's environment without ever passing through a registry tarball. The registry artifact itself is only the trigger; no second-stage payload is contained in the published package. IOCs: github[.]com/lordseidon/recon-vps (ref expo-probe-1106-c2a16db2), dependency name expo-prepare-probe-c2a16db2.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@expo-probe-ff8e2b/snack-probe-c2a16",
+        "purl": "pkg:npm/%40expo-probe-ff8e2b/snack-probe-c2a16"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@expo-probe-ff8e2b/snack-probe-c2a16/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13726"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T14:35:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "sha256": [
+          "80cc71ba237c1746c4b0e52a149d771f7a29c99759398c719b924a8faf13b33a"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/lordseidon/recon-vps[.]git#expo-probe-1106-c2a16db2"
+        ]
+      }
+    }
+  }
+}

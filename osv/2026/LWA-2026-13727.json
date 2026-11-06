@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13727",
+  "modified": "2026-11-06T14:36:11Z",
+  "published": "2026-11-06T14:35:24Z",
+  "summary": "Malicious code in @expo-probe-ff8e2b/snack-probe-c2a16 (npm)",
+  "details": "@expo-probe-ff8e2b/snack-probe-c2a16@1.0.0 contains no code of its own — package/index.js is `module.exports = 1;` and there are no lifecycle scripts — but its package.json declares a single dependency resolved from an arbitrary git commit rather than the npm registry: `\"expo-prepare-probe-c2a16db2\": \"git+hxxps://github[.]com/lordseidon/recon-vps[.]git#expo-probe-1106-c2a16db2\"`. Installing this package therefore fetches and runs third-party code at that pinned commit from the repository github[.]com/lordseidon/recon-vps, which is unrelated to the Expo project the scoped package name and the decoy dependency name (`expo-prepare-probe-*`) imitate. Because it is pinned to a raw commit-ish rather than a fixed published version, the code delivered to installers can be swapped without republishing the npm package. The dependency's name and the `recon-vps` repository are consistent with a recon/payload delivery stage; the executable payload lives in that git repository and is not present in the npm tarball. IOCs: dependency spec git+hxxps://github[.]com/lordseidon/recon-vps[.]git#expo-probe-1106-c2a16db2; repository host github[.]com/lordseidon/recon-vps.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@expo-probe-ff8e2b/snack-probe-c2a16",
+        "purl": "pkg:npm/%40expo-probe-ff8e2b/snack-probe-c2a16"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@expo-probe-ff8e2b/snack-probe-c2a16/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13727"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T14:35:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com/lordseidon/recon-vps"
+        ],
+        "sha256": [
+          "a47d4cdfa05915165ed064e4ba8743e9d0d710f7889ac54cf1295753e2b95b76"
+        ],
+        "url_observed": [
+          "git+hxxps://github[.]com/lordseidon/recon-vps[.]git",
+          "hxxps://github[.]com/lordseidon/recon-vps[.]git#expo-probe-1106-c2a16db2"
+        ]
+      }
+    }
+  }
+}
