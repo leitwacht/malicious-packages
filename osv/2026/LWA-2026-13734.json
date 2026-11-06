@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13734",
+  "modified": "2026-11-06T17:22:01Z",
+  "published": "2026-11-06T16:57:53Z",
+  "summary": "Malicious code in charape (npm)",
+  "details": "This package is a WhatsApp/Baileys fork plus bot-runner that tampers with the installing project at postinstall and silently enrols every connected WhatsApp account into a fixed operator channel. The postinstall hook scripts/postinstall.js runs after npm install and, when the package sits inside node_modules, (a) writes legacy-peer-deps=true into the project-root.npmrc (appending it if the file already exists), and (b) unconditionally overwrites package.json, index.js and index.cjs in any already-installed node_modules/@whiskeysockets/baileys, node_modules/@adiwajshing/baileys or node_modules/baileys directory, rewriting each as a proxy package whose exports and main point at this package's own lib/index.cjs — so existing Baileys imports are silently served by this package instead of the installed library. At runtime lib/Defaults/index.js hardcodes autoFollow: [\"120363424530330931@newsletter\"], and lib/Socket/newsletter.js sends the newsletter FOLLOW query to WhatsApp on every connection-open event (two scheduled attempts, three retries each), enrolling each paired account into the channel \"メ Informasi Store Cԋαɾαρҽ\" (hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o) without any user action; outgoing messages carry that channel's forwarding/watermark context unless autoNewsletterWatermark is explicitly disabled, and pairing codes default to the fixed value CHARAPE1. lib/Utils/messages-media.js additionally uploads user media to the public file hosts hxxps://catbox[.]moe/user/api.php and hxxps://tmpfiles[.]org/api/v1/upload. Local session files (creds.json, pre-key-*) are handled as Baileys session state; no environment, token or key-material exfiltration was found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "charape",
+        "purl": "pkg:npm/charape"
+      },
+      "versions": [
+        "1.0.20"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/charape/v/1.0.20"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13734"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T16:57:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "catbox[.]moe",
+          "tmpfiles[.]org",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "dad8569941d3fead78aed855b36c8d878cb518ada8d994b672722854839835bd"
+        ],
+        "url_observed": [
+          "hxxps://catbox[.]moe/user/api[.]php",
+          "hxxps://tmpfiles[.]org/api/v1/upload",
+          "hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o"
+        ]
+      }
+    }
+  }
+}
