@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13703",
+  "modified": "2026-11-06T06:48:45Z",
+  "published": "2026-11-06T06:47:55Z",
+  "summary": "Malicious code in @yuanjielab/cli (npm)",
+  "details": "The package installs a CLI (`yj`) and its postinstall hook downloads and executes a platform-specific native binary that the npm tarball does not contain or pin. scripts/postinstall.js maps os.platform()/os.arch() to an artifact key, requests hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/0[.]9[.]0[.]json, follows manifest.platforms[\u003cos\u003e_\u003carch\u003e].path to fetch the binary from the same OSS bucket, checks its byte length and sha256 against that manifest, writes it to vendor/yj with mode 0755, and immediately runs it (execFileSync with `version --json`). bin/yj.js is a spawnSync shim that forwards arguments to that binary. Because the integrity manifest is served from the same distribution host as the executable it validates, the checksum gives no protection against that host being compromised or repointed, and the download source can be redirected with the YJ_DOWNLOAD_BASE environment variable (YJ_SKIP_DOWNLOAD skips it). No installer credentials, tokens, shell profiles or wallet files are read, and nothing is uploaded - network activity is limited to those two downloads. The code that ends up running on the installer's machine is therefore determined entirely by the remote distribution host, not by the published package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yuanjielab/cli",
+        "purl": "pkg:npm/%40yuanjielab/cli"
+      },
+      "versions": [
+        "0.9.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yuanjielab/cli/v/0.9.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13703"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T06:47:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com"
+        ],
+        "sha256": [
+          "4262960216c6450edf2ae02c66fed391607c0c4bcad7fa657dde10d75219b3f6"
+        ],
+        "url_observed": [
+          "hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/bin/",
+          "hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/0[.]9[.]0[.]json"
+        ]
+      }
+    }
+  }
+}
