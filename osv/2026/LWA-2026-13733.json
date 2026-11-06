@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13733",
+  "modified": "2026-11-06T16:52:13Z",
+  "published": "2026-11-06T14:40:58Z",
+  "summary": "Security-research / proof-of-concept package: x3r0day-bunnyhijack-poc (npm)",
+  "details": "This package executes code during `bun install` while declaring no lifecycle scripts of its own. package.json has an empty `scripts` block and declares `\"bin\": {\"grunt\": \"./shim.js\"}`; the package depends on `@sap/hana-theme-vscode`, whose postinstall command invokes the `grunt` CLI name, so bun's `node_modules/.bin` linking causes `shim.js` to run inside a trusted dependency's install step. When it runs, `shim.js` writes a marker file named `pwned-by-bunnyhijack.txt` into the project directory (from `INIT_CWD` and `npm_config_local_prefix`), the current working directory and the OS temp directory, containing the local username, hostname, platform/arch, cwd and process arguments, and prints the same text to stdout and stderr. It then spawns a detached, unref'd child process to open `hxxps://github[.]com/X3r0Day/BunnyHijack-PoC` in the default browser (`xdg-open`, `gio open`, `sensible-browser`, `open` on macOS, `cmd /c start` on Windows). The package itself contains no HTTP client and sends no data over the network; the only outbound action is opening that single hardcoded repository URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "x3r0day-bunnyhijack-poc",
+        "purl": "pkg:npm/x3r0day-bunnyhijack-poc"
+      },
+      "versions": [
+        "1.0.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/x3r0day-bunnyhijack-poc/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13733"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-06T14:40:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com"
+        ],
+        "sha256": [
+          "24b8f0283418a6afac9c23b11dac803b44e77e62525ddb07b31a109d3bb6ab6a"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/X3r0Day/BunnyHijack-PoC"
+        ]
+      }
+    }
+  }
+}
