@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13710",
+  "modified": "2026-11-06T10:16:46Z",
+  "published": "2026-11-06T10:15:59Z",
+  "summary": "Malicious code in nullsub (npm)",
+  "details": "This package contains no JavaScript. It is a delivery vehicle for a Windows executable: NULLSUB.exe (1,300,309 bytes, x64 PE, package is win32-only), plus a second copy inside NULLSUB[.]zip, advertised as a \"portable Windows activator for desktop AI apps\" that the reader is told to download and double-click (the README points at hxxps://cdn[.]jsdelivr[.]net/npm/nullsub/NULLSUB[.]exe and hxxps://nullsub[.]ink). The binary is an encrypted-payload loader with active defence evasion, evidenced by its own strings and imports: - Hidden stage: \"carrier=1 chunks=5\", \"[payload] %zu bytes\", \"[crypto] decrypted, magic=%02x%02x%02x%02x\", \"[crc] chunk %u mismatch\" — a five-chunk encrypted blob decrypted at startup, then memory-mapped and executed by a bundled reflective PE loader (\"[ldr] mapping %zu bytes\", \"[ldr] relocs ok\", \"[ldr].NET image, launch mode\", \"map failed (%d), temp fallback\" → \"[temp] launched %ls\"). It also skips its own anti-sleep delay (\"[sleep] skipped (fast start)\").\n- AV/EDR neutering: \"[patch] %s!%s stomped\" together with AmsiScanBuffer, AmsiScanString, AmsiOpenSession (amsi.dll) and EtwEventWrite, EtwEventWriteFull, EventWrite (ntdll.dll / advapi32.dll) — the process patches out AMSI scanning and ETW telemetry before running the payload.\n- Privilege escalation: if not elevated it hijacks \"Software\\Classes\\ms-settings\\Shell\\Open\\command\" with DelegateExecute and falls back to computerdefaults.exe / fodhelper.exe (\"[uac] not elevated, hijacking ms-settings\", \"computerdefaults failed … trying fodhelper\", \"[uac] cleaned\").\n- Analysis evasion and host fingerprinting: CPUID hypervisor checks, IsDebuggerPresent / CheckRemoteDebuggerPresent, process enumeration via CreateToolhelp32Snapshot, GetAdaptersAddresses (MAC/adapters), GetVolumeInformationW, GetSystemFirmwareTable and GlobalMemoryStatusEx, plus a check for loaded drivers under \\drivers\\.\n- Imports include CreateProcessW, VirtualAlloc, VirtualProtect, WriteFile and RegSetValueExW. No command-and-control hostname or IP is present in the binary; the second stage exists only in encrypted form, so its network indicators are not observable from the package itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nullsub",
+        "purl": "pkg:npm/nullsub"
+      },
+      "versions": [
+        "1.11.16"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nullsub/v/1.11.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13710"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T10:15:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cdn[.]jsdelivr[.]net",
+          "nullsub[.]ink"
+        ],
+        "sha256": [
+          "79ce55deb01a78363b53cdb0901ff16af7075e42c65d97ad42b69020c9c5e4e0"
+        ],
+        "url_observed": [
+          "hxxps://cdn[.]jsdelivr[.]net/npm/nullsub/NULLSUB[.]exe",
+          "hxxps://nullsub[.]ink"
+        ]
+      }
+    }
+  }
+}

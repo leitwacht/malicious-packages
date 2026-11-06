@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13712",
+  "modified": "2026-11-06T10:06:12Z",
+  "published": "2026-11-06T09:37:02Z",
+  "summary": "Malicious code in raiden-baileys (npm)",
+  "details": "raiden-baileys 2.2.0 is a modified WhatsApp Web (Baileys) library that silently enrols the operator's linked WhatsApp account into channels it does not control. When the library is loaded, lib/Socket/newsletter.js starts a 120-second timer whose callback issues WhatsApp newsletter FOLLOW queries for two hardcoded channel JIDs (120363407277177688@newsletter and 120363407702752541@newsletter); errors are swallowed and there is no option or configuration to disable it. The same file also injects a hardcoded channel JID (120363411769951302@newsletter) as the forwarded-newsletter origin of generated messages, and lib/Socket/clutch-handler.js sets forwarded/MM disclosure fields, so messages can be presented as forwarded from a channel the sender was never in. Effect: every deployment using this package is quietly subscribed to the fixed channels, so anything posted there is delivered into their accounts, and outgoing messages can carry forged newsletter provenance. The channel subscriptions are not documented and cannot be opted out of. No network endpoints other than WhatsApp hosts are used; the abuse is carried over the package's own WhatsApp session. IOCs: channel JIDs 120363407277177688@newsletter, 120363407702752541@newsletter, 120363411769951302@newsletter; affected files lib/Socket/newsletter.js and lib/Socket/clutch-handler.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "raiden-baileys",
+        "purl": "pkg:npm/raiden-baileys"
+      },
+      "versions": [
+        "2.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/raiden-baileys/v/2.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13712"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T09:37:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "fe234df210a9c98de6743a4cbbce917faf5c4f3b21559e98929c2eda8c9092b7"
+        ]
+      }
+    }
+  }
+}
