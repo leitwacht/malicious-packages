@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13725",
+  "modified": "2026-11-06T14:37:32Z",
+  "published": "2026-11-06T14:36:56Z",
+  "summary": "Malicious code in @yuanjielab/cli (npm)",
+  "details": "@yuanjielab/cli installs and executes a remote native executable at install time. Its package.json postinstall hook runs scripts/postinstall.js, which maps os.platform()/os.arch() to a target key (darwin/linux/windows × amd64/arm64), fetches the manifest hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/0.10.1[.]json (host and path overridable via the YJ_DOWNLOAD_BASE environment variable), then downloads the binary from {BASE}/bin/\u003cfile\u003e and writes it to vendor/yj with mode 0755. The hook then executes the downloaded file with `execFileSync(target, ['version','--json'])`. The sha256 and byte-length \"verification\" it performs are self-referential: the checksum is read from the same unauthenticated third-party bucket that serves the binary, so whoever controls that bucket can replace manifest and payload together and have arbitrary code run on every `npm install` of this package, and the check cannot detect a tampered or substituted binary. An escape hatch env var YJ_SKIP_DOWNLOAD suppresses the download. The declared `yj` bin entry (bin/yj.js) is a thin shim that spawnSync-forwards all arguments to the downloaded vendor/yj executable with inherited stdio. No network destination other than the aliyuncs[.]com bucket is contacted by the shipped JavaScript, and no credentials,.npmrc, SSH/AWS material or environment values are read or transmitted by it — the payload that actually runs on the host is the uninspectable downloaded binary.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yuanjielab/cli",
+        "purl": "pkg:npm/%40yuanjielab/cli"
+      },
+      "versions": [
+        "0.10.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yuanjielab/cli/v/0.10.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13725"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T14:36:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com",
+          "aliyuncs[.]com"
+        ],
+        "sha256": [
+          "e8964f918cd43e4143aba0fcce10e69ca10a66d580644ba8cd2f312325a6e479"
+        ],
+        "url_observed": [
+          "hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/",
+          "hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/0[.]10[.]1[.]json"
+        ]
+      }
+    }
+  }
+}
