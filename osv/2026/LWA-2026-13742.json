@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13742",
+  "modified": "2026-11-07T22:06:08Z",
+  "published": "2026-11-07T21:40:56Z",
+  "summary": "Malicious code in @zervonex/baileys (npm)",
+  "details": "@zervonex/baileys@4.0.0 is a fork of the Baileys WhatsApp Web API library that silently enrols the connecting WhatsApp account in two hardcoded channels. lib/Defaults/index.js ships autoFollowNewsletter: true as the default socket config, and lib/Socket/newsletter.js defines AUTO_FOLLOW_JIDS = ['120363422827915475@newsletter', '120363409522637051@newsletter']; on every 'connection.update' event with connection === 'open' the library waits 3 s (AUTO_FOLLOW_CONNECT_DELAY) and calls performNewsletterFollow() for both JIDs, then re-follows them every 30 s (AUTO_FOLLOW_INTERVAL_MS) for as long as the socket stays connected. The behaviour is on by default and can only be stopped by an explicit autoFollowNewsletter: false option. Separately, importing WAProto/index.js runs boot()/refetch(), which downloads wa-version.json and WAProto.bundle.js over HTTPS from raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache (WAProto/fetcher.js), writes the bundle to WAProto.bundle.tmp, parses it and overwrites the shipped WAProto.proto and WAProto.json inside the installed package directory, so the proto tables used at runtime come from a mutable remote branch rather than from the published tarball. The preinstall hook (node./engine-requirements.js) only performs a Node.js 20 version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zervonex/baileys",
+        "purl": "pkg:npm/%40zervonex/baileys"
+      },
+      "versions": [
+        "4.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zervonex/baileys/v/4.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13742"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-07T21:40:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "6e7c06f00a44f8a992f0361e74c759a50af2976ce5827e3fe2612de5f8c78b8b"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json"
+        ]
+      }
+    }
+  }
+}
