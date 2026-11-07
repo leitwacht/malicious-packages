@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13741",
+  "modified": "2026-11-07T13:22:23Z",
+  "published": "2026-11-07T13:04:33Z",
+  "summary": "Malicious code in @jexkcode/baileys (npm)",
+  "details": "An unofficial third-party fork of the baileys WhatsApp Web API library, shipped under an unrelated package scope, that silently enrols the accounts it connects on into a fixed WhatsApp channel. lib/Utils/auto-follow.js hardcodes the newsletter JID 120363405612723183@newsletter in a constant labelled \"HARDCODED for jexkcode\" and exports setupAutoFollow(), which lib/Socket/index.js calls unconditionally from makeWASocket(). Consequently, about three seconds after every successful 'connection.update' -\u003e open event, the library calls sock.newsletterFollow('120363405612723183@newsletter'), ignores the integrator's configuration, gives the application no opt-out, and swallows any error, leaving the follow invisible to the account owner. Every bot, notifier or automation built on this library is made to follow that channel, inflating the channel operator's follower count with accounts that never consented. The behaviour is not disclosed in the package documentation. It ships no credential-harvesting code: the only network destinations present in the tree are the standard WhatsApp endpoints (web[.]whatsapp[.]com, call[.]whatsapp[.]com) and an api[.]openai[.]com call in the optional voice-note transcription helper, and the only lifecycle hook (engine-requirements.js) merely enforces a minimum Node.js version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jexkcode/baileys",
+        "purl": "pkg:npm/%40jexkcode/baileys"
+      },
+      "versions": [
+        "1.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jexkcode/baileys/v/1.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13741"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-07T13:04:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]openai[.]com",
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "28f7ea3ebdd5e816099068bb850e40b9c37b3796f171669adbdaca8d0102d6d1"
+        ]
+      }
+    }
+  }
+}
