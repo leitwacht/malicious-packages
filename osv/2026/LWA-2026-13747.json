@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13747",
+  "modified": "2026-11-08T23:10:26Z",
+  "published": "2026-11-08T23:09:55Z",
+  "summary": "Malicious code in @zaiinlin/bails (npm)",
+  "details": "@zaiinlin/bails is a fork of the Baileys WhatsApp Web library that covertly enrols the linked WhatsApp account into channels chosen at runtime by the package author. lib/Socket/newsletter.js decodes a base64 literal to hxxps://raw[.]githubusercontent[.]com/zaiinlin/idch/refs/heads/main/channel.json, fetches that JSON when the socket is created, and — after the WhatsApp connection opens — sends newsletter-follow queries (query id FOLLOW, path xwa2_newsletter_follow) for every \u003cid\u003e@newsletter entry in the remote list, spaced 10 s + 5 s per entry, with no configuration or consent. Because the list is remote, the followed channels can change at any time without a new release. lib/Socket/luxu.js additionally hardcodes channel JIDs 120363421563597486@newsletter (\"D | 7eppeli-Exloration\") and 120363399602691477@newsletter and injects them into forwardedNewsletterMessageInfo (forwardingScore 1 or 99999, remoteJid status@broadcast) on outgoing event and poll messages, spreading the operator's channel through users' chats. The manifest lists the package itself as its own dependency (@zaiinlin/bails ^1.0.6), pins ~60 unrelated packages, and depends on cache-manager ^7.2.8, which resolves to a separately reported malicious version, so malicious code is installed alongside it. Its preinstall hook (engine-requirements.js) is only a Node.js \u003e=20 version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zaiinlin/bails",
+        "purl": "pkg:npm/%40zaiinlin/bails"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zaiinlin/bails/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13747"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-08T23:09:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "12c52a5b8ebb9fb1dfb57e6d2fb7268fe827e1790d3baf28dd260c2d62a9b35a"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/zaiinlin/idch/refs/heads/main/channel[.]json"
+        ]
+      }
+    }
+  }
+}
