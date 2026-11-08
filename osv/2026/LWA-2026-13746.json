@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13746",
+  "modified": "2026-11-08T21:51:15Z",
+  "published": "2026-11-08T21:50:23Z",
+  "summary": "Malicious code in @gsas/gsas-sdk (npm)",
+  "details": "@gsas/gsas-sdk@99.99.99 is an install-time dependency-confusion package: it publishes version 99.99.99 under a scope that matches a real corporate SDK name, so a private-registry name resolved against the public registry would win. Its only executable content is a preinstall lifecycle hook, an inline `node -e` script in package.json that loads require('dns') and require('os'), builds a DNS name from the installing machine's hostname and the local username (non-alphanumeric characters replaced and lengths truncated), and resolves `\u003chostname\u003e.\u003cusername\u003e.gsas-rce[.]66wdtgr[.]a[.]intrax[.]cc`, swallowing errors. Host and user identifiers therefore leave the host as DNS query labels to an operator-controlled domain at install time. The rest of the tarball is inert: index.js contains only `module.exports = {}`, and the package ships just package.json, README.md and index.js (786 bytes total). The hook does not read environment variables, npm or GitHub tokens,.npmrc, SSH/cloud credential files or file contents, and does not download or execute a second stage. The package describes itself as security research; no repository, license \"ISC\".",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@gsas/gsas-sdk",
+        "purl": "pkg:npm/%40gsas/gsas-sdk"
+      },
+      "versions": [
+        "99.99.99"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@gsas/gsas-sdk/v/99.99.99"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13746"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-08T21:50:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gsas-rce[.]66wdtgr[.]a[.]intrax[.]cc",
+          "intrax[.]cc"
+        ],
+        "sha256": [
+          "d2187d037faa739ef820a8d0751b80f266dda8a80e5e57f9a0e2474f1ebc7e9c"
+        ]
+      }
+    }
+  }
+}
