@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13743",
+  "modified": "2026-11-08T15:11:17Z",
+  "published": "2026-11-08T15:10:56Z",
+  "summary": "Malicious code in @yuanjielab/cli (npm)",
+  "details": "This package is a thin npm wrapper that, at install time, downloads and runs a native executable from an external object-storage host instead of shipping it in the tarball. The postinstall hook scripts/postinstall.js requests hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/\u003cpackage-version\u003e.json, selects the \u003cgoos\u003e_\u003cgoarch\u003e entry for the current platform, refuses absolute or parent-relative paths, checks the declared byte size and SHA-256 from that document, writes the result to vendor/yj with mode 0755, and then executes it once as `yj version --json`, deleting it if the reported version does not match. The download location can be redirected with the YJ_DOWNLOAD_BASE environment variable and skipped entirely with YJ_SKIP_DOWNLOAD; when skipped, bin/yj.js fails with an error. bin/yj.js is a shim that re-executes vendor/yj with inherited stdio. Because the executable that is actually run on the installer's machine is fetched at install time rather than contained in the package, the code that executes is whatever the remote bucket serves; the package itself carries no repository reference and no licence. IOC: hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/ (manifest) and /yj-cli/bin/ (binary), configured via YJ_DOWNLOAD_BASE.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yuanjielab/cli",
+        "purl": "pkg:npm/%40yuanjielab/cli"
+      },
+      "versions": [
+        "0.11.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yuanjielab/cli/v/0.11.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13743"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-08T15:10:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com"
+        ],
+        "sha256": [
+          "89317a3b55ebdb2fdf1a33fbc2ba5bff2be5885f89afa1e8e3950ae9db87ca45"
+        ],
+        "url_observed": [
+          "hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/bin/",
+          "hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/",
+          "hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/0[.]11[.]0[.]json"
+        ]
+      }
+    }
+  }
+}
