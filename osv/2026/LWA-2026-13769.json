@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-13769",
-  "modified": "2026-11-09T04:07:14Z",
-  "published": "2026-11-09T04:05:53Z",
+  "modified": "2026-11-09T04:23:21Z",
+  "published": "2026-11-07T05:38:58Z",
   "summary": "Malicious code in template-pictogram (npm)",
-  "details": "Installing this package executes a lifecycle hook that beacons host and install-location metadata to an external endpoint. package.json declares \"postinstall\": \"node beacon.cjs\"; beacon.cjs sends an HTTP POST to hxxp://13[.]140[.]137[.]222:8787/_ah/dc with a x-beacon-package header, transmitting the package name, the machine hostname (os.hostname()), the install path (__dirname), the process working directory and the node user-agent string. The same request is repeated whenever the module entry point index.js is loaded, which also exports a Proxy of no-op functions so an importing build completes normally while the beacon runs. No credentials, environment values, tokens, or file contents are read or transmitted; the payload is install metadata only. The README describes the package as part of an authorized dependency-confusion test.",
+  "details": "The package ships a postinstall hook (\"node beacon.cjs\") and an index.js that invokes the same beacon loader on import, so any install of \"template-pictogram\" — or any build that merely imports it and finishes installing — sends a JSON fingerprint of the machine to a hardcoded IP address. The callback is an HTTP POST to hxxp://13[.]140[.]137[.]222:8787/_ah/dc carrying the package name, os.hostname(), the package install directory (__dirname), process.cwd(), the node/npm user-agent string, and the transport protocol, with an identifying \"x-beacon-package: template-pictogram\" header. index.js exports a Proxy of no-op functions so that consumers do not crash, and the beacon code swallows all errors and never blocks the install, maximising the chance the callback completes silently in a CI pipeline. The README labels the publish an \"authorized dependency-confusion test\"; the code itself only sends install/host metadata (no environment values, credential files or file contents are read by beacon.cjs or index.js) and drops no second-stage payload. IOC: 13[.]140[.]137[.]222:8787, path /_ah/dc, header x-beacon-package. The same beacon shape is used by other publishes of this name. Installing this package executes a lifecycle hook that beacons host and install-location metadata to an external endpoint. package.json declares \"postinstall\": \"node beacon.cjs\"; beacon.cjs sends an HTTP POST to hxxp://13[.]140[.]137[.]222:8787/_ah/dc with a x-beacon-package header, transmitting the package name, the machine hostname (os.hostname()), the install path (__dirname), the process working directory and the node user-agent string. The same request is repeated whenever the module entry point index.js is loaded, which also exports a Proxy of no-op functions so an importing build completes normally while the beacon runs. No credentials, environment values, tokens, or file contents are read or transmitted; the payload is install metadata only. The README describes the package as part of an authorized dependency-confusion test.",
   "affected": [
     {
       "package": {
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "dependency_confusion",
-      "first_seen_at": "2026-11-09T04:05:53Z",
+      "first_seen_at": "2026-11-07T05:38:58Z",
       "indicators_observed": {
         "ip_observed": [
           "13[.]140[.]137[.]222:8787"

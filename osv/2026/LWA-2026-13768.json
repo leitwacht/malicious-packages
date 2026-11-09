@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13768",
+  "modified": "2026-11-09T04:20:53Z",
+  "published": "2026-11-07T05:38:57Z",
+  "summary": "Malicious code in template-pictogram (npm)",
+  "details": "The package runs a host-fingerprinting callback at install and at import time. Its package.json declares \"postinstall\": \"node beacon.cjs\"; beacon.cjs POSTs a JSON body to hxxp://13[.]140[.]137[.]222:8787/_ah/dc with the header x-beacon-package: template-pictogram, containing the package name, os.hostname(), the install path (__dirname), process.cwd(), an npm/Node user agent string, and the transfer protocol. The callback target is a hardcoded bare IP literal rather than a resolvable service name. index.js fires the same beacon whenever the module is required, and exports a defensive Proxy that returns no-op functions for every property access so that importing the name does not crash the depending build. Request failures and timeouts are silently swallowed so the install completes regardless. Files: package/beacon.cjs and package/index.js; the payload is triggered automatically, requires no opt-in, and is not disclosed in the package description (\"Compatibility shim.\"). The bundled README describes the package as a dependency-confusion test that reports installation metadata; no credentials, tokens, environment values, wallet data or file contents are read or transmitted by the code, and the payload contains no second-stage download or spawned process.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "template-pictogram",
+        "purl": "pkg:npm/template-pictogram"
+      },
+      "versions": [
+        "9.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/template-pictogram/v/9.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13768"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-07T05:38:57Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]140[.]137[.]222:8787"
+        ],
+        "sha256": [
+          "2dcf88cb4419353ba8e75d55d0067744d0872e028cc85fc90d67edde29eb9e78"
+        ],
+        "url_observed": [
+          "hxxp://13[.]140[.]137[.]222",
+          "hxxp://13[.]140[.]137[.]222:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
