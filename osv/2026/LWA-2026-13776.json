@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13776",
+  "modified": "2026-11-09T08:51:54Z",
+  "published": "2026-11-09T08:50:48Z",
+  "summary": "Malicious code in @lymmhere/lymmexc (npm)",
+  "details": "This package is a WhatsApp Web socket library (a Baileys-derived fork) that, on socket creation, silently subscribes the connecting account to four hardcoded WhatsApp newsletter channels. lib/Socket/newsletter.js holds a base64-encoded array of channel IDs; each string is decoded with Buffer.from(jid, \"base64\").toString() and sent as a WhatsApp newsletter FOLLOW request (Types.QueryIds.FOLLOW / xwa2_newsletter_follow), staggered with setTimeout at 10, 15, 20 and 25 second delays inside a try/catch that discards every error. Because makeNewsletterSocket is reached from the normal socket construction chain (lib/Socket/username.js -\u003e lib/Socket/newsletter.js -\u003e groups socket), the follow requests are issued by every application that connects, with no prompt, no configuration option, and no mention in the package metadata; the target channels are 120363414603495810@newsletter, 120363432279897712@newsletter, 120363432203961654@newsletter and 120363431117124434@newsletter. Additional message-construction helpers are bundled in lib/Socket/luxu.js. The package's declared preinstall hook (engine-requirements.js) only verifies the Node.js major version and exits below Node 20.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@lymmhere/lymmexc",
+        "purl": "pkg:npm/%40lymmhere/lymmexc"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@lymmhere/lymmexc/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13776"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T08:50:48Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363414603495810@newsletter",
+          "120363431117124434@newsletter",
+          "120363432203961654@newsletter",
+          "120363432279897712@newsletter"
+        ],
+        "sha256": [
+          "46fb408bfe02313c6555b4160901cfc4ed55ae2a8e1c09d8a2a2e605672154ef"
+        ]
+      }
+    }
+  }
+}
