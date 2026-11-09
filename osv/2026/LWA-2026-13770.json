@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13770",
+  "modified": "2026-11-09T04:06:26Z",
+  "published": "2026-11-09T04:05:53Z",
+  "summary": "Security-research / proof-of-concept package: template-projection-map (npm)",
+  "details": "This package is a dependency-confusion proof of concept that sends an install-time beacon to a callback host. It publishes version 99.1.3 to shadow an internal-looking name, and package.json sets postinstall to `node beacon.cjs`; index.js additionally calls the same beacon on require (wrapped in try/catch) and exports a no-op Proxy so importing bundlers keep building. beacon.cjs POSTs a JSON body containing only the package name, os.hostname(), __dirname, process.cwd(), the npm/node version and the protocol, with the header x-beacon-package, to hxxp://13[.]140[.]137[.]222:8787/_ah/dc. It collects no credentials, environment values, or file contents, performs no remote code execution, and reads no sensitive paths.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "template-projection-map",
+        "purl": "pkg:npm/template-projection-map"
+      },
+      "versions": [
+        "22.1.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/template-projection-map/v/22.1.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-09T04:05:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]140[.]137[.]222:8787"
+        ],
+        "sha256": [
+          "d2143c9287ed9662630de9d0821c21fd7a7fa815730fadf143dec4801a248be7"
+        ],
+        "url_observed": [
+          "hxxp://13[.]140[.]137[.]222",
+          "hxxp://13[.]140[.]137[.]222:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

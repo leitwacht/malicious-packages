@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13769",
+  "modified": "2026-11-09T04:07:14Z",
+  "published": "2026-11-09T04:05:53Z",
+  "summary": "Malicious code in template-pictogram (npm)",
+  "details": "Installing this package executes a lifecycle hook that beacons host and install-location metadata to an external endpoint. package.json declares \"postinstall\": \"node beacon.cjs\"; beacon.cjs sends an HTTP POST to hxxp://13[.]140[.]137[.]222:8787/_ah/dc with a x-beacon-package header, transmitting the package name, the machine hostname (os.hostname()), the install path (__dirname), the process working directory and the node user-agent string. The same request is repeated whenever the module entry point index.js is loaded, which also exports a Proxy of no-op functions so an importing build completes normally while the beacon runs. No credentials, environment values, tokens, or file contents are read or transmitted; the payload is install metadata only. The README describes the package as part of an authorized dependency-confusion test.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "template-pictogram",
+        "purl": "pkg:npm/template-pictogram"
+      },
+      "versions": [
+        "9.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/template-pictogram/v/9.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13769"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-09T04:05:53Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]140[.]137[.]222:8787"
+        ],
+        "sha256": [
+          "34a8b93ba0956a59fa023801bc97d184a336453d237a8948666fc8993e65e9ac"
+        ],
+        "url_observed": [
+          "hxxp://13[.]140[.]137[.]222",
+          "hxxp://13[.]140[.]137[.]222:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

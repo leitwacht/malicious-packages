@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13773",
+  "modified": "2026-11-09T04:06:48Z",
+  "published": "2026-11-09T04:05:49Z",
+  "summary": "Security-research / proof-of-concept package: template-cards (npm)",
+  "details": "This package is a dependency-confusion proof of concept that reports an install to a callback host. Its postinstall hook (`node beacon.cjs`) and the shim's index.js both POST an install beacon to hxxp://13[.]140[.]137[.]222:8787/_ah/dc carrying the header `x-beacon-package: template-cards`. The beacon body contains only install metadata: the package name, the host's hostname, the module install path (__dirname), the process working directory, the npm/Node user agent, and the protocol. No environment variable values, tokens, credentials, wallet data or file contents are read or transmitted. index.js exports a Proxy that returns no-op functions so imports of the name do not crash while the beacon fires.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "template-cards",
+        "purl": "pkg:npm/template-cards"
+      },
+      "versions": [
+        "16.1.2"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/template-cards/v/16.1.2"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-09T04:05:49Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "13[.]140[.]137[.]222:8787"
+        ],
+        "sha256": [
+          "f084b8c7356824bad39eac34e43cabdc212bef7bcc85cb79d0827c5e41f6a9c8"
+        ],
+        "url_observed": [
+          "hxxp://13[.]140[.]137[.]222",
+          "hxxp://13[.]140[.]137[.]222:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
