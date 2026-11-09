@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13767",
+  "modified": "2026-11-09T01:39:09Z",
+  "published": "2026-11-09T01:35:26Z",
+  "summary": "Malicious code in @pasqua-dev/baileys (npm)",
+  "details": "This package republishes a WhatsApp Web automation library under the name \"baileys\" in a scope that is not the canonical publisher, and bundles abuse-oriented code beyond the upstream library. lib/Utils/bug-payloads.js builds messages explicitly intended to crash, freeze or glitch recipient WhatsApp clients: 1500-level nested tag alternation (nesting), 1024 null-byte injections interleaved with bidi characters (nullbyte), ~50k zero-width and RTL-override sequences (glitchdot), a 16 MB invisible-separator body (overflow), corrupted media metadata, and 2048 phantom device entries with oversized identity keys (deviceinfo). These are sent via sock.sendBugPayload, wired up in lib/Socket/chats.js. The package also ships lib/antiban.cjs, a full \"anti-ban\" evasion layer that randomises and throttles sending to avoid WhatsApp ban detection and can forward alerts to configured webhook, Telegram bot or Discord webhook URLs. Its own network traffic targets WhatsApp/Meta endpoints (web[.]whatsapp[.]com, api[.]whatsapp[.]com, graph[.]whatsapp[.]com, call[.]whatsapp[.]com) plus caller-supplied URLs for media and link previews; the preinstall hook only enforces Node.js \u003e= 20. No hardcoded command-and-control host or install-time exfiltration of the installer's credentials was found.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pasqua-dev/baileys",
+        "purl": "pkg:npm/%40pasqua-dev/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pasqua-dev/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13767"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T01:35:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]whatsapp[.]com",
+          "call[.]whatsapp[.]com",
+          "graph[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "081ac0f9c49528a75e8ebf50c652df1d19e394c809204acdd6280fbdbb20bce7"
+        ]
+      }
+    }
+  }
+}
