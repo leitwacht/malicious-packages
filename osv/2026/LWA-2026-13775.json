@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13775",
+  "modified": "2026-11-09T08:06:31Z",
+  "published": "2026-11-09T07:41:56Z",
+  "summary": "Malicious code in @sakataa/baileys (npm)",
+  "details": "A republished WhatsApp bot library (\"Sakata Baileys\") that forks the well-known baileys codebase and adds two hidden behaviours to the shipped source. Silent channel auto-subscription: lib/Socket/newsletter.js contains a hardcoded array of four BASE64-encoded WhatsApp newsletter JIDs. When the socket is created, timers (10s, 15s, 20s, 25s) fire FOLLOW mutations for each of them (xwa2_newsletter_follow), with errors swallowed in an empty catch. Any bot built on this library silently subscribes the logged-in WhatsApp account to four channels that the developer controls, without the operator calling any API or seeing any log line. The base64 encoding serves only to keep the channel IDs out of plain sight. Phone-number exfiltration: lib/Socket/socket.js exposes a `checkBan(number)` helper that normalises the supplied number and issues a GET to hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e with a spoofed desktop browser User-Agent, then returns the remote JSON with a `creator: \"t[.]me/luyatiem\"` field injected. Every number a bot operator checks with this helper is delivered to an unrelated third party. The package manifest also declares a caret dependency on cache-manager ^7.2.8, which resolves to a compromised release of that package. IOCs: hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp; hxxps://t[.]me/luyatiem; hxxps://t[.]me/sakata_real; hxxps://t[.]me/infobaileys. Files of interest: lib/Socket/newsletter.js, lib/Socket/socket.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sakataa/baileys",
+        "purl": "pkg:npm/%40sakataa/baileys"
+      },
+      "versions": [
+        "4.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sakataa/baileys/v/4.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13775"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T07:41:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me"
+        ],
+        "sha256": [
+          "6bd3354b97884a1e1dcd9e2a9d47dc9fcdff728582ef51825091f0fcf437aae3"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://t[.]me/infobaileys",
+          "hxxps://t[.]me/luyatiem",
+          "hxxps://t[.]me/sakata_real"
+        ]
+      }
+    }
+  }
+}
