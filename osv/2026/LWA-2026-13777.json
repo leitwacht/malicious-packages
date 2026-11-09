@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13777",
+  "modified": "2026-11-09T09:37:24Z",
+  "published": "2026-11-09T09:20:56Z",
+  "summary": "Malicious code in @sakataa/baileys (npm)",
+  "details": "@sakataa/baileys@4.0.2 is an unofficial copy of the @whiskeysockets/baileys WhatsApp Web library (published under the @sakataa scope, with the canonical scope's basename) that silently enrols every connecting account into hardcoded WhatsApp channels. In lib/Socket/newsletter.js, an array of four base64 strings (e.g. MTIwMzYzNDI3NzE4MTQ0Mjk0QG5ld3NsZXR0ZXI=, MTIwMzYzNDA4ODkzNTU1ODUxQG5ld3NsZXR0ZXI=, MTIwMzYzNDI0Mjk1NTIyMzI3QG5ld3NsZXR0ZXI=, MTIwMzYzNDI2NDcwMDgxMTI0QG5ld3NsZXR0ZXI=) decodes to newsletter JIDs 120363427718144294@newsletter, 120363408893555851@newsletter, 120363424295522327@newsletter and 120363426470081124@newsletter. At socket creation (makeNewsletterSocket) these are fed into a FOLLOW newsletter query with a 10s/5s staggered delay, using the installer's authenticated session, so the victim account subscribes to attacker-controlled channels without consent. The package also ships lib/Socket/socket.js checkBan(), which phones home to the non-WhatsApp third-party host hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e to look up arbitrary phone numbers and stamps a \"creator: t[.]me/luyatiem\" label on the response. The preinstall lifecycle script (node./engine-requirements.js) only checks the Node.js version. Payload: lib/Socket/newsletter.js, lib/Socket/luxu.js, lib/Socket/socket.js. Third-party endpoint: kyuux-r.indevs.in.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sakataa/baileys",
+        "purl": "pkg:npm/%40sakataa/baileys"
+      },
+      "versions": [
+        "4.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sakataa/baileys/v/4.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13777"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T09:20:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me"
+        ],
+        "sha256": [
+          "186322270612378798011c50bcc743cdc2daa544e4d5ffd771d2bf98314a5dc5"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=",
+          "hxxps://t[.]me/infobaileys",
+          "hxxps://t[.]me/sakata_real",
+          "hxxps://whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k"
+        ]
+      }
+    }
+  }
+}

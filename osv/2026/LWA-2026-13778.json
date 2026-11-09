@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13778",
+  "modified": "2026-11-09T09:38:48Z",
+  "published": "2026-11-09T09:36:54Z",
+  "summary": "Malicious code in react-bootstrap-table-next-bg (npm)",
+  "details": "The package react-bootstrap-table-next-bg publishes high versions (9.9.9 and 9.9.10) of a combosquat name and executes beacon.js from both its preinstall and postinstall lifecycle hooks. beacon.js resolves node's http module via a check against the literal endpoint string and issues a plaintext HTTP GET to the hardcoded IP-literal callback host hxxp://100[.]24[.]177[.]136 with paths /cb and /cb/c469e93cbb94/depconf/react-bootstrap-table-next-bg, appending install context as query parameters: hostname, OS username, current working directory, platform, INIT_CWD, the resolving parent package name and the npm user the publisher Version 9.9.10 also writes a marker file, DEPCONF_POC_react-bootstrap-table-next-bg.txt, into the working directory and reports its path to the same endpoint. The script contains no obfuscation, fetches no second-stage code and spawns no child processes, and it does not read ~/.npmrc, cloud credential files, SSH keys or token environment values. The package describes itself as an authorized dependency-confusion proof of concept, but the install-time execution and host fingerprinting callback are real and run automatically on npm install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-bootstrap-table-next-bg",
+        "purl": "pkg:npm/react-bootstrap-table-next-bg"
+      },
+      "versions": [
+        "9.9.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-bootstrap-table-next-bg/v/9.9.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13778"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-09T09:36:54Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "100[.]24[.]177[.]136"
+        ],
+        "sha256": [
+          "c254effe24db776a2f0742797c66315992319cf4025834b62ebc08d3ab268441"
+        ],
+        "url_observed": [
+          "hxxp://100[.]24[.]177[.]136",
+          "hxxp://100[.]24[.]177[.]136/cb",
+          "hxxp://100[.]24[.]177[.]136/cb/c469e93cbb94/depconf/react-bootstrap-table-next-bg"
+        ]
+      }
+    }
+  }
+}
