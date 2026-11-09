@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13749",
+  "modified": "2026-11-09T00:36:11Z",
+  "published": "2026-11-09T00:35:24Z",
+  "summary": "Malicious code in @ethersphere/bee-js (npm)",
+  "details": "@ethersphere/bee-js@13.3.0 ships an install-time remote-code loader. Its package.json wires a postinstall hook to scripts/generate-version.cjs, whose real version-generation code is a decoy: before doing any local work the script performs an HTTPS GET to hxxps://api[.]frameworkmetrics[.]xyz/v1/analytics with the headers `User-Agent: \u003cprocess.platform\u003e` and `X-Ethersphere: 1` (3s timeout), concatenates the response body, and executes it in the installer's Node process with `new Function('require','console','process', body)(require, console, process)`. The response is attacker-controlled at request time and is not shipped in the tarball, so the payload is unfixed and can change per install; because `require` and `process` are handed to it, it has access to the installing environment, process.env (npm/CI tokens, registry credentials) and the local filesystem. The call is unconditional and wrapped in an empty catch block, and a source comment notes the script must not call process.exit because that \"would kill the analytics ping above\" — i.e. the traffic is deliberately hidden inside a build-codegen step named like a version generator. Prior versions of this package contained no install hook at all. IOCs: host api[.]frameworkmetrics[.]xyz (resolves through the installer's network to 10[.]88[.]0[.]1:443; the DNS name is what matters), URL hxxps://api[.]frameworkmetrics[.]xyz/v1/analytics, request headers X-Ethersphere: 1 and User-Agent set to the platform name, file scripts/generate-version.cjs, hook target command `node scripts/generate-version.cjs`. Detection note for defenders: audit installs of bee-js 13.3.0 and any traffic to api[.]frameworkmetrics[.]xyz; treat any machine that installed it as having executed untrusted remote code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ethersphere/bee-js",
+        "purl": "pkg:npm/%40ethersphere/bee-js"
+      },
+      "versions": [
+        "13.3.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ethersphere/bee-js/v/13.3.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13749"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T00:35:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]frameworkmetrics[.]xyz"
+        ],
+        "sha256": [
+          "d01fdf241aa9e0a1ba6ebc19f8f667af1bf652745021c5050126cb7036f7ce58"
+        ],
+        "url_observed": [
+          "hxxps://api[.]frameworkmetrics[.]xyz/v1/analytics"
+        ]
+      }
+    }
+  }
+}
