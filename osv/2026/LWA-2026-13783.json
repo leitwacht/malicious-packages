@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13783",
+  "modified": "2026-11-09T23:06:30Z",
+  "published": "2026-11-09T22:11:55Z",
+  "summary": "Malicious code in hauntview (npm)",
+  "details": "The package declares a postinstall hook (node scripts/postinstall.mjs) and also ships a CLI bin at dist/cli.js. In addition to a conventional Playwright Chromium bootstrap (`npx playwright install chromium`, skipped when RENDER/CI/SKIP_PLAYWRIGHT_INSTALL are set), both scripts/postinstall.mjs and dist/cli.js contain a ~12KB obfuscated loader executed at install time and on CLI start. The loader is a hand-rolled polymorphic string decoder rather than a standard obfuscator: an encoded string array containing fragments such as \"c^mejb^tro\" and \"hqersxluvwacdjbymgorzfkociptrutnstonc\"; a permutation decode driven by two numeric key vectors (NX=[6912847,367,20411,613,43759,5019283], SX=[5283741,241,41953,187,56129,4738901]); delimiter substitution using String.fromCharCode(28); and split/join lane swapping over the separators \"\", \"*\", \"*0\", \"^\", \"*1\". Helpers are renamed via Object.defineProperty to spin/splitLane/peel. At install time the module sets global.z = \"-c\", publishes the module loader (require) onto a global alias, rebuilds decoded source through Function-constructor aliases, and invokes it with the numeric argument 2509 — i.e. install-time execution of code that exists nowhere in the shipped TypeScript source tree (src/ contains no counterpart), so it was added to the build output and to the hook. The payload's decoded content is not recoverable from the encoded form as shipped; there is no plaintext command-and-control host or URL in the package, and the only visible network calls in dist/cli.js are ordinary HEAD requests for link checking. Anyone who installed 0.2.9 should treat install-time code execution from an unidentified decoded payload as untrusted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hauntview",
+        "purl": "pkg:npm/hauntview"
+      },
+      "versions": [
+        "0.2.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hauntview/v/0.2.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13783"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T22:11:55Z",
+      "indicators_observed": {
+        "sha256": [
+          "43efe181353786362844e5714531b4e30e41a711210934cb804639673c3dc053"
+        ]
+      }
+    }
+  }
+}
