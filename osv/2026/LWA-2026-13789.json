@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13789",
+  "aliases": [
+    "MAL-2026-18804"
+  ],
+  "modified": "2026-11-09T23:39:49Z",
+  "published": "2026-11-09T23:38:12Z",
+  "summary": "Malicious code in @alzx7z/baileys (npm)",
+  "details": "@alzx7z/baileys is an unofficial-scope combosquat of the @whiskeysockets/baileys WhatsApp library: it keeps the canonical basename, republishes the fork under an unrelated scope, and remaps the libsignal dependency to npm:@alzx7z/libsignal-node. Code has been injected into the socket layer. lib/Socket/newsletter.js is require()'d at module load by lib/Socket/messages-send.js (makeNewsletterSocket), and lines 108-142 unconditionally register three timers with a 90,000 ms delay. When a timer fires it decodes three hardcoded WhatsApp newsletter JIDs from String.fromCharCode integer arrays — 120363408367338249@newsletter, 12036342617926743@newsletter and 12036340882345807@newsletter — and issues a FOLLOW query (QueryIds.FOLLOW) against each, swallowing all errors in empty catch blocks. About 90 seconds after any bot requires this library the linked WhatsApp account is silently enrolled as a follower of those channels; the delay and the silent error handling keep the enrolment out of install/test windows and out of the host application's logs. lib/Socket/dugong.js (lines 388-393) additionally hardcodes newsletterName \"fadelsm.\" and newsletterJid 120363420091867664@newsletter into the context of forwarded status/event messages, branding messages the host bot sends to its users. The preinstall hook (engine-requirements.js) only performs a Node.js major-version check. There is no obfuscation, no dynamic code evaluation, no credential, token or environment access, and no network destination beyond WhatsApp's own wss://web[.]whatsapp[.]com endpoint — the abuse is confined to hijacking the hosting account's WhatsApp subscription and message state for the fork author's channels.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@alzx7z/baileys",
+        "purl": "pkg:npm/%40alzx7z/baileys"
+      },
+      "versions": [
+        "2.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@alzx7z/baileys/v/2.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13789"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:38:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "23cf73c0b0a098bd23afda2d7c6b0de4ab16993f9b12ea8eb12771dc50f31b47"
+        ]
+      }
+    }
+  }
+}

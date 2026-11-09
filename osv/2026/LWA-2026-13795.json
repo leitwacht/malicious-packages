@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13795",
+  "aliases": [
+    "MAL-2026-18809"
+  ],
+  "modified": "2026-11-09T23:47:14Z",
+  "published": "2026-11-09T23:41:16Z",
+  "summary": "Malicious code in @bellachu/bails (npm)",
+  "details": "This package is a rebranded fork of the Baileys WhatsApp socket library with covert account-manipulation added to its socket layer. When any socket is created, lib/Socket/newsletter.js schedules two delayed (10s and 19s after construction) newsletter-follow mutations against hardcoded WhatsApp channel JIDs — 120363428745722504@newsletter and 120363410388316963@newsletter — supplied to the follower as base64-encoded literals so they are not readable in the source. The enrolments are unconditional: there is no configuration flag or caller involvement, so simply importing and initialising the library subscribes the user's own WhatsApp account to those two channels. The package also injects operator channel branding into messages the user sends: lib/Socket/luxu.js hooks sendMessage and stamps an added forwardedNewsletterMessageInfo (newsletterJid 120363421563597486@newsletter named \"D | 7eppeli-Exloration\", and 120363399602691477@newsletter, plus a 99999 forwardingScore and \"status@broadcast\" context) onto album, event, poll-result, order and group-status messages, making the user's outgoing traffic carry the operator's channel attribution. Its manifest declares \"cache-manager\": \"^7.2.8\", a range that resolves to a compromised release of that package. The declared repository and homepage are Telegram channels (hxxps://t[.]me/Xatanicvxii, hxxps://t[.]me/tredictInfo) rather than a source repository, and the README references a different package name. The preinstall hook, engine-requirements.js, only enforces Node.js \u003e= 20. This package is a modified fork of the Baileys WhatsApp Web library (published as @bellachu/bails) that handles WhatsApp account credentials and message encryption. It runs an install-time script (preinstall: node./engine-requirements.js, a Node version gate) and routes core cryptographic operations md5, hkdf, LTHash anti-tampering and app-state key expansion through two non-standard dependencies instead of the reference implementation: whatsapp-rust-bridge (native module, pinned 0.5.4) and libsignal pinned to a third-party GitHub fork (github:tenka-san/libsignal-node) rather than the published Signal package, so key material is passed to code maintained outside the upstream project. It also declares a runtime dependency on cache-manager (^7.2.8), which resolves to a malicious release. Message-generation code in lib/Socket/luxu.js silently stamps every generated event and poll-result payload with two hardcoded WhatsApp newsletter references (120363421563597486@newsletter, 120363399602691477@newsletter) that the calling code cannot remove, and lib/Socket/messages-send.js wires that module into sendMessage for all outgoing messages so the channel promotion is applied automatically. No command-and-control or exfiltration endpoint was found in the shipped JavaScript; the only URLs in the code are hxxps://web[.]whatsapp[.]com (WhatsApp's own WebSocket origin), the call domains, and a fetch of hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts used by fetchLatestBaileysVersion.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@bellachu/bails",
+        "purl": "pkg:npm/%40bellachu/bails"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@bellachu/bails/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13795"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:41:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "t[.]me",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "cc8bee206073bd840680a59fc235672de66c44716a6920c127f055279feb1862"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts",
+          "hxxps://t[.]me/Xatanicvxii",
+          "hxxps://t[.]me/tredictInfo",
+          "hxxps://web[.]whatsapp[.]com"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13794",
+  "aliases": [
+    "MAL-2026-18808"
+  ],
+  "modified": "2026-11-09T23:43:19Z",
+  "published": "2026-11-09T23:40:49Z",
+  "summary": "Malicious code in @barz-dev/baileys (npm)",
+  "details": "@barz-dev/baileys@8.4.0 reuses the basename of the widely used WhatsApp library @whiskeysockets/baileys under an unofficial scope, and ships a hidden modification that forces the user's WhatsApp account to follow attacker-chosen channels. In lib/Socket/newsletter.js a top-level setTimeout is registered when the newsletter socket is built; after a 90-second delay it calls the newsletter FOLLOW mutation against three hardcoded channel JIDs that are stored base64-encoded in the source — 120363371116852333@newsletter, 120363423484934199@newsletter and 120363425714950722@newsletter — spaced three seconds apart, with all errors swallowed so the action is invisible. Nothing in the package's API or documentation requests this and no option disables it. lib/Utils/messages.js additionally constructs extended-text messages carrying a hidden newsletter context for 120363400362472743@newsletter (display name \"ALL-INFORMASI-BADZZ-NE\"). The fork also adds non-upstream modules lib/Socket/dugong.js and lib/Socket/luxu.js (\"kikyy dugonggg\", telegram: @tskiofc \u0026 @kyuucode) that forge payment, product and interactive message payloads, and it pulls a github: dependency on the author's own fork, github:Badzz88/libsignal-node, instead of the registry package. No credential, token or file exfiltration was found; outbound traffic otherwise goes only to wss://web[.]whatsapp[.]com, and the preinstall hook is merely a Node.js \u003e= 20 version check. This package is a modified fork of the @whiskeysockets/baileys WhatsApp Web library, published under a non-canonical @barz-dev scope, that covertly mutates the connecting user's WhatsApp account: it silently subscribes the account to three hardcoded WhatsApp channels. In lib/Socket/newsletter.js, makeNewsletterSocket() installs a 90000 ms setTimeout inside the normal socket setup path. When it fires, with no user action, configuration or consent, it issues w:mex FOLLOW newsletter queries (query xmlns \"w:mex\" against s[.]whatsapp[.]net) for three channels whose JIDs are shipped base64-encoded to keep them out of plain-text review: 120363371116852333@newsletter, 120363423484934199@newsletter and 120363425714950722@newsletter. The three follows are separated by 3-second waits and the whole block is wrapped in an empty try/catch so failures are silent. The 90-second delay pushes the action past the window in which a connecting client would normally be inspected. The channels correspond to the fork author's own branding. Rest of the package behaviour: the preinstall hook (engine-requirements.js) only checks Node.js \u003e= 20; message-media uploads go to Meta/WhatsApp media hosts; fetchLatestBaileysVersion() optionally fetches the version file from raw[.]githubusercontent[.]com/barz-dev/baileys; the WhatsApp WebSocket endpoint is wss://web[.]whatsapp[.]com/ws/chat. No credential, token or file exfiltration and no second-stage code download were found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@barz-dev/baileys",
+        "purl": "pkg:npm/%40barz-dev/baileys"
+      },
+      "versions": [
+        "8.4.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@barz-dev/baileys/v/8.4.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13794"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:40:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363371116852333@newsletter",
+          "120363423484934199@newsletter",
+          "120363425714950722@newsletter",
+          "raw[.]githubusercontent[.]com",
+          "s[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "da9830eb9df83f6230481cac1b01f40ee42b611b131e7e364455f61d31591990"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/barz-dev/baileys/main/lib/Defaults/baileys-version[.]json",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

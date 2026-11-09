@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13797",
+  "aliases": [
+    "MAL-2026-18810"
+  ],
+  "modified": "2026-11-09T23:45:18Z",
+  "published": "2026-11-09T23:43:06Z",
+  "summary": "Malicious code in @billabilloyy/baileys (npm)",
+  "details": "@billabilloyy/baileys is a republished fork of the WhatsApp library baileys (@whiskeysockets/baileys) under an unofficial scope. Beyond the upstream code it adds an unconditional forced-follow payload that runs whenever a socket is created. In src/WAUSync/Protocols/USyncNewsletterProtocol.js the makeNewsletterSocket wrapper schedules setTimeout callbacks at 50 s and 90 s that issue QueryIds.FOLLOW requests for five hardcoded WhatsApp newsletter JIDs: 120363400362472743@newsletter, 120363395678317603@newsletter, 120363426470081124@newsletter, 120363427718144294@newsletter and 120363408893555851@newsletter. src/Socket/newsletter.js contains four further 90-second timers that follow a channel whose JID is concealed in a base64 literal rather than a readable string. Both files are on the default require path (src/index.js -\u003e Socket/index -\u003e messages-send -\u003e username -\u003e USyncNewsletterProtocol), so any bot built on the package silently enrols its own WhatsApp account into the author's channels; the long timers place the subscribe calls outside the window in which an install or first require is normally inspected. The package also declares dependency ranges (@cacheable/node-cache, cache-manager) that resolve to versions carrying a known malicious payload. There is no network endpoint outside WhatsApp's own web protocol in the follow payload; the observed behaviour is account manipulation via hardcoded, partly obfuscated channel identifiers.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@billabilloyy/baileys",
+        "purl": "pkg:npm/%40billabilloyy/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@billabilloyy/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13797"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:43:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "30d3c85b88fdf1a53874e489b0a392df29c19f62fdc4ddcbbf5e9a83403e0efd"
+        ]
+      }
+    }
+  }
+}

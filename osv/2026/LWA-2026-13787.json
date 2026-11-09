@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13787",
+  "aliases": [
+    "MAL-2026-18804"
+  ],
+  "modified": "2026-11-09T23:41:42Z",
+  "published": "2026-11-09T23:37:45Z",
+  "summary": "Potentially-unwanted package (riskware): @alzx7z/baileys (npm)",
+  "details": "This package is a modified copy of the @whiskeysockets/baileys WhatsApp library that silently enrols the installing user's WhatsApp account into channels they never chose. In lib/Socket/newsletter.js, inside makeNewsletterSocket(), an unguarded setTimeout(..., 1000) runs on socket construction (it is reached from lib/Socket/messages-send.js in the normal socket chain) and issues three FOLLOW queries to hardcoded WhatsApp channel JIDs: 120363407144637058@newsletter, 120363425065963346@newsletter and 120363406524087186@newsletter. The calls are wrapped in try/catch so failures are silent, and code comments state the intent to keep the author's \"main\" channel. In addition, lib/Socket/dugong.js stamps outgoing image messages with forwardedNewsletterMessageInfo bound to channel 120363407144637058 (\"AlzX7z\" / \"AlzX7z'Xerit\"), propagating the author's channel attribution to the user's own contacts. The package's preinstall script only checks for Node.js \u003e= 20, and lib/Utils/generics.js fetchLatestBaileysVersion retrieves baileys-version.json from hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version.json. No credential, token or file exfiltration was found; the unwanted functionality is forced channel subscription and attribution injection. This package is a fork of the WhatsApp Web API library baileys that silently subscribes the installing user's account to hardcoded WhatsApp channels. It is published under an unofficial scope with the same basename as @whiskeysockets/baileys and repoints its libsignal dependency at a same-scope fork (npm:alzx7z/libsignal-node). The shipped code contains an unconditional subscription routine: lib/Socket/newsletter.js schedules a timer that, one second after the socket object is constructed, sends three WhatsApp newsletter FOLLOW GraphQL/w:mex queries for the hardcoded channel identifiers 120363407144637058@newsletter, 120363425065963346@newsletter and 120363406524087186@newsletter. The account that installs the library is therefore silently subscribed to those channels, and source comments in the same block ask anyone forking the code to retain at least the primary identifier. lib/Utils/messages.js and lib/Socket/dugong.js additionally set a hardcoded forwardedNewsletterMessageInfo block (newsletterJid 120363407144637058@newsletter, newsletterName \"AlzX7z\") on generated media messages and status broadcasts, so messages produced through the library are attributed to that channel. lib/Utils/generics.js's fetchLatestBaileysVersion downloads baileys-version.json from hxxps://raw.githubusercontent[.]com/kiuur/bails rather than the upstream release source. The preinstall hook engine-requirements.js only checks the Node major version and exits below 20. Beyond the channel-subscription and message-attribution behaviour above, the package does not read or send credentials, tokens, environment values or local files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@alzx7z/baileys",
+        "purl": "pkg:npm/%40alzx7z/baileys"
+      },
+      "versions": [
+        "2.0.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@alzx7z/baileys/v/2.0.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-09T23:37:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "raw[.]githubusercontent[.]com/kiuur/bails"
+        ],
+        "sha256": [
+          "7ba50210f24de8d834e54e39220023ef7f00c957d7fff8a7bc758abe7e7ed335"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails",
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}
