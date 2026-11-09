@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13748",
+  "modified": "2026-11-09T00:06:07Z",
+  "published": "2026-11-09T00:05:35Z",
+  "summary": "Malicious code in archetype-index-sdk (npm)",
+  "details": "This package ships an obfuscated loader that beacons host metadata and then downloads and runs an unverified second stage outside the package. `index.mjs` re-exports `./dist/index.js`, which pulls in `telemetry-info.mjs` — a 255 KB single-line bundle obfuscated behind a base64 string array and `_0x`-prefixed identifiers. On import it collects hostname, username, home directory, working directory, Node and npm versions, platform, architecture, uptime and the enclosing project name, plus a 0/1 presence flag for about fifteen environment variable NAMES (including CI, GITHUB_CI, SSH_CONNECTION and DEVCONTAINER — values are not read), base64-encodes them and issues a GET to hxxps://cdn[.]node-js[.]dev[.]/report/\u003cid\u003e/\u003cblob\u003e, retrying once on failure. It parses the JSON response, base64-decodes its `patch` field, writes it to a per-user stash directory outside node_modules (`~/.local/share/\u003cvendor\u003e` on Linux, `%LOCALAPPDATA%\\\u003cvendor\u003e` on Windows, `~/Library/.../\u003cvendor\u003e` on macOS) and executes it with `child_process.spawn(process.execPath, [stashPath], {detached:true, stdio:'ignore'})`, so the downloaded code runs detached from and outlives the importing process, and runs again on subsequent imports once the ~30-minute heartbeat record goes stale. The integrity check guarding this write is a stub that unconditionally returns true (`function tU(buf, m) { return true; }`) — the fetched script is executed with no signature or hash verification, so whoever controls the response body controls code executed on the installer's machine. Network IOC: DNS lookup and TLS GET to cdn[.]node-js[.]dev / cdn[.]node-js[.]dev (port 443), path /report/f40a8396af/\u0026lt;payload\u0026gt;. No credential-file or token reads were observed before the second stage executes, but that stage is entirely attacker-supplied.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "archetype-index-sdk",
+        "purl": "pkg:npm/archetype-index-sdk"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/archetype-index-sdk/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13748"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T00:05:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cdn[.]node-js[.]dev"
+        ],
+        "sha256": [
+          "055dd3eaf5b3dddd69ec5f92f23812ffa77a6eda51082af327f498afddffa85c"
+        ],
+        "url_observed": [
+          "hxxps://cdn[.]node-js[.]dev[.]/report/",
+          "hxxps://cdn[.]node-js[.]dev/report/f40a8396af/"
+        ]
+      }
+    }
+  }
+}
