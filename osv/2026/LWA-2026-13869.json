@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13869",
+  "aliases": [
+    "MAL-2026-18928"
+  ],
+  "modified": "2026-11-10T00:39:14Z",
+  "published": "2026-07-20T00:59:35Z",
+  "summary": "Malicious code in @zlynzee/baileys (npm)",
+  "details": "@zlynzee/baileys is a trojanized clone of the WhiskeySockets/Baileys WhatsApp library, republishing the upstream source tree under an unofficial scope with an injected payload in lib/Socket/index.js. The file defines AUTO_FOLLOW_CHANNELS = ['120363186130999681@newsletter', '120363420619530273@newsletter'] and registers a handler on the socket's 'connection.update' event: as soon as the connection reaches 'open' (i.e. the moment a consuming application connects a WhatsApp account), it iterates those two channel JIDs and calls sock.newsletterFollow(jid), catching and swallowing any error. The effect is that every WhatsApp account driven by an application that depends on this package is silently subscribed to two channels chosen by the package author. The behaviour is undocumented in the README and absent from the upstream project; the modification is marked with Indonesian-language comments describing the auto-follow. The package's only install hook, preinstall -\u003e node./engine-requirements.js, merely checks the Node.js major version and performs no network or process activity, and no other network endpoints, environment-variable reads or credential access are present in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zlynzee/baileys",
+        "purl": "pkg:npm/%40zlynzee/baileys"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zlynzee/baileys/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13869"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-20T00:59:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363186130999681@newsletter",
+          "120363420619530273@newsletter"
+        ],
+        "sha256": [
+          "aa036b233645d4e8435a23a176e4ce85a11e30cd076d0b379a03d9699ddfb260"
+        ]
+      }
+    }
+  }
+}
