@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13825",
+  "aliases": [
+    "MAL-2026-18817"
+  ],
+  "modified": "2026-11-09T23:51:57Z",
+  "published": "2026-11-09T23:46:10Z",
+  "summary": "Malicious code in @darling-2002/baileys (npm)",
+  "details": "A trojanized clone of the WhatsApp Web library baileys that adds a hidden, delayed account-manipulation payload to lib/Socket/newsletter.js. Any application that loads the module executes a top-level `setTimeout(..., 120000)` (a 120-second delay) which fetches a remote list of WhatsApp channel IDs from hxxps://raw[.]githubusercontent[.]com/tskiofc/ChannelID/refs/heads/main/token[.]json and then silently follows every channel in that list on the authenticated account: it issues the internal newsletter FOLLOW query for each ID and paces the requests with `setTimeout(..., 11000)` between them. The channel list is fully controlled by the remote repository owner, so the operator can at any time redirect which channels victim accounts are enrolled into; all errors are swallowed in empty catch blocks so the host application never sees the activity. The same fork also hardcodes the operator's own channel JID 120363191779210764@newsletter (name \"Starlights Team\") into lib/Socket/dugong.js and lib/Utils/messages.js, where it is stamped into forwardedNewsletterMessageInfo on messages the library sends, giving the payload an in-band promotion path. Separately, the package declares a preinstall hook pointing at a zero-byte engine-requirements.js, and the manifest's homepage/repository fields name a non-existent \"github[.]com/@whiskeysockets/baileys\" path while the package ships the byte layout of the upstream library. Indicators: hxxps://raw[.]githubusercontent[.]com/tskiofc/ChannelID/refs/heads/main/token.json (remote channel-ID feed); WhatsApp channel JID 120363191779210764@newsletter. No credential, token, env-var or file theft was found in the payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@darling-2002/baileys",
+        "purl": "pkg:npm/%40darling-2002/baileys"
+      },
+      "versions": [
+        "1.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@darling-2002/baileys/v/1.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13825"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:46:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "raw[.]githubusercontent[.]com/tskiofc"
+        ],
+        "sha256": [
+          "cddf885d29cff49c699e954e0adf715fc74856dc683103e52976240a75db927a"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/tskiofc/ChannelID/refs/heads/main/token[.]json"
+        ]
+      }
+    }
+  }
+}

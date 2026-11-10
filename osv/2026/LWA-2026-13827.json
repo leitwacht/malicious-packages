@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13827",
+  "aliases": [
+    "MAL-2026-18818"
+  ],
+  "modified": "2026-11-09T23:51:03Z",
+  "published": "2026-11-09T23:47:54Z",
+  "summary": "Malicious code in @denzy-official/baileys (npm)",
+  "details": "This package is an unofficial fork of the WhatsApp library Baileys, published under a scope that is not the upstream project's, and it performs two non-obvious actions. 1. Encoded code execution on import. lib/index.js is the package's \"main\" entry, so it runs whenever the library is required. It calls eval() on a base64-encoded string. Decoded, that string prints a branded banner advertising the fork (\"Baileys Custom By Denzy ZeroDay\", with a Telegram contact), but it is still dynamic evaluation of an obfuscated blob at library load time. 2. Non-consensual, delayed channel enrolment. lib/Socket/newsletter.js schedules a 90-second setTimeout and then, on every socket creation, sends a WhatsApp GraphQL (\"w:mex\") follow request for the hardcoded channel JID 120363402308105961@newsletter; the same request is repeated 5 seconds later. Errors are swallowed so the action is silent, and the JID is stored base64-encoded (MTIwMzYzNDAyMzA4MTA1OTYxQG5ld3NsZXR0ZXI=) to hide it from plain string searches. lib/Utils/messages.js and lib/Socket/dugong.js additionally attach forwardedNewsletterMessageInfo metadata for the same channel (\"Denzy Z3roDay\") to outbound messages. Any application that opens a socket therefore silently subscribes the user's WhatsApp account to the author's channel and attributes its traffic to it, without consent. The preinstall hook (engine-requirements.js) only checks that the Node.js major version is 20 or newer. The shipped code contacts only WhatsApp's own hosts (web[.]web[.]whatsapp[.]com, v[.]whatsapp[.]net, g[.]whatsapp[.]net) and collects or transmits no credentials, tokens, environment variables or files. IOCs: WhatsApp channel JID 120363402308105961@newsletter; Telegram handle t[.]me/pantatBegetar; files lib/index.js, lib/Socket/newsletter.js, lib/Utils/messages.js, lib/Socket/dugong.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzy-official/baileys",
+        "purl": "pkg:npm/%40denzy-official/baileys"
+      },
+      "versions": [
+        "1.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzy-official/baileys/v/1.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13827"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:47:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "g[.]whatsapp[.]net",
+          "t[.]me",
+          "v[.]whatsapp[.]net",
+          "web[.]web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "4c1a09c6c7d06dd050397ed19a3bf162c6dd665d2ba80daf465fa9351cd2a064"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/pantatBegetar"
+        ]
+      }
+    }
+  }
+}

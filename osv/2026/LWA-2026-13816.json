@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13816",
+  "aliases": [
+    "MAL-2026-18861"
+  ],
+  "modified": "2026-11-09T23:57:50Z",
+  "published": "2026-11-09T23:56:42Z",
+  "summary": "Malicious code in @langitdeveloper/baileys (npm)",
+  "details": "This package is a WhatsApp client library fork that covertly manipulates the account it is instantiated for. In lib/Socket/newsletter.js the channel identifier 120363426930096454@newsletter is hardcoded and a 90-second timer issues a newsletter FOLLOW query for it over the user's authenticated WhatsApp connection; the hook runs on ordinary socket creation (lib/Socket/socket.js, lib/Socket/messages-send.js), is not exposed as a configuration option, and gives the account owner no indication that their account was enrolled as a follower. The delayed timer means the enrolment happens well after startup. lib/Socket/dugong.js carries a second hardcoded channel identifier, 120363430179804706@newsletter, used to attach spoofed \"forwarded newsletter\" attribution (newsletterName \"shenvn.\") to generated messages. lib/Utils/bot-toolkit.js also ships an aiMahiru() helper that POSTs to hxxps://api[.]anthropic[.]com/v1/messages using an ANTHROPIC_API_KEY supplied by the caller or the environment; that is the only environment variable read in the package, and no npm, GitHub, cloud or wallet credentials are collected or transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@langitdeveloper/baileys",
+        "purl": "pkg:npm/%40langitdeveloper/baileys"
+      },
+      "versions": [
+        "2.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@langitdeveloper/baileys/v/2.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13816"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:56:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]anthropic[.]com"
+        ],
+        "sha256": [
+          "fdead2700f6d723ca4e08affca433298122f2fd2e3b8fbcfbbdfb0de474cffc5"
+        ],
+        "url_observed": [
+          "hxxps://api[.]anthropic[.]com/v1/messages"
+        ]
+      }
+    }
+  }
+}

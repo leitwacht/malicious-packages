@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13807",
+  "aliases": [
+    "MAL-2026-18861"
+  ],
+  "modified": "2026-11-09T23:53:42Z",
+  "published": "2026-11-09T23:52:17Z",
+  "summary": "Malicious code in @langitdeveloper/baileys (npm)",
+  "details": "A fork of the Baileys WhatsApp client published under an unofficial scope (`@langitdeveloper/baileys`) that silently enrols the authenticated user's WhatsApp account into third-party channels. In `lib/Socket/newsletter.js`, `makeNewsletterSocket()` starts an async task when the socket is created that fetches a channel list over HTTPS from `hxxps://raw[.]githubusercontent[.]com/FadelSM/IDCH/refs/heads/main/idch[.]json`, then, after a 90-second `setTimeout`, issues the WhatsApp `w:mex` newsletter FOLLOW mutation (query id 7871414976211147) for every JID in that list via `Promise.allSettled(...)`. The enrolment runs unprompted, is not exposed as a caller-controlled option, and returns nothing to the application, so the installing account joins operator-chosen channels without consent. The remote list is attacker-controlled, so the set of channels can change without a new release. Additionally, `lib/Socket/dugong.js` (`handleEvent`) injects `contextInfo.forwardedNewsletterMessageInfo` with a hardcoded channel — `newsletterName: \"shenvn.\"`, `newsletterJid: \"120363430179804706@newsletter\"` — into every event message the account relays, attributing forwarded content to that channel. The package also swaps the signal-protocol dependency for a third-party GitHub fork (`github:RILLYZY/libsignal-node`). IOCs: raw[.]githubusercontent[.]com/FadelSM/IDCH/refs/heads/main/idch.json; WhatsApp newsletter JID 120363430179804706@newsletter; FOLLOW query id 7871414976211147.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@langitdeveloper/baileys",
+        "purl": "pkg:npm/%40langitdeveloper/baileys"
+      },
+      "versions": [
+        "2.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@langitdeveloper/baileys/v/2.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13807"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:52:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "fba1365ad61a334659e2d1d53ed1af9d6bbdfd0b7dc3d721675185061d69dcfe"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/FadelSM/IDCH/refs/heads/main/idch[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13815",
+  "aliases": [
+    "MAL-2026-18861"
+  ],
+  "modified": "2026-11-09T23:58:49Z",
+  "published": "2026-11-09T23:56:25Z",
+  "summary": "Malicious code in @langitdeveloper/baileys (npm)",
+  "details": "@langitdeveloper/baileys is a fork of the Baileys WhatsApp Web library (published under a non-canonical scope for the baileys name) that covertly manipulates the installing user's WhatsApp account. In lib/Socket/newsletter.js the module declares `let newsletters = ['120363426930096454@newsletter']`, and every socket built through makeNewsletterSocket() schedules, via a 90-second setTimeout, a WhatsApp `w:mex` GraphQL FOLLOW mutation (newsletterWMexQuery(id, 'QueryIds.FOLLOW')) for that hardcoded channel JID. No caller, configuration option or user action is involved: any application built on this fork silently makes its owner's WhatsApp account a follower of channel 120363426930096454, and the minute-and-a-half delay keeps the action out of the immediate connection flow where it would be noticed. The preinstall hook (engine-requirements.js) only enforces a Node.js \u003e= 20 major version. The remaining code is conventional Baileys functionality: WhatsApp endpoints (web[.]whatsapp[.]com, v[.]whatsapp[.]net), ffmpeg invocation in lib/Utils/messages-media.js, and an optional debugging helper in lib/Utils/bot-toolkit.js that sends a caller-supplied error/code snippet and ANTHROPIC_API_KEY to the official api[.]anthropic[.]com/v1/messages endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@langitdeveloper/baileys",
+        "purl": "pkg:npm/%40langitdeveloper/baileys"
+      },
+      "versions": [
+        "2.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@langitdeveloper/baileys/v/2.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13815"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:56:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]anthropic[.]com",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "aed8dcd1faa41f00a2ea0a32bfc039c2f6bb7c9883704e14013332d4c5859b10"
+        ],
+        "url_observed": [
+          "hxxps://api[.]anthropic[.]com/v1/messages"
+        ]
+      }
+    }
+  }
+}

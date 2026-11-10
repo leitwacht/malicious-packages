@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13804",
+  "aliases": [
+    "MAL-2026-18861"
+  ],
+  "modified": "2026-11-09T23:52:50Z",
+  "published": "2026-11-09T23:51:25Z",
+  "summary": "Malicious code in @langitdeveloper/baileys (npm)",
+  "details": "This package is a fork of the WhatsApp Web library `baileys` published under a non-canonical scope, and it silently performs account actions the installer never asked for. When a socket is created, `lib/Socket/newsletter.js` schedules a one-second timer that sends a WhatsApp newsletter follow query to a hardcoded channel, `120363418090359162@newsletter` (displayed name \"RiljiX7\"), using the library's `QueryIds.FOLLOW` query over `w:mex`. The error is swallowed, so the application embedding the library never learns that the user's WhatsApp account was subscribed to that channel. `lib/Socket/dugong.js` further hardcodes `forwardedNewsletterMessageInfo` with `newsletterJid` `120363404481963766@newsletterr` and `newsletterName` \"Daffa'Ravage\" into outgoing status and album messages, together with `forwardingScore` 99999 and `participant` `an account`, so messages sent through the library carry forged channel-forwarding attribution. `lib/Utils/generics.js` also replaces the upstream version-check endpoint: `fetchLatestBaileysVersion` fetches `hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json` rather than the canonical project path. The `preinstall` hook (`node./engine-requirements.js`) only enforces Node.js \u003e= 20. The package contains no obfuscation or dynamic code evaluation, and outbound hosts in it are limited to `web[.]whatsapp[.]com`, `v[.]whatsapp[.]net`, `g[.]whatsapp[.]net`, the WhatsApp media CDN hosts, and the fork-controlled raw[.]githubusercontent[.]com path above. IOCs: WhatsApp channel JIDs `120363418090359162@newsletter` and `120363404481963766@newsletterr`; hxxps://raw.githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version.json",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@langitdeveloper/baileys",
+        "purl": "pkg:npm/%40langitdeveloper/baileys"
+      },
+      "versions": [
+        "2.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@langitdeveloper/baileys/v/2.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13804"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:51:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "g[.]whatsapp[.]net",
+          "raw[.]githubusercontent[.]com",
+          "s[.]whatsapp[.]net",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "8cac23187c18d9fa954d04ccd66fb0b77f71f6928f7e5d9b51cbfb7d51e18a3c"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

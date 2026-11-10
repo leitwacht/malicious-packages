@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13799",
+  "aliases": [
+    "MAL-2026-18826"
+  ],
+  "modified": "2026-11-09T23:50:32Z",
+  "published": "2026-11-09T23:48:41Z",
+  "summary": "Malicious code in @epinkenedy/siiu (npm)",
+  "details": "This package is a repackaged WhatsApp client library (a rebranded Baileys fork) that silently enrols the linked WhatsApp account into two fixed channels that no integrating developer asked for. In lib/Socket/newsletter.js, inside the newsletter socket construction path, a timer schedules work 90 seconds after a socket is created; the callback issues follow queries against two hardcoded channel JIDs, 120363403259387464@newsletter and 120363425904953412@newsletter, and swallows every error so the action is invisible to the application and to the end user. The delay places the enrolment after normal startup, and no option, environment variable or documented API disables it. The library otherwise behaves as a WhatsApp client: it connects to wss://web[.]whatsapp[.]com, ships protobuf codegen in WAProto/index.js, and uses child_process only to run an ffmpeg thumbnail command in lib/Utils/messages-media.js. There is no other hardcoded network endpoint in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@epinkenedy/siiu",
+        "purl": "pkg:npm/%40epinkenedy/siiu"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@epinkenedy/siiu/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13799"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:48:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "ec6d6145e381b6f9d411e7477ef78f0f7dfee2cf03d1a4fe2ab0dfd1e8d5f76e"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029Vb7d9KxKWEKynNYTMy1m",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
