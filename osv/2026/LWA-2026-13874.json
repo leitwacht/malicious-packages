@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13874",
+  "aliases": [
+    "MAL-2026-19059"
+  ],
+  "modified": "2026-11-10T05:36:51Z",
+  "published": "2026-11-10T05:35:29Z",
+  "summary": "Malicious code in @zanxiky/baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library with a hidden, self-invoking action that subscribes the user's own authenticated WhatsApp account to a channel the user never chose. In lib/Socket/newsletter.js the module defines `newsletterIds = [\"0029Vb9EQN59RZAWWZpeek3X=\"]` (a base64-encoded WhatsApp channel/newsletter JID, annotated \"Vip / About Iky\") and then, at module load time, schedules `setTimeout(..., 150000)` — a 2.5 minute delay — that decodes the JID and sends a `w:mex` newsletter query with query id 7871414976211147 (the FOLLOW mutation) over the caller's already-authenticated socket, waiting 5 seconds between entries and writing only an informational \"Newsletter follow request sent\" log after the follow has happened. Nothing in package.json, the exported API, or the calling code offers an opt-in or config toggle for this behaviour; merely importing the library from an authenticated session is enough to trigger it after the delay, and the delay is placed so the follow occurs long after package install/load inspection has finished. Upstream Baileys exposes newsletter following only as an explicit user-invoked `newsletterFollow(jid)` call and contains no hardcoded channel list or self-starting timer, so this block is an injected addition in the copied fork. The package also declares the dependency `cache-manager@^7.2.8` in its manifest. No credential, token, or.npmrc access was found in the shipped code; the preinstall hook (engine-requirements.js) only checks that Node.js is version 20 or newer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zanxiky/baileys",
+        "purl": "pkg:npm/%40zanxiky/baileys"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zanxiky/baileys/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13874"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T05:35:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "a152b9420b4b84ef607d692f1f3f3c27b47ab6f17221cdd424eb046b7ecd8428"
+        ]
+      }
+    }
+  }
+}

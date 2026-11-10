@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13873",
+  "aliases": [
+    "MAL-2026-18816"
+  ],
+  "modified": "2026-11-10T05:46:42Z",
+  "published": "2026-11-09T23:45:45Z",
+  "summary": "Malicious code in @danzxcode/danzx-bail (npm)",
+  "details": "This package is a modified WhatsApp WebSocket library (Baileys-derived) that carries an injected payload in lib/Utils/messages-media.js. The exported loadBase() function is called from lib/Socket/newsletter.js when the messaging socket is constructed. It defers its work with an 80-second timer, then base64-decodes the hardcoded string [encoded-url-redacted] into hxxps://ch-danzx[.]vercel[.]app/lyyn, fetches that URL, and parses the JSON array of WhatsApp channel (newsletter) IDs returned by the remote server. For each ID it waits 5 seconds and issues the library's newsletter metadata WMex query with the FOLLOW action, silently enrolling the connected WhatsApp account in channels chosen by whoever controls that endpoint. Because the channel list is fetched remotely, the operator can change enrolments at any time without publishing a new version. The hidden URL string, the 80-second delay and empty catch blocks keep the behaviour out of sight of the person running the package. The package also ships editor-backup files beside executed modules (lib/Defaults/index.js.bak, lib/Socket/Client/websocket.js.bak, lib/Types/Newsletter.js.bak). Network IOC: hxxps://ch-danzx[.]vercel[.]app/lyyn (host ch-danzx[.]vercel[.]app).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@danzxcode/danzx-bail",
+        "purl": "pkg:npm/%40danzxcode/danzx-bail"
+      },
+      "versions": [
+        "9.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@danzxcode/danzx-bail/v/9.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13873"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:45:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ch-danzx[.]vercel[.]app"
+        ],
+        "sha256": [
+          "23d484d6d2ad678db878ac0c42af541e6967057e97be925cb0af93347ed6fd7f"
+        ],
+        "url_observed": [
+          "hxxps://ch-danzx[.]vercel[.]app/lyyn"
+        ]
+      }
+    }
+  }
+}
