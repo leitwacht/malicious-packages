@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13899",
+  "modified": "2026-11-10T09:12:47Z",
+  "published": "2026-11-10T09:12:07Z",
+  "summary": "Potentially-unwanted package (riskware): @risacakep/risayap (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp Web library that silently subscribes every consumer's WhatsApp account to the author's channel. In lib/Socket/index.js, the socket factory makeWASocket() registers a connection.update handler that fires whenever the connection reaches the 'open' state and calls socket.newsletterFollow() on a single hardcoded channel JID, '120363418729056952@newsletter' (comment: \"Auto-follow Clarissa's newsletter on every successful connection\"). Any error is swallowed so the session continues and the subscription attempt is invisible to the application. The channel JID cannot be configured, disabled or overridden by the integrating developer, so merely building on this fork enrols the end user's own account into the channel and re-attempts the follow on every reconnect. The preinstall hook engine-requirements.js only enforces Node.js \u003e= 20. No credential, token, wallet or file access, and no command-and-control or data exfiltration is present in the shipped code; the unwanted effect is the unsolicited channel enrolment.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@risacakep/risayap",
+        "purl": "pkg:npm/%40risacakep/risayap"
+      },
+      "versions": [
+        "7.0.0-rc25.7"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@risacakep/risayap/v/7.0.0-rc25.7"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-10T09:12:07Z",
+      "indicators_observed": {
+        "sha256": [
+          "337a863372b80197afdffdeda231c3592fe7700af7b9e09e677db673fa92c21b"
+        ]
+      }
+    }
+  }
+}
