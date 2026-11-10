@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13875",
+  "aliases": [
+    "MAL-2026-18861"
+  ],
+  "modified": "2026-11-10T05:59:32Z",
+  "published": "2026-11-09T23:56:07Z",
+  "summary": "Malicious code in @langitdeveloper/baileys (npm)",
+  "details": "This package is an unofficial fork of the @whiskeysockets/baileys WhatsApp Web library published under a different scope, and it modifies what happens to the account that pairs through it. In lib/Socket/newsletter.js the socket factory hardcodes a newsletter/channel identifier, 120363426930096454@newsletter, and 90 seconds after the WhatsApp socket is created it issues a w:mex FOLLOW query for that channel to S_WHATSAPP_NET, so accounts connected through this library are silently enrolled in that channel with no user consent or visible prompt. The same module exposes newsletterFollow, newsletterUnfollow and newsletterMetadata. lib/Socket/chats.js ships and exports reqPairing(number, count, config), which requests WhatsApp pairing codes for an arbitrary phone number in a loop — count iterations spaced 30 seconds apart, logging \"Spam i/count\" — i.e. tooling for mass pairing-code abuse of the messaging service. lib/Utils/bot-toolkit.js exposes aiMahiru(), which reads process.env.ANTHROPIC_API_KEY and POSTs it along with caller-supplied error text and source code to hxxps://api[.]anthropic[.]com/v1/messages; that key is sent only to Anthropic's official API endpoint. The declared preinstall hook, engine-requirements.js, only verifies that Node.js 20 or newer is in use. The package contains no code that reads or transmits npm or GitHub tokens, cloud credential files, SSH keys, wallet data or arbitrary local files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@langitdeveloper/baileys",
+        "purl": "pkg:npm/%40langitdeveloper/baileys"
+      },
+      "versions": [
+        "2.1.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@langitdeveloper/baileys/v/2.1.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13875"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:56:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]anthropic[.]com"
+        ],
+        "sha256": [
+          "cbb37d54310fb282d63a2927945fd67907bd0db0f80d725dfaeee76fb372e4e7"
+        ],
+        "url_observed": [
+          "hxxps://api[.]anthropic[.]com/v1/messages"
+        ]
+      }
+    }
+  }
+}

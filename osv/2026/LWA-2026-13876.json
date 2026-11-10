@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13876",
+  "aliases": [
+    "MAL-2026-18905"
+  ],
+  "modified": "2026-11-10T06:03:59Z",
+  "published": "2026-08-24T19:09:13Z",
+  "summary": "Malicious code in @trashcore/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp library (@whiskeysockets/baileys) published under a different npm scope. Beyond the legitimate newsletter API clone, lib/Socket/newsletter.js contains an injected routine that runs on its own: every time a socket is constructed (the library's normal entry point, reached through lib/Socket/messages-send.js), it registers a 90-second setTimeout that issues a newsletter FOLLOW mutation for the hardcoded channel JID 120363420249672073@newsletter, then a nested 5-second timer that does the same for 120363424020283759@newsletter. Both JIDs are stored base64-encoded (MTIwMzYzNDIwMjQ5NjcyMDczQG5ld3NsZXR0Z and MTIwMzYzNDI0MDIwMjgzNzU5QG5ld3NsZXR0Z) and hidden in the middle of the ordinary newsletter functions, and every error is silently swallowed so the operation leaves no trace. The subscriptions are not requested by the caller, are not configurable, and are not part of the upstream library API: any application that uses this fork silently enrols its connected WhatsApp account(s) as followers of those two channels. The manifest also requires libsignal from git+hxxps://github[.]com/whiskeysockets/libsignal-node rather than the registry, and lib/Utils/generics.js downloads its WhatsApp version JSON at connect time from hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json, a repository unrelated to the package's own stated repository (github[.]com/Tennor-modz/MD-Baileys).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@trashcore/baileys",
+        "purl": "pkg:npm/%40trashcore/baileys"
+      },
+      "versions": [
+        "4.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@trashcore/baileys/v/4.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13876"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-24T19:09:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com/kiuur/bails",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "f729db957090bcf890c02ec27b8d681447c8251a566c4a4c3b44a313307e5ec9"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

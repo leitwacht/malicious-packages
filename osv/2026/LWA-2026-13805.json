@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13805",
+  "aliases": [
+    "MAL-2026-18861"
+  ],
+  "modified": "2026-11-10T06:03:33Z",
+  "published": "2026-06-23T14:36:19Z",
+  "summary": "Potentially-unwanted package (riskware): @langitdeveloper/baileys (npm)",
+  "details": "This package is a modified fork of the WhatsApp library baileys, published under an unrelated scope while reusing the canonical package basename. It carries two additions that act on the installing user's WhatsApp account and traffic: lib/Socket/newsletter.js schedules an unconditional GraphQL FOLLOW call one second after a newsletter socket is created, subscribing the account to the hardcoded channel 120363418090359162@newsletter (display name \"RiljiX7\"), with no user-visible option to opt out; and lib/Utils/messages.js injects an annotations.newsletter block referencing the same channel JID into every outgoing media upload, so media sent by applications using this library is tagged toward that channel. The package also fetches a version file from raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version.json. The preinstall hook executes engine-requirements.js, which only checks for Node.js 20+ and exits. No credential, token or environment-variable access and no other remote endpoints were found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@langitdeveloper/baileys",
+        "purl": "pkg:npm/%40langitdeveloper/baileys"
+      },
+      "versions": [
+        "2.0.8"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@langitdeveloper/baileys/v/2.0.8"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-06-23T14:36:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "7f991b6d81c3ae2ec69572f28d03e76aafd871b2a42a106f6c158a268dcddc3e"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}
