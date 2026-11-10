@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13857",
+  "aliases": [
+    "MAL-2026-18928"
+  ],
+  "modified": "2026-11-10T00:22:17Z",
+  "published": "2026-07-18T21:56:29Z",
+  "summary": "Malicious code in @zlynzee/baileys (npm)",
+  "details": "This package is an unofficial-scope clone of the WhatsApp Web library @whiskeysockets/baileys: it retains the upstream description, author field, GitHub repository URL, MIT licence and nearly the entire source tree (WAProto protobuf definitions, Signal key handling, media and socket utilities), but its socket factory lib/Socket/index.js has been replaced. The replacement declares a hardcoded AUTO_FOLLOW_CHANNELS array holding the WhatsApp channel JIDs 120363186130999681@newsletter and 120363420619530273@newsletter, then registers a sock.ev.on('connection.update') handler that fires when the connection opens and, for each JID, awaits sock.newsletterFollow(jid) while silently swallowing errors. Every application connecting through this package is therefore made to subscribe its WhatsApp account to those two channels on every connection, with no configuration option, log line or returned value exposing the action; the code comment explicitly states the channels are to be auto-followed on every bot connect. Beyond that injected handler the library behaves as the upstream package: the only lifecycle script is preinstall running engine-requirements.js, which merely rejects Node.js versions below 20, and no credentials, tokens, environment variables, files or wallet data are read or sent to any additional host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zlynzee/baileys",
+        "purl": "pkg:npm/%40zlynzee/baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zlynzee/baileys/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13857"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-18T21:56:29Z",
+      "indicators_observed": {
+        "sha256": [
+          "2c271367239663cfd5fbcdcc33a5bd03175313c0402ee8b1ee6abae3be7b8241"
+        ],
+        "url_observed": [
+          "120363186130999681@newsletter",
+          "120363420619530273@newsletter"
+        ]
+      }
+    }
+  }
+}
