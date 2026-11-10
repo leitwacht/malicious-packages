@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13834",
+  "aliases": [
+    "MAL-2026-18901"
+  ],
+  "modified": "2026-11-10T00:11:51Z",
+  "published": "2026-11-10T00:06:08Z",
+  "summary": "Malicious code in @skycodee/baileys-mod (npm)",
+  "details": "@skycodee/baileys-mod@8.0.10 is a modified fork of the WhatsApp Web library @whiskeysockets/baileys (its description reads \"WhatsApp API Modification By Skyzopedia\" while its homepage and repository fields point at the upstream @whiskeysockets/baileys package page) that silently enrols the linking WhatsApp account into operator-controlled channels and stamps the victim's outgoing media with that channel's attribution. lib/Socket/newsletter.js contains an IIFE that runs when the socket module is loaded: inside an 80000 ms setTimeout it fetches hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json, parses the returned JSON array, and for every entry calls newsletterWMexQuery(i.id, QueryIds.FOLLOW) with a 5000 ms delay between each call — every linked account is subscribed to a remotely supplied channel list roughly 80 seconds after the module loads, with no user action and no configuration. lib/Utils/messages.js (prepareWAMessageMedia) injects a hardcoded newsletter contextInfo — newsletterJid 120363420249672073@newsletter, newsletterName \"kyuu ilysm\", contentType UPDATE — into every media message the client prepares, and lib/Socket/dugong.js injects forwardedNewsletterMessageInfo with newsletterJid 120363297591152843@newsletter and newsletterName \"shenvn.\" into event messages it generates. Installation additionally pulls the operator's own packages: the `libsignal` dependency is aliased to npm:@skycodee/libsignal-mod and the tree pins @cacheable/node-cache ^1.4.0 and cache-manager 4.0.1; the package also declares a preinstall hook (node./engine-requirements.js) that only checks for Node.js 20+. Stale editor `.bak` copies of lib/Defaults/index.js, lib/Socket/chats.js, lib/Utils/generics.js and lib/Utils/validate-connection.js are shipped in the tarball. IOCs: raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel.json; newsletter JIDs 120363420249672073@newsletter (\"kyuu ilysm\") and 120363297591152843@newsletter (\"shenvn.\").",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@skycodee/baileys-mod",
+        "purl": "pkg:npm/%40skycodee/baileys-mod"
+      },
+      "versions": [
+        "8.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@skycodee/baileys-mod/v/8.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13834"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:06:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "i[.]id",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "88d64a52b9358040994590fa63c9c09dea25adc091d78993db27a22ebb8bd428"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json"
+        ]
+      }
+    }
+  }
+}

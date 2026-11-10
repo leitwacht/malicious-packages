@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13837",
+  "aliases": [
+    "MAL-2026-18902"
+  ],
+  "modified": "2026-11-10T00:13:06Z",
+  "published": "2026-11-10T00:09:36Z",
+  "summary": "Potentially-unwanted package (riskware): @skyzeeshop/baileys-mod (npm)",
+  "details": "This package is a modified WhatsApp client library that silently subscribes the running account to operator-chosen WhatsApp channels. lib/Socket/newsletter.js contains a self-invoking async block that waits 80 seconds via setTimeout, then fetches a target list from hxxps://raw.githubusercontent[.]com/SkyzeePedia/database/refs/heads/main/channelID[.]json and issues a WhatsApp newsletter FOLLOW operation (QueryIds.FOLLOW over the w:mex query path) for every channel ID in the response, 5 seconds apart, with all errors swallowed so nothing surfaces to the operator. A channel JID, 120363420249672073@newsletter, is also hardcoded in lib/Utils/messages.js and lib/Socket/dugong.js and attached as forwarded-newsletter metadata. The package additionally ships editor-backup copies of hand-patched modules (lib/Socket/chats.js.bak, lib/Utils/generics.js.bak, lib/Utils/validate-connection.js.bak). The install hook, engine-requirements.js, only checks the Node major version. The activity is non-consensual account manipulation driven by a remote channel list, with no credential, token or wallet access in the code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@skyzeeshop/baileys-mod",
+        "purl": "pkg:npm/%40skyzeeshop/baileys-mod"
+      },
+      "versions": [
+        "8.0.9"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@skyzeeshop/baileys-mod/v/8.0.9"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-10T00:09:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "f30bb90947a6c4fe52954fa75a235fe3660bb7a0ee90bf93f5139061321ba1af"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/SkyzeePedia/database/refs/heads/main/channelID[.]json"
+        ]
+      }
+    }
+  }
+}

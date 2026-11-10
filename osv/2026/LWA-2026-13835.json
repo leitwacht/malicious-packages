@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13835",
+  "aliases": [
+    "MAL-2026-18901"
+  ],
+  "modified": "2026-11-10T00:13:16Z",
+  "published": "2026-11-10T00:06:39Z",
+  "summary": "Malicious code in @skycodee/baileys-mod (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp library that silently modifies the installing user's WhatsApp account. lib/Socket/newsletter.js runs an IIFE at module load: it sleeps 80 seconds via setTimeout, then downloads hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json (repository \"Screaper\") and issues a WhatsApp newsletter FOLLOW mutation for every id in the returned list, spaced 5 seconds apart — remotely controlled auto-subscription of the user's account to attacker-chosen channels, with no configuration option or logging. The module is loaded from the core send path (lib/Socket/messages-send.js requires./newsletter and calls makeNewsletterSocket), so it executes whenever the library is used. A second remote dependency is hardcoded: fetchLatestBaileysVersion() in lib/Utils/generics.js downloads its version JSON from hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json instead of the upstream source, giving the author a remote update channel. lib/Utils/messages.js also injects a hardcoded newsletter attribution (newsletterJid 120363420249672073@newsletter, name \"kyuu ilysm\") into the context of outgoing messages. The tarball additionally ships editor-backup files (lib/Socket/chats.js.bak, lib/Utils/generics.js.bak, lib/Utils/validate-connection.js.bak), consistent with in-place source edits. The preinstall hook only checks the Node.js major version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@skycodee/baileys-mod",
+        "purl": "pkg:npm/%40skycodee/baileys-mod"
+      },
+      "versions": [
+        "8.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@skycodee/baileys-mod/v/8.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13835"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:06:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "97d5e2e084bdd150cf5e38a9508135d6b1ebab18a7a1bd015ad234539f1d04ca"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json"
+        ]
+      }
+    }
+  }
+}

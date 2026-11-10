@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13856",
+  "aliases": [
+    "MAL-2026-18906"
+  ],
+  "modified": "2026-11-10T00:18:38Z",
+  "published": "2026-11-10T00:17:36Z",
+  "summary": "Malicious code in @vanzzo/priject (npm)",
+  "details": "This is a WhatsApp library (a fork of baileys) that silently forces the user's paired WhatsApp account to subscribe to attacker-chosen channels. In lib/Socket/newsletter.js the newsletter socket factory hardcodes a remote control URL, hxxps://raw[.]githubusercontent[.]com/kiryzzo/vanzzooffc/refs/heads/main/vanzzopushch, and schedules a setTimeout of 120000 ms; when it fires it fetches that URL, parses the response as a JSON array of WhatsApp channel JIDs, and calls the newsletter FOLLOW query (newsletterWMexQuery(id, QueryIds.FOLLOW)) for each channel, with an 11000 ms setTimeout between each follow to stay under rate limits. The channel list is attacker-controlled and can be changed at any time without republishing the package, and the two-minute delay pushes the action well past the point where a user would associate it with the install. The package also fetches hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json at require time and prints the returned text as a \"latest update\" banner, and lib/index.js renders a startup banner built from the session's pairing reference, noise key and identity key while advertising the Telegram handle @vanzzo. The preinstall hook (engine-requirements.js) only checks that Node.js is version 20 or newer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vanzzo/priject",
+        "purl": "pkg:npm/%40vanzzo/priject"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vanzzo/priject/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13856"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:17:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "411611a005d6726ccd64ca5d98d6f4342000712ad85eb4123e32f842f8095c94"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiryzzo/vanzzooffc/refs/heads/main/vanzzopushch",
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json"
+        ]
+      }
+    }
+  }
+}

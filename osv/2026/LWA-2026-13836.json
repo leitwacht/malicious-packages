@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13836",
+  "aliases": [
+    "MAL-2026-18902"
+  ],
+  "modified": "2026-11-10T00:11:32Z",
+  "published": "2026-11-10T00:07:04Z",
+  "summary": "Malicious code in @skyzeeshop/baileys-mod (npm)",
+  "details": "This package is a modified WhatsApp (Baileys-style) client library that silently enrols the connected WhatsApp account into remote-controlled channels. In lib/Socket/newsletter.js a self-invoking block schedules setTimeout of 80000 ms at module load, then fetches hxxps://raw[.]githubusercontent[.]com/SkyzeePedia/database/refs/heads/main/channelID.json, parses the returned newsletter IDs and sends a WhatsApp newsletter FOLLOW query (QueryIds.FOLLOW) for each one, spaced 5000 ms apart, with every error swallowed. The channel list is therefore controlled server-side and can be changed without republishing the package, and the user or bot operator is never asked for consent. The same file's socket also hardcodes WhatsApp channel attribution into outbound content: lib/Utils/messages.js stamps every uploaded media message with newsletterJid 120363420249672073@newsletter (newsletterName \"kyuu ilysm\"), and lib/Socket/dugong.js stamps forwarded-newsletter fields with 120363297591152843@newsletter (\"shenvn.\") plus fabricated sender names on forged forwarded messages. The published tarball also contains editor backup copies of source files shipped alongside live files: lib/Socket/chats.js.bak, lib/Utils/generics.js.bak and lib/Utils/validate-connection.js.bak. No credential, publishing-token, cloud-key or environment-variable access was found anywhere in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@skyzeeshop/baileys-mod",
+        "purl": "pkg:npm/%40skyzeeshop/baileys-mod"
+      },
+      "versions": [
+        "8.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@skyzeeshop/baileys-mod/v/8.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13836"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:07:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "af6585d8d376724aec19bde5a2a5b1793b0aa560502095068baed1f4d9c0f6cf"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/SkyzeePedia/database/refs/heads/main/channelID[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

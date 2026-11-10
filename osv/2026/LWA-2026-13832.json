@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13832",
+  "aliases": [
+    "MAL-2026-18900"
+  ],
+  "modified": "2026-11-10T00:11:29Z",
+  "published": "2026-11-10T00:05:31Z",
+  "summary": "Malicious code in @skycodee/baileys (npm)",
+  "details": "@skycodee/baileys@8.0.8 and @skycodee/baileys@8.0.15 are modified forks of the WhatsApp Web library @whiskeysockets/baileys that quietly enrol the linking WhatsApp account into operator-controlled channels and forge newsletter attribution on the victim's outgoing media. Three injected payloads execute against the victim's authenticated socket: 1. lib/Socket/socket.js (socketConnect) rebuilds a URL from an integer char-code array to hxxps://raw[.]githubusercontent[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]js[.]json, fetches and parses it, then inside a 200000 ms setTimeout sends WhatsApp `iq` / `w:mex` queries with query_id 7871414976211147 (the newsletter FOLLOW query) for each fetched id — the linking account is silently subscribed to an operator-supplied channel list roughly 200 seconds after connecting.\n2. lib/Utils/messages-media.js (loadBase, called unconditionally from lib/Socket/newsletter.js on socket construction) base64-decodes hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json, fetches it inside an 80000 ms setTimeout and re-issues the same FOLLOW query for every listed newsletter id at 5000 ms intervals.\n3. lib/Socket/socket.js (generateMessageV) base64-decodes and single-byte XOR-decodes the constant 120363423995305186@newsletter and drives it through FOLLOW after a 40000 ms timer; the function is exposed on the returned socket object. Separately, lib/Utils/messages.js (prepareWAMessageMedia) injects a hardcoded newsletter contextInfo — newsletterJid 120363422054951473@newsletter, newsletterName \"skyzopedia\", contentType UPDATE — into every media message the client prepares, attributing the victim's outgoing media to that channel. The package also declares `*` dependency ranges on @skycodee/libsignal, @cacheable/node-cache and cache-manager, so installation pulls in a further package from the same operator, and it ships editor `.bak` copies of lib/Defaults/index.js, lib/Socket/Client/websocket.js and lib/Types/Newsletter.js. IOCs: raw[.]githubusercontent[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push.js.json; raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel.json; newsletter JIDs 120363423995305186@newsletter and 120363422054951473@newsletter (label \"skyzopedia\").",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@skycodee/baileys",
+        "purl": "pkg:npm/%40skycodee/baileys"
+      },
+      "versions": [
+        "8.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@skycodee/baileys/v/8.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13832"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:05:31Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "3ba0f8582f009055ab526bbc5b0e77ad4ddb51fa87bc04274e9cb8306786be38"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]js[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13838",
+  "aliases": [
+    "MAL-2026-18904"
+  ],
+  "modified": "2026-11-10T00:13:07Z",
+  "published": "2026-11-10T00:10:14Z",
+  "summary": "Malicious code in @thunderx/baileys (npm)",
+  "details": "This package impersonates the @whiskeysockets/baileys WhatsApp library: it keeps the same basename and still claims github[.]com/whiskeysockets/baileys as its homepage while being published under an unrelated scope, and replaces the trusted `libsignal` dependency with `libsignal: npm:@thunderx/libsignal-node`. Injected behaviour, all reachable from normal library use:\n- lib/Socket/newsletter.js fetches hxxps://raw[.]githubusercontent[.]com/yun-xiaogt/ivory-lotus/refs/heads/main/newsletter[.]json on a 120-second timer, then for every JID in the returned JSON array issues a WhatsApp newsletter FOLLOW query (QueryIds.FOLLOW), spaced 11 seconds apart. A list the operator can change at any time silently makes the victim's authenticated WhatsApp account subscribe to arbitrary channels.\n- lib/index.js performs a top-level fetch at import of hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json and prints the first array element to the installer's console as an \"update\" notice — remote-supplied text executed into the consumer's terminal.\n- lib/Utils/generics.js repoints fetchLatestBaileysVersion to hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json, so the WhatsApp protocol version is taken from an operator-controlled file.\n- lib/Socket/dugong.js hardcodes WhatsApp channel JIDs (120363297591152843@newsletter named \"shenvn.\", and 0@newsletter named \"WhatsApp\") into forged forwardedNewsletterMessageInfo and eventMessage context payloads.\n- Import-time console advertising (Telegram @primeroselotus, ASCII-art banner) and package.json profile.baseurl hxxps://shenirapi[.]shenira9x[.]me. The preinstall hook (node./engine-requirements.js) is only a Node.js \u003e=20 version check. No environment-variable,.npmrc, cloud-credential or wallet access was found; the abuse is remote-config-driven control of the consumer's WhatsApp account and messaging content.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@thunderx/baileys",
+        "purl": "pkg:npm/%40thunderx/baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@thunderx/baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13838"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:10:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "shenirapi[.]shenira9x[.]me"
+        ],
+        "sha256": [
+          "a474ac68ca6328801e652731e83c6385c676ed0f9e88d7a82ec31361f8710ac0"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/yun-xiaogt/ivory-lotus/refs/heads/main/newsletter[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json",
+          "hxxps://shenirapi[.]shenira9x[.]me"
+        ]
+      }
+    }
+  }
+}

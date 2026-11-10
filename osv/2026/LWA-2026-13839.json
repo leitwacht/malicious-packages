@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13839",
+  "aliases": [
+    "MAL-2026-18905"
+  ],
+  "modified": "2026-11-10T00:13:44Z",
+  "published": "2026-11-10T00:10:46Z",
+  "summary": "Malicious code in @trashcore/baileys (npm)",
+  "details": "A WhatsApp/Baileys library published under an unofficial scope (@trashcore/baileys, where the canonical package is @whiskeysockets/baileys) that covertly subscribes the running account to hidden WhatsApp channels. In lib/Socket/newsletter.js, inside makeNewsletterSocket(), two nested timers fire 90 seconds and then 95 seconds after the socket is created and silently issue newsletter FOLLOW queries (query_id 7871414976211147) with base64-encoded channel JIDs decoded to 120363420249672073@newsletter and 120363424020283759@newsletter. Both calls are wrapped in empty catch blocks — no log line, no configuration flag and no consent path — so the account follows channels the user never chose. The hook is reachable on every normal session: makeNewsletterSocket() is invoked unconditionally at module scope in lib/Socket/messages-send.js. The package also aliases its signal dependency to an unofficial implementation (\"libsignal\": \"npm:@shennmine/libsignal-node\") instead of the upstream package, hardcodes marketing/newsletter JIDs in lib/Socket/luxu.js and lib/Utils/messages.js (including 120363420757607688@newsletter), and fetches its runtime version config from a third-party GitHub repository at hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json. The shipped code contains no credential, token or local file access; the payload acts only through the authenticated WhatsApp session.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@trashcore/baileys",
+        "purl": "pkg:npm/%40trashcore/baileys"
+      },
+      "versions": [
+        "4.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@trashcore/baileys/v/4.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13839"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:10:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "95c406f4f82fa3989b53bf7cd0e7c349065afdbfdda6266698f40895e361047d"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}
