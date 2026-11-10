@@ -4,10 +4,10 @@
   "aliases": [
     "MAL-2026-18861"
   ],
-  "modified": "2026-11-09T23:57:50Z",
-  "published": "2026-11-09T23:56:42Z",
+  "modified": "2026-11-10T00:07:45Z",
+  "published": "2026-06-29T11:44:39Z",
   "summary": "Malicious code in @langitdeveloper/baileys (npm)",
-  "details": "This package is a WhatsApp client library fork that covertly manipulates the account it is instantiated for. In lib/Socket/newsletter.js the channel identifier 120363426930096454@newsletter is hardcoded and a 90-second timer issues a newsletter FOLLOW query for it over the user's authenticated WhatsApp connection; the hook runs on ordinary socket creation (lib/Socket/socket.js, lib/Socket/messages-send.js), is not exposed as a configuration option, and gives the account owner no indication that their account was enrolled as a follower. The delayed timer means the enrolment happens well after startup. lib/Socket/dugong.js carries a second hardcoded channel identifier, 120363430179804706@newsletter, used to attach spoofed \"forwarded newsletter\" attribution (newsletterName \"shenvn.\") to generated messages. lib/Utils/bot-toolkit.js also ships an aiMahiru() helper that POSTs to hxxps://api[.]anthropic[.]com/v1/messages using an ANTHROPIC_API_KEY supplied by the caller or the environment; that is the only environment variable read in the package, and no npm, GitHub, cloud or wallet credentials are collected or transmitted.",
+  "details": "This package is an unofficial republish of the WhatsApp \"Baileys\" library that covertly alters every consuming account's channel subscriptions. lib/Socket/newsletter.js hardcodes the newsletter JID 120363426930096454@newsletter and, inside setTimeout(..., 90000) — 90 seconds after each socket is created, with no notification and no opt-out — sends a \"w:mex\" graph query with QueryIds.FOLLOW for that JID to WhatsApp's S_WHATSAPP_NET endpoint via newsletterWMexQuery, so the operator's channel is silently added as followed. The same file also carries a second hardcoded channel reference (120363430179804706@newsletter) in lib/Socket/dugong.js. lib/Utils/bot-toolkit.js adds an aiMahiru helper that reads the ANTHROPIC_API_KEY environment variable and POSTs caller-supplied error text and source code to hxxps://api[.]anthropic[.]com/v1/messages. The preinstall hook (node./engine-requirements.js) only performs a Node.js major-version check; the rest of the network code targets web[.]whatsapp[.]net, v[.]whatsapp[.]net, g[.]whatsapp[.]net and raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/baileys-version.json. The library identifies itself as \"WhatsApp API Modification By Langit\" with homepage github[.]com/langitdeveloper-official/mahiru-baileys. This package is a WhatsApp client library fork that covertly manipulates the account it is instantiated for. In lib/Socket/newsletter.js the channel identifier 120363426930096454@newsletter is hardcoded and a 90-second timer issues a newsletter FOLLOW query for it over the user's authenticated WhatsApp connection; the hook runs on ordinary socket creation (lib/Socket/socket.js, lib/Socket/messages-send.js), is not exposed as a configuration option, and gives the account owner no indication that their account was enrolled as a follower. The delayed timer means the enrolment happens well after startup. lib/Socket/dugong.js carries a second hardcoded channel identifier, 120363430179804706@newsletter, used to attach spoofed \"forwarded newsletter\" attribution (newsletterName \"shenvn.\") to generated messages. lib/Utils/bot-toolkit.js also ships an aiMahiru() helper that POSTs to hxxps://api[.]anthropic[.]com/v1/messages using an ANTHROPIC_API_KEY supplied by the caller or the environment; that is the only environment variable read in the package, and no npm, GitHub, cloud or wallet credentials are collected or transmitted.",
   "affected": [
     {
       "package": {
@@ -50,10 +50,15 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-09T23:56:42Z",
+      "first_seen_at": "2026-06-29T11:44:39Z",
       "indicators_observed": {
         "domain_observed": [
-          "api[.]anthropic[.]com"
+          "120363426930096454@newsletter",
+          "api[.]anthropic[.]com",
+          "g[.]whatsapp[.]net",
+          "raw[.]githubusercontent[.]com",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]net"
         ],
         "sha256": [
           "fdead2700f6d723ca4e08affca433298122f2fd2e3b8fbcfbbdfb0de474cffc5"

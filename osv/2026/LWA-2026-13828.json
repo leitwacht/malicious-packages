@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13828",
+  "aliases": [
+    "MAL-2026-18900"
+  ],
+  "modified": "2026-11-10T00:07:15Z",
+  "published": "2026-07-14T15:51:11Z",
+  "summary": "Malicious code in @skycodee/baileys (npm)",
+  "details": "This package is a trojanized clone of @whiskeysockets/baileys published under the scope @skycodee: the legitimate Baileys source tree is republished with added code that silently forces the installing user's own WhatsApp account to subscribe to third-party channels. On connection the socket fetches remote configuration and queries newsletter IDs without the user's knowledge:\n- lib/Utils/messages-media.js exports loadBase(), which builds a URL from a base64 literal (\"[encoded-url-redacted]\") resolving to hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json, fetches the list, then calls the follow operation on each newsletter ID with a 5s pause between calls, inside an 80-second timer.\n- lib/Socket/socket.js defines socketConnect(), which rebuilds a URL via String.fromCharCode over a decimal char-code array resolving to hxxps://raw[.]github[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]json, fetches that list and sends a \"w:mex\" IQ query (query_id 7871414976211147, variables.newsletter_id) for each entry inside a 200-second timer. It is invoked right after the WhatsApp handshake in the connect path.\n- lib/Socket/newsletter.js invokes loadBase() on the newsletter subsystem and exposes the follow/unfollow wrappers the payload drives. The fork also injects an operator-owned channel into user traffic: in lib/Utils/messages.js, prepareMediaMessage builds a default Message.annotations block containing newsletterJid \"120363409159786018@newsletter\" with newsletterName \"skyzopedia\", so outgoing media messages carry a reference to that channel when the caller supplied no annotations. The tampering is visible in editor-backup leftovers that were shipped in the tarball: lib/Socket/Client/websocket.js.bak still contains \"this.socket.newsletterFollow(\\\"120363302042233203@newsletter\\\")\" inside connect(), which was replaced in the live lib/Socket/Client/websocket.js; lib/Types/Newsletter.js.bak is the matching backup of an edited type file. The package also declares a runtime dependency on @skycodee/libsignal (a fork of libsignal published under the same scope), so installing it pulls that separately flagged package into the dependency tree.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@skycodee/baileys",
+        "purl": "pkg:npm/%40skycodee/baileys"
+      },
+      "versions": [
+        "8.0.15"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@skycodee/baileys/v/8.0.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13828"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-14T15:51:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]github[.]com",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "8f4b2dd913c931eed2ca1ade9e2eed7b2eb537bb5d8460177c9d28bb91184122"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/skycodee/Baileys",
+          "hxxps://raw[.]github[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/skyzopedia/Screaper/refs/heads/main/idChannel[.]json"
+        ]
+      }
+    }
+  }
+}

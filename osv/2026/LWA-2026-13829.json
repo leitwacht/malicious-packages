@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13829",
+  "aliases": [
+    "MAL-2026-18909"
+  ],
+  "modified": "2026-11-10T00:07:32Z",
+  "published": "2026-08-13T10:18:08Z",
+  "summary": "Malicious code in @vinzsocket/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp automation library that silently enrols the operator's WhatsApp account into a third-party channel by default. lib/Defaults/index.js ships autoFollowNewsletterOnConnect: true, autoFollowNewsletterDelayMs: 90000 and autoFollowNewsletterJid: \"120363400911374213@newsletter\" as the library defaults, and lib/Socket/index.js calls triggerAutoFollow(sock, newConfig) inside makeWASocket(), so every socket created by any bot built on this package is armed. lib/Socket/newsletter.js registers a connection.update listener, waits 90 seconds after the connection reaches state \"open\", then sends an iq to WhatsApp (xmlns \"w:mex\", query_id FOLLOW, content variables {newsletter_id: \"120363400911374213@newsletter\"}) using the operator's already-authenticated session, retrying three times with a 4-second backoff so the follow completes after the operator has stopped watching. It is default-on and can only be suppressed by explicitly passing autoFollowNewsletterOnConnect: false; the package documentation presents follow/unfollow only as explicit API calls and never discloses automatic enrolment. A second literal channel reference, hxxps://whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k, appears in the header of lib/Modded/message_builder.js. package.json also declares the dependencies @cacheable/node-cache and whatsapp-rust-bridge. No credential, environment-variable or file exfiltration and no remote command channel were found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vinzsocket/baileys",
+        "purl": "pkg:npm/%40vinzsocket/baileys"
+      },
+      "versions": [
+        "3.3.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vinzsocket/baileys/v/3.3.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13829"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-08-13T10:18:08Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "3d266e4f3c50c68b2ded00c6d577ef59ac0843931c8dd381fbc716d9a9748ea2"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k"
+        ]
+      }
+    }
+  }
+}
