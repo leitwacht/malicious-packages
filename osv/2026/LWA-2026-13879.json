@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13879",
+  "modified": "2026-11-10T06:09:10Z",
+  "published": "2026-11-10T06:05:24Z",
+  "summary": "Malicious code in mock-data-sdk (npm)",
+  "details": "mock-data-sdk@1.0.1 ships a hidden loader behind the API of a mock-transaction-data generator. `index.js` defines an XOR-obfuscated string table (`_0x1a2b`, eight arrays of hex character codes XOR-decoded into the identifiers Buffer, require, process, setTimeout, clearTimeout, try/catch) and an undocumented export `get_transfer_data`. When a consumer calls the documented `getTransactions()`, the package calls that hidden function inside an empty try/catch: it reads the bundled `data/products_1.js` … `data/products_10.js`, concatenates the 4-character `mark` field of every fixture record (roughly 700 records) into one base64 blob — `data/_index.js` records the decoded length as 2008 bytes — base64-decodes it, and executes the result with `Function(Buffer, require, process, code)`, handing the decoded script full access to Buffer, require and process. The concatenated fragments decode to JavaScript source beginning `const os = require(\"os\")`, i.e. a host-fingerprinting stage; the second stage is deliberately split into four-character chunks across the shipped data files so that no single file contains the payload. Nothing runs at install time — there is no lifecycle hook — so the loader only fires when the library's main API is called, and all errors from it are silently swallowed. Stage 1 contains no network literal; the network/process capability available to the decoded stage comes from the declared axios and python-shell dependencies, which `index.js` itself never uses. No C2 host or URL is observable in the readable layer of the package; the IOC set is structural: `index.js` (`get_transfer_data`), the XOR string table `_0x1a2b`, and the `mark` fragment carriers in `data/products_1.js`–`data/products_10.js`.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mock-data-sdk",
+        "purl": "pkg:npm/mock-data-sdk"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mock-data-sdk/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13879"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T06:05:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "2db380d92abe5108f49be070027936529f36fbdb566f632c36128facad8d0753"
+        ]
+      }
+    }
+  }
+}
