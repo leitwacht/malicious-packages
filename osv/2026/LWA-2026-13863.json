@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13863",
+  "aliases": [
+    "MAL-2026-19033"
+  ],
+  "modified": "2026-11-10T00:25:46Z",
+  "published": "2026-11-10T00:24:59Z",
+  "summary": "Malicious code in wertybailz (npm)",
+  "details": "wertybailz is a WhatsApp Web socket library (a fork of Baileys) that silently enrols the user's WhatsApp account into following the author's own WhatsApp channel. lib/Socket/newsletter.js hardcodes a channel JID, 120363426748858626@newsletter, base64-encoded in a MY_CHANNEL constant, and registers a 'connection.update' listener that fires the first time a socket reports an open connection: it waits 15 seconds, then sends the WhatsApp w:mex FOLLOW query (query id 7871414976211147) with that channel as the newsletter_id target, retrying up to three times with 10-second back-off. The \"already followed\" flag is reset on every disconnect, so the follow request is re-issued each time the account reconnects. Nothing in the package's options or README enables or describes this — it runs for every consumer of the library, quietly adding the author's channel to the follower list of the installing user's account, an account-state change the user never requested. The rest of the package is conventional WhatsApp plumbing: its only lifecycle hook, engine-requirements.js, just checks for Node.js 20 or newer and exits on older runtimes, and the outbound endpoints in the code are the standard web[.]whatsapp[.]com and call[.]whatsapp[.]com hosts. No environment variables, credential files, tokens or wallet material are read, and no data is transmitted to a third-party host. IOC: WhatsApp channel JID 120363426748858626@newsletter (FOLLOW query id 7871414976211147).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wertybailz",
+        "purl": "pkg:npm/wertybailz"
+      },
+      "versions": [
+        "1.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wertybailz/v/1.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13863"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:24:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "9eb6bda811b7344ea93a4a6f238b2cba4e0dca3f94819c1c3c1f9b7358249950"
+        ]
+      }
+    }
+  }
+}

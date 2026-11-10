@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13859",
+  "aliases": [
+    "MAL-2026-18990"
+  ],
+  "modified": "2026-11-10T00:24:01Z",
+  "published": "2026-11-10T00:23:09Z",
+  "summary": "Malicious code in mid-baileys (npm)",
+  "details": "mid-baileys@0.7.29 is a WhatsApp Web API library (\"baileys\" fork) with an injected account-manipulation payload in lib/Socket/newsletter.js. Inside makeNewsletterSocket() a 60-second setTimeout fetches hxxps://raw[.]githubusercontent[.]com/gcamerator/My/refs/heads/main/ids[.]json, parses the response as an array of WhatsApp newsletter/channel JIDs, and for each one issues the library's newsletter FOLLOW query (Types_1.QueryIds.FOLLOW via newsletterWMexQuery), pausing 2 seconds between each and silently swallowing all errors. Every consumer that instantiates the newsletter socket therefore force-subscribes the paired WhatsApp account to an attacker-controlled list of channels, which can be re-targeted at any time by editing the remote ids.json, and this runs from library code rather than any documented API call. The package also ships a stale editor backup lib/Socket/messages-send.js.bak alongside the executed lib/Socket/messages-send.js. Network IOCs: hxxps://raw[.]githubusercontent[.]com/gcamerator/My/refs/heads/main/ids[.]json (attacker-controlled targeting list); follow requests are sent to WhatsApp channel JIDs supplied by that file. No credential, token or file exfiltration was found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mid-baileys",
+        "purl": "pkg:npm/mid-baileys"
+      },
+      "versions": [
+        "0.7.29"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mid-baileys/v/0.7.29"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13859"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:23:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "47ae0b957e0e0a333383a1f458f30e6fce25b99e63c988af432f821e6ca18e83"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/gcamerator/My/refs/heads/main/ids[.]json"
+        ]
+      }
+    }
+  }
+}

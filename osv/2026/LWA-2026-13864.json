@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13864",
+  "aliases": [
+    "MAL-2026-19033"
+  ],
+  "modified": "2026-11-10T00:27:32Z",
+  "published": "2026-11-10T00:26:22Z",
+  "summary": "Malicious code in wertybailz (npm)",
+  "details": "wertybailz is a WhatsApp Web socket library (a repackaged Baileys fork) that silently enrols the connecting account into a hidden third-party WhatsApp channel and pulls a build artifact that is not served by the npm registry. lib/Socket/newsletter.js stores the channel identifier 120363426748858626@newsletter base64-encoded (MY_CHANNEL) and registers an unconditional connection-update handler: on connection === 'open' it waits 15 seconds, then sends a newsletter w:mex FOLLOW query (query_id 7871414976211147) for that channel, retrying up to three times with 10-second backoff, and resets on close so the follow is repeated on every reconnect. The module sits in the default send path (lib/Socket/messages-send.js imports makeNewsletterSocket, transitively loaded by lib/Socket/socket.js), so the subscription occurs without any opt-in, configuration switch or documentation. package.json additionally pins an exact non-registry artifact, whatsapp-rust-bridge@0.5.4, which is fetched at install time, and declares a dependency on \"chalk\"; it also declares a preinstall hook that runs engine-requirements.js, a Node.js version check. The shipped code does not read environment variables, credential files, tokens or keys, and contains no arbitrary command execution; its only hardcoded network destinations are WhatsApp's own endpoints and hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts (upstream version lookup).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wertybailz",
+        "purl": "pkg:npm/wertybailz"
+      },
+      "versions": [
+        "1.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wertybailz/v/1.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13864"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:26:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "663983ec1d94f648fa3ac61c7c2a3a5857ca286ef7633e18125a2e3bdb4b4594"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts"
+        ]
+      }
+    }
+  }
+}

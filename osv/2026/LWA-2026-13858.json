@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13858",
+  "aliases": [
+    "MAL-2026-18990"
+  ],
+  "modified": "2026-11-10T00:23:31Z",
+  "published": "2026-11-10T00:22:44Z",
+  "summary": "Malicious code in mid-baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web API library (mid-baileys) that silently subscribes the installing user's own WhatsApp account to channels chosen by a remote, publisher-controlled list. When the socket layer is initialised, lib/Socket/newsletter.js starts a `setTimeout` of 60000 ms (unconditional, not gated by any option, no logging) that downloads hxxps://raw[.]githubusercontent[.]com/gcamerator/My/refs/heads/main/ids.json, requires the response to be a JSON array of newsletter JIDs, and for each entry sends a newsletter FOLLOW query (QueryIds.FOLLOW, xmlns w:mex) over the host application's already-authenticated WhatsApp session, pausing 2 seconds between requests and silently swallowing every error. Because the ID list lives in the remote file rather than in the package, the set of channels joined can be changed at any time without a new release. The action requires no user consent or configuration and is invisible to the application embedding the library. lib/Utils/messages.js additionally hardcodes the newsletter JID 120363425556949261@newsletter as the default target for forwarded-newsletter update context. The package does not read credential files, environment tokens or wallets, and the only publisher-controlled network destination is the JSON tasking file above. Its preinstall hook (node./engine-requirements.js) merely checks the Node.js major version. No obfuscation or dynamically decoded code is present.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mid-baileys",
+        "purl": "pkg:npm/mid-baileys"
+      },
+      "versions": [
+        "0.7.28"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mid-baileys/v/0.7.28"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13858"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:22:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "efcd949b6b73e8c453eda32f2a274536991f3a2a806ae4fe929914d3af8422e6"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/gcamerator/My/refs/heads/main/ids[.]json"
+        ]
+      }
+    }
+  }
+}

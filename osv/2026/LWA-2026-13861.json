@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13861",
+  "aliases": [
+    "MAL-2026-19033"
+  ],
+  "modified": "2026-11-10T00:28:33Z",
+  "published": "2026-11-10T00:27:05Z",
+  "summary": "Malicious code in wertybailz (npm)",
+  "details": "wertybailz@1.0.8 is a fork of the Baileys WhatsApp Web library with injected channel-enrolment code. In lib/Socket/newsletter.js a hardcoded channel identifier, 120363426748858626@newsletter, is base64-wrapped in the constant MY_CHANNEL and a timer fires 10 seconds after the module loads: `setTimeout(() =\u003e newsletterWMexQuery(Buffer.from(MY_CHANNEL,\"base64\").toString(), QueryIds.FOLLOW), 10000)`. Because makeNewsletterSocket() is constructed unconditionally by makeMessagesSocket() in lib/Socket/messages-send.js, every client connection causes the authenticated user's WhatsApp account to issue a FOLLOW (w:mex query 7871414976211147) on that channel — the user is subscribed without any call, option or notice. The same fork also stamps the author's channels onto messages the victim sends: in lib/Socket/luxu.js, event messages are given forwardedNewsletterMessageInfo newsletterName \"D | 7eppeli-Exloration\" / newsletterJid 120363421563597486@newsletter, and poll-result messages default to 120363399602691477@newsletter. The package.json homepage and repository fields point at another npm package name (xzcbailz) instead of a source repository. The package reads no environment variables, credential files (.npmrc/.ssh/.aws) or tokens, and contacts only WhatsApp endpoints (web[.]whatsapp[.]com, call[.]whatsapp[.]com, media hosts); its preinstall script only checks the Node.js major version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wertybailz",
+        "purl": "pkg:npm/wertybailz"
+      },
+      "versions": [
+        "1.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wertybailz/v/1.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13861"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:27:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363399602691477@newsletter",
+          "120363421563597486@newsletter",
+          "120363426748858626@newsletter",
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "a302f4df8cf9a7a620153441e2ab210e5e05601a797b61f370d594c02abc9c02"
+        ]
+      }
+    }
+  }
+}
