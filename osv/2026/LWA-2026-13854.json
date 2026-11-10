@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13854",
+  "aliases": [
+    "MAL-2026-18905"
+  ],
+  "modified": "2026-11-10T05:59:23Z",
+  "published": "2026-11-10T00:16:59Z",
+  "summary": "Malicious code in @trashcore/baileys (npm)",
+  "details": "This package is a modified WhatsApp library (\"MD-Baileys\") that ships hidden code which silently subscribes the installer's WhatsApp account to channels controlled by the package author. On creation of a newsletter-capable socket, lib/Socket/newsletter.js schedules a 90-second timer (followed by a second 5-second timer) that issues w:mex FOLLOW queries for two hardcoded channel JIDs that are stored base64-encoded to keep them out of plain-text inspection: 120363420249672073@newsletter and 120363424020283759@newsletter. The calls are wrapped in empty catch blocks so the victim's application never learns they happened, and the 90-second wait keeps the action away from start-up. The package also injects a non-upstream 23KB module, lib/Socket/luxu.js, required from lib/Socket/messages-send.js, which builds payment-request, product and interactive message payloads with hardcoded \"an account\" business sender fields, giving a caller mass payment-request spam primitives. Nothing in the package documents or exposes these actions to the installer; they run against the installer's own authenticated session. No C2 infrastructure is used — the payload's only network destination is WhatsApp itself (wss://web[.]whatsapp[.]com/ws/chat), which is what makes it hard to spot from traffic alone.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@trashcore/baileys",
+        "purl": "pkg:npm/%40trashcore/baileys"
+      },
+      "versions": [
+        "4.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@trashcore/baileys/v/4.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13854"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:16:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "af12871ccbe0c82a7036de2c4912371e0b1022b9f32b7e1499f30c63ae7729b7"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
