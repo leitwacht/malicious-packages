@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13798",
+  "aliases": [
+    "MAL-2026-18859"
+  ],
+  "modified": "2026-11-09T23:53:29Z",
+  "published": "2026-06-13T08:59:55Z",
+  "summary": "Malicious code in @kyuu2nd/baileys (npm)",
+  "details": "@kyuu2nd/baileys is a modified WhatsApp/Baileys library published under a scope impersonating the canonical baileys project — the basename is reused intact and package.json declares the upstream whiskeysockets/baileys repository as its homepage. The shipped code adds covert remote-controlled behaviour on top of the library: - lib/index.js performs an unconditional HTTPS GET to hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json every time the library is required, then prints an \"update\" banner from the response. The content is controlled by the operator's GitHub account and can be changed after publication.\n- lib/Socket/newsletter.js downloads a list of WhatsApp newsletter/channel JIDs from hxxps://raw[.]githubusercontent[.]com/kiuur/IDCH/refs/heads/main/idch[.]json at module load, then after a 90-second delay issues a w:mex QueryIds.FOLLOW query for every JID in that list. This silently subscribes the user's own linked WhatsApp account to the operator's channels, with no configuration option, opt-out, or user confirmation; the follow list is remote and mutable.\n- lib/Utils/generics.js fetches its \"latest version\" data from hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json instead of the upstream project.\n- The libsignal dependency is replaced with npm:@kyuu2nd/libsignal-node, a publisher-controlled fork of the protocol crypto library. No access to npm/GitHub tokens,.npmrc files, AWS credentials, or environment variables was found in the shipped code, and no obfuscation is used. A WhatsApp Web library distributed as a modified fork of Baileys that performs remote-controlled actions on the installing user's account without any opt-in. - On `require()` of the package, lib/index.js fetches hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json and prints the returned string to the console, giving the author a live remote-content channel into every application that imports the library.\n- lib/Socket/newsletter.js fetches a second remote list, hxxps://raw[.]githubusercontent[.]com/kiuur/IDCH/refs/heads/main/idch[.]json, and 90 seconds later issues WhatsApp newsletter FOLLOW queries for every JID in that list, silently subscribing the user's WhatsApp account to channels selected by the author. The JIDs are stored as character-code arrays and decoded with String.fromCharCode to avoid appearing as plaintext strings.\n- lib/Utils/generics.js points the \"latest version\" lookup at the author's fork (raw[.]githubusercontent[.]com/z4phdev/baileys) instead of the upstream project. The channel-subscription list is controlled server-side, so the set of channels an account is enrolled into can be changed at any time after publication; nothing in the documented API exposes or disables this behaviour. The package's only install hook (engine-requirements.js) merely checks the Node.js major version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kyuu2nd/baileys",
+        "purl": "pkg:npm/%40kyuu2nd/baileys"
+      },
+      "versions": [
+        "2.0.24"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kyuu2nd/baileys/v/2.0.24"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13798"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-06-13T08:59:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "35b869793ee06fbca700a942376da562378b2aa75bc98f22ce419f237f73848b"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/IDCH/refs/heads/main/idch[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/thumbnail[.]png"
+        ]
+      }
+    }
+  }
+}
