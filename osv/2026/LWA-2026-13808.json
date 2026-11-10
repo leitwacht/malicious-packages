@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13808",
+  "aliases": [
+    "MAL-2026-18861"
+  ],
+  "modified": "2026-11-10T06:02:34Z",
+  "published": "2026-11-09T23:52:17Z",
+  "summary": "Malicious code in @langitdeveloper/baileys (npm)",
+  "details": "@langitdeveloper/baileys ships a modified copy of the WhatsApp Web client library with an added auto-subscribe payload. When a socket is constructed, lib/Socket/newsletter.js (makeNewsletterSocket, lines ~71-100) fetches a remote channel list over HTTPS from hxxps://raw[.]githubusercontent[.]com/FadelSM/IDCH/refs/heads/main/idch[.]json, parses it as an array of newsletter JIDs, and schedules a 90-second setTimeout that iterates the list and sends a WhatsApp `mex` newsletter FOLLOW query for every entry using the victim's own authenticated session (query tag 'iq', xmlns 'w:mex', to s[.]whatsapp[.]net). The account running the library is therefore silently subscribed to whichever WhatsApp channels the remote third-party JSON names, and the list can be changed at any time by its author. The delay is used to place the subscriptions past short-lived monitoring windows. Separately, lib/Socket/dugong.js (~line 391) stamps outbound status/event messages with a hardcoded forwardedNewsletterMessageInfo block naming channel \"shenvn.\" with newsletterJid 120363430179804706@newsletter, routing that traffic to a fixed channel. The package's preinstall script only checks for Node.js \u003e= 20 and does nothing else. Indicator to block or monitor: hxxps://raw[.]githubusercontent[.]com/FadelSM/IDCH/refs/heads/main/idch[.]json and newsletter JID 120363430179804706@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@langitdeveloper/baileys",
+        "purl": "pkg:npm/%40langitdeveloper/baileys"
+      },
+      "versions": [
+        "2.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@langitdeveloper/baileys/v/2.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13808"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-09T23:52:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "s[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "1b800d20fb956a1a84ade4a18c0eb6ba982a928822376b7e8a5bafb24eddde36"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/FadelSM/IDCH/refs/heads/main/idch[.]json"
+        ]
+      }
+    }
+  }
+}

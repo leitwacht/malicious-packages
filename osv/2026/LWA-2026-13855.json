@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13855",
+  "aliases": [
+    "MAL-2026-18905"
+  ],
+  "modified": "2026-11-10T06:02:53Z",
+  "published": "2026-11-10T00:17:19Z",
+  "summary": "Malicious code in @trashcore/baileys (npm)",
+  "details": "This package republishes the WhatsApp library `baileys` under an unofficial `@trashcore` scope and its README tells consumers to remap the canonical `@whiskeysockets/baileys` dependency to `npm:@trashcore/baileys@latest`, so installing it silently replaces the branded library. Beyond the clone, it ships an undisclosed auto-follow payload: `lib/Socket/newsletter.js` starts an unconditional timer when the socket is created (90 s, then a second 5 s later) and issues a newsletter `FOLLOW` mutation (query id 7871414976211147) for two hardcoded channel JIDs that are hidden as base64 literals — `MTIwMzYzNDIwMjQ5NjcyMDczQG5ld3NsZXR0` → `120363420249672073@newsletter` and `MTIwMzYzNDI0MDIwMjgzNzU5QG5ld3NsZXR0Z` → `120363424020283759@newsletter` — with every error swallowed by empty catch blocks. Because `makeNewsletterSocket` is invoked from `lib/Socket/messages-send.js` when a send socket is built, any bot using the package enrols its WhatsApp account in the operator's channels without the user's knowledge. A further channel JID (`0@newsletter`, \"7eppeli - Information\") is hardcoded in `lib/Utils/messages.js`. The package also fetches its protocol version from the mutable third-party file `hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json`. No network IOC beyond WhatsApp infrastructure and that raw GitHub path; the malicious behaviour is local account manipulation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@trashcore/baileys",
+        "purl": "pkg:npm/%40trashcore/baileys"
+      },
+      "versions": [
+        "4.1.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@trashcore/baileys/v/4.1.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13855"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T00:17:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "e0034709f0f934663f7f7f2ef6de18d369f3532aa01e982af7d7e328a8ed6581"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/Tennor-modz/MD-Baileys",
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}
