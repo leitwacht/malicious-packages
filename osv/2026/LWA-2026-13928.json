@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-13928",
-  "modified": "2026-11-11T22:21:56Z",
-  "published": "2026-11-11T22:20:24Z",
+  "modified": "2026-11-11T22:36:27Z",
+  "published": "2026-11-11T19:17:27Z",
   "summary": "Malicious code in @xzvbailss/baileys (npm)",
-  "details": "This package is an unofficial republish of the Baileys WhatsApp library under an unrelated npm scope, with modifications that act on the installer's own WhatsApp account. Requiring the library silently enrols the connected account into a hardcoded WhatsApp channel: lib/Socket/newsletter.js defines `YgBroRasakan = [\"120363430764800148@newsletter\"]` and, 150 seconds after the socket initialises, sends a `w:mex` query with `query_id` FOLLOW for that JID (5s between attempts), without the caller asking for it. The fork also ships lib/Socket/luxu.js, an undocumented broadcast/mass-messaging module (`handlePayment`, `handleProduct`, `handleAlbum`) that builds poll-result, product, album and payment-request messages and stamps relayed messages with forged `forwardedNewsletterMessageInfo` and `status@broadcast` contexts (channels 120363421563597486@newsletter and 120363399602691477@newsletter, forwardingScore 99999) for wide distribution. The preinstall hook runs `node./engine-requirements.js`, which only aborts on Node \u003c 20. No environment variables,.npmrc contents, npm/GitHub tokens or other credentials are read, and no network requests are made outside WhatsApp/Meta hosts (web[.]whatsapp[.]com, call[.]whatsapp[.]com). IOC: WhatsApp newsletter JID 120363430764800148@newsletter.",
+  "details": "This package is a modified copy of the Baileys WhatsApp library, published under an unofficial scope, that silently enrols the installing user's WhatsApp account into a specific channel. lib/Socket/newsletter.js hardcodes the channel JID 120363430764800148@newsletter in a module-scope array (variable YgBroRasakan) and registers a top-level timer of 150000 ms; when it fires, the module issues a WhatsApp newsletter FOLLOW query (query id 7871414976211147) for that JID over the live socket, logging only a generic \"Newsletter follow failed\" error on failure. The action requires no user interaction, configuration flag or exported API call, so any application that merely imports the library subscribes the connected account to the operator's channel roughly two and a half minutes after startup; the delay hides the action from the developer's startup code. The only lifecycle hook, preinstall: node./engine-requirements.js, merely checks the Node.js major version and exits on Node \u003c 20. No environment-variable or npm/GitHub token access, no.npmrc or.ssh reads, no eval/Function-constructor decoding, and no download-and-execute or non-WhatsApp callback destination were found; the network reach of the payload is the WhatsApp socket itself. This package is an unofficial republish of the Baileys WhatsApp library under an unrelated npm scope, with modifications that act on the installer's own WhatsApp account. Requiring the library silently enrols the connected account into a hardcoded WhatsApp channel: lib/Socket/newsletter.js defines `YgBroRasakan = [\"120363430764800148@newsletter\"]` and, 150 seconds after the socket initialises, sends a `w:mex` query with `query_id` FOLLOW for that JID (5s between attempts), without the caller asking for it. The fork also ships lib/Socket/luxu.js, an undocumented broadcast/mass-messaging module (`handlePayment`, `handleProduct`, `handleAlbum`) that builds poll-result, product, album and payment-request messages and stamps relayed messages with forged `forwardedNewsletterMessageInfo` and `status@broadcast` contexts (channels 120363421563597486@newsletter and 120363399602691477@newsletter, forwardingScore 99999) for wide distribution. The preinstall hook runs `node./engine-requirements.js`, which only aborts on Node \u003c 20. No environment variables,.npmrc contents, npm/GitHub tokens or other credentials are read, and no network requests are made outside WhatsApp/Meta hosts (web[.]whatsapp[.]com, call[.]whatsapp[.]com). IOC: WhatsApp newsletter JID 120363430764800148@newsletter.",
   "affected": [
     {
       "package": {
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-11T22:20:24Z",
+      "first_seen_at": "2026-11-11T19:17:27Z",
       "indicators_observed": {
         "domain_observed": [
           "120363399602691477@newsletter",
