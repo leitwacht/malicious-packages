@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13930",
+  "modified": "2026-11-11T22:36:17Z",
+  "published": "2026-11-11T22:35:24Z",
+  "summary": "Malicious code in @violetix/baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library published under the @violetix scope rather than the upstream @whiskeysockets scope. On top of the upstream code it silently subscribes the installing user's WhatsApp account to a specific channel: lib/Socket/newsletter.js registers a 'connection.update' listener and, every time the socket reports connection === 'open' (including on every reconnect), sends an unconditional follow/join request via executeWMexQuery({ newsletter_id: '120363417337256584@newsletter' }, QueryIds.FOLLOW, XWAPaths.xwa2_newsletter_join_v2) and then logs \"Auto-joined newsletter 120363417337256584@newsletter\". The README acknowledges that each connection open event \"automatically sends a follow request for 120363417337256584@newsletter\", so any bot built on this package joins that channel without the account owner's action, inflating the channel's subscriber count and adding unsolicited content to the account's channel subscriptions. The rest of the package matches upstream Baileys behaviour: outbound traffic goes only to WhatsApp/GraphQL endpoints, the sole process spawn is 'ffmpeg' for video thumbnail extraction in lib/Utils/messages-media.js, there is no obfuscation, no eval/atob decoding, no environment-variable or credential-file access, and the install hook engine-requirements.js only checks for Node.js 20 or newer. IOC: WhatsApp newsletter JID 120363417337256584@newsletter (auto-followed on every connection open).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@violetix/baileys",
+        "purl": "pkg:npm/%40violetix/baileys"
+      },
+      "versions": [
+        "0.5.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@violetix/baileys/v/0.5.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13930"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T22:35:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "ce40d9856ba81c2f94a5dadd7159441311042cc30edc897b92ee297402123cd8"
+        ]
+      }
+    }
+  }
+}
