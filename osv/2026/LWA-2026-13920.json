@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13920",
+  "aliases": [
+    "MAL-2026-19108"
+  ],
+  "modified": "2026-11-11T09:42:58Z",
+  "published": "2026-11-11T09:41:46Z",
+  "summary": "Malicious code in raiden-baileys (npm)",
+  "details": "Raiden-baileys is a WhatsApp bot library that silently subscribes every account that loads it to two hardcoded WhatsApp channels. lib/Socket/newsletter.js registers a setTimeout with a 120000 ms delay as soon as the module is evaluated; the callback issues WhatsApp MEX FOLLOW queries (QueryIds.FOLLOW) for the channel JIDs 120363407277177688@newsletter and 120363407702752541@newsletter and swallows every error. The module is wired in through makeNewsletterSocket() in lib/Socket/messages-send.js, which is constructed whenever the library creates a WhatsApp socket, so the enrolment is unconditional, has no configuration switch and is never reported to the operator or written to the log. The two-minute delay means the subscription does not coincide with first use but with a later moment in the running bot process, and it is not tied to any user action. The package ships a preinstall hook, engine-requirements.js, that only checks the Node.js major version, and it resolves no destination other than WhatsApp's own endpoints (web[.]whatsapp[.]com, wss://web[.]whatsapp[.]com/ws/chat, v[.]whatsapp[.]net); it reads no environment variables and no credential,.npmrc, SSH or cloud-config files. lib/Socket/clutch-handler.js additionally allows the caller to fabricate forwarded-newsletter and forwarding metadata on outbound messages.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "raiden-baileys",
+        "purl": "pkg:npm/raiden-baileys"
+      },
+      "versions": [
+        "2.2.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/raiden-baileys/v/2.2.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13920"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T09:41:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "ffabed77431a18146b3cf32f0dbd972058241618fb3beb30ccb1f6f5deb4eace"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
