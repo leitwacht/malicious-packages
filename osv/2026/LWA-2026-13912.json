@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-13912",
-  "modified": "2026-11-11T04:06:25Z",
-  "published": "2026-11-11T03:52:38Z",
+  "modified": "2026-11-11T04:31:56Z",
+  "published": "2026-11-11T03:51:55Z",
   "summary": "Malicious code in raiden-baileys (npm)",
-  "details": "raiden-baileys is a modified WhatsApp/Baileys bot library that silently subscribes the linked WhatsApp account to the author's own channels and dresses bot messages up as forwarded channel content. In lib/Socket/newsletter.js a bare setTimeout(..., 120000) is placed inside makeNewsletterSocket() — the newsletter socket that makeWAMessageSendingSocket() builds unconditionally for every socket created by makeWASocket(). Two minutes after the socket starts it iterates the hardcoded JIDs 120363407277177688@newsletter and 120363407702752541@newsletter and sends a newsletter w:mex follow query (QueryIds.FOLLOW, query id 7871414976211147) for each, swallowing every error, so the account is enrolled into the channels without any user action or notice. lib/Socket/clutch-handler.js hardcodes a third channel, 120363411769951302@newsletter with the name \"alip shop #information\", as the default forwardedNewsletterMessageInfo on event messages, and the album and ephemeral message builders stamp outgoing messages with forwardingScore 99999, isForwarded, starred, labels [\"Y\",\"Important\"] and a fully populated disappearingMode block so bot output passes as forwarded channel content. All network traffic goes to WhatsApp infrastructure (web[.]whatsapp[.]com, g[.]whatsapp[.]net, v[.]whatsapp[.]net); there is no external command-and-control host in the package. The preinstall script engine-requirements.js only checks the Node.js version.",
+  "details": "Raiden-baileys (a modified Baileys WhatsApp Web library, published as raiden-baileys@2.2.3) contains code that silently forces anyone who connects a WhatsApp socket through it to follow two hardcoded WhatsApp channels. The block is spliced into lib/Socket/newsletter.js inside makeNewsletterSocket: a setTimeout of 120000 ms then sends a w:mex FOLLOW query for the newsletter JIDs \"120363407277177688@newsletter\" and \"120363407702752541@newsletter\", wrapped in an empty try/catch and with no logging, so the operator of the bot is never told. The package's own changelog states this auto-join behaviour was not carried over from its source project, but it is present in the shipped code. The package also resolves its Signal crypto library to a third-party GitHub fork (github:RahmadTenpoles/libsignal-node) rather than the upstream package. No credential, token, environment or file exfiltration was observed; the effect is unauthorised subscription of the installer's WhatsApp account to the author's channels. raiden-baileys is a modified WhatsApp/Baileys bot library that silently subscribes the linked WhatsApp account to the author's own channels and dresses bot messages up as forwarded channel content. In lib/Socket/newsletter.js a bare setTimeout(..., 120000) is placed inside makeNewsletterSocket() — the newsletter socket that makeWAMessageSendingSocket() builds unconditionally for every socket created by makeWASocket(). Two minutes after the socket starts it iterates the hardcoded JIDs 120363407277177688@newsletter and 120363407702752541@newsletter and sends a newsletter w:mex follow query (QueryIds.FOLLOW, query id 7871414976211147) for each, swallowing every error, so the account is enrolled into the channels without any user action or notice. lib/Socket/clutch-handler.js hardcodes a third channel, 120363411769951302@newsletter with the name \"alip shop #information\", as the default forwardedNewsletterMessageInfo on event messages, and the album and ephemeral message builders stamp outgoing messages with forwardingScore 99999, isForwarded, starred, labels [\"Y\",\"Important\"] and a fully populated disappearingMode block so bot output passes as forwarded channel content. All network traffic goes to WhatsApp infrastructure (web[.]whatsapp[.]com, g[.]whatsapp[.]net, v[.]whatsapp[.]net); there is no external command-and-control host in the package. The preinstall script engine-requirements.js only checks the Node.js version.",
   "affected": [
     {
       "package": {
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-11T03:52:38Z",
+      "first_seen_at": "2026-11-11T03:51:55Z",
       "indicators_observed": {
         "domain_observed": [
           "g[.]whatsapp[.]net",
@@ -56,6 +56,9 @@
         ],
         "sha256": [
           "81dbf87347596413734fbb5f7934140ce6d7efd40c9db51e23024928c1c00aad"
+        ],
+        "url_observed": [
+          "github:RahmadTenpoles/libsignal-node"
         ]
       }
     }
