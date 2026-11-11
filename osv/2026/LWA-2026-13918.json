@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13918",
+  "aliases": [
+    "MAL-2026-19109"
+  ],
+  "modified": "2026-11-11T05:08:08Z",
+  "published": "2026-11-11T05:05:28Z",
+  "summary": "Malicious code in @lekzsync/baileys (npm)",
+  "details": "@lekzsync/baileys is a repackaged fork of Baileys (the WhatsApp Web library) published under a scope other than the upstream project's. It carries behaviour absent from upstream: - Silent channel enrolment: lib/Socket/newsletter.js hardcodes a base64-encoded WhatsApp channel JID (\"MTIwMzYzNDExMDE4NTUxNzU0QG5ld3NsZXR0ZXI=\" = 120363411018551754@newsletter) and, as soon as the socket is created, schedules a delayed executeWMexQuery({newsletter_id}, QueryIds.FOLLOW, \"xwa2_newsletter_follow\") call. Every account using the library is enrolled as a follower of that channel without any action, option or notification from the user; errors are swallowed.\n- Third-party phone-number egress: lib/Socket/socket.js defines and exports a checkBan() helper that sends phone numbers supplied by the caller to hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e and returns the remote response merged with {creator: \"t[.]me/luyatiem\"}.\n- Forged/deceptive message metadata: lib/Socket/luxu.js (class \"imup\") tags outgoing album media with the channel JID 120363421563597486@newsletter (\"D | 7eppeli-Exloration\", senderName \"7-Yuukey\") and sets spoofed forwarding scores, \"verification\"/business-owner fields and an is_ai_message support payload.\n- Declares a dependency on cache-manager ^7.2.8 (resolving to the known-malicious 7.2.10).\n- preinstall runs node./engine-requirements.js, which only checks the Node major version (\u003e=20). Domains: kyuux-r.indevs.in, t[.]me/luyatiem, whatsapp[.]com/channel/0029Vb863rSLtOjDrDNHqq3o.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@lekzsync/baileys",
+        "purl": "pkg:npm/%40lekzsync/baileys"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@lekzsync/baileys/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13918"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T05:05:28Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "328d7ecb565afcb294cac029eb52c848695eb79ce557d8b568f0f792ae89e3ee"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://t[.]me/luyatiem",
+          "hxxps://whatsapp[.]com/channel/0029Vb863rSLtOjDrDNHqq3o"
+        ]
+      }
+    }
+  }
+}
