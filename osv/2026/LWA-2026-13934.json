@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13934",
+  "modified": "2026-11-11T22:51:02Z",
+  "published": "2026-11-11T12:05:00Z",
+  "summary": "Malicious code in elaina-baileys (npm)",
+  "details": "elaina-baileys is a fork of the Baileys WhatsApp library that silently enrols the running account into the publisher's WhatsApp channel. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules a 90-second setTimeout that fires a WhatsApp w:mex newsletter FOLLOW query for the hardcoded channel JID 120363400911374213@newsletter, wrapped in an empty try/catch so any failure is invisible; it is unconditional and undocumented, so any bot built on this library subscribes the victim's WhatsApp account to that channel shortly after connecting without the operator's knowledge or consent. lib/Utils/messages.js additionally hardcodes the same channel into the contextInfo of generated outgoing messages (newsletterJid 120363400911374213@newsletter, newsletterName \"ELAINA INFORMATION\", contentType \"UPDATE\"), stamping the operator's channel attribution onto messages the victim's account sends. No credentials are read and no external host is contacted; the payload acts entirely through the WhatsApp protocol session it is given.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "elaina-baileys",
+        "purl": "pkg:npm/elaina-baileys"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/elaina-baileys/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13934"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T12:05:00Z",
+      "indicators_observed": {
+        "channel_observed": [
+          "120363400911374213@newsletter"
+        ],
+        "sha256": [
+          "d83b067cfb80d105d7e480e933c5e048a895f07de5de85b60c61392179dbf820"
+        ]
+      }
+    }
+  }
+}
