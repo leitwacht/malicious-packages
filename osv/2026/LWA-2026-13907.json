@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13907",
+  "modified": "2026-11-10T23:52:39Z",
+  "published": "2026-11-10T23:50:24Z",
+  "summary": "Malicious code in @risacakep/risayap (npm)",
+  "details": "@risacakep/risayap@7.0.0-rc25.14 is a WhatsApp Web automation library (a fork of Baileys) that performs an undisclosed action on the operator's own WhatsApp account. lib/Socket/index.js registers a connection.update handler inside makeWASocket; on every successful connection it calls newsletterFollow('120363418729056952@newsletter'), silently subscribing the connected account to the author's WhatsApp channel. The call is wrapped in a swallowing try/catch and there is no configuration option to disable it (the source comment reads \"Auto-follow Clarissa's newsletter on every successful connection\"). The follower is driven through the library's newsletter MEX query path (xwa2_newsletter_join_v2 in lib/Socket/newsletter.js). The package additionally prints an author banner on module import from lib/Utils/terminal-welcome.js containing the contacts hxxps://wa[.]me/88991583829 and hxxps://t[.]me/shaaaiu. Its preinstall hook (node./engine-requirements.js) only enforces Node.js \u003e= 20. Every account that connects through this library is enrolled into channel 120363418729056952@newsletter without the operator's knowledge, inflating that channel's subscriber count and giving its operator a direct broadcast channel to the victims' accounts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@risacakep/risayap",
+        "purl": "pkg:npm/%40risacakep/risayap"
+      },
+      "versions": [
+        "7.0.0-rc25.14"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@risacakep/risayap/v/7.0.0-rc25.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13907"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-10T23:50:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363418729056952@newsletter",
+          "t[.]me",
+          "wa[.]me"
+        ],
+        "sha256": [
+          "a760a9d0a05dc584afc51df9b76acf4d18b9cc36a9f6f9c49ce530fb82d3a94c"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/shaaaiu",
+          "hxxps://wa[.]me/88991583829"
+        ]
+      }
+    }
+  }
+}
