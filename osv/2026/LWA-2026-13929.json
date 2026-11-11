@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13929",
+  "modified": "2026-11-11T22:21:09Z",
+  "published": "2026-11-11T22:20:24Z",
+  "summary": "Malicious code in @xzvbailss/baileys (npm)",
+  "details": "This package is an unofficial republication of the WhatsApp library @whiskeysockets/baileys, shipped under the unrelated scope @xzvbailss and declaring itself as the same library (\"a Baileys-based Wazapp Web library\"), with its repository and homepage fields pointing at Telegram channels (t[.]me/XzRzSynxC, t[.]me/JustRxVz) rather than source control. It differs from the upstream project in ways an installer would not expect: its preinstall hook runs `node./engine-requirements.js`; crypto primitives are delegated to third-party packages instead of the upstream implementations — `whatsapp-rust-bridge@0.5.4` provides hkdf/md5 (lib/Utils/crypto.js), expandAppStateKeys (lib/Utils/chat-utils.js) and LTHashAntiTampening (lib/Utils/lt-hash.js), and libsignal is pulled from the personal repository github:tenka-san/libsignal-node; and lib/Socket/luxu.js hardcodes WhatsApp channel identifiers (\"120363421563597486@newsletter\" / \"PouCode\", \"120363399602691477@newsletter\", and \"0@newsletter\" labelled \"WhatsApp\" / sender \"7-Yuukey\") which it injects as forwardedNewsletterMessageInfo on every generated album, event and poll-result message, promoting those channels through messages sent by any application using the library. lib/index.js also prints Telegram channel links on import. No network C2 endpoint, credential access, or obfuscated payload was found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xzvbailss/baileys",
+        "purl": "pkg:npm/%40xzvbailss/baileys"
+      },
+      "versions": [
+        "6.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xzvbailss/baileys/v/6.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13929"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T22:20:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "t[.]me"
+        ],
+        "sha256": [
+          "b39fdc72ecae83266514832ea1c972a65676787fe958c2a49aa8eee7a2460df9"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/tenka-san/libsignal-node",
+          "hxxps://t[.]me/JustRxVz",
+          "hxxps://t[.]me/XzRzSynxC"
+        ]
+      }
+    }
+  }
+}

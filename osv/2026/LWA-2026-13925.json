@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13925",
+  "modified": "2026-11-11T09:57:24Z",
+  "published": "2026-11-11T09:56:52Z",
+  "summary": "Malicious code in elaina-baileys (npm)",
+  "details": "elaina-baileys@1.0.0 is a modified fork of the Baileys WhatsApp library that silently makes the connecting WhatsApp account follow a hardcoded channel. In lib/Socket/newsletter.js the socket factory (makeNewsletterSocket) registers a 90-second setTimeout whose callback sends a newsletter FOLLOW query (QueryIds.FOLLOW) for the hardcoded channel JID 120363400911374213@newsletter, with all errors swallowed, so any bot or client built on this package is subscribed to the operator's channel without the developer's or the account owner's knowledge. The same channel is also embedded as a newsletter context with the name \"ELAINA INFORMATION\" in lib/Utils/messages.js, so it can be attached to messages the client sends. The legitimate, opt-in follow helpers are documented in the README, but this automatic call is not; the package's only other install-time code (engine-requirements.js) merely rejects Node.js below version 20. Network traffic in the package is WhatsApp protocol traffic to WhatsApp servers; no separate exfiltration endpoint is present. IOCs: WhatsApp channel JID 120363400911374213@newsletter, channel display name \"ELAINA INFORMATION\".",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "elaina-baileys",
+        "purl": "pkg:npm/elaina-baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/elaina-baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13925"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T09:56:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363400911374213@newsletter"
+        ],
+        "sha256": [
+          "4212e1f4f61b79bdc9ef3ecfe82bfd8f80c834dbcff42a62d7723ff50d2aba78"
+        ]
+      }
+    }
+  }
+}

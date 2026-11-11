@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13928",
+  "modified": "2026-11-11T22:21:56Z",
+  "published": "2026-11-11T22:20:24Z",
+  "summary": "Malicious code in @xzvbailss/baileys (npm)",
+  "details": "This package is an unofficial republish of the Baileys WhatsApp library under an unrelated npm scope, with modifications that act on the installer's own WhatsApp account. Requiring the library silently enrols the connected account into a hardcoded WhatsApp channel: lib/Socket/newsletter.js defines `YgBroRasakan = [\"120363430764800148@newsletter\"]` and, 150 seconds after the socket initialises, sends a `w:mex` query with `query_id` FOLLOW for that JID (5s between attempts), without the caller asking for it. The fork also ships lib/Socket/luxu.js, an undocumented broadcast/mass-messaging module (`handlePayment`, `handleProduct`, `handleAlbum`) that builds poll-result, product, album and payment-request messages and stamps relayed messages with forged `forwardedNewsletterMessageInfo` and `status@broadcast` contexts (channels 120363421563597486@newsletter and 120363399602691477@newsletter, forwardingScore 99999) for wide distribution. The preinstall hook runs `node./engine-requirements.js`, which only aborts on Node \u003c 20. No environment variables,.npmrc contents, npm/GitHub tokens or other credentials are read, and no network requests are made outside WhatsApp/Meta hosts (web[.]whatsapp[.]com, call[.]whatsapp[.]com). IOC: WhatsApp newsletter JID 120363430764800148@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xzvbailss/baileys",
+        "purl": "pkg:npm/%40xzvbailss/baileys"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xzvbailss/baileys/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13928"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T22:20:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363399602691477@newsletter",
+          "120363421563597486@newsletter",
+          "120363430764800148@newsletter",
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "8fe9e8f2d2456080fdbf48402812535e48255b94f5a9508dc8b9971b70a324f6"
+        ],
+        "url_observed": [
+          "hxxps://call[.]whatsapp[.]com/video/",
+          "hxxps://web[.]whatsapp[.]com"
+        ]
+      }
+    }
+  }
+}
