@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13923",
+  "modified": "2026-11-11T16:48:49Z",
+  "published": "2026-11-11T16:47:33Z",
+  "summary": "Malicious code in @xzvbailss/baileys (npm)",
+  "details": "This package is a trojanized clone of the Baileys WhatsApp library: the WhiskeySockets source tree, description and MIT licence are shipped intact, with an unauthorised payload injected into lib/Socket/newsletter.js that silently subscribes the end user's WhatsApp account to the author's channel. The file hardcodes the channel JID 120363430764800148@newsletter and, at socket-construction scope, schedules a timer for 150000 ms (150 seconds) whose callback sends a newsletter FOLLOW query (query id 7871414976211147) for that JID. The subscription runs unconditionally: there is no configuration flag, no consent step, and no way to pass a different channel, and it bypasses the library's own newsletterFollow(jid) function, which takes the JID from the caller. Errors are swallowed into the logger and a 5 second pause is inserted between JIDs, so the follow is issued quietly. The package name reuses the canonical Baileys basename under an unofficial scope (the package is also published by a different account than the upstream project), and the homepage and repository fields point to Telegram accounts (t[.]me/XzRzSynxC, t[.]me/JustRxVz) rather than a source repository, so the injected code cannot be reviewed upstream. Related hardcoded channel JIDs appear in lib/Socket/luxu.js (120363421563597486@newsletter, 120363399602691477@newsletter) as forged forwarded-newsletter metadata. No credential, environment-value or file exfiltration was found, and the preinstall hook only checks the Node.js major version. Impact: any application embedding this library follows the author's WhatsApp channel on each end user's account, without the user or the integrating developer knowing.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xzvbailss/baileys",
+        "purl": "pkg:npm/%40xzvbailss/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xzvbailss/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13923"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T16:47:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "t[.]me"
+        ],
+        "sha256": [
+          "616827bfdcfb603f73a6e95265deb9881fba0bc352810edd07b1f2841c4666ab"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/JustRxVz",
+          "hxxps://t[.]me/XzRzSynxC"
+        ]
+      }
+    }
+  }
+}
