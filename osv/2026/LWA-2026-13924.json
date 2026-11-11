@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13924",
+  "modified": "2026-11-11T19:06:39Z",
+  "published": "2026-11-11T18:18:00Z",
+  "summary": "Potentially-unwanted package (riskware): codez48-cli (npm)",
+  "details": "This package is a Windows-first automation suite that bundles and executes a native Win32 input-injection helper, and it collects host telemetry into a hidden directory without disclosing it. src/pilot/drivers/fast_input.exe (10 KB PE, compiled from the bundled src/pilot/drivers/fast_input.cs) is run by src/pilot/drivers/gui-driver.js via execFileSync and by src/pilot/drivers/office-launcher.js to synthesise mouse and keyboard input (mouse_event, keybd_event, WM_COMMAND/BM_CLICK, clipboard writes) against whatever window is in the foreground; office-launcher.js also starts the user's Office binary as a detached process with stdio ignored so it outlives the CLI. src/core/activity-tracker.js builds a rolling profile of the machine (os.hostname(), os.type()/os.release(), a generated USR-CDZ48-* user id, command history) and stores it in ~/.codez48_analytics/user_activity_logs.json and unique_cli_users.json, seeded with fabricated historical entries. src/pilot/remote/remote-device-bridge.js opens an HTTP listener on port 4848 and POSTs session records plus base64-encoded generated documents to hxxps://codez48[.]netlify[.]app/.netlify/functions/remote-device-sync and to a Firebase project. The package additionally contains a 14.7 MB archive of its own source, src/pilot/licensing/codez48cli_enterprise_master.zip, which embeds a second copy of fast_input.exe. package.json declares no lifecycle hooks, so none of this runs during install; it runs when the codez48 CLI is used. No access to.npmrc, npm or GitHub tokens, SSH/AWS credentials or wallet files was found, and the bundled executable contains no network or process-creation imports.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "codez48-cli",
+        "purl": "pkg:npm/codez48-cli"
+      },
+      "versions": [
+        "1.3.9"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/codez48-cli/v/1.3.9"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-11T18:18:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "codez48[.]netlify[.]app"
+        ],
+        "sha256": [
+          "79bfd5644818eeed8cde225f683bfc8cf5ff98c15f06a3db0cee197aef80478e"
+        ],
+        "url_observed": [
+          "hxxps://codez48[.]netlify[.]app/[.]netlify/functions",
+          "hxxps://codez48[.]netlify[.]app/[.]netlify/functions/remote-device-sync",
+          "hxxps://codez48[.]netlify[.]app/tools/payment[.]html"
+        ]
+      }
+    }
+  }
+}
