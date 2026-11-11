@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13908",
+  "modified": "2026-11-10T13:11:16Z",
+  "published": "2026-11-10T13:10:39Z",
+  "summary": "Potentially-unwanted package (riskware): gimaa-baileys (npm)",
+  "details": "This package is a WhatsApp Web WebSocket library fork that silently makes the operator's WhatsApp account follow a hardcoded channel. lib/Socket/messages-recv.js holds the channel JID 120363413502028752@newsletter and, on the first 'connection.update' event where connection === 'open', calls sock.newsletterFollow() with it, logging \"GIMAA auto-followed newsletter\". The behaviour is on by default and can only be suppressed by setting the undocumented environment variable GIMAA_AUTO_FOLLOW_NEWSLETTER_JID to an empty string (or redirected to another JID). The package description and a comment in lib/Socket/socket.js claim automatic newsletter following is \"intentionally disabled\", which the shipped code contradicts. The action is a single static channel follow — no environment, credential, token or file data is read or transmitted. Operator-impacting IOC: WhatsApp channel JID 120363413502028752@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "gimaa-baileys",
+        "purl": "pkg:npm/gimaa-baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/gimaa-baileys/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-10T13:10:39Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363413502028752@newsletter"
+        ],
+        "sha256": [
+          "9b2b2f6c4c69f462e68ab47342246cdd14426580467b37429967b7e373eda609"
+        ]
+      }
+    }
+  }
+}
