@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13946",
+  "modified": "2026-11-12T20:06:46Z",
+  "published": "2026-11-12T20:05:25Z",
+  "summary": "Malicious code in @charape/baileys (npm)",
+  "details": "@charape/baileys is an unofficial branded clone of the WhatsApp Web library @whiskeysockets/baileys that silently enrols every user's WhatsApp account into the author's promotional channel. lib/Defaults/index.js ships the channel as a default connection setting (autoFollow: ['120363424530330931@newsletter'], newsletterJid, newsletterName 'メ Informasi Store Cԋαɾαρҽ', channelUrl hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o), so any bot built on the library inherits it. lib/Socket/newsletter.js registers a 'connection.update' handler that, as soon as the WhatsApp connection opens for a paired session, sends a newsletter FOLLOW query (Types.QueryIds.FOLLOW / xwa2_newsletter_follow) for that JID over the WhatsApp websocket, retrying up to three times at 2.5s and 7s, with errors silently swallowed — there is no opt-in and no visible prompt to the account owner. The same JID and channel name are hardcoded as fallback defaults in lib/Utils/messages.js and lib/Socket/messages-send.js (injectNewsletterWatermark), so outgoing image and video messages can be annotated with the author's channel. The package additionally pins the non-canonical native addon 'whatsapp-rust-bridge' to an exact version (0.5.4) and depends on 'cache-manager' ^7.2.8 resolving to 7.2.10. No install-time lifecycle hook is present and the shipped code contains no credential, token or.npmrc harvesting and no C2 endpoint outside the WhatsApp servers and the self-promotional links charape.id and t[.]me/nofalycharape.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@charape/baileys",
+        "purl": "pkg:npm/%40charape/baileys"
+      },
+      "versions": [
+        "1.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@charape/baileys/v/1.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13946"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-12T20:05:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "charape[.]id",
+          "t[.]me",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "79feabfc530fc52b473f8d80fe714f1a6bdb7d6450c8516df3d5818d6db43295"
+        ],
+        "url_observed": [
+          "hxxps://charape[.]id",
+          "hxxps://t[.]me/nofalycharape",
+          "hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o"
+        ]
+      }
+    }
+  }
+}
