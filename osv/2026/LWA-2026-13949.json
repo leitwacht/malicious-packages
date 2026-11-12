@@ -2,7 +2,7 @@
   "schema_version": "1.6.0",
   "id": "LWA-2026-13949",
   "modified": "2026-11-12T17:58:18Z",
-  "published": "2026-11-12T15:13:13Z",
+  "published": "2026-11-12T15:13:02Z",
   "summary": "Malicious code in @tedbrain/vlink (npm)",
   "details": "@tedbrain/vlink is an npm installer package that fetches and runs a platform binary during npm install. Its package.json declares \"postinstall\": \"node install.js\"; install.js immediately requests hxxp://49[.]232[.]144[.]199/downloads/oss/vlink/\u003cversion\u003e/vlink-\u003cplatform\u003e (plain HTTP to a raw IP literal, User-Agent \"@tedbrain/vlink/\u003cversion\u003e\") and, as a first source, the Gitee release API at hxxps://gitee[.]com/api/v5/repos/ted-team/tedbrain/releases/tags/\u003cversion\u003e. The download base can be overridden with the VLINK_DOWNLOAD_BASE / VLINK_DOWNLOAD_URL / VLINK_VERSION environment variables, so the install host is trivially redirectable. The fetched file is written to disk, SHA-256 compared against the checksums in binaries.json, then executed in-line during install via spawnSync(binaryPath, ['-V']); installer.js also runs powershell.exe to rewrite the user PATH and appends a TEDBRAIN_INSTALL_DIR entry. Every install therefore executes unsigned remote code over an unencrypted channel from a bare IP address. Files involved: install.js, installer.js, mcp-installer.js, npm-shims.js, bin/vlink.js, binaries.json.",
   "affected": [
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-12T15:13:13Z",
+      "first_seen_at": "2026-11-12T15:13:02Z",
       "indicators_observed": {
         "domain_observed": [
           "gitee[.]com"
