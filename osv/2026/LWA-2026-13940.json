@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13940",
+  "modified": "2026-11-12T14:06:04Z",
+  "published": "2026-11-12T13:29:58Z",
+  "summary": "Malicious code in @zervonex/baileys (npm)",
+  "details": "@zervonex/baileys is an unofficial fork of the WhiskeySockets Baileys WhatsApp Web library that behaves on the connected user's account and ships a publisher-controlled remote-code channel. 1) Account manipulation on every connection. lib/Socket/newsletter.js hardcodes AUTO_FOLLOW_JIDS = ['120363422827915475@newsletter', '120363409522637051@newsletter'] and AUTO_FOLLOW_INTERVAL_MS = 30_000. performNewsletterFollow() issues a FOLLOW request (QueryIds.FOLLOW, xwa2_newsletter_join_v2) for each of those Zervonex channels on the `connection.update` event when connection === 'open', then calls newsletterUserSetting(jid, 'ADMIN_NOTIFICATIONS', false) to mute admin notifications for the channel, and re-runs the follow loop every 30 seconds for as long as the socket stays open. The enrolment is on by default; the only escape is setting `autoFollowNewsletter: false` in the socket config. Every bot built on the fork therefore silently subscribes its phone number to the publisher's channels, inflating follower counts on attacker-chosen WhatsApp channels with victim accounts. 2) Mutable remote payload compiled at runtime. WAProto/fetcher.js downloads hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json and WAProto.bundle.js (a git branch, not a pinned commit) over undici with a 24-hour cache, writing the bundle to WAProto/WAProto.bundle.tmp. WAProto/index.js then reads that downloaded bundle and passes it through WAProto/parser.js (acorn/acorn-walk AST extraction) to regenerate WAProto.proto and WAProto.json, which change the codec the library uses to parse and build WhatsApp traffic. Only a self-computed sha256 of the same download is compared against the previous fetch, so whoever controls that branch can push different bundle source into every installation within 24 hours, with no signature, no version pin and no verification against the npm package. The install hook (preinstall → engine-requirements.js) only checks the Node.js major version and performs no network activity.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zervonex/baileys",
+        "purl": "pkg:npm/%40zervonex/baileys"
+      },
+      "versions": [
+        "4.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zervonex/baileys/v/4.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13940"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-12T13:29:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "93ee1a202d686426e62da216e77bc0712bb4376ee81fe7fd77b92a94035e397d"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json",
+          "hxxps://www[.]whatsapp[.]com/channel/0029VbBK53XBvvslYeZlBe0V"
+        ]
+      }
+    }
+  }
+}
