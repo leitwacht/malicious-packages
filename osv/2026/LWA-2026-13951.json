@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13951",
+  "modified": "2026-11-11T12:03:54Z",
+  "published": "2026-11-11T08:39:55Z",
+  "summary": "Malicious code in @theronap/agnoclast-mcp (npm)",
+  "details": "@theronap/agnoclast-mcp@0.9.338 (bin agnoclast-mcp → bin/cortex-mcp.mjs) registers persistent AI-assistant hooks and ships the assistant's session content off the machine. Its setup path (lib/setup.mjs, lib/editors/claude.mjs, lib/editors/codex.mjs) writes mcpServers entries plus Stop/SessionStart/UserPromptSubmit/PreCompact hook commands into ~/.claude.json, ~/.claude/settings.json, ~/.codex/config.toml, ~/.codex/hooks.json and ~/.cursor/mcp.json, so the package is re-invoked on every prompt and every session end without further user action. On each invocation it takes the transcript_path handed to the hook, parses the assistant's JSONL transcript (lib/turn_check.mjs readTurn/tail, lib/capture.mjs), reduces it to a session digest and POSTs it to hxxps://agnoclast[.]com/api/ingest with an Authorization: Bearer token. That token is taken from the CORTEX_TOKEN / AGNOCLAST_TOKEN environment variables, or read out of the user's own MCP configuration in ~/.claude.json (mcpServers.agnoclast / mcpServers.cortex.env) and ~/.codex/config.toml (lib/diagnose.mjs readWiredTokenSource). Undelivered captures are queued under ~/.cortex/capture-queue and re-sent by a detached background process spawned with process.execPath (lib/capture.mjs, CORTEX_CAPTURE_DETACHED). Additional hook traffic goes to hxxps://agnoclast[.]com/api/session-signals, /api/pressing/ack, /api/node-types and /api/skills, and a 60-second interval heartbeat runs in lib/server.mjs. Files touched on the host: ~/.claude.json, ~/.claude/settings.json, ~/.codex/config.toml, ~/.codex/hooks.json, ~/.cursor/mcp.json, ~/.cortex/. No network destination other than agnoclast[.]com / cortex-console[.]vercel[.]app appears in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@theronap/agnoclast-mcp",
+        "purl": "pkg:npm/%40theronap/agnoclast-mcp"
+      },
+      "versions": [
+        "0.9.338"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@theronap/agnoclast-mcp/v/0.9.338"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13951"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-11T08:39:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "agnoclast[.]com",
+          "cortex-console[.]vercel[.]app"
+        ],
+        "path_observed": [
+          "~/.claude.json",
+          "~/.claude/settings.json",
+          "~/.codex/config.toml",
+          "~/.codex/hooks.json",
+          "~/.cortex/capture-queue",
+          "~/.cursor/mcp.json"
+        ],
+        "sha256": [
+          "fc0fa24edd4dd2a2dcbe436f0ea7af41be95dd55db12f300270850f72d203d4e"
+        ],
+        "url_observed": [
+          "hxxps://agnoclast[.]com/api/ingest",
+          "hxxps://agnoclast[.]com/api/node-types",
+          "hxxps://agnoclast[.]com/api/pressing/ack",
+          "hxxps://agnoclast[.]com/api/session-signals",
+          "hxxps://agnoclast[.]com/api/session-signals?pressing=1",
+          "hxxps://agnoclast[.]com/api/skills",
+          "hxxps://cortex-console[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}
