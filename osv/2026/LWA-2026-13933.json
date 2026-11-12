@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13933",
+  "modified": "2026-11-12T04:37:39Z",
+  "published": "2026-11-11T13:41:54Z",
+  "summary": "Potentially-unwanted package (riskware): @violetix/baileys (npm)",
+  "details": "This package is a WhatsApp Web multi-device library (a fork of Baileys) that silently enrols the connecting account into a specific WhatsApp newsletter channel. In lib/Socket/newsletter.js, makeNewsletterSocket registers a connection.update handler that, whenever the socket reaches connection === \"open\" — and again on every reconnect — sends a hardcoded newsletter FOLLOW query for the channel newsletter_id 120363417337256584@newsletter through the WhatsApp MEX endpoint (QueryIds.FOLLOW / XWAPaths.xwa2_newsletter_join_v2). The effect is that any application using this library subscribes its WhatsApp account to that channel without the end user choosing to; the behaviour is not opt-in, has no configuration flag, and is mentioned only in a single line deep in the README. It performs no other hidden network activity: the only destinations referenced in the shipped code are WhatsApp's own endpoints, and there is no collection or transmission of credentials, session files, tokens or environment data. The package ships a preinstall hook, engine-requirements.js, that only checks for Node.js 20 or newer. Note also that the package reuses the canonical \"baileys\" basename under an unofficial scope rather than the upstream @whiskeysockets scope.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@violetix/baileys",
+        "purl": "pkg:npm/%40violetix/baileys"
+      },
+      "versions": [
+        "0.5.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@violetix/baileys/v/0.5.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-11T13:41:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "7d383326b94facb5394a55d867f964c68bd3b0cb78a7dcd3c62de75461e40dbc"
+        ]
+      }
+    }
+  }
+}
