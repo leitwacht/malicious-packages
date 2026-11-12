@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13938",
+  "aliases": [
+    "MAL-2026-19150"
+  ],
+  "modified": "2026-11-12T06:40:00Z",
+  "published": "2026-11-12T06:35:25Z",
+  "summary": "Malicious code in @ruthless-imperium/baileys (npm)",
+  "details": "An unofficial republish of the baileys WhatsApp Web library, published under the unrelated scope @ruthless-imperium with the upstream vendor identity rewritten to \"noxleyss\"/\"Calver\". Installing it executes package/engine-requirements.js from the preinstall hook (a Node.js 20+ version gate), and requiring lib/index.js additionally clears the terminal, prints a branded banner, and spawns a child process running inline JavaScript (a spinner loop) via node -e. Its version check queries registry[.]npmjs[.]org for a package named \"noxleyss\" rather than the real upstream package, and library code uploads media unattended to public anonymous file hosts: catbox.moe, scdn.pdi.moe, qu.ax, uguu[.]se, tmpfiles[.]org and ezgif[.]com, with hardcoded links to levvicode[.]cloud embedded in message payloads. This version of the tree contains no environment or file exfiltration path and no remote-payload execution; WAProto/index.js and lib/WAM/constants.js are pure protocol/telemetry constant tables.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ruthless-imperium/baileys",
+        "purl": "pkg:npm/%40ruthless-imperium/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ruthless-imperium/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13938"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-12T06:35:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "catbox[.]moe",
+          "ezgif[.]com",
+          "levvicode[.]cloud",
+          "qu[.]ax",
+          "registry[.]npmjs[.]org",
+          "scdn[.]pdi[.]moe",
+          "tmpfiles[.]org",
+          "uguu[.]se",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "e1f38201048571a04662dea15fcd81e7ca542ffb64a788f22bdf9d92b4347ca0"
+        ],
+        "url_observed": [
+          "hxxps://catbox[.]moe/user/api[.]php",
+          "hxxps://ezgif[.]com/video-to-jpg",
+          "hxxps://qu[.]ax/upload[.]php",
+          "hxxps://registry[.]npmjs[.]org/noxleyss",
+          "hxxps://scdn[.]pdi[.]moe/upload",
+          "hxxps://tmpfiles[.]org/api/v1/upload",
+          "hxxps://uguu[.]se/upload[.]php"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13939",
+  "aliases": [
+    "MAL-2026-19152"
+  ],
+  "modified": "2026-11-12T06:41:24Z",
+  "published": "2026-11-12T06:36:14Z",
+  "summary": "Malicious code in @ndikagantengg/baileys (npm)",
+  "details": "This package publishes the canonical Baileys basename under an unofficial scope (@ndikagantengg/baileys) as a combosquat of the WhatsApp automation library @whiskeysockets/baileys; the bundled README markets it as \"@ndikz/baileys\" and points at yet another scope. It ships a preinstall lifecycle hook (\"node./engine-requirements.js\") so publisher-controlled code runs on every npm install, and it rewires the library's crypto helpers — md5 and hkdf exported from lib/Utils/crypto.js, LTHashAntiTampering in lib/Utils/lt-hash.js, expandAppStateKeys in lib/Utils/chat-utils.js — to an exact-pinned third-party dependency, whatsapp-rust-bridge@0.5.4, which the upstream project does not use. The library handles WhatsApp authentication state (it writes creds.json via lib/Utils/use-multi-file-auth-state.js), so substituting its primitives affects session material. This version contains no hardcoded C2 host, IP address, webhook URL, or token-harvesting code; the exposure comes from installing an unvetted, impersonating build of a session-handling library whose cryptographic primitives are supplied by a separate package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ndikagantengg/baileys",
+        "purl": "pkg:npm/%40ndikagantengg/baileys"
+      },
+      "versions": [
+        "7.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ndikagantengg/baileys/v/7.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13939"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-12T06:36:14Z",
+      "indicators_observed": {
+        "sha256": [
+          "ac0083fe7eb90f85ee8ccf2cc037517c01f6a94e083943aee790f769736df8a6"
+        ]
+      }
+    }
+  }
+}
