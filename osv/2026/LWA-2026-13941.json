@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13941",
+  "modified": "2026-11-12T15:06:12Z",
+  "published": "2026-11-12T14:48:55Z",
+  "summary": "Malicious code in @violetix/baileys (npm)",
+  "details": "This package reuses the upstream `baileys` package basename under an unrelated npm scope, presenting itself as a drop-in fork of the well-known WhiskeySockets/Baileys WhatsApp client, while shipping an unsolicited account-enrolment routine. In lib/Socket/newsletter.js the package registers an unconditional connection.update handler: whenever the WhatsApp connection opens it issues a newsletter-join query (QueryIds.FOLLOW against XWAPaths.xwa2_newsletter_join_v2) for the hardcoded channel 120363417337256584@newsletter, silently subscribing the account running the library to that channel. There is no configuration option to disable it, and the accompanying log line names a different channel (120363203083379699@newsletter), so the subscription is not reported to the operator. The bundled README states the fork does not auto-follow newsletter channels, which the shipped code contradicts. The package's only lifecycle hook, engine-requirements.js, merely checks that process.versions.node is 20 or newer. Outbound network destinations in the code are WhatsApp endpoints (wss://web[.]whatsapp[.]com/ws/chat, graph[.]whatsapp[.]com, acs[.]whatsapp[.]com); no credential, token or file-read exfiltration was found.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@violetix/baileys",
+        "purl": "pkg:npm/%40violetix/baileys"
+      },
+      "versions": [
+        "0.6.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@violetix/baileys/v/0.6.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13941"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-12T14:48:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "acs[.]whatsapp[.]com",
+          "graph[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "ff1c1e8a9cf23b4b11f6d2d5c4e0484dd6fd8474396dae046aa36125d0450166"
+        ]
+      }
+    }
+  }
+}
