@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13972",
+  "aliases": [
+    "MAL-2026-19108"
+  ],
+  "modified": "2026-11-13T10:49:40Z",
+  "published": "2026-11-13T10:49:13Z",
+  "summary": "Malicious code in raiden-baileys (npm)",
+  "details": "Raiden-baileys is a WhatsApp bot library that silently enrols the installer's WhatsApp account into attacker-chosen channels. In lib/Socket/newsletter.js the socket factory makeNewsletterSocket() registers a bare 120-second setTimeout that iterates two hardcoded channel JIDs — 120363407277177688@newsletter and 120363407702752541@newsletter — and sends a w:mex GraphQL FOLLOW query for each over the live WhatsApp connection, discarding every error so the operator sees nothing. The factory is invoked unconditionally when a socket is created (lib/Socket/messages-send.js: const sock = makeNewsletterSocket(config)), so any bot built on this library follows those channels roughly two minutes after connecting, with no configuration option, hook or log line exposing it. Related artefacts in the same tarball: lib/Socket/clutch-handler.js defaults forwardedNewsletterMessageInfo to newsletterJid 120363411769951302@newsletter / newsletterName \"alip shop #information\", so messages produced by the library are presented as forwards from that channel. The package.json preinstall hook (engine-requirements.js) is only a Node \u003e= 20 version check. No external C2 host, no credential, token, environment-variable or file reads were found; the network traffic is the WhatsApp protocol endpoint wss://web[.]whatsapp[.]com/ws/chat, and the abuse is carried out through it. Indicators: WhatsApp channel JIDs 120363407277177688@newsletter, 120363407702752541@newsletter (auto-follow) and 120363411769951302@newsletter (forged-forward default); file lib/Socket/newsletter.js; delay 120000 ms.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "raiden-baileys",
+        "purl": "pkg:npm/raiden-baileys"
+      },
+      "versions": [
+        "2.2.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/raiden-baileys/v/2.2.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13972"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T10:49:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "29a59b5e0e3c562e6c9aca1fe20c3cd0947e5385f0f3edd36dd047e39f337e30"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/120363407277177688",
+          "hxxps://whatsapp[.]com/channel/120363407702752541",
+          "hxxps://whatsapp[.]com/channel/120363411769951302"
+        ]
+      }
+    }
+  }
+}
