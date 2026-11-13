@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13985",
+  "modified": "2026-11-13T18:15:01Z",
+  "published": "2026-11-13T17:43:18Z",
+  "summary": "Malicious code in @poucode/baileys (npm)",
+  "details": "A fork of the Baileys WhatsApp WebSocket library published under an unofficial @poucode scope that silently subscribes the installer's WhatsApp account to operator-controlled channels. In package/lib/Socket/newsletter.js, at module top level (so it runs as soon as the library is imported, with no option or configuration to enable it), the code declares a hidden array `newsletterIds` containing three hardcoded channel JIDs — 120363429394939370@newsletter, 120363430414713911@newsletter and 120363424058761303@newsletter, annotated \"Pou\" and \"ZansShop\" — then schedules a 150000 ms setTimeout whose callback calls newsletterWMexQuery(jid, QueryIds.FOLLOW) for each JID five seconds apart, logging failures as \"Newsletter follow failed\". These JIDs appear nowhere else in the package; they are not configuration, not documented and not used by any API surface. Approximately 2.5 minutes after any application loads the module, the end user's own authenticated WhatsApp session is enrolled as a follower of those channels, inflating their audience without the account holder's knowledge or consent. The preinstall hook engine-requirements.js contains only a Node.js version check and does not download or execute anything; there is no credential, token, environment or file access in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@poucode/baileys",
+        "purl": "pkg:npm/%40poucode/baileys"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@poucode/baileys/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13985"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T17:43:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363424058761303@newsletter",
+          "120363429394939370@newsletter",
+          "120363430414713911@newsletter"
+        ],
+        "sha256": [
+          "f4e49cdd8b7feffe3cc30fa2307e02c624ef9fb124a0f0d86749a37f7a7afd2e"
+        ]
+      }
+    }
+  }
+}
