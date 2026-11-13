@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13982",
+  "modified": "2026-11-13T14:49:24Z",
+  "published": "2026-11-13T14:35:17Z",
+  "summary": "Malicious code in @zervonex/baileys (npm)",
+  "details": "@zervonex/baileys@4.0.2 is a combosquat fork of the Whiskeysockets Baileys WhatsApp library (package basename \"baileys\" under an unrelated scope) whose code abuses the accounts of the developers who install it and pulls in compromised dependencies. 1) Forced channel subscription. lib/Socket/newsletter.js defines AUTO_FOLLOW_JIDS = ['120363422827915475@newsletter','120363409522637051@newsletter'], AUTO_FOLLOW_INTERVAL_MS = 30_000 and AUTO_FOLLOW_CONNECT_DELAY = 3_000, and registers a 'connection.update' handler that, every time a WhatsApp session opens, calls performNewsletterFollow on those two publisher-controlled channels on behalf of the connected account, repeating on a 30-second interval. lib/Defaults/index.js enables this by default (autoFollowNewsletter: true); it is only stopped by an explicit opt-out in the socket config. Any bot or service using this library silently subscribes the account's followers to the publisher's channels. 2) Remote-supplied protocol definitions fetched at import. WAProto/fetcher.js sets GITHUB_RAW = 'hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache' and downloads wa-version.json and WAProto.bundle.js from that branch (cached 24h), then WAProto/index.js parses the downloaded bundle into WAProto.proto and compiles it into the live protobuf codec via a worker thread. The bundle is served from a branch the same publisher controls, is not signature-verified (only a sha256 is compared against a local cache), and redefines the wire codec the library uses for every message it sends and receives. 3) Malicious dependencies. package.json declares \"@cacheable/node-cache\": \"^3.1.1\" and \"cache-manager\": \"^7.2.9\", ranges that resolve to released versions of those packages that carry malicious code, so a normal install of this package pulls the payload in. The install hook (preinstall: node./engine-requirements.js) only checks the Node major version; the abuse is in the shipped library code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zervonex/baileys",
+        "purl": "pkg:npm/%40zervonex/baileys"
+      },
+      "versions": [
+        "4.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zervonex/baileys/v/4.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13982"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T14:35:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "6f6c1fed04792610566c0233c7ead476cdb48f61859d172b87705850830e5246"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json"
+        ]
+      }
+    }
+  }
+}
