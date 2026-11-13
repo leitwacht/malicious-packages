@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13986",
+  "modified": "2026-11-13T21:46:32Z",
+  "published": "2026-11-13T21:44:37Z",
+  "summary": "Malicious code in @violetix/baileys (npm)",
+  "details": "@violetix/baileys is an unofficial re-publish of the baileys WhatsApp Web library that silently enrols the operator's WhatsApp account in a channel the author controls. In lib/Socket/newsletter.js the package registers a listener on the library's own 'connection.update' event: every time a session reaches connection === 'open' — the normal event a WhatsApp client emits on login and on each reconnect — it unconditionally issues an xwa2_newsletter_join_v2 follow request for the hardcoded channel JID 120363417337256584@newsletter. There is no configuration option, environment variable or opt-out; the request is not surfaced to the embedding application and only appears as a log line reading \"Auto-joined newsletter 120363417337256584@newsletter\", which the README documents as automatic behaviour on open and reconnect. A fork of a WhatsApp client library has no legitimate reason to alter the subscription state of the authenticated user's account against a third-party channel the author owns. No other payload, network destination, obfuscation, credential or token access was found in the package; the preinstall hook (engine-requirements.js) only enforces a Node.js 20+ version check, and the child_process use in lib/Utils/messages-media.js is the library's normal ffmpeg/audio transcoding path. The package is a combosquat-style clone: it keeps the canonical basename 'baileys' under the unofficial @violetix scope while the upstream project lives under @whiskeysockets, and its description markets itself as an enhanced fork. IOCs: hardcoded WhatsApp newsletter JID 120363417337256584@newsletter; source repository github[.]com/cv3inx/bv2.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@violetix/baileys",
+        "purl": "pkg:npm/%40violetix/baileys"
+      },
+      "versions": [
+        "0.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@violetix/baileys/v/0.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13986"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T21:44:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363417337256584@newsletter"
+        ],
+        "sha256": [
+          "00fba26dae3fff69bad3f7f77cbd5ddbd94dfced127dcf1fa24b1bfc8566df17"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/cv3inx/bv2"
+        ]
+      }
+    }
+  }
+}
