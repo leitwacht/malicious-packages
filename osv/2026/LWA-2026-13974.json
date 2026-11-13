@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13974",
+  "modified": "2026-11-13T12:30:13Z",
+  "published": "2026-11-13T11:56:13Z",
+  "summary": "Malicious code in @xzvbailss/baileys (npm)",
+  "details": "This package impersonates the WhiskeySockets Baileys WhatsApp library: it is published under the unofficial scope @xzvbailss while keeping the upstream package basename \"baileys\", so installing @xzvbailss/baileys in place of @whiskeysockets/baileys substitutes a fork maintained by a different, unaffiliated author. The tarball ships no source repository — the package.json \"repository\" and \"homepage\" fields point only at Telegram channels (t[.]me/JustRxVz, t[.]me/XzRzSynxC) — and its contact channel is Telegram rather than a code host. Observed contents and behaviour: a preinstall hook runs \"node./engine-requirements.js\", which only aborts when the Node major version is below 20; lib/index.js prints an ASCII banner and the operator's Telegram URLs (t[.]me/XzRzSynxC, t[.]me/JustRxVz) to the console every time the module is imported; lib/Socket/luxu.js hardcodes the operator's WhatsApp channel (newsletter JID 120363421563597486@newsletter, display name \"LiniusNv\") and stamps it into the forwarded-newsletter context of the poll-result and event messages the library builds, attributing messages sent through the installer's bot to that channel. The library implements the WhatsApp client protocol (web[.]whatsapp[.]com, call[.]whatsapp[.]com) and stores WhatsApp session credentials supplied by the caller. No network endpoint other than WhatsApp's own hosts and raw[.]githubusercontent[.]com/WhiskeySockets appears in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xzvbailss/baileys",
+        "purl": "pkg:npm/%40xzvbailss/baileys"
+      },
+      "versions": [
+        "6.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xzvbailss/baileys/v/6.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13974"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T11:56:13Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "raw[.]githubusercontent[.]com",
+          "raw[.]githubusercontent[.]com/WhiskeySockets",
+          "t[.]me",
+          "t[.]me/JustRxVz",
+          "t[.]me/XzRzSynxC",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "909e0fedd090e52fecf97d3019e533bab9361dbd6a9610074ea6c7c3f4e2e320"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/JustRxVz",
+          "hxxps://t[.]me/XzRzSynxC"
+        ]
+      }
+    }
+  }
+}
