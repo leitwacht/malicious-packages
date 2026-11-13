@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13963",
+  "aliases": [
+    "MAL-2026-19108"
+  ],
+  "modified": "2026-11-13T10:17:50Z",
+  "published": "2026-11-13T10:17:16Z",
+  "summary": "Malicious code in raiden-baileys (npm)",
+  "details": "raiden-baileys, a WhatsApp/Baileys library fork, ships a hidden auto-follow payload. In lib/Socket/newsletter.js the makeNewsletterSocket factory contains top-level code outside any exported API: a setTimeout of 120000 ms that, once it fires, iterates a hardcoded list of two WhatsApp channel JIDs — 120363407277177688@newsletter and 120363407702752541@newsletter — and for each one sends a GraphQL w:mex \"FOLLOW\" mutation (Types.QueryIds.FOLLOW) to the WhatsApp server over the library's own socket. The call is unconditional, has no configuration switch or caller input, and errors are silently discarded, so every application that opens a socket with this package silently subscribes its owner's WhatsApp account to those two channels about two minutes after connecting. The delayed timer pushes the request past the point where install/connect-time inspection would normally look, and the package's README states that channel auto-join was not carried over from upstream, so the behaviour is undocumented and contradicted by the project's own documentation. The only lifecycle script, engine-requirements.js, merely enforces Node.js \u003e= 20. Affected versions include 2.2.6; the injected block is appended to the newsletter socket module next to the legitimate newsletter API.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "raiden-baileys",
+        "purl": "pkg:npm/raiden-baileys"
+      },
+      "versions": [
+        "2.2.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/raiden-baileys/v/2.2.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13963"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T10:17:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363407277177688@newsletter",
+          "120363407702752541@newsletter"
+        ],
+        "sha256": [
+          "b524493c52599dcd2e61ae6102cfd6c559924884addc42ac510d4b1f49671890"
+        ]
+      }
+    }
+  }
+}
