@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13958",
+  "aliases": [
+    "MAL-2026-18635"
+  ],
+  "modified": "2026-11-03T18:39:49Z",
+  "published": "2026-11-03T18:39:14Z",
+  "summary": "Potentially-unwanted package (riskware): filipt (npm)",
+  "details": "This package is executable-delivery riskware: installing it launches a bundled Windows binary with no user action. postinstall.js resolves assets/Helper.exe — a 34.6 MB PE binary shipped inside the tarball — and runs it via child_process.spawn with detached: true, stdio: \"ignore\" and unref(), so the process survives the exit of the installer that started it. On non-Windows platforms the hook does nothing; the same launch is also reachable by consumers through the runHello() export of index.js. Nothing in the package documents what the executable does, and it has no accompanying source, signature or hash. The JavaScript shipped with the package contains no downloader, no callback host, no IP address and no credential or environment access, so there is no network IOC to report; the risk is the automatic, hidden execution of an unreviewed 34.6 MB vendor binary at install time (assets/Helper.exe in filipt@0.5.0, spawned by postinstall.js and index.js).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "filipt",
+        "purl": "pkg:npm/filipt"
+      },
+      "versions": [
+        "0.5.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/filipt/v/0.5.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-03T18:39:14Z",
+      "indicators_observed": {
+        "sha256": [
+          "d50814825122e24404a8585ce147130d23c85bd9facb853675885e868bc53557"
+        ]
+      }
+    }
+  }
+}
