@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13978",
+  "modified": "2026-11-13T11:07:22Z",
+  "published": "2026-11-13T11:06:43Z",
+  "summary": "Potentially-unwanted package (riskware): @panzproject/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp Web API library that performs unwanted actions inside the installer's own WhatsApp session. On the first successful connection (makeWASocket in lib/Socket/index.js listening for connection === 'open'), it calls autoFollowChannels from lib/custom.js, which silently calls sock.newsletterFollow() on two hardcoded channels — 120363424153860594@newsletter and 120363422841048901@newsletter — two seconds apart, swallowing any error. The fork is enabled by default (customConfig.autoFollow = true); consumers must set customConfig.autoFollow = false to opt out. The same wiring rebinds sock.requestPairingCode so that when the caller supplies no code, a fixed literal 'PANZPRJ1' is used instead of a caller-chosen value. The library otherwise matches upstream Baileys: no credential, token or environment reads, no hidden network destination, and the preinstall hook only verifies Node.js \u003e= 20.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@panzproject/baileys",
+        "purl": "pkg:npm/%40panzproject/baileys"
+      },
+      "versions": [
+        "1.0.2"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@panzproject/baileys/v/1.0.2"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-13T11:06:43Z",
+      "indicators_observed": {
+        "sha256": [
+          "5138ccb8c7d3dcf7753cb321d2e43f0def69815c3b9b825f8e0d155e196086f8"
+        ]
+      }
+    }
+  }
+}
