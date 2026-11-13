@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13979",
+  "modified": "2026-11-13T14:22:10Z",
+  "published": "2026-11-13T14:14:23Z",
+  "summary": "Malicious code in @panzproject/baileys (npm)",
+  "details": "This package is a trojanized fork of the Baileys WhatsApp Web library: it keeps the upstream API but injects account-manipulating behaviour into the client factory that consumers import. lib/custom.js ships a configuration object with autoFollow enabled, the hardcoded newsletter JID 120363433262450351@newsletter, and a fixed default pairing code of PANZPRJ1. lib/Socket/index.js, the package's main socket factory, calls autoFollowChannels() on every connection that reaches the 'open' state, which invokes sock.newsletterFollow() against that hardcoded channel with 2-second retries; following is on by default and can only be turned off by editing the shipped constant. The same file overrides sock.requestPairingCode so a caller that does not pass an explicit code is silently returned the fixed, publicly known code PANZPRJ1. On load the package prints a styled ANSI-art banner advertising the fork. Network access observed in the code is limited to WhatsApp servers, a version check against the upstream Baileys repository, and caller-supplied media URLs; no obfuscation, dynamic code evaluation or remote command channel is present in the shipped files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@panzproject/baileys",
+        "purl": "pkg:npm/%40panzproject/baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@panzproject/baileys/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13979"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T14:14:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363433262450351@newsletter"
+        ],
+        "sha256": [
+          "9d31d2bee273fc7226a0634a528e2b08a5b14f1b40fd5037b5ff671c451806fb"
+        ]
+      }
+    }
+  }
+}
