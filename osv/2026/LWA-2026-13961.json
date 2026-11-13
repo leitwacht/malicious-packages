@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13961",
+  "aliases": [
+    "MAL-2026-19223"
+  ],
+  "modified": "2026-11-13T04:41:39Z",
+  "published": "2026-11-13T04:40:37Z",
+  "summary": "Security-research / proof-of-concept package: curse-allies-module (npm)",
+  "details": "This package is a dependency-resolution / dependency-confusion proof of concept. Installing it runs a postinstall hook (\"node probe.cjs\") that sends an HTTPS POST to a webhook[.]site collection endpoint, hxxps://webhook[.]site/a4bf0f9f-6d96-46e6-80ac-b76a5329f481, with the fixed body \"CURSE_DEPENDENT_REMOTE_INSTALL_PROBE\". The hook is a 381-byte script that only performs that single request: it reads no environment variables, no credential or configuration files (~/.npmrc, ~/.ssh, ~/.aws), collects no host metadata, executes no child processes, and downloads no further payload. Its purpose is to confirm that an internal/private package name resolves to an externally published package and that the install-time hook executes in the installer's environment. The package describes itself as an authorized canary; it exfiltrates no secrets or files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "curse-allies-module",
+        "purl": "pkg:npm/curse-allies-module"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/curse-allies-module/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-13T04:40:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "d0495d145e46cc95520ef17551e5c115a66fb2929c86734bb8b328b345af8eda"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/a4bf0f9f-6d96-46e6-80ac-b76a5329f481"
+        ]
+      }
+    }
+  }
+}
