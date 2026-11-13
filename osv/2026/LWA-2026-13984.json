@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13984",
+  "modified": "2026-11-13T17:00:29Z",
+  "published": "2026-11-13T16:23:15Z",
+  "summary": "Malicious code in @risacakep/risayap (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library that silently enrols every connecting WhatsApp account into a fixed newsletter channel. In lib/Socket/index.js the socket factory makeWASocket hardcodes the channel identifier 120363418729056952@newsletter, registers its own 'connection.update' listener, and on every connection with status 'open' calls socket.newsletterFollow() with that identifier; the resulting error is caught and discarded so the follow is never surfaced to the application. There is no configuration option, environment variable or documented flag that disables the action, and it is applied to the socket returned by the library's main entry point, so any bot or automation built on this fork makes its owners' WhatsApp accounts followers of that channel on first connect. The only lifecycle hook in the package (preinstall: node./engine-requirements.js) just aborts on Node versions below 20 and contains no network access. No credential, token or environment exfiltration was found in the shipped code. IOC: hardcoded WhatsApp newsletter JID 120363418729056952@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@risacakep/risayap",
+        "purl": "pkg:npm/%40risacakep/risayap"
+      },
+      "versions": [
+        "7.0.0-rc25.15"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@risacakep/risayap/v/7.0.0-rc25.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13984"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T16:23:15Z",
+      "indicators_observed": {
+        "sha256": [
+          "ed3f9d2bef71a440ab2fbd46cd5fb7fc311297aebc8d4056e2783c710af1e385"
+        ],
+        "url_observed": [
+          "120363418729056952@newsletter"
+        ]
+      }
+    }
+  }
+}
