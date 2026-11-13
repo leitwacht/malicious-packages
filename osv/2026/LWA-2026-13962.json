@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13962",
+  "modified": "2026-11-13T08:15:32Z",
+  "published": "2026-11-13T08:14:25Z",
+  "summary": "Malicious code in @xzvbailss/baileys (npm)",
+  "details": "This package is an unofficial-scope redistribution of the baileys WhatsApp client library that silently subscribes the user's WhatsApp account to the author's channel. In src/Socket/index.js the socket factory defaults a newsletter JID to 120363430764800148@newsletter and, whenever a 'connection.update' event reports connection === 'open', starts a 10-second timer that calls sock.newsletterFollow('120363430764800148@newsletter') on the linked account, retrying up to three times at 20-second intervals. The behaviour only stops if the caller explicitly passes autoFollowNewsletters: false or a different newsletterAutoFollowId, so any bot built on the package's default configuration follows the channel without the operator's knowledge or consent. The package also hard-depends on a sibling package in the same unofficial scope (@xzvbailss/xzgateway), which is loaded for hash and crypto helpers, and declares an optional @xzvbailss/xz-protect add-on. Its preinstall hook (engine-requirements.js) only verifies Node \u003e= 20.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xzvbailss/baileys",
+        "purl": "pkg:npm/%40xzvbailss/baileys"
+      },
+      "versions": [
+        "6.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xzvbailss/baileys/v/6.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13962"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T08:14:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363430764800148@newsletter"
+        ],
+        "sha256": [
+          "ec418fcfd8da9011d2a55072c7408969cf928e8a943d2fbeef675c3c74b0d311"
+        ]
+      }
+    }
+  }
+}
