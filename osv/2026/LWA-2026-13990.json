@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13990",
+  "modified": "2026-11-06T02:30:39Z",
+  "published": "2026-11-06T01:43:56Z",
+  "summary": "Malicious code in plogme (npm)",
+  "details": "Plogme is a WhatsApp/Baileys protocol fork that pulls malicious code into the install tree and covertly annotates the user's outgoing messages. Three behaviours verified in the published files: 1. Dependency on a malicious release. package.json declares \"cache-manager\": \"^7.2.8\", which resolves to cache-manager@7.2.10, a release distributed as malicious. lib/Store/make-cache-manager-store.js imports createCache from it to back the WhatsApp auth state, so the malicious module is loaded on a normal install. 2. Hidden third-party channel annotation on every upload. lib/Utils/channel-policy.js exports getMediaChannelAnnotations(), which returns ContextInfo.ForwardedNewsletterMessageInfo metadata pointing at newsletter JID 120363402922206865@newsletter, display name \"crysnovax\", contentType UPDATE, and serverMessageId built from hex \"313033\" (\"103\"). lib/Utils/messages.js imports and attaches this to every outgoing image and video message, so each upload carries channel-promotion metadata the installer never asked for and cannot see. A comment in the file claims the metadata \"does not follow, subscribe to, or otherwise modify newsletter subscriptions\", which understates what it does. 3. Embedded WhatsApp service credentials and a third-party version endpoint. lib/Defaults/ban-checker.js hardcodes a WhatsApp GraphQL access token and doc id used by lib/Socket/ban-checker.js to POST ban-appeal status queries to hxxps://graph[.]whatsapp[.]com/graphql. lib/Utils/generics.js fetches the protocol version from the third-party host hxxps://pair[.]crysnovax[.]link instead of WhatsApp, and that host is also embedded as a sticker-pack publisher credit in lib/Utils/messages.js. The preinstall hook engine-requirements.js only reads process.versions.node and exits when the Node major version is below 20. No access to.npmrc, NPM_TOKEN, GITHUB_TOKEN, SSH keys or other installer credential files was found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "plogme",
+        "purl": "pkg:npm/plogme"
+      },
+      "versions": [
+        "2.2.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/plogme/v/2.2.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13990"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-06T01:43:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "graph[.]whatsapp[.]com",
+          "pair[.]crysnovax[.]link",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "990b22331c1693a6a69307042392fceb291eefd8edcdd5ac29ab31b8c4fc5e67"
+        ],
+        "url_observed": [
+          "hxxps://graph[.]whatsapp[.]com/graphql",
+          "hxxps://pair[.]crysnovax[.]link"
+        ],
+        "wallet_observed": [
+          "120363402922206865@newsletter"
+        ]
+      }
+    }
+  }
+}
