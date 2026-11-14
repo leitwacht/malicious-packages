@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13992",
+  "modified": "2026-11-14T12:15:39Z",
+  "published": "2026-11-14T12:02:16Z",
+  "summary": "Malicious code in @poucode/baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library that covertly enrols the user's WhatsApp account into the author's channels and ships an embedded WhatsApp GraphQL access token. In lib/Socket/newsletter.js, at module scope inside makeNewsletterSocket, the code hardcodes a JID list — 120363429394939370@newsletter, 120363430414713911@newsletter (commented \"Pou\") and 120363424058761303@newsletter (commented \"ZansShop\") — and registers setTimeout(..., 150000). About 2.5 minutes after the module loads it calls newsletterWMexQuery(jid, QueryIds.FOLLOW) for each of the three channels, 5 seconds apart, catching and suppressing every error so the integrator sees nothing. The action is unrelated to the library's message-sending purpose, targets channels chosen by the package author rather than the user, and the delay keeps it away from install time and start-up. A second hidden behaviour is in lib/Socket/graphql.js, which hardcodes a default WhatsApp WAMO access token (constant WWW_DEFAULT_TOKEN, built from app id 1015890928915437) and attaches it, together with caller-supplied credential and user_id values, to POST requests to hxxps://wamo[.]whatsapp[.]net/api/wamo/graphql/ as form-encoded bodies, using it silently whenever the caller has not supplied a token of their own. The package also prints a link to an author Telegram channel (hxxps://t[.]me/pouchinfo) on import. The preinstall hook engine-requirements.js only checks the Node.js version. No environment variables,.npmrc, npm/GitHub tokens or wallet data are read or transmitted anywhere in the tree.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@poucode/baileys",
+        "purl": "pkg:npm/%40poucode/baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@poucode/baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13992"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-14T12:02:16Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "t[.]me",
+          "wamo[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "d1443245bb1ff2b9a512de74668e36a015b86d125f1cd70d70dd3cc66eca3104"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/pouchinfo",
+          "hxxps://wamo[.]whatsapp[.]net/api/wamo/graphql/"
+        ]
+      }
+    }
+  }
+}
