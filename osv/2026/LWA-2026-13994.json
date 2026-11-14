@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13994",
+  "aliases": [
+    "MAL-2026-19938"
+  ],
+  "modified": "2026-11-14T21:00:55Z",
+  "published": "2026-11-14T20:59:41Z",
+  "summary": "Malicious code in testpackage83 (npm)",
+  "details": "This package executes a remote, server-selected executable at install time from a bare IP address over unencrypted HTTP. The postinstall hook (scripts/install.js) calls src/download2.js, which immediately issues GET hxxp://185[.]212[.]128[.]180/chromedriver[.]bat?platform=\u003cos\u003e\u0026arch=\u003carch\u003e, follows up to 10 redirects, saves the body to ~/.celest/bin/.download.tmp, gunzips/unzips it, moves it to ~/.celest/bin/chrome (chrome.exe on Windows), sets mode 0755, and src/browser.js launches it via puppeteer-core with --no-sandbox and --disable-setuid-sandbox as the \"custom patched Chromium\" the README advertises. No checksum, signature, certificate or pinned version is verified; the only validation is a content-type check, an extension list and a two-byte PE/ZIP header sniff, all of which a malicious executable passes. The URL path names a.bat while the code claims to fetch a Chrome archive, and the host is unrelated to any Chromium distribution channel, so the delivered payload is entirely controlled by the operator's server and varies per install (platform/arch are appended to the request). The package reads no credentials, tokens, environment values or files and sends no local data out; the exposure is the arbitrary remote binary fetched and run on the installer's machine. Network IOC: hxxp://185[.]212[.]128[.]180/chromedriver[.]bat (port 80). Installer opt-out: CELEST_SKIP_DOWNLOAD=1.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "testpackage83",
+        "purl": "pkg:npm/testpackage83"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/testpackage83/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13994"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-14T20:59:41Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "185[.]212[.]128[.]180",
+          "185[.]212[.]128[.]180:80"
+        ],
+        "sha256": [
+          "da10f31b4f94405ee6da95d00f25e6efaaebcd71734093b1ddd027d4a896537f"
+        ],
+        "url_observed": [
+          "hxxp://185[.]212[.]128[.]180/chromedriver[.]bat"
+        ]
+      }
+    }
+  }
+}
