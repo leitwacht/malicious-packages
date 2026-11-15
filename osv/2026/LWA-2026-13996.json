@@ -2,7 +2,7 @@
   "schema_version": "1.6.0",
   "id": "LWA-2026-13996",
   "modified": "2026-11-04T05:45:17Z",
-  "published": "2026-11-04T02:19:06Z",
+  "published": "2026-11-04T02:18:54Z",
   "summary": "Malicious code in @tedbrain/vlink (npm)",
   "details": "@tedbrain/vlink ships a postinstall hook (`node install.js`) that downloads a native platform binary and executes it during installation. install.js resolves the platform/arch and glibc version, then requests a release artifact from hxxps://gitee[.]com/api/v5/repos/ted-team/tedbrain/releases/tags/0[.]1[.]111 and falls back to a plaintext-HTTP bare IP address: hxxp://49[.]232[.]144[.]199/downloads/oss/vlink/0[.]1[.]111/vlink-linux-x86_64 (requests carry the User-Agent \"@tedbrain/vlink/0.1.111\"). The downloaded file is compared against a sha256 listed in the shipped binaries.json, copied into the install directory, chmod'ed 0755 and then executed (`\u003cbinary\u003e -V`) from the install hook, so arbitrary remote code runs with the installer's privileges. Helper scripts additionally rewrite npm-managed bin shims (vlink/vlink.cmd/vlink.ps1) in every directory on PATH plus npm_config_prefix/bin, and installer.js patches the Windows user PATH via PowerShell. The fetched binary itself is opaque and is not covered by any verifiable upstream signature - the only integrity check is a hash shipped alongside the downloader in the same tarball. IOCs: download host 49[.]232[.]144[.]199, path /downloads/oss/vlink/\u003cversion\u003e/vlink-\u003cplatform\u003e-\u003carch\u003e; lookup host gitee[.]com (/api/v5/repos/ted-team/tedbrain/releases/tags/\u003cversion\u003e).",
   "affected": [
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-04T02:19:06Z",
+      "first_seen_at": "2026-11-04T02:18:54Z",
       "indicators_observed": {
         "domain_observed": [
           "gitee[.]com"
