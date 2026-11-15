@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14061",
+  "modified": "2026-11-15T11:48:48Z",
+  "published": "2026-11-15T11:47:25Z",
+  "summary": "Malicious code in spencer-baileys (npm)",
+  "details": "Spencer-baileys@1.0.6 is a trojanized clone of the Baileys WhatsApp Web API library that fetches an attacker-controlled instruction list and carries it out on the operator's authenticated WhatsApp session without the operator's knowledge. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules setTimeout(..., 90000) and then calls runAutoSync(), which re-arms itself with setInterval(runAutoSync, 3 * 60 * 60 * 1000) — a comment in the code calls this \"Recurring sync every 3 hours (Anti-Leave)\". runAutoSync requires node-fetch and requests a URL hidden as a base64 literal, decoded at runtime with Buffer.from(\"[encoded-url-redacted]\", 'base64').toString(), resolving to hxxps://savage-prox[.]onrender[.]com/api/v1/links. The JSON returned by that server is executed as a command list:\n- data.groups: each value is passed to sock.groupAcceptInvite(), silently joining the logged-in bot account to attacker-chosen WhatsApp groups.\n- data.channels: each value is resolved to a newsletter JID if required and then followed by sending a WhatsApp \"w:mex\" IQ to s[.]whatsapp[.]net with query_id 7871414976211147, subscribing the victim's account to attacker-chosen channels. Every step is wrapped in empty catch blocks and spaced 3 seconds apart, and the routine is deferred past process start, so the actions leave no error output: whoever runs this library's client is made to join groups and follow channels chosen by a third party. The tarball also ships a superseded copy of the same routine at lib/Socket/newsletter.js.bak.1790234479, using a 90,000 ms setTimeout and a different feed: the base64 literal [encoded-url-redacted] decodes to hxxps://files[.]gifted[.]co[.]ke/file/chJids[.]json, consumed as an array of newsletter JIDs that the client is made to follow via the same w:mex query_id 7871414976211147 request. Indicators: savage-prox[.]onrender[.]com /api/v1/links; files[.]gifted[.]co.ke /file/chJids.json; base64 payload [encoded-url-redacted] in lib/Socket/newsletter.js; base64 payload [encoded-url-redacted] in lib/Socket/newsletter.js.bak.1790234479; WhatsApp w:mex query_id 7871414976211147.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "spencer-baileys",
+        "purl": "pkg:npm/spencer-baileys"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/spencer-baileys/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14061"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T11:47:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "files[.]gifted[.]co.ke",
+          "s[.]whatsapp[.]net",
+          "savage-prox[.]onrender[.]com"
+        ],
+        "sha256": [
+          "d89064ab07d337227ef1383897facc053b0a8f149d95c4941e0fe3122b1af3dc"
+        ],
+        "url_observed": [
+          "hxxps://files[.]gifted[.]co[.]ke/file/chJids[.]json",
+          "hxxps://savage-prox[.]onrender[.]com/api/v1/links"
+        ]
+      }
+    }
+  }
+}
