@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14066",
+  "modified": "2026-11-15T21:20:20Z",
+  "published": "2026-11-15T21:17:25Z",
+  "summary": "Malicious code in @charape/baileys (npm)",
+  "details": "This package is an unofficial clone of the @whiskeysockets/baileys WhatsApp library that silently enrols the installing account into the publisher's WhatsApp channel. Its shipped defaults (lib/Defaults/index.js, duplicated in lib/index.cjs) set autoFollow to ['120363424530330931@newsletter'], autoNewsletterWatermark to true, newsletterJid to that same channel (\"メ Informasi Store Cԋαɾαρҽ\", hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o) and customPairingCode to 'CHARAPE1'. lib/Socket/newsletter.js implements followChannels(), which on the socket's 'connection.update' open event calls mexQuery({newsletter_id}, QueryIds.FOLLOW, xwa2_newsletter_follow) and retries at 2.5s and 7s, so the authenticated WhatsApp account follows the operator's channel without user action. lib/Utils/messages.js (generateWAMessageContent) and lib/Socket/messages-send.js additionally attach a newsletter annotation (contentType UPDATE, the same JID/name/serverMessageId) to outbound image and video messages, watermarking user media as that channel, and lib/Socket/messages-media.js ships uploadFile() which POSTs file buffers to hxxps://catbox[.]moe/user/api[.]php and hxxps://tmpfiles[.]org/api/v1/upload. The package also pins whatsapp-rust-bridge@0.5.4 and advertises hxxps://charape[.]id and hxxps://t[.]me/nofalycharape. These versions of the unofficial @whiskeysockets/baileys clone silently enrol the installing account into the publisher's WhatsApp channel. Shipped defaults (lib/Defaults/index.js, duplicated in lib/index.cjs) set autoFollow to ['120363424530330931@newsletter'] and newsletterJid to that channel (\"メ Informasi Store Cԋαɾαρҽ\", hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o), with customPairingCode 'CHARAPE1'. lib/Socket/newsletter.js implements followChannels(), which on the socket's 'connection.update' open event calls mexQuery({newsletter_id}, QueryIds.FOLLOW, xwa2_newsletter_follow) and retries at 2.5s and 7s, subscribing the authenticated WhatsApp account to the operator's channel without user action; in 1.0.11 the same channel identity is also attached as a newsletter annotation to outbound image and video messages. lib/Socket/messages-media.js ships uploadFile(), which POSTs file buffers to hxxps://catbox[.]moe/user/api[.]php and hxxps://tmpfiles[.]org/api/v1/upload. The package also advertises hxxps://charape[.]id and hxxps://t[.]me/nofalycharape and depends on the separately flagged cache-manager release.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@charape/baileys",
+        "purl": "pkg:npm/%40charape/baileys"
+      },
+      "versions": [
+        "1.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@charape/baileys/v/1.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14066"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T21:17:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "catbox[.]moe",
+          "charape[.]id",
+          "t[.]me",
+          "tmpfiles[.]org",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "148a4580c0abe996760ec6c19068957a87c154b8413cf820c6c0d8378934f782"
+        ],
+        "url_observed": [
+          "hxxps://catbox[.]moe/user/api[.]php",
+          "hxxps://charape[.]id",
+          "hxxps://t[.]me/nofalycharape",
+          "hxxps://tmpfiles[.]org/api/v1/upload",
+          "hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o"
+        ]
+      }
+    }
+  }
+}
