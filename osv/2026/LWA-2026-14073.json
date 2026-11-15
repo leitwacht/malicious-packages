@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14073",
+  "modified": "2026-11-15T23:09:31Z",
+  "published": "2026-11-14T11:55:17Z",
+  "summary": "Malicious code in @wanzforme/bails (npm)",
+  "details": "@wanzforme/bails is a fork of the Baileys WhatsApp client library that silently subscribes the linking user's WhatsApp account to a hardcoded channel. In lib/Socket/newsletter.js a \"connection.update\" handler runs 10 seconds after the socket reports \"open\" and sends a FOLLOW IQ (query id 7871414976211147) for the hardcoded JID 120363380357951328@newsletter, retrying twice at 20-second intervals before giving up. The follow is enabled by default and can only be suppressed with an undocumented config option (autoFollowNewsletters: false); the README documents newsletter message sending but never mentions the automatic subscription. The same hardcoded JID is embedded in lib/Socket/luxu.js under the name \"WanzLonely\", where it is stamped into forwardedNewsletterMessageInfo on relayed event and poll-result messages, attributing the user's outgoing content to that channel. The package also ships a preinstall hook (node./engine-requirements.js) that only performs a Node.js \u003e= 20 version check, and declares a dependency range on cache-manager ^7.2.8, which resolves to 7.2.10, a release that carries a malicious install payload. libsignal is pulled from a mutable third-party GitHub fork (github:wanzchil/libsignal-node) instead of the upstream source, with no commit pin. No credential, token, environment or file exfiltration was found in this version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wanzforme/bails",
+        "purl": "pkg:npm/%40wanzforme/bails"
+      },
+      "versions": [
+        "6.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wanzforme/bails/v/6.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14073"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-14T11:55:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363380357951328@newsletter"
+        ],
+        "sha256": [
+          "b4c8e4cca5c3527808dab86f48edb74b39ad3d40745959755dc59f645471316b"
+        ],
+        "url_observed": [
+          "github:wanzchil/libsignal-node"
+        ]
+      }
+    }
+  }
+}
