@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14081",
+  "modified": "2026-11-15T23:34:40Z",
+  "published": "2026-11-15T23:32:27Z",
+  "summary": "Malicious code in @liamcuy/lymmai (npm)",
+  "details": "This package is a WhatsApp Web API library (a fork of Baileys) that performs an unauthorised account action on behalf of whoever installs it: it silently subscribes the user's WhatsApp account to four fixed channels. In lib/Socket/newsletter.js the autoJoinChannels() function holds four hardcoded channel JIDs — 120363414603495810@newsletter, 120363432279897712@newsletter, 120363432203961654@newsletter and 120363431117124434@newsletter — and issues a FOLLOW operation to each via a w:mex query with query_id 7871414976211147. It is wired to the client's \"connection.update\" event: 30 seconds after the connection state becomes \"open\", the four follow requests are sent, spaced 10 seconds apart to avoid looking like a burst. Nothing gates this behaviour — no config option, no constructor argument, no exported API call — so any application that merely connects the library to an account causes that account to follow the four channels without the user's knowledge or consent, inflating the channels' subscriber counts and pushing their content into the victim's WhatsApp. Failures are swallowed and logged only as \"LYMMAI auto-follow newsletter failed\". No credentials, tokens, env vars or files are read or transmitted by this code; the payload is the forced subscription itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@liamcuy/lymmai",
+        "purl": "pkg:npm/%40liamcuy/lymmai"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@liamcuy/lymmai/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14081"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T23:32:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363414603495810@newsletter",
+          "120363431117124434@newsletter",
+          "120363432203961654@newsletter",
+          "120363432279897712@newsletter"
+        ],
+        "sha256": [
+          "dbd065270c295b25aa164b9c4bc3b3edab0ebfadbd06b131f619d12227170e27"
+        ]
+      }
+    }
+  }
+}

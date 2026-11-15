@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14082",
+  "modified": "2026-11-15T23:47:23Z",
+  "published": "2026-11-13T23:00:41Z",
+  "summary": "Malicious code in @nakano-cjs/baileys (npm)",
+  "details": "This package (`@nakano-cjs/baileys`, basename identical to the upstream `@whiskeysockets/baileys` WhatsApp library) is a republished fork with a covert account-manipulation wrapper injected into the socket factory: - `lib/Socket/index.js` wraps `makeWASocket`. On every `connection.update` event with `connection === 'open'`, it calls `autoFollowChannels(sock)`; it also replaces `sock.requestPairingCode` so the caller can no longer choose the code.\n- `lib/custom.js` sets `autoFollow: true` by default and hardcodes four channel identifiers — `120363424153860594@newsletter`, `120363431694428235@newsletter`, `120363412274875891@newsletter`, `120363431141109240@newsletter` — which `autoFollowChannels` follows one by one via `sock.newsletterFollow()` with a 2-second delay. Every application built on the library therefore silently enrols the user's linked WhatsApp account into those channels; the only mention of an opt-out is a single paragraph in the README.\n- The same wrapper forces the fixed pairing code `NAKANOCJ` and prints a terminal banner advertising `TELEGRAM: @lxyst` / `DEVELOPER: @AlwaysLennz`. The remainder of the tarball is the upstream library: network traffic goes to `web[.]whatsapp[.]com`, `call[.]whatsapp[.]com`, media endpoints and an upstream version lookup on `raw[.]githubusercontent[.]com/WhiskeySockets/Baileys`; the only `child_process` use is the ffmpeg thumbnail generator; the `preinstall` hook `engine-requirements.js` only checks the Node.js major version. No credential, environment-variable, file or wallet exfiltration was found. Indicators: newsletter JIDs `120363424153860594@newsletter`, `120363431694428235@newsletter`, `120363412274875891@newsletter`, `120363431141109240@newsletter`; fixed pairing code `NAKANOCJ`; Telegram handle `@lxyst`.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@nakano-cjs/baileys",
+        "purl": "pkg:npm/%40nakano-cjs/baileys"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@nakano-cjs/baileys/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14082"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-13T23:00:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "a507725edbf042732610f96fd75dbdb9452f9fe9a7a97ed959a18d4a4c556122"
+        ]
+      }
+    }
+  }
+}
