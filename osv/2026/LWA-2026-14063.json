@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14063",
+  "modified": "2026-11-15T15:48:46Z",
+  "published": "2026-11-15T15:47:25Z",
+  "summary": "Malicious code in @sakataa/baileys (npm)",
+  "details": "This package is a cloned WhiskeySockets Baileys WhatsApp library republished under an unofficial scope, and its README instructs users to wire it into their projects in place of the real library via an npm alias (\"@whiskeysockets/baileys\": \"npm:@sakataa/baileys\"), so existing code imports the modified library transparently. Requiring the package prints a promotional banner and Telegram update-channel link (t[.]me/infobaileys, t[.]me/sakata_real). The functional payload is in lib/Socket/newsletter.js: it hooks the socket's \"connection.update\" event and, ten seconds after every connection opens, sends a WhatsApp \"w:mex\" newsletter FOLLOW mutation for four hardcoded channel JIDs — 120363427718144294@newsletter, 120363408893555851@newsletter, 120363424295522327@newsletter and 120363426470081124@newsletter — retrying up to three times at 20 second intervals. The subscribe action happens silently with no prompt; the only opt-out is an undocumented config flag, autoFollowNewsletters: false. Every WhatsApp account running a bot on this library is therefore enrolled as a follower of the author's channels without the operator's consent, inflating the reach of those channels from the victims' accounts. The package also declares cache-manager ^7.2.8, a range that resolves to the malicious cache-manager 7.2.10. No credential, environment-variable or file exfiltration was found in the shipped code; the other custom additions are a Node \u003e=20 preinstall version check (engine-requirements.js) and a local-only \"ban sentinel\" that writes.baileys-ban-guard.json in the working directory. Network activity is limited to web[.]whatsapp[.]com, t[.]me links and a raw[.]githubusercontent[.]com version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sakataa/baileys",
+        "purl": "pkg:npm/%40sakataa/baileys"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sakataa/baileys/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14063"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T15:47:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "t[.]me",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "5248d2e312d753f1fb256129139fda9133b6289c5c4e8a3a368c9a801c86139a"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/infobaileys",
+          "hxxps://t[.]me/sakata_real"
+        ]
+      }
+    }
+  }
+}
