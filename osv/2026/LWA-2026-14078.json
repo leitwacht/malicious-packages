@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14078",
+  "modified": "2026-11-15T23:15:50Z",
+  "published": "2026-11-15T22:47:24Z",
+  "summary": "Malicious code in @alannxds/baileys (npm)",
+  "details": "@alannxds/baileys (versions 6.2.12 and 6.2.13) is a fork of the Baileys WhatsApp Web library modified so that any account connecting through it is silently made to follow three hardcoded WhatsApp channels. In lib/Socket/newsletter.js the socket factory holds a hardcoded list of channel JIDs — 120363387182851100@newsletter, 120363371199176376@newsletter and 120363421367985094@newsletter — and issues a newsletter FOLLOW query (QueryIds.FOLLOW / XWAPaths.xwa2_newsletter_follow) for each of them: in 6.2.12 from a timed auto-follow routine (10s initial delay, 20s retries, up to 3 attempts) that runs even when no user action requests it, and in 6.2.13 from a module-level setTimeout of 150 seconds that iterates the IDs and follows them one by one 5 seconds apart. The follow uses the library's own authenticated WhatsApp session, so the connected user's account is enrolled as a subscriber without consent. lib/Socket/luxu.js additionally hardcodes channel branding into relayed event and poll-result messages, setting forwardedNewsletterMessageInfo to newsletterName \"ᴀʟᴀɴɴxᴅ | ʜᴏʟᴏᴡ 徴\" / newsletterJid 120363387182851100@newsletter, and stamps outgoing image messages with a \"0@newsletter\" forwarded card whose senderName is \"AlannXD\", so relayed content is presented as forwarded channel material. IOCs: WhatsApp channel JIDs 120363387182851100@newsletter, 120363371199176376@newsletter, 120363421367985094@newsletter; channel display name \"ᴀʟᴀɴɴxᴅ | ʜᴏʟᴏᴡ 徴\"; code paths lib/Socket/newsletter.js and lib/Socket/luxu.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@alannxds/baileys",
+        "purl": "pkg:npm/%40alannxds/baileys"
+      },
+      "versions": [
+        "6.2.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@alannxds/baileys/v/6.2.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14078"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T22:47:24Z",
+      "indicators_observed": {
+        "sha256": [
+          "a18e615286100d269e6cb4ed349152b6daacd50bad428d4ed9dea7191ebe419a"
+        ]
+      }
+    }
+  }
+}

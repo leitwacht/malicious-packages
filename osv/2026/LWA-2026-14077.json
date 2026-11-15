@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14077",
+  "modified": "2026-11-15T23:05:18Z",
+  "published": "2026-11-14T11:08:13Z",
+  "summary": "Potentially-unwanted package (riskware): nakano-baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web API library that silently subscribes the user's WhatsApp account to the author's channels. lib/custom.js hardcodes an autoFollow: true flag together with two channel JIDs (120363424153860594@newsletter and 120363422841048901@newsletter), and exports autoFollowChannels(sock) which calls sock.newsletterFollow() on each of them with a 2-second delay and ignores errors. lib/Socket/index.js imports that function and registers a handler on the socket's 'connection.update' event: as soon as the connection state becomes 'open' it invokes autoFollowChannels(sock), so every socket created through the library's makeWASocket() follows those channels using the authenticated account, with no configuration switch available to the caller (the flag is a fixed module constant, not settable through the makeWASocket config). The same module also overrides sock.requestPairingCode so that when the caller does not pass a custom pairing code, the hardcoded value NAKANOCJ is used. No credential, token, environment-variable or file exfiltration is present in the package; the only environment variable read anywhere in the tree is BAILEYS_LOG_LEVEL, and the preinstall entry engine-requirements.js only checks that Node.js is version 20 or newer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nakano-baileys",
+        "purl": "pkg:npm/nakano-baileys"
+      },
+      "versions": [
+        "1.0.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nakano-baileys/v/1.0.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-14T11:08:13Z",
+      "indicators_observed": {
+        "sha256": [
+          "f296ec65efab99a785fc8da14a4f2b08d351dbf41e2ef884c074834e0f1121e9"
+        ]
+      }
+    }
+  }
+}

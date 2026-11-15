@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14079",
+  "modified": "2026-11-15T23:05:28Z",
+  "published": "2026-11-15T23:02:26Z",
+  "summary": "Potentially-unwanted package (riskware): @web2apkbail/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp automation library shipped under an unofficial scope (@web2apkbail/baileys) while reusing the canonical basename \"baileys\", with a broken repository/homepage pointing at github[.]com/@web2apkbail/baileys, so a developer can mistake it for the upstream @whiskeysockets/baileys library. The fork silently enrols the host's WhatsApp account into the developer's channel: lib/Socket/registration.js hardcodes HARDCODED_AUTO_JOIN_CHANNELS = ['120363410300674611@newsletter'] and, on every \"connection.update\" event with connection === \"open\", calls sock.newsletterFollow(jid) for that channel, logging \"auto joined whatsapp channel\". There is no option to disable it and no caller-visible notice; it is mentioned only in passing in the README, which links the channel at hxxps://whatsapp[.]com/channel/0029VaranC0KmCPQCHryFs2C. The fork also attaches promotional attribution to messages it generates: lib/Utils/messages.js builds contextInfo.forwardedNewsletterMessageInfo with newsletterJid 120363408947530202@newsletter and newsletterName \"KawakunChan Baileys\" on media/poll uploads, and the README examples route buttons and ad replies to hxxps://t[.]me/KawakunChan. Its preinstall hook (engine-requirements.js) only parses the Node major version and exits when it is below 20; the only other process spawning is ffmpeg/audio conversion in lib/Utils/messages-media.js, and the only WebSocket endpoint used is wss://web[.]whatsapp[.]com/ws/chat.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@web2apkbail/baileys",
+        "purl": "pkg:npm/%40web2apkbail/baileys"
+      },
+      "versions": [
+        "3.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@web2apkbail/baileys/v/3.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T23:02:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "t[.]me",
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "774813d440680827f73241bc65dc887c07577004ed6ab791f83eb63721d911f0"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/KawakunChan",
+          "hxxps://whatsapp[.]com/channel/0029VaranC0KmCPQCHryFs2C"
+        ]
+      }
+    }
+  }
+}

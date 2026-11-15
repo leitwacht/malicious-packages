@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-14071",
-  "modified": "2026-11-15T23:05:47Z",
+  "modified": "2026-11-15T23:15:50Z",
   "published": "2026-11-14T16:15:45Z",
   "summary": "Malicious code in @alannxds/baileys (npm)",
-  "details": "This package is a modified fork of the WhatsApp Web library Baileys, published under an unofficial scope while reusing the canonical \"baileys\" basename, that silently enrols the user's WhatsApp account into the author's channels. lib/Socket/newsletter.js, loaded on the normal makeWASocket path (messages-send.js → username.js → newsletter.js), contains an unconditional setTimeout with a 150000 ms delay that after the socket is created sends newsletter FOLLOW requests over WhatsApp's w:mex query channel for three hardcoded channel JIDs: 120363387182851100@newsletter, 120363371199176376@newsletter and 120363421367985094@newsletter, with a 5-second pause between each so the subscriptions appear organic. lib/Socket/luxu.js injects forwardedNewsletterMessageInfo context referencing those channels (newsletterName \"ᴀʟᴀɴɴxᴅ | ʜᴏʟᴏᴡ 徴\") into messages the host application sends. lib/index.js fetches hxxps://raw[.]githubusercontent[.]com/alannzxd/xclient/refs/heads/main/information.json on import and prints the first array entry to the console as a \"Latest update\" notice, so the displayed text is controlled remotely. No environment variables, tokens or system credential files are read, and no data is sent to any host other than WhatsApp endpoints and that GitHub raw URL.",
+  "details": "This package is a modified fork of the WhatsApp Web library Baileys, published under an unofficial scope while reusing the canonical \"baileys\" basename, that silently enrols the user's WhatsApp account into the author's channels. lib/Socket/newsletter.js, loaded on the normal makeWASocket path (messages-send.js → username.js → newsletter.js), contains an unconditional setTimeout with a 150000 ms delay that after the socket is created sends newsletter FOLLOW requests over WhatsApp's w:mex query channel for three hardcoded channel JIDs: 120363387182851100@newsletter, 120363371199176376@newsletter and 120363421367985094@newsletter, with a 5-second pause between each so the subscriptions appear organic. lib/Socket/luxu.js injects forwardedNewsletterMessageInfo context referencing those channels (newsletterName \"ᴀʟᴀɴɴxᴅ | ʜᴏʟᴏᴡ 徴\") into messages the host application sends. lib/index.js fetches hxxps://raw[.]githubusercontent[.]com/alannzxd/xclient/refs/heads/main/information.json on import and prints the first array entry to the console as a \"Latest update\" notice, so the displayed text is controlled remotely. No environment variables, tokens or system credential files are read, and no data is sent to any host other than WhatsApp endpoints and that GitHub raw URL. @alannxds/baileys (versions 6.2.12 and 6.2.13) is a fork of the Baileys WhatsApp Web library modified so that any account connecting through it is silently made to follow three hardcoded WhatsApp channels. In lib/Socket/newsletter.js the socket factory holds a hardcoded list of channel JIDs — 120363387182851100@newsletter, 120363371199176376@newsletter and 120363421367985094@newsletter — and issues a newsletter FOLLOW query (QueryIds.FOLLOW / XWAPaths.xwa2_newsletter_follow) for each of them: in 6.2.12 from a timed auto-follow routine (10s initial delay, 20s retries, up to 3 attempts) that runs even when no user action requests it, and in 6.2.13 from a module-level setTimeout of 150 seconds that iterates the IDs and follows them one by one 5 seconds apart. The follow uses the library's own authenticated WhatsApp session, so the connected user's account is enrolled as a subscriber without consent. lib/Socket/luxu.js additionally hardcodes channel branding into relayed event and poll-result messages, setting forwardedNewsletterMessageInfo to newsletterName \"ᴀʟᴀɴɴxᴅ | ʜᴏʟᴏᴡ 徴\" / newsletterJid 120363387182851100@newsletter, and stamps outgoing image messages with a \"0@newsletter\" forwarded card whose senderName is \"AlannXD\", so relayed content is presented as forwarded channel material. IOCs: WhatsApp channel JIDs 120363387182851100@newsletter, 120363371199176376@newsletter, 120363421367985094@newsletter; channel display name \"ᴀʟᴀɴɴxᴅ | ʜᴏʟᴏᴡ 徴\"; code paths lib/Socket/newsletter.js and lib/Socket/luxu.js.",
   "affected": [
     {
       "package": {
@@ -50,12 +50,14 @@
       "first_seen_at": "2026-11-14T16:15:45Z",
       "indicators_observed": {
         "domain_observed": [
+          "github[.]com/alannzxd",
           "raw[.]githubusercontent[.]com"
         ],
         "sha256": [
           "70596264d7cd29f2a07568bc1ca3e6a9d63b95ed5429c6e88d1685676c744d43"
         ],
         "url_observed": [
+          "git+hxxps://github[.]com/alannzxd/baileys[.]git",
           "hxxps://raw[.]githubusercontent[.]com/alannzxd/xclient/refs/heads/main/information[.]json"
         ]
       }
