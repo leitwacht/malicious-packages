@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14067",
+  "modified": "2026-11-14T11:07:19Z",
+  "published": "2026-11-14T11:06:48Z",
+  "summary": "Potentially-unwanted package (riskware): nakano-baileys (npm)",
+  "details": "This package is a community WhatsApp Web API library fork that forcibly subscribes the user's WhatsApp account to author-chosen channels. lib/custom.js hardcodes two WhatsApp newsletter JIDs (120363424153860594@newsletter and 120363422841048901@newsletter) in a `customConfig` object with `autoFollow: true`, and lib/Socket/index.js calls `autoFollowChannels(sock)` on every `connection.update` event where the connection becomes `open`; the helper sequentially calls `sock.newsletterFollow(id)` on each JID, swallowing errors with a 2 second delay between calls. Every application that creates a socket therefore silently enrols its own paired account as a follower of those channels, with no prompt and no consent; the only way to stop it is to import and mutate `customConfig.autoFollow = false` before creating the socket. The same module patches `sock.requestPairingCode` so that the hardcoded code NAKANOCJ is used whenever the caller does not pass one, and prints a rainbow ANSI banner to stdout on first socket creation. The behaviour is opt-out-only self-promotion; no other network destination or file access was found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nakano-baileys",
+        "purl": "pkg:npm/nakano-baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nakano-baileys/v/1.0.3"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-14T11:06:48Z",
+      "indicators_observed": {
+        "sha256": [
+          "cb20af13ff509f38d7b17776e07d8ecd67841cf77fc7d8cad13cdafbf39ce024"
+        ]
+      }
+    }
+  }
+}

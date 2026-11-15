@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14070",
+  "modified": "2026-11-15T23:02:51Z",
+  "published": "2026-11-14T11:35:17Z",
+  "summary": "Malicious code in nakano-baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web API library that silently enrols the installing user's WhatsApp account into channels chosen by the package author. lib/Socket/index.js hooks the socket 'connection.update' event and, the first time the connection reaches the 'open' state, calls autoFollowChannels(sock); lib/custom.js ships two hardcoded newsletter IDs (120363424153860594@newsletter and 120363422841048901@newsletter) with the autoFollow flag enabled by default, and the routine calls sock.newsletterFollow() for each one with the user's authenticated session, two seconds apart, swallowing all errors. The same file overrides sock.requestPairingCode so that any caller-supplied pairing code is replaced with the fixed literal 'NAKANOCJ', and prints a coloured 'the publisher BAILEYS' banner on first socket creation. The subscription is opt-out only (customConfig.autoFollow = false before use) and is unrelated to the library's documented API surface. Beyond this account-side manipulation, the shipped code contains no credential, token or environment exfiltration, no callback or webhook host, and no obfuscated or dynamically-decoded payload: the only environment variable read is BAILEYS_LOG_LEVEL, the preinstall hook is a Node.js \u003e= 20 version check, and outbound traffic is the ordinary web[.]whatsapp[.]com client protocol. IOCs: WhatsApp newsletter JIDs 120363424153860594@newsletter and 120363422841048901@newsletter; fixed pairing code NAKANOCJ; project repository github[.]com/nakano-cjs/baileys.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nakano-baileys",
+        "purl": "pkg:npm/nakano-baileys"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nakano-baileys/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14070"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-14T11:35:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "b8fff1d0b7bf1ac86b5825393b01299b05b89d1ebc8034c12490e6b1d15b2ad3"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/nakano-cjs/baileys"
+        ]
+      }
+    }
+  }
+}

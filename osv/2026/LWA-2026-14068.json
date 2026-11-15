@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14068",
+  "modified": "2026-11-15T08:42:29Z",
+  "published": "2026-11-15T08:41:10Z",
+  "summary": "Malicious code in @izi-coder/baileys (npm)",
+  "details": "This package is an unofficial, re-branded fork of the Baileys WhatsApp Web library that silently enrolls the operator's WhatsApp account into a channel controlled by its author. In lib/Socket/newsletter.js a channel JID (120363430764800148@newsletter) is hardcoded, and makeNewsletterSocket schedules an auto-follow 10 seconds after the socket opens, issuing the WhatsApp newsletter FOLLOW query (QueryIds.FOLLOW) for that JID and retrying up to three times at 20-second intervals while the connection stays open. The routine is enabled by default: it is skipped only when config.autoFollowNewsletters is explicitly set to false or when config.newsletterAutoFollowId overrides the JID, and neither option is documented in the README, so an unmodified consumer account follows the channel without the app author's or end user's consent. Additional hardcoded JIDs used as defaults appear in lib/Socket/luxu.js for forwarded/event/poll message metadata. lib/WABinary/constants.js also carries an embedded Google API key (AIza-prefixed) inside its binary-token table. No reads of environment variables, credential files or wallet material and no non-WhatsApp C2 infrastructure were observed; the account-state change is performed over WhatsApp's own servers.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@izi-coder/baileys",
+        "purl": "pkg:npm/%40izi-coder/baileys"
+      },
+      "versions": [
+        "6.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@izi-coder/baileys/v/6.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14068"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:41:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "0e7afaee9cc07aed7546ebab9f09596875fc57e75543241656cf2e7af766bd96"
+        ]
+      }
+    }
+  }
+}

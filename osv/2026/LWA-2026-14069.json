@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14069",
+  "modified": "2026-11-15T22:49:10Z",
+  "published": "2026-11-15T22:47:26Z",
+  "summary": "Malicious code in @izi-coder/baileys (npm)",
+  "details": "This package is a WhatsApp Web automation library published under an unofficial scope using the basename of the upstream @whiskeysockets/baileys project, with injected behaviour on top of the fork. On every successful WhatsApp connection (the socket 'connection.update' == 'open' event) it starts a hidden 10-second timer, retrying every 20 seconds up to three times, and sends a newsletter follow request (w:mex query_id 7871414976211147) for hardcoded channel JID 120363430764800148@newsletter, silently subscribing the user's WhatsApp account to that channel operator without asking. The only way to disable it is an undocumented config flag (autoFollowNewsletters: false); the packaged README does not mention it. The same module tree stamps hardcoded channel JIDs 120363421563597486@newsletter and 120363399602691477@newsletter into forwardedNewsletterMessageInfo on generated event, poll-result and album messages, attributing relayed messages to those channels. The package also declares a dependency on cache-manager ^7.2.8, which resolves to a version carrying a confirmed malicious payload and is pulled into the install tree without any use of it by this library's code. Its preinstall hook (engine-requirements.js) only enforces Node.js \u003e= 20. No non-WhatsApp command-and-control endpoint is hardcoded in this package's own code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@izi-coder/baileys",
+        "purl": "pkg:npm/%40izi-coder/baileys"
+      },
+      "versions": [
+        "6.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@izi-coder/baileys/v/6.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14069"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T22:47:26Z",
+      "indicators_observed": {
+        "sha256": [
+          "68a01c7e1b7827f3557bea571856b7495c7b8946963c9043e5ac3ab7f1d33976"
+        ]
+      }
+    }
+  }
+}
