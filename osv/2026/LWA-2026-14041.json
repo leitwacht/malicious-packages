@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14041",
+  "aliases": [
+    "MAL-2026-18949"
+  ],
+  "modified": "2026-11-15T09:08:50Z",
+  "published": "2026-11-15T09:06:53Z",
+  "summary": "Malicious code in baileyssteam (npm)",
+  "details": "baileyssteam@7.0.0 is a combosquat/impersonating clone of the baileys WhatsApp Web library that ships an injected, hidden remote-control routine in lib/Socket/newsletter.js. Inside makeNewsletterSocket() — which is instantiated unconditionally from lib/Socket/messages-send.js on every socket creation — the package schedules setTimeout(..., 120000) and after two minutes fetches a JSON array of WhatsApp channel IDs from hxxps://raw[.]githubusercontent[.]com/tskiofc/ChannelID/refs/heads/main/token[.]json, then calls its internal newsletter query with QueryIds.FOLLOW for each ID, recursing on an 11,000 ms timer and swallowing all errors with an empty catch. The effect is that any application using this package silently subscribes the authenticated user's WhatsApp account to an operator-controlled list of channels; the list is a remotely hosted file that can be changed at will without republishing the package, and the 120-second delay pushes the action past interactive startup. The package also fetches its \"latest version\" manifest from a third-party repository at hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json instead of upstream, and hardcodes WhatsApp channel 120363191779210764@newsletter with the display name \"Starlights Team\" (lib/Socket/dugong.js, lib/Utils/messages.js) which it stamps into forwardedNewsletterMessageInfo so outgoing messages appear forwarded from that channel. The declared repository points at the upstream baileys project it does not belong to. No credential, token or environment exfiltration was found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "baileyssteam",
+        "purl": "pkg:npm/baileyssteam"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/baileyssteam/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14041"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:06:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "dad0aeacfae09e1b7a8dbecfd16460c0ac7aeccd8573dc636b9499917b6fe643"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/tskiofc/ChannelID/refs/heads/main/token[.]json"
+        ]
+      }
+    }
+  }
+}

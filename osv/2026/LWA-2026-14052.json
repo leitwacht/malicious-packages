@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14052",
+  "aliases": [
+    "MAL-2026-18881"
+  ],
+  "modified": "2026-11-15T09:16:21Z",
+  "published": "2026-11-15T09:14:32Z",
+  "summary": "Malicious code in @ravliesh/baileys (npm)",
+  "details": "@ravliesh/baileys is a modified repackage of the WhatsApp socket library @whiskeysockets/baileys (its package.json homepage and repository fields point at the upstream @whiskeysockets/baileys npm page) that adds a covert payload executed as soon as the library is required. The payload is a top-level IIFE in lib/Socket/newsletter.js. It registers an 80-second setTimeout and then fetches a JSON list of WhatsApp newsletter/channel JIDs from hxxps://raw[.]githubusercontent[.]com/ravliesh/listid/refs/heads/main/idChannel[.]json. For each returned ID it calls the internal newsletter query with the FOLLOW operation, spacing the calls five seconds apart, with every error silently swallowed. The follow targets therefore live in a remote file controlled by the package author and can be changed at any time without republishing the package. Because lib/Socket/messages-send.js imports./newsletter and instantiates makeNewsletterSocket at module load, this code runs automatically on `require('@ravliesh/baileys')` — the application does not have to call any of the library's APIs and there is no configuration switch, log output or README mention of it. The 80-second delay places the network action well after installation. The package also ships editor backup sidecars lib/Utils/generics.js.bak and lib/Utils/validate-connection.js.bak, leftovers from hand-editing a forked codebase. In lib/Utils/generics.js, fetchLatestBaileysVersion is redirected to hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json instead of the upstream source, and fetchLatestWaWebVersion scrapes hxxps://web[.]whatsapp[.]com/sw[.]js. No credential, token or file exfiltration was found in the package; the preinstall hook (engine-requirements.js) is only a Node.js version check. The malicious behaviour is the concealment and remote control: account actions are performed against a server-side list without the operator's knowledge. IOCs: hxxps://raw[.]githubusercontent[.]com/ravliesh/listid/refs/heads/main/idChannel[.]json; hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json; file lib/Socket/newsletter.js; files lib/Utils/generics.js.bak, lib/Utils/validate-connection.js.bak",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ravliesh/baileys",
+        "purl": "pkg:npm/%40ravliesh/baileys"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ravliesh/baileys/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14052"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:14:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "47b55b942fae9b894f481386b5ba1b8ddc1a007351e27cde26ca5e5e1f670f5b"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/ravliesh/listid/refs/heads/main/idChannel[.]json",
+          "hxxps://web[.]whatsapp[.]com/sw[.]js"
+        ]
+      }
+    }
+  }
+}

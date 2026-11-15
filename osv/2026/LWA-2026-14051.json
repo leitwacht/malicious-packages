@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14051",
+  "aliases": [
+    "MAL-2026-18847"
+  ],
+  "modified": "2026-11-15T09:14:42Z",
+  "published": "2026-11-15T09:12:51Z",
+  "summary": "Malicious code in @ikhsan-project/dizzanzz (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web API library that covertly modifies the connecting user's WhatsApp account. In lib/Socket/newsletter.js, makeNewsletterSocket — invoked unconditionally from lib/Socket/messages-send.js for every client socket — schedules two 90000 ms timers; each issues a WhatsApp w:mex FOLLOW query (QueryIds.FOLLOW) for a newsletter JID stored base64-encoded in the source, followed by a second nested follow 5 seconds later. The four hardcoded channels are 120363425000320171@newsletter, 120363420757607688@newsletter, 120363400738305381@newsletter and 120363423837510800@newsletter, and every call is wrapped in an empty catch so no error or log surfaces. The fork also stamps messages generated through the library with forwarded-newsletter attribution to 120363420757607688@newsletter (\"7eppeli - Information\") in lib/Utils/messages.js, and lib/Socket/luxu.js hardcodes 120363421563597486@newsletter and 120363399602691477@newsletter for the same purpose. Additionally lib/Utils/generics.js fetches version data from hxxps://raw.githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version.json. The obfuscation (base64 JIDs, 90-second delays, silent failures) exists specifically to hide the account modification; the preinstall file engine-requirements.js only checks the Node.js major version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ikhsan-project/dizzanzz",
+        "purl": "pkg:npm/%40ikhsan-project/dizzanzz"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ikhsan-project/dizzanzz/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14051"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:12:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363400738305381@newsletter",
+          "120363420757607688@newsletter",
+          "120363421563597486@newsletter",
+          "120363423837510800@newsletter",
+          "120363425000320171@newsletter",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "163913354222517f36d3c8da4d373e7d1e2bbd6238d5362f3e5ad114d31435c8"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

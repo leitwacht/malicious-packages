@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14043",
+  "aliases": [
+    "MAL-2026-18823"
+  ],
+  "modified": "2026-11-15T09:11:48Z",
+  "published": "2026-11-15T09:09:25Z",
+  "summary": "Malicious code in @dinzid/bailstaov1 (npm)",
+  "details": "This package is a WhatsApp Web API library (a renamed Baileys derivative) with hidden account-manipulation logic added to its socket layer and message builder. In lib/Socket/messages-recv.js a connection.update handler waits until the socket reports \"connection open\", schedules a 90,000 ms timeout whose callback reconstructs two newsletter identifiers from decimal character-code arrays — \"120363408975923153@newsletter\" and \"120363421171049265@newsletter\" — and calls sock.newsletterFollow() on both, inside a try/catch that discards every error. The result is that the victim's WhatsApp account is silently subscribed to the operator's promotion channels 90 seconds after connect, with the identifiers obfuscated so a casual read of the library does not reveal them. lib/Utils/messages.js contains a third hardcoded channel, \"12036340870324179@newsletter\" (newsletterName \"DinZBails\"), returned as a defaultAnnotation.newsletter from prepareWAMessageMedia, which injects a channel reference into outgoing media messages. lib/Utils/generics.js adds an Itsuki() helper that GETs hxxps://raw[.]githubusercontent[.]com/Itsukichann/database/refs/heads/main/itsuki.json and returns a random element of the returned array, so the returned content is controlled remotely and can be changed after publication. lib/Utils/messages-media.js uploads media to anonymous public file hosts uguu[.]se and tmpfiles[.]org and converts video through ezgif[.]com. The only lifecycle hook, preinstall (engine-requirements.js), merely enforces Node.js \u0026gt;= 20. No access to registry tokens, repository tokens,.npmrc, cloud credentials or SSH/AWS paths was found in the shipped tree.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dinzid/bailstaov1",
+        "purl": "pkg:npm/%40dinzid/bailstaov1"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dinzid/bailstaov1/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14043"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:09:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ezgif[.]com",
+          "raw[.]githubusercontent[.]com",
+          "tmpfiles[.]org",
+          "uguu[.]se"
+        ],
+        "sha256": [
+          "1aa313d97bde9555a0dc5710aa58a5597d88c476c4c496443fc1c2659ae2ccbc"
+        ],
+        "url_observed": [
+          "hxxps://ezgif[.]com/video-to-jpg",
+          "hxxps://raw[.]githubusercontent[.]com/Itsukichann/database/refs/heads/main/itsuki[.]json",
+          "hxxps://tmpfiles[.]org/api/v1/upload"
+        ]
+      }
+    }
+  }
+}

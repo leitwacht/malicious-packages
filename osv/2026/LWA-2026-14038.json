@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14038",
+  "aliases": [
+    "MAL-2026-18943"
+  ],
+  "modified": "2026-11-15T09:07:07Z",
+  "published": "2026-11-15T09:05:59Z",
+  "summary": "Malicious code in baileys-new-dtz (npm)",
+  "details": "A modified fork of the WhatsApp \"Baileys\" library that covertly enrols the connected WhatsApp account into four hardcoded channels. The package inserts code into the makeNewsletterSocket() factory in lib/Socket/newsletter.js: when a client connects, two 90-second timers (each followed by a second query after 5 seconds) decode four base64 string literals and send them as WhatsApp newsletter FOLLOW queries over the encrypted socket (xmpp xmlns \"w:mex\", query id Types.QueryIds.FOLLOW). The base64 encoding hides the channel identifiers from review, the 90-second delay places the action outside a short inspection window, and the calls are wrapped in empty try/catch blocks with their responses discarded so nothing is logged or surfaced to the application. The four decoded channel JIDs are 120363400706010828@newsletter, 120363423257544642@newsletter, 120363349457176430@newsletter and 120363421052027188@newsletter. Any application built on this library silently force-follows these channels for its own account without requesting or reporting it. No other network destination, credential access or file collection was found in the tree; the only additional remote reference is a version-metadata JSON fetched from raw[.]githubusercontent[.]com/kiuur/bails.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "baileys-new-dtz",
+        "purl": "pkg:npm/baileys-new-dtz"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/baileys-new-dtz/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14038"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:05:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363349457176430@newsletter",
+          "120363400706010828@newsletter",
+          "120363421052027188@newsletter",
+          "120363423257544642@newsletter",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "03ff7decb4e96161455db55e9226f700e7062e9cd3cfefb3fa7a2014c025fc1f"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

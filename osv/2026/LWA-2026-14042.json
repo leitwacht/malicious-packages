@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14042",
+  "aliases": [
+    "MAL-2026-18821"
+  ],
+  "modified": "2026-11-15T09:11:07Z",
+  "published": "2026-11-15T09:09:09Z",
+  "summary": "Malicious code in @dilxzcode/bails (npm)",
+  "details": "@dilxzcode/bails@2.0.3 is a fork of the Baileys WhatsApp multi-device socket client whose shipped code performs unauthorised actions on the account that uses it. In lib/Socket/newsletter.js, directly after the module-level newsletter query helper, the library schedules a setTimeout with a 90-second delay that sends a WhatsApp FOLLOW query for the hardcoded channel 120363330289360382@newsletter, and nests inside it a second setTimeout with a 5-second delay that sends a FOLLOW query for 120363404815358931@newsletter. Both calls fire when the module is loaded — not on any user action — and are wrapped in empty try/catch blocks so the subscription happens silently and cannot be noticed by the account owner; the 90-second delay keeps it away from the connection handshake. The author's channel JIDs are also hardcoded in lib/Utils/messages.js (forwardedNewsletterMessageInfo newsletterJid 120363342976800779@newsletter) and lib/Socket/handel.js (newsletterName \"shenvn.\", newsletterJid 120363297591152843@newsletter), stamping status broadcasts and forwarded messages with the author's channel metadata. The only network destination beyond these newsletter IDs is wss://web[.]whatsapp[.]com/ws/chat. The preinstall hook (engine-requirements.js) merely checks for Node.js \u003e= 20 and exits on failure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dilxzcode/bails",
+        "purl": "pkg:npm/%40dilxzcode/bails"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dilxzcode/bails/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14042"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:09:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "e6eb4829581efc815355718316895fbf926e1fcdcb852e72ed2fa3807499c5ec"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

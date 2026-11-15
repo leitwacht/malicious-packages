@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14028",
+  "aliases": [
+    "MAL-2026-18933"
+  ],
+  "modified": "2026-11-15T09:01:52Z",
+  "published": "2026-11-15T09:00:59Z",
+  "summary": "Potentially-unwanted package (riskware): amanexfujimiya-baileys (npm)",
+  "details": "This package is a customised WhatsApp (Baileys) library that silently subscribes the connecting account to its author's WhatsApp channel and tags outgoing messages with that channel's attribution. lib/Socket/newsletter.js registers a top-level 90-second timer inside makeNewsletterSocket that, once the library builds a WhatsApp socket, issues a w:mex FOLLOW query for the base64-hidden channel JID 120363407277177688@newsletter (channel name \"shenvn.\") and discards any error. Nothing in the module's exported API or options exposes or gates this call. lib/Socket/rahmad.js additionally hardcodes the same JID in a forwardedNewsletterMessageInfo block (newsletterName \"shenvn.\") on messages it constructs, so the bot's traffic appears attributed to that channel. No credential, token or file access was observed in the package; network use is limited to the WhatsApp WebSocket endpoint and registry[.]npmjs[.]org. Behaviour: undisclosed forced channel subscription plus channel-attribution injection.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "amanexfujimiya-baileys",
+        "purl": "pkg:npm/amanexfujimiya-baileys"
+      },
+      "versions": [
+        "8.6.23"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/amanexfujimiya-baileys/v/8.6.23"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:00:59Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "b6a0eda6851b01a7cf268787dc6d40f194f2fc6abee791a5c8929bd2722f18f6"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

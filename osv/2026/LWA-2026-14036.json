@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14036",
+  "aliases": [
+    "MAL-2026-18972"
+  ],
+  "modified": "2026-11-15T09:06:15Z",
+  "published": "2026-11-15T09:05:23Z",
+  "summary": "Malicious code in felixid (npm)",
+  "details": "This package is a WhatsApp Web API library (a Baileys-style fork) carrying an injected, undisclosed routine that makes the connecting account follow a set of hardcoded WhatsApp newsletter channels. In lib/Socket/newsletter.js the package defines an AUTO_FOLLOW_NEWSLETTERS array of 15 channel JIDs (120363401730881684@newsletter, 120363400049731712@newsletter, 120363395770194330@newsletter, 120363398373680649@newsletter, 120363417491017987@newsletter, 120363420942322597@newsletter, 120363421775069451@newsletter, 120363421327959143@newsletter, 120363402922114408@newsletter, 120363420869866105@newsletter, 120363403493336270@newsletter, 120363421299844060@newsletter, 120363402964797607@newsletter, 120363421865196664@newsletter, 120363403158835368@newsletter) and registers a connection.update handler: when the host application's WhatsApp session reaches the \"open\" state, it waits 3 seconds and issues the newsletter FOLLOW request (w:mex query_id 7871414976211147) for each JID in turn, retrying once and pausing 1 second between each, with only an in-memory running flag as a guard. Nothing is logged or surfaced to the calling application and there is no configuration switch, so every account that connects through this library is silently subscribed to all 15 channels. The package's preinstall hook (engine-requirements.js) only enforces Node.js \u003e= 20; the VoIP eval/vm call sites load bundled Emscripten worker modules from lib/assets/wasm. No credential, token or environment-secret access and no non-WhatsApp/Meta network endpoints were found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "felixid",
+        "purl": "pkg:npm/felixid"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/felixid/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14036"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:05:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363395770194330@newsletter",
+          "120363398373680649@newsletter",
+          "120363400049731712@newsletter",
+          "120363401730881684@newsletter",
+          "120363402922114408@newsletter",
+          "120363402964797607@newsletter",
+          "120363403158835368@newsletter",
+          "120363403493336270@newsletter",
+          "120363417491017987@newsletter",
+          "120363420869866105@newsletter",
+          "120363420942322597@newsletter",
+          "120363421299844060@newsletter",
+          "120363421327959143@newsletter",
+          "120363421775069451@newsletter",
+          "120363421865196664@newsletter"
+        ],
+        "sha256": [
+          "766d7de186c8f563c5983a493e92af4bc9632a8214e3650b6137fdf0ca19001a"
+        ]
+      }
+    }
+  }
+}

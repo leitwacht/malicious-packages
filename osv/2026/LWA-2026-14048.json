@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14048",
+  "aliases": [
+    "MAL-2026-18851"
+  ],
+  "modified": "2026-11-15T09:14:13Z",
+  "published": "2026-11-15T09:13:27Z",
+  "summary": "Potentially-unwanted package (riskware): @jiancodes/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp library whose socket layer covertly enrols the connecting account into channels chosen by its author. In lib/Socket/newsletter.js, makeNewsletterSocket() registers a timer that fires 90 seconds after a socket is created and issues a w:mex FOLLOW query for the newsletter JID 120363399266188954@newsletter, then follows 120363402472932012@newsletter five seconds later; both JIDs are stored as base64-encoded string literals (\"MTIwMzYzMzk5MjY2MTg4OTU0QG5ld3NsZXR0ZXI=\", \"MTIwMzYzNDAyNDcyOTMyMDEyQG5ld3NsZXR0ZXI=\") and query errors are silently swallowed. The same channel, displayed as \"Faa About Information\", is hardcoded in lib/Socket/luxu.js and lib/Utils/messages.js, where outgoing status and poll payloads are stamped with forwardedNewsletterMessageInfo pointing at that channel, making the user's messages appear forwarded from it. The package performs no credential, token, environment or file access; its only install-time action is a Node.js version check in engine-requirements.js, and its network traffic is limited to the WhatsApp websocket endpoint and the npm registry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jiancodes/baileys",
+        "purl": "pkg:npm/%40jiancodes/baileys"
+      },
+      "versions": [
+        "1.7.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jiancodes/baileys/v/1.7.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:13:27Z",
+      "indicators_observed": {
+        "sha256": [
+          "af475b0d6d2f79b881be559a872c6dba84ea14e02c0fd4f456a73e46a6a84340"
+        ]
+      }
+    }
+  }
+}

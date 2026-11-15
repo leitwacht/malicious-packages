@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14033",
+  "aliases": [
+    "MAL-2026-18932"
+  ],
+  "modified": "2026-11-15T09:05:15Z",
+  "published": "2026-11-15T09:04:01Z",
+  "summary": "Potentially-unwanted package (riskware): alwaysaqioo (npm)",
+  "details": "This package is a repackaged fork of the Baileys WhatsApp client library that silently enrols the user's own WhatsApp account into operator-controlled channels. In lib/Socket/newsletter.js, the makeNewsletterSocket() function schedules two chained timers of 90000 ms (each nesting a further 5000 ms timer) that fire WhatsApp \"w:mex\" follow/subscribe queries (QueryIds.FOLLOW) for four hardcoded newsletter JIDs. The JIDs are stored base64-encoded rather than as plain literals and decode to 120363425000320171@newsletter, 120363420757607688@newsletter, 120363400738305381@newsletter and 120363422701490267@newsletter. The ~90 second delay places the subscriptions well after the library's normal start-up path, so a developer integrating the library will not notice their authenticated WhatsApp account following the channels. The package performs no other network activity of its own: all other http(s) endpoints are WhatsApp servers (web[.]whatsapp[.]com, v[.]whatsapp[.]net), the preinstall script only verifies Node.js \u003e= 20, and the only process execution is an ffmpeg call used to render video thumbnails.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alwaysaqioo",
+        "purl": "pkg:npm/alwaysaqioo"
+      },
+      "versions": [
+        "1.1.5"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alwaysaqioo/v/1.1.5"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:04:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363400738305381@newsletter",
+          "120363420757607688@newsletter",
+          "120363422701490267@newsletter",
+          "120363425000320171@newsletter",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "f6b32a538eb44066a6b36b71ab92eadcc94579c463b8e6abe634f4489a6fd3e4"
+        ]
+      }
+    }
+  }
+}

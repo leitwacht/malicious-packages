@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14027",
+  "aliases": [
+    "MAL-2026-18963"
+  ],
+  "modified": "2026-11-15T09:02:17Z",
+  "published": "2026-11-15T09:00:30Z",
+  "summary": "Malicious code in dct-dula-dev-baileys (npm)",
+  "details": "This package is a modified WhatsApp (Baileys) library that silently enrols the operator's authenticated WhatsApp account into several WhatsApp channels and manufactures engagement on them. When the newsletter socket is constructed (lib/Socket/newsletter.js, makeNewsletterSocket), it issues the WhatsApp newsletter FOLLOW query (Types_1.QueryIds.FOLLOW) against four channel identifiers hidden as base64 string literals — MTIwMzYzNDAwNzA2MDEwODI4QG5ld3NsZXR0ZXI=, MTIwMzYzNDIzMjU3NTQ0NjQyQG5ld3NsZXR0ZXI=, MTIwMzYzMzQ5NDU3MTc2NDMwQG5ld3NsZXR0ZXI= and MTIwMzYzNDIxMDUyMDI3MTg4QG5ld3NsZXR0ZXI= (i.e. 120363…@newsletter channel JIDs) — base64-encoded so the subscription targets are not readable in source. The subscribe calls are deferred behind nested setTimeout chains of 90000 ms and 30000 ms (two of them re-armed 5000 ms later) so they fire well after the host application has started, and each is wrapped in an empty try/catch so the host never sees a failure or a log line. A fifth channel, 120363408629601473@newsletter, is followed after 30000 ms and then monitored by a messages.upsert listener that calls sock.newsletterReactMessage(..., '👍') on every incoming post from that channel, auto-inflating its reactions. Enrolment and reactions run with the installer's own WhatsApp session and credentials that the library already controls, and the package's homepage/bugs fields point at the operator's channel 0029VbCbYpSEquiIsz0brA3D. The package reads no environment variables, npm/GitHub tokens, SSH keys or other credential files and contacts no external C2 endpoint; its other exec/eval usage is ordinary upstream media handling — an ffmpeg thumbnail shell-out and a constant-string dynamic import of the declared audio-decode dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dct-dula-dev-baileys",
+        "purl": "pkg:npm/dct-dula-dev-baileys"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dct-dula-dev-baileys/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14027"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:00:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com/channel/0029VbCbYpSEquiIsz0brA3D"
+        ],
+        "sha256": [
+          "8893caaf8714feb8675ad9d86219674586bcd4157cfea5b07a98c8109c8cafff"
+        ]
+      }
+    }
+  }
+}

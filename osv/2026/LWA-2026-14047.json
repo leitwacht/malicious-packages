@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14047",
+  "aliases": [
+    "MAL-2026-18848"
+  ],
+  "modified": "2026-11-15T09:14:36Z",
+  "published": "2026-11-15T09:12:53Z",
+  "summary": "Malicious code in @ikyybella/baileys (npm)",
+  "details": "This package republishes the Baileys WhatsApp Web library under the @ikyybella scope with the upstream name intact and adds a hidden installer-independent action to it. lib/Socket/newsletter.js contains an injected, unguarded 90-second setTimeout inside the newsletter socket factory that fires on every connection and issues a WhatsApp \"w:mex\" query with QueryIds.FOLLOW against the hardcoded channel JID 120363425000320171@newsletter — silently subscribing the linked WhatsApp account to that channel, with errors swallowed and no API call or user consent. lib/Socket/luxu.js additionally hardcodes forwardedNewsletterMessageInfo channel JIDs (120363421563597486@newsletter, 120363399602691477@newsletter) and the channel name \"Ikyy\" onto outgoing eventMessage and poll messages, so messages sent through this fork inherit forced channel attribution. The package declares a dependency on cache-manager ^7.2.8, a version range that resolves to a release of that otherwise-legitimate caching library which has been separately identified as malicious, so installing this package alongside those libraries pulls the compromised build into the dependency tree. The preinstall hook engine-requirements.js only checks the Node.js major version. The fork contains no credential, token,.npmrc or environment-variable reads and no file exfiltration; all hardcoded network destinations are web[.]whatsapp[.]com, call[.]whatsapp[.]com, wa[.]me and raw[.]githubusercontent[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ikyybella/baileys",
+        "purl": "pkg:npm/%40ikyybella/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ikyybella/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14047"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:12:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "raw[.]githubusercontent[.]com",
+          "wa[.]me",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "0a6ee47679dd7c3f50f1e4a3a2bd28449b96537a0a25d9c2934de9ca08b096f8"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts",
+          "hxxps://web[.]whatsapp[.]com/sw[.]js"
+        ]
+      }
+    }
+  }
+}

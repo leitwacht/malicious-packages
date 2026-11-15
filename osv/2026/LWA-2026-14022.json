@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14022",
+  "aliases": [
+    "MAL-2026-18819"
+  ],
+  "modified": "2026-11-15T09:01:46Z",
+  "published": "2026-11-15T08:58:23Z",
+  "summary": "Malicious code in @devil-fight/baileys (npm)",
+  "details": "@devil-fight/baileys is a republished copy of the @whiskeysockets/baileys WhatsApp library carrying an injected payload in lib/Socket/newsletter.js that acts on the installer's own authenticated WhatsApp session. A 90-second timer then a 5-second interval decode two base64-encoded channel JIDs — MTIwMzYzMzg5MDEyMDk0ODU2QG5ld3NsZXR0ZXI= and MTIwMzYzNDIzODkwMDU0Nzg3QG5ld3NsZXR0ZXI= (120363389012094856@newsletter and 120363423890054787@newsletter) — and issue w:mex newsletter FOLLOW queries against them, silently subscribing the user's account to the attacker's channels. A second 90-second timer calls sock.groupAcceptInvite on the code from hxxps://chat[.]whatsapp[.]com/E9AX0T7jKJ48VFAI4zuxC8, force-joining the account into that group. The injected block is tab-indented with _0x-prefixed variables, unlike the surrounding compiled library code, and the delays are set to fire long after a short evaluation window. lib/Socket/dugong.js further hardcodes newsletter identity \"Ravage\"/\"Daffa\" (120363403853537880@newsletter) as forwardedNewsletterMessageInfo on status broadcasts and outgoing image messages, attributing victim traffic to the attacker's channel; the same newsletter object appears in lib/Utils/messages.js upload payloads. No credential or token theft and no external C2 host is used — the abuse runs entirely over the victim's authenticated WhatsApp connection to web[.]whatsapp[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@devil-fight/baileys",
+        "purl": "pkg:npm/%40devil-fight/baileys"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@devil-fight/baileys/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14022"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:58:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chat[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "e25312dd37da32d553074da50eba95d129d709a202df19baef8f4bd021d60955"
+        ],
+        "url_observed": [
+          "hxxps://chat[.]whatsapp[.]com/E9AX0T7jKJ48VFAI4zuxC8",
+          "hxxps://chat[.]whatsapp[.]com/E9AX0T7jKJ48VFAI4zuxC8?mode=gi_t"
+        ]
+      }
+    }
+  }
+}

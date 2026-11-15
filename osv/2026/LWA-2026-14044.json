@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14044",
+  "aliases": [
+    "MAL-2026-18959"
+  ],
+  "modified": "2026-11-15T09:10:42Z",
+  "published": "2026-11-15T09:09:41Z",
+  "summary": "Malicious code in dapzsyz-baileysm (npm)",
+  "details": "dapzsyz-baileysm@0.4.2 is a fork of the WhatsApp Web (Baileys/Wileys) API library that ships an injected account-enrolment payload in lib/Socket/newsletter.js. When a client calls the newsletter API, the modified module schedules setTimeout chains (70 seconds, then 5 seconds) that silently issue W:MEX newsletter FOLLOW mutations on the user's authenticated WhatsApp account for seven hardcoded channel JIDs: 120363397787532298, 120363419938392281, 120363403088190386, 120363401425960788, 120363402984117316, 120363401712599053 and 120363403341539432. The FOLLOW calls are spaced 3-5 seconds apart, are wrapped in empty catch blocks so failures leave no trace, and fire long after connect so the account enrolments are not visible in normal client logs. The package otherwise mirrors the upstream library, including a preinstall hook that only checks the Node.js version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dapzsyz-baileysm",
+        "purl": "pkg:npm/dapzsyz-baileysm"
+      },
+      "versions": [
+        "0.4.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dapzsyz-baileysm/v/0.4.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14044"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:09:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "4d1a186cc5325d0c5318a2e2bf15d93a0a41fd97c29851253582974cac905ca9"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

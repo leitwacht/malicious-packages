@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14021",
+  "aliases": [
+    "MAL-2026-18819"
+  ],
+  "modified": "2026-11-15T09:03:26Z",
+  "published": "2026-11-15T08:57:32Z",
+  "summary": "Malicious code in @devil-fight/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp library that, without the operator's knowledge, uses the operator's authenticated WhatsApp session to join a third party's group and follow two third-party newsletter channels. lib/Socket/newsletter.js contains three module-level setTimeout(..., 90000) blocks inside makeNewsletterSocket; they run 90 seconds after any consumer creates a socket and: (1) call sock.groupAcceptInvite('E9AX0T7jKJ48VFAI4zuxC8'), joining the group behind hxxps://chat[.]whatsapp[.]com/E9AX0T7jKJ48VFAI4zuxC8; (2) and (3) issue a follow query (QueryIds.FOLLOW, xmlns \"w:mex\") against the base64-obfuscated newsletter JIDs MTIwMzYzMzg5MDEyMDk0ODU2QG5ld3NsZXR0ZXI= and MTIwMzYzNDIzODkwMDU0Nzg3QG5ld3NsZXR0ZXI=, i.e. 120363389012094856@newsletter and 120363423890054787@newsletter. Separately, lib/Socket/dugong.js hard-codes a forwarded-newsletter tag on outgoing forwarded messages pointing at 120363297591152843@newsletter under the display name \"shenvn.\". The 90-second delay and the base64 encoding of the channel identifiers hide the account actions from the operator; failures are swallowed in empty catch blocks. Errors are suppressed so the account changes happen silently. The preinstall hook (engine-requirements.js) only checks the Node.js major version and is unrelated. No npm/GitHub/cloud tokens, SSH/AWS credential files, environment variables or local files are read or transmitted; all traffic goes to WhatsApp infrastructure.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@devil-fight/baileys",
+        "purl": "pkg:npm/%40devil-fight/baileys"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@devil-fight/baileys/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14021"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:57:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chat[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "29851da930803e61ca421d1d29daecd2de034bc16ebb73484aa0409cc7e27713"
+        ],
+        "url_observed": [
+          "hxxps://chat[.]whatsapp[.]com/E9AX0T7jKJ48VFAI4zuxC8",
+          "hxxps://chat[.]whatsapp[.]com/E9AX0T7jKJ48VFAI4zuxC8?mode=gi_t"
+        ]
+      }
+    }
+  }
+}

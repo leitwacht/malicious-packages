@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14035",
+  "aliases": [
+    "MAL-2026-18822"
+  ],
+  "modified": "2026-11-15T09:05:59Z",
+  "published": "2026-11-15T09:04:38Z",
+  "summary": "Malicious code in @dinzid/bailstao (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library whose lib/Socket/newsletter.js silently manipulates the account's WhatsApp channel subscriptions. Two newsletter ids stored base64-encoded (120363388739599619@newsletter and 120363186130999681@newsletter) are auto-followed with a w:mex FOLLOW query 5 and 10 seconds after the socket is created, without any caller action. The same file starts a \"startSecurityPatrol\" loop every 10 seconds that reads the account's subscribed channels and unfollows any listed in a hardcoded 21-entry blacklist, removing subscriptions the user chose. The preinstall hook engine-requirements.js only prints a Node.js \u003e= 20 banner; no credentials, environment variables or files are collected.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dinzid/bailstao",
+        "purl": "pkg:npm/%40dinzid/bailstao"
+      },
+      "versions": [
+        "0.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dinzid/bailstao/v/0.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14035"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:04:38Z",
+      "indicators_observed": {
+        "sha256": [
+          "dc3fe0fa140e5260cb8e1d8863fec250c05eb7943f505a9bbc8dabbe589b82a2"
+        ]
+      }
+    }
+  }
+}

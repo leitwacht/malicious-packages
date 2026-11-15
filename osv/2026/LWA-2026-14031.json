@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14031",
+  "aliases": [
+    "MAL-2026-18933"
+  ],
+  "modified": "2026-11-15T09:04:30Z",
+  "published": "2026-11-15T09:01:34Z",
+  "summary": "Malicious code in amanexfujimiya-baileys (npm)",
+  "details": "This package is a modified WhatsApp (Baileys) client library that covertly enrols the connecting account into an unknown WhatsApp channel and forges that channel's attribution onto outgoing messages. In lib/Socket/newsletter.js a top-level setTimeout fires 90 seconds after the module is loaded and sends a w:mex FOLLOW query for the channel identifier 120363407277177688@newsletter (stored base64-encoded as MTIwMzYzNDA3Mjc3MTc3Njg4QG5ld3NsZXR0ZXI=); every error is swallowed, so the subscription happens silently and is not described anywhere in the package. In lib/Socket/rahmad.js (class kikyy, required from lib/Socket/messages-send.js) every generated message is given forwardedNewsletterMessageInfo {newsletterJid: 120363407277177688@newsletter, newsletterName: \"shenvn.\"} plus fabricated forwardingScore 99999, isForwarded, disappearingMode and businessMessageForwardInfo fields, so traffic sent by the application appears forwarded from and attributed to that channel. The preinstall hook engine-requirements.js only checks the Node.js major version (\u003e=20). No credentials, tokens, environment variables,.npmrc, SSH or cloud key files are read, and the only network destinations in the code are the WhatsApp service (wss://web[.]whatsapp[.]com/ws/chat, v[.]whatsapp[.]net) and the npm registry; the injected behaviour uses WhatsApp's own protocol rather than a separate controller host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "amanexfujimiya-baileys",
+        "purl": "pkg:npm/amanexfujimiya-baileys"
+      },
+      "versions": [
+        "8.6.25"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/amanexfujimiya-baileys/v/8.6.25"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14031"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:01:34Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "38134fbe5125fe068b0b0dcf5a921aae455d53b3ec5e618d187c2c3090a4c4ca"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14034",
+  "aliases": [
+    "MAL-2026-18822"
+  ],
+  "modified": "2026-11-15T09:07:19Z",
+  "published": "2026-11-15T09:04:38Z",
+  "summary": "Malicious code in @dinzid/bailstao (npm)",
+  "details": "This package is a modified WhatsApp (Baileys) client library that silently manipulates the channel subscriptions of the account it is connected with. In lib/Socket/newsletter.js, makeNewsletterSocket() base64-decodes two hardcoded channel JIDs — 120363388739599619@newsletter and 120363186130999681@newsletter — and calls the WhatsApp newsletter FOLLOW mutation (QueryIds.FOLLOW) for each about five seconds after the socket is created, subscribing the user's account to channels the user never chose. The same module immediately starts a 10-second interval named \"startSecurityPatrol\" that runs the xwa2_newsletter_subscribed GraphQL query (query id 6388546374527196) against the WhatsApp WebSocket endpoint (wss://web[.]whatsapp[.]com/ws/chat) and automatically sends the UNFOLLOW mutation for any subscription matching one of 22 hardcoded channel JIDs listed in blacklistIds, repeatedly unsubscribing the user from channels the package author does not control. All of this runs from the library's normal socket-construction path, so it executes inside any bot that consumes the package, without the operator's knowledge or consent. The preinstall hook engine-requirements.js only prints a Node-version banner and exits when Node is below 20; it downloads and executes nothing. No environment variables, tokens, credential files or local data are read or transmitted by the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dinzid/bailstao",
+        "purl": "pkg:npm/%40dinzid/bailstao"
+      },
+      "versions": [
+        "0.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dinzid/bailstao/v/0.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14034"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:04:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "073f5598847bd5fb0661e9db53bb4fc39e46fd6f30e0ca6c663bec8a1ebeeaf6"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
