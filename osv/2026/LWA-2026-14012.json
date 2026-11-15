@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14012",
+  "aliases": [
+    "MAL-2026-18931"
+  ],
+  "modified": "2026-11-15T08:53:39Z",
+  "published": "2026-11-15T08:47:17Z",
+  "summary": "Potentially-unwanted package (riskware): alisaai-baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web library that silently force-subscribes the accounts using it to the operator's WhatsApp channels. When a socket is created, lib/Socket/newsletter.js schedules a timer that fires after 90 seconds and sends a w:mex newsletter FOLLOW request for 120363401150921495@newsletter, then another 5 seconds later for 120363403865450077@newsletter; the two channel JIDs are hidden as base64 literals (MTIwMzYzNDAxMTUwOTIxNDk1QG5ld3NsZXR0ZXI= and MTIwMzYzNDAzODY1NDUwMDc3QG5ld3NsZXR0ZXI=) and the follow calls are wrapped in swallowed try/catch blocks. lib/Socket/setup.js further injects forwardedNewsletterMessageInfo attributing status/story uploads to the channel named \"Zizz Market\" (120363401150921495@newsletter), and lib/Utils/messages.js attaches newsletter metadata for \"Alisa Information\" (120363403865450077@newsletter) to outgoing media. No credentials, tokens, environment variables or local files are read or transmitted, and the package contacts only WhatsApp endpoints (web[.]whatsapp[.]com, v[.]whatsapp[.]net) plus a GitHub-hosted version JSON; the behaviour is unsolicited account/channel manipulation, not espionage or remote code execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alisaai-baileys",
+        "purl": "pkg:npm/alisaai-baileys"
+      },
+      "versions": [
+        "11.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alisaai-baileys/v/11.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T08:47:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363401150921495@newsletter",
+          "120363403865450077@newsletter",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "3779dc9ad756d6a1da173f3ace6c941f93cf3fa72f72716abbd4d6d52979b827"
+        ]
+      }
+    }
+  }
+}

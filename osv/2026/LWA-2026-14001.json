@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14001",
+  "aliases": [
+    "MAL-2026-18934"
+  ],
+  "modified": "2026-11-15T08:49:14Z",
+  "published": "2026-11-15T08:48:12Z",
+  "summary": "Malicious code in amiudmodz (npm)",
+  "details": "This package is a modified copy of the Baileys WhatsApp Web client library with hardcoded channel-manipulation code injected into library code paths that run for every consumer. 1. lib/Socket/newsletter.js — inside makeNewsletterSocket, an unconditional timer (setTimeout, 90000 ms) fires a newsletter FOLLOW query (w:mex / Types.QueryIds.FOLLOW) against the hardcoded WhatsApp channel 120363400725985615@newsletter. Any application that creates a socket with this library silently enrols the account into that channel ~90 seconds later; the call is wrapped in a silent try/catch so failures are invisible. 2. lib/Utils/messages.js — prepareWAMessageMedia has an injected hardcoded annotations block (a polygonVertices list plus newsletter: { newsletterJid: \"120363400725985615sletter\", serverMessageId: 0, newsletterName: \"z4ph\", contentType: \"UPDATE\" }) that is merged into the upload payload whenever the caller does not supply annotations. Outbound media sent through the library is therefore stamped with the operator's channel attribution. The package also declares the dependency \"cache-manager\" as the floating tag \"latest\" instead of a version range, and pulls libsignal from the third-party git fork github[.]com/xhclintohn/libsignal-node rather than the upstream repository. The declared preinstall hook (engine-requirements.js) only checks the Node.js major version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "amiudmodz",
+        "purl": "pkg:npm/amiudmodz"
+      },
+      "versions": [
+        "4.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/amiudmodz/v/4.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14001"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:48:12Z",
+      "indicators_observed": {
+        "sha256": [
+          "f70cf03e8a407511230ab63b0af58581ce4880d575dd2982880a6954f8856f27"
+        ]
+      }
+    }
+  }
+}

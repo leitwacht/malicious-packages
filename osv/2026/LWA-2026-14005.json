@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14005",
+  "aliases": [
+    "MAL-2026-18955"
+  ],
+  "modified": "2026-11-15T08:56:21Z",
+  "published": "2026-11-15T08:54:51Z",
+  "summary": "Malicious code in casper-baileys (npm)",
+  "details": "casper-baileys@2.0.0 is a repackaged Baileys WhatsApp library that silently subscribes the installer's own WhatsApp account to a third-party channel. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules a 90-second setTimeout that unconditionally sends the WhatsApp w:mex FOLLOW mutation (query id 7871414976211147) for channel 120363322461279856@newsletter — no user prompt, no configuration and no relation to the library's documented API; the same channel JID and names (\"z4ph\", \"shenvn.\") are hardcoded into message ContextInfo in lib/Utils/messages.js and into status forwarding in lib/Socket/dugong.js, so forwarded content carries the channel branding. The package also ships a preinstall hook (engine-requirements.js, a Node \u003e=20 version check) and lib/index.js performs a fire-and-forget require-time request to hxxps://raw.githubusercontent[.]com/xhclintohn/client/refs/heads/main/information.json whose response is discarded. No credential, token, wallet or file access was found in the shipped code; the unwanted behaviour is the undisclosed channel auto-follow and the silent install-time request.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "casper-baileys",
+        "purl": "pkg:npm/casper-baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/casper-baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14005"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:54:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "c6e0de5cee89de763c6a015f1123148fd8d8db009b55c60504fb329d343e7ec4"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/xhclintohn/client/refs/heads/main/information[.]json"
+        ]
+      }
+    }
+  }
+}

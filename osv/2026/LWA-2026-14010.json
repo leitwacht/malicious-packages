@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14010",
+  "aliases": [
+    "MAL-2026-18842"
+  ],
+  "modified": "2026-11-15T08:55:08Z",
+  "published": "2026-11-15T08:54:23Z",
+  "summary": "Potentially-unwanted package (riskware): @hanzzy/baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library that silently enrols the user's WhatsApp account into the author's channel. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules setTimeout(..., 90000) which issues a w:mex WhatsApp query with query id FOLLOW for the hardcoded newsletter JID 120363342976800779@newsletter (hxxps://whatsapp[.]com/channel/0029VaranC0KmCPQCHryFs2C), so every socket the application creates subscribes the account to that channel; failures are swallowed in an empty catch. lib/Utils/messages.js hardcodes the same newsletterJid together with newsletterName \"z4ph\" into message context/quote metadata, attributing forwarded content to that channel. The package's only lifecycle hook (preinstall \"node./engine-requirements.js\") merely checks the Node.js major version and contacts nothing. No credential, token or environment exfiltration and no non-WhatsApp network destinations were found; the sole child_process use is ffmpeg for video thumbnail extraction.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hanzzy/baileys",
+        "purl": "pkg:npm/%40hanzzy/baileys"
+      },
+      "versions": [
+        "2.0.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@hanzzy/baileys/v/2.0.3"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T08:54:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "3171d655ea4dac203f326c74c84e99b5679061c64fcac3bb52793eb2cbb2b6a4"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VaranC0KmCPQCHryFs2C",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

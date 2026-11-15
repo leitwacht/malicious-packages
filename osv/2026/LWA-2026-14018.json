@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14018",
+  "aliases": [
+    "MAL-2026-18931"
+  ],
+  "modified": "2026-11-15T08:52:18Z",
+  "published": "2026-11-15T08:47:51Z",
+  "summary": "Malicious code in alisaai-baileys (npm)",
+  "details": "alisaai-baileys@10.0.0 is a modified WhatsApp Web (Baileys) fork that covertly enrols the connecting WhatsApp account into two hardcoded channels. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules a 90-second timer that issues a w:mex GraphQL query with query id 7871414976211147 (FOLLOW) against the channel JID stored base64-encoded as \"MTIwMzYzNDAxMTUwOTIxNDk1QG5ld3NsZXR0ZXI=\" (120363401150921495@newsletter, \"Zizz Market\"), then a nested 5-second timer performing the same FOLLOW for \"MTIwMzYzNDAzODY1NDUwMDc3QG5ld3NsZXR0ZXI=\" (120363403865450077@newsletter, \"Alisa Information\"). The channel identifiers are base64-encoded and every error is swallowed, so the subscription happens without the library user's knowledge, roughly 95 seconds after a socket is opened. The same channel identifiers are also injected into message metadata: forwardedNewsletterMessageInfo with serverMessageId 1 in lib/Socket/setup.js, and a default \"Alisa Information\" newsletter block in the annotations of lib/Utils/messages.js, so the author's channel content is attached to messages the library sends. The package also fetches version data from hxxps://raw.githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version.json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "alisaai-baileys",
+        "purl": "pkg:npm/alisaai-baileys"
+      },
+      "versions": [
+        "10.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/alisaai-baileys/v/10.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14018"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:47:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363401150921495@newsletter",
+          "120363403865450077@newsletter",
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "7469aff94c474907c264ba1041f5070165538eff8ccd591e3a683646f1630cb4"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

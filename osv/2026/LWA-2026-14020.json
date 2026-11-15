@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14020",
+  "aliases": [
+    "MAL-2026-18963"
+  ],
+  "modified": "2026-11-15T09:00:58Z",
+  "published": "2026-11-15T08:59:43Z",
+  "summary": "Malicious code in dct-dula-dev-baileys (npm)",
+  "details": "This package is a trojanized clone of the Baileys WhatsApp-Web library that hijacks the operator's WhatsApp account into following the publisher's channels and acting on their behalf. The injected code lives in lib/Socket/newsletter.js inside makeNewsletterSocket(), so it runs whenever a socket is created. It issues five hardcoded newsletter FOLLOW mutations (Types.QueryIds.FOLLOW over the w:mex newsletter query to s[.]whatsapp[.]net): four channel JIDs are hidden as base64 literals so they never appear as readable strings — MTIwMzYzNDAwNzA2MDEwODI4QG5ld3NsZXR0ZXI= (120363400706010828@newsletter), MTIwMzYzNDIzMjU3NTQ0NjQyQG5ld3NsZXR0ZXI= (120363423257544642@newsletter), MTIwMzYzMzQ5NDU3MTc2NDMwQG5ld3NsZXR0ZXI= (120363349457176430@newsletter), MTIwMzYzNDIxMDUyMDI3MTg4QG5ld3NsZXR0ZXI= (120363421052027188@newsletter) — plus the plaintext 120363408629601473@newsletter. Each of the four encoded JIDs is followed from a 90000 ms timer followed by a nested 5000 ms follow-up, and the plaintext channel is followed from a 30000 ms timer; the delays and encoding keep the subscriptions out of a quick read of the source and out of short-lived execution windows. The same module registers a messages.upsert listener that automatically posts a thumbs-up reaction to every incoming message from 120363408629601473@newsletter, impersonating user activity. lib/Utils/messages.js additionally stamps outgoing media with forwardedNewsletterMessageInfo pointing at 120363400706010828@newsletter (\"Dew Coders OFC\"). No credential, token, environment-variable, SSH or wallet file access and no destination outside WhatsApp's own endpoints were found in the package; the preinstall hook engine-requirements.js only compares the Node major version and exits. The package declares no repository and points its homepage and bugs URL at the WhatsApp channel 0029VbCbYpSEquiIsz0brA3D.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dct-dula-dev-baileys",
+        "purl": "pkg:npm/dct-dula-dev-baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dct-dula-dev-baileys/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14020"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:59:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "5767a5d748641fc205d63350ea34d91555c7859f879f209148e115747b602070"
+        ],
+        "url_observed": [
+          "couchdb://dct-dula-dev-baileys",
+          "hxxps://whatsapp[.]com/channel/0029VbCbYpSEquiIsz0brA3D"
+        ]
+      }
+    }
+  }
+}

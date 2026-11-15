@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14004",
+  "aliases": [
+    "MAL-2026-18934"
+  ],
+  "modified": "2026-11-15T08:52:10Z",
+  "published": "2026-11-15T08:48:57Z",
+  "summary": "Malicious code in amiudmodz (npm)",
+  "details": "amiudmodz is a Node.js WhatsApp Web API library (a rebranded Baileys copy) that covertly enrols the account of anyone who installs it into a third-party WhatsApp channel. In lib/Socket/newsletter.js, the socket factory makeNewsletterSocket() unconditionally schedules a 90-second setTimeout that, over the victim's own authenticated WhatsApp session, sends a `w:mex` GraphQL query (query_id 7871414976211147, the FOLLOW mutation) with variables {\"newsletter_id\":\"120363400725985615@newsletter\"} to s[.]whatsapp[.]net. The call is wrapped in a silent try/catch, so the subscription succeeds without the application or its user ever being notified; it has no configuration switch and no caller opt-in. A second hook in lib/Utils/messages.js injects a hardcoded annotation block into every media upload whenever the caller supplies no annotations, tagging the upload with newsletterJid \"120363400725985615@newsletter\", serverMessageId 0, newsletterName \"z4ph\", contentType \"UPDATE\", again attributing customer traffic to that channel. The package's preinstall hook (engine-requirements.js) is only a Node.js version check, and no credential, environment-variable or file-read behaviour was found. The package additionally declares an unresolved `cache-manager` dependency. Hidden state-changing actions performed on a user's live messaging account without consent, under a name reusing a library's code, make the package untrustworthy as a dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "amiudmodz",
+        "purl": "pkg:npm/amiudmodz"
+      },
+      "versions": [
+        "5.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/amiudmodz/v/5.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14004"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:48:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "ad77e7e314d28199608f0a74ee8c8052ccdc2db2fdb07093448772465a5ae7fd"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

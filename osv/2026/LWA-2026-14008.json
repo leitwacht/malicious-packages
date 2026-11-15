@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14008",
+  "aliases": [
+    "MAL-2026-18819"
+  ],
+  "modified": "2026-11-15T09:00:59Z",
+  "published": "2026-11-15T08:57:17Z",
+  "summary": "Malicious code in @devil-fight/baileys (npm)",
+  "details": "@devil-fight/baileys is a WhatsApp automation library that reuses the name of the widely used @whiskeysockets/baileys package while being published under an unrelated scope, and it silently modifies the messages it generates. In lib/Socket/dugong.js, message objects built for outgoing status/media posts have a forwardedNewsletterMessageInfo block forced onto them with newsletterJid \"120363403853537880@newsletter\", newsletterName \"Ravage\", senderName \"Daffa\", contentType 1 and serverMessageId 1. In lib/Utils/messages.js, generated media messages instead carry \"120363422108999723@newsletter\" with newsletterName \"Daffa Ravage\". Both identifiers are hardcoded and are not read from configuration, so every message produced by software built on this library advertises a third-party WhatsApp channel to its recipients without the operator's knowledge. The remainder of the tree is the upstream library: the preinstall hook (node./engine-requirements.js) is a 389-byte check that Node.js is version 20 or newer, the only process execution site is an ffmpeg thumbnail command in lib/Utils/messages-media.js, and network destinations are the standard WhatsApp endpoints web[.]whatsapp[.]com, web[.]whatsapp[.]net, g[.]whatsapp[.]net and v[.]whatsapp[.]net. The package contains no credential, token, environment-variable or file exfiltration logic.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@devil-fight/baileys",
+        "purl": "pkg:npm/%40devil-fight/baileys"
+      },
+      "versions": [
+        "1.0.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@devil-fight/baileys/v/1.0.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14008"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:57:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "g[.]whatsapp[.]net",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com",
+          "web[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "d56078a0adcae4be1dc4f58a519863e0331e83f76c9781c91d02e6aa87e6fe0c"
+        ],
+        "url_observed": [
+          "hxxps://web[.]whatsapp[.]com/sw[.]js"
+        ]
+      }
+    }
+  }
+}

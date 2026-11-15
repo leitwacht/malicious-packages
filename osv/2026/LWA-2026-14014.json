@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14014",
+  "aliases": [
+    "MAL-2026-18843"
+  ],
+  "modified": "2026-11-15T08:53:32Z",
+  "published": "2026-11-15T08:51:47Z",
+  "summary": "Malicious code in @hanzzy/baileys-mod (npm)",
+  "details": "@hanzzy/baileys-mod is a modified fork of the Baileys WhatsApp library (\"WhatsApp API Modification By Hanzzy\") that carries a hidden account-manipulation payload in lib/Socket/newsletter.js. Immediately after the module is loaded, an unawaited async IIFE starts an 80-second setTimeout; when it elapses the code calls fetch('hxxps://raw[.]githubusercontent[.]com/h4nzzy/WAchannel/refs/heads/main/idChannel[.]json'), reads a remote JSON array of WhatsApp channel IDs, and iterates it calling newsletterWMexQuery(id, QueryIds.FOLLOW) with a 5s delay between each. The victim's own authenticated WhatsApp session is therefore silently made to follow every channel in a list the author can rewrite at any time, with errors swallowed so the action leaves no trace. Nothing in the package's documented API requests or requires this; the library's real newsletterFollow() is a user-invoked function, while this block runs unconditionally at import. The same tarball additionally: declares its own name as a dependency (\"@hanzzy/baileys-mod\": \"github:h4nzzy/Baileys\"), which points npm at a second, unpinned source tree and leaves published editor-backup files behind (lib/Socket/chats.js.bak, lib/Utils/generics.js.bak, lib/Utils/validate-connection.js.bak); redirects the documented helper fetchLatestBaileysVersion() from the official Baileys source to hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json, so the WebSocket protocol version a caller installs is chosen by a third-party repo; and hardcodes channel JIDs (e.g. 120363420249672073@newsletter, 120363297591152843@newsletter) into outgoing message metadata in lib/Socket/dugong.js and lib/Utils/messages.js. The only lifecycle hook, preinstall \"node./engine-requirements.js\", merely checks for Node 20+ and exits.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hanzzy/baileys-mod",
+        "purl": "pkg:npm/%40hanzzy/baileys-mod"
+      },
+      "versions": [
+        "8.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@hanzzy/baileys-mod/v/8.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14014"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:51:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "9c3de00ffaffe3a3379ff73bcd7b128318b2db1d7cfe793f04be28874da592c7"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/h4nzzy/WAchannel/refs/heads/main/idChannel[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

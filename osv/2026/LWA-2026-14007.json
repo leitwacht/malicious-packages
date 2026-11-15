@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14007",
+  "aliases": [
+    "MAL-2026-18818"
+  ],
+  "modified": "2026-11-15T08:59:35Z",
+  "published": "2026-11-15T08:57:25Z",
+  "summary": "Malicious code in @denzy-official/baileys (npm)",
+  "details": "@denzy-official/baileys@1.2.9 is a modified republish of the WhatsApp automation library @whiskeysockets/baileys under an unrelated scope, and ships behaviour the upstream library does not: 1. Concealed payload at the entrypoint. lib/index.js begins with eval(Buffer.from(`\u003cbase64 blob\u003e`, 'base64').toString()). The blob decodes to a console banner built with gradient-string and figlet (\"Denzy ZeroDay\", Telegram @pantatBegetar), but the construct is arbitrary code evaluation of an opaque, encoded string in the package's main file — whatever is put in that blob runs on require. 2. Hidden WhatsApp newsletter auto-follow. In lib/Socket/newsletter.js, a 90-second setTimeout (followed by a nested 5-second retry) calls newsletterWMexQuery(..., QueryIds.FOLLOW) against a hardcoded, base64-encoded newsletter JID (\"MTIwMzYzNDAyMzA4MTA1OTYxQG5ld3NsZXR0ZXI=\"). The value is encoded specifically to hide which channel it is, and nothing in the library's normal operation subscribes the user's account to a channel. Every bot that connects is silently subscribed to an operator-chosen newsletter; the 90-second delay keeps the action out of the first seconds of execution. 3. Remote mutable config. lib/Utils/generics.js exposes fetchLatestBaileysVersion(), which requests hxxps://raw[.]githubusercontent[.]com/Denzy-Z3roDay/baileys/master/src/Defaults/baileys-version[.]json via axios instead of upstream, giving the fork's owner a config channel into every installer's runtime. The preinstall hook (node./engine-requirements.js) is only a Node.js version guard. The package's dependency libsignal: the publisher:NaufalYupra/libsignal-node pulls a fork rather than the official source. IOCs: hxxps://raw.githubusercontent[.]com/Denzy-Z3roDay/baileys/master/src/Defaults/baileys-version.json; hxxps://t[.]me/pantatBegetar; hxxps://files[.]catbox[.]moe/8aomwf.jpg; encoded newsletter JID MTIwMzYzNDAyMzA4MTA1OTYxQG5ld3NsZXR0ZXI=.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzy-official/baileys",
+        "purl": "pkg:npm/%40denzy-official/baileys"
+      },
+      "versions": [
+        "1.2.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzy-official/baileys/v/1.2.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14007"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:57:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "files[.]catbox[.]moe",
+          "raw[.]githubusercontent[.]com",
+          "t[.]me"
+        ],
+        "sha256": [
+          "38262fb952824914652603a9770d2e54be5bb26bc54cec56f70bc1eebd6f8099"
+        ],
+        "url_observed": [
+          "hxxps://files[.]catbox[.]moe/8aomwf[.]jpg",
+          "hxxps://raw[.]githubusercontent[.]com/Denzy-Z3roDay/baileys/master/src/Defaults/baileys-version[.]json",
+          "hxxps://t[.]me/pantatBegetar"
+        ]
+      }
+    }
+  }
+}

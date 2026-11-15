@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14011",
+  "aliases": [
+    "MAL-2026-18842"
+  ],
+  "modified": "2026-11-15T08:53:43Z",
+  "published": "2026-11-15T08:48:51Z",
+  "summary": "Potentially-unwanted package (riskware): @hanzzy/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp library, published under a scope unrelated to the upstream @whiskeysockets scope, that silently enrols every account using it into the author's WhatsApp channel and attributes outbound messages to that channel. In lib/Socket/newsletter.js the module schedules a 90-second setTimeout that issues newsletterWMexQuery(\"120363342976800779@newsletter\", QueryIds.FOLLOW) inside a try/catch, so the account follows the hardcoded channel as soon as the socket module is initialised, with no user action or logging. lib/Utils/messages.js hardcodes the same newsletter JID (newsletterName \"z4ph\") into the newsletter ContextInfo attached to outbound media messages, marking them as forwarded from that channel. The preinstall hook \"node./engine-requirements.js\" only checks the Node.js major version and exits if it is below 20. No credential, token,.env or wallet access was found, and the only network destinations are wss://web[.]whatsapp[.]com/ws/chat and the npm registry. One dependency alias points at a non-existent scoped package (@shennmine/libsignal-node@2.0.1), which makes a fresh install fail before the library is loaded. Channel JID: 120363342976800779@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hanzzy/baileys",
+        "purl": "pkg:npm/%40hanzzy/baileys"
+      },
+      "versions": [
+        "2.0.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@hanzzy/baileys/v/2.0.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T08:48:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "da6901addb37acf2fcdd7430e65579ace55bd99a4f390431722c19fee7afffe1"
+        ]
+      }
+    }
+  }
+}

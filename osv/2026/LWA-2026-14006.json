@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14006",
+  "aliases": [
+    "MAL-2026-18818"
+  ],
+  "modified": "2026-11-15T08:58:25Z",
+  "published": "2026-11-15T08:56:58Z",
+  "summary": "Malicious code in @denzy-official/baileys (npm)",
+  "details": "This package is an unofficial republish of the WhatsApp client library baileys under a different scope (@denzy-official) than the upstream project. It performs two actions the installer does not expect. First, lib/index.js executes base64-encoded source through eval(Buffer.from(...,'base64').toString()) as soon as the module is required; the decoded payload prints a \"Baileys Custom By Denzy ZeroDay\" ASCII banner and advertises the Telegram handle @pantatBegetar. Second, lib/Socket/newsletter.js schedules, at module load, a call delayed by 90 seconds (with a further 5-second repeat) that issues a newsletterWMexQuery FOLLOW request for a hardcoded, base64-encoded WhatsApp channel JID, 120363402308105961@newsletter — silently making the connected WhatsApp account follow the operator's channel. The package also fetches version metadata at runtime from an unofficial the publisher fork, hxxps://raw[.]githubusercontent[.]com/Denzy-Z3roDay/baileys/master/src/Defaults/baileys-version[.]json, rather than the upstream source. The preinstall hook (node./engine-requirements.js) only checks the Node.js version. No credential, token or environment-variable harvesting was found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@denzy-official/baileys",
+        "purl": "pkg:npm/%40denzy-official/baileys"
+      },
+      "versions": [
+        "1.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@denzy-official/baileys/v/1.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14006"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:56:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "e690a60b6ee2a453c6285f45085167faa93171c6a0584392d061d10778756592"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/Denzy-Z3roDay/baileys/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

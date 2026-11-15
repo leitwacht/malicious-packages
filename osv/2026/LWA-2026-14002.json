@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14002",
+  "aliases": [
+    "MAL-2026-18934"
+  ],
+  "modified": "2026-11-15T08:55:19Z",
+  "published": "2026-11-15T08:48:42Z",
+  "summary": "Malicious code in amiudmodz (npm)",
+  "details": "amiudmodz is a modified copy of the Baileys WhatsApp client library that covertly subscribes the user's WhatsApp account to a third-party channel. In lib/Socket/newsletter.js the group-socket setup schedules a 90-second setTimeout that issues a WhatsApp \"w:mex\" IQ query with the FOLLOW query id against the hardcoded newsletter JID 120363400725985615@newsletter; the response is discarded in an empty try/catch, so the account becomes a follower of that channel with no user action, no prompt and no visible output, and the delay puts the action well after the client has connected. lib/Utils/messages.js also carries the same JID 120363400725985615@newsletter hardcoded next to an upload-cache fixture with newsletterName \"z4ph\". Upstream Baileys has no such automatic follow. The package further resolves mutable/foreign code at install: cache-manager is declared as \"latest\" and libsignal from git+hxxps://github[.]com/xhclintohn/libsignal-node. engine-requirements.js only asserts Node.js \u003e= 20. No external HTTP/S upload of credentials, tokens or files was found in the shipped code; the covert channel enrolment happens entirely over the WhatsApp protocol to web[.]whatsapp[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "amiudmodz",
+        "purl": "pkg:npm/amiudmodz"
+      },
+      "versions": [
+        "4.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/amiudmodz/v/4.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14002"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T08:48:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "374f95eff5425425c960bfb6582aa36a1924b4306d0804de7852acea8d48fa99"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/xhclintohn/libsignal-node"
+        ]
+      }
+    }
+  }
+}
