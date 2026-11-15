@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-14064",
-  "modified": "2026-11-15T19:33:34Z",
+  "modified": "2026-11-15T21:20:15Z",
   "published": "2026-11-15T19:32:25Z",
   "summary": "Malicious code in @charape/baileys (npm)",
-  "details": "@charape/baileys@1.0.9 is a fork of the Baileys WhatsApp Web library distributed under an unofficial scope, and it silently enrols accounts into the author's WhatsApp channel. lib/Defaults/index.js ships connection defaults containing autoFollow: ['120363424530330931@newsletter'], newsletterJid '120363424530330931@newsletter', newsletterName 'メ Informasi Store Cԋαɾαρҽ', channelUrl hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o and customPairingCode 'CHARAPE1'. lib/Socket/newsletter.js hooks the 'connection.update' event and, whenever a session reaches the open (paired) state, calls a followChannels() routine that issues the WhatsApp graphql mutation xwa2_newsletter_follow (Types.QueryIds.FOLLOW) for that JID, retrying three times and re-arming with timers at 2.5s and 7s — so every bot pairing with this library is subscribed to the operator's channel without the bot owner being asked. lib/Utils/messages.js adds a channel annotation referencing the same JID and channel name to outgoing image and video messages, and lib/Socket/messages-send.js contains the related forwarding/watermark path into '120363424530330931@newsletter' (channel text 'メ Informasi Store Cԋαɾαρҽ', server message id 1). The package additionally advertises the unofficial \"charape\" bin/supervisor CLI and does not disclose the channel enrolment in its documentation. IOCs: WhatsApp channel JID 120363424530330931@newsletter; channel URL hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o.",
+  "details": "@charape/baileys@1.0.9 is a fork of the Baileys WhatsApp Web library distributed under an unofficial scope, and it silently enrols accounts into the author's WhatsApp channel. lib/Defaults/index.js ships connection defaults containing autoFollow: ['120363424530330931@newsletter'], newsletterJid '120363424530330931@newsletter', newsletterName 'メ Informasi Store Cԋαɾαρҽ', channelUrl hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o and customPairingCode 'CHARAPE1'. lib/Socket/newsletter.js hooks the 'connection.update' event and, whenever a session reaches the open (paired) state, calls a followChannels() routine that issues the WhatsApp graphql mutation xwa2_newsletter_follow (Types.QueryIds.FOLLOW) for that JID, retrying three times and re-arming with timers at 2.5s and 7s — so every bot pairing with this library is subscribed to the operator's channel without the bot owner being asked. lib/Utils/messages.js adds a channel annotation referencing the same JID and channel name to outgoing image and video messages, and lib/Socket/messages-send.js contains the related forwarding/watermark path into '120363424530330931@newsletter' (channel text 'メ Informasi Store Cԋαɾαρҽ', server message id 1). The package additionally advertises the unofficial \"charape\" bin/supervisor CLI and does not disclose the channel enrolment in its documentation. IOCs: WhatsApp channel JID 120363424530330931@newsletter; channel URL hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o. These versions of the unofficial @whiskeysockets/baileys clone silently enrol the installing account into the publisher's WhatsApp channel. Shipped defaults (lib/Defaults/index.js, duplicated in lib/index.cjs) set autoFollow to ['120363424530330931@newsletter'] and newsletterJid to that channel (\"メ Informasi Store Cԋαɾαρҽ\", hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o), with customPairingCode 'CHARAPE1'. lib/Socket/newsletter.js implements followChannels(), which on the socket's 'connection.update' open event calls mexQuery({newsletter_id}, QueryIds.FOLLOW, xwa2_newsletter_follow) and retries at 2.5s and 7s, subscribing the authenticated WhatsApp account to the operator's channel without user action; in 1.0.11 the same channel identity is also attached as a newsletter annotation to outbound image and video messages. lib/Socket/messages-media.js ships uploadFile(), which POSTs file buffers to hxxps://catbox[.]moe/user/api[.]php and hxxps://tmpfiles[.]org/api/v1/upload. The package also advertises hxxps://charape[.]id and hxxps://t[.]me/nofalycharape and depends on the separately flagged cache-manager release.",
   "affected": [
     {
       "package": {
@@ -51,12 +51,20 @@
       "indicators_observed": {
         "domain_observed": [
           "120363424530330931@newsletter",
+          "catbox[.]moe",
+          "charape[.]id",
+          "t[.]me",
+          "tmpfiles[.]org",
           "whatsapp[.]com"
         ],
         "sha256": [
           "2491781a42da867c51425f3c30293762a55062d52c9c5ebfef422d86f6769643"
         ],
         "url_observed": [
+          "hxxps://catbox[.]moe/user/api[.]php",
+          "hxxps://charape[.]id",
+          "hxxps://t[.]me/nofalycharape",
+          "hxxps://tmpfiles[.]org/api/v1/upload",
           "hxxps://whatsapp[.]com/channel/0029Vb6cCfP3GJP6g8eeff1o"
         ]
       }
