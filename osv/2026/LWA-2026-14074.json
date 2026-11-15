@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14074",
+  "modified": "2026-11-15T23:11:12Z",
+  "published": "2026-11-14T11:55:17Z",
+  "summary": "Malicious code in @wanzforme/bails (npm)",
+  "details": "@wanzforme/bails is a modified fork of the Baileys WhatsApp library that silently enrols the installer's WhatsApp account into a third-party channel and injects channel branding into messages it sends. Automatic channel enrolment: lib/Socket/newsletter.js adds an \"XzV Newsletter Auto-Follow\" block that upstream Baileys does not have. It hardcodes the newsletter JID 120363380357951328@newsletter as the default target and, on every socket \"connection.update\" event with connection === 'open', waits 10 seconds and then issues a w:mex FOLLOW query (query id 7871414976211147) to WhatsApp for that JID — subscribing the user's account to the channel without asking. It retries up to 3 times at 20-second intervals and is only disabled if the caller explicitly passes autoFollowNewsletters: false. Channel promotion injection: lib/Socket/luxu.js hardcodes the same JID and the channel name \"WanzLonely\" into forwardedNewsletterMessageInfo inside contextInfo, so outgoing status/poll messages the library builds are attributed as forwarded from that channel. Poisoned dependency: package.json declares \"cache-manager\": \"^7.2.8\", a range satisfied by a published malicious version of cache-manager, so installing this package also pulls that package's payload. The package's preinstall hook (node./engine-requirements.js) is only a Node.js version check; the abuse is in the shipped socket code and the dependency chain. IOCs: WhatsApp newsletter JID 120363380357951328@newsletter (channel \"WanzLonely\"), w:mex follow query id 7871414976211147, dependency range cache-manager ^7.2.8.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wanzforme/bails",
+        "purl": "pkg:npm/%40wanzforme/bails"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wanzforme/bails/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14074"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-14T11:55:17Z",
+      "indicators_observed": {
+        "sha256": [
+          "3f270507148aa12f21737e79b36dba27107cf6a685d6e1cc113c823770d1c527"
+        ]
+      }
+    }
+  }
+}
