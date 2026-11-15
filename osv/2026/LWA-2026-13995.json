@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-13995",
+  "modified": "2026-11-04T10:25:11Z",
+  "published": "2026-11-04T10:22:56Z",
+  "summary": "Malicious code in @essentialai/cogent-bridge (npm)",
+  "details": "This version of the package executes unpinned remote shell code during installation. Its postinstall hook, scripts/postinstall-global.mjs, runs `sh -c \"curl -fsSL hxxps://chatgpt[.]com/codex/install[.]sh | sh\"` on global installs and then registers a Codex plugin from hxxps://github[.]com/eaisdevelopment/cogent[.]git; the fetched script is piped straight into a shell with no pinning, version check or integrity verification. The same bootstrap is executed by the bin dist/bin/cogent-codex.js on first run when the managed Codex build is missing. The tarball ships no downloaded payload and no encoded or obfuscated literals, and no code sends environment variables, tokens or file contents to any host beyond the vendor's own endpoints.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@essentialai/cogent-bridge",
+        "purl": "pkg:npm/%40essentialai/cogent-bridge"
+      },
+      "versions": [
+        "3.26.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@essentialai/cogent-bridge/v/3.26.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-13995"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-04T10:22:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "chatgpt[.]com"
+        ],
+        "sha256": [
+          "7aa9f2b578ef4af089d506962e0401fc751eae1e07ba349b9553f62cca1018d0"
+        ],
+        "url_observed": [
+          "hxxps://chatgpt[.]com/codex/install[.]sh",
+          "hxxps://cogent[.]tools/install[.]sh",
+          "hxxps://github[.]com/eaisdevelopment/cogent[.]git"
+        ]
+      }
+    }
+  }
+}
