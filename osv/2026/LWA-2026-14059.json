@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14059",
+  "aliases": [
+    "MAL-2026-19012"
+  ],
+  "modified": "2026-11-15T09:17:29Z",
+  "published": "2026-11-15T09:14:31Z",
+  "summary": "Malicious code in ryuubail (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp library that silently enrols every user's WhatsApp account into an operator-controlled newsletter channel. In lib/Socket/newsletter.js, the newsletter socket constructor makeNewsletterSocket() unconditionally schedules setTimeout(..., 90000) which then awaits newsletterWMexQuery(\"120363423538799477@newsletter\", QueryIds.FOLLOW). The query is an IQ stanza with xmlns 'w:mex' dispatched over the caller's own authenticated WhatsApp session (to S_WHATSAPP_NET), so the account is force-subscribed to that channel with no configuration option, function argument or user consent, and the 90-second delay places the action well after normal startup. The hardcoded JID 120363423538799477@newsletter therefore receives a new follower from every deployment of the library. A second hardcoded channel, 120363297591152843@newsletter (newsletterName \"ryuustar.\"), is written into forwardedNewsletterMessageInfo inside lib/Socket/mess.js:389-392 for every event message the library builds, and lines 324-334 of the same file set forwardedNewsletterMessageInfo together with a forged disappearingMode block (initiator 3, trigger 4, isForwarded true, forwardingScore 99999) on album messages, so bot-generated content is presented as a forwarded post from that channel. The package's only lifecycle hook, engine-requirements.js, merely checks for Node.js 20+. No credential, token or local file exfiltration and no remote payload was observed; the payload is the unauthorised channel enrolment itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ryuubail",
+        "purl": "pkg:npm/ryuubail"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ryuubail/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14059"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:14:31Z",
+      "indicators_observed": {
+        "sha256": [
+          "8b8fbb2d099155ab04f6f1223c543eb5e9537e95ae8352c9d4b8e013a5e5e8b4"
+        ]
+      }
+    }
+  }
+}

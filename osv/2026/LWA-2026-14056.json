@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14056",
+  "aliases": [
+    "MAL-2026-18988"
+  ],
+  "modified": "2026-11-15T09:16:44Z",
+  "published": "2026-11-15T09:14:01Z",
+  "summary": "Malicious code in malvin-baileys (npm)",
+  "details": "Malvin-baileys is a modified fork of the Baileys WhatsApp Web library that silently enrols the installer's WhatsApp account into the author's channels and advertises those channels in messages the bot relays. lib/Socket/newsletter.js, inside makeNewsletterSocket, schedules a timer that fires 90 seconds after a socket is created and issues a newsletter FOLLOW operation for 120363399205146445@newsletter; a nested timer 5 seconds later issues a second FOLLOW for 120363391079867105@newsletter. No user action or consent is involved and the errors are swallowed, so the account subscribes to both channels whenever the library is used. Separately, lib/Utils/messages.js and lib/Socket/dugong.js hardcode forwardedNewsletterMessageInfo pointing at 120363402308105961@newsletter (labelled \"Denzy ZeroDay.\"/\"Denzy Z3roDay\") on the status-event and event messages the library relays, so recipients of the bot's messages see a promotion for that channel. The package's preinstall hook runs node./engine-requirements.js, which only aborts installation when the Node.js major version is below 20. The tree contains no access to.npmrc, environment tokens, SSH/AWS credential files or wallet data, no eval/atob or other dynamic code loading, and its only network destinations are the WhatsApp Web endpoint wss://web[.]whatsapp[.]com/ws/chat and media URLs supplied by callers; child_process use is limited to invoking ffmpeg for thumbnail generation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "malvin-baileys",
+        "purl": "pkg:npm/malvin-baileys"
+      },
+      "versions": [
+        "2.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/malvin-baileys/v/2.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14056"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:14:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "fac5e10e06173a7a3e50816ac860ec9b42d6026b0cc1daa1ead4c6f532c8f589"
+        ]
+      }
+    }
+  }
+}

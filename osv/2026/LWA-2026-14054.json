@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14054",
+  "aliases": [
+    "MAL-2026-18859"
+  ],
+  "modified": "2026-11-15T09:17:37Z",
+  "published": "2026-11-15T09:14:46Z",
+  "summary": "Malicious code in @kyuu2nd/baileys (npm)",
+  "details": "@kyuu2nd/baileys@2.0.0 is a republished fork of the WhatsApp library baileys that silently enrols the installing user's own WhatsApp account into the author's channel. The library's newsletter module (lib/Socket/newsletter.js) schedules a 90-second timer whose callback issues a newsletter FOLLOW query for the hardcoded channel 120363423538799477@newsletter over the victim's authenticated session, wrapped in a silent try/catch and delayed so the action happens long after startup; the package README (line 413) presents this forced follow as a feature. A second hardcoded channel, 120363297591152843@newsletter (\"shenvn.\"), is injected into forwarded status messages in lib/Socket/dugong.js. In addition, requiring the package (main entry lib/index.js) immediately fetches hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json and prints author-controlled content taken from data[0], and lib/Utils/generics.js repoints the Baileys version update check to hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json. The package also replaces the native Signal protocol dependency with an unofficial personal-scope package, libsignal rewritten to npm:@shennmine/libsignal-node@2.0.1. IOC: WhatsApp channel JIDs 120363423538799477@newsletter and 120363297591152843@newsletter; raw[.]githubusercontent[.]com/z4phdev/client and raw[.]githubusercontent[.]com/z4phdev/baileys; npm scope @shennmine.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kyuu2nd/baileys",
+        "purl": "pkg:npm/%40kyuu2nd/baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kyuu2nd/baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14054"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:14:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363297591152843@newsletter",
+          "120363423538799477@newsletter",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "4600110817f4d0d341c34593bd8072ef9c02750cfd8fae1e97c1485d792be830"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/client/refs/heads/main/information[.]json"
+        ]
+      }
+    }
+  }
+}

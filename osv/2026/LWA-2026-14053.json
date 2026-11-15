@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14053",
+  "aliases": [
+    "MAL-2026-18851"
+  ],
+  "modified": "2026-11-15T09:17:07Z",
+  "published": "2026-11-15T09:14:09Z",
+  "summary": "Malicious code in @jiancodes/baileys (npm)",
+  "details": "This package is an unofficial republish of the Baileys WhatsApp Web library, distributed under a different scope while keeping the canonical package's basename, and it silently enrols the user's WhatsApp account into two hardcoded channels. At module load, lib/Socket/newsletter.js schedules a 90000 ms setTimeout that calls newsletterWMexQuery(..., QueryIds.FOLLOW) with a base64-encoded channel JID (120363399266188954@newsletter), then schedules a second follow of another base64 channel JID (120363402472932012@newsletter) after a further 5000 ms. Both calls are wrapped in empty try/catch blocks, so the subscription happens with no developer action and no visible error; any application that instantiates the library's socket subscribes its account to those channels. The package's preinstall hook, engine-requirements.js, only checks the Node.js major version. lib/Utils/generics.js fetches a version manifest from hxxps://raw.githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version.json rather than an official source, and the README loads an image from hxxps://uploader[.]zenzxz[.]dpdns[.]org. No access to registry tokens, cloud credentials, environment variables or credential files, and no command execution, were found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jiancodes/baileys",
+        "purl": "pkg:npm/%40jiancodes/baileys"
+      },
+      "versions": [
+        "2.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jiancodes/baileys/v/2.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14053"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:14:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "uploader[.]zenzxz[.]dpdns[.]org"
+        ],
+        "sha256": [
+          "83442c67f348e534a911355fabbfc8ca68e44204a99f0c1c21d93f8d7239a77d"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json",
+          "hxxps://uploader[.]zenzxz[.]dpdns[.]org",
+          "hxxps://uploader[.]zenzxz[.]dpdns[.]org/uploads/1769165418349[.]jpeg"
+        ]
+      }
+    }
+  }
+}
