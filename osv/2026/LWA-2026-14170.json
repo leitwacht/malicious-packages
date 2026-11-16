@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14170",
+  "modified": "2026-11-16T23:33:57Z",
+  "published": "2026-11-16T23:32:25Z",
+  "summary": "Malicious code in @nakanoo/baileys (npm)",
+  "details": "This package is a republished copy of the WhiskeySockets/Baileys WhatsApp library (v7.0.0-rc14, attributed in NOTICE.md) published under an unofficial scope, with hidden account-manipulation behaviour added at runtime. lib/custom.js defines customConfig with `pairingCode: 'RANDEV12'` and `autoFollow: true`; lib/Socket/index.js wraps makeWASocket and patches sock.requestPairingCode so that when a caller does not pass their own code, the fixed 8-character code RANDEV12 is used instead of a random one — anyone who knows the target phone number and this public code can enter it on their own device and link a companion device to the victim's WhatsApp account. The same wrapper subscribes to the socket's 'connection.update' event and, on first successful connection, calls autoFollowChannels(sock), which iterates two hardcoded WhatsApp channel JIDs — 120363424153860594@newsletter and 120363422841048901@newsletter — and calls sock.newsletterFollow() on each, so every program using this library silently enrols the operator's WhatsApp account into those channels. It also prints an ASCII banner crediting \"RAN\" and linking saweria[.]co/ranzdev. There is no install hook and no credential, token or file access; the impact is unauthorized device linking and forced channel subscriptions on the installing account.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@nakanoo/baileys",
+        "purl": "pkg:npm/%40nakanoo/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@nakanoo/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14170"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T23:32:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "saweria[.]co"
+        ],
+        "sha256": [
+          "d583f10a1748719d7c8ed4657fa87fd3689a9c44f602a17614cba1524206aabf"
+        ]
+      }
+    }
+  }
+}
