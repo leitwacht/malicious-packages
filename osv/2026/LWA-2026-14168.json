@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14168",
+  "modified": "2026-11-16T22:18:21Z",
+  "published": "2026-11-16T22:17:25Z",
+  "summary": "Malicious code in @zervonex/baileys (npm)",
+  "details": "@zervonex/baileys is an unofficial-scope copy of the WhiskeySockets/Baileys WhatsApp Web library that adds two pieces of unwanted remote behaviour to the connected account. First, lib/Socket/newsletter.js hardcodes two WhatsApp channel JIDs ('120363422827915475@newsletter' and '120363409522637051@newsletter') in AUTO_FOLLOW_JIDS; on every 'connection' -\u003e 'open' event the library waits three seconds and then issues a newsletter-join query (XWAPaths.xwa2_newsletter_join_v2) for both channels on the user's own WhatsApp account, re-issuing the follow every 30 seconds via a setInterval, and additionally sets ADMIN_NOTIFICATIONS to false on those channels. The behaviour is on by default (lib/Defaults/index.js ships autoFollowNewsletter: true) and only stops if the caller explicitly passes autoFollowNewsletter: false. Second, WAProto/fetcher.js downloads hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json and hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js once every 24 hours and feeds the fetched bundle into WAProto/parser.js, an acorn-based transform that writes the resulting protocol definitions to WAProto/WAProto.proto and regenerates WAProto.json, so the publisher controls a mutable code/protocol path loaded from a branch that is not tied to any pinned commit or integrity value. The package also declares a preinstall hook (node./engine-requirements.js, a Node version check) and depends on @cacheable/node-cache and cache-manager. The package name imitates the canonical @whiskeysockets/baileys library under a different scope.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zervonex/baileys",
+        "purl": "pkg:npm/%40zervonex/baileys"
+      },
+      "versions": [
+        "4.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zervonex/baileys/v/4.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14168"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T22:17:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "be4822d837c9b5de5dafd3a6f14a05099de1af60c6b80c4493ce6b71431c9065"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14169",
+  "modified": "2026-11-16T22:18:42Z",
+  "published": "2026-11-16T22:17:27Z",
+  "summary": "Malicious code in @zervonex/baileys (npm)",
+  "details": "@zervonex/baileys@4.0.4-final is a second publish of the same unofficial-scope copy of the WhiskeySockets/Baileys WhatsApp Web library, with the same byte-identical added behaviour. lib/Socket/newsletter.js hardcodes two WhatsApp channel JIDs in AUTO_FOLLOW_JIDS ('120363422827915475@newsletter' and '120363409522637051@newsletter'); on every 'connection' -\u003e 'open' event the library issues a newsletter-join query (XWAPaths.xwa2_newsletter_join_v2) for both channels on the user's own account, repeats it every 30 seconds via setInterval, and sets ADMIN_NOTIFICATIONS to false on those channels. The behaviour is enabled by default (lib/Defaults/index.js ships autoFollowNewsletter: true) and only stops when the caller explicitly sets autoFollowNewsletter: false. WAProto/fetcher.js additionally downloads hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json and hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js every 24 hours, and WAProto/parser.js transforms the fetched bundle into WAProto/WAProto.proto before WAProtoCompile.js regenerates WAProto.json, giving the publisher a mutable, non-commit-pinned content path into the running library. The package also declares a preinstall hook (node./engine-requirements.js, a Node version check) and depends on @cacheable/node-cache and cache-manager. The name imitates the canonical @whiskeysockets/baileys library under a different scope. @zervonex/baileys@4.0.4-final is an unofficial-scope variant of the WhiskeySockets/Baileys WhatsApp Web library whose shipped code enrols the connected WhatsApp account into publisher channels and pulls publisher-controlled code on a timer. lib/Socket/newsletter.js hardcodes AUTO_FOLLOW_JIDS = ['120363422827915475@newsletter', '120363409522637051@newsletter']; on every 'connection' -\u003e 'open' event it calls performNewsletterFollow(), issuing an xwa2_newsletter_join_v2 follow query per JID on the user's own account, then sets ADMIN_NOTIFICATIONS to false on that channel, and repeats both follows every 30 seconds via setInterval (AUTO_FOLLOW_INTERVAL_MS = 30_000). lib/Defaults/index.js ships autoFollowNewsletter: true, so the behaviour is active unless the caller explicitly passes autoFollowNewsletter: false. In addition, WAProto/fetcher.js downloads hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json and hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js every 24 hours (CACHE_TTL = 24h) and feeds the fetched bundle to WAProto/parser.js, an acorn AST transform that rewrites WAProto/WAProto.proto, after which WAProto/WAProtoCompile.js regenerates WAProto.json — a mutable publisher-side content path with no pinned commit or integrity value. The package also declares a preinstall hook (node./engine-requirements.js, a Node 20 version check).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zervonex/baileys",
+        "purl": "pkg:npm/%40zervonex/baileys"
+      },
+      "versions": [
+        "4.0.4-final"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zervonex/baileys/v/4.0.4-final"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14169"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T22:17:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "6f4d9d0632af2329c55813448ed07f21e567fd7cebe5d5ee27ac9ada492168cf"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json"
+        ]
+      }
+    }
+  }
+}
