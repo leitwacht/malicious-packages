@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14121",
+  "aliases": [
+    "MAL-2026-18899"
+  ],
+  "modified": "2026-11-16T00:26:31Z",
+  "published": "2026-11-15T09:23:11Z",
+  "summary": "Malicious code in @shurainc/baileys (npm)",
+  "details": "This package is a combosquat of the @whiskeysockets/baileys WhatsApp Web library — the official name is kept intact under an unofficial scope, and its README instructs aliasing the official package to this one — with undisclosed behaviour injected into the library's socket lifecycle. In lib/Socket/messages-recv.js it hardcodes the channel JID 120363387535716103@newsletter and registers a connection.update handler: as soon as the socket reaches the 'open' state (once per socket instance) it calls sock.newsletterFollow() on that JID, logging 'auto-followed shurainc update channel'. There is no configuration flag, environment switch or documented opt-out — every WhatsApp account driven by this library is silently enrolled as a follower of that channel. The preinstall hook engine-requirements.js only checks the Node.js major version (exit 1 below Node 20), and no credential, token, environment-variable or file access was found in the package. It also ships template helpers in lib/Socket/messages-send.js that fabricate forwardedNewsletterMessageInfo metadata naming third-party channels (for example newsletterJid 120363297591152843@newsletter, newsletterName 'shenvn.', and newsletterJid 0@newsletter labelled 'WhatsApp'), allowing outgoing messages to appear as channel forwards; the README promotes the channel hxxps://whatsapp[.]com/channel/0029Vb8IWc3FSAsy4xaX991n as the update channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shurainc/baileys",
+        "purl": "pkg:npm/%40shurainc/baileys"
+      },
+      "versions": [
+        "3.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shurainc/baileys/v/3.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14121"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:23:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "8f24f580a3edbb3012c3c80dc11ade3662160b82025576018c8293fd3b614fd7"
+        ],
+        "url_observed": [
+          "hxxps://call[.]whatsapp[.]com/video/shurainc",
+          "hxxps://whatsapp[.]com/channel/0029Vb8IWc3FSAsy4xaX991n"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14143",
+  "aliases": [
+    "MAL-2026-19050"
+  ],
+  "modified": "2026-11-16T00:17:32Z",
+  "published": "2026-11-15T09:55:58Z",
+  "summary": "Potentially-unwanted package (riskware): zyleys (npm)",
+  "details": "This package is a typosquat of the \"wileys\" WhatsApp Web API library (name differs by one letter; description, keywords and internal identifiers match the upstream Wileys/Baileys library) that silently subscribes the user's WhatsApp account to hardcoded channels. An injected block at the end of makeNewsletterSocket() in lib/Socket/newsletter.js, labelled \"Auto join newsletters\", holds three hardcoded channel JIDs (120363422814525873@newsletter, 120363368585140499@newsletter, 120363367153552860@newsletter) and calls autoJoinNewsletters(), which issues newsletter FOLLOW queries (query id 7871414976211147) for each, sleeping 2 seconds between them. That function is invoked unconditionally before the socket is returned, so any application creating a WhatsApp socket through this package consents to those follows on the account owner's behalf, with no user action, option or configuration. No credential, token,.npmrc or wallet data is read or transmitted. Other network destinations match upstream behaviour: wss://web[.]whatsapp[.]com/ws/chat and mmg[.]whatsapp[.]net, an npm registry version check (registry[.]npmjs[.]org/wileys), and public media-upload hosts used when sending media (catbox.moe, scdn.pdi.moe, qu.ax, uguu[.]se, tmpfiles[.]org, ezgif[.]com). The preinstall hook engine-requirements.js only checks for Node.js 20 or newer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zyleys",
+        "purl": "pkg:npm/zyleys"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zyleys/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:55:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "catbox[.]moe",
+          "ezgif[.]com",
+          "mmg[.]whatsapp[.]net",
+          "qu[.]ax",
+          "registry[.]npmjs[.]org",
+          "scdn[.]pdi[.]moe",
+          "tmpfiles[.]org",
+          "uguu[.]se",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "cdfbde923f89893573b97abb597666c76a1ea1f5fa2f5310ac5dfa759084db7e"
+        ],
+        "url_observed": [
+          "hxxps://catbox[.]moe/user/api[.]php",
+          "hxxps://registry[.]npmjs[.]org/wileys",
+          "hxxps://scdn[.]pdi[.]moe/upload",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

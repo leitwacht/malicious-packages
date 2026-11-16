@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14145",
+  "aliases": [
+    "MAL-2026-19010"
+  ],
+  "modified": "2026-11-16T00:26:26Z",
+  "published": "2026-11-15T10:02:26Z",
+  "summary": "Malicious code in rsembilaneks-baileys (npm)",
+  "details": "This package is a rebranded fork of the Baileys WhatsApp Web library that advertises itself as an ordinary API wrapper but has been modified to attach author-controlled WhatsApp channel references to the messages it sends. In package/lib/Utils/messages.js, prepareWAMessageMedia hardcodes annotations containing {newsletterJid: \"120363403941803439@newsletter\", newsletterName: \"Ditciix7\"} and applies them to every outgoing media message when the caller did not supply annotations, so images, video, documents and stickers posted by the installing bot or bot farm carry a forwarded-channel card for a channel the caller never chose. The bundled module package/lib/Socket/damnn.js (class yowaimo, exposed as sock.luki) hardcodes further channel IDs — 120363421563597486@newsletter (\"D | 7eppeli-Exloration\") and 120363399602691477@newsletter — inside forwardedNewsletterMessageInfo and poll-result contextInfo, and the same file stamps fixed marketing identifiers into messages: senderName \"7-Yuukey\", orderId \"7EPPELI25022008\" and the placeholder token \"7EPPELI_EXAMPLE_TOKEN\" in every order message, together with hardcoded order, catalog and business-owner identifiers. It ships a preinstall hook (engine-requirements.js) that only aborts installs below Node 20. It also rewrites the update check: fetchLatestBaileysVersion in package/lib/Utils/generics.js pulls protocol version data from hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json, an author-supplied repository rather than the upstream library, instead of the upstream default. The package has no configuration switch for any of these injected channel references. Indicators: 120363403941803439@newsletter, 120363421563597486@newsletter, 120363399602691477@newsletter, hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json. This package is a modified fork of the Baileys WhatsApp library that silently injects hardcoded WhatsApp channel attributions into messages generated through it, with no switch to disable the behaviour. In lib/Utils/messages.js, the message-content generator (generateWAMessageContent) unconditionally stamps an `annotations` block onto every outgoing media message whenever the caller has not supplied its own: four fixed polygon vertices plus newsletter metadata — newsletterJid 120363403941803439@newsletter, newsletterName \"Ditciix7\", contentType \"UPDATE\" — so third-party bots relay this channel reference to their own contacts. The custom message builder in lib/Socket/damnn.js (class yowaimo, instantiated from lib/Socket/messages-send.js) repeats the same shaping: the album handler writes forwardedNewsletterMessageInfo with newsletterJid \"0@newsletter\", newsletterName \"WhatsApp\" and senderName \"7-Yuukey\", a forwardingScore of 99999, isForwarded true and fabricated labels [\"Y\",\"Important\"]; the event handler writes newsletterName \"D | 7eppeli-Exloration\" with newsletterJid 120363421563597486@newsletter; the poll-result handler falls back to newsletterJid 120363399602691477@newsletter. lib/Utils/generics.js additionally redirects the client version lookup away from the upstream project to hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json, a third-party file that supplies the version constant used in the WhatsApp handshake. The package contains no credential, environment-variable or file exfiltration and no remote command-and-control endpoint; its only fixed third-party identifiers are the channel JIDs above, which are written into the user's outbound message payloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "rsembilaneks-baileys",
+        "purl": "pkg:npm/rsembilaneks-baileys"
+      },
+      "versions": [
+        "2.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/rsembilaneks-baileys/v/2.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14145"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T10:02:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "raw[.]githubusercontent[.]com/kiuur/bails"
+        ],
+        "sha256": [
+          "cb18ad377d09055139c4d084bc2ff2e0a4e11f1080dcc0f53beba77a57c5a1e3"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

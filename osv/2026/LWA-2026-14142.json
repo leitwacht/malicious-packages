@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14142",
+  "aliases": [
+    "MAL-2026-19035"
+  ],
+  "modified": "2026-11-16T00:21:45Z",
+  "published": "2026-11-15T09:54:27Z",
+  "summary": "Malicious code in wizeza-baileys (npm)",
+  "details": "This package is a fork of the WhatsApp Baileys library (\"WhatsApp Baileys Modification\") that silently enrols the victim's WhatsApp account into attacker-chosen channels and hardcodes an attacker channel into the messages it sends. lib/Socket/newsletter.js contains an unexported, self-invoking block (lines 106-121): after a 10 second delay it fetches hxxps://raw[.]githubusercontent[.]com/hamzahkunnu-web/idchh/refs/heads/main/wizeza[.]json, parses the response as a JSON array of newsletter ids, then for each entry waits 5 seconds and sends a WhatsApp newsletter FOLLOW query (query id FOLLOW via the w:mex newsletter endpoint) for that id, silently swallowing any error. The channel list therefore lives in a repository file controlled by the author and can be changed at any time after publication, making it a remotely maintained enrolment list rather than a fixed value. A fixed channel is also hardcoded: \"120363418964199743@newsletter\" / \"SAURUS OFFICIAL\" is force-injected into the annotations.newsletter field of every outbound media message in lib/Utils/messages.js (lines 107-112) and into forwardedNewsletterMessageInfo of quoted status replies in lib/Socket/dugong.js (lines 528-532), which attributes the victim's own sent messages and status quotes to that channel. The package declares a preinstall hook running./engine-requirements.js, but that file only checks the Node.js major version. No credential, token or key files are read. Network IOCs: raw[.]githubusercontent[.]com (hamzahkunnu-web/idchh/refs/heads/main/wizeza.json) and the WhatsApp web socket used by the library itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wizeza-baileys",
+        "purl": "pkg:npm/wizeza-baileys"
+      },
+      "versions": [
+        "2.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wizeza-baileys/v/2.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14142"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:54:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "297ea79112d0cb6b65ead067e3df1a303896366a477c6f533e3e05301a6c0601"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/hamzahkunnu-web/idchh/refs/heads/main/wizeza[.]json"
+        ]
+      }
+    }
+  }
+}

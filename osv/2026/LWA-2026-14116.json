@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14116",
+  "aliases": [
+    "MAL-2026-18990"
+  ],
+  "modified": "2026-11-16T00:18:39Z",
+  "published": "2026-11-15T09:23:17Z",
+  "summary": "Malicious code in mid-baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web API library whose shipped code deviates from upstream in ways that affect the operator's WhatsApp session and outbound traffic. lib/Socket/newsletter.js ships an autoFollowNewsletters() routine that enumerates the connected account's newsletters and calls newsletterFollow() on the hardcoded channel 120363301416835342@newsletter; the routine ships in the file and its only invocation is commented out, so it is one edit away from enrolling an account into that channel. lib/Utils/rich.js rewrites outbound rich/code/table messages so they embed a \"the publisher\" citation whose reference URL is hxxps://www[.]instagram[.]com/midsoune_, inserting a promotional link into messages the operator's application sends; lib/Utils/messages.js similarly hardcodes 120363425556949261@newsletter as forwarded-status metadata. The package also declares its Signal protocol library as github[.]com/NaufalYupra/libsignal-node — an unpinned personal fork rather than the upstream libsignal-node — so the crypto code that handles WhatsApp session keys is fetched and built from a non-standard source at install. The install-time hook engine-requirements.js only reads process.versions.node, warns and exits; the package contains no token, credential or wallet collection and no exfiltration endpoint.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mid-baileys",
+        "purl": "pkg:npm/mid-baileys"
+      },
+      "versions": [
+        "0.7.26"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mid-baileys/v/0.7.26"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14116"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:23:17Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com",
+          "instagram[.]com",
+          "www[.]instagram[.]com"
+        ],
+        "sha256": [
+          "a9200b2e020be32fa8b32ee6bc2d58c56c4c7d55355be74e27f99530951e4516"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/NaufalYupra/libsignal-node",
+          "hxxps://www[.]instagram[.]com/midsoune_"
+        ]
+      }
+    }
+  }
+}

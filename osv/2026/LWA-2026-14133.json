@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14133",
+  "aliases": [
+    "MAL-2026-19047"
+  ],
+  "modified": "2026-11-16T00:21:23Z",
+  "published": "2026-11-15T09:40:38Z",
+  "summary": "Malicious code in zenvyflump (npm)",
+  "details": "This package is a modified WhatsApp (Baileys) library fork (\"baileys modifikasi by rahmad\") that covertly enrols the linked WhatsApp account into a hardcoded channel. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules a 90000 ms setTimeout whose callback issues a newsletter FOLLOW GraphQL query for the channel JID 120363408522985879@newsletter; the call is wrapped in an empty try/catch and is not exposed through any option, flag or log line, so a bot using this library subscribes the account without the operator's knowledge. lib/Socket/idk-bruh.js hardcodes the same JID (newsletterName \"who know\") inside a forwardedNewsletterMessageInfo node that is attached to status@broadcast messages built by lib/Socket/messages-send.js. The preinstall hook (node./engine-requirements.js) only checks for Node.js 20+. No credential, environment-variable or file harvesting behaviour was found, and the only remote endpoints referenced are WhatsApp's own properties (hxxps://web[.]whatsapp[.]com, wss://web[.]whatsapp[.]com/ws/chat, hxxps://v[.]whatsapp[.]net/v2) plus a library version file at hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "zenvyflump",
+        "purl": "pkg:npm/zenvyflump"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/zenvyflump/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14133"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:40:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "fe640c5ad8ef76c273b96aedb23477d1bf893c77742b8c08db9a4c6413c787a7"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json",
+          "hxxps://v[.]whatsapp[.]net/v2",
+          "hxxps://web[.]whatsapp[.]com"
+        ]
+      }
+    }
+  }
+}

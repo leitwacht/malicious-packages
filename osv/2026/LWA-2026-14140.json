@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14140",
+  "aliases": [
+    "MAL-2026-18989"
+  ],
+  "modified": "2026-11-16T00:22:47Z",
+  "published": "2026-11-15T09:50:57Z",
+  "summary": "Malicious code in malvin-wa (npm)",
+  "details": "This package is a WhatsApp Web API library (a fork of the baileys/Wileys client) that silently subscribes the connecting account to hardcoded WhatsApp channels. In lib/Socket/newsletter.js, inside makeNewsletterSocket(), an added block schedules a 70-second timeout that issues WhatsApp newsletter FOLLOW queries (query_id 7871414976211147) for the channels 120363397787532298@newsletter, 120363419938392281@newsletter, 120363403088190386@newsletter, 120363401425960788@newsletter, 120363402984117316@newsletter, 120363401712599053@newsletter and 120363403341539432@newsletter, chained with nested five-second timeouts and 3-5 second delays, each wrapped in an empty catch block so no error surfaces. makeNewsletterSocket is instantiated by the message-sending socket (lib/Socket/messages-send.js), so any client that connects sends these follow requests automatically, with no API call and no user consent, adding the operator's own WhatsApp account as a follower of publisher-chosen channels. The preinstall hook, engine-requirements.js, only checks the Node.js major version. Separately, lib/Utils/messages-media.js can POST user media to anonymous third-party upload services (catbox.moe, pdi.moe, qu.ax, uguu[.]se, tmpfiles[.]org, ezgif[.]com).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "malvin-wa",
+        "purl": "pkg:npm/malvin-wa"
+      },
+      "versions": [
+        "0.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/malvin-wa/v/0.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14140"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:50:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "catbox[.]moe",
+          "ezgif[.]com",
+          "pdi[.]moe",
+          "qu[.]ax",
+          "tmpfiles[.]org",
+          "uguu[.]se"
+        ],
+        "sha256": [
+          "f223c35346e87e607f4118df1f29768ec93344d9f412eb2f7be21c164a8642d7"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14120",
+  "aliases": [
+    "MAL-2026-18888"
+  ],
+  "modified": "2026-11-16T00:26:58Z",
+  "published": "2026-11-15T09:19:38Z",
+  "summary": "Malicious code in @rizzkezik/bails (npm)",
+  "details": "@rizzkezik/bails is a modified fork of the Baileys WhatsApp Web API library that silently forces the end user's WhatsApp account to follow the package author's channels. In lib/Socket/newsletter.js the module declares an array of three base64-encoded WhatsApp newsletter JIDs (e.g. MTIwMzYzMzg3MTgyODUxMTAwQG5ld3NsZXR0ZXI= decoding to 120363387182851100@newsletter) and schedules, via setTimeout with a 90000 ms delay, a loop that decodes each JID and issues newsletterWMexQuery(jid, QueryIds.FOLLOW) against WhatsApp's w:mex endpoint, spacing the follows 3 seconds apart and swallowing errors. Because that socket is constructed by every makeWASocket call (lib/Socket/messages-send.js imports it), any WhatsApp bot or app built on this package enrols its account into those channels without the developer's or user's knowledge. The behaviour is deliberately hidden: identifiers are base64-encoded, the array carries an innocuous name, and the 90-second delay separates it from startup. The package documentation claims only a single newsletter follow, while the code performs three. The package also declares a preinstall hook (engine-requirements.js, a Node version check only) and a dependency on cache-manager ^7.2.8. No credential, token or file exfiltration was found in the package; the unwanted behaviour is non-consensual account mutation. IOCs: WhatsApp newsletter JIDs 120363387182851100@newsletter, and the two further base64 JIDs shipped in lib/Socket/newsletter.js; channel invite hxxps://whatsapp[.]com/channel/0029Vb3IiqTL7UVP9A9n0w1x; contact handle hxxps://t[.]me/ranstech.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rizzkezik/bails",
+        "purl": "pkg:npm/%40rizzkezik/bails"
+      },
+      "versions": [
+        "6.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rizzkezik/bails/v/6.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14120"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:19:38Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "t[.]me",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "a22855d04fdcdecb57bf98dbdd9830849cfc95dbf93cda362665d0903c08619e"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/ranstech",
+          "hxxps://whatsapp[.]com/channel/0029Vb3IiqTL7UVP9A9n0w1x"
+        ]
+      }
+    }
+  }
+}

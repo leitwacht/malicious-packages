@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14123",
+  "aliases": [
+    "MAL-2026-18910"
+  ],
+  "modified": "2026-11-16T00:18:30Z",
+  "published": "2026-11-15T09:31:47Z",
+  "summary": "Potentially-unwanted package (riskware): @vinzzofficial/baileys (npm)",
+  "details": "This package is a republished, modified fork of the WhatsApp Web library baileys, published under an unofficial scope. It bundles code that silently enrols the installer's paired WhatsApp account into two newsletter channels run by the fork's author. In lib/Socket/newsletter.js, two module-level setTimeout callbacks with a 90,000 ms delay call the WhatsApp newsletter follow query (Types.QueryIds.FOLLOW) with hardcoded base64-encoded channel JIDs, which decode to 120363389012094856@newsletter and 120363423890054787@newsletter. The timers are registered when the newsletter socket module is initialised, so any bot built on this fork subscribes the user's account to those channels without prompting; errors are swallowed so the action stays invisible. The package otherwise behaves like the upstream library: the only outbound network destinations are wss://web[.]whatsapp[.]com/ws/chat and WhatsApp media hosts, the only process execution is an ffmpeg thumbnail command in lib/Utils/messages-media.js, and the preinstall hook (engine-requirements.js, 307 bytes) merely exits when Node is older than 20. No credentials, tokens, environment variables or user files are read or transmitted, and there is no remote command channel.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vinzzofficial/baileys",
+        "purl": "pkg:npm/%40vinzzofficial/baileys"
+      },
+      "versions": [
+        "1.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vinzzofficial/baileys/v/1.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:31:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "cafc1fca2d06a8788aff9a9c1fc28a60df81b45931a5c61a409d83ce54881ed6"
+        ]
+      }
+    }
+  }
+}

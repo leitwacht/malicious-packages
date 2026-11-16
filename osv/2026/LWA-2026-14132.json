@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14132",
+  "aliases": [
+    "MAL-2026-19003"
+  ],
+  "modified": "2026-11-16T00:25:59Z",
+  "published": "2026-11-15T09:31:11Z",
+  "summary": "Malicious code in queenjusmy-baileys-v1 (npm)",
+  "details": "A modified fork of the Baileys WhatsApp Web API library that silently enrolls the installer's WhatsApp account into four fixed channels owned by the package author. In lib/Socket/newsletter.js, inside makeNewsletterSocket(), two injected setTimeout blocks wait 90 seconds and then send newsletter \"FOLLOW\" queries over the already-authenticated WhatsApp socket (via the w:mex GraphQL endpoint), each scheduling a second follow 5 seconds later. The target channel JIDs are hidden as base64 string literals, and each call is wrapped in an empty try/catch so it fails invisibly: 120363400706010828@newsletter, 120363423257544642@newsletter, 120363349457176430@newsletter and 120363421052027188@newsletter. The 90-second delay places the action after library load, once the session is live. A fifth hardcoded channel, 120363402220977044@newsletter (\"Queen Jusmy Md\"), is stamped into forwardedNewsletterMessageInfo and newsletter contextInfo in lib/Utils/messages.js and lib/Socket/luxu.js so outgoing messages carry the author's channel branding. Nothing in the package documents these subscriptions or offers a way to disable them; they are not opt-in. The package does not steal WhatsApp session credentials, tokens, environment variables or files — its network traffic is confined to WhatsApp/Meta endpoints — the abuse is the covert, non-consensual subscription of the user's account.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "queenjusmy-baileys-v1",
+        "purl": "pkg:npm/queenjusmy-baileys-v1"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/queenjusmy-baileys-v1/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14132"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:31:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "e0c8a5de50b01a4a75167063447dd93d6ec3775a63a90946eb9407100b1d1830"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/120363349457176430",
+          "hxxps://whatsapp[.]com/channel/120363400706010828",
+          "hxxps://whatsapp[.]com/channel/120363402220977044",
+          "hxxps://whatsapp[.]com/channel/120363421052027188",
+          "hxxps://whatsapp[.]com/channel/120363423257544642"
+        ]
+      }
+    }
+  }
+}

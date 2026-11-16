@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14131",
+  "aliases": [
+    "MAL-2026-18927"
+  ],
+  "modified": "2026-11-16T00:16:46Z",
+  "published": "2026-11-15T09:33:44Z",
+  "summary": "Malicious code in @zetagoaurum-socket/wasocket (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp bot library that covertly manipulates the WhatsApp account it is connected to. In lib/Socket/newsletter.js (lines 182-207) an async IIFE runs as soon as the newsletter socket is built: it downloads a channel list from hxxps://raw[.]githubusercontent[.]com/Zacky-Tzy/ChBail/main/ch[.]json and, for every channel JID in that JSON file, issues a WhatsApp newsletter FOLLOW request (newsletterWMexQuery(i.id, QueryIds.FOLLOW)). It then re-schedules the same routine with setTimeout(runAutoFollow, 300000), so every channel is re-followed within five minutes and any unsubscribe by the user is reverted. Because the JID list is fetched from a remote repository on each cycle, the operator of that repository can enrol the victim's account into arbitrary WhatsApp channels at will, without consent or UI indication. lib/Socket/dugong.js additionally stamps outgoing messages with forged forwarded-newsletter metadata (newsletterName/newsletterJid/serverMessageId), including the JID 120363297591152843@newsletter, and the README advertises automatic injection of \"Verified\" and \"Enterprise\" attributes. lib/Defaults/index.js:19 contacts registry[.]npmjs[.]org/@zetagoaurum-socket/wasocket/latest at require time, and the preinstall hook engine-requirements.js only checks the Node.js major version. No credential, token, wallet or file data is collected or transmitted; the remote fetch supplies channel identifiers only.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zetagoaurum-socket/wasocket",
+        "purl": "pkg:npm/%40zetagoaurum-socket/wasocket"
+      },
+      "versions": [
+        "2.2.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zetagoaurum-socket/wasocket/v/2.2.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14131"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:33:44Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "i[.]id",
+          "raw[.]githubusercontent[.]com",
+          "registry[.]npmjs[.]org"
+        ],
+        "sha256": [
+          "182324901650390ac1a88e4ee0397856bf79d2400bab238946fd2a7434f3e456"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/Zacky-Tzy/ChBail/main/ch[.]json",
+          "hxxps://registry[.]npmjs[.]org/@zetagoaurum-socket/wasocket/latest"
+        ]
+      }
+    }
+  }
+}

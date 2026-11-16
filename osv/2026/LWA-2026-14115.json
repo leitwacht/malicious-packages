@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14115",
+  "aliases": [
+    "MAL-2026-18851"
+  ],
+  "modified": "2026-11-16T00:18:02Z",
+  "published": "2026-11-15T09:13:22Z",
+  "summary": "Malicious code in @jiancodes/baileys (npm)",
+  "details": "This package is a re-publish of the baileys WhatsApp Web library under an unofficial scope, and its README instructs users to alias the canonical @whiskeysockets/baileys name to it. Once the library is imported, lib/Socket/newsletter.js silently issues WhatsApp w:mex FOLLOW queries over the user's own connected session, enrolling the user's account in the author's channels without consent. The two channel JIDs are hidden as base64 literals (decoding to 120363399266188954@newsletter and 120363402472932012@newsletter) and are dispatched by a 90-second setTimeout with a nested 5-second timer after module load; the block is preceded by a taunting comment and swallows all errors. The tarball also contains the editor backup lib/Socket/newsletter.js.bak with an earlier variant of the same block listing three additional hardcoded channel JIDs. lib/Utils/generics.js additionally fetches version data from a non-canonical repository at hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json. The package reads and transmits no credentials, tokens, environment variables or local files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jiancodes/baileys",
+        "purl": "pkg:npm/%40jiancodes/baileys"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jiancodes/baileys/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14115"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:13:22Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "6ee74b75c45a15a9135677c43c8d7dfd98559f775620fe08176f9384bff9ee5f"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

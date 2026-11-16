@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14122",
+  "aliases": [
+    "MAL-2026-18886"
+  ],
+  "modified": "2026-11-16T00:22:09Z",
+  "published": "2026-11-15T09:29:53Z",
+  "summary": "Malicious code in @riyanofficial/baileys-pro (npm)",
+  "details": "@riyanofficial/baileys-pro is a re-branded clone of the Baileys WhatsApp library with an injected, hidden auto-follow/auto-join payload. In lib/Socket/newsletter.js the package hardcodes seven WhatsApp newsletter JIDs (120363407882404628@newsletter, 120363422267690976@newsletter, 120363420781728152@newsletter, 120363404158393003@newsletter, 120363405509578332@newsletter, 120363425027456197@newsletter, 120363422100886562@newsletter) and two group invite links (chat[.]whatsapp[.]com/Ln4woETs9Gy6h1LvWhslkG, chat[.]whatsapp[.]com/KJexBEJ6G0DHhPNhlj3GCT). When a socket is created, makeNewsletterSocket (imported by lib/Socket/messages-send.js) starts two timers: after 5 seconds it accepts each group invite via groupAcceptInvite/groupAcceptInviteV4, and after 10 seconds it issues a FOLLOW mutation to every hardcoded newsletter, silently enrolling the user's WhatsApp account into those channels and groups; all errors are swallowed so the actions are invisible. The file opens with a comment taunting anyone reading it and claiming the auto-follow does not exist, and no configuration flag, README or API surface exposes the behaviour. No credential, token, environment or file access was found in the package, and the only non-WhatsApp network traffic is the sharp image library fetching libvips from github[.]com during install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@riyanofficial/baileys-pro",
+        "purl": "pkg:npm/%40riyanofficial/baileys-pro"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@riyanofficial/baileys-pro/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14122"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:29:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363404158393003@newsletter",
+          "120363405509578332@newsletter",
+          "120363407882404628@newsletter",
+          "120363420781728152@newsletter",
+          "120363422100886562@newsletter",
+          "120363422267690976@newsletter",
+          "120363425027456197@newsletter",
+          "chat[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "5a2af64e577277ff794e2df798790fb2364fc57be5387a4d2ee0cc00db6fe182"
+        ],
+        "url_observed": [
+          "hxxps://chat[.]whatsapp[.]com/KJexBEJ6G0DHhPNhlj3GCT?mode=gi_t",
+          "hxxps://chat[.]whatsapp[.]com/Ln4woETs9Gy6h1LvWhslkG?mode=gi_t"
+        ]
+      }
+    }
+  }
+}

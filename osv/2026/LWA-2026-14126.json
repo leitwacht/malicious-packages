@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14126",
+  "aliases": [
+    "MAL-2026-18925"
+  ],
+  "modified": "2026-11-16T00:26:54Z",
+  "published": "2026-11-15T09:39:18Z",
+  "summary": "Malicious code in @zeppeliorg/wbails (npm)",
+  "details": "This package is a Baileys (WhatsApp Web API) fork that has been modified to silently force the installed bot's WhatsApp account to follow a fixed set of operator-controlled newsletter channels. Inside makeNewsletterSocket in lib/Socket/newsletter.js, an injected block that is present in no upstream Baileys release starts one-shot setTimeout timers (10s, with nested 9s and 8s timers) as soon as the socket is constructed, and issues the WhatsApp \"follow\" mutation (query id 7871414976211147) as an IQ to s[.]whatsapp[.]net for seven hardcoded channel JIDs. The JIDs are base64-obfuscated in the shipped source and decode to: 120363428745722504@newsletter, 120363410018949906@newsletter, 120363425869049995@newsletter, 120363425177067841@newsletter, 120363349140729983@newsletter, 120363424800295266@newsletter, 120363410614416828@newsletter. The subscribing user is never asked, there is no package option or configuration to disable it, and nothing is logged. The package also ships lib/Socket/luxu.js, an added message-type dispatcher wired into sendMessage in lib/Socket/messages-send.js, which stamps outgoing event messages with forwardedNewsletterMessageInfo pointing at 120363421563597486@newsletter (labelled \"D | 7eppeli-Exloration\") and album messages with a spoofed newsletterJid \"0@newsletter\" and senderName \"7-Yuukey\". The only install-time script, the preinstall target./engine-requirements.js, merely checks that Node.js is version 20 or newer. No installer credentials, environment variables, wallet data or files are read or transmitted; the harmful action is the unauthorised subscription of the installer's WhatsApp account to the operator's channels.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zeppeliorg/wbails",
+        "purl": "pkg:npm/%40zeppeliorg/wbails"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zeppeliorg/wbails/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14126"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:39:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "2816d4de49732e45ee0ab32d439b935640dee802e761cb085fad97ad414c1f03"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14144",
+  "aliases": [
+    "MAL-2026-18908"
+  ],
+  "modified": "2026-11-16T00:19:28Z",
+  "published": "2026-11-15T10:02:14Z",
+  "summary": "Potentially-unwanted package (riskware): @vinxwhy1st/bails (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library (WhatsApp Web API client) that ships a hidden channel-subscription side effect. In lib/Socket/newsletter.js the newsletter query helper newsletterWMexQuery() builds the caller's query and then, unconditionally, schedules a 90-second setTimeout that issues a WhatsApp newsletter FOLLOW query for the hardcoded JID 120363425547320365@newsletter, wrapped in an empty catch. The effect is that any operator who queries newsletter metadata through this library has their WhatsApp account silently subscribed to the developer's channel (hxxps://whatsapp[.]com/channel/0029VbBdf5sATRStSkGm7l2h) 90 seconds later, regardless of their own code. The package also fetches a version descriptor from hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version.json. No credentials, tokens or environment values are read or transmitted; the unwanted behaviour is the unaided account-level subscription performed on the user's authenticated WhatsApp session.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vinxwhy1st/bails",
+        "purl": "pkg:npm/%40vinxwhy1st/bails"
+      },
+      "versions": [
+        "2.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vinxwhy1st/bails/v/2.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T10:02:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "31d89037af4051ba559cc9c10aa6799223e651271f6cbc8c34c6357b7281436f"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json",
+          "hxxps://whatsapp[.]com/channel/0029VbBdf5sATRStSkGm7l2h"
+        ]
+      }
+    }
+  }
+}

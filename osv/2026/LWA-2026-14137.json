@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14137",
+  "aliases": [
+    "MAL-2026-18924"
+  ],
+  "modified": "2026-11-16T00:26:43Z",
+  "published": "2026-11-15T09:54:36Z",
+  "summary": "Malicious code in @zephkiel/wbails (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web library that covertly injects the author's own channel branding into messages produced by applications that embed it. lib/Utils/messages.js (prepareWAMessageMedia) supplies a default annotations block containing newsletterJid \"120363403941803439@newsletter\" with newsletterName \"Ditciix7\" and serverMessageId 0 for every media message that does not already define annotations. The custom file lib/Socket/damnn.js, wired into lib/Socket/messages-send.js, hardcodes forwardedNewsletterMessageInfo into generated message content and into status@broadcast payloads, using newsletterJid \"120363403941803439@newsletter\" / \"0@newsletter\", newsletterName \"Ditcii Information\"/\"Ditcii\", senderName \"Ditcii\" and priority \"high\". On require, lib/index.js prints the author's promotional banner (\"Support My Channel @sf7zephkiel\", \"@AboutDitcii\"). The install hook engine-requirements.js only checks for Node.js \u003e= 20. No network destination beyond wss://web[.]whatsapp[.]com and the standard WhatsApp media upload endpoint was found, and no credential, token or key material (npm/GitHub/cloud tokens,.npmrc, ~/.ssh) is read or transmitted. IOCs: newsletter JID 120363403941803439@newsletter; author handles @sf7zephkiel, @AboutDitcii, DitciiX7.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zephkiel/wbails",
+        "purl": "pkg:npm/%40zephkiel/wbails"
+      },
+      "versions": [
+        "2.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zephkiel/wbails/v/2.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14137"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:54:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "300b7a02a0f6a0b7fa97fc1969da5944c3c3135ef5b0f8f6d146b4fc98c088f0"
+        ]
+      }
+    }
+  }
+}
