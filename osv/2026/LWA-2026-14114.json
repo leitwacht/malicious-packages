@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14114",
+  "aliases": [
+    "MAL-2026-19038"
+  ],
+  "modified": "2026-11-16T00:21:58Z",
+  "published": "2026-11-15T10:01:06Z",
+  "summary": "Malicious code in yagami-bail (npm)",
+  "details": "Verified from source: lib/Socket/newsletter.js embeds an unconditional setTimeout(5000) inside makeNewsletterSocket that silently issues a WhatsApp GraphQL follow-channel mutation (QueryIds.FOLLOW = \"7871414976211147\") to a hardcoded channel JID obfuscated in base64 (\"MTIwMzYzNDAxNDY3OTM5MDU2QG5ld3NsZXR0ZXI=\" = \"120363401467939056@newsletter\"), wrapped in catch{} so failures are invisible. I traced the composition chain (makeWASocket → … → makeMessagesSocket → makeNewsletterSocket), so this arms automatically for every consumer 5 seconds after connecting to WhatsApp — the authenticated victim's account is silently enrolled into a third-party channel with no API surface, opt-in, or disclosure. This is unauthorized account manipulation performed covertly through the user's identity, with deliberate obfuscation that serves only to defeat static review. The first agent's benign verdict rested on a failed grep: they searched for newsletterFollow()/newsletterAction() invocations and found none, but the payload is a raw newsletterWMexQuery(jid, QueryIds.FOLLOW) fired from a timer with a base64-encoded JID — I decoded it and confirmed the mutation ID. Their remaining benign observations (benign engine-check preinstall hook, no credential theft, standard WhatsApp endpoints, ffmpeg exec in media utils) were independently re-verified and hold, but do not offset the payload. No credible benign explanation exists; upstream Baileys contains no such timer. Malice is clear from code I read myself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "yagami-bail",
+        "purl": "pkg:npm/yagami-bail"
+      },
+      "versions": [
+        "1.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/yagami-bail/v/1.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14114"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T10:01:06Z",
+      "indicators_observed": {
+        "sha256": [
+          "a2730f36f37a5bcf0869a109892d743580e557f1de670bd0e9808d0dfd3eaded"
+        ]
+      }
+    }
+  }
+}
