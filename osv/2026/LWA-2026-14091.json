@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14091",
+  "aliases": [
+    "MAL-2026-18899"
+  ],
+  "modified": "2026-11-16T00:08:25Z",
+  "published": "2026-11-15T09:15:03Z",
+  "summary": "Potentially-unwanted package (riskware): @shurainc/baileys (npm)",
+  "details": "This package is an unofficial re-publish of the WhatsApp Web library \"baileys\" under a different scope, modified to auto-follow a specific WhatsApp channel. In lib/Socket/messages-recv.js the socket setup installs a connection.update handler that, on the first transition to connection state \"open\", calls sock.newsletterFollow('120363387535716103@newsletter') exactly once per socket instance and logs \"auto-followed shurainc update channel\". The follow happens without any opt-in, configuration flag or user interaction, so any client built on this library silently subscribes the linked WhatsApp account to that channel; the same channel is promoted in the README via hxxps://whatsapp[.]com/channel/0029Vb8IWc3FSAsy4xaX991n. The package otherwise mirrors the upstream library. Its preinstall hook (node./engine-requirements.js) only checks for Node.js 20+ and exits; no download, eval or decode step. Declared dependencies include libsignal resolved from a git repository (github[.]com/whiskeysockets/libsignal-node) rather than the registry. No credential, token or wallet access and no network endpoints other than WhatsApp hosts were found in the shipped code. IOC: WhatsApp newsletter JID 120363387535716103@newsletter (channel URL hxxps://whatsapp[.]com/channel/0029Vb8IWc3FSAsy4xaX991n).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@shurainc/baileys",
+        "purl": "pkg:npm/%40shurainc/baileys"
+      },
+      "versions": [
+        "3.0.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@shurainc/baileys/v/3.0.3"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:15:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "e4cb864e32d8694bb6357a99edd41d0b3da685e858664a3cb5bdb93b2a1d0973"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029Vb8IWc3FSAsy4xaX991n"
+        ]
+      }
+    }
+  }
+}

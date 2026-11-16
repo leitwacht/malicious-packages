@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14103",
+  "aliases": [
+    "MAL-2026-19001"
+  ],
+  "modified": "2026-11-16T00:10:08Z",
+  "published": "2026-11-15T09:48:20Z",
+  "summary": "Potentially-unwanted package (riskware): phantom-pro (npm)",
+  "details": "This package is a modified WhatsApp Web library (a fork of the Baileys library, shipped as lib/) that auto-enrols the connected account into an operator-controlled WhatsApp channel and stamps that channel onto outgoing messages. Its preinstall hook (engine-requirements.js) only checks that Node.js is version 20 or newer. On socket connection, lib/Socket/newsletter.js schedules an automatic follow of the hardcoded WhatsApp channel JID 120363401718869058@newsletter (\"Khyz update\" / \"ᴋʜʏᴢ || ᴜᴘᴅᴀᴛᴇ\") by issuing the WhatsApp w:mex GraphQL query with QueryIds.FOLLOW. The same JID is embedded in lib/Utils/messages.js and lib/Socket/luxu.js, where it is written into the forwardedNewsletterMessageInfo field of outgoing message content (including event and poll messages), so messages sent through the library carry the channel attribution; the README configures newsletterName \"PHANTOM-X\". No credential, environment-variable,.npmrc or token access exists in the shipped code, no obfuscation or dynamic code execution is present, and the only network destination used by the library is the WhatsApp Web WebSocket endpoint wss://web[.]whatsapp[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "phantom-pro",
+        "purl": "pkg:npm/phantom-pro"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/phantom-pro/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:48:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "3df60bd824f8feedb351a3a9f7c23ae082ff2ca689a3baf16c7a386f0a7825a7"
+        ]
+      }
+    }
+  }
+}

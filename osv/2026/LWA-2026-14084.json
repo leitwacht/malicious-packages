@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14084",
+  "aliases": [
+    "MAL-2026-18860"
+  ],
+  "modified": "2026-11-16T00:08:27Z",
+  "published": "2026-11-15T09:28:07Z",
+  "summary": "Malicious code in @kyynotdevv/baileys (npm)",
+  "details": "This package is a modified copy of the Baileys WhatsApp Web library published under an unofficial scope that secretly alters the WhatsApp account using it. lib/Socket/newsletter.js schedules follow requests (QueryIds.FOLLOW at 500 ms and 2000 ms after a socket is created, wrapped in empty catch blocks) for the hardcoded channels 120363405751989725@newsletter, 120363424433029723@newsletter, 120363409815577276@newsletter and 120363407393907794@newsletter, so every bot built on it silently follows its author's channels. lib/Socket/dugong.js rewrites every image/album message with forwardedNewsletterMessageInfo for channel 120363425458769503@newsletter, named \"𝐒𝐇𝐀𝐑𝐄 𝐒𝐂 𝐅𝐑𝐄𝐄\" with sender \"Rixzz\", together with forwardingScore 99999, isForwarded and starred, so media sent by the account appears forwarded from a promotion channel; status@broadcast messages are given a second injected channel, 120363422684021546@newsletter. lib/Utils/messages.js embeds channel 120363418090359162@newsletter (\"RiljiX7\") in the default upload annotations. The package also depends on github:RILLYZY/libsignal-node, a fork of the Signal protocol implementation instead of the upstream library, giving that fork's owner control over session-key handling in every deployment. It does not read environment variables,.npmrc, SSH or cloud credential files, and it contacts no host other than the normal WhatsApp WebSocket endpoint wss://web[.]whatsapp[.]com/ws/chat; its preinstall hook (engine-requirements.js) only aborts when Node.js is older than 20. The observed behaviour is unauthorised promotion and traffic manipulation of the installing WhatsApp account, combined with a third-party-controlled cryptography dependency.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kyynotdevv/baileys",
+        "purl": "pkg:npm/%40kyynotdevv/baileys"
+      },
+      "versions": [
+        "2.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kyynotdevv/baileys/v/2.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14084"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:28:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "050425fab3695540cb9c19c48c733dc8db6a34e29aab160f7dbe42471da94451"
+        ],
+        "url_observed": [
+          "github:RILLYZY/libsignal-node",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14107",
+  "aliases": [
+    "MAL-2026-19027"
+  ],
+  "modified": "2026-11-16T00:09:21Z",
+  "published": "2026-11-15T09:59:19Z",
+  "summary": "Potentially-unwanted package (riskware): vendezuubaileys (npm)",
+  "details": "This package is a WhatsApp Web library (a Baileys fork) that silently makes the installer's own paired WhatsApp session contact the author's channel. In lib/Socket/socket.js, inside the websocket keep-alive routine (startKeepAliveRequest, default keepAliveIntervalMs 30000), it sends an additional w:mex GraphQL query to the WhatsApp server (query_id 7871414976211147) carrying a hardcoded newsletter_id \"120363399204776509@newsletter\" on every keep-alive tick — twice a minute for the whole session — in addition to the normal ping. The query is undocumented and is not needed for the connection to stay alive. The same file also modifies the device-pairing flow: requestPairingCode falls back to a fixed hardcoded pairing code (byte-array constant) when the caller does not supply one, instead of a user-chosen value. The package ships no credential, token, environment-variable or file reads, its preinstall hook is only a Node.js \u003e=20 version check, and all traffic goes to WhatsApp's own endpoints. The behaviour is real but unwanted: a fork-specific hidden channel query tied to the author's channel, not a credential-stealing supply-chain attack.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vendezuubaileys",
+        "purl": "pkg:npm/vendezuubaileys"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vendezuubaileys/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:59:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "054cf526bcd56f5cd6eaa1a27ce7aab7c69b2db304116242b4c57378127c28e3"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

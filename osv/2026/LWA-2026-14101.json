@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14101",
+  "aliases": [
+    "MAL-2026-19016"
+  ],
+  "modified": "2026-11-16T00:07:46Z",
+  "published": "2026-11-15T09:44:32Z",
+  "summary": "Malicious code in silva-baileys (npm)",
+  "details": "Silva-baileys, a WhatsApp Web API library, contains a hidden remote-control payload injected into lib/Socket/newsletter.js that is not part of upstream Baileys and is absent from any plaintext in the package. When an application initialises the library's newsletter socket (`makeNewsletterSocket`), the code starts a timer that fires after 90 seconds and then:\n1. decodes a base64 string at runtime into the URL hxxps://files[.]giftedtech[.]co[.]ke/file/chJids[.]json (the string is base64-encoded specifically so the host never appears in plaintext source);\n2. fetches that URL with node-fetch and parses the response as a JSON array of WhatsApp channel (newsletter) JIDs supplied by the remote server;\n3. iterates the array and, for every entry, sends a WhatsApp IQ query stanza to s[.]whatsapp[.]net with `xmlns: w:mex` and `query_id: 7871414976211147` carrying `{ variables: { newsletter_id: \u003cremote JID\u003e } }`, pausing 3 seconds between entries. query_id 7871414976211147 is the identifier the library's own `newsletterFollow` helper uses, so the loop makes the victim's WhatsApp account follow an attacker-controlled, remotely-updatable list of channels. Every error is swallowed by empty catch blocks so failures are silent, and the remote list can be changed at any time without republishing the package. The package's postinstall hook (`node engine-requirements.js`) only performs a Node.js version check. No credential, token, environment-variable or file exfiltration was found in the package. IOCs:\n- hxxps://files[.]giftedtech[.]co[.]ke/file/chJids[.]json\n- domain: files[.]giftedtech[.]co[.]ke\n- WhatsApp query_id: 7871414976211147",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "silva-baileys",
+        "purl": "pkg:npm/silva-baileys"
+      },
+      "versions": [
+        "1.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/silva-baileys/v/1.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14101"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:44:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "files[.]giftedtech[.]co.ke",
+          "s[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "58ba7103f3e8a3558f9946210e95d289bfbcaab2172b100bc8b34f3b763c4d80"
+        ],
+        "url_observed": [
+          "hxxps://files[.]giftedtech[.]co[.]ke/file/chJids[.]json"
+        ]
+      }
+    }
+  }
+}

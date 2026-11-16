@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14087",
+  "aliases": [
+    "MAL-2026-18880"
+  ],
+  "modified": "2026-11-16T00:14:07Z",
+  "published": "2026-11-15T09:27:03Z",
+  "summary": "Malicious code in @ranstech/bails (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp automation library that injects the author's channel promotion into the client and into the messages it sends. lib/Socket/newsletter.js is imported by the message-send path and, at module initialisation, schedules a follow request for the hardcoded channel JID 120363419931177308@newsletter about one second later, with no user action or consent, so the authenticated WhatsApp account is enrolled into that channel; the shipped call is malformed (it references an undefined Types_1.QueryIds.FOLLOW and would throw) but the enrolment is unconditional whenever a socket is constructed. lib/Socket/luxu.js runs on every sendMessage and stamps outgoing messages with forwarding metadata pointing at the author's channel, newsletterName \"D | 7eppeli-Exloration\", newsletterJid 120363421563597486@newsletter, plus a hardcoded 7EPPELI order token and seller JID. lib/Socket/dugong.js references 120363430179804706@newsletter. The preinstall hook (engine-requirements.js) performs only a Node.js major-version check. The package declares a dependency on cache-manager ^7.2.8, which resolves to a version that is itself malicious. It does not read environment variables, does not touch ~/.npmrc or any credential store, ships no encoded or obfuscated payload, and contacts no host other than the WhatsApp service. Users get silent channel enrolment and advertising injected into their messages.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ranstech/bails",
+        "purl": "pkg:npm/%40ranstech/bails"
+      },
+      "versions": [
+        "1.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ranstech/bails/v/1.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14087"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:27:03Z",
+      "indicators_observed": {
+        "sha256": [
+          "393784a25a94c0ce164eef2102eadf79edf635d7f4f9266daf1c6a7d6b9149a8"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VbAJOR4DJ6H3p6aFhI1I"
+        ]
+      }
+    }
+  }
+}

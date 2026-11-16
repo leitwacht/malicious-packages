@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14106",
+  "aliases": [
+    "MAL-2026-19043"
+  ],
+  "modified": "2026-11-16T00:09:51Z",
+  "published": "2026-11-15T09:53:53Z",
+  "summary": "Malicious code in yuliawhh (npm)",
+  "details": "This package is a repackaged copy of the Baileys WhatsApp Web/Multi-Device library (same metadata, README and lib/ tree as the upstream project) with an injected block added to lib/Socket/socket.js. The injected code registers a connection.update listener: when the caller's WhatsApp socket reports connection === 'open', it waits 5 seconds and then, on the already-authenticated socket, sends an iq stanza (tag 'iq', xmlns 'w:mex', query_id '7871414976211147', payload {\"variables\":{\"newsletter_id\":...}}) for each of two hardcoded newsletter JIDs, 120363422344105323@newsletter and 120363425728944719@newsletter. The effect is that any application using the library silently subscribes the end user's authenticated WhatsApp account to those two channels; every error from the call is swallowed in an empty catch block. The block is marked in the source with the comment \"AUTO JOIN CHANNEL YULIAW STORE\". The package carries no command-and-control host or hardcoded IP of its own — the subscription traffic is sent over the library's normal WhatsApp socket (wss://web[.]whatsapp[.]com/ws/chat) — and its only process execution is the upstream ffmpeg thumbnail call in lib/Utils/messages-media.js. The hidden, unrequested account manipulation performed for every connected client is the malicious behaviour.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "yuliawhh",
+        "purl": "pkg:npm/yuliawhh"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/yuliawhh/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14106"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:53:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "d5cc9c3e066b12e96800f9275e3dded1c355ed8d5793e00d2b6f753e608e2c42"
+        ],
+        "url_observed": [
+          "120363422344105323@newsletter",
+          "120363425728944719@newsletter",
+          "hxxps://web[.]whatsapp[.]com"
+        ]
+      }
+    }
+  }
+}

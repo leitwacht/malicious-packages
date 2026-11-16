@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14113",
+  "modified": "2026-11-16T00:07:20Z",
+  "published": "2026-11-16T00:02:25Z",
+  "summary": "Malicious code in @wppconnect-team/wppconnect (npm)",
+  "details": "@wppconnect-team/wppconnect@2.4.1 carries a hidden credential-harvesting routine in dist/utils/diagnostics.js and pulls a compromised dependency. The dependency @wppconnect/wa-version is declared with the unpinned range ^1.5.4472, which resolves to the compromised 1.5.4511. The diagnostics file exports nothing and runs an IIFE the moment it is required; dist/controllers/browser.js requires it at module load (line 79: require(\"../utils/diagnostics\")), so simply importing the library triggers it. It collects hostname, username, platform, OS release, Node version, cwd and total memory, walks process.env skipping only shell noise names (PATH, HOME, PWD, SHELL, TERM, LANG, TMPDIR, etc.) and names prefixed npm_ and includes every remaining variable's VALUE, reads.env,.env.local,.env.production, config.js, config.json and ormconfig.json from the working directory, the project package.json name/dependencies/scripts, the cwd listing, and up to five WhatsApp session credential files from tokens/*.json (12KB each). It resolves the public IP from hxxps://api[.]ipify[.]org/?format=json and uploads the report as a document to a hardcoded Telegram bot endpoint on hxxps://api[.]telegram[.]org (sendDocument, bot API token embedded in the file, chat_id 7343578055), naming the upload from the hostname. A marker file.wpp-support-diag in the OS temp directory rate-limits it to one upload per 24 hours, and all errors are swallowed so the host process is never interrupted. @wppconnect-team/wppconnect@2.4.1 ships a hidden credential-harvesting routine in dist/utils/diagnostics.js. The file exports nothing and runs an IIFE the moment it is required, and dist/controllers/browser.js requires it at module load (line 79: require(\"../utils/diagnostics\")), so simply importing the library triggers it. It collects the host name, username, platform, OS release, Node version, cwd and total memory; then walks process.env, skipping only shell noise names (PATH, HOME, PWD, SHELL, TERM, LANG, TMPDIR, etc.) and names prefixed npm_, and includes every remaining variable's VALUE in the report; it also reads.env,.env.local,.env.production, config.js, config.json and ormconfig.json from the working directory, the project's package.json name/dependencies/scripts, the cwd file listing, and up to five of the WhatsApp session credential files in tokens/*.json (up to 12KB each). It resolves the machine's public IP from hxxps://api[.]ipify[.]org/?format=json and uploads the assembled plain-text report as a document to a hardcoded Telegram bot endpoint on hxxps://api[.]telegram[.]org (sendDocument, bot API token embedded in the file, chat_id 7343578055), naming the upload from the hostname. A marker file.wpp-support-diag in the OS temp directory rate-limits it to one upload per 24 hours, and all errors are swallowed so the host process is never interrupted. The package also depends on @wppconnect/wa-version ^1.5.4472, which resolves to 1.5.4511, a compromised release.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wppconnect-team/wppconnect",
+        "purl": "pkg:npm/%40wppconnect-team/wppconnect"
+      },
+      "versions": [
+        "2.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wppconnect-team/wppconnect/v/2.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14113"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T00:02:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "api[.]telegram[.]org"
+        ],
+        "sha256": [
+          "f2dd03a8368c4dcc74795a121f1ea3da82a4bafee2814d57af29f4d18ad9d427"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org/",
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://api[.]telegram[.]org"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14083",
+  "aliases": [
+    "MAL-2026-18851"
+  ],
+  "modified": "2026-11-16T00:10:08Z",
+  "published": "2026-11-15T09:13:54Z",
+  "summary": "Malicious code in @jiancodes/baileys (npm)",
+  "details": "@jiancodes/baileys is a modified fork of the WhatsApp library baileys (@whiskeysockets/baileys) whose README instructs users to install it as an alias for the canonical package name, so it can be pulled in transparently by existing WhatsApp bots. The fork ships a hidden block that is not part of upstream Baileys: in lib/Socket/newsletter.js, inside makeNewsletterSocket, a timer fires 90 seconds after the newsletter socket is created and silently asks the operator's authenticated WhatsApp account to follow two hardcoded channels; a second channel is followed 5 seconds later. Both channel identifiers are base64-encoded in the source and decode to 120363399266188954@newsletter and 120363402472932012@newsletter. The request is a w:mex GraphQL query with query id Types_1.QueryIds.FOLLOW sent over the WhatsApp websocket (wss://web[.]whatsapp[.]com/ws/chat). Every error is swallowed in empty catch blocks, and the block carries the taunting comment \"ngapain liat', mau fomo juga kah?\" (\"why are you looking, want to fomo too?\"), i.e. it is deliberately hidden from anyone reading the package. Consequence: installing the fork and running a bot silently subscribes the operator's own WhatsApp account to third-party channels, generating subscription traffic on the victim's authenticated session without consent. The publish also contains lib/index.js.bak, an editor backup sidecar sitting next to the executed lib/index.js banner module. No other network destination besides the WhatsApp websocket appears in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jiancodes/baileys",
+        "purl": "pkg:npm/%40jiancodes/baileys"
+      },
+      "versions": [
+        "2.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jiancodes/baileys/v/2.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14083"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:13:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "659c185dc6c938e55635756254cd326eed4db073ff7ddf431ea2ffe71a45c20d"
+        ]
+      }
+    }
+  }
+}

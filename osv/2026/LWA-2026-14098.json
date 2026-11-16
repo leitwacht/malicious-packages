@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14098",
+  "aliases": [
+    "MAL-2026-19018"
+  ],
+  "modified": "2026-11-16T00:06:03Z",
+  "published": "2026-11-15T09:43:11Z",
+  "summary": "Potentially-unwanted package (riskware): skylerss (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library that silently enrols the connecting account into hardcoded WhatsApp channels. In lib/Socket/chats.js the socket 'connection === open' handler unconditionally calls sock.newsletterFollow() for two hardcoded newsletter JIDs — 120363426241392511@newsletter and 120363408224884979@newsletter — logging \"Auto-followed channel\" on success. The package ships the generic newsletterFollow/newsletterUnfollow API of the upstream library, but the auto-follow is added on top of it and is not opt-in: any application that connects with this library subscribes the end user's own account to those two channels without notifying them, exposing the user to content distributed through those channels. Other behaviour is ordinary: the preinstall hook engine-requirements.js only checks for Node.js 20+ and exits, the only network destination in the code is the official wss://web[.]whatsapp[.]com/ws/chat endpoint, and child_process is used in lib/Utils/messages-media.js for local audio transcoding. No credentials, tokens, environment variables or files are read or transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "skylerss",
+        "purl": "pkg:npm/skylerss"
+      },
+      "versions": [
+        "2.0.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/skylerss/v/2.0.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:43:11Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "b2ab82f16e8ab5aaf4bb77198013c847aee0b61f5ef7a8fe51b408604d713647"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14093",
+  "aliases": [
+    "MAL-2026-18907"
+  ],
+  "modified": "2026-11-16T00:09:13Z",
+  "published": "2026-11-15T09:31:30Z",
+  "summary": "Malicious code in @vanzzooffc/baileys (npm)",
+  "details": "A modified fork of the Baileys WhatsApp client library that hijacks the installer's WhatsApp account to make it follow attacker-chosen channels. lib/Socket/newsletter.js defines RAW_URL = hxxps://raw[.]githubusercontent[.]com/kiryzzo/vanzzooffc/refs/heads/main/vanzzopushch and, 120 seconds after the library loads, fetches that JSON array of channel IDs and issues a WhatsApp FOLLOW newsletter query for each one, spaced ~11 seconds apart, so the paired account silently subscribes to channels controlled from the remote file. lib/index.js performs the same fetch with no delay at module load and prints the returned message. lib/Socket/dugong.js injects a hardcoded forwarded-newsletter attribution (newsletterName \"shenvn.\", newsletterJid \"120363297591152843@newsletter\") into outgoing event messages, falsely attributing them to that channel. package.json adds profile.baseurl hxxps://shenirapi[.]shenira9x[.]me while the homepage points at the upstream repository. The preinstall hook (engine-requirements.js) only checks the Node.js major version; no credentials, tokens, environment variables or local files are read or transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@vanzzooffc/baileys",
+        "purl": "pkg:npm/%40vanzzooffc/baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@vanzzooffc/baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14093"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:31:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "shenirapi[.]shenira9x[.]me"
+        ],
+        "sha256": [
+          "dde197ce86014fd9507c8bc67bee183ec9991e3195de6c4fb641c3714da4a68f"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/kiryzzo/vanzzooffc/refs/heads/main/vanzzopushch",
+          "hxxps://shenirapi[.]shenira9x[.]me"
+        ]
+      }
+    }
+  }
+}

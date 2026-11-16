@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14094",
+  "aliases": [
+    "MAL-2026-19033"
+  ],
+  "modified": "2026-11-16T00:07:07Z",
+  "published": "2026-11-15T09:33:51Z",
+  "summary": "Malicious code in wertybailz (npm)",
+  "details": "This package is a modified copy of the Baileys WhatsApp Web library, distributed under a lookalike name, that silently enrols the WhatsApp account running it into an operator-controlled channel and stamps that channel into the user's outgoing messages. In lib/Socket/newsletter.js the channel JID 120363426748858626@newsletter is stored base64-encoded, and the connection.update handler sends a FOLLOW mutation for it via the newsletter MEX endpoint every time the socket opens — up to 3 attempts with a 15 second delay before the first try and 10 seconds between retries, with no configuration option and no user consent. A second channel, 120363421563597486@newsletter (newsletterName \"D | 7eppeli-Exloration\"), is hardcoded in lib/Socket/luxu.js and injected as forwardedNewsletterMessageInfo into the context info of every event message and poll-result snapshot the library sends, while supportPayload carries {is_ai_message: true, should_show_system_message: true} so recipients see the messages attributed as AI/system messages. lib/Socket/luxu.js is imported and its handler instantiated unconditionally inside sendMessage in lib/Socket/messages-send.js, so the injection applies to ordinary message sending. The package installs a preinstall hook (node./engine-requirements.js) that only enforces Node.js 20+, and declares a non-upstream dependency on the GitHub repository tenka-san/libsignal-node instead of the library's original signal implementation. No credential, environment-variable or file exfiltration is present: the package contacts only WhatsApp endpoints, and the only obfuscation is the base64-wrapped channel identifier.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "wertybailz",
+        "purl": "pkg:npm/wertybailz"
+      },
+      "versions": [
+        "1.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/wertybailz/v/1.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14094"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:33:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "e5875dbef742540d28e30f3dd561fbd0acaeba944a4db2564be216787debc3ac"
+        ]
+      }
+    }
+  }
+}

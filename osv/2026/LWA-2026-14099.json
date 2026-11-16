@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14099",
+  "aliases": [
+    "MAL-2026-19000"
+  ],
+  "modified": "2026-11-16T00:09:18Z",
+  "published": "2026-11-15T09:43:36Z",
+  "summary": "Malicious code in patron-pro (npm)",
+  "details": "patron-pro republishes the Baileys WhatsApp Web library with injected code in lib/Socket/newsletter.js. Every time a WhatsApp socket is created, that module schedules a 90000 ms timer whose callback unconditionally issues a w:mex newsletter query — newsletterWMexQuery(\"120363303045895814@newsletter\", QueryIds.FOLLOW) — which makes the connecting user's WhatsApp account follow the hardcoded newsletter channel 120363303045895814@newsletter. The call is not exposed through any user-facing API, is not gated on user action, and wraps the request in try/catch so failures pass silently; the 90-second delay defers it past client startup. The same channel (whatsapp[.]com/channel/0029Val0s0rIt5rsIDPCoD2q) is what the package's homepage and repository fields point to. The package's only network destinations in code are wss://web[.]whatsapp[.]com/ws/chat (the WhatsApp Web endpoint) and the npm registry; its preinstall hook, engine-requirements.js, only checks that the Node.js major version is \u003e= 20 and exits otherwise.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "patron-pro",
+        "purl": "pkg:npm/patron-pro"
+      },
+      "versions": [
+        "2.1.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/patron-pro/v/2.1.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14099"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:43:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "63a2fe39ae228cf349fec244a2afb11f89d7fc98818a3357e3812083d9261b21"
+        ],
+        "url_observed": [
+          "hxxps://web[.]whatsapp[.]com/ws/chat",
+          "hxxps://whatsapp[.]com/channel/0029Val0s0rIt5rsIDPCoD2q"
+        ]
+      }
+    }
+  }
+}
