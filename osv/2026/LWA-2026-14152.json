@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14152",
+  "aliases": [
+    "MAL-2026-19947"
+  ],
+  "modified": "2026-11-16T06:04:46Z",
+  "published": "2026-11-16T06:02:26Z",
+  "summary": "Malicious code in baileys-clean (npm)",
+  "details": "baileys-clean is a WhatsApp (Baileys) library fork that covertly enrols the authenticated user's account into operator-controlled channels and keeps re-following them. In lib/Socket/socket.js, once the socket reaches the connection:open state, a 15-second timer fetches a channel list over HTTP GET from hxxps://rafzbail[.]rafzhost[.]xyz/api/channels and sends newsletter \"follow\" IQ nodes for every @newsletter JID returned, repeating the loop every 60 seconds while the socket is open so that channels the user unfollows are re-followed. In lib/Socket/newsletter.js, the export newsletterAutoFollowSilent is an immediately-invoked function that performs the same follow requests against four hardcoded channels: 120363421412174731@newsletter, 120363406225530257@newsletter, 120363419318051000@newsletter, 120363408101167880@newsletter. Because the target list is served from the operator's endpoint, additional channels can be pushed to installed accounts after publication. The package's README states that the silent auto-follow function and the remote channel-list fetch were removed, while working equivalents ship and run from lib/Socket/socket.js and lib/Socket/newsletter.js. The preinstall hook (engine-requirements.js) only checks the Node.js version. No installer credential, token, environment or file exfiltration was observed; the channel-list endpoint is the only non-WhatsApp destination contacted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "baileys-clean",
+        "purl": "pkg:npm/baileys-clean"
+      },
+      "versions": [
+        "7.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/baileys-clean/v/7.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14152"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T06:02:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "rafzbail[.]rafzhost[.]xyz"
+        ],
+        "sha256": [
+          "09a423efb4cd825185e32cc8189a68bec585c6be915116f05c9ffe672acd7612"
+        ],
+        "url_observed": [
+          "hxxps://rafzbail[.]rafzhost[.]xyz/api/channels"
+        ]
+      }
+    }
+  }
+}
