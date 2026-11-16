@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14157",
+  "modified": "2026-11-16T13:40:06Z",
+  "published": "2026-11-16T13:33:30Z",
+  "summary": "Malicious code in @kropaku/baileys (npm)",
+  "details": "This package is an unofficial republished fork of the Baileys WhatsApp library that silently enrols the connected WhatsApp account into the author's channel and gates the library behind a remote license check. In lib/Socket/newsletter.js a module-load timer waits 120000 ms and then sends a WhatsApp W:mex query with QueryIds.FOLLOW for the hardcoded channel JID 120363407277177688@newsletter, wrapping the call in empty catch blocks so the follow attempt is invisible to the caller. lib/Socket/index.js (makeWASocket) requires a license key taken from config.licenseKey, process.env.KRISPEDIA_LICENSE or global.licenseKey, sends that key as a query parameter to hxxps://krispedia-license-api[.]vercel[.]app/api/verify (endpoint overridable via process.env.LICENSE_SERVER_URL), and calls process.exit(1) when the key is missing or rejected; two hardcoded master keys, \"KRP-DEV-MASTER-2026\" and \"KRP-VIP-DEMO1\", bypass the remote check. The license logic ships as javascript-obfuscator output (lib/Utils/license-guard.js, base64/rot decoder string array) with its unobfuscated source also included as lib/Utils/license-guard.src.js. A preinstall hook runs engine-requirements.js, a Node \u003e=20 version check. IOCs: WhatsApp channel JID 120363407277177688@newsletter, license host krispedia-license-api[.]vercel[.]app, path /api/verify, env vars KRISPEDIA_LICENSE and LICENSE_SERVER_URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kropaku/baileys",
+        "purl": "pkg:npm/%40kropaku/baileys"
+      },
+      "versions": [
+        "6.7.22"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kropaku/baileys/v/6.7.22"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14157"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T13:33:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "krispedia-license-api[.]vercel[.]app"
+        ],
+        "sha256": [
+          "4437985543fd89427094da520a9b932ca71ba68d1bac5ae57d9e03bfbc1b6577"
+        ],
+        "url_observed": [
+          "hxxps://krispedia-license-api[.]vercel[.]app/api/verify"
+        ]
+      }
+    }
+  }
+}

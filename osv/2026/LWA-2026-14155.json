@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14155",
+  "modified": "2026-11-16T13:34:39Z",
+  "published": "2026-11-16T13:32:25Z",
+  "summary": "Potentially-unwanted package (riskware): @kropaku/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp client library that silently subscribes the host's WhatsApp account to a third-party channel. Merely requiring the library loads package/lib/Socket/newsletter.js, which registers a module-level 120000 ms timer that sends a wmex FOLLOW query (Types.QueryIds.FOLLOW) for the hardcoded newsletter JID 120363407277177688@newsletter over the user's authenticated session roughly two minutes after load, with no caller opt-in and all errors swallowed. A second default channel, 120363423239131660@newsletter (\"Clutch Info Channel\"), is hardcoded in package/lib/Socket/clutch-handler.js and advertised in the README. On require, package/lib/index.js also prints an author advertising banner (Instagram @alifalfrl__, Telegram @bigedikeman, wa[.]me/6281249703469). The preinstall hook package/engine-requirements.js only enforces Node.js \u003e= 20. No token, credential, environment-variable or file exfiltration was found; network destinations in the shipped code are limited to WhatsApp endpoints. This package is an unofficial fork of the Baileys WhatsApp client library that silently subscribes the host's WhatsApp account to third-party channels. package/lib/Socket/newsletter.js hardcodes the newsletter JID 120363407277177688@newsletter and issues a wmex FOLLOW query (Types.QueryIds.FOLLOW) for it on the user's authenticated session from a module-level timer, with no caller opt-in. package/lib/Socket/clutch-handler.js additionally hardcodes 120363423239131660@newsletter (\"Clutch Info Channel\").",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kropaku/baileys",
+        "purl": "pkg:npm/%40kropaku/baileys"
+      },
+      "versions": [
+        "6.7.20"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kropaku/baileys/v/6.7.20"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-16T13:32:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "wa[.]me",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ],
+        "sha256": [
+          "18fa22d207ddce70d4d89360ed03849ffae41824f3a8b21aad53320ff0bf1e4f"
+        ],
+        "url_observed": [
+          "hxxps://wa[.]me/6281249703469"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14156",
+  "modified": "2026-11-16T13:41:02Z",
+  "published": "2026-11-16T13:33:10Z",
+  "summary": "Potentially-unwanted package (riskware): @kropaku/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp Web socket library that adds a hidden commercial license gate and an undisclosed channel subscription. lib/Socket/index.js wraps makeWASocket() and calls a license check in lib/Utils/license-guard.js (shipped as obfuscated code, with lib/Utils/license-guard.src.js revealing the logic): if no key is supplied via config.licenseKey, the KRISPEDIA_LICENSE environment variable, or global.licenseKey, the process is terminated with process.exit(1); otherwise the key is sent as a query parameter to hxxps://krispedia-license-api[.]vercel[.]app/api/verify (overridable via LICENSE_SERVER_URL) and the process exits if the server denies or does not answer. Separately, loading lib/Socket/newsletter.js registers a two-minute timer that silently sends a WhatsApp newsletter FOLLOW query for the hardcoded channel JID 120363407277177688@newsletter, subscribing the linked account without the caller's knowledge or consent. The package also resolves its \"libsignal\" dependency from a third-party alias, npm:@alipclutch/libsignal-node, rather than the upstream package. The preinstall script (engine-requirements.js) only enforces Node.js 20+. No credential, token or file exfiltration was observed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kropaku/baileys",
+        "purl": "pkg:npm/%40kropaku/baileys"
+      },
+      "versions": [
+        "6.7.21"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kropaku/baileys/v/6.7.21"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-16T13:33:10Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "krispedia-license-api[.]vercel[.]app"
+        ],
+        "sha256": [
+          "be321ac972b4afeab496cd628cc64e3dd0b0296c2c956cdbb5d9e76c613a70a6"
+        ],
+        "url_observed": [
+          "hxxps://krispedia-license-api[.]vercel[.]app/api/verify"
+        ]
+      }
+    }
+  }
+}

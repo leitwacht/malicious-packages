@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14160",
+  "modified": "2026-11-16T13:35:18Z",
+  "published": "2026-11-16T13:34:35Z",
+  "summary": "Security-research / proof-of-concept package: signup-lib (npm)",
+  "details": "This package is a dependency-confusion proof of concept: it uses the internal-looking name signup-lib at a synthetic version (99.99.99) so a build that resolves the name from the public registry instead of a private one is detected. Its postinstall hook (node postinstall.js) prints a banner to stderr identifying the package as a security-research canary, then sends one HTTPS GET to hxxps://h1[.]cx/log?depconf=\u003curl-encoded hostname\u003e, carrying only os.hostname(). It reads no files, no environment variables, no tokens or credentials, performs no remote code execution and makes no host changes; the bundled index.js exports an empty object and the package ships only DISCLOSURE/source.txt documentation of the test.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "signup-lib",
+        "purl": "pkg:npm/signup-lib"
+      },
+      "versions": [
+        "99.99.99"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/signup-lib/v/99.99.99"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-16T13:34:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "h1[.]cx"
+        ],
+        "sha256": [
+          "a26e3389dac596e978c1650acd92087e56c96918273deb8b1fd7d53caec524fd"
+        ],
+        "url_observed": [
+          "hxxps://h1[.]cx/log"
+        ]
+      }
+    }
+  }
+}
