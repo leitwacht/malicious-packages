@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14148",
+  "modified": "2026-11-03T16:38:23Z",
+  "published": "2026-11-03T13:40:54Z",
+  "summary": "Malicious code in plogme (npm)",
+  "details": "Plogme@2.2.3 is a WhatsApp (Baileys-fork) client library that installs unwanted behaviour on top of its advertised purpose. Its preinstall hook runs node./engine-requirements.js, and at import time lib/Utils/channel-policy.js attaches a forwarded-newsletter annotation to every eligible image and video upload — a newsletter JID (120363402922206865@newsletter), newsletter name \"crysnovax\" and content type UPDATE — so media sent by any application embedding the library is silently stamped with the author's channel attribution. The file's own comment claims the metadata \"does not follow, subscribe, or otherwise modify newsletter subscriptions\", which is contradicted by the code it annotates. The package also declares a dependency range cache-manager ^7.2.8, which resolves to cache-manager@7.2.10, a release whose npm distribution is malicious, so installing plogme pulls that payload into the dependency tree automatically. lib/Defaults/ban-checker.js additionally carries a hardcoded WhatsApp GraphQL access token and a ban-status doc id, and redirects the GraphQL and registration endpoints to attacker-controlled values if CRYSNOVAX_GRAPHQL_ENDPOINT / CRYSNOVAX_MOBILE_REGISTRATION_ENDPOINT are set in the environment, alongside a configurable media token prefix (CRYSNOVAX_MOBILE_TOKEN_PREFIX). A prior release of this package has already been recorded as malicious, and this version republishes the same shape.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "plogme",
+        "purl": "pkg:npm/plogme"
+      },
+      "versions": [
+        "2.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/plogme/v/2.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14148"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T13:40:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "g[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "bbe815906b33cabe2cd5a18320db015b24a99df36b1e7ace13ac9ab610364e79"
+        ],
+        "url_observed": [
+          "hxxps://graph[.]whatsapp[.]com/graphql",
+          "hxxps://v[.]whatsapp[.]net/v2"
+        ]
+      }
+    }
+  }
+}
