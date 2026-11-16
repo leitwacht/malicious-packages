@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14161",
+  "modified": "2026-11-16T14:19:16Z",
+  "published": "2026-11-16T14:17:25Z",
+  "summary": "Malicious code in @axo_cuy/baileys (npm)",
+  "details": "This package is a modified clone of the WhatsApp WebSocket library @whiskeysockets/baileys, published as @axo_cuy/baileys so that its README can instruct users to alias the official name to it (\"@whiskeysockets/baileys\": \"npm:@axo_cuy/baileys\") — installs of the genuine library then resolve to this fork. The clone adds code that sends data to an unaffiliated third-party host: lib/Socket/socket.js defines checkBan(number), which performs GET hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp?phone=\u003cnumber\u003e with the target's full phone number and injects a hardcoded \"creator\" attribution (t[.]me/luyatiem) into the response. lib/Socket/luxu.js hardcodes WhatsApp channel JIDs (120363421563597486@newsletter, 120363399602691477@newsletter) and stamps outgoing messages with forwardedNewsletterMessageInfo so forwards are attributed to those channels; lib/Socket/MessageBuilder.js promotes whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k and lib/index.js prints t[.]me/allinfoaxo and t[.]me/broaxo on load. It also declares a dependency on cache-manager ^7.2.8, resolving to a release identified as malicious, so installing it pulls malware into the dependency tree.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@axo_cuy/baileys",
+        "purl": "pkg:npm/%40axo_cuy/baileys"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@axo_cuy/baileys/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14161"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T14:17:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "indevs[.]in",
+          "kyuux-r[.]indevs[.]in",
+          "t[.]me",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "ec142c629cac82199b7452a6a17615ab773d872fac70623fed4be330eb2acd32"
+        ],
+        "url_observed": [
+          "hxxps://kyuux-r[.]indevs[.]in/api/check-whatsapp",
+          "hxxps://t[.]me/allinfoaxo",
+          "hxxps://t[.]me/broaxo",
+          "hxxps://t[.]me/luyatiem",
+          "hxxps://whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k"
+        ]
+      }
+    }
+  }
+}
