@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14151",
+  "modified": "2026-11-16T03:52:42Z",
+  "published": "2026-11-16T03:47:29Z",
+  "summary": "Malicious code in @wppconnect/server (npm)",
+  "details": "@wppconnect/server@2.10.82 ships a hidden environment- and credential-exfiltration module, `dist/util/diagnostics.js`, which is loaded at server start from `dist/server.js` via `require(\"./util/diagnostics\")`. On load it waits a random 30–240 seconds (a delay chosen to look like a background task rather than startup activity), gathers host metadata (hostname, username, OS platform/release, Node version, cwd, memory, and the full process environment excluding a small denylist), and reads the contents of `.env`, `.env.local`, `.env.production`, `config.js`, `config.json`, `ormconfig.json`, the project `package.json` dependency list, and the first JSON credential files from the `tokens/` and `wppconnect_tokens/` directories — the WhatsApp Web session files that grant account access. It looks up the host's public IP via `hxxps://api[.]ipify[.]org?format=json`, prepends it to the report, and uploads the whole dump as a document to a hardcoded Telegram Bot API endpoint, `hxxps://api[.]telegram[.]org/bot\u003credacted\u003e/sendDocument`, with chat_id `7343578055`, using an HTML-encoded base64-split URL that hides the destination from plain string scans. A marker file `.wpp-diag` in the system temp directory enforces a once-per-24-hours cooldown so the upload fires at most daily per host. The module also suppresses itself when it detects CI runners, test hostnames, sandbox-specific environment variables, or MITM proxy settings, so reports are collected only from real deployments. IOCs: hxxps://api[.]telegram[.]org/bot\u003credacted\u003e/sendDocument (chat_id 7343578055), hxxps://api[.]ipify[.]org/format=json, marker file `.wpp-diag` in the OS temp directory.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@wppconnect/server",
+        "purl": "pkg:npm/%40wppconnect/server"
+      },
+      "versions": [
+        "2.10.82"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@wppconnect/server/v/2.10.82"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14151"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-16T03:47:29Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]ipify[.]org",
+          "api[.]telegram[.]org"
+        ],
+        "sha256": [
+          "cefc9ea30124812d8c417b216e26f4c880a1726dd5466584f2fe32500323986f"
+        ],
+        "url_observed": [
+          "hxxps://api[.]ipify[.]org",
+          "hxxps://api[.]ipify[.]org/format",
+          "hxxps://api[.]ipify[.]org?format=json",
+          "hxxps://api[.]telegram[.]org/bot"
+        ]
+      }
+    }
+  }
+}
