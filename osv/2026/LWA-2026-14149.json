@@ -2,7 +2,7 @@
   "schema_version": "1.6.0",
   "id": "LWA-2026-14149",
   "modified": "2026-11-03T12:55:00Z",
-  "published": "2026-11-03T12:54:10Z",
+  "published": "2026-11-03T12:53:55Z",
   "summary": "Malicious code in @yuanjielab/cli (npm)",
   "details": "@yuanjielab/cli@0.8.0 is a four-file npm package (package.json, README.md, bin/yj.js, scripts/postinstall.js) whose install-time logic executes code that is not contained in the tarball. Its package.json postinstall hook runs `node scripts/postinstall.js`, which resolves the host platform via os.platform()/os.arch(), then issues a GET to hxxps://ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com/yj-cli/versions/0.8.0.json, reads the platform entry from that manifest, downloads the referenced native executable from the same bucket, writes it to vendor/yj with mode 0755, and runs it with execFileSync(vendor/yj, ['version','--json']). The only integrity check is a SHA-256 value taken from the same remote manifest used to locate the download, so the hash travels with the payload and does not authenticate it against any independent source; the executable itself never ships in the npm tarball and cannot be inspected from the registry. Two environment variables alter this path: YJ_DOWNLOAD_BASE replaces the download origin, and YJ_SKIP_DOWNLOAD bypasses the download entirely. The companion bin/yj.js is a spawnSync shim that forwards all arguments and the exit status to vendor/yj.",
   "affected": [
@@ -47,7 +47,7 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-03T12:54:10Z",
+      "first_seen_at": "2026-11-03T12:53:55Z",
       "indicators_observed": {
         "domain_observed": [
           "ai-ass-file[.]oss-cn-hangzhou[.]aliyuncs[.]com"
