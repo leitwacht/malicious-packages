@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14237",
+  "aliases": [
+    "MAL-2026-18919"
+  ],
+  "modified": "2026-11-17T05:58:48Z",
+  "published": "2026-11-15T09:40:54Z",
+  "summary": "Malicious code in @yemo-dev/yebail (npm)",
+  "details": "This package is a WhatsApp Web API library (a rebranded Baileys fork) with concealed account-modifying behaviour. In lib/Socket/messages-recv.js, the connection-open handler starts a 90-second timer that rebuilds a WhatsApp newsletter (channel) identifier from hardcoded character-code arrays and calls newsletterFollow() on it, silently subscribing the account of whoever uses the library to the publisher's channel on every connect, with errors suppressed so the user is never told. The identifier is stored only as numeric arrays so it does not appear as readable text. No credential, token, wallet or file theft was observed; the preinstall hook only checks the Node.js version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yemo-dev/yebail",
+        "purl": "pkg:npm/%40yemo-dev/yebail"
+      },
+      "versions": [
+        "4.1.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yemo-dev/yebail/v/4.1.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14237"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:40:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "fe1a585789e43ff99195479c3e163db6ae793d72d9f549975b6c85cfc60f05a2"
+        ]
+      }
+    }
+  }
+}

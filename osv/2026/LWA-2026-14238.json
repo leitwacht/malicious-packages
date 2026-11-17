@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14238",
+  "aliases": [
+    "MAL-2026-20034"
+  ],
+  "modified": "2026-11-17T05:57:48Z",
+  "published": "2026-11-17T05:57:04Z",
+  "summary": "Malicious code in base128-x58 (npm)",
+  "details": "base128-x58 is a trojanized clone of the base-x base58 codec source tree (same upstream headers, LICENSE, description, keywords and cryptocoinjs repository link) with injected credential-stealing code added to the decode() function of both builds, src/cjs/index.cjs and src/esm/index.js. The injected code hides behind a rotated string-array decoder and shadows the `decode` name; every string passed to decode() is transmitted out before the normal decode result is returned. The payload POSTs JSON {\"chat_id\":\"-1002664926517\",\"text\":\u003cthe string handed to decode()\u003e} to the Telegram Bot API \"sendMessage\" endpoint of a hardcoded bot on api[.]telegram[.]org, so an attacker-controlled Telegram chat receives anything a dependent project passes to this library - in practice base-encoded keys, addresses, seeds and tokens. The request is fire-and-forget, does not block and does not alter the decoded output, and there is no install hook, so the library keeps working normally and the leak is easy to miss. Any project that has used this package should treat values passed to decode() as disclosed, and the bot token embedded in the bundled URL should be revoked with Telegram.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "base128-x58",
+        "purl": "pkg:npm/base128-x58"
+      },
+      "versions": [
+        "0.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/base128-x58/v/0.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14238"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T05:57:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ],
+        "sha256": [
+          "261e56d95e433345392edfba24f8d443a0c0f65e98a3ab6fbc9b4ef9e0d96ea5"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot8016635959:[secret-redacted]/sendMessage"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14241",
+  "aliases": [
+    "MAL-2026-20039"
+  ],
+  "modified": "2026-11-17T05:59:34Z",
+  "published": "2026-11-17T05:57:20Z",
+  "summary": "Malicious code in node-bs58.js (npm)",
+  "details": "node-bs58.js is a trojanized clone of the base58 codec library bs58: it depends on the genuine bs58 package but ships its own package/index.js that wraps the real decoder. Every call to the exported decode() function first POSTs the caller's raw input string to a hardcoded Telegram bot endpoint (hxxps://api[.]telegram[.]org/bot\u003cbot-token\u003e/sendMessage, chat_id 7631491367) and only then returns bs58.decode(inputKey), so base58-encoded secrets — most commonly cryptocurrency private/secret keys decoded with bs58 — are silently forwarded to the operator while the application behaves normally. The module also embeds a link to the operator's Telegram group (t[.]me/+IDl6XgFBZdI1ZjZh). The exfiltration is unconditional and error-swallowing (the fetch failure is caught and ignored), and no credentials, files or environment variables beyond the decoded input are read. The package contains no install-time hooks; the payload runs whenever the library is imported and decode() is called.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-bs58.js",
+        "purl": "pkg:npm/node-bs58.js"
+      },
+      "versions": [
+        "4.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-bs58.js/v/4.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14241"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T05:57:20Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "t[.]me"
+        ],
+        "sha256": [
+          "820ae8d06ff6f1407e6e3d6f396ff5962f7da25221dcb15e28889a7dc68e45dd"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot",
+          "hxxps://api[.]telegram[.]org/bot7764117154:[secret-redacted]/sendMessage",
+          "hxxps://t[.]me/+IDl6XgFBZdI1NjZh"
+        ]
+      }
+    }
+  }
+}

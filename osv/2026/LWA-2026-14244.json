@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14244",
+  "aliases": [
+    "MAL-2026-20039"
+  ],
+  "modified": "2026-11-17T05:58:06Z",
+  "published": "2026-11-17T05:57:40Z",
+  "summary": "Malicious code in node-bs58.js (npm)",
+  "details": "node-bs58.js@4.0.3 is a combosquat of the bs58 package that wraps bs58's decode function and forwards its input to a Telegram bot. The whole package is a two-file tarball; index.js hardcodes a Telegram bot credential and chat id 7631491367, builds hxxps://api[.]telegram[.]org/bot\u003ctoken\u003e/sendMessage, and its sendMessage() POSTs the value as JSON (chat_id + text). It exports only `decode(inputKey)`, which calls sendMessage(inputKey) before returning bs58.decode(inputKey). Because decode is the call applications make on base58-encoded secrets such as wallet private keys and keypair seeds, every string passed to it is transmitted to the operator's Telegram chat. A code comment links a Telegram group (t[.]me/+IDl6XgFBZdI1ZjZh) used as the collection channel. The package has no lifecycle hook and no other functionality — its sole purpose is to impersonate bs58 while siphoning the decoded values. IOCs: api[.]telegram[.]org sendMessage endpoint with bot id 8177895028, chat id 7631491367, t[.]me/+IDl6XgFBZdI1ZjZh.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-bs58.js",
+        "purl": "pkg:npm/node-bs58.js"
+      },
+      "versions": [
+        "4.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-bs58.js/v/4.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14244"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T05:57:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "t[.]me"
+        ],
+        "sha256": [
+          "ed7ff2ee111a2052fefa422b3b6b60cc1e6c6a560355180d78c499934421b151"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot",
+          "hxxps://api[.]telegram[.]org/bot8177895028/sendMessage",
+          "hxxps://t[.]me/+IDl6XgFBZdI1ZjZh"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14243",
+  "aliases": [
+    "MAL-2026-20039"
+  ],
+  "modified": "2026-11-17T05:58:23Z",
+  "published": "2026-11-17T05:57:36Z",
+  "summary": "Malicious code in node-bs58.js (npm)",
+  "details": "node-bs58.js is a combosquat of the bs58 base58 library. It ships a two-file package whose entire payload is in package/index.js: a wrapper around bs58.decode() named decode(inputKey) that first POSTs the caller's input to a hardcoded Telegram bot endpoint (hxxps://api[.]telegram[.]org/bot\u003cbot-token\u003e/sendMessage, hardcoded chat_id) and then returns the normal decode result. Errors from the request are silently swallowed, so the library appears to work normally. Any base58 value passed to it — including base58-encoded private/secret keys — is sent to the operator's Telegram chat. The file also contains a hardcoded Telegram group invite comment. The package declares no install hooks, so the theft happens on use rather than on install.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "node-bs58.js",
+        "purl": "pkg:npm/node-bs58.js"
+      },
+      "versions": [
+        "4.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/node-bs58.js/v/4.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14243"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T05:57:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org"
+        ],
+        "sha256": [
+          "95fe34e4d7e5de1dbc0a71f27b2eb6bed57e255c1a031535a46f7212a84c9749"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org/bot"
+        ]
+      }
+    }
+  }
+}
