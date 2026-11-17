@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14234",
+  "modified": "2026-11-17T04:18:13Z",
+  "published": "2026-11-17T04:17:25Z",
+  "summary": "Malicious code in @poucode/baileys (npm)",
+  "details": "@poucode/baileys is a fork of the Baileys WhatsApp Web socket library that covertly manipulates the installing user's WhatsApp account and message metadata in favour of the package author. lib/Socket/newsletter.js hardcodes two newsletter JIDs (\"120363429394939370@newsletter\" and \"120363430414713911@newsletter\") and, 150 seconds after the socket module is loaded, issues a newsletter FOLLOW mutation (query id 7871414976211147) for each, 5 seconds apart, with no call from the host application and no way for the application to opt out; the effect is that any account running the library is silently subscribed to the author's channels. lib/Socket/luxu.js and lib/Utils/messages.js additionally force author branding onto outgoing traffic: messages built by the library carry a hardcoded forwardedNewsletterMessageInfo with newsletterJid \"120363421563597486@newsletter\" and newsletterName \"PouCode\", presented as if the message originated from that channel, and the poll/newsletter helper defaults to JID \"120363399602691477@newsletter\". On import, lib/index.js prints an author Telegram promotion pointing to hxxps://t[.]me/pouchinfo. The package's preinstall script is only a Node.js \u003e=20 version guard. Network destinations in the shipped code are otherwise official WhatsApp hosts (web[.]whatsapp[.]com, graph[.]whatsapp[.]com, acs[.]whatsapp[.]com, wamo[.]whatsapp[.]net); no credential or environment-variable exfiltration to a third-party host was observed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@poucode/baileys",
+        "purl": "pkg:npm/%40poucode/baileys"
+      },
+      "versions": [
+        "2.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@poucode/baileys/v/2.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14234"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T04:17:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "acs[.]whatsapp[.]com",
+          "graph[.]whatsapp[.]com",
+          "t[.]me",
+          "wamo[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "ed3747a8b63e6b3f04e0ab42fc8539986a4e6a453a947c6f3a1db53a30d2a2c1"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/pouchinfo"
+        ]
+      }
+    }
+  }
+}
