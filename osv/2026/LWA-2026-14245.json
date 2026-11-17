@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14245",
+  "modified": "2026-11-17T08:37:48Z",
+  "published": "2026-11-17T08:36:35Z",
+  "summary": "Malicious code in @zervonex/baileys (npm)",
+  "details": "This package is an unofficial clone of the @whiskeysockets/baileys WhatsApp Web API library published under a different scope while keeping the canonical \"baileys\" package name, and it manipulates the WhatsApp account that uses it. 1) Automatic channel enrolment. lib/Socket/newsletter.js hardcodes two channels, '120363422827915475@newsletter' and '120363409522637051@newsletter' (AUTO_FOLLOW_JIDS), and on the socket 'connection.update' event with state \"open\" it calls newsletterFollow/performNewsletterFollow for each of them, then repeats the follows on a repeating interval. lib/Defaults/index.js sets autoFollowNewsletter: true, so any application using the library silently makes its WhatsApp account follow those two publisher-controlled channels; the only opt-out is passing autoFollowNewsletter: false. 2) Unpinned remote content written into the installed package. WAProto/index.js performs a fetch at import time: when WAProto.proto or WAProto.json are missing or invalid it calls refetch(), which via WAProto/fetcher.js downloads wa-version.json and WAProto.bundle.js from hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache, parses the downloaded bundle and writes the result into WAProto.proto inside the installed package directory, then regenerates WAProto.json. The sha256 computed over the download is only used as a local cache key — it is never compared to a pinned or signed digest — so the publisher can substitute the content delivered to every installation at any time. The preinstall hook itself (node./engine-requirements.js) only checks the Node.js version. 3) Malicious dependency versions. The manifest declares @cacheable/node-cache ^3.1.1 and cache-manager ^7.2.9, ranges that resolve to @cacheable/node-cache@3.1.2 and cache-manager@7.2.10, versions that carry a separate malicious install payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zervonex/baileys",
+        "purl": "pkg:npm/%40zervonex/baileys"
+      },
+      "versions": [
+        "4.0.5-final"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zervonex/baileys/v/4.0.5-final"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14245"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T08:36:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "zervonex[.]com"
+        ],
+        "sha256": [
+          "c468871929cf7e2a8be56b205de2097c5442a3440b0aba4c6dced3fed31089a3"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json"
+        ]
+      }
+    }
+  }
+}
