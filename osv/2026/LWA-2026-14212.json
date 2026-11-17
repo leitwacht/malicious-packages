@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14212",
+  "aliases": [
+    "MAL-2026-18991"
+  ],
+  "modified": "2026-11-17T00:16:57Z",
+  "published": "2026-11-15T09:47:09Z",
+  "summary": "Malicious code in mod-baileys (npm)",
+  "details": "mod-baileys (a fork of the Baileys WhatsApp Web API library) silently enrols the operator's own WhatsApp account into hardcoded WhatsApp channels. In lib/Socket/newsletter.js the makeNewsletterSocket constructor schedules two 90-second timers; each fires a w:mex FOLLOW query against web[.]whatsapp[.]com for a channel JID stored only as a base64 string (MTIwMzYzNDAwNzA2MDEwODI4QG5ld3NsZXR0ZXI= etc. decode to 120363400706010828@newsletter, 120363423257544642@newsletter, 120363349457176430@newsletter and 120363421052027188@newsletter), with two more follows 5 seconds later, errors swallowed. The delay plus base64 encoding hides the behaviour from a quick source review, and every socket creation (including through lib/Socket/messages-send.js) triggers it. The fork additionally injects channel metadata into messages it sends: lib/Utils/messages.js adds a newsletter block naming \"Dew Coders OFC\" (newsletterJid 120363400706010828@newsletter) to media upload annotation payloads, and lib/Socket/luxu.js stamps forwardedNewsletterMessageInfo with newsletterJid 120363421563597486@newsletter and the default 120363399602691477@newsletter into outgoing event, album, poll and interactive messages. No credential or file exfiltration and no non-WhatsApp network destinations were present in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "mod-baileys",
+        "purl": "pkg:npm/mod-baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/mod-baileys/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14212"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:47:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363349457176430@newsletter",
+          "120363399602691477@newsletter",
+          "120363400706010828@newsletter",
+          "120363421052027188@newsletter",
+          "120363421563597486@newsletter",
+          "120363423257544642@newsletter",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "2e23954b2772357a75b7e9a56b6cff3840baf211155a94231f429dba16f36079"
+        ]
+      }
+    }
+  }
+}

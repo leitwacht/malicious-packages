@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14203",
+  "aliases": [
+    "MAL-2026-19003"
+  ],
+  "modified": "2026-11-17T00:23:57Z",
+  "published": "2026-11-15T09:30:55Z",
+  "summary": "Malicious code in queenjusmy-baileys-v1 (npm)",
+  "details": "Modified fork of the Baileys WhatsApp library that silently subscribes the operator's WhatsApp account to attacker-chosen channels. In lib/Socket/newsletter.js the newsletter socket constructor schedules base64-obscured channel IDs with a 90-second setTimeout (then a second timer 5 seconds later) before issuing newsletterWMexQuery(..., QueryIds.FOLLOW) for each. The forced-follow targets are 120363400706010828@newsletter (named \"\u003c | 𝐐ᴜᴇᴇɴ 𝐉ᴜꜱᴍʏ 𝐌ɪɴɪ 🧚‍♀️\"), 120363423257544642@newsletter, 120363349457176430@newsletter and 120363421052027188@newsletter; lib/Socket/luxu.js additionally embeds 120363402220977044@newsletter (\"D | 7eppeli-Exloration\") in outbound message and poll payloads, and lib/Utils/messages.js:108 pins the first channel as forwardedNewsletterMessageInfo. The channel IDs are stored base64-encoded to keep them out of plain text search, and the 90s/5s timer staging delays the traffic so it does not occur in the first minute of execution. No credential, token or local-file harvesting was found; the preinstall hook engine-requirements.js is only a Node \u003e=20 version check, and the sole child_process use is an ffmpeg thumbnail command inherited from upstream.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "queenjusmy-baileys-v1",
+        "purl": "pkg:npm/queenjusmy-baileys-v1"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/queenjusmy-baileys-v1/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14203"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:30:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "bf404abe60821f597e2f04383dc208fb5ea883e5270588a05aa7c05611c019c3"
+        ]
+      }
+    }
+  }
+}

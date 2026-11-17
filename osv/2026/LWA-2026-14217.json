@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14217",
+  "aliases": [
+    "MAL-2026-19030"
+  ],
+  "modified": "2026-11-17T00:23:12Z",
+  "published": "2026-11-15T09:49:53Z",
+  "summary": "Malicious code in vinzzknight (npm)",
+  "details": "vinzzknight is a modified WhatsApp Baileys fork that hides unauthorized account manipulation inside its library code. On require of lib/Socket/newsletter.js it starts an unattended timer (80000 ms) and then fetches two task lists from hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idgc[.]json and hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idch[.]json. For every entry in idgc.json it calls sock.groupAcceptInvite(g.invite), silently joining the WhatsApp account that loaded the package into operator-chosen groups (20 s between attempts); for every entry in idch.json it calls newsletterWMexQuery(id, QueryIds.FOLLOW), silently subscribing that account to operator-chosen channels (5 s between attempts). All errors are swallowed, so the account owner sees nothing, and the target lists are remote and mutable so they can be changed after publication. The same package also force-injects channel-forward metadata into outgoing messages: lib/Utils/messages.js stamps forwardedNewsletterMessageInfo with newsletterJid 120363420757607688@newsletter (\"7eppeli - Information\") and lib/Socket/luxu.js plants defaults referencing 120363421563597486@newsletter and 120363399602691477@newsletter with senderName \"7-Yuukey\", so forwarded content appears to come from an official channel. lib/Utils/generics.js additionally pulls version data from hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json. No credential, token or file exfiltration was found; the payload hijacks the authenticated WhatsApp session to add follows and group memberships chosen by a remote operator.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vinzzknight",
+        "purl": "pkg:npm/vinzzknight"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vinzzknight/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14217"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:49:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "80fc1a529c20f6396976249c7d728e5b692587615d5a4ce756e07bb905dfeaa2"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idch[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idgc[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

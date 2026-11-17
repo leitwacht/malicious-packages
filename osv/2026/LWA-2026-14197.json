@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14197",
+  "aliases": [
+    "MAL-2026-18860"
+  ],
+  "modified": "2026-11-17T00:18:14Z",
+  "published": "2026-11-15T09:27:51Z",
+  "summary": "Malicious code in @kyynotdevv/baileys (npm)",
+  "details": "This package is a modified fork of the WhatsApp client library @whiskeysockets/baileys that silently subscribes any account connecting through it to hardcoded WhatsApp channels and injects channel promotion metadata into outbound messages. lib/Socket/newsletter.js, inside makeNewsletterSocket, schedules four setTimeout callbacks (500 ms and 2 s after socket construction) that send w:mex newsletter FOLLOW queries for the hardcoded JIDs 120363405751989725@newsletter and 120363424433029723@newsletter, each wrapped in an empty try/catch so the user sees no prompt and no error. lib/Socket/dugong.js and lib/Utils/messages.js set forwardedNewsletterMessageInfo (newsletterJid 120363425458769503@newsletter and 120363422684021546@newsletter; newsletterName \"Rixzz\", \"RiljiX7\", \"SHARE SC FREE\") on generated sticker/status messages so sent payloads carry a channel forward header. A comment in newsletter.js leaves the channel-ID slots for fork operators to insert their own IDs. The preinstall hook engine-requirements.js only enforces Node.js \u003e= 20. The package also resolves libsignal from a third-party git source, github:RILLYZY/libsignal-node, instead of the upstream package. No credential, token or wallet data is read or transmitted by the shipped code; the network endpoint is WhatsApp's own relay wss://web[.]whatsapp[.]com/ws/chat.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kyynotdevv/baileys",
+        "purl": "pkg:npm/%40kyynotdevv/baileys"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kyynotdevv/baileys/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14197"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:27:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "2a7a111fad71806ab2a96e1a045259a4e17a2315bd2e2e4592ffc523d1062190"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/RILLYZY/libsignal-node"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14209",
+  "aliases": [
+    "MAL-2026-19000"
+  ],
+  "modified": "2026-11-17T00:22:46Z",
+  "published": "2026-11-15T09:43:51Z",
+  "summary": "Malicious code in patron-pro (npm)",
+  "details": "Patron-pro is a WhatsApp/Baileys-style API fork that covertly manipulates the authenticated user's WhatsApp account on first use. In lib/Socket/newsletter.js, the socket factory makeNewsletterSocket() unconditionally registers a 90-second timer when the socket is created. When it fires, the callback issues a WhatsApp WMex newsletter query with the FOLLOW operation for the hardcoded channel 120363303045895814@newsletter, subscribing the user's own account to that channel without any call from package code, user action or consent; the request is wrapped in an empty catch so failures are silent. Only one channel JID is hardcoded in the whole package, and it is not the channel the package's metadata advertises. The 90-second delay places the subscription after connection set-up, and the preinstall hook (node./engine-requirements.js) only checks the Node.js version, so nothing warns the user. Aside from the subscription, traffic is the ordinary wss://web[.]whatsapp[.]com/ws/chat session and WhatsApp newsletter IQ queries, and the only process execution is ffmpeg thumbnail extraction in lib/Utils/messages-media.js. Hardcoded auto-followed channel JID: 120363303045895814@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "patron-pro",
+        "purl": "pkg:npm/patron-pro"
+      },
+      "versions": [
+        "2.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/patron-pro/v/2.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14209"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:43:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "5bc4ac89a15f4a8a3895c7e6570634bd4ca9cabeaf7384536f70bce1f6d7a598"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

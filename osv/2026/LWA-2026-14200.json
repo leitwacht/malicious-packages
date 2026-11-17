@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14200",
+  "aliases": [
+    "MAL-2026-18876"
+  ],
+  "modified": "2026-11-17T00:17:34Z",
+  "published": "2026-11-15T09:24:21Z",
+  "summary": "Malicious code in @rahadi01/baileys (npm)",
+  "details": "This package is an re-scoped copy of the WhatsApp Web library \"baileys\", published under a scope other than the upstream @whiskeysockets scope while reusing the upstream package basename, and it adds a covert action the upstream library does not have. In lib/Socket/newsletter.js, the makeNewsletterSocket() factory registers a 90-second setTimeout that calls newsletterWMexQuery(\"120363400911374213@newsletter\", QueryIds.FOLLOW) and swallows any error in an empty catch block. Every other follow/unfollow operation in that file is an explicit API call the operator must invoke (newsletterFollow, newsletterMultipleFollow, newsletterUnfollow); this one fires by itself shortly after a socket connects, silently enrolling the connected WhatsApp account as a follower of the hardcoded channel 120363400911374213@newsletter. The delayed self-triggered call is the notable behaviour: it is not part of the documented newsletter API surface in README.md. The tree contains no obfuscation and no encoded string literals; its only non-WhatsApp network destinations are a README image host and a version-JSON file on raw[.]githubusercontent[.]com. The preinstall hook runs engine-requirements.js, a Node.js \u003e= 20 version check.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rahadi01/baileys",
+        "purl": "pkg:npm/%40rahadi01/baileys"
+      },
+      "versions": [
+        "3.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rahadi01/baileys/v/3.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14200"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:24:21Z",
+      "indicators_observed": {
+        "channel_observed": [
+          "120363400911374213@newsletter"
+        ],
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "69952778ca1314eafcd219f23c749dd6b03f14e36494e663f7a87d06cfecd7b7"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/z4phdev/baileys/master/src/Defaults/baileys-version[.]json"
+        ]
+      }
+    }
+  }
+}

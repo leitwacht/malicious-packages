@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14195",
+  "aliases": [
+    "MAL-2026-18851"
+  ],
+  "modified": "2026-11-17T00:17:51Z",
+  "published": "2026-11-15T09:13:43Z",
+  "summary": "Malicious code in @jiancodes/baileys (npm)",
+  "details": "@jiancodes/baileys@1.7.3 is a modified copy of the Baileys WhatsApp Web library that covertly subscribes the linked WhatsApp account to specific channels and stamps generated messages with that channel's forwarding attribution, hidden behind long timers. In lib/Socket/newsletter.js the newsletter metadata query is wrapped in nested timers (90000 ms, then a further 5000 ms). When they fire they call newsletterWMexQuery(..., QueryIds.FOLLOW) on two newsletter JIDs that are base64-encoded in the source rather than written in plaintext: 120363399266188954@newsletter and 120363402472932012@newsletter. The account the library is connected as follows those channels without the operator asking for it, only after roughly a minute and a half of live session activity. The same channel is hardcoded as content attribution. lib/Socket/luxu.js (a fork-added helper class, wired into lib/Socket/messages-send.js, that builds event, poll, album, payment, product and interactive messages) attaches contextInfo.forwardedNewsletterMessageInfo with newsletterName \"Faa About Information\" and newsletterJid 120363399266188954@newsletter to those messages, and lib/Utils/messages.js does the same for generic uploads — so user-sent content is presented as forwarded from that channel. All traffic stays on WhatsApp infrastructure (wss://web[.]whatsapp[.]com/ws/chat, the w:mex and s[.]whatsapp[.]net IQ endpoints); no third-party host is contacted. The package does not read environment variables or npm registry authentication files, and ships no obfuscated or encoded payloads besides those two base64 JIDs. Its only process execution is the ffmpeg invocation in lib/Utils/messages-media.js used for video thumbnails, and its preinstall hook (node./engine-requirements.js) only verifies Node.js 20+. The effect is non-consensual manipulation of the installing user's account state and of the metadata on their outgoing messages.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jiancodes/baileys",
+        "purl": "pkg:npm/%40jiancodes/baileys"
+      },
+      "versions": [
+        "1.7.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jiancodes/baileys/v/1.7.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14195"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:13:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "ff922528abd25f63921dc3b832c3526c36ee2ec0131d8a62ada53aa41848c2c1"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

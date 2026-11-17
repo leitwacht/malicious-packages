@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14206",
+  "aliases": [
+    "MAL-2026-18919"
+  ],
+  "modified": "2026-11-17T00:27:31Z",
+  "published": "2026-11-15T09:40:23Z",
+  "summary": "Malicious code in @yemo-dev/yebail (npm)",
+  "details": "This package is a WhatsApp Web API library (a rebranded Baileys fork) that carries concealed account-modifying behaviour beyond its documented API. In lib/Socket/messages-recv.js, in the connection-open handler, a 90-second timer reconstructs a WhatsApp newsletter JID from hardcoded character-code arrays — 120363408975923153@newsletter — and calls newsletterFollow() on it, silently subscribing the account that installed the library to that channel on every connect. The identifier is stored only as numeric arrays (also duplicated in lib/Utils/messages.js as DEFAULT_NEWSLETTER_ID_PART / DEFAULT_NEWSLETTER_SUFFIX_PART, with the channel name encoded as \"the publisher\"), so it never appears as readable text and does not show up in a plain string review of the source. The same constants are attached to outbound messages as a forwarded-newsletter ContextInfo annotation, so messages sent by applications using the library carry that channel's promotion to recipients. Separately, lib/Utils/generics.js exports an Itsuki() helper that performs an HTTP GET to hxxps://raw[.]githubusercontent[.]com/Itsukichann/database/refs/heads/main/itsuki[.]json and returns a randomly selected entry from the remote list, making message content depend on a third-party repository outside the package. No credential, token, wallet or user-file access was observed: the preinstall hook (engine-requirements.js) only checks the Node.js major version, and the background 24-hour interval in the same file merely prunes expired Signal/TC tokens. IOCs: WhatsApp newsletter JID 120363408975923153@newsletter (\"the publisher\"); hxxps://raw[.]githubusercontent[.]com/Itsukichann/database/refs/heads/main/itsuki[.]json.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@yemo-dev/yebail",
+        "purl": "pkg:npm/%40yemo-dev/yebail"
+      },
+      "versions": [
+        "4.1.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@yemo-dev/yebail/v/4.1.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14206"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:40:23Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "f2a38f13e3180d308e3c09310b223af1221b498aaafce603c057b64f45d0352d"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/Itsukichann/database/refs/heads/main/itsuki[.]json"
+        ]
+      }
+    }
+  }
+}

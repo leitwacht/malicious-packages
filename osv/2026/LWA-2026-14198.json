@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14198",
+  "aliases": [
+    "MAL-2026-18997"
+  ],
+  "modified": "2026-11-17T00:24:29Z",
+  "published": "2026-11-15T09:18:18Z",
+  "summary": "Malicious code in nrx-bails (npm)",
+  "details": "This package is a clone of the Baileys WhatsApp Web library with covert promotional behaviour injected into the user's account and messages. On startup, lib/Socket/newsletter.js unconditionally schedules a 90-second timer that issues a newsletter FOLLOW request for the hard-coded channel 120363423175289826@newsletter (base64 MTIwMzYzNDIzMTc1Mjg5ODI2QG5ld3NsZXR0ZXI=) using the authenticated WhatsApp session, with all errors swallowed. lib/Socket/messages-send.js also silently attaches forwardedNewsletterMessageInfo for that same channel — forwardingScore 99999, isForwarded true, starred labels, senderName \"NEROXRTX\", newsletterName \"NEROXRTX | Development Full Stack\" — to outgoing album and media messages, so the account's messages are presented as forwarded from the author's channel without the user's consent or knowledge. The package's preinstall hook (requirements.js) only prints a Node version banner. No credential, token, environment-variable or file data is read or transmitted, and no download or command-and-control endpoint is contacted; the network surface is the WhatsApp endpoints web[.]whatsapp[.]com and v[.]whatsapp[.]net plus optional public file hosts (catbox.moe, qu.ax, uguu[.]se, tmpfiles[.]org) used by the library's media upload helpers.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nrx-bails",
+        "purl": "pkg:npm/nrx-bails"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nrx-bails/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14198"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:18:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "tmpfiles[.]org",
+          "uguu[.]se",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "5f11fb313b54cdef84c01144e5d09883f421f1d914b68d509e5ee01128522b19"
+        ]
+      }
+    }
+  }
+}

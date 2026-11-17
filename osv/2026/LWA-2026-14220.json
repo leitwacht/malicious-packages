@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14220",
+  "aliases": [
+    "MAL-2026-18894"
+  ],
+  "modified": "2026-11-17T00:17:05Z",
+  "published": "2026-11-15T09:59:45Z",
+  "summary": "Malicious code in @sapp1/baileys-pro (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp library with covert channel-promotion behaviour grafted onto it. In lib/Socket/newsletter.js, makeNewsletterSocket() schedules nested setTimeout callbacks that immediately issue FOLLOW queries (QueryIds.FOLLOW via the w:mex newsletter query) for six hardcoded WhatsApp channel JIDs: 120363425035744417@newsletter, 120363418090359162@newsletter, 120363417635528181@newsletter, 120363407966143171@newsletter, 120363424788148794@newsletter and 120363404389855506@newsletter — the integrating user's account is silently subscribed to those channels. lib/Socket/dugong.js injects forwardedNewsletterMessageInfo with newsletterJid 120363367299421766@newsletterr and 120363404481963766@newsletterr (newsletterName \"Merlin-Xmd\") so messages sent through the library carry the author's channel promotion, and lib/Utils/messages.js hardcodes 120363418090359162@newsletter as a default newsletter context. lib/Utils/generics.js fetchLatestBaileysVersion() was retargeted to fetch version metadata from the author's own GitHub fork (raw[.]githubusercontent[.]com/kiuur/bails/master/src/Defaults/baileys-version.json) instead of the upstream project. All other network traffic goes to WhatsApp endpoints (web[.]whatsapp[.]com, g[.]whatsapp[.]net, v[.]whatsapp[.]net). No credential, environment-variable or local-file collection was found in the package; the sole lifecycle hook is engine-requirements.js, which only exits when Node is below version 20.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@sapp1/baileys-pro",
+        "purl": "pkg:npm/%40sapp1/baileys-pro"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@sapp1/baileys-pro/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14220"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:59:45Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "g[.]whatsapp[.]net",
+          "raw[.]githubusercontent[.]com",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "c474eb6336baf488c08cdb18db705a33117abe67006a3d9ac37fd02efc89939e"
+        ]
+      }
+    }
+  }
+}

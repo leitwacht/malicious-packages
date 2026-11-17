@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14199",
+  "aliases": [
+    "MAL-2026-19002"
+  ],
+  "modified": "2026-11-17T00:22:54Z",
+  "published": "2026-11-15T09:22:56Z",
+  "summary": "Potentially-unwanted package (riskware): popkid-baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web library that silently enrols the user's WhatsApp account into a hardcoded channel. In lib/Socket/socket.js, inside the login-success handler, a five-second timer calls newsletterFollow() with the channel JID 120363423997837331@newsletter, so any account the library logs in is auto-subscribed to that channel without the operator's consent; failures are swallowed and logged only at debug level. The package also ships a preinstall hook that runs./engine-requirements.js, which merely checks that the Bun runtime is present and exits. No credential, token, wallet or file exfiltration was found: the only outbound destinations in the tree are WhatsApp/Baileys endpoints (web[.]whatsapp[.]com, mmg[.]whatsapp[.]net) and the upstream version-check URL, and the only child_process use is ffmpeg thumbnail generation. Unwanted behaviour: non-consensual account enrolment, not malicious code execution.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "popkid-baileys",
+        "purl": "pkg:npm/popkid-baileys"
+      },
+      "versions": [
+        "1.0.2"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/popkid-baileys/v/1.0.2"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-15T09:22:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363423997837331@newsletter",
+          "mmg[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "6d36cdcf348508ef640b2f633e1e111cebeb072263c76340801accb0aa303738"
+        ]
+      }
+    }
+  }
+}

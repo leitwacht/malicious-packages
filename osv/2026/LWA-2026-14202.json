@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14202",
+  "aliases": [
+    "MAL-2026-18915"
+  ],
+  "modified": "2026-11-17T00:17:29Z",
+  "published": "2026-11-15T09:34:00Z",
+  "summary": "Malicious code in @xsat10/baileys (npm)",
+  "details": "A trojanized clone of the WhatsApp library baileys, published under the unofficial scope @xsat10 with the original basename intact. The shipped code is a fork of @whiskeysockets/baileys with a silently injected channel-enrolment routine. In lib/Socket/newsletter.js, inside makeNewsletterSocket, a setTimeout fires 90 seconds after the socket module is loaded and calls newsletterWMexQuery(\"120363409971362124@newsletter\", QueryIds.FOLLOW) inside an empty try/catch — subscribing the account to a hardcoded WhatsApp channel without the caller ever requesting it. Every other newsletter operation in that file takes the channel id from the caller; only this timer hardcodes one. The same operator's channels are also injected into the user's own outbound traffic: lib/Utils/messages.js adds a newsletter block with newsletterJid 120363420249672073@newsletter (\"kyuu ilysm\", contentType UPDATE) to outgoing media messages, and lib/Socket/dugong.js adds forwardedNewsletterMessageInfo with newsletterJid 120363297591152843@newsletter (\"shenvn.\", serverMessageId 1) to status-broadcast contextInfo. There is no external C2 host: the enrolment is performed over the WhatsApp w:mex protocol to S_WHATSAPP_NET, so it blends into the library's normal traffic. The 90-second delay hides the action from short-lived observers. The preinstall hook runs a Node version check only. Installing this package silently enrols the account into attacker-controlled channels and stamps outbound messages with them.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xsat10/baileys",
+        "purl": "pkg:npm/%40xsat10/baileys"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xsat10/baileys/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14202"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:34:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363297591152843@newsletter",
+          "120363409971362124@newsletter",
+          "120363420249672073@newsletter"
+        ],
+        "sha256": [
+          "6c5e709294908480fc947cc573955ddfc51e75db4ec9f9ccfaa96b2f7e54ad51"
+        ]
+      }
+    }
+  }
+}

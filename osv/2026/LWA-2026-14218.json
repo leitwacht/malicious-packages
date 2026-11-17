@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14218",
+  "aliases": [
+    "MAL-2026-18995"
+  ],
+  "modified": "2026-11-17T00:22:15Z",
+  "published": "2026-11-15T09:50:09Z",
+  "summary": "Malicious code in nobiztoblut-bot (npm)",
+  "details": "Nobiztoblut-bot, a fork of the Baileys WhatsApp Web library, contains an injected payload that silently subscribes whichever WhatsApp account the library is connected with to four hardcoded newsletter channels chosen by the package author. The code is added inside makeNewsletterSocket() in lib/Socket/newsletter.js: two setTimeout blocks fire 90 seconds (and 95 seconds) after the socket is constructed, issuing w:mex newsletter FOLLOW queries for four channel JIDs that are hidden as base64 literals — 120363425000320171@newsletter, 120363420757607688@newsletter, 120363400738305381@newsletter and 120363423837510800@newsletter. Every call is wrapped in an empty try/catch, so the subscription happens with no log line, no error and no notification to the developer or the account owner, and the 90-second delay keeps it out of the window in which the library is normally inspected. At least one of the targets is the author's own channel: lib/Utils/messages.js:108 hardcodes the same JID (120363420757607688@newsletter) under the name \"7eppeli - Information\" as its branding default, and lib/Socket/luxu.js:388 brands forwarded status messages \"D | 7eppeli-Exloration\" with 120363421563597486@newsletter. There is no configuration option, no API call and no documentation for this behaviour: it fires automatically on any bot built with the library. The package holds no other network destination beyond WhatsApp's own endpoints (web[.]whatsapp[.]com, v[.]whatsapp[.]net, g[.]whatsapp[.]net); it reads no credential or token files and exfiltrates no data. The install-time preinstall hook (node./engine-requirements.js) only checks for Node.js 20 or newer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nobiztoblut-bot",
+        "purl": "pkg:npm/nobiztoblut-bot"
+      },
+      "versions": [
+        "1.2.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nobiztoblut-bot/v/1.2.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14218"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:50:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "g[.]whatsapp[.]net",
+          "v[.]whatsapp[.]net",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "09fbb20654c49bfa56534a62ff2db444ed5d10b5186aee8262552ce94117c9a1"
+        ]
+      }
+    }
+  }
+}

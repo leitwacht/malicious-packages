@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14196",
+  "aliases": [
+    "MAL-2026-18983"
+  ],
+  "modified": "2026-11-17T00:24:12Z",
+  "published": "2026-11-15T09:20:32Z",
+  "summary": "Malicious code in killua-baileys (npm)",
+  "details": "This package is a modified build of the Baileys WhatsApp Web library that silently makes the installing user's WhatsApp account follow a set of hidden third-party channels. In lib/Socket/newsletter.js it ships `const RansFollowCh = [...]`, an array of five base64-encoded channel JIDs which decode to 120363419931177308@newsletter, 120363371199176376@newsletter, 120363409519566274@newsletter, 120363408883778327@newsletter and 120363404953742204@newsletter. A setTimeout with a 90,000 ms delay is registered when the socket module loads; after the delay it iterates the array and calls the internal w:mex 'FOLLOW' query (query id QueryIds.FOLLOW, addressed to S_WHATSAPP_NET, variables {newsletter_id: \u003cjid\u003e}) for each channel, spacing the calls three seconds apart and swallowing every error, so the user's account is subscribed to channels the user never selected. The identifiers are base64-encoded rather than plaintext and the action is deferred 90 seconds; the package's own README advertises only a single, different developer channel (whatsapp[.]com/channel/0029VbAJOR4DJ6H3p6aFhI1I), so the shipped list is undisclosed. Apart from WhatsApp's own hosts (web[.]whatsapp[.]com, call[.]whatsapp[.]com, www[.]whatsapp[.]com) and the upstream Baileys version-check file on raw[.]githubusercontent[.]com, the package contacts no external endpoint; it contains no dynamic code evaluation and the only shell invocation is upstream ffmpeg thumbnail extraction. The payload's purpose is unauthorised account-level promotion activity driven by an obfuscated, undisclosed channel list.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "killua-baileys",
+        "purl": "pkg:npm/killua-baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/killua-baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14196"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:20:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363371199176376@newsletter",
+          "120363404953742204@newsletter",
+          "120363408883778327@newsletter",
+          "120363409519566274@newsletter",
+          "120363419931177308@newsletter",
+          "call[.]whatsapp[.]com",
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com",
+          "www[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "fa5f47694353c2f95faff95ec3d4823d3368b82f7c731d61f102682a9df9a4d1"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VbAJOR4DJ6H3p6aFhI1I"
+        ]
+      }
+    }
+  }
+}
