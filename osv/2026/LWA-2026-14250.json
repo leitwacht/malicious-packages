@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14250",
+  "aliases": [
+    "MAL-2026-14211"
+  ],
+  "modified": "2026-11-17T19:08:32Z",
+  "published": "2026-11-17T15:35:51Z",
+  "summary": "Malicious code in sw-pluginer (npm)",
+  "details": "sw-pluginer@1.2.0 is a Tailwind CSS plugin that turns a build-time config load into remote code execution on the developer's machine. Adding the advertised `require('sw-pluginer')` to tailwind.config.js invokes the exported factory in index.js, which reads `node_modules/.bin/manifest.json`, takes its `path` field as a URL, deletes that manifest file immediately (lib/manifest-reader.js calls fs.unlinkSync), downloads the script at that URL over http/https via lib/worker-fetcher.js — accepting any response whose Content-Type contains \"javascript\" or \"text/plain\" — and then executes the downloaded body with eval() inside lib/register-worker.js::generateRegistration. There is no allowlist, host restriction, signature or integrity check on the URL or the fetched code, so whoever can place that manifest file determines what code runs with the developer's privileges during the build. The eval is disguised: the function is documented as \"safe, no eval\", and the README describes the package only as service-worker registration and an offline-PWA update banner. The fetched URL is not fixed in the package — index.js builds its path from process.cwd() plus node_modules/.bin/manifest.json, so the second stage is attacker-supplied rather than hardcoded. The same remote URL is also interpolated into emitted client-side service-worker registration snippets (lib/sw-update-prompt.js), and the package ships no network IOCs of its own beyond that manifest-supplied URL.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sw-pluginer",
+        "purl": "pkg:npm/sw-pluginer"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sw-pluginer/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14250"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T15:35:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "b6f0b77517b51a283d3abf90923c5a261dbada56fd7e64cc3b3fcbb502d708cc"
+        ]
+      }
+    }
+  }
+}
