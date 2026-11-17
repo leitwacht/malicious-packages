@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14249",
+  "modified": "2026-11-17T11:37:07Z",
+  "published": "2026-11-17T11:35:52Z",
+  "summary": "Malicious code in @izi-coder/baileys (npm)",
+  "details": "@izi-coder/baileys is an unofficial look-alike-scope fork of @whiskeysockets/baileys that adds a covert channel-subscription routine not present in the upstream library. In lib/Socket/newsletter.js the package hardcodes an array of WhatsApp newsletter JIDs — 120363429394939370@newsletter and 120363430414713911@newsletter — and wraps a follow loop in setTimeout(..., 150000), so roughly 150 seconds after the module is loaded the code sends w:mex \"query_id\" FOLLOW IQ stanzas via newsletterWMexQuery to WhatsApp's servers for each JID. Through the authenticated client socket this subscribes the account running the library to those channels without user consent, with no configuration or API to disable it; failures are caught and only logged as \"Newsletter follow failed\". The package's preinstall hook (engine-requirements.js) merely rejects Node versions below 20 and performs no download or execution. No access to environment variables, npm/registry credentials, home-directory files or any non-WhatsApp network endpoint was found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@izi-coder/baileys",
+        "purl": "pkg:npm/%40izi-coder/baileys"
+      },
+      "versions": [
+        "2.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@izi-coder/baileys/v/2.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14249"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T11:35:52Z",
+      "indicators_observed": {
+        "sha256": [
+          "30ff571ab7b406120f10f23587d1c83e4a12471c91dcb7801a06a5e44ea7c2c9"
+        ]
+      }
+    }
+  }
+}
