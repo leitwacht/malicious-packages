@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14221",
+  "modified": "2026-11-03T06:17:37Z",
+  "published": "2026-11-03T04:17:07Z",
+  "summary": "Malicious code in @tedbrain/vlink (npm)",
+  "details": "This package's postinstall hook (node install.js) downloads and installs a platform-specific native executable and wires it into the shell and into AI coding agents. It first queries the release metadata endpoint hxxps://gitee[.]com/api/v5/repos/ted-team/tedbrain/releases/tags/0.1.110; when that fails it falls back to a plain-HTTP GET of a binary from the bare IP hxxp://49[.]232[.]144[.]199/downloads/oss/vlink/0.1.110/vlink-linux-x86_64 (the host, channel, URL and version are overridable through VLINK_DOWNLOAD_BASE, VLINK_DOWNLOAD_URL, VLINK_DOWNLOAD_CHANNEL, VLINK_SKIP_GITEE and VLINK_GITEE_API_BASE). The fetched file is written under ~/.cache/vlink/\u003cversion\u003e/, chmod 0755 and then executed (spawnSync with -V). Integrity is only checked after the transfer, by comparing a SHA-256 against a hash list shipped in binaries.json, while the transfer itself is unauthenticated plain HTTP — so the executable is modifiable in transit before it is run at install time. The installer additionally rewrites the user's shell rc file to prepend the install directory to PATH (persistence), and the bundled `mcp install` path registers the downloaded binary as an MCP server in Claude Code / Codex, giving the remote artifact a persistent, agent-launched execution path.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tedbrain/vlink",
+        "purl": "pkg:npm/%40tedbrain/vlink"
+      },
+      "versions": [
+        "0.1.110"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tedbrain/vlink/v/0.1.110"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14221"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-03T04:17:07Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gitee[.]com"
+        ],
+        "ip_observed": [
+          "49[.]232[.]144[.]199",
+          "49[.]232[.]144[.]199:80"
+        ],
+        "sha256": [
+          "c56bc1781c876b679725a1325fa2d64109822c5a60369ec6feac2b26cdf34af5"
+        ],
+        "url_observed": [
+          "hxxp://49[.]232[.]144[.]199/downloads/oss/vlink/0[.]1[.]110/vlink-linux-x86_64",
+          "hxxps://gitee[.]com/api/v5/repos/ted-team/tedbrain/releases/tags/0[.]1[.]110"
+        ]
+      }
+    }
+  }
+}
