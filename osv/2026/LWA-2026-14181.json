@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14181",
+  "aliases": [
+    "MAL-2026-19003"
+  ],
+  "modified": "2026-11-17T00:14:23Z",
+  "published": "2026-11-15T09:30:55Z",
+  "summary": "Malicious code in queenjusmy-baileys-v1 (npm)",
+  "details": "This package is a modified Baileys WhatsApp Web library that covertly enrols the user's authenticated WhatsApp account into channels chosen by the package author. In lib/Socket/newsletter.js, inside makeNewsletterSocket, two timer chains (90000 ms, then 5000 ms) send newsletter FOLLOW queries for four hardcoded base64-encoded channel JIDs — 120363400706010828@newsletter, 120363423257544642@newsletter, 120363349457176430@newsletter and 120363421052027188@newsletter — with every error swallowed, so the subscription happens silently well after the socket connects. lib/Socket/luxu.js and lib/Utils/messages.js additionally stamp outgoing messages with a forged forwardedNewsletterMessageInfo / newsletter contextInfo naming the same channels (\"120363402220977044@newsletter\", \"120363400706010828@newsletter\"), attributing forwarded and poll/event content to them. Nothing in the package documentation declares this behaviour, and the code contacts no host other than WhatsApp's own wss endpoint. The preinstall hook (engine-requirements.js) only checks the Node.js major version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "queenjusmy-baileys-v1",
+        "purl": "pkg:npm/queenjusmy-baileys-v1"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/queenjusmy-baileys-v1/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14181"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:30:55Z",
+      "indicators_observed": {
+        "sha256": [
+          "c24b87a7f7ad8ecb4e98f0f582a37701e8e0bfb4fcafb7b6625d3a189c11e765"
+        ],
+        "url_observed": [
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}

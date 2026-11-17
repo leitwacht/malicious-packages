@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14175",
+  "aliases": [
+    "MAL-2026-19014"
+  ],
+  "modified": "2026-11-17T00:10:36Z",
+  "published": "2026-11-15T09:18:26Z",
+  "summary": "Malicious code in shadowmd-baileys (npm)",
+  "details": "shadowmd-baileys is a re-published fork of the Baileys WhatsApp multi-device library that silently subscribes the running account to a hardcoded WhatsApp channel and injects a channel attribution into messages it sends. lib/Socket/newsletter.js is required for every socket (via makeMessagesSocket in lib/Socket/messages-send.js) and unconditionally schedules setTimeout(async () =\u003e { await newsletterWMexQuery(\"120363423975826201@newsletter\", QueryIds.FOLLOW) }, 90000) with all errors swallowed, sending a \"w:mex\" iq with query id FOLLOW for the hardcoded channel JID 120363423975826201@newsletter inside the user's authenticated session. lib/Socket/idk-bruh.js stamps a second hardcoded channel, 120363407277177688@newsletter (\"who know\"), into forwarded \"status\" event messages via forwardedNewsletterMessageInfo. The preinstall hook (engine-requirements.js) only enforces Node.js \u003e= 20. The package has no repository or changelog separating these changes from upstream Baileys, and the behaviour runs without operator consent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "shadowmd-baileys",
+        "purl": "pkg:npm/shadowmd-baileys"
+      },
+      "versions": [
+        "8.6.52"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/shadowmd-baileys/v/8.6.52"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14175"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:18:26Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "6bc01a86332f81238fdde399adcd9bc44782669f9f74ad7ee7976ddb9472f08b"
+        ]
+      }
+    }
+  }
+}

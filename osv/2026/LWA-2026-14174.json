@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14174",
+  "aliases": [
+    "MAL-2026-18887"
+  ],
+  "modified": "2026-11-17T00:11:05Z",
+  "published": "2026-11-15T09:20:18Z",
+  "summary": "Malicious code in @rizzkezik/baileys (npm)",
+  "details": "@rizzkezik/baileys@1.1.1 is a repackaged fork of the @whiskeysockets/baileys WhatsApp Web library that silently forces the installer's WhatsApp account to follow six hardcoded channels. In lib/Socket/newsletter.js the makeNewsletterSocket() constructor — called unconditionally by makeMessagesSocket() — schedules newsletter \"follow\" mutations (query id 7871414976211147) at 10 second delays, one nested at a further 8 and 9 seconds, against six channel JIDs stored base64-encoded so they do not read as channel IDs in source: 120363428745722504@newsletter, 120363410018949906@newsletter, 120363425869049995@newsletter, 120363425177067841@newsletter, 120363349140729983@newsletter and 120363424800295266@newsletter. No user action or configuration is involved, and the README presents the enrolment as a feature (\"Has 1 newsletter follow, only the developer's WhatsApp channel\", linking channel 0029Vb3IiqTL7UVP9A9n0w1x) while the code follows six. A second modified file, lib/Socket/luxu.js, injects fake forwarded-newsletter metadata (forwardingScore: 99999, isHighlighted, starred, labels \"Y\"/\"Important\", dataSharingContext.showMmDisclosure) and a fake forwardedNewsletterMessageInfo block naming \"WhatsApp\" / \"D | 7eppeli-Exloration\" and channel 120363421563597486@newsletter into album, event and poll messages the library sends. The package also declares a preinstall hook (node./engine-requirements.js, a Node version check only) and pulls in an additional cache-manager dependency its upstream does not use. Its npm metadata advertises no source repository, only the package's own npm page.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rizzkezik/baileys",
+        "purl": "pkg:npm/%40rizzkezik/baileys"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rizzkezik/baileys/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14174"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:20:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "0029Vb3IiqTL7UVP9A9n0w1x",
+          "120363349140729983@newsletter",
+          "120363410018949906@newsletter",
+          "120363424800295266@newsletter",
+          "120363425177067841@newsletter",
+          "120363425869049995@newsletter",
+          "120363428745722504@newsletter"
+        ],
+        "sha256": [
+          "2cdc0b71b5cbe51697c6fd55b79ee80cff9ba52a208d4bd07a8fbfa0608ffb44"
+        ]
+      }
+    }
+  }
+}

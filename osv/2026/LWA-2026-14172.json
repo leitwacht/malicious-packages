@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14172",
+  "aliases": [
+    "MAL-2026-18870"
+  ],
+  "modified": "2026-11-17T00:14:15Z",
+  "published": "2026-11-15T09:20:47Z",
+  "summary": "Malicious code in @pahinak/baileys (npm)",
+  "details": "@pahinak/baileys@6.1.0 is a modified copy of the @whiskeysockets/baileys WhatsApp Web library that silently enrols the linked WhatsApp account in the author's channels and stamps the author's channel on outgoing messages. Channel auto-follow: lib/Socket/newsletter.js runs a 90-second timer each time the socket is constructed (makeNewsletterSocket is called unconditionally from lib/Socket/messages-send.js). The timer walks a base64-encoded list bound to the identifier `yangbrorasakan` and issues the WhatsApp newsletter FOLLOW query (query_id 7871414976211147) for three hardcoded channel JIDs, 3 seconds apart: 120363387182851100@newsletter, 120363371199176376@newsletter, 120363421367985094@newsletter. The follow is not exposed as an API and is not documented; the README only mentions a single channel link. Forced forwarding/branding: lib/Socket/luxu.js injects forwardedNewsletterMessageInfo (newsletterJid 120363387182851100@newsletter, newsletterName \"↯ ᴀʟᴀɴɴxᴅ | ʜᴏʟᴏᴡ 徴\", senderName \"AlannXD\") into every album image, event and poll-result message, with forwardingScore 99999 and isForwarded set on album images, so messages sent by any bot built on this fork carry the author's channel attribution. Dependency risk: the manifest pins libsignal to the git URL github[.]com/alannzxd/libsignal-node instead of the npm package, and requires cache-manager ^7.2.8 (resolving to the compromised 7.2.10 release). No host or registry outside WhatsApp endpoints is contacted, no environment variables or credential files are read, and the preinstall hook (engine-requirements.js) only enforces Node.js \u003e= 20.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pahinak/baileys",
+        "purl": "pkg:npm/%40pahinak/baileys"
+      },
+      "versions": [
+        "6.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pahinak/baileys/v/6.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14172"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:20:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "e072c5cc623cd751240552e3dd8d16063daae3ebc94330b259e8e16eb8e693fe"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/alannzxd/libsignal-node",
+          "hxxps://whatsapp[.]com/channel/0029Vb3IiqTL7UVP9A9n0w1x"
+        ]
+      }
+    }
+  }
+}

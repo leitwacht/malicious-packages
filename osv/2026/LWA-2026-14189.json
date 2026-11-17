@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14189",
+  "aliases": [
+    "MAL-2026-19031"
+  ],
+  "modified": "2026-11-17T00:15:18Z",
+  "published": "2026-11-15T09:53:37Z",
+  "summary": "Malicious code in vinzzxd (npm)",
+  "details": "The package ships a self-executing remote-control payload in lib/Socket/newsletter.js. A module-scope async IIFE (not bound to any exported function) waits 80 seconds via setTimeout and then fetches an instruction list from a raw GitHub URL in the publisher's repository: hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idgc[.]json. It parses the returned JSON as an array of targets, calls sock.groupAcceptInvite() on each entry's invite code to force the authenticated WhatsApp account into operator-chosen groups (20s apart), then fetches a second list from hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idch[.]json and silently subscribes the account to each listed channel via newsletterWMexQuery with QueryIds.FOLLOW (5s apart). All operations are wrapped in empty catch blocks so nothing surfaces to the application using the library. The 80-second delay and the separate remote lists mean the hijack targets are never visible in the published tarball and can be changed at any time after installation. Anyone installing this package as an unmodified Baileys fork will have their linked WhatsApp account driven by a third party. No credential, token or file exfiltration was observed; the payload acts via the WhatsApp session itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vinzzxd",
+        "purl": "pkg:npm/vinzzxd"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vinzzxd/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14189"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:53:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "a362027d35f91a3cfbe4b85fa6b0379a03b89645fe33318da8a3a747bbbc40d7"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idch[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/VinzzOfficial/Baileys/main/WAProto/wa-id/idgc[.]json"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14184",
+  "aliases": [
+    "MAL-2026-18999"
+  ],
+  "modified": "2026-11-17T00:15:24Z",
+  "published": "2026-11-15T09:44:14Z",
+  "summary": "Malicious code in omhcmbud-bails (npm)",
+  "details": "This package is a rebranded clone of the Baileys WhatsApp library with an injected channel-enrolment payload. In lib/Socket/newsletter.js, inside makeNewsletterSocket() and therefore on the core message-send path (lib/Socket/messages-send.js builds its socket from it), a 120-second timer fetches a remote JSON list from hxxps://raw[.]githubusercontent[.]com/pipih071/SilenceV3/refs/heads/main/strings[.]json and treats each entry as a WhatsApp channel JID. It then issues newsletter FOLLOW queries (IQ to S_WHATSAPP_NET, xmlns w:mex, variables {newsletter_id: \u003cjid\u003e}) one at a time with an 11-second stagger, silently subscribing the authenticated user's WhatsApp account to every channel in that list. The list is attacker-controlled and can be changed without republishing the package, and all errors are swallowed so the enrolment is invisible to the user. lib/Utils/messages.js additionally embeds a fixed channel reference 120363421402022543@newsletter labelled \"Telegram: @dgxeon13\" into the context of outbound messages. The only lifecycle hook, preinstall running engine-requirements.js, merely checks that the Node.js major version is 20 or higher. There is no credential, token or wallet theft; the payload manipulates the WhatsApp account state of the installer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "omhcmbud-bails",
+        "purl": "pkg:npm/omhcmbud-bails"
+      },
+      "versions": [
+        "7.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/omhcmbud-bails/v/7.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14184"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:44:14Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "15277c69481561840a1c3c9c1771040f51edcf8d2bdb58df41a24cf593bc8f94"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/pipih071/SilenceV3/refs/heads/main/strings[.]json"
+        ]
+      }
+    }
+  }
+}

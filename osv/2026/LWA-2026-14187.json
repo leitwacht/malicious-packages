@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14187",
+  "aliases": [
+    "MAL-2026-18926"
+  ],
+  "modified": "2026-11-17T00:11:15Z",
+  "published": "2026-11-15T09:48:05Z",
+  "summary": "Malicious code in @zeppeliorg/xzcbailz (npm)",
+  "details": "This package is a republished fork of the WhatsApp Web (Baileys) socket library that covertly enrols the consumer's linked WhatsApp account into a channel and brands outgoing traffic. In lib/Socket/newsletter.js the socket factory arms a setTimeout(5000) callback that issues the WhatsApp newsletter FOLLOW query for the hardcoded channel JID 120363420757607688@newsletter; the call is wrapped in an empty try/catch, so every account that connects through this library is silently subscribed to that channel with no user action and no API call from the integrating application. lib/Socket/luxu.js additionally rewrites forwarded and poll content with the author's newsletter identity: newsletterName \"D | 7eppeli-Exloration\" plus newsletterJid 120363421563597486@newsletter, with 120363399602691477@newsletter used as a default value, so messages sent through the library carry that channel's branding. The package publishes under a scope that is not the canonical publisher of the \"baileys\" name and points its homepage/repository at its own npm page. The preinstall hook (engine-requirements.js) only checks that the running Node.js version is 20 or newer. The package reads no environment variables and no credential, token or auth-state files, and its only network destinations besides WhatsApp endpoints are a raw[.]githubusercontent[.]com URL used for an upstream version check and caller-supplied media URLs.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zeppeliorg/xzcbailz",
+        "purl": "pkg:npm/%40zeppeliorg/xzcbailz"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zeppeliorg/xzcbailz/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14187"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:48:05Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "8e7a819826cf98005b2d47bbbe5968ae10eb367d25ee59215819bb28f594c1c9"
+        ]
+      }
+    }
+  }
+}

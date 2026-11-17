@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14173",
+  "aliases": [
+    "MAL-2026-18880"
+  ],
+  "modified": "2026-11-17T00:09:41Z",
+  "published": "2026-11-15T09:26:32Z",
+  "summary": "Malicious code in @ranstech/bails (npm)",
+  "details": "This package is a rebranded fork of the Baileys WhatsApp Web library that silently enrols the end-user's WhatsApp account into six hardcoded channels. In lib/Socket/newsletter.js, inside makeNewsletterSocket(), a chain of setTimeout timers (10s, 9s/8s) fires six newsletter FOL-LOW queries (QueryIds.FOLLOW = 7871414976211147) over the w:mex newsletter path as soon as a socket is created, using newsletter JIDs hidden as base64 string literals: MTIwMzYzNDI4NzQ1NzIyNTA0QG5ld3NsZXR0ZXI=, MTIwMzYzNDEwMDE4OTQ5OTA2QG5ld3NsZXR0ZXI=, MTIwMzYzNDI1ODY5MDQ5OTk1QG5ld3NsZXR0ZXI=, MTIwMzYzNDI1MTc3MDY3ODQxQG5ld3NsZXR0ZXI=, MTIwMzYzMzQ5MTQwNzI5OTgzQG5ld3NsZXR0ZXI=, MTIwMzYzNDI0ODAwMjk1MjY2QG5ld3NsZXR0ZXI= (each decoding to an \u003cid\u003e@newsletter JID). The follow calls run without any configuration or consent from the integrator. The README states the package has \"1 newsletter follow, only the developer's WhatsApp channel\", while the code performs six. lib/Socket/luxu.js additionally stamps outgoing media/poll/event messages with forwardedNewsletterMessageInfo referencing newsletter JIDs \"0@newsletter\", \"120363421563597486@newsletter\" and \"120363399602691477@newsletter\" (channel names \"WhatsApp\", \"D | 7eppeli-Exloration\") so relayed content appears to come from a channel. On top of this, lib/index.js performs an unconditional fetch at require time to hxxps://raw[.]githubusercontent[.]com/rans-beep/Bailss/refs/heads/main/infojir[.]json and prints the returned string, giving the author a post-publication string channel into every project that imports the library. package.json pins no lockfile (no shrinkwrap) and declares \"cache-manager\": \"^7.2.8\", allowing resolution to any 7.x release of that dependency. No credential, token or wallet access was found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ranstech/bails",
+        "purl": "pkg:npm/%40ranstech/bails"
+      },
+      "versions": [
+        "1.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ranstech/bails/v/1.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14173"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:26:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "ba486f7ed96a41488e1d158e5518d70e7c07ae799ac449b13882c517d1337a41"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/rans-beep/Bailss/refs/heads/main/infojir[.]json"
+        ]
+      }
+    }
+  }
+}
