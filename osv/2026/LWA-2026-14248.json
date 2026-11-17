@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14248",
+  "modified": "2026-11-17T10:09:41Z",
+  "published": "2026-11-17T10:08:32Z",
+  "summary": "Malicious code in @xz-bails/baileys (npm)",
+  "details": "This package republishes the WhiskeySockets Baileys WhatsApp Web library under an unofficial scope using the canonical `baileys` name, with two behaviours that are not part of upstream. (1) lib/Socket/newsletter.js contains a hidden \"XzV Newsletter Auto-Follow\" routine: ten seconds after every connection opens it sends a WhatsApp `w:mex` FOLLOW query (query_id 7871414976211147) for the hardcoded channel JID 120363430764800148@newsletter, retrying up to three times at 20s intervals. The only opt-out is an undocumented `autoFollowNewsletters: false` socket config flag (or overriding `newsletterAutoFollowId`), so every bot built on this library silently enrols its WhatsApp account as a follower of the operator's channel. (2) package.json declares a runtime dependency on cache-manager ^7.2.8, satisfied by 7.2.10 — a version separately recorded as malicious — and an unpinned dependency on libsignal: github:tenka-san/libsignal-node, so installation pulls and runs third-party code fetched from a GitHub repository at install time. The declared preinstall hook (engine-requirements.js) only performs a Node.js \u003e=20 version check. Operator contact/redirect: hxxps://t[.]me/XzRzSynxC.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xz-bails/baileys",
+        "purl": "pkg:npm/%40xz-bails/baileys"
+      },
+      "versions": [
+        "6.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xz-bails/baileys/v/6.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14248"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T10:08:32Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "t[.]me"
+        ],
+        "sha256": [
+          "e510b75d747faf4b2492f81cb539675492d58df3abef045750e0baa80c770c23"
+        ],
+        "url_observed": [
+          "hxxps://t[.]me/XzRzSynxC"
+        ]
+      }
+    }
+  }
+}

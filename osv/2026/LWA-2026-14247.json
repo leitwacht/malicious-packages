@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14247",
+  "modified": "2026-11-17T10:08:20Z",
+  "published": "2026-11-17T10:06:35Z",
+  "summary": "Potentially-unwanted package (riskware): @angkasabaileys/baileys (npm)",
+  "details": "This package is an unofficial fork of the WhatsApp library published under the scope @angkasabaileys/baileys, which reuses the upstream \"baileys\" basename under an unaffiliated scope, and it silently enrols the user's WhatsApp account into the author's channel. In lib/Socket/newsletter.js, makeNewsletterSocket registers a 'connection.update' handler that, every time the socket reports connection === 'open', issues a newsletter join query (QueryIds.FOLLOW via XWAPaths.xwa2_newsletter_join_v2) for the hardcoded channel JID 120363431179022660@newsletter; the call is wrapped in an empty try/catch so failures are silent, and the source comments it as \"Auto follow newsletter saat connection open\". This happens without user action or consent and contradicts the package's own README, which advertises \"No auto-follow channel (newsletter) behavior\". A second channel is injected into message metadata: lib/Utils/messages.js defines a mediaAnnotation whose newsletterJid is a hex-encoded JID (Buffer.from(...,'hex')) decoding to 120363404006644139@newsletter, with serverMessageId 103 and the package name as accessibility text, so media/forwarded annotations carry the author's channel attribution. Those values can be overridden at runtime through the NEWSLETTER_ID, NEWSLETTER_MESSAGE_ID, NEWSLETTER_NAME and NEWSLETTER_ACCESSIBILITY_TEXT environment variables. The preinstall hook (engine-requirements.js) only verifies Node.js \u003e= 20; the package does not read credential files, tokens or the installer's environment beyond the NEWSLETTER_* variables, and its network activity is limited to the WhatsApp WebSocket/media endpoints used by the library itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@angkasabaileys/baileys",
+        "purl": "pkg:npm/%40angkasabaileys/baileys"
+      },
+      "versions": [
+        "1.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@angkasabaileys/baileys/v/1.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-17T10:06:35Z",
+      "indicators_observed": {
+        "sha256": [
+          "0b46dc13ddc2f9f6a7fb1457040a099b92dd8e63b09e0a7ba9672e656ba525a3"
+        ]
+      }
+    }
+  }
+}
