@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14180",
+  "aliases": [
+    "MAL-2026-18925"
+  ],
+  "modified": "2026-11-17T00:39:02Z",
+  "published": "2026-11-15T09:38:43Z",
+  "summary": "Malicious code in @zeppeliorg/wbails (npm)",
+  "details": "@zeppeliorg/wbails is a fork of the Baileys WhatsApp Web library whose installed code silently brands and fabricates forwarding metadata on the messages its users send. In lib/Socket/luxu.js — instantiated on every call to sendMessage in lib/Socket/messages-send.js — event, poll-result and album messages are stamped with hardcoded third-party channel identifiers: 120363421563597486@newsletter (newsletterName \"D | 7eppeli-Exloration\") and 120363399602691477@newsletter. The same messages receive forged delivery metadata: forwardingScore 99999, isForwarded: true, remoteJid \"status@broadcast\", a businessOwnerJid, and a synthetic disappearingMode with every initiatedBy flag (system, server, admin, bot, app, user) set true. Album messages additionally carry newsletterJid \"0@newsletter\" with newsletterName \"WhatsApp\". Recipients therefore see the caller's bot traffic as channel-forwarded content attributed to those channels instead of to the operator; the poll example in the package documentation passes only a placeholder channel JID (\"1@newsletter\"). Separately, package.json declares a dependency on cache-manager ^7.2.8, a version range that permits installation of the malicious cache-manager 7.2.10 release. The preinstall hook target engine-requirements.js only checks the Node.js major version. No credential, token or wallet access, no hidden command-and-control endpoint and no remote code execution were found in the package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zeppeliorg/wbails",
+        "purl": "pkg:npm/%40zeppeliorg/wbails"
+      },
+      "versions": [
+        "1.1.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zeppeliorg/wbails/v/1.1.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14180"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-15T09:38:43Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "0@newsletter",
+          "120363399602691477@newsletter",
+          "120363421563597486@newsletter"
+        ],
+        "sha256": [
+          "ce5bce90055d4a8253387ee5c80c9c3842ac2a7335052b490c50d4ff7927ac42"
+        ]
+      }
+    }
+  }
+}
