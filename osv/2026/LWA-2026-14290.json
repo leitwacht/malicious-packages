@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14290",
+  "aliases": [
+    "MAL-2026-20107"
+  ],
+  "modified": "2026-11-18T03:44:47Z",
+  "published": "2026-11-18T03:37:58Z",
+  "summary": "Potentially-unwanted package (riskware): vant (npm)",
+  "details": "This package is a trojanized clone of the Vant Vue mobile UI library: the tarball ships the genuine component bundle plus an injected 609KB obfuscated payload at lib/utils/support.js, wired to the package's postinstall hook via \"node lib/utils/support.js\" and run on every install. At install time the payload silences its own output (process.stdout.write, process.stderr.write, console.log and console.error are replaced with no-ops) and queries hxxp://ipinfo[.]io/json to geolocate the host. If the returned country is CN, RU, HK, BY, IR or unknown it proceeds; for any other country it calls process.exit(0) to stay dormant. When it proceeds it downloads the XMRig Monero miner from hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz, extracts it, renames the binary to /tmp/vant_helper, marks it executable and spawns it with: -u 475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j -o pool[.]supportxmr[.]com:443 --tls -k --cpu-max-threads-hint=75\ni.e. mining Monero over TLS to pool[.]supportxmr[.]com on 443 using the bundled wallet address, with CPU usage capped at 75%, and with TLS certificate verification disabled. Immediately before mining it reads cloud-CLI credential files from the installer's home directory — ~/.aliyun/config.json, ~/.hcloud/config.json and one further cloud CLI config path — concatenates their contents and, if any exist, POSTs them to hxxp://80[.]78[.]28[.]72/tokens. It then runs the miner. On non-Linux platforms it exits after the credential upload step. Indicators: 80[.]78[.]28[.]72 (HTTP exfiltration endpoint, path /tokens), ipinfo[.]io (geofence lookup), pool[.]supportxmr[.]com:443 (mining pool), the renamed miner at /tmp/vant_helper, and the bundled Monero wallet address used as the mining login. Multiple publishes of the `vant` Vue UI library (2.13.3, 2.13.5, 3.6.13, 3.6.15) are trojanized clones: each adds a lifecycle hook `\"postinstall\": \"node lib/utils/support.js\"` that upstream vant does not ship. The hook target is a 609 KB obfuscated script (javascript-obfuscator-style encoded string array and hex-offset dispatcher). It silences `process.stdout.write`, `process.stderr.write`, `console.log` and `console.error`, and only continues on linux, darwin or win32. When the hook runs it: 1. Issues `GET hxxp://ipinfo[.]io/json` (axios 1.7.9 user agent) and reads `country`, continuing only when the reported country is CN, RU, HK, BY, IR or unresolvable — a geo-fence that skips most other networks. 2. Reads cloud CLI credential files — `~/.hcloud/config.json` (Hetzner), `~/.aliyun/config.json` (Alibaba Cloud) and a further file under the user's home directory — concatenates them, base64-encodes the result and POSTs it to `hxxps://80[.]78[.]28[.]72/tokens`. 3. Downloads `hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3` (Accept: application/vnd.github.raw+json) into `/tmp`, extracts it with tar, `chmod 0755`s the result and launches it with `-u \u003cMonero address\u003e -o pool[.]supportxmr[.]com:443 --tls`, i.e. XMRig pointed at a SupportXMR pool. The miner tarball is also referenced as `hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz`. 4. Falls back, if the GitHub fetch fails, to downloading a tarball from `hxxp://80[.]78[.]28[.]72/`, extracting it with an `xmrig` name filter, and executing the resulting helper from `/tmp` (referenced as `/tmp/vant_helper`; the miner binary path `/tmp/xmrig` also appears in the string table). The script then calls `process.exit(0)` so the install appears to succeed. IOCs: `80[.]78[.]28[.]72` (HTTP download host and `/tokens` credential upload), `pool[.]supportxmr[.]com:443`, `ipinfo[.]io/json`, the GitHub blob URL above, dropped paths under `/tmp`.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vant",
+        "purl": "pkg:npm/vant"
+      },
+      "versions": [
+        "3.6.15"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vant/v/3.6.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14290"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-18T03:37:58Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipinfo[.]io",
+          "pool[.]supportxmr[.]com",
+          "pool[.]supportxmr[.]com:443"
+        ],
+        "ip_observed": [
+          "80[.]78[.]28[.]72"
+        ],
+        "sha256": [
+          "8039ed4dbf58bec7d0c0c29a79131c775fd877b6c5147866e048009167c00a8c"
+        ],
+        "url_observed": [
+          "hxxp://80[.]78[.]28[.]72/",
+          "hxxp://80[.]78[.]28[.]72/tokens",
+          "hxxp://ipinfo[.]io/json",
+          "hxxps://80[.]78[.]28[.]72/tokens",
+          "hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3",
+          "hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz",
+          "pool[.]supportxmr[.]com:443"
+        ],
+        "wallet_observed": [
+          "475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j"
+        ]
+      }
+    }
+  }
+}

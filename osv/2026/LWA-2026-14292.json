@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14292",
+  "aliases": [
+    "MAL-2026-20107"
+  ],
+  "modified": "2026-11-18T03:46:07Z",
+  "published": "2026-11-18T03:38:30Z",
+  "summary": "Potentially-unwanted package (riskware): vant (npm)",
+  "details": "Vant@4.9.12 carries a malicious postinstall hook: package.json runs `node lib/utils/support.js`, a 609 KB heavily obfuscated bundle (javascript-obfuscator string-array, ~22k _0x identifiers) that is a credential stealer plus Monero miner dropper. On execution it: (1) silently disables process warnings and console output; (2) exits on any platform other than linux; (3) queries hxxp://ipinfo[.]io/json for the host's country and only continues on CN/RU/HK/BY/IR (or unknown) — a geofenced target selection; (4) reads the user's cloud CLI credential files ~/.aliyun/config.json and ~/.hcloud/config.json plus one additional config path, joins them, base64-encodes the result and POSTs it to hxxp://80[.]78[.]28[.]72/tokens; (5) downloads and extracts the XMRig miner from hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz (with a second downloader path using archive noderig.tar.gz and an Accept: application/vnd.github.raw+json header), renames the binary to /tmp/vant_helper, chmods it 0755, deletes the downloaded archive, and spawns it with `-u 475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j -o pool[.]supportxmr[.]com:443 --tls -k --cpu-max-threads-hint=75`, i.e. CPU cryptomining against a public Monero pool. The package otherwise ships the ordinary Vant Vue component tree, so the install-time hook is non-obvious to an installer. Indicators: C2/exfil endpoint 80[.]78[.]28[.]72 (/tokens), geo-lookup ipinfo[.]io, mining pool pool[.]supportxmr[.]com:443, dropped binary /tmp/vant_helper, and the XMR wallet above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vant",
+        "purl": "pkg:npm/vant"
+      },
+      "versions": [
+        "4.9.12"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vant/v/4.9.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14292"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-18T03:38:30Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipinfo[.]io",
+          "pool[.]supportxmr[.]com",
+          "pool[.]supportxmr[.]com:443"
+        ],
+        "ip_observed": [
+          "80[.]78[.]28[.]72"
+        ],
+        "sha256": [
+          "35e142ca15a40fb2c538d2a80e123d50d79963c96c6d06ee6020fd67250f65ec"
+        ],
+        "url_observed": [
+          "hxxp://80[.]78[.]28[.]72/tokens",
+          "hxxp://ipinfo[.]io/json",
+          "hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz"
+        ],
+        "wallet_observed": [
+          "475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j"
+        ]
+      }
+    }
+  }
+}

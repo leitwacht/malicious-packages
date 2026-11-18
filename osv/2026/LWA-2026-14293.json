@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14293",
+  "aliases": [
+    "MAL-2026-20107"
+  ],
+  "modified": "2026-11-18T03:42:54Z",
+  "published": "2026-11-18T03:38:42Z",
+  "summary": "Potentially-unwanted package (riskware): vant (npm)",
+  "details": "Trojanized clone of the Vue mobile UI library \"vant\": version 4.9.13 ships a \"postinstall\" hook running lib/utils/support.js, a 609KB single-line bundle obfuscated with javascript-obfuscator (rotating _0x string dictionary, ~22k hex identifiers). At install it: (1) reads local credential/config files from the user's home directory, including ~/.hcloud/config.json and other home-relative config paths, hex-encodes the concatenated contents and POSTs them to hxxp://80[.]78[.]28[.]72/tokens; (2) queries hxxp://ipinfo[.]io/json and only continues if the country code is CN, RU, HK, BY, IR or UNK; (3) downloads hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz, extracts it, renames the binary to /tmp/vant_helper, chmods it 0755 and spawns it with mining flags (-u/-o/--tls/-k/--cpu-max-threads-hint=75) pointed at pool[.]supportxmr[.]com:443; (4) suppresses stdout/stderr and console output, and exits immediately on non-Linux platforms. Endpoints: 80[.]78[.]28[.]72:80 (/tokens), pool[.]supportxmr[.]com:443, ipinfo[.]io, and a GitHub releases download of xmrig 6.22.2. Dropped artifact: /tmp/vant_helper (xmrig miner); staging path /tmp/xmrig.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vant",
+        "purl": "pkg:npm/vant"
+      },
+      "versions": [
+        "4.9.13"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vant/v/4.9.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14293"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-18T03:38:42Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipinfo[.]io",
+          "pool[.]supportxmr[.]com",
+          "pool[.]supportxmr[.]com:443"
+        ],
+        "ip_observed": [
+          "80[.]78[.]28[.]72",
+          "80[.]78[.]28[.]72:80"
+        ],
+        "path_observed": [
+          "/tmp/vant_helper",
+          "/tmp/xmrig",
+          "~/.hcloud/config.json"
+        ],
+        "sha256": [
+          "99878b029de5fe916674554c7c97ce7246df5789e0f94aeaac37b53f477fc8a7"
+        ],
+        "url_observed": [
+          "hxxp://80[.]78[.]28[.]72/tokens",
+          "hxxp://ipinfo[.]io/json",
+          "hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz"
+        ]
+      }
+    }
+  }
+}

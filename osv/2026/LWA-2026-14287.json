@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14287",
+  "aliases": [
+    "MAL-2026-20107"
+  ],
+  "modified": "2026-11-18T03:44:47Z",
+  "published": "2026-11-18T03:37:19Z",
+  "summary": "Potentially-unwanted package (riskware): vant (npm)",
+  "details": "Multiple publishes of the `vant` Vue UI library (2.13.3, 2.13.5, 3.6.13, 3.6.15) are trojanized clones: each adds a lifecycle hook `\"postinstall\": \"node lib/utils/support.js\"` that upstream vant does not ship. The hook target is a 609 KB obfuscated script (javascript-obfuscator-style encoded string array and hex-offset dispatcher). It silences `process.stdout.write`, `process.stderr.write`, `console.log` and `console.error`, and only continues on linux, darwin or win32. When the hook runs it: 1. Issues `GET hxxp://ipinfo[.]io/json` (axios 1.7.9 user agent) and reads `country`, continuing only when the reported country is CN, RU, HK, BY, IR or unresolvable — a geo-fence that skips most other networks. 2. Reads cloud CLI credential files — `~/.hcloud/config.json` (Hetzner), `~/.aliyun/config.json` (Alibaba Cloud) and a further file under the user's home directory — concatenates them, base64-encodes the result and POSTs it to `hxxps://80[.]78[.]28[.]72/tokens`. 3. Downloads `hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3` (Accept: application/vnd.github.raw+json) into `/tmp`, extracts it with tar, `chmod 0755`s the result and launches it with `-u \u003cMonero address\u003e -o pool[.]supportxmr[.]com:443 --tls`, i.e. XMRig pointed at a SupportXMR pool. The miner tarball is also referenced as `hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz`. 4. Falls back, if the GitHub fetch fails, to downloading a tarball from `hxxp://80[.]78[.]28[.]72/`, extracting it with an `xmrig` name filter, and executing the resulting helper from `/tmp` (referenced as `/tmp/vant_helper`; the miner binary path `/tmp/xmrig` also appears in the string table). The script then calls `process.exit(0)` so the install appears to succeed. IOCs: `80[.]78[.]28[.]72` (HTTP download host and `/tokens` credential upload), `pool[.]supportxmr[.]com:443`, `ipinfo[.]io/json`, the GitHub blob URL above, dropped paths under `/tmp`. vant@2.13.5 ships the Vue component library's normal files (repository github[.]com/vant-ui/vant, web-types.json, lib/vant[.]es.js, lib/index.css) plus an added npm postinstall hook, \"node lib/utils/support.js\", that runs on install. lib/utils/support.js is a 609 KB single-line javascript-obfuscator bundle: a rotated string array decoded by a0_0x4e61, hex-encoded property keys (e.g. process[_0x..(0x163)] for process.env), and packed modules loaded through 14 dynamic require() calls. The bundle's string table is mostly repackaged third-party code (axios 1.7.x, tar, form-data, http-proxy-agent, debug), which is what conceals the install-time behaviour added on top of it: it bundles an axios HTTP client and contacts two non-library endpoints — hxxp://ipinfo[.]io/json, a public-IP geolocation service used to fingerprint the host running the install, and hxxp://80[.]78[.]28[.]72/tokens, a hardcoded raw-IP, plaintext-HTTP endpoint named /tokens that sits next to the string 'authorization' in the same decoded table. The library itself needs no network access at install time; the hook's only purpose is to locate a token-collection endpoint and identify the machine it runs on. IOC: hxxp://ipinfo[.]io/json, hxxp://80[.]78[.]28[.]72/tokens (GET, User-Agent axios/1.7.9). Analysis of the exfiltration sink for hxxp://80[.]78[.]28[.]72/tokens is based on the endpoint and the surrounding decoded strings; no plaintext credential file path appeared in the bundle.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vant",
+        "purl": "pkg:npm/vant"
+      },
+      "versions": [
+        "2.13.5"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vant/v/2.13.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14287"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-18T03:37:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipinfo[.]io",
+          "pool[.]supportxmr[.]com",
+          "pool[.]supportxmr[.]com:443"
+        ],
+        "ip_observed": [
+          "80[.]78[.]28[.]72"
+        ],
+        "sha256": [
+          "fb8916fa8cd66d2a3b65cf65c6fb37faf45c4fd0cc5deed59976a2ced23c9a40"
+        ],
+        "url_observed": [
+          "hxxp://80[.]78[.]28[.]72/",
+          "hxxp://80[.]78[.]28[.]72/tokens",
+          "hxxp://ipinfo[.]io/json",
+          "hxxps://80[.]78[.]28[.]72/tokens",
+          "hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3",
+          "hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz"
+        ],
+        "wallet_observed": [
+          "475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j"
+        ]
+      }
+    }
+  }
+}

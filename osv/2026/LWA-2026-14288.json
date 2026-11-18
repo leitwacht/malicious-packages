@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14288",
+  "aliases": [
+    "MAL-2026-20107"
+  ],
+  "modified": "2026-11-18T03:44:31Z",
+  "published": "2026-11-18T03:37:47Z",
+  "summary": "Potentially-unwanted package (riskware): vant (npm)",
+  "details": "This publish of the `vant` Vue UI library is a trojanized clone: it adds a lifecycle hook `\"postinstall\": \"node lib/utils/support.js\"` that upstream vant does not ship. The hook target, `lib/utils/support.js` (609 KB of obfuscated, javascript-obfuscator-style code with a large encoded string array), silences `process.stdout.write`, `process.stderr.write`, `console.log` and `console.error`, and only runs on linux, darwin or win32. When it runs it performs two things: 1. Cloud credential theft. It reads `~/.hcloud/config.json` (Hetzner), `~/.aliyun/config.json` (Alibaba Cloud) and a further file under the user's home directory, concatenates their contents, base64-encodes them and POSTs the result to `hxxps://80[.]78[.]28[.]72/tokens`. 2. Cryptominer deployment. It geo-fences via `hxxp://ipinfo[.]io/json`, continuing only when the reported country is CN, RU, HK, BY, IR or unresolvable, and then downloads `hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3` (Accept: application/vnd.github.raw+json) into `/tmp`, extracts it with tar, `chmod 0755`s the result and launches it with `-u \u003cMonero address\u003e -o pool[.]supportxmr[.]com:443 --tls` — XMRig pointed at a SupportXMR mining pool. The miner tarball is also referenced as `hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz`. If the GitHub fetch fails, it falls back to downloading a tarball from `hxxp://80[.]78[.]28[.]72/`, extracting it with an `xmrig` name filter and running the helper from `/tmp`. It then calls `process.exit(0)` to hide the activity behind a successful install. IOCs: `80[.]78[.]28[.]72` (HTTP download + `/tokens` credential upload), `pool[.]supportxmr[.]com:443`, `ipinfo[.]io/json`, `api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3`, files dropped under `/tmp` (`/tmp/xmrig`, `/tmp/vant_helper`).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vant",
+        "purl": "pkg:npm/vant"
+      },
+      "versions": [
+        "3.6.13"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vant/v/3.6.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14288"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-18T03:37:47Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipinfo[.]io",
+          "pool[.]supportxmr[.]com",
+          "pool[.]supportxmr[.]com:443"
+        ],
+        "ip_observed": [
+          "80[.]78[.]28[.]72"
+        ],
+        "sha256": [
+          "a763b66b6231d8b7aaf025cc2d6121fbf46f699a9bc6b471dea7f6298e9201b5"
+        ],
+        "url_observed": [
+          "hxxp://80[.]78[.]28[.]72/",
+          "hxxp://ipinfo[.]io/json",
+          "hxxps://80[.]78[.]28[.]72/tokens",
+          "hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3",
+          "hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz"
+        ],
+        "wallet_observed": [
+          "475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j"
+        ]
+      }
+    }
+  }
+}

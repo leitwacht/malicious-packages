@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14285",
+  "aliases": [
+    "MAL-2026-20107"
+  ],
+  "modified": "2026-11-18T03:44:46Z",
+  "published": "2026-11-18T03:36:50Z",
+  "summary": "Potentially-unwanted package (riskware): vant (npm)",
+  "details": "Multiple publishes of the `vant` Vue UI library (2.13.3, 2.13.5, 3.6.13, 3.6.15) are trojanized clones: each adds a lifecycle hook `\"postinstall\": \"node lib/utils/support.js\"` that upstream vant does not ship. The hook target is a 609 KB obfuscated script (javascript-obfuscator-style encoded string array and hex-offset dispatcher). It silences `process.stdout.write`, `process.stderr.write`, `console.log` and `console.error`, and only continues on linux, darwin or win32. When the hook runs it: 1. Issues `GET hxxp://ipinfo[.]io/json` (axios 1.7.9 user agent) and reads `country`, continuing only when the reported country is CN, RU, HK, BY, IR or unresolvable — a geo-fence that skips most other networks. 2. Reads cloud CLI credential files — `~/.hcloud/config.json` (Hetzner), `~/.aliyun/config.json` (Alibaba Cloud) and a further file under the user's home directory — concatenates them, base64-encodes the result and POSTs it to `hxxps://80[.]78[.]28[.]72/tokens`. 3. Downloads `hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3` (Accept: application/vnd.github.raw+json) into `/tmp`, extracts it with tar, `chmod 0755`s the result and launches it with `-u \u003cMonero address\u003e -o pool[.]supportxmr[.]com:443 --tls`, i.e. XMRig pointed at a SupportXMR pool. The miner tarball is also referenced as `hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz`. 4. Falls back, if the GitHub fetch fails, to downloading a tarball from `hxxp://80[.]78[.]28[.]72/`, extracting it with an `xmrig` name filter, and executing the resulting helper from `/tmp` (referenced as `/tmp/vant_helper`; the miner binary path `/tmp/xmrig` also appears in the string table). The script then calls `process.exit(0)` so the install appears to succeed. IOCs: `80[.]78[.]28[.]72` (HTTP download host and `/tokens` credential upload), `pool[.]supportxmr[.]com:443`, `ipinfo[.]io/json`, the GitHub blob URL above, dropped paths under `/tmp`. vant@2.13.3 ships an injected postinstall hook (\"node lib/utils/support.js\") that runs on every install. The file is a 609KB obfuscated bundle that first disables stdout/stderr and console output to conceal itself, then on Linux: queries hxxp://ipinfo[.]io/json and only proceeds for specific country values; downloads a hardcoded blob (8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3) from hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs into /tmp, untars it, chmods it 0755 and executes it as a second stage; collects configuration and credential files from the user's home directory (including ~/.hcloud/config.json) and POSTs them base64-encoded to the hardcoded plain-HTTP endpoint hxxps://80[.]78[.]28[.]72/tokens; and as a fallback downloads hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz into /tmp, extracts the xmrig binary, chmods it and launches it against the mining pool pool[.]supportxmr[.]com:443. Staging strings include /tmp/xmrig, /tmp/vant_helper and vant.tar.gz. The legitimate component library code in lib/ is unmodified; the malicious logic exists only in lib/utils/support.js referenced by the postinstall script. vant@2.13.3 ships a postinstall hook, `node lib/utils/support.js`, which executes a 609 KB javascript-obfuscator bundle (string-array + _0x dispatcher, ~22k obfuscated identifiers) at install time. The bundle silently replaces process.stdout.write, process.stderr.write, console.log and console.error with no-ops, then geo-filters the host: it GETs hxxp://ipinfo[.]io/json and continues only when the returned country is CN, RU, HK, BY, IR or unknown; on any other host it calls process.exit(0) so the install looks normal. On selected hosts it: (1) GETs cloud metadata from hxxps://80[.]78[.]28[.]72/[.][.]. style paths; (2) downloads the XMRig 6.22.2 static Linux miner from hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz, extracts it to /tmp filtering for the `xmrig` entry and chmods it 0755, then spawns it with the arguments `-u \u003cwallet\u003e -o pool[.]supportxmr[.]com:443` using Monero wallet 475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j; (3) if that download fails, it instead fetches a staged tarball to /tmp/vant.tar.gz from the GitHub blob API (api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3), unpacks /tmp/vant_helper and executes that; (4) reads cloud-CLI credential files under the user's home directory, including.aliyun/config.json and.hcloud/config.json, joins their contents, base64-encodes the result and POSTs it to hxxps://80[.]78[.]28[.]72/tokens (axios POST, base64 body) — this is the exfiltration endpoint. Note the manifest also declares workspace:^ dependencies and carries a \"Contains security vulnerabilities, do not use\" deprecation notice, consistent with a tampered publish.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vant",
+        "purl": "pkg:npm/vant"
+      },
+      "versions": [
+        "2.13.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vant/v/2.13.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14285"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-18T03:36:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "ipinfo[.]io",
+          "pool[.]supportxmr[.]com",
+          "pool[.]supportxmr[.]com:443"
+        ],
+        "ip_observed": [
+          "80[.]78[.]28[.]72"
+        ],
+        "sha256": [
+          "05f5be5e008d2728a4cc8dc5d6d58e5d6517fe30ec61dfa46916ccd56cc69333"
+        ],
+        "url_observed": [
+          "hxxp://80[.]78[.]28[.]72/",
+          "hxxp://ipinfo[.]io/json",
+          "hxxps://80[.]78[.]28[.]72/",
+          "hxxps://80[.]78[.]28[.]72/tokens",
+          "hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/",
+          "hxxps://api[.]github[.]com/repos/youzan/vant/git/blobs/8ed1c9256b4bfeb3e4f5aaff48bf140398361ae3",
+          "hxxps://github[.]com/xmrig/xmrig/releases/download/v6[.]22[.]2/xmrig-6[.]22[.]2-linux-static-x64[.]tar[.]gz"
+        ],
+        "wallet_observed": [
+          "475NBZygwEajj4YP2Bdu7yg6XnaphiFjxTFPkvzg5xAjLGPSakE68nyGavn8r1BYqB44xTEyKQhueeqAyGy8RaYc73URL1j"
+        ]
+      }
+    }
+  }
+}

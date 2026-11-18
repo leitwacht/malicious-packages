@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14294",
+  "aliases": [
+    "MAL-2026-20107"
+  ],
+  "modified": "2026-11-18T03:41:31Z",
+  "published": "2026-11-18T03:38:55Z",
+  "summary": "Malicious code in vant (npm)",
+  "details": "This publish of vant@4.9.14 ships the genuine Vant Vue UI library plus an injected install hook. package.json runs \"node lib/utils/support.js\" as a postinstall script; that file is a 609 KB javascript-obfuscator bundle (dictionary string array, _0x hex identifiers, index-shift decoder) whose payload is hidden among vendored tar/http helpers. At install time it performs an external IP/geo lookup: a GET request to hxxp://ipinfo[.]io/json (axios 1.7.9 user agent) is issued from the npm install process. The same obfuscated string table contains a second hardcoded endpoint on an IP-literal host, hxxp://80[.]78[.]28[.]72/tokens, together with cloud-CI environment identifiers (GITHUB_ACTIONS, CIRCLECI, GITLAB_CI, BUILDKITE, CI_NAME), the Alibaba Cloud credential file path /.aliyun/config.json, an authorization header name and an archive staging name \"noderig.tar.gz\" — the shape of a CI/cloud-token collection and upload routine executed on every `npm install`. No network request to a package function ever needs ipinfo[.]io or an IP-literal /tokens endpoint, and the upstream library has no postinstall hook at all. IOCs: hxxp://ipinfo[.]io/json, hxxp://80[.]78[.]28[.]72/tokens, /.aliyun/config.json, noderig.tar.gz.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "vant",
+        "purl": "pkg:npm/vant"
+      },
+      "versions": [
+        "4.9.14"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/vant/v/4.9.14"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14294"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T03:38:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ipinfo[.]io"
+        ],
+        "ip_observed": [
+          "80[.]78[.]28[.]72"
+        ],
+        "sha256": [
+          "397f5386451d90e882d15cdfa382942790a25fb232af782955f158cd719e32c4"
+        ],
+        "url_observed": [
+          "hxxp://80[.]78[.]28[.]72/tokens",
+          "hxxp://ipinfo[.]io/json"
+        ]
+      }
+    }
+  }
+}
