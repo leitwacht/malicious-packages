@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14299",
+  "modified": "2026-11-18T05:53:42Z",
+  "published": "2026-11-18T05:51:51Z",
+  "summary": "Malicious code in react-native-datepickerror (npm)",
+  "details": "This package is a dependency-confusion payload carrier published under the name `react-native-datepickerror` (a combosquat of the real `react-native-datepicker`) at version 99.9.1. The tarball contains only an `index.js` that exports an empty object and a `package.json` whose single dependency, `ltidisafe`, is resolved from a raw off-registry tarball URL: hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]6[.]tgz. Installing this package makes npm download and unpack that remote tarball from Google Cloud Storage (path segment \"depenconf\"), outside the npm registry's audit trail and outside the signed registry artifact, so arbitrary code in `ltidisafe-4.0.6.tgz` is executed in the installer's environment. The declared high version 99.9.1 is used to win semver range resolution against the genuine date-picker package. The payload body itself is not shipped in this tarball; this publish's role is the delivery vector. Confirmed by direct inspection: react-native-datepickerror@99.9.1 is a 359-byte typosquat shell whose sole functional content is a manifest dependency \"ltidisafe\": \"hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]6[.]tgz\". npm installs URL dependencies at consumer install time including any lifecycle scripts inside the remote tarball — unaudited, unversioned, attacker-mutable code execution at install, i.e. a dropper; the \"depenconf\" path is the attacker's own dependency-confusion labeling. The first agent's \"benign\" call only argued finding-duplication and never validated the off-registry payload; an empty JS file is the intended design, not evidence of safety. No credible benign packaging pattern involves a typosquat of react-native-datepicker whose only behavior is forcing a foreign GCS tarball install; registry signatures are irrelevant because the payload lives off-registry. Upholding as malicious.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "react-native-datepickerror",
+        "purl": "pkg:npm/react-native-datepickerror"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/react-native-datepickerror/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14299"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-18T05:51:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "54fc4ed9636b08813f48a059588f7c98e8fe41e2f9e3c07c2f8c86b1a8587ced"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]6[.]tgz"
+        ]
+      }
+    }
+  }
+}

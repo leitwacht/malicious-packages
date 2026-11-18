@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14298",
+  "modified": "2026-11-18T05:39:02Z",
+  "published": "2026-11-18T05:36:51Z",
+  "summary": "Malicious code in @silent404/baileys (npm)",
+  "details": "@silent404/baileys is an unofficial re-implementation of the WhatsApp Web library @whiskeysockets/baileys published under the @silent404 scope, presenting itself as a lightweight fork that adds interactive-message, group-status and album support. The shipped library code contains a hidden, non-optional auto-enrolment of the user's WhatsApp account. In lib/Socket/newsletter.js, makeNewsletterSocket() hardcodes a group invite code (DX3If8rgUQFLnkbquI6SkB) and a newsletter channel JID (120363412548428603@newsletter) and registers a socket 'connection.update' listener that runs once, the first time a session reports connection === 'open'. It then calls sock.groupAcceptInvite(\u003chardcoded code\u003e) to join the user into that group and issues the newsletter FOLLOW WMex query (XWAPaths.xwa2_newsletter_follow) for the hardcoded channel, joining the account to that channel as a follower. Both calls are wrapped in empty catch blocks, so the actions are silent and unreported. The behaviour is not documented in the README, is not exposed as configuration, and cannot be disabled by the installer; it fires whenever any application built on this library connects to WhatsApp. The net effect is that each victim account is silently added to, and subscribes to, operator-controlled WhatsApp destinations. The package also declares its \"libsignal\" dependency as an unpinned git+hxxps://github[.]com/whiskeysockets/libsignal-node[.]git URL rather than a registry version. No other network destinations, droppers or obfuscated payloads were found in the package source. This WhatsApp Web library fork, published as @silent404/baileys (imitating the canonical @whiskeysockets/baileys under a different scope), injects unauthorized account actions when a client connects. In lib/Socket/newsletter.js the socket factory embeds hardcoded constants AUTO_JOIN_GROUP_INVITE_CODE = \"DX3If8rgUQFLnkbquI6SkB\" and AUTO_FOLLOW_CHANNEL_JID = \"120363412548428603@newsletter\". A `connection.update` listener registered on socket creation fires as soon as the connection state becomes \"open\"; it calls sock.groupAcceptInvite(\"DX3If8rgUQFLnkbquI6SkB\") to join that group, then issues a FOLLOW query (XWAPaths.xwa2_newsletter_follow) for newsletter_id \"120363412548428603@newsletter\". Both calls are wrapped in empty `catch {}` blocks: nothing is logged, nothing is returned, and there is no option, environment variable or configuration flag to disable it. Any application embedding this library therefore silently adds the end user's WhatsApp account to an operator-chosen group and subscribes it to an operator-chosen channel on the next connect, without the account owner's knowledge. The package declares a non-registry dependency, `libsignal: git+hxxps://github[.]com/whiskeysockets/libsignal-node[.]git`, and its preinstall hook runs `node./engine-requirements.js` (a Node version check). The remaining network endpoints in the shipped code are WhatsApp/meta and GitHub documentation URLs; no separate command-and-control host is used.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@silent404/baileys",
+        "purl": "pkg:npm/%40silent404/baileys"
+      },
+      "versions": [
+        "7.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@silent404/baileys/v/7.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14298"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T05:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363412548428603@newsletter"
+        ],
+        "sha256": [
+          "b0005a2e85f028e10e4af233887d39dd753ae089726c5aceeeac26dd18fa3f92"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/whiskeysockets/libsignal-node[.]git"
+        ]
+      }
+    }
+  }
+}
