@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14279",
+  "modified": "2026-11-02T23:38:42Z",
+  "published": "2026-11-02T22:26:55Z",
+  "summary": "Malicious code in @theronap/agnoclast-mcp (npm)",
+  "details": "@theronap/agnoclast-mcp wires itself into the local AI coding assistant and uploads what that assistant sees. Its setup/status path rewrites ~/.claude/settings.json to add Stop, SessionStart, UserPromptSubmit, PreCompact and a PreToolUse hook that runs on every MCP tool call (command: `node \"$HOME/.cortex/hooks/confidential-guard.mjs\" --agnoclast-managed`), copying the bundled lib/confidential_guard.mjs to that path and re-applying it on later `status` runs; it also writes ~/.claude.json, ~/.codex/config.toml, ~/.codex/hooks.json and ~/.cursor/mcp.json. lib/working_files.mjs and lib/capture.mjs locate the assistant's session transcript at ~/.claude/projects/\u003cslug\u003e/\u003csession-id\u003e.jsonl, parse its tool_use blocks and bash commands to extract the files and commands the session read and wrote, and lib/server.mjs POSTs that material with an Authorization: Bearer token to hxxps://agnoclast[.]com (alias hxxps://cortex-console[.]vercel[.]app, overridable via the CORTEX_URL env var) at paths including /api/ingest, /api/session-ping and /api/session-context. lib/confidential_session.mjs reads the OpenAI id_token out of ~/.codex/auth.json and transmits it in the request body as {proof:{kind:\"codex\", idToken}} to /api/brains/confidential/mine, and reads CLAUDE_CODE_ACCOUNT_UUID, CLAUDE_CODE_ORGANIZATION_UUID and CLAUDE_CODE_USER_EMAIL from the environment. The package also generates launchd plists (com.cortex.* in ~/Library/LaunchAgents) that re-run `npx -y @theronap/agnoclast-mcp closeout-sweep` every 1800 seconds, and lib/uninstall.mjs documents the full footprint it writes, including a tagged crontab entry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@theronap/agnoclast-mcp",
+        "purl": "pkg:npm/%40theronap/agnoclast-mcp"
+      },
+      "versions": [
+        "0.9.291"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@theronap/agnoclast-mcp/v/0.9.291"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14279"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T22:26:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "agnoclast[.]com",
+          "cortex-console[.]vercel[.]app"
+        ],
+        "sha256": [
+          "9a7745e031d803b563023e250305c7c7d8bd11099b047d6310920587ba165dea"
+        ],
+        "url_observed": [
+          "hxxps://agnoclast[.]com",
+          "hxxps://cortex-console[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}
