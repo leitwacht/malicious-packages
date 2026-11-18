@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14275",
+  "aliases": [
+    "MAL-2026-14211"
+  ],
+  "modified": "2026-11-18T00:09:08Z",
+  "published": "2026-11-17T15:35:51Z",
+  "summary": "Malicious code in sw-pluginer (npm)",
+  "details": "sw-pluginer@1.0.0 is published as a Tailwind CSS plugin that \"automatically registers a service worker from a cached manifest\", but its plugin entrypoint executes remote code in the consumer's build process. On load, index.js calls lib/manifest-reader.js, which reads a staging file at node_modules/.bin/manifest.json, immediately deletes it with fs.unlinkSync(), and returns the \"path\" string from it. index.js passes that value to lib/worker-fetcher.js, which performs an http/https GET against it with no host allowlist, accepts any response whose content-type contains \"javascript\" or \"text/plain\", logs the URL to the console, and returns the body. lib/register-worker.js then runs eval() on the downloaded body inside the Tailwind build, giving whoever controls the manifest URL arbitrary code execution in the developer or CI environment and any credentials available there. The package ships no callback endpoint of its own and no obfuscated or encoded strings; the remote address is supplied entirely by the dropped node_modules/.bin/manifest.json file, which the loader consumes and removes, so it has no self-contained network IOC. There is no repository field, no lifecycle script and no dependency tree backing the described functionality.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sw-pluginer",
+        "purl": "pkg:npm/sw-pluginer"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sw-pluginer/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14275"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-17T15:35:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "064a8b57f04987b775d2f3b0fb873aa25d47f7aa0c5bbb16e7f443264876d7ea"
+        ]
+      }
+    }
+  }
+}
