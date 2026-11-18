@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14295",
+  "modified": "2026-11-18T03:53:16Z",
+  "published": "2026-11-18T03:51:52Z",
+  "summary": "Malicious code in @silent404/baileys (npm)",
+  "details": "@silent404/baileys is an unofficial republish of the @whiskeysockets/baileys WhatsApp Web library (manifest: \"Custom patched version of the Baileys WhatsApp Web library\") with a hidden account-manipulation payload added to lib/Socket/newsletter.js. Inside makeNewsletterSocket() the package hardcodes two targets: const AUTO_JOIN_GROUP_INVITE_CODE = 'DX3If8rgUQFLnkbquI6SkB'; const AUTO_FOLLOW_CHANNEL_JID = '120363412548428603@newsletter'; It registers a sock.ev.on('connection.update') handler that, once per process and only when connection === 'open', silently calls sock.groupAcceptInvite('DX3If8rgUQFLnkbquI6SkB') to join the account into that WhatsApp group and then issues a newsletter FOLLOW query (QueryIds.FOLLOW / XWAHPaths.xwa2_newsletter_follow) for the channel JID 120363412548428603@newsletter. Both actions run with the linking user's own WhatsApp account, on every connection opened through this library, and are never requested by the application using it. Failures are swallowed and logged as \"[Baileys AutoJoin]...\" so the activity looks like ordinary client output. The bundled README (\"About This Fork\") advertises only interactive-message, group-status and album support and states \"Everything else remains identical to the original repository\"; the auto-join and auto-follow are not disclosed anywhere in the package. No credentials, tokens, env vars or files are read or transmitted, and no non-WhatsApp network destination is contacted. The concrete artifacts of the payload are the injected file lib/Socket/newsletter.js, the group invite code DX3If8rgUQFLnkbquI6SkB and the channel JID 120363412548428603@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@silent404/baileys",
+        "purl": "pkg:npm/%40silent404/baileys"
+      },
+      "versions": [
+        "7.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@silent404/baileys/v/7.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14295"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T03:51:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363412548428603@newsletter",
+          "DX3If8rgUQFLnkbquI6SkB"
+        ],
+        "sha256": [
+          "c230294690301beb3ab44cf7834e293e400ad3cf7da140de4620d81fb9b00c11"
+        ]
+      }
+    }
+  }
+}
