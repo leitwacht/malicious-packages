@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14304",
+  "modified": "2026-11-18T10:39:18Z",
+  "published": "2026-11-18T10:37:28Z",
+  "summary": "Malicious code in @rizzkezik/bailss (npm)",
+  "details": "This package is a republished fork of the Baileys WhatsApp Web library whose socket layer has been modified to silently force the connected WhatsApp account to follow two hardcoded channels. lib/Socket/newsletter.js declares newsletterIds = [\"120363427469009013@newsletter\",\"120363422660312465@newsletter\"] and, 150 seconds after the socket object is constructed, sends a w:mex FOLLOW query (query_id 7871414976211147) for each JID over the victim's authenticated WhatsApp connection. The timer is registered inside makeNewsletterSocket with no option to disable it, and that function is used by makeCommunitiesSocket (lib/Socket/communities.js) and makeUsernameSocket (lib/Socket/username.js), so any client built with this package — not only code that explicitly uses the newsletter API — enrols the account as a follower of the operator's channels. Nothing in the published API or README performs this automatically; the channel/subscribe API is documented, the automatic follow at construction time is not. The 150-second delay keeps the follow outside the window in which an install or first require would normally be inspected. The package also pulls dependencies from non-standard sources rather than the upstream set, including libsignal from a raw repository reference (github:tenka-san/libsignal-node) and whatsapp-rust-bridge@0.5.4; its preinstall hook only performs a Node.js version check. Indicators: the two followed channel JIDs 120363427469009013@newsletter and 120363422660312465@newsletter, w:mex query ids 7871414976211147 (FOLLOW) and 7238632346214362 (UNFOLLOW), and the 150000 ms constructor timer in lib/Socket/newsletter.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rizzkezik/bailss",
+        "purl": "pkg:npm/%40rizzkezik/bailss"
+      },
+      "versions": [
+        "1.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rizzkezik/bailss/v/1.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14304"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T10:37:28Z",
+      "indicators_observed": {
+        "sha256": [
+          "b436f92043e01e63f3fb510c756d722bd1c0c808e5aadc310e07a701e35a55ad"
+        ],
+        "url_observed": [
+          "120363422660312465@newsletter",
+          "120363427469009013@newsletter"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14302",
+  "modified": "2026-11-18T10:38:28Z",
+  "published": "2026-11-18T10:36:51Z",
+  "summary": "Malicious code in @rizzkezik/bailseys (npm)",
+  "details": "This package (@rizzkezik/bailseys, \"WhatsApp Baileys RansK2\") is a republished fork of the Baileys WhatsApp Web library with code added that acts on the user's WhatsApp account. lib/Socket/newsletter.js contains an injected block that is not part of the upstream library: it starts a 150-second timer when the module is imported, then iterates a hardcoded array of newsletter JIDs — 120363427469009013@newsletter, 120363422660312465@newsletter and 120363421367985094@newsletter — and sends a \"w:mex\" IQ query with query_id 7871414976211147 (QueryIds.FOLLOW) for each, five seconds apart. Every process that loads this library therefore makes the paired WhatsApp account silently follow those three channels. A second added file, lib/Socket/luxu.js (an exported \"imup\" class imported by lib/Socket/messages-send.js), forges forwarded-channel metadata onto outgoing album, event, status and label messages: forwardedNewsletterMessageInfo with newsletterName \"LiniusNv\" and newsletterJid 120363421563597486@newsletter, forwardingScore 99999, isForwarded/starred/isHighlighted flags, businessMessageForwardInfo with businessOwnerJid set to the target, and dataSharingContext — so a bot's ordinary messages are rendered as official WhatsApp update-card advertisements. The library's default logger class is \"LiniusNv\" (lib/Defaults/index.js) and the README templates brand content \"RansK2\"/\"#Ranstech\" with links to t[.]me/RansK2New. The package also declares runtime dependencies that resolve outside the npm registry or to a single pinned version: libsignal from the GitHub fork github:tenka-san/libsignal-node, whatsapp-rust-bridge at 0.5.4, and cache-manager ^7.2.8, which is declared but never imported by the package's own code. The preinstall hook (engine-requirements.js) only exits when the Node.js major version is below 20. No code in the package reads credentials, npm tokens,.npmrc, cloud keys or environment secrets, and the only destinations reached from its own code are wss://web[.]whatsapp[.]com/ws/chat, WhatsApp media endpoints, and raw[.]githubusercontent[.]com/WhiskeySockets/Baileys for the version check in lib/Utils/generics.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@rizzkezik/bailseys",
+        "purl": "pkg:npm/%40rizzkezik/bailseys"
+      },
+      "versions": [
+        "6.7.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@rizzkezik/bailseys/v/6.7.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14302"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T10:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363421367985094@newsletter",
+          "120363421563597486@newsletter",
+          "120363422660312465@newsletter",
+          "120363427469009013@newsletter",
+          "raw[.]githubusercontent[.]com",
+          "t[.]me",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "05225b8a438e721fdcdbc4421ed8af26dd8c8df9aad26f62961a7474e8235970"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/tenka-san/libsignal-node",
+          "hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts",
+          "hxxps://t[.]me/RansK2New",
+          "hxxps://t[.]me/Rizzisreal01",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
