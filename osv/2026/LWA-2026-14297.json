@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14297",
+  "modified": "2026-11-18T05:07:29Z",
+  "published": "2026-11-18T05:06:51Z",
+  "summary": "Malicious code in lianrouter (npm)",
+  "details": "This package is a launcher CLI for an LLM gateway that installs its real payload outside the npm tarball. The declared postinstall hook only prints a message; the actual work happens on first run, when dist/cli.js resolves a release candidate for the host platform/architecture through the GitHub API for the ReXooGen/Lian-Router repository, downloads the matching release archive, verifies a required sha256 checksum, lists and extracts it into a per-user install root (LIANROUTER_HOME), and starts the extracted native `lianrouter` (or `lianrouter.exe` on Windows) executable as a child process with the invoking user's full environment inherited plus PORT and LIANROUTER_HOME. Because the executable is fetched at run time it is never part of the published npm artifact, so the code executed on the machine is not the code the registry served. Both fetch destinations can be redirected by environment variable: LIANROUTER_UPDATE_BASE_URL replaces the GitHub releases base and LIANROUTER_NPM_REGISTRY replaces the npm update-check endpoint (hxxps://registry[.]npmjs[.]org/lianrouter/latest). dist/tray.js can additionally start, stop and restart the installed binary and launch a browser, and uses Windows user32 API calls. The packaged JavaScript also writes a starter.env into the install root holding a locally generated LIANROUTER_ENCRYPTION_KEY, DATABASE_URL and REDIS_URL. No token, SSH key, cloud credential or wallet data is read or transmitted by the packaged JavaScript itself; the remaining network traffic it issues goes to 127[.]0[.]0[.]1 loopback control and health endpoints, the GitHub releases API and the npm registry.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "lianrouter",
+        "purl": "pkg:npm/lianrouter"
+      },
+      "versions": [
+        "2.3.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/lianrouter/v/2.3.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14297"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T05:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]github[.]com",
+          "registry[.]npmjs[.]org"
+        ],
+        "sha256": [
+          "5253e9d05c0e5e108e7656d860f97684fa32998472e91bd4813827bf5b0f77a1"
+        ],
+        "url_observed": [
+          "hxxps://api[.]github[.]com/repos/ReXooGen/Lian-Router/releases",
+          "hxxps://github[.]com/ReXooGen/Lian-Router/releases",
+          "hxxps://registry[.]npmjs[.]org/lianrouter/latest"
+        ]
+      }
+    }
+  }
+}
