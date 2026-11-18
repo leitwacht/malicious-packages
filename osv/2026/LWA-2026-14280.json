@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14280",
+  "modified": "2026-11-02T16:56:15Z",
+  "published": "2026-11-02T16:54:55Z",
+  "summary": "Malicious code in agent-bypass (npm)",
+  "details": "agent-bypass ships an offensive-security toolkit plus an installer that rewrites the instruction files of AI coding agents, and bundles scripts that harvest credentials. bin/install.js copies a ~131 KB SKILL.md and generated AGENTS.md persona files into six harness skill directories (~/.pi/agent/skills/agent-bypass, ~/.config/opencode/skills/agent-bypass, the the model Harness agents directory, ~/.claude/skills/agent-bypass, ~/.grok/skills/agent-bypass and the OpenMinis skills directory); the injected text includes an \"Authorization Protocol\" telling the agent to execute operator goals without repeated questioning. scripts/keystrike.py probes 20 credential paths on operator-named hosts (/.env, /.env.local, /.env.production, /.hermes/.env, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json, /.ssh/id_rsa, /.ssh/id_ed25519, /.npmrc, /.mcp.json), regex-matches the model API keys and validates recovered keys against hxxps://api[.]the model scripts/webprobe.py and scripts/mutate.py disable TLS certificate validation (check_hostname = False, verify_mode = CERT_NONE) when AB_INSECURE=1. scripts/origin_trace.py and scripts/doh_resolve.sh resolve names over DNS-over-HTTPS via hxxps://1[.]1[.]1[.]1/dns-query, hxxps://dns[.]google/resolve and hxxps://223[.]5[.]5[.]5/resolve to bypass TUN/fake-IP interception, and enumerate subdomains from crt.sh, api[.]certspotter[.]com, otx[.]alienvault[.]com, api[.]hackertarget[.]com, jldc[.]me and rapiddns[.]io. bin/grok-memory.js shells out to \"security find-generic-password -s 'Grok Bot Safe Storage'\" on macOS or PowerShell DPAPI on Windows to decrypt the local Grok Bot credential store, then replays the recovered session token to hxxps://api2[.]cursor[.]sh. The toolkit contains no dedicated C2 endpoint of its own; its credential-access targets are the hosts the operator names.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "agent-bypass",
+        "purl": "pkg:npm/agent-bypass"
+      },
+      "versions": [
+        "2.30.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/agent-bypass/v/2.30.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14280"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-02T16:54:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]certspotter[.]com",
+          "api[.]hackertarget[.]com",
+          "api2[.]cursor[.]sh",
+          "jldc[.]me",
+          "otx[.]alienvault[.]com",
+          "rapiddns[.]io"
+        ],
+        "ip_observed": [
+          "1[.]1[.]1[.]1",
+          "223[.]5[.]5[.]5"
+        ],
+        "sha256": [
+          "af5cec47de186bad168d8004472f94e6fa26ac7eca6d2e7ce30d74c6352cf5fb"
+        ],
+        "url_observed": [
+          "hxxps://1[.]1[.]1[.]1/dns-query",
+          "hxxps://223[.]5[.]5[.]5/resolve",
+          "hxxps://api2[.]cursor[.]sh",
+          "hxxps://dns[.]google/resolve"
+        ]
+      }
+    }
+  }
+}
