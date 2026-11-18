@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-13555",
-  "modified": "2026-11-02T13:47:29Z",
-  "published": "2026-11-02T13:45:55Z",
+  "modified": "2026-11-02T16:38:06Z",
+  "published": "2026-11-02T13:45:53Z",
   "summary": "Malicious code in agent-bypass (npm)",
-  "details": "This package ships an installable offensive-security toolkit. Running its bin (bin/install.js) copies publisher-authored skill files (SKILL.md, ck-hunter.md, references/) into AI-assistant harness directories — ~/.pi/agent/skills, ~/.config/opencode/skills, ~/.claude/skills, ~/.grok/skills, ~/.agents/skills and /var/minis/skills — and injects a marked preset block into the the model Harness profile file ~/.dsh/profiles/\u003cprofile\u003e/cordis.patch.yml, so subsequent agent sessions run with an attacker-authored \"universal executor\" persona that accepts pentest/forgery/brute-force instructions. With --doctor it fingerprints the host: platform, architecture, node and npm versions, and a which() enumeration of python3, pip3, curl, git and rg plus installed package managers. The bundled playbooks and Python tools target credential material: scripts/keystrike.py probes for /.ssh/id_rsa, /.ssh/id_ed25519, /.npmrc, /.env, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json and /.hermes/auth.json; scripts/env_chain.py parses.env content and classifies AWS, database, secret and API-key entries; ck-hunter.md drives FOFA/Shodan keyword searches for internet-exposed \"Directory listing for /\" pages whose body contains.npmrc,.ssh,.env, wallet.json, private.key, mnemonic, binance.json or bybit.json, i.e. hunting credential and wallet stores on third-party hosts. scripts/payment_forge.py builds a signed payment-callback body (MD5 over the sorted query string) and POSTs it to \u003cbase\u003e/payment/notify/\u003cmethod\u003e/\u003cuuid\u003e to forge a successful payment notification. Other scripts perform directory brute forcing, CDN/WAF origin tracing with certificate verification deliberately disabled (ssl.CERT_NONE plus check_hostname=False in scripts/origin_trace.py, webprobe.py, mutate.py, keystrike.py) and key-hunting over JS bundles. The network code contacts only public lookup services — DoH at 1[.]1[.]1[.]1/dns.google/223[.]5[.]5[.]5, crt.sh, api[.]certspotter[.]com, otx[.]alienvault[.]com, api[.]hackertarget[.]com, jldc[.]me, rapiddns[.]io — and targets supplied on the command line; no hardcoded command-and-control or exfiltration endpoint was found.",
+  "details": "Agent-bypass ships a working credential-harvesting toolkit alongside its advertised \"agent skills\" pack. scripts/keystrike.py searches for victim hosts through the FOFA (hxxps://fofa[.]info/api/v1/search/all) and Shodan (hxxps://api[.]shodan[.]io) APIs, then requests a fixed list of credential paths from every hit: /.env, /.env.local, /.env.production, /.hermes/.env, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json, /.ssh/id_rsa, /.ssh/id_ed25519, /.npmrc, /.mcp.json and openclaw.json. TLS certificate verification is disabled for those fetches (check_hostname = False, verify_mode = CERT_NONE), responses are regex-scanned for the model keys (sk-, sk-proj-, sk-ant-), and the recovered the model keys are validated against the provider's balance endpoint and written to a local jsonl file. scripts/env_chain.py parses.env content into AWS access/secret key pairs, database URLs with passwords, and SMTP/SSH credentials, then builds verification commands such as \"aws sts get-caller-identity\". bin/install.js is the package binary; scripts/origin_trace.py resolves CDN-fronted hosts over DNS-over-HTTPS (hxxps://1[.]1[.]1[.]1/dns-query) and enumerates subdomains through crt.sh, certspotter, otx, hackertarget, anubis and rapiddns. The bundled documentation lists wallet.json, wallet.dat,.ethereum, private.key, mnemonic and api_keys.json as further harvesting targets. This package ships an installable offensive-security toolkit. Running its bin (bin/install.js) copies publisher-authored skill files (SKILL.md, ck-hunter.md, references/) into AI-assistant harness directories — ~/.pi/agent/skills, ~/.config/opencode/skills, ~/.claude/skills, ~/.grok/skills, ~/.agents/skills and /var/minis/skills — and injects a marked preset block into the the model Harness profile file ~/.dsh/profiles/\u003cprofile\u003e/cordis.patch.yml, so subsequent agent sessions run with an attacker-authored \"universal executor\" persona that accepts pentest/forgery/brute-force instructions. With --doctor it fingerprints the host: platform, architecture, node and npm versions, and a which() enumeration of python3, pip3, curl, git and rg plus installed package managers. The bundled playbooks and Python tools target credential material: scripts/keystrike.py probes for /.ssh/id_rsa, /.ssh/id_ed25519, /.npmrc, /.env, /.claude/.credentials.json, /.codex/auth.json, /.opencode/auth.json and /.hermes/auth.json; scripts/env_chain.py parses.env content and classifies AWS, database, secret and API-key entries; ck-hunter.md drives FOFA/Shodan keyword searches for internet-exposed \"Directory listing for /\" pages whose body contains.npmrc,.ssh,.env, wallet.json, private.key, mnemonic, binance.json or bybit.json, i.e. hunting credential and wallet stores on third-party hosts. scripts/payment_forge.py builds a signed payment-callback body (MD5 over the sorted query string) and POSTs it to \u003cbase\u003e/payment/notify/\u003cmethod\u003e/\u003cuuid\u003e to forge a successful payment notification. Other scripts perform directory brute forcing, CDN/WAF origin tracing with certificate verification deliberately disabled (ssl.CERT_NONE plus check_hostname=False in scripts/origin_trace.py, webprobe.py, mutate.py, keystrike.py) and key-hunting over JS bundles. The network code contacts only public lookup services — DoH at 1[.]1[.]1[.]1/dns.google/223[.]5[.]5[.]5, crt.sh, api[.]certspotter[.]com, otx[.]alienvault[.]com, api[.]hackertarget[.]com, jldc[.]me, rapiddns[.]io — and targets supplied on the command line; no hardcoded command-and-control or exfiltration endpoint was found.",
   "affected": [
     {
       "package": {
@@ -47,13 +47,17 @@
   "database_specific": {
     "leitwacht": {
       "category": "malware",
-      "first_seen_at": "2026-11-02T13:45:55Z",
+      "first_seen_at": "2026-11-02T13:45:53Z",
       "indicators_observed": {
         "domain_observed": [
           "api[.]certspotter[.]com",
           "api[.]hackertarget[.]com",
+          "api[.]shodan[.]io",
+          "crt[.]sh",
+          "fofa[.]info",
           "jldc[.]me",
           "otx[.]alienvault[.]com",
+          "rapiddns",
           "rapiddns[.]io"
         ],
         "ip_observed": [
@@ -62,6 +66,12 @@
         ],
         "sha256": [
           "486d1583657266e5fc121f8057b1a9f95b77198ae43bf076dd95d01be6abcf97"
+        ],
+        "url_observed": [
+          "hxxps://1[.]1[.]1[.]1/dns-query",
+          "hxxps://api[.]shodan[.]io",
+          "hxxps://api[.]shodan[.]io/shodan/host/search",
+          "hxxps://fofa[.]info/api/v1/search/all"
         ]
       }
     }
