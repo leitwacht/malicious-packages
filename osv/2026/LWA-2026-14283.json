@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14283",
+  "modified": "2026-11-18T02:37:50Z",
+  "published": "2026-11-18T02:36:51Z",
+  "summary": "Malicious code in @jexkcode/baileys (npm)",
+  "details": "This package is a redistributed copy of the Baileys WhatsApp Web library that silently subscribes every user account to a fixed WhatsApp channel. lib/Utils/auto-follow.js hardcodes the channel JID 120363405612723183@newsletter and exports setupAutoFollow(); lib/Socket/index.js imports it and calls it unconditionally inside makeWASocket(), so it runs for every application that uses the library. On each connection.update event with connection === 'open' it waits 3 seconds and calls sock.newsletterFollow('120363405612723183@newsletter'), with the failure path swallowed so the user never sees it. The channel is not configurable, not documented, and has no opt-out — the code comment invites the reader to replace the ID, but the hardcoded value ships as-is, meaning the host account is enrolled into that channel on every connect. The package also carries upstream Baileys identity markers it does not own (LIBRARY_NAME 'itsliaaa/baileys', a saweria[.]co/itsliaaa donation URL) and README examples that import 'jexkcode', consistent with a repackaged clone rather than an independent implementation. The preinstall hook (engine-requirements.js) only checks the Node.js version and exits if unsupported; no credential, environment or file exfiltration is present in the tree. IOCs: channel JID 120363405612723183@newsletter; repository github[.]com/jexkpinkman/JexkCode-baileys.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@jexkcode/baileys",
+        "purl": "pkg:npm/%40jexkcode/baileys"
+      },
+      "versions": [
+        "1.3.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@jexkcode/baileys/v/1.3.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14283"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T02:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363405612723183@newsletter",
+          "saweria[.]co"
+        ],
+        "sha256": [
+          "f71797cf54e8a42060bced817ce5c72d3290314d90a5b9ffccc0de64ca92ff6e"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/jexkpinkman/JexkCode-baileys"
+        ]
+      }
+    }
+  }
+}
