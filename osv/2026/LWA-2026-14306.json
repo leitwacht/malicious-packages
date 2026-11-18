@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14306",
+  "modified": "2026-11-18T17:23:42Z",
+  "published": "2026-11-18T17:21:51Z",
+  "summary": "Malicious code in @japofc/baileys (npm)",
+  "details": "@japofc/baileys@2.4.9 is a WhatsApp Web automation fork republished under the unofficial @japofc scope with the same package basename as @whiskeysockets/baileys. Its package.json declares a runtime dependency on \"@cacheable/node-cache\": \"^3.0.1\", a semver range that resolves to a known-malicious release of that package, so a fresh install of this package pulls the compromised version into the installer's dependency tree; the import is real (lib/Socket/messages-send.js, lib/Socket/messages-recv.js and lib/Socket/chats.js all import NodeCache from it). The package also exact-pins an optional native addon, \"whatsapp-rust-bridge\": \"0.5.5\", which is loaded via dynamic import in lib/Utils/lt-hash.js and lib/Utils/crypto.js and therefore executes native code in the host process when app-state/crypto helpers are used. Otherwise the tarball is a large, documented WhatsApp library (26MB, WAProto protobuf bundle, lib/assets/wasm/whatsapp.wasm); its own network calls target web[.]whatsapp[.]com and, for the opt-in voice-note transcription provider, api[.]openai[.]com with the caller's own key. No credential-harvesting code was found in this tarball; the exposure for installers comes from the malicious dependency pulled in at install time and from the impersonated scope.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@japofc/baileys",
+        "purl": "pkg:npm/%40japofc/baileys"
+      },
+      "versions": [
+        "2.4.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@japofc/baileys/v/2.4.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14306"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T17:21:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]openai[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "4bc113b546464c9715ea3dbe484c20c0165f76522e969a61736564c0526f9bca"
+        ]
+      }
+    }
+  }
+}
