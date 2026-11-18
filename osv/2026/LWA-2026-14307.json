@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14307",
+  "modified": "2026-11-18T23:07:09Z",
+  "published": "2026-11-18T23:06:52Z",
+  "summary": "Malicious code in hijiko-parser (npm)",
+  "details": "hijiko-parser@1.0.0 ships no functionality — its entire index.js is a single console.log line and it declares no lifecycle or bin scripts — and exists only to install a dependency from a non-registry host. Its dependencies map (repeated in npm-shrinkwrap.json, so the pin survives lockfile-based installs) points marker-script-suffix-mapper@1.0.18 at a raw plain-HTTP tarball URL: hxxp://web[.]vitemaweed[.]fr:4873/marker-script-suffix-mapper/-/marker-script-suffix-mapper-1[.]0[.]18[.]tgz. Installing this package makes npm fetch and execute the install lifecycle of a tarball served from web[.]vitemaweed[.]fr:4873 instead of registry[.]npmjs[.]org, bypassing the registry's integrity and audit trail. The package has an empty description, no repository, and no README.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "hijiko-parser",
+        "purl": "pkg:npm/hijiko-parser"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/hijiko-parser/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14307"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-18T23:06:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]vitemaweed[.]fr",
+          "web[.]vitemaweed[.]fr:4873"
+        ],
+        "sha256": [
+          "eee73da19de73a1f0fc13b49c8d858be3d6ae0be80f20fe74be8c7aa5a78eb4c"
+        ],
+        "url_observed": [
+          "hxxp://web[.]vitemaweed[.]fr",
+          "hxxp://web[.]vitemaweed[.]fr:4873/marker-script-suffix-mapper/-/marker-script-suffix-mapper-1[.]0[.]18[.]tgz"
+        ]
+      }
+    }
+  }
+}
