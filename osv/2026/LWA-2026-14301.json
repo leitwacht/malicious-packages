@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14301",
+  "modified": "2026-11-18T06:07:25Z",
+  "published": "2026-11-18T06:06:55Z",
+  "summary": "Malicious code in @clikwraps/navigate (npm)",
+  "details": "@clikwraps/navigate@99.9.1 is a dependency-confusion staging stub published under a name that misspells the @clickwraps scope. The tarball holds no functional code — package/index.js is an empty `module.exports = {}` and package.json declares no lifecycle scripts and no bin — but its sole dependency is a raw off-registry tarball: \"ltidisafe\": \"hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]8[.]tgz\". Installing the package makes npm download and unpack a tarball from a Google Cloud Storage bucket (ltidi, path /depenconf/) that never went through registry review; the filename ltidisafe-4.0.8.tgz and the \"depenconf\" path indicate an attempt to substitute an internal package named ltidisafe. The off-registry dependency and the sentinel version 99.9.1 are the only behaviour in the package; the remote tarball's own code is not included here. IOC: hxxps://ltidi[.]storage.googleapis[.]com/depenconf/ltidisafe-4.0.8.tgz",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@clikwraps/navigate",
+        "purl": "pkg:npm/%40clikwraps/navigate"
+      },
+      "versions": [
+        "99.9.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@clikwraps/navigate/v/99.9.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14301"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-18T06:06:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ltidi[.]storage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "dcdb190cf6b99adc83969976cf5131d537395ec15262fd2f9c4e444a5393c771"
+        ],
+        "url_observed": [
+          "hxxps://ltidi[.]storage[.]googleapis[.]com/depenconf/ltidisafe-4[.]0[.]8[.]tgz"
+        ]
+      }
+    }
+  }
+}
