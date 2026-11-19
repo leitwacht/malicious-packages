@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14317",
+  "aliases": [
+    "MAL-2026-20190"
+  ],
+  "modified": "2026-11-19T07:38:15Z",
+  "published": "2026-11-19T07:37:06Z",
+  "summary": "Malicious code in @h1stealthy/gh046-npm-transfer-9421a2 (npm)",
+  "details": "This package executes a hidden host-fingerprinting beacon at install time. package.json declares scripts.install = \"node backend-canary.js\"; that script reads /etc/hostname and the current OS username, SHA-256-hashes both, and issues an HTTPS GET to hxxps://webhook[.]site/314c4c8c-4eba-4012-9bf5-0a45805cd355/npm-backend-574b7ccdaeb61dd9dd70d6d4/lifecycle carrying the hashes in the host= and user= query parameters, then swallows any error so installation completes silently. The rest of the package is inert (index.js only exports the string 'controlled'; marker.txt holds an identifier 'NPM_BACKEND_PROTOTYPE_KEYS_...'), and the whole tarball is four files totalling about one kilobyte — the install hook is the only code that runs. Callback base used: hxxps://webhook[.]site/314c4c8c-4eba-4012-9bf5-0a45805cd355/.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@h1stealthy/gh046-npm-transfer-9421a2",
+        "purl": "pkg:npm/%40h1stealthy/gh046-npm-transfer-9421a2"
+      },
+      "versions": [
+        "0.0.386388"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@h1stealthy/gh046-npm-transfer-9421a2/v/0.0.386388"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14317"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T07:37:06Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "0e1212fbb62b41a1354705eccf88aedff7b78af37bc5a194959e1e6f76a4a5f0"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/314c4c8c-4eba-4012-9bf5-0a45805cd355/",
+          "hxxps://webhook[.]site/314c4c8c-4eba-4012-9bf5-0a45805cd355/npm-backend-574b7ccdaeb61dd9dd70d6d4/lifecycle"
+        ]
+      }
+    }
+  }
+}
