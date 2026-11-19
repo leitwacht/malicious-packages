@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14335",
+  "modified": "2026-11-19T20:37:35Z",
+  "published": "2026-11-19T20:36:52Z",
+  "summary": "Potentially-unwanted package (riskware): svg-bucket (npm)",
+  "details": "This package declares a postinstall hook (\"node index.js\") whose entire payload is a DNS callback: index.js calls dns.lookup() on the per-package hostname ecf9b17e-4d04-499c-ab0b-5d94402c760b.webhook[.]site, so every install resolves an operator-controlled webhook[.]site subdomain and thereby registers that the package was installed. The package contains nothing else of substance — a single unused export that logs \"SVG Bucket initialized.\" — and the callback carries no data: no environment variables, tokens, credential files or file contents are read or transmitted, and no second-stage code is fetched. The advertised functionality (a utility for managing SVG buckets) is not implemented anywhere in the 315-byte index.js. This package declares a postinstall hook (\"node index.js\") that runs its main entry file at install time. That file's only real action is a DNS callback: index.js calls dns.lookup() on the per-package hostname ecf9b17e-4d04-499c-ab0b-5d94402c760b.webhook[.]site, so installing the package resolves an operator-controlled webhook[.]site subdomain and registers the install. No environment variables, tokens, credential files or file contents are read or transmitted, and no second-stage code is fetched. This package declares a postinstall hook (\"node index.js\") that, on every install, performs a DNS lookup of the operator-controlled hostname ecf9b17e-4d04-499c-ab0b-5d94402c760b.webhook[.]site, registering the install with a webhook[.]site callback endpoint. No environment variables, tokens, credential files or file contents are transmitted; the lookup carries only the fixed hostname and no second-stage code is fetched.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "svg-bucket",
+        "purl": "pkg:npm/svg-bucket"
+      },
+      "versions": [
+        "2.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/svg-bucket/v/2.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-19T20:36:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ecf9b17e-4d04-499c-ab0b-5d94402c760b[.]webhook[.]site",
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "f0e4031ab452f3b73f46d139d77193b997e79c49c8dcd3ffa21369629f3f5213"
+        ],
+        "url_observed": [
+          "ecf9b17e-4d04-499c-ab0b-5d94402c760b[.]webhook[.]site"
+        ]
+      }
+    }
+  }
+}
