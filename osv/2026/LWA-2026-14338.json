@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14338",
+  "modified": "2026-11-19T22:09:59Z",
+  "published": "2026-11-19T22:08:12Z",
+  "summary": "Malicious code in @xz-bails/baileys (npm)",
+  "details": "This package is an unofficial republication of the Baileys WhatsApp Web library under a lookalike scope, with modified behaviour in the shipped code. lib/Socket/newsletter.js registers a \"Newsletter Auto-Follow\" routine: whenever the WebSocket connection opens it waits 10 seconds and then sends a w:mex FOLLOW query for the hardcoded channel 120363430764800148@newsletter, retrying up to three times; the routine can be redirected via the newsletterAutoFollowId socket option but otherwise runs unconditionally. Because newsletter.js is in the socket inheritance chain used by the main socket factory, any application that logs in with this package silently subscribes the user's own WhatsApp account to that channel. The package also declares a dependency range on cache-manager (^7.2.8) that resolves to a compromised release, requires it at runtime from lib/Store/make-cache-manager-store.js, pulls an unversioned git dependency (github:tenka-san/libsignal-node) instead of a pinned registry package, and replaces the library entry point with a branded startup banner advertising Telegram contacts (hxxps://t[.]me/XzRzSynxC, hxxps://t[.]me/JustRxVz). The preinstall hook only checks for Node.js 20 or newer. No network endpoint other than the WhatsApp channel JID was observed in the payload.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@xz-bails/baileys",
+        "purl": "pkg:npm/%40xz-bails/baileys"
+      },
+      "versions": [
+        "6.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@xz-bails/baileys/v/6.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14338"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T22:08:12Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "t[.]me"
+        ],
+        "other_observed": [
+          "120363430764800148@newsletter"
+        ],
+        "sha256": [
+          "92aab8be3d7878f29dfbd99608950fd0fee755b375f11fb6e69937da450b4f85"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/tenka-san/libsignal-node",
+          "hxxps://t[.]me/JustRxVz",
+          "hxxps://t[.]me/XzRzSynxC"
+        ]
+      }
+    }
+  }
+}
