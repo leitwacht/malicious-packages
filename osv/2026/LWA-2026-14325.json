@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14325",
+  "modified": "2026-11-19T14:53:27Z",
+  "published": "2026-11-19T14:51:55Z",
+  "summary": "Malicious code in @outlaw1/baileys (npm)",
+  "details": "This package is an unofficial republication of the @whiskeysockets/baileys WhatsApp Web API library, published under a different scope (@outlaw1 rather than the canonical @whiskeysockets or the author's own @lordmega scope referenced in its README and repository links). Two core modules are shipped deliberately obfuscated with javascript-obfuscator output — a shuffled encoded string array plus hex-named identifier dispatcher — while every neighbouring module in the same directories ships as readable source: lib/Utils/messages.js (about 72 KB, roughly 2,900 obfuscated identifiers) and lib/Socket/newsletter.js (about 13 KB, roughly 530 obfuscated identifiers). The published sourcemaps for both files omit sourcesContent, so the hidden logic cannot be recovered from the tarball. The package also declares a preinstall lifecycle hook, \"node./engine-requirements.js\" (that file performs only a Node.js version check and exits), and ships an editor-backup artefact, lib/Socket/messages-send.js.bak, next to the live lib/Socket/messages-send.js — a leftover of post-copy editing. No network indicators, credential paths or environment-variable reads were found in the readable portions of the package; the behaviour is hidden inside the two obfuscated message-handling modules, which sit on the code path that processes WhatsApp session and message data.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@outlaw1/baileys",
+        "purl": "pkg:npm/%40outlaw1/baileys"
+      },
+      "versions": [
+        "0.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@outlaw1/baileys/v/0.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14325"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T14:51:55Z",
+      "indicators_observed": {
+        "sha256": [
+          "005bcd937ce08c0c891e75fc5f907d32c988db53bd67d36e3c1962807cf8cc8e"
+        ]
+      }
+    }
+  }
+}
