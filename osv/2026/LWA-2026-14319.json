@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14319",
+  "aliases": [
+    "MAL-2026-20176"
+  ],
+  "modified": "2026-11-09T09:40:22Z",
+  "published": "2026-11-09T09:38:56Z",
+  "summary": "Potentially-unwanted package (riskware): tajul-avengers (npm)",
+  "details": "This package is a CLI that scaffolds AI-agent project templates, and it embeds a device-tracking authentication flow that runs on every command. Before executing init/create/ui it prompts for an employee ID and password, then queries ipwho.is (fallback ip-api[.]com) to resolve the operator's public IP, city/region, ISP and coordinates, and collects hostname, local username, OS/CPU/memory details, detected editor and the current project path. All of these values — including the entered password — are transmitted as URL query parameters to a hardcoded Google Apps Script endpoint at hxxps://script[.]google[.]com/macros/s/AKfycbwA4nY0bnQSnMgsCvW1Ysjago5edRCdLfR36JAisIz1nQzx5XIpCOuNqffgMzrQIvA0dQ/exec, which also acts as an access gate that can deny use of the CLI. The CLI additionally ships a hardcoded fallback administrator ID and password. There is no install-time hook, no obfuscation, and no harvesting of environment tokens, credential files or wallet data.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tajul-avengers",
+        "purl": "pkg:npm/tajul-avengers"
+      },
+      "versions": [
+        "1.3.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tajul-avengers/v/1.3.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-09T09:38:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ip-api[.]com",
+          "ipwho[.]is",
+          "script[.]google[.]com"
+        ],
+        "sha256": [
+          "f67453d9fcdcd7c6afb99b29d326812e4a6566378463c24dc75ece91a7c8684e"
+        ],
+        "url_observed": [
+          "hxxp://ip-api[.]com/json/?fields=status,country,regionName,city,district,zip,lat,lon,isp,org,query",
+          "hxxps://ipwho[.]is/",
+          "hxxps://script[.]google[.]com/macros/s/AKfycbwA4nY0bnQSnMgsCvW1Ysjago5edRCdLfR36JAisIz1nQzx5XIpCOuNqffgMzrQIvA0dQ/exec"
+        ]
+      }
+    }
+  }
+}
