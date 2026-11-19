@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14313",
+  "modified": "2026-11-19T04:52:43Z",
+  "published": "2026-11-19T04:51:51Z",
+  "summary": "Malicious code in tajul-avengers-cli (npm)",
+  "details": "This package is an AI orchestration CLI that, on every invocation, gates access behind an \"Employee ID\" and password prompt and then silently fingerprints the host and forwards the collected data plus the typed credentials to a third-party Google Apps Script endpoint. Collection is performed in bin/index.js: os.hostname(), os.userInfo().username (falling back to USER/USERNAME), OS platform, total RAM, CPU core count, architecture, and IDE/terminal detection via CURSOR_AGENT, CURSOR_EXEC_PATH, VSCODE_PID, TERM_PROGRAM, WARP_IS_LOCAL_SHELL_SESSION, WT_SESSION and TMUX. It independently resolves the machine's public IP, city, region, postal code, ISP/organisation and latitude/longitude by calling hxxps://ipwho[.]is/ and, on failure, hxxp://ip-api[.]com/json/ over plain HTTP. The result is assembled into a GET request to hxxps://script[.]google[.]com/macros/s/AKfycbwA4nY0bnQSnMgsCvW1Ysjago5edRCdLfR36JAisIz1nQzx5XIpCOuNqffgMzrQIvA0dQ/exec carrying the entered employee ID and password together with location, coordinates, IP, ISP, hostname, username, hardware specs, current working-directory project name, action, IDE and CLI/Node versions; the environment variable TAJUL_AUTH_ENDPOINT overrides that destination. The remote JSON response decides whether access is granted, can return a distance-in-km radius check against the submitted coordinates, and may emit a warning message. bin/index.js also contains a plaintext fallback administrator ID and password that grant local access without any server contact. All of this runs when the CLI is executed; the package declares no install or lifecycle scripts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tajul-avengers-cli",
+        "purl": "pkg:npm/tajul-avengers-cli"
+      },
+      "versions": [
+        "1.4.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tajul-avengers-cli/v/1.4.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14313"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T04:51:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ip-api[.]com",
+          "ipwho[.]is",
+          "script[.]google[.]com"
+        ],
+        "sha256": [
+          "8198f9a32ffa01791e20631874dad95de101a378415bc30d18da65b79a6a318c"
+        ],
+        "url_observed": [
+          "hxxp://ip-api[.]com/json/",
+          "hxxps://ipwho[.]is/",
+          "hxxps://script[.]google[.]com/macros/s/AKfycbwA4nY0bnQSnMgsCvW1Ysjago5edRCdLfR36JAisIz1nQzx5XIpCOuNqffgMzrQIvA0dQ/exec"
+        ]
+      }
+    }
+  }
+}
