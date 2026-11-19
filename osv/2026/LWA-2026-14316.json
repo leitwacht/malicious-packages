@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14316",
+  "modified": "2026-11-19T07:24:07Z",
+  "published": "2026-11-19T07:21:52Z",
+  "summary": "Malicious code in codez48-cli (npm)",
+  "details": "Codez48-cli is a CLI desktop-automation agent that also exposes the machine it is installed on to remote control and ships bulk telemetry. src/pilot/remote/remote-device-bridge.js starts an HTTP server on port 4848 with Access-Control-Allow-Origin: *, pairs clients with a 6-digit PIN, and after pairing runs executeRemoteTask(): the task string supplied by the remote client is passed straight into the agent controller, which performs AI-driven desktop automation, shell execution and browser control on the host. The same server serves /api/files and /api/download, where the `file` query parameter is used directly as a filesystem path (path.existsSync(requestedFile)) with no confinement to a deliverable directory. Host identity is collected and transmitted: src/core/activity-tracker.js stores every command executed through the CLI plus the AI response with os.hostname() and os.platform() under a generated USR-CDZ48-xxxx identifier, and src/core/firebase-sync.js uploads that account record to the Firebase project nshandlooms-a19be; session registration and generated project archives (.zip of the workspace) are POSTed to hxxps://codez48[.]netlify[.]app/.netlify/functions/remote-device-sync, and the CLI also contacts hxxps://codez48-web-automation-production[.]railway[.]app. A Firebase web API key is hardcoded in supervoice/public/checkout.html. The tarball bundles a native Windows executable at src/pilot/drivers/fast_input.exe (Win32 input/window helper, executed with fixed arguments by src/pilot/drivers/gui-driver.js) and a 14.7 MB zip of the project's own source tree at src/pilot/licensing/codez48cli_enterprise_master.zip. Passwords and OTPs typed into its browser-automation prompts are injected into the target web forms, and goal prompts are forwarded to generativelanguage[.]googleapis[.]com and api[.]groq[.]com. codez48-cli is a CLI desktop-automation agent that also exposes the machine it is installed on to remote control and ships bulk telemetry. src/pilot/remote/remote-device-bridge.js starts an HTTP server on port 4848 with Access-Control-Allow-Origin: *, pairs clients with a 6-digit PIN, and after pairing runs executeRemoteTask(): the task string supplied by the remote client is passed straight into the agent controller, which performs AI-driven desktop automation, shell execution and browser control on the host. The same server serves /api/files and /api/download, where the `file` query parameter is used directly as a filesystem path (fs.existsSync(requestedFile)) with no confinement to a deliverable directory. Host identity is collected and transmitted: src/core/activity-tracker.js stores every command executed through the CLI plus the AI response with os.hostname() and os.platform() under a generated USR-CDZ48-xxxx identifier, and src/core/firebase-sync.js uploads that account record to the Firebase project nshandlooms-a19be; session registration and generated project archives (.zip of the workspace) are POSTed to hxxps://codez48[.]netlify[.]app/.netlify/functions/remote-device-sync, and the CLI also contacts hxxps://codez48-web-automation-production[.]railway[.]app. A Firebase web API key is hardcoded in supervoice/public/checkout.html. The tarball bundles a native Windows executable at src/pilot/drivers/fast_input.exe (Win32 input/window helper, executed with fixed arguments by src/pilot/drivers/gui-driver.js) and a 14.7 MB zip of the project's own source tree at src/pilot/licensing/codez48cli_enterprise_master.zip. Passwords and OTPs typed into its browser-automation prompts are injected into the target web forms, and goal prompts are forwarded to generativelanguage[.]googleapis[.]com and api[.]groq[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "codez48-cli",
+        "purl": "pkg:npm/codez48-cli"
+      },
+      "versions": [
+        "1.3.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/codez48-cli/v/1.3.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14316"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T07:21:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]groq[.]com",
+          "codez48-web-automation-production[.]railway[.]app",
+          "codez48-web-automation-production[.]up[.]railway[.]app",
+          "codez48[.]netlify[.]app",
+          "generativelanguage[.]googleapis[.]com"
+        ],
+        "sha256": [
+          "77727df174891be47ecdc1f068f453606e7aa1447b06f0b31a45fef120628e25"
+        ],
+        "url_observed": [
+          "hxxps://codez48-web-automation-production[.]railway[.]app",
+          "hxxps://codez48-web-automation-production[.]up[.]railway[.]app",
+          "hxxps://codez48[.]netlify[.]app/[.]netlify/functions",
+          "hxxps://codez48[.]netlify[.]app/[.]netlify/functions/remote-device-sync"
+        ]
+      }
+    }
+  }
+}
