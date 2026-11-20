@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14387",
+  "modified": "2026-11-20T23:07:28Z",
+  "published": "2026-11-20T23:06:51Z",
+  "summary": "Malicious code in @zervonex/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp Web library, published under a scope other than the upstream @whiskeysockets/baileys, and it ships two behaviours that are not upstream. 1) Forced channel auto-follow. lib/Socket/newsletter.js hardcodes two WhatsApp channel JIDs, `120363422827915475@newsletter` and `120363409522637051@newsletter` (AUTO_FOLLOW_JIDS). On every `connection.update` event with `connection === 'open'` it waits 3 seconds, then calls the newsletter-join query (`xwa2_newsletter_join_v2`) for both channels on behalf of the connected account, and starts a 30-second interval that re-follows the same channels for as long as the socket stays open. lib/Defaults/index.js sets `autoFollowNewsletter: true` by default, so every consumer's WhatsApp account is enrolled as a follower of the author's channels unless they explicitly pass `autoFollowNewsletter: false`. Installing the library therefore mutates the operator's WhatsApp account state and inflates the author's channel subscriber counts. 2) Remote code delivery. WAProto/fetcher.js fetches `wa-version.json` and `WAProto.bundle.js` from `hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache` (GITHUB_RAW const) on a 24-hour cache TTL and writes the bundle into the installed package directory (`WAProto/WAProto.bundle.tmp`, then `WAProto.proto`). WAProto/index.js runs `boot()` at import time; when the proto/table files are absent, invalid or fail to regenerate, it downloads that bundle, parses it with acorn (WAProto/parser.js), rewrites `WAProto.proto`, regenerates `WAProto.json` in a worker thread and hot-reloads it. What the library loads and executes on an already-installed machine is thus controlled by a git branch outside the published tarball, and changes there take effect on existing installs without a new npm version. The bundled preinstall hook (`engine-requirements.js`) only parses `process.versions.node` and exits below Node 20; it performs no network or shell activity. No credential, token, environment-variable or wallet exfiltration was found in the package, and no obfuscated string literals are shipped. IOCs: hxxps://raw.githubusercontent[.]com/nexustechpro2/baileys/wa-cache (files `wa-version.json`, `WAProto.bundle.js`); forced-follow channel JIDs `120363422827915475@newsletter` and `120363409522637051@newsletter`.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@zervonex/baileys",
+        "purl": "pkg:npm/%40zervonex/baileys"
+      },
+      "versions": [
+        "4.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@zervonex/baileys/v/4.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14387"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T23:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "2d6d0e68c10ff362666ea3bc5b46224c7f478c17aae0e44de0bc244841628b88"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/WAProto[.]bundle[.]js",
+          "hxxps://raw[.]githubusercontent[.]com/nexustechpro2/baileys/wa-cache/wa-version[.]json"
+        ]
+      }
+    }
+  }
+}
