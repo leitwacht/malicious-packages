@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14347",
+  "modified": "2026-11-20T03:09:27Z",
+  "published": "2026-11-20T03:06:51Z",
+  "summary": "Malicious code in ardanbaileys (npm)",
+  "details": "A WhatsApp (Baileys-derived) library carrying hidden, install-adjacent automation that enrols every connected account into attacker-chosen WhatsApp channels.\\n\\nIn lib/Socket/socket.js a URL is stored as a decimal char-code array and rebuilt at run time with String.fromCharCode(..._u), yielding hxxps://raw[.]github[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]json (a non-standard raw[.]github[.]com host, not the GitHub raw-content host). This runs unconditionally from the socket connect path: fetchLatestBaileysVersion() executes socketConnect(), which fetches the list before the handshake completes and then, inside a 200-second setTimeout, sends one w:mex IQ query per entry with query_id 7871414976211147 (the newsletter FOLLOW query, defined as QueryIds.FOLLOW in lib/Types/Newsletter.js) and variables.newsletter_id taken from the remote list. All errors are swallowed, so the account joins each channel silently.\\n\\nA second hidden path in the same file, generateMessageV(n) (exported to callers via the socket object), decodes the base64 constant \"JCUkJCQjIyQkIyMjIyQjIyMjIyQjIyMjQG5ld3NsZXR0ZXI=\" and XORs each character with key 23, producing 120363405765232446@newsletter, then after a 40-second timer calls the same FOLLOW query for that fixed channel, again inside a try/catch that discards failures. Both channels are attacker-controlled: the second is fixed in the code, the first is whatever the remote JSON contains.\\n\\nA separate auto-follow module (lib/Channels/index.js, exported from the entry point) fetches config/channels.json from an account-controlled raw[.]githubusercontent[.]com path and follows every channel ID listed there on connection open; that remote list is mutable after publication.\\n\\nIndicators: hxxps://raw[.]github[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]json; hxxps://raw[.]githubusercontent[.]com/ardanClv/ardanbaileys/main/config/channels[.]json; hardcoded channel 120363405765232446; newsletter FOLLOW query id 7871414976211147; decoder key 23 in lib/Socket/socket.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ardanbaileys",
+        "purl": "pkg:npm/ardanbaileys"
+      },
+      "versions": [
+        "1.2.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ardanbaileys/v/1.2.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14347"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T03:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]github[.]com",
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "084b5ac34f0c17c7f40b0298ad9d7aaec44268109b64c222993bfe5603a3f87e"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]github[.]com/skyzopedia/NewsletterID/refs/heads/main/VIP_Push[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/ardanClv/ardanbaileys/main/config/author[.]json",
+          "hxxps://raw[.]githubusercontent[.]com/ardanClv/ardanbaileys/main/config/channels[.]json"
+        ]
+      }
+    }
+  }
+}
