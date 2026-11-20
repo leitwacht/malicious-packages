@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14378",
+  "modified": "2026-11-20T09:38:38Z",
+  "published": "2026-11-20T09:36:51Z",
+  "summary": "Malicious code in dinocode-baileys (npm)",
+  "details": "dinocode-baileys is a WhatsApp multi-device library fork that enrols the connecting account into operator-chosen WhatsApp channels without asking. Auto-follow is on by default: lib/Defaults/index.js ships autoFollowNewsletterOnConnect: true, autoFollowNewsletterDelayMs: 90000 and a hardcoded default channel, and makeWASocket in lib/Socket/index.js starts the follow routine unconditionally unless the caller passes the opt-out flag. On socket open lib/Socket/newsletter.js downloads a channel-id list from hxxps://raw[.]githubusercontent[.]com/noxXza/data/refs/heads/main/noxleys[.]json and, for every numeric@newsletter value in it, sends a newsletterFollow then a newsletterMute w:mex query to WhatsApp, spaced three and ten seconds apart. Because the list is fetched on every connection, the set of channels an installed bot is subscribed to can be changed remotely by whoever controls that repository. A second, independent routine in lib/Socket/messages-recv.js waits 30 seconds after the connection opens and then follows and mutes two further channels whose JIDs are assembled from character codes (120363428355171197@newsletter, 120363428984357510@newsletter), bypassing the documented configuration switch. The package has no install hooks and does not read credentials, environment variables, registry configuration or wallet material; the behaviour is limited to acting on the user's own WhatsApp account by silently subscribing it to, and muting, remote-selected channels. Integrators should set autoFollowNewsletterOnConnect to false and treat the shipped default as untrusted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "dinocode-baileys",
+        "purl": "pkg:npm/dinocode-baileys"
+      },
+      "versions": [
+        "9.0.23"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/dinocode-baileys/v/9.0.23"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14378"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T09:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "2f34e6a64420927c026e80f6552a6f644973dc510385fb143d40e0c81dc25ef7"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts",
+          "hxxps://raw[.]githubusercontent[.]com/noxXza/data/refs/heads/main/noxleys[.]json"
+        ]
+      }
+    }
+  }
+}
