@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14344",
+  "aliases": [
+    "MAL-2026-19108"
+  ],
+  "modified": "2026-11-20T00:29:48Z",
+  "published": "2026-11-20T00:22:09Z",
+  "summary": "Malicious code in raiden-baileys (npm)",
+  "details": "This package is a modified WhatsApp/Baileys client library that enrols the connected WhatsApp account into hardcoded channels without the operator's consent. In lib/Socket/newsletter.js, inside makeNewsletterSocket, a setTimeout of 120000 ms runs two minutes after the socket is created and, for each of the hardcoded JIDs 120363407277177688@newsletter and 120363407702752541@newsletter, sends a w:mex query node addressed to S_WHATSAPP_NET with Types.QueryIds.FOLLOW — a follow request issued from the connected account's own session, with every error swallowed. No library API, option or README entry exposes or disables this, and no other long-delay timer exists anywhere in the package. lib/Socket/clutch-handler.js embeds a third hardcoded channel, 120363411769951302@newsletter (displayed as \"alip shop #information\"), used as the default forwarded-newsletter origin for status posts. The package also resolves its Signal-protocol implementation from the unaffiliated GitHub fork github:RahmadTenpoles/libsignal-node instead of the canonical libsignal package, so session and key handling for the account come from code outside the published tarball; lib/Signal/libsignal.js feeds the account's stored creds, signed prekeys, identity key and sender keys into it. The shipped source contains no string obfuscation, no environment-variable or credential-file reads, no eval/new Function, and no detached child processes; the network destinations present in it are wss://web[.]whatsapp[.]com/ws/chat and user-supplied media URLs fetched with axios.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "raiden-baileys",
+        "purl": "pkg:npm/raiden-baileys"
+      },
+      "versions": [
+        "2.2.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/raiden-baileys/v/2.2.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14344"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T00:22:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "f9afa9e91eb1a7ea4056533bcb20decce8cb58e6111552a38cb99a67f44385f6"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/RahmadTenpoles/libsignal-node",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
