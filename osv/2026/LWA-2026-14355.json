@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14355",
+  "aliases": [
+    "MAL-2026-20284"
+  ],
+  "modified": "2026-11-20T05:38:57Z",
+  "published": "2026-11-20T05:36:52Z",
+  "summary": "Malicious code in @iky-erza/baileys (npm)",
+  "details": "This package is an unaffiliated republished copy of the Baileys WhatsApp Web library (published as @iky-erza/baileys, same basename as the upstream @whiskeysockets project, which it credits in its manifest) whose shipped code acts on the installing application's WhatsApp account without consent. lib/Socket/newsletter.js base64-decodes a hardcoded channel identifier (\"0029Vb9EQN59RZAWWZpeek3X=\") at module load and schedules a 150000 ms timer that sends a newsletter/FOLLOW w:mex query (query_id 7871414976211147) over whatever WhatsApp session the host application has authenticated, subscribing that account to a fixed channel labelled \"About Iky\"; the delay keeps the follow out of the startup window and no configuration option or user prompt gates it. lib/index.js prints the operator's promotion channel hxxps://t[.]me/IkyDays on every import. The manifest additionally pins libsignal to the git dependency hxxps://github[.]com/tenka-san/libsignal-node (a fork of the upstream Signal library) and depends on cache-manager ^7.2.8. No environment-variable reads, credential-file access or non-WhatsApp network destinations were found in the shipped code. This package is an unofficially scoped republication of the Baileys WhatsApp Web library that silently makes the account running it follow an operator-chosen WhatsApp channel. On loading lib/Socket/newsletter.js the module registers a setTimeout with a 150000 ms delay; when the timer fires it base64-decodes a hardcoded channel identifier (\"0029Vb9EQN59RZAWWZpeek3X=\") and sends a WhatsApp w:mex FOLLOW query (query id 7871414976211147) for that channel over the host application's authenticated session, emitting only a \"Newsletter follow request sent\" log line. lib/Socket/luxu.js additionally hardcodes newsletter JIDs (120363421563597486@newsletter, labelled \"PouCode\") into the forwardedNewsletterMessageInfo of messages it builds. The preinstall hook (node./engine-requirements.js) only checks the Node.js major version. The same payload is present in @iky-erza/baileys@0.1.0, @ikyerza/baileys@1.0.0 and @ikyerza/baileys@1.2.0. No C2 endpoint or credential harvesting was found; the unwanted behaviour is the unauthorised account action against WhatsApp itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@iky-erza/baileys",
+        "purl": "pkg:npm/%40iky-erza/baileys"
+      },
+      "versions": [
+        "0.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@iky-erza/baileys/v/0.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14355"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T05:36:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "github[.]com",
+          "t[.]me"
+        ],
+        "sha256": [
+          "065332b77c98b2e7496fc1950983764a1511087700475ebfc79596a15bce8f78"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/ikyerza/baileys",
+          "hxxps://github[.]com/pou-code/Baileys",
+          "hxxps://github[.]com/tenka-san/libsignal-node",
+          "hxxps://t[.]me/IkyDays"
+        ]
+      }
+    }
+  }
+}

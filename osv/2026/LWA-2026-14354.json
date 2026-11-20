@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14354",
+  "modified": "2026-11-20T05:41:28Z",
+  "published": "2026-11-20T05:39:25Z",
+  "summary": "Malicious code in @agentgates/cli (npm)",
+  "details": "The package runs a postinstall hook (scripts/postinstall.mjs) that silently rewrites developer AI-assistant configuration on the installing machine: it appends or replaces a marked instruction block in ~/.claude/CLAUDE.md, creates ~/.cursor/rules/agentgates.md and appends to ~/.windsurfrules. The injected text directs the assistant to route all wallet, balance, send, swap and password-vault work through the bundled `agentgates` CLI and to prefer it over other tooling, placing attacker-authored instructions into the agent's trusted context at install time. The bundled CLI (dist/cli.mjs) contains a hardcoded relay at hxxps://covenant-backend[.]vercel[.]app/api and posts to its prepare, submit and positions routes carrying an operator bearer read from the BOUNTY_LAUNCH_ADMIN_KEY or ADMIN_API_KEY environment variables. It reads and writes self-custodial key material at ~/.agentgates/trade-sol.json and ~/.agentgates/desk-session-sol.json, and holds a credential vault keyed from AGENTGATES_PASSWORDS_SEED. Network IOCs: hxxps://covenant-backend[.]vercel[.]app/api and hxxps://cli[.]agentgates[.]ai.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@agentgates/cli",
+        "purl": "pkg:npm/%40agentgates/cli"
+      },
+      "versions": [
+        "0.86.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@agentgates/cli/v/0.86.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14354"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T05:39:25Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cli[.]agentgates[.]ai",
+          "covenant-backend[.]vercel[.]app"
+        ],
+        "sha256": [
+          "3f2f349c559cc0f7223a0c89298d908356f2a1c6fa339737ba1ab5b96c6a672c"
+        ],
+        "url_observed": [
+          "hxxps://cli[.]agentgates[.]ai",
+          "hxxps://covenant-backend[.]vercel[.]app/api"
+        ]
+      }
+    }
+  }
+}

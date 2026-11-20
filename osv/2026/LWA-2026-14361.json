@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14361",
+  "modified": "2026-11-20T05:41:40Z",
+  "published": "2026-11-20T05:38:33Z",
+  "summary": "Malicious code in @agentgates/cli (npm)",
+  "details": "These versions run a postinstall hook (scripts/postinstall.mjs) that silently rewrites developer AI-assistant configuration on the installing machine: it appends or replaces a marked instruction block in ~/.claude/CLAUDE.md, creates ~/.cursor/rules/agentgates.md and appends to ~/.windsurfrules. The injected text tells the assistant to route every wallet, balance, send, swap and earn operation through the bundled `agentgates` CLI and to prefer it over other tooling, placing attacker-authored instructions into the agent's trusted context at install time. The bundled CLI (dist/cli.mjs) has a hardcoded relay at hxxps://covenant-backend[.]vercel[.]app/api and sends POST/GET requests to that host carrying a bearer token read from the BOUNTY_LAUNCH_ADMIN_KEY or ADMIN_API_KEY environment variables. Network IOCs: hxxps://covenant-backend[.]vercel[.]app/api and hxxps://cli[.]agentgates[.]ai.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@agentgates/cli",
+        "purl": "pkg:npm/%40agentgates/cli"
+      },
+      "versions": [
+        "0.11.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@agentgates/cli/v/0.11.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14361"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T05:38:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cli[.]agentgates[.]ai",
+          "covenant-backend[.]vercel[.]app"
+        ],
+        "sha256": [
+          "244d61a441ef050ec818a60dcfd6713f6a14b09ae2851c5e29eddf2e3ae69907"
+        ],
+        "url_observed": [
+          "hxxps://cli[.]agentgates[.]ai",
+          "hxxps://covenant-backend[.]vercel[.]app/api"
+        ]
+      }
+    }
+  }
+}

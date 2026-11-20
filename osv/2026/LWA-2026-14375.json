@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14375",
+  "aliases": [
+    "MAL-2026-20292"
+  ],
+  "modified": "2026-11-20T05:43:46Z",
+  "published": "2026-11-20T05:41:35Z",
+  "summary": "Malicious code in @kingorwot/my-baileys (npm)",
+  "details": "This package is a WhatsApp bot library (\"modded Baileys\") carrying hidden, remotely controlled account-manipulation logic. lib/Socket/newsletter.js installs a 120-second timer when a socket is constructed; when it elapses the code downloads a channel list from hxxps://raw[.]githubusercontent[.]com/DGXeon13/strings/refs/heads/main/strings.json and subscribes the connected WhatsApp account to every channel ID in that list using the newsletter join query (xwa2_newsletter_join_v2), joining one channel at a time with an 11-second delay and suppressing all errors. There is no opt-in, no configuration switch and nothing in the API surface that exposes it, and because the target list is fetched at run time it can be changed by the author without republishing. lib/Socket/luxu.js hardcodes channel identifiers (120363421563597486@newsletter, labelled \"D | 7eppeli-Exloration\", and 0@newsletter) and injects them as forwardedNewsletterMessageInfo into messages the client sends, so the account operator's outbound traffic carries the author's channel advertising. The package also pulls a bundled git dependency, whatsapp-rust-bridge-baron from hxxps://github[.]com/7ucg/whatsapp-rust-bridge[.]git, and replaces the libsignal end-to-end-encryption implementation with the author's own fork published as @kingorwot/libsignal-node, giving the author control of the code path that handles message keys and session state. No file or credential upload to an arbitrary host was observed in the shipped code; the only non-WhatsApp destination referenced is the channel-list URL above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kingorwot/my-baileys",
+        "purl": "pkg:npm/%40kingorwot/my-baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kingorwot/my-baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14375"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T05:41:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "cc64ba96d69921c0c52bcc816daf2ecf1f6b69c8bd67b11ec581ff5ebebca324"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/7ucg/whatsapp-rust-bridge[.]git",
+          "hxxps://raw[.]githubusercontent[.]com/DGXeon13/strings/refs/heads/main/strings[.]json"
+        ]
+      }
+    }
+  }
+}
