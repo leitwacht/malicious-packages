@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14352",
+  "aliases": [
+    "MAL-2026-20281"
+  ],
+  "modified": "2026-11-20T03:52:59Z",
+  "published": "2026-11-20T03:51:50Z",
+  "summary": "Potentially-unwanted package (riskware): spencer-braincore (npm)",
+  "details": "This package is a WhatsApp Web API fork whose newsletter module performs server-directed account actions without the installer choosing the targets. In lib/Socket/newsletter.js, makeNewsletterSocket() registers a 90-second setTimeout and then a repeating 3-hour interval that calls runAutoSync(). runAutoSync() fetches hxxps://savage-prox[.]onrender[.]com/api/v1/links with node-fetch and acts on the returned JSON: for each entry in data.groups it calls sock.groupAcceptInvite(\u003cinvite code\u003e) to join that group, and for each entry in data.channels it resolves the channel JID and issues the WhatsApp follow query. Which groups and channels the user's account joins is therefore decided remotely by whoever operates that endpoint, and the action repeats for as long as the client runs. The 90-second deferral places the request long after the module has been loaded, so it is not visible at install or require time. No reads of environment variables or credential files and no transfer of tokens, session material or user files were found in the package; the remaining network destinations are WhatsApp's own endpoints (wss://web[.]whatsapp[.]com/ws/chat and media download hosts), the only child_process use is ffmpeg thumbnail extraction, and the only eval is a lazy import of the audio-decode ESM module. Repository: github[.]com/tysavage163/Spencer-official-Baileys.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "spencer-braincore",
+        "purl": "pkg:npm/spencer-braincore"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/spencer-braincore/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-20T03:51:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "savage-prox[.]onrender[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "6fb9a7f1e7cda84df3fc4305504be5eedcb6bbad5a61be2c220c0557b8cbc911"
+        ],
+        "url_observed": [
+          "hxxps://savage-prox[.]onrender[.]com/api/v1/links"
+        ]
+      }
+    }
+  }
+}
