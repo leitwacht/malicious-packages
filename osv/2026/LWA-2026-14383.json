@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14383",
+  "aliases": [
+    "MAL-2026-20310"
+  ],
+  "modified": "2026-11-20T20:56:20Z",
+  "published": "2026-11-20T20:53:03Z",
+  "summary": "Potentially-unwanted package (riskware): @kropa/baileys (npm)",
+  "details": "This package is a republished fork of the Baileys WhatsApp socket library that adds a commercial licence gate and silently enrols connected WhatsApp accounts into a fixed channel. It wraps makeWASocket so that every socket creation runs a licence check in lib/Utils/license-guard.js (shipped obfuscated with a string-array/decoder, with a readable copy at lib/Utils/license-guard.src.js): if no key is supplied via the licenseKey option or the KRISPEDIA_LICENSE environment variable, the process prints an activation banner and calls process.exit(1); otherwise it sends the supplied licence key to hxxps://krispedia-license-api[.]vercel[.]app/api/verify (overridable via LICENSE_SERVER_URL). Separately, lib/Socket/newsletter.js schedules a 120-second timer that issues a newsletter FOLLOW query for the hardcoded channel JID 120363407277177688@newsletter, subscribing the user's WhatsApp account to that channel without prompting. Message builders in lib/Socket/messages-send.js embed a hardcoded, char-code-encoded hxxps://fiora[.]nixel[.]my[.]id/ as the sourceUrl of generated image and video payloads, and label failed product/post/video placeholders with \"NIXEL\". The package contains no install-time lifecycle scripts, no credential or token harvesting, no remote code execution, and no second-stage download; its unwanted behaviour is the licence enforcement, the forced channel subscription, and the third-party host injection into outgoing message payloads.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kropa/baileys",
+        "purl": "pkg:npm/%40kropa/baileys"
+      },
+      "versions": [
+        "1.0.2"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kropa/baileys/v/1.0.2"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-20T20:53:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "fiora[.]nixel[.]my.id",
+          "krispedia-license-api[.]vercel[.]app"
+        ],
+        "sha256": [
+          "22417751ba26c11f0935bf35f156bc205144b21c440560e97dd32ed02f07ab58"
+        ],
+        "url_observed": [
+          "hxxps://fiora[.]nixel[.]my[.]id/",
+          "hxxps://krispedia-license-api[.]vercel[.]app/api/verify"
+        ]
+      }
+    }
+  }
+}

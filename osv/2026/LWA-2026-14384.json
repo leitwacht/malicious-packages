@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14384",
+  "aliases": [
+    "MAL-2026-20310"
+  ],
+  "modified": "2026-11-20T20:55:37Z",
+  "published": "2026-11-20T20:53:21Z",
+  "summary": "Potentially-unwanted package (riskware): @kropa/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp socket library, published under the @kropa scope instead of the upstream @whiskeysockets scope, with several non-upstream insertions that run whenever the library is used. 1. Forced WhatsApp channel follow. In lib/Socket/newsletter.js a bare setTimeout with a 120000 ms delay in makeNewsletterSocket sends a newsletter FOLLOW query for the hardcoded channel id 120363407277177688@newsletter from every socket the host application creates. The response and all errors are swallowed, there is no opt-out, and the account's own WhatsApp identity is enrolled into that channel. 2. Concealed marketing URL injected into outbound messages. lib/Socket/messages-send.js builds its rich-media payload with the host encoded as String.fromCharCode(104,116,116,112,115,58,47,47,102,105,111,114,97,46,110,105,120,101,108,46,109,121,46,105,100,47), which decodes to hxxps://fiora[.]nixel[.]my[.]id/. That URL is set as sourceUrl on every image and video submessage the operator sends, and the video/product helpers replace message body text with \"[ CANNOT_LOAD_VIDEO - NIXEL ]\" / \"[ CANNOT_LOAD_PRODUCT - NIXEL ]\". 3. Mandatory phone-home licence gate that terminates the process. makeWASocket in lib/Socket/index.js calls verifyLicenseGuard (lib/Utils/license-guard.js, a javascript-obfuscator bundle whose plaintext source is also shipped as lib/Utils/license-guard.src.js). If no licenceKey / KRISPEDIA_LICENSE value is supplied, or the key is rejected, the package prints a \"KRISPEDIA DIGITAL LICENSE GUARD PROTOCOL\" banner and calls process.exit(1) and sock.end(), killing the host application. Valid keys, or two hardcoded master keys in the file, are otherwise checked by GET ${LICENSE_SERVER_URL || hxxps://krispedia-license-api[.]vercel[.]app}/api/verify?key=.... The obfuscated file is a compile of the shipped plaintext, not a hidden second payload. No credential, token, wallet or file-content collection was found: the only environment variables read are the licence variables, and there is no access to npm/GitHub/cloud tokens,.npmrc, ~/.ssh or ~/.aws.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kropa/baileys",
+        "purl": "pkg:npm/%40kropa/baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kropa/baileys/v/1.0.3"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-20T20:53:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "fiora[.]nixel[.]my.id",
+          "krispedia-license-api[.]vercel[.]app"
+        ],
+        "sha256": [
+          "2c8c3c24e88e635d08a132b94e019f5fe4e090f6b8375cfd10da81603fca3bf9"
+        ],
+        "url_observed": [
+          "hxxps://fiora[.]nixel[.]my[.]id/",
+          "hxxps://krispedia-license-api[.]vercel[.]app",
+          "hxxps://krispedia-license-api[.]vercel[.]app/api/verify"
+        ]
+      }
+    }
+  }
+}

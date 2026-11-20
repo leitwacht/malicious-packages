@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14382",
+  "aliases": [
+    "MAL-2026-20310"
+  ],
+  "modified": "2026-11-20T20:58:01Z",
+  "published": "2026-11-20T20:52:36Z",
+  "summary": "Malicious code in @kropa/baileys (npm)",
+  "details": "@kropa/baileys@1.0.1 is a WhatsApp socket library that reuses the @whiskeysockets/baileys API and package name and adds behaviour the caller does not ask for. lib/Socket/newsletter.js hardcodes the channel 120363407277177688@newsletter and, 120 seconds after the socket initialises, issues a WhatsApp newsletter FOLLOW query for it (newsletterWMexQuery with QueryIds.FOLLOW, with empty catch blocks around it), silently subscribing the end user's WhatsApp account to that channel; no option or documentation exposes it. lib/Utils/license-guard.js is an obfuscated 11398-byte bundle (large _0x string dictionary and a second XOR string decoder); its plaintext twin lib/Utils/license-guard.src.js, shipped in the same directory, shows it reads KRISPEDIA_LICENSE / global.licenseKey, sends that key to hxxps://krispedia-license-api[.]vercel[.]app/api/verify (overridable through the LICENSE_SERVER_URL environment variable) and calls process.exit(1) on the embedding application when the key is missing, invalid or the gateway is unreachable — a remote kill-switch over any application that requires the library, triggered from makeWASocket() in lib/Socket/index.js. lib/Socket/messages-send.js assembles the sourceUrl field of outgoing rich image and video payloads from String.fromCharCode sequences that decode to hxxps://fiora[.]nixel[.]my[.]id/, injecting an undocumented third-party host into message metadata in a form that defeats string search. Inspection of the shipped code found no reads of NPM_TOKEN, GITHUB_TOKEN, ~/.npmrc, ~/.ssh or ~/.aws and no upload of user files or credentials; the payload contacts only the licence endpoint and the host above.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kropa/baileys",
+        "purl": "pkg:npm/%40kropa/baileys"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kropa/baileys/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14382"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-20T20:52:36Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "fiora[.]nixel[.]my.id",
+          "krispedia-license-api[.]vercel[.]app"
+        ],
+        "sha256": [
+          "ccccafd0899db1e5f5685dd5f207b5630a4e267caeaf78340bdb0d2172d6227a"
+        ],
+        "url_observed": [
+          "hxxps://fiora[.]nixel[.]my[.]id/",
+          "hxxps://krispedia-license-api[.]vercel[.]app/api/verify"
+        ]
+      }
+    }
+  }
+}
