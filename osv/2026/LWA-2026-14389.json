@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14389",
+  "modified": "2026-10-27T11:09:06Z",
+  "published": "2026-10-27T07:16:56Z",
+  "summary": "Malicious code in @alannxds/baileys (npm)",
+  "details": "This package is a republished fork of the WhatsApp Web library Baileys published under the @alannxds scope while its README, badges and LICENSE reference the canonical @whiskeysockets/baileys project, so installers get a look-alike name rather than the upstream package. Its dependency manifest declares cache-manager ^7.2.8, a range that resolves to cache-manager 7.2.10 — the compromised release of that package — so a normal install pulls the malicious code in as a transitive dependency. The package also carries a preinstall hook (node./engine-requirements.js, which only checks the Node major version), and importing the module entry point lib/index.js immediately performs an outbound request to hxxps://raw[.]githubusercontent[.]com/alannzxd/xclient/refs/heads/main/information[.]json, a repository controlled by the fork's author rather than any Baileys upstream, and prints the returned content to the console while advertising a Telegram contact (t[.]me/alannxd) and a WhatsApp channel. The library code bundles the full Baileys protocol stack plus extra message helpers in lib/Socket/luxu.js that stamp messages with a hardcoded forwarded-newsletter identity (newsletterJid \"0@newsletter\", newsletterName \"WhatsApp\", senderName \"AlannXD\", forwardingScore 99999), making relayed messages appear to originate from a WhatsApp update card. This package republishes the WhatsApp Web library Baileys under the @alannxds scope while its README, badges and LICENSE reference the canonical @whiskeysockets/baileys project, so installers get a look-alike name instead of the upstream package. Its manifest declares cache-manager ^7.2.8, a range that resolves to cache-manager 7.2.10, the compromised release of that package, so a normal install pulls the malicious code in as a transitive dependency. Importing the module entry point lib/index.js unconditionally requests hxxps://raw[.]githubusercontent[.]com/alannzxd/xclient/refs/heads/main/information[.]json — a repository controlled by the fork's author, not by any Baileys upstream — and prints the response to the console together with a Telegram contact (t[.]me/alannxd).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@alannxds/baileys",
+        "purl": "pkg:npm/%40alannxds/baileys"
+      },
+      "versions": [
+        "6.2.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@alannxds/baileys/v/6.2.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14389"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-27T07:16:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "t[.]me"
+        ],
+        "sha256": [
+          "3ac1dea972e1a61f426e19ae279b12cd8f7d2e930554d2730c98353bb68a87ab"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/alannzxd/xclient/refs/heads/main/information[.]json",
+          "hxxps://t[.]me/alannxd",
+          "hxxps://whatsapp[.]com/channel/0029Vb3IiqTL7UVP9A9n0w1x"
+        ]
+      }
+    }
+  }
+}
