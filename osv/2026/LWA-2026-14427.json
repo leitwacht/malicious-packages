@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14427",
+  "modified": "2026-11-22T23:07:43Z",
+  "published": "2026-11-22T23:06:57Z",
+  "summary": "Security-research / proof-of-concept package: fable-csp-poc (npm)",
+  "details": "fable-csp-poc@1.0.0 is a browser script (index.js, the package main entry) that reads the Firebase authentication state of whatever site loads it and sends it to a third-party webhook. It opens the IndexedDB database firebaseLocalStorageDb, enumerates every record in the firebaseLocalStorage object store and extracts the key, uid, email, accessToken, refreshToken and expirationTime fields of each Firebase auth entry; it also enumerates localStorage and collects every key matching /firebase|token|auth/i. It then sends the page URL and origin, the collected localStorage values and the full IndexedDB record dump (values included, up to 3500 characters per request) as three tracking-pixel GET requests to hxxps://webhook[.]site/0ef44895-6b7a-431e-9930-79022251686a, tagged by the fable= query parameter (href, localStorage, indexeddb). A code comment frames the file as an \"authorized\" CSP-bypass proof-of-concept; the data collection and beaconing to the webhook is what it actually does.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "fable-csp-poc",
+        "purl": "pkg:npm/fable-csp-poc"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/fable-csp-poc/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14427"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T23:06:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "0aef6f296b57720722dea88ad0b6be1c4e9a93887a1f53ad6aed77defc07fca9"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/0ef44895-6b7a-431e-9930-79022251686a"
+        ]
+      }
+    }
+  }
+}

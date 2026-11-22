@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14426",
+  "modified": "2026-11-22T23:07:17Z",
+  "published": "2026-11-22T23:06:56Z",
+  "summary": "Malicious code in env-helper-friend (npm)",
+  "details": "env-helper-friend@0.2.0 runs an install-time payload from scripts/postinstall.js, wired through the package's \"postinstall\" script. The script serialises the entire process.env object to JSON, keeps the first 200 characters, and uses that slice as the leftmost DNS label of a hostname under ygyrsdtjvygv[.]oeh, then resolves it with node:dns/promises (dns.lookup). This exfiltrates environment-variable names and values — tokens, credentials and connection strings included — out of the installer's machine over DNS. The script prints only masked \"********\" values to the console so the install looks like an innocuous env scan, and it exits quietly on any error so it never fails the install. The destination can be redirected through the URLLY environment variable, and the hook is skipped if ENV_TOOLKIT_QUIET is set. IOC: ygyrsdtjvygv[.]oeh (DNS exfiltration endpoint).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "env-helper-friend",
+        "purl": "pkg:npm/env-helper-friend"
+      },
+      "versions": [
+        "0.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/env-helper-friend/v/0.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14426"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-22T23:06:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ygyrsdtjvygv[.]oeh"
+        ],
+        "sha256": [
+          "94675911e7a589c6d994671cce8ba3cdfe55e976c5265688f88f406dfa1717ca"
+        ]
+      }
+    }
+  }
+}
