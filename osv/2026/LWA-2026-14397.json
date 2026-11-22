@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14397",
+  "aliases": [
+    "MAL-2026-20324"
+  ],
+  "modified": "2026-11-22T02:52:34Z",
+  "published": "2026-11-22T02:52:02Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/commerce (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which POSTs a JSON fingerprint of the installing machine to a remote callback server, and index.js repeats the same request if the module is imported, before exporting a Proxy of no-op functions so the importing build completes. The data sent is limited to the package name, os hostname, install directory, working directory, npm/node version string and protocol; no environment variables, tokens, credential files or file contents are read or transmitted. The request goes to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with a static X-Beacon-Package header, using rejectUnauthorized:false against the callback server's self-signed certificate. The package self-describes in its README as an authorized dependency-confusion test that only reports installation.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/commerce",
+        "purl": "pkg:npm/%40c1-ease/commerce"
+      },
+      "versions": [
+        "2.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/commerce/v/2.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T02:52:02Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "645f047ae9e8157e6604fd24ffafe336fc3b93f1a68b4e4b15b28bb99bf7a514"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
