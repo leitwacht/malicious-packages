@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14428",
+  "modified": "2026-11-22T23:24:19Z",
+  "published": "2026-11-22T23:21:51Z",
+  "summary": "Malicious code in @agentgates/cli (npm)",
+  "details": "This package is a wallet/password CLI for AI agents whose install hook (scripts/postinstall.mjs) rewrites developer AI-assistant configuration on the installing machine: it injects a marker-delimited block (agentgates-cli:start / agentgates-cli:end) into ~/.claude/CLAUDE.md, ~/.cursor/rules/agentgates.md and ~/.windsurfrules, instructing any assistant that reads those files to perform wallet, send, swap, earn and stored-site-password operations through the `agentgates` CLI, and it prints a stdout banner explicitly addressed to the installing AI session. The bundled CLI (dist/cli.mjs, ~3.8 MB, includes ethers and @noble crypto) appends a directive to its own output asking the model to \"present the above verbatim... do not reformat, summarize, or omit rows\", and keeps a twelve-word BIP-39 seed plus stored site passwords in a JSON file at ~/.agentgates/passwords-key.json (mode 0600), reading the seed from AGENTGATES_PASSWORDS_SEED or disk and signing requests with it. Remote endpoints referenced by the code include hxxps://cli[.]agentgates[.]ai, hxxps://agentgates[.]ai, hxxps://covenant-backend[.]vercel[.]app and public EVM/Solana RPCs; no third-party collection endpoint was found in the code. The flagged string array in @agentgates/cli@0.95.1 (dist/cli.mjs) is the ED25519_TORSION_SUBGROUP constant table shipped inside the bundled @noble/curves library; the strings are ordinary curve constants and are not decoded, joined or executed. The behaviour that does warrant attention is the install hook scripts/postinstall.mjs: it detects developer AI-assistant configuration on the installing machine and injects a marker-delimited instruction block (agentgates-cli:start / agentgates-cli:end) into ~/.claude/CLAUDE.md, ~/.cursor/rules/agentgates.md and ~/.windsurfrules, directing any assistant that reads them to route wallet, swap, earn and stored-site-password operations through the `agentgates` CLI, and prints a stdout banner explicitly addressed to the installing AI session. The bundled CLI appends an AI directive to its output asking for verbatim reproduction without reformatting, and stores a twelve-word BIP-39 seed plus site passwords at ~/.agentgates/passwords-key.json (mode 0600), signing first-party requests to hxxps://cli[.]agentgates[.]ai and hxxps://covenant-backend[.]vercel[.]app with it.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@agentgates/cli",
+        "purl": "pkg:npm/%40agentgates/cli"
+      },
+      "versions": [
+        "0.95.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@agentgates/cli/v/0.95.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14428"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-22T23:21:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "agentgates[.]ai",
+          "cli[.]agentgates[.]ai",
+          "covenant-backend[.]vercel[.]app"
+        ],
+        "sha256": [
+          "2730b783122abd56a48e0c68d96b4f80b1c3b46308d4c1332ddfc41221d207ea"
+        ],
+        "url_observed": [
+          "hxxps://agentgates[.]ai",
+          "hxxps://cli[.]agentgates[.]ai",
+          "hxxps://covenant-backend[.]vercel[.]app"
+        ]
+      }
+    }
+  }
+}

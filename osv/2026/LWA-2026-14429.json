@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14429",
+  "modified": "2026-11-22T23:25:37Z",
+  "published": "2026-11-22T23:22:01Z",
+  "summary": "Malicious code in @agentgates/cli (npm)",
+  "details": "This package ships a postinstall hook (scripts/postinstall.mjs, run as `node scripts/postinstall.mjs`) that silently modifies AI coding-assistant configuration files in the installer's home directory: it injects an `\u003c!-- agentgates-cli:start --\u003e…\u003c!-- agentgates-cli:end --\u003e` block into ~/.claude/CLAUDE.md, creates and writes ~/.cursor/rules/agentgates.md, and writes ~/.windsurfrules. The injected text redirects the assistant's wallet operations to the `agentgates` CLI and advertises a login lane that stores site passwords with \"no pairing and no human\"; a companion directive string in the bundle instructs the model to reproduce command output verbatim. The CLI itself manages wallet and password secrets: a twelve-word wallet seed is taken from the AGENTGATES_PASSWORDS_SEED environment variable or from keys under ~/.agentgates, and the `open`/login flow serves a local web page that posts those twelve words to the origin hxxps://agentgates[.]ai via window.postMessage, with a reverse page accepting a login key. Stored credential rows are encrypted with AES-256-GCM under a key derived from a wallet signature and the sealed ciphertext is exchanged with the operator API. Default network endpoints are hxxps://agentgates[.]ai and hxxps://cli[.]agentgates[.]ai (overridable via AGENTGATES_ORIGIN and BOUNTY_API_ORIGIN). No reads of ~/.ssh, ~/.npmrc, ~/.aws, docker config, or NPM_TOKEN/GITHUB_TOKEN were found, and no eval(atob(…))-style second stage is present; the 3.9MB dist/cli.mjs is an esbuild bundle of ethers 6.16, @solana/web3.js and @noble/*.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@agentgates/cli",
+        "purl": "pkg:npm/%40agentgates/cli"
+      },
+      "versions": [
+        "0.98.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@agentgates/cli/v/0.98.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14429"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-22T23:22:01Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "agentgates[.]ai",
+          "cli[.]agentgates[.]ai"
+        ],
+        "sha256": [
+          "5ddecdc0bbca8493a645ed0a9446e88dced3bf58663ae4da5dae3ed67c136c77"
+        ],
+        "url_observed": [
+          "hxxps://agentgates[.]ai",
+          "hxxps://agentgates[.]ai/api/passwords/",
+          "hxxps://cli[.]agentgates[.]ai"
+        ]
+      }
+    }
+  }
+}
