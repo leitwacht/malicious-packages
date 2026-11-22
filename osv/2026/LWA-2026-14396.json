@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14396",
+  "aliases": [
+    "MAL-2026-20324"
+  ],
+  "modified": "2026-11-22T02:52:47Z",
+  "published": "2026-11-22T02:51:50Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/commerce (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its package.json postinstall hook runs beacon.cjs, which sends an HTTP POST to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc (header X-Beacon-Package: @c1-ease/commerce) with a JSON body containing the package name, the machine hostname, the install path, the current working directory, the npm/node user agent and the protocol, with TLS certificate validation disabled. Loading the package's main file (index.js) fires the same beacon via require('./beacon.cjs').fire(). The collected data is limited to host and install metadata: no environment variable values, credentials, tokens, dotfiles or file contents are read or transmitted, and nothing else is executed. This package is a dependency-confusion proof of concept whose postinstall hook sends an install-time beacon: a JSON body of package name, os hostname, install directory, working directory, npm/node version and protocol, POSTed to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with a static X-Beacon-Package header. No credentials, environment values or file contents are collected. This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which POSTs a JSON fingerprint of the installing machine to a remote callback server, and index.js repeats the same request if the module is imported, then exports a Proxy of no-op functions so the importing build completes. Only the package name, os hostname, install directory, working directory, npm/node version string and protocol are sent; no environment variables, tokens, credential files or file contents are read or transmitted. The request goes to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with a static X-Beacon-Package header and rejectUnauthorized:false against the callback server's self-signed certificate. The README describes it as an authorized dependency-confusion test that only reports installation. This package is a dependency-confusion proof of concept whose postinstall hook resolves and POSTs to a single callback host, vmi3699893[.]contaboserver[.]net on port 8787 at path /_ah/dc, sending only package name, os hostname, install directory, working directory and npm/node version. No credentials, environment values or file contents are collected. This package is a dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which POSTs a JSON fingerprint of the installing machine (package name, os hostname, install directory, working directory, npm/node version, protocol) to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with a static X-Beacon-Package header, using rejectUnauthorized:false against the callback server's self-signed certificate. index.js repeats the same request on require and exports a Proxy of no-op functions so an importing build completes. No environment variables, tokens, credential files or file contents are read or transmitted, and nothing is spawned or persisted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/commerce",
+        "purl": "pkg:npm/%40c1-ease/commerce"
+      },
+      "versions": [
+        "2.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/commerce/v/2.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T02:51:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "91ca3ea7e175d682aae4136f3d2e3475259ba3ca225441f7301b58e8d7574e8c"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
