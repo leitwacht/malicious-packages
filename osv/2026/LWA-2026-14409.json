@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14409",
+  "aliases": [
+    "MAL-2026-20326"
+  ],
+  "modified": "2026-11-22T03:39:57Z",
+  "published": "2026-11-22T03:38:37Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/bank (npm)",
+  "details": "This package is a dependency-confusion proof of concept that beacons to a callback host at install time. Its package.json postinstall hook runs beacon.cjs, and index.js fires the same beacon when the package is imported, so a build that resolves the name reports itself. The beacon sends a single HTTP POST to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with Content-Type application/json, the header X-Beacon-Package: @c1-ease/bank, and a JSON body containing only package name, os.hostname(), the install path (__dirname), process.cwd(), the npm/user-agent string and the protocol. It sets rejectUnauthorized:false to tolerate the callback host's self-signed certificate and suppresses its own errors and a 5s timeout so the install proceeds. The payload collects no credentials, tokens, environment values, wallet data or file contents, makes no second-stage download and performs no execution or persistence beyond the install beacon. index.js exports a no-op Proxy shim so that consumers importing the package do not crash. The README describes the package as part of an authorized dependency-confusion test that only reports that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/bank",
+        "purl": "pkg:npm/%40c1-ease/bank"
+      },
+      "versions": [
+        "2.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/bank/v/2.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T03:38:37Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "ip_observed": [
+          "vmi3699893[.]contaboserver[.]net:8787"
+        ],
+        "sha256": [
+          "91312d2db09ad04e2aa39af256fbee35cd0a0c1f5d6e64db33afb46e8d132498"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

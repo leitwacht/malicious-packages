@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14403",
+  "aliases": [
+    "MAL-2026-20325"
+  ],
+  "modified": "2026-11-22T03:38:20Z",
+  "published": "2026-11-22T03:37:50Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/autoloan (npm)",
+  "details": "This package is a dependency-confusion proof of concept that sends an install-time beacon to a callback host. It declares a postinstall hook (\"node beacon.cjs\") and its main entry point (index.js) also fires the same beacon on require, so simply resolving the package name reports the install. The beacon POSTs JSON to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with an X-Beacon-Package header, collecting only host metadata: the package name, the machine hostname, the install directory, the current working directory, and the npm/node version. The connection is made with TLS certificate verification disabled; no environment variable values, credentials, tokens, SSH or wallet material, and no file contents are read or transmitted, and the package does nothing else (index.js exports a Proxy returning no-op functions so that imports of the real package's members do not crash the consumer's build). The package describes itself as an authorized dependency-confusion test and names a researcher contact in its README.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/autoloan",
+        "purl": "pkg:npm/%40c1-ease/autoloan"
+      },
+      "versions": [
+        "3.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/autoloan/v/3.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T03:37:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "90f86474718930dad7f2b2a3e54c81300a87998969b6972c463d4e87c91170b6"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

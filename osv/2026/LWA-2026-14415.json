@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14415",
+  "aliases": [
+    "MAL-2026-20327"
+  ],
+  "modified": "2026-11-22T03:41:12Z",
+  "published": "2026-11-22T03:39:46Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/card (npm)",
+  "details": "This package is a dependency-confusion proof of concept. Its postinstall hook (node beacon.cjs) and its index.js export both send an HTTPS POST to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc carrying only install-host metadata: package name, os.hostname(), the install directory (__dirname), process.cwd(), and the npm/Node user agent, tagged with an x-beacon-package header. The request disables TLS certificate verification (rejectUnauthorized: false) and errors are swallowed so the install completes silently. index.js exports a no-op Proxy so imports of the name do not crash. No credentials, environment values, tokens, wallet data or file contents are collected or sent.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/card",
+        "purl": "pkg:npm/%40c1-ease/card"
+      },
+      "versions": [
+        "1.1.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/card/v/1.1.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T03:39:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "66f424c0ef279db0eafb0857e83a1b6d5da38339a198a421baa2b24859b376a5"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

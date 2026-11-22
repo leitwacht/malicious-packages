@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14410",
+  "aliases": [
+    "MAL-2026-20326"
+  ],
+  "modified": "2026-11-22T03:39:19Z",
+  "published": "2026-11-22T03:38:49Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/bank (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept (scoped internal-looking name, description \"Compatibility shim.\") that beacons host metadata at install time. Its postinstall hook runs beacon.cjs, which POSTs a JSON body containing only the package name, machine hostname, install path (__dirname), working directory, npm user the publisher and protocol to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with an X-Beacon-Package header and TLS certificate validation disabled. index.js re-fires the same beacon when the module is required and exports a Proxy that returns no-op functions so that named/default imports of the impersonated package do not fail. No credentials, tokens, environment variables or file contents are read or transmitted; the only data leaving the host is install fingerprint metadata.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/bank",
+        "purl": "pkg:npm/%40c1-ease/bank"
+      },
+      "versions": [
+        "3.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/bank/v/3.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T03:38:49Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "f48a1108c6e95374968d877337fb2d242856e649f8420783d672f887a3c526dc"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

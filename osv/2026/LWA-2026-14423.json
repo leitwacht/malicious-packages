@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14423",
+  "aliases": [
+    "MAL-2026-20328"
+  ],
+  "modified": "2026-11-22T03:42:09Z",
+  "published": "2026-11-22T03:41:19Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/core (npm)",
+  "details": "This package is a self-declared dependency-confusion proof of concept. Its postinstall hook runs beacon.cjs, which sends an HTTPS POST to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with an X-Beacon-Package: @c1-ease/core header. The JSON body reports only install metadata: package name, machine hostname, the package install path (__dirname), the current working directory, the npm user-agent and protocol. The TLS request is made with certificate validation disabled. index.js also fires the same beacon on require and exports a catch-all Proxy no-op shim so that imports of the real package name do not crash. No credentials, environment values, tokens or file contents are collected or transmitted. Version 99.0.1 on a scoped name with a 3 KB tarball is the version-squat delivery shape.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/core",
+        "purl": "pkg:npm/%40c1-ease/core"
+      },
+      "versions": [
+        "99.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/core/v/99.0.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T03:41:19Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "279d18807718911178611f2331121e8406d7a0307fff6e92cc67f9622c283023"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

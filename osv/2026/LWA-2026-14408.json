@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14408",
+  "aliases": [
+    "MAL-2026-20326"
+  ],
+  "modified": "2026-11-22T03:40:17Z",
+  "published": "2026-11-22T03:38:33Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/bank (npm)",
+  "details": "This package is a dependency-confusion proof of concept (\"Compatibility shim\") that beacons to a callback host at install time. Its package.json postinstall runs \"node beacon.cjs\", which POSTs a JSON body containing the package name, os.hostname(), __dirname, process.cwd() and the npm/node version to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with an \"x-beacon-package\" header over TLS (certificate validation disabled). package/index.js re-sends the same beacon whenever the module is imported, and exports a no-op Proxy so a consuming build does not fail before it calls back. No credentials, environment values, wallet data or file contents are read or transmitted. Callback: vmi3699893[.]contaboserver[.]net:8787, path /_ah/dc.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/bank",
+        "purl": "pkg:npm/%40c1-ease/bank"
+      },
+      "versions": [
+        "2.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/bank/v/2.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T03:38:33Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "18cfbe7e80710ceee2af219908017362ea0e234a11a405fddd29f87d99fe6338"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}

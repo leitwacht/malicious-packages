@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14406",
+  "aliases": [
+    "MAL-2026-20326"
+  ],
+  "modified": "2026-11-22T03:40:36Z",
+  "published": "2026-11-22T03:38:18Z",
+  "summary": "Security-research / proof-of-concept package: @c1-ease/bank (npm)",
+  "details": "This package is a dependency-confusion proof of concept that sends an install-time beacon to a callback host. Its postinstall hook (\"node beacon.cjs\") runs package/beacon.cjs, which issues an HTTPS POST (certificate validation disabled) to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with an \"x-beacon-package\" header; loading package/index.js also triggers the same beacon, after which the module exports a Proxy of no-op functions so that imports of the real package's members resolve without error. The reported fields are limited to host metadata: the package name, the machine hostname (os.hostname), the install path (__dirname), the working directory (process.cwd), the npm/node user agent, and the transport protocol. No environment variable values, credentials, tokens, key material, or file contents are read or transmitted, and there is no second-stage download, spawned process, or persistence. The package's README states it is published as part of an authorized dependency-confusion test and records only that it was installed.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/bank",
+        "purl": "pkg:npm/%40c1-ease/bank"
+      },
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/bank/v/1.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T03:38:18Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "92504e7740cb050a12773ee770c9c8415ae8b2e399e38b351fe71b8b9a5e29cc"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
