@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14425",
+  "modified": "2026-11-22T23:07:07Z",
+  "published": "2026-11-22T23:06:51Z",
+  "summary": "Security-research / proof-of-concept package: com.unity.external-dependency-manager (npm)",
+  "details": "This package is an install-time proof-of-concept beacon published under a com.unity.* namespace name on npm. Its package.json declares a postinstall hook of \"node index.js\", and index.js generates a random UUID and sends an HTTP POST to hxxps://webhook[.]site/6fc1b78a-5046-4192-abc9-edf993a31b33 with the JSON body {\"event\":\"authorized-poc-test\",\"testId\":\"\u003crandom UUID\u003e\",\"status\":\"executed\"}. The script also prints the hostname and working directory to the local console only; those values are not included in the outbound request. The package contains just two files (index.js and package.json, 1185 bytes total) and performs no file reads, no environment or credential access, no additional downloads, and no persistence. It is a callback-beacon demonstration, not a payload that steals data: the published name imitates the internal com.unity.* package namespace while the stated description (\"A utility for managing SVG buckets\") does not correspond to the code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "com.unity.external-dependency-manager",
+        "purl": "pkg:npm/com.unity.external-dependency-manager"
+      },
+      "versions": [
+        "2.1.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/com.unity.external-dependency-manager/v/2.1.1"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-22T23:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "fad6f191b2cda0bcfe423bd387212fcb0c7bd6930509b37be8158f70106c57e7"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/6fc1b78a-5046-4192-abc9-edf993a31b33"
+        ]
+      }
+    }
+  }
+}
