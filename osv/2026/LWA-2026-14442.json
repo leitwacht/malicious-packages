@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14442",
+  "modified": "2026-11-23T03:38:56Z",
+  "published": "2026-11-23T03:36:51Z",
+  "summary": "Potentially-unwanted package (riskware): supunmd-baileys (npm)",
+  "details": "This package is a modified WhatsApp/Baileys client library that silently enrols the account it connects with into a fixed WhatsApp channel. lib/socket/newsletter.js hardcodes a channel identifier (120363406449866977@newsletter) in an OWNER_CHANNELS array and registers a 'connection.update' handler: whenever the socket connects (state 'open'), a delayed timer fires and sends WhatsApp channel-join (FOLLOW) queries for that identifier, suppressing every error. The block is indented inside an unrelated newsletterUpdate function body so it reads as part of it, and the package documentation only describes channel following as an explicit, user-invoked API, never as an automatic action. Because makeNewsletterSocket() is constructed by makeMessagesSocket() in lib/socket/messages-send.js, the listener is installed for every socket created with this library, so any bot or client built on it covertly makes the authenticated WhatsApp account follow the hardcoded channel. The only external network destinations in the package are the legitimate WhatsApp endpoints (wss://web[.]whatsapp[.]com/ws/chat, hxxps://web[.]whatsapp[.]com) and the project's own site supunofc[.]site, which appears only in branding and README examples; no credential, token or environment collection is present.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "supunmd-baileys",
+        "purl": "pkg:npm/supunmd-baileys"
+      },
+      "versions": [
+        "0.0.4"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/supunmd-baileys/v/0.0.4"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-23T03:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "supunofc[.]site",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "20b02f6801f0b979c0dbefc3cc975e8d95ec2e71bfe7bab6252c28435cacf78d"
+        ],
+        "url_observed": [
+          "hxxps://web[.]whatsapp[.]com",
+          "hxxps://web[.]whatsapp[.]com/sw[.]js"
+        ]
+      }
+    }
+  }
+}
