@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14457",
+  "modified": "2026-11-23T23:38:31Z",
+  "published": "2026-11-23T23:36:51Z",
+  "summary": "Malicious code in combined-baileys (npm)",
+  "details": "This package is a modified WhatsApp Web library (a fork of Baileys) that silently enrols the connected WhatsApp account into an operator-controlled newsletter channel and then generates fake engagement on it. Two hidden implementations are shipped. In lib/Socket/newsletter.js the channel \"120363422352987107@newsletter\" is hardcoded; an autoJoinChannels() routine calls the channel-follow mutation and, 3 seconds later, the channel-mute mutation, and it is wired to the socket's connection.update event with a 15-second delay, so the subscription happens without any call from the application using the library. The same file registers a messages.upsert handler that automatically sends a reaction (drawn from a fixed emoji list: heart, fire, thumbs-up, party, star-struck, sparkles, 100, rocket) to every new message posted in that channel, using the victim account's identity. A second copy of the payload in lib/Socket/messages-recv.js hides all three artefacts — the channel JID, the string \"newsletterFollow\" and the string \"newsletterMute\" — as decimal char-code arrays decoded at runtime through a String.fromCharCode helper, and stores them in randomly named variables (xkmt, pzha, wjcf). They are invoked through computed property access 30 seconds after every successful connection, so the follow and mute calls never appear as plain strings in the source. The package documentation states that newsletter follow methods are only invoked explicitly by the application and never automatically when the socket connects; the shipped code does the opposite. No install-time hooks, credential/token harvesting or non-WhatsApp network endpoints were found; the payload action is confined to follow/mute/reaction traffic on the hardcoded WhatsApp newsletter channel 120363422352987107@newsletter. IOCs: WhatsApp channel JID 120363422352987107@newsletter; decoder helper implemented as String.fromCharCode over decimal arrays; randomly named concealment variables xkmt / pzha / wjcf in lib/Socket/messages-recv.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "combined-baileys",
+        "purl": "pkg:npm/combined-baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/combined-baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14457"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-23T23:36:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "f3b33246bbe1d574087451fe052ada753696a112e3c55e15b2c7c20937367fd3"
+        ]
+      }
+    }
+  }
+}
