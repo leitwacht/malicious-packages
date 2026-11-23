@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14434",
+  "modified": "2026-11-22T23:53:11Z",
+  "published": "2026-11-22T23:52:09Z",
+  "summary": "Malicious code in @c1-ease/commerce (npm)",
+  "details": "@c1-ease/commerce ships a postinstall hook (\"node beacon.cjs\"), and importing the package also fires that beacon from index.js, so the callback happens at install time as well as at require time. The beacon POSTs JSON containing the package name, the machine hostname (os.hostname()), the install path (__dirname), the current working directory and the npm/Node version to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc with an x-beacon-package header, with TLS certificate verification disabled (rejectUnauthorized:false) so the self-signed certificate of the bare VPS is accepted. index.js otherwise exports a no-op Proxy so imported properties resolve to no-op functions and the host build completes. Versions 1.0.1, 1.1.0 and 3.0.0 ship the same four files (beacon.cjs, index.js, package.json, README.md) calling the same endpoint. The README describes the package as an authorized dependency-confusion test that performs no operation other than reporting that it was installed. The beacon payload is limited to install host metadata; no environment variables, credential files, npm config or user files are read or transmitted. @c1-ease/commerce ships a postinstall hook (\"node beacon.cjs\"), and importing the package also fires that beacon from index.js, so the callback happens at install time as well as at require time. The beacon POSTs JSON containing the package name, the machine hostname (os.hostname()), the install path (__dirname), the current working directory and the npm/Node version to hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc, using a request body sized with content-length and an x-beacon-package header, with TLS certificate verification disabled (rejectUnauthorized:false) so the self-signed certificate of the bare VPS is accepted. index.js otherwise exports a no-op Proxy so any imported property resolves to a no-op function and the host build completes. The same four-file payload (beacon.cjs, index.js, package.json, README.md) and the same callback endpoint are present in versions 1.0.1, 1.1.0 and 3.0.0. The README describes the package as an authorized dependency-confusion test and performs no operation other than reporting that it was installed. The beacon payload is limited to install host metadata; no environment variables, credential files, npm config or user files are read or transmitted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@c1-ease/commerce",
+        "purl": "pkg:npm/%40c1-ease/commerce"
+      },
+      "versions": [
+        "3.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@c1-ease/commerce/v/3.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14434"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-22T23:52:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "vmi3699893[.]contaboserver[.]net"
+        ],
+        "sha256": [
+          "ea9c8dab8dfeb171975080d185635aa04ba3c17385b0d8ffacfa66dd760830f2"
+        ],
+        "url_observed": [
+          "hxxps://vmi3699893[.]contaboserver[.]net",
+          "hxxps://vmi3699893[.]contaboserver[.]net:8787/_ah/dc"
+        ]
+      }
+    }
+  }
+}
