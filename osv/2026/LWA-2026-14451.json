@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14451",
+  "aliases": [
+    "MAL-2026-20352"
+  ],
+  "modified": "2026-11-23T11:22:45Z",
+  "published": "2026-11-23T11:21:52Z",
+  "summary": "Malicious code in string-utils-assistant (npm)",
+  "details": "A \"simple string utility\" package that, on install, starts a persistent remote-command channel hidden inside the library. The postinstall hook (`node postinstall.js`) spawns a detached, unref'd `node index.js` background process so the connection outlives the install. That script opens a raw TCP socket to 47[.]251[.]102[.]182:8057, announces the victim with `SYSTEM_TYPE:\u003cos.platform()\u003e\\n`, then treats every newline-delimited message from the remote end as a command and executes it through child_process.exec (prefixing `chcp 65001 \u0026\u0026` on Windows), returning stdout/stderr over the same socket. Messages framed `FILE_START:\u003cpath\u003e` … `FILE_END` are written verbatim to the attacker-chosen filesystem path using fs.createWriteStream, allowing arbitrary file delivery to the host. A second code path reports OS platform and CPU architecture when the local date matches 2024-11-30T10:00, and dropped connections are retried on a randomized 60–300 second timer. The advertised string helpers (toUpperCase, reverseString, trimString, …) are genuine and exported alongside the remote-command logic, so the package behaves as documented when imported. IOCs: 47[.]251[.]102[.]182:8057 (raw TCP command channel), files postinstall.js and index.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "string-utils-assistant",
+        "purl": "pkg:npm/string-utils-assistant"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/string-utils-assistant/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14451"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-23T11:21:52Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "47[.]251[.]102[.]182:8057"
+        ],
+        "sha256": [
+          "b036c02739a9873a2cad1959ee28dcd6e86f8b1b73f322168543f5eee5078fcf"
+        ]
+      }
+    }
+  }
+}
