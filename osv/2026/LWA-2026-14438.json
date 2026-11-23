@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14438",
+  "modified": "2026-11-23T00:27:38Z",
+  "published": "2026-11-23T00:22:15Z",
+  "summary": "Malicious code in cop3-rc (npm)",
+  "details": "cop3-rc@5.0.0 presents itself as a didactic Colombian crypto-network library and ships three JavaScript files — c-rc-3-cop3.js, cop3-rc-3-1.js and cp-3-rc-2.js — that are JavaScript-obfuscator output: an encoded string table of hex-escaped entries resolving to encrypted blobs (e.g. \"W53cS1SGW41PWPZdI8o+WRNcPgJdH30\"), control-flow flattening, and a runtime decoder built with new Function(). Host names, URLs and SQL strings live inside that encoded table. The public API is built around wallet secrets: createAccount() returns {privateAddress, privateKey}, generateTemporaryPublicAddress, deactivateTemporaryPublicAddress, transfer and getBalance each take privateAddress and privateKey arguments, and the README tells users to paste a GASFEE_PRIVATEKEY into the entry file. Inside the bundle the code requires mysql2 and dotenv and assembles the MySQL connection settings from the encoded string table, so key-bearing account and transaction records are written to a remote database defined only inside the obfuscated data. There is no child_process use and no install or postinstall hook; the plaintext URL published with the package is the faucet at hxxp://faucet-cop3-rc[.]hstn[.]me/.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cop3-rc",
+        "purl": "pkg:npm/cop3-rc"
+      },
+      "versions": [
+        "5.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cop3-rc/v/5.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14438"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-23T00:22:15Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "faucet-cop3-rc[.]hstn[.]me"
+        ],
+        "sha256": [
+          "578aa27e317ee85a1bfee4e95f5b8f7ea441a7037a469e3e2fad48aecfe90521"
+        ],
+        "url_observed": [
+          "hxxp://faucet-cop3-rc[.]hstn[.]me/"
+        ]
+      }
+    }
+  }
+}

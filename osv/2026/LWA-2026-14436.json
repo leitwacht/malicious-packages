@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14436",
+  "modified": "2026-11-23T00:26:24Z",
+  "published": "2026-11-23T00:21:51Z",
+  "summary": "Security-research / proof-of-concept package: aia-b-locator-fe (npm)",
+  "details": "aia-b-locator-fe@1.0.1 declares a preinstall hook, \"node index.js\", which executes at install time. The only code in the package is that 240-byte script: it requires the dns module and resolves the external callback name ojoecyzdevxakimabqtr9bimrjqhw66zr[.]oast[.]fun, printing \"preinstall callback triggered\" on success and exiting with status 1 on failure. Installing the package therefore produces an unsolicited outbound DNS query to a third-party OAST/collaborator endpoint, an install-confirmation callback that identifies hosts installing the package. The tarball contains only package.json and index.js; this version does not read or transmit environment variables, files, tokens or credentials, does not spawn processes, and does not fetch further code. The observable indicator is the callback domain ojoecyzdevxakimabqtr9bimrjqhw66zr[.]oast[.]fun, reached from index.js during preinstall.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "aia-b-locator-fe",
+        "purl": "pkg:npm/aia-b-locator-fe"
+      },
+      "versions": [
+        "1.0.1"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/aia-b-locator-fe/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14436"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-23T00:21:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ojoecyzdevxakimabqtr9bimrjqhw66zr[.]oast[.]fun"
+        ],
+        "sha256": [
+          "15a2d0231b7f95e3183818454d076582eac525eb98626950191d89ec918c6a5f"
+        ]
+      }
+    }
+  }
+}
