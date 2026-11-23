@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14431",
+  "modified": "2026-10-17T09:55:31Z",
+  "published": "2026-10-17T08:05:41Z",
+  "summary": "Malicious code in adbf (npm)",
+  "details": "Adbf ships a 7.4 MB single-file bundle (index.js) obfuscated with javascript-obfuscator — a dense _0x identifier table, a string-array decoder, and \\x-escaped method names — that carries a hardcoded Telegram command-and-control channel and a hardcoded database credential set, and contacts remote hosts whenever the package is loaded or its `adbf` bin is run. The README documents only \"npm install -g adbf; adbf\" and mentions none of this network activity. On execution the bundle:\n- Sends messages to the Telegram Bot API using two hardcoded bot tokens (stored base64-encoded in index.js, bot IDs 6809260210 and 6077895886) each paired with a hardcoded chat_id, via api.sendMessage({chat_id, text}) — a Telegram-based C2/exfiltration channel.\n- Opens a PostgreSQL connection to a hardcoded server (user \"root\", base64-encoded password and host in index.js, port 12301) and reports \"Database ERR: Error: Connection terminated unexpectedly\" when it cannot connect.\n- Polls hxxps://www[.]izko[.]org[.]tr/api/web/v1/gold-settings and hxxps://www[.]izko[.]org[.]tr/api/web/v1/gold-prices with an axios/1.20.0 user agent, and repeatedly opens socket[.]io WebSocket connections to wss://veri[.]ozbag[.]com/socket[.]io/?status=true\u0026EIO=4\u0026transport=websocket.\n- Reads process.env and spawns child processes (spawnSync taskkill on Windows).\n- Ships atob.txt, a base64 blob that decodes to a git publish script (rm -rf.git; npm version patch; git add.; git commit; git push -u origin master --force). IOCs: hosts www[.]izko[.]org[.]tr, veri[.]ozbag[.]com, api[.]telegram[.]org; IP 163[.]5[.]53[.]143:12301; paths /api/web/v1/gold-settings, /api/web/v1/gold-prices, /socket[.]io/?status=true\u0026EIO=4\u0026transport=websocket.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "adbf",
+        "purl": "pkg:npm/adbf"
+      },
+      "versions": [
+        "1.0.205"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/adbf/v/1.0.205"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14431"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-17T08:05:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]telegram[.]org",
+          "veri[.]ozbag[.]com",
+          "www[.]izko[.]org[.]tr"
+        ],
+        "ip_observed": [
+          "163[.]5[.]53[.]143:12301"
+        ],
+        "sha256": [
+          "bca86241aff96591084c5b37f981c8e1b74a9b68f076780e48fa94fe1619a67d"
+        ],
+        "url_observed": [
+          "hxxps://api[.]telegram[.]org",
+          "hxxps://www[.]izko[.]org[.]tr/api/web/v1/gold-prices",
+          "hxxps://www[.]izko[.]org[.]tr/api/web/v1/gold-settings",
+          "wss://veri[.]ozbag[.]com/socket[.]io/?status=true\u0026EIO=4\u0026transport=websocket"
+        ]
+      }
+    }
+  }
+}
