@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14439",
+  "aliases": [
+    "MAL-2026-20337"
+  ],
+  "modified": "2026-11-23T00:54:15Z",
+  "published": "2026-11-23T00:51:52Z",
+  "summary": "Malicious code in @silent404/baileys (npm)",
+  "details": "@silent404/baileys is an unofficial fork of the WhiskeySockets Baileys WhatsApp Web library published under an unrelated scope, presenting itself as a \"custom patched version of Baileys\" while reusing the upstream package basename, and it is not the @whiskeysockets/baileys project. Installing it executes code on the installer's machine: a preinstall lifecycle hook runs./engine-requirements.js, and the dependency tree pulls libsignal from a mutable git URL (git+hxxps://github[.]com/whiskeysockets/libsignal-node[.]git) rather than a pinned registry version, so install-time code is resolved from a branch reference rather than an immutable artifact. The package also adds a whatsapp-rust-bridge dependency whose wasm-bindgen glue builds functions dynamically in the Signal crypto paths (lib/Utils/crypto.js, lib/Utils/lt-hash.js, lib/Utils/chat-utils.js). No C2 host, credential or token harvesting, or executable payload was found in the shipped bytes of versions 7.0.0 and 7.0.1: all outbound endpoints in the code are upstream WhatsApp and GitHub resources (wss://web[.]whatsapp[.]com, web[.]whatsapp[.]com/sw.js, raw[.]githubusercontent[.]com/WhiskeySockets/Baileys, mmg[.]whatsapp[.]net), there are no process.env reads, no access to.npmrc/.ssh/.aws or wallet files, and no obfuscated payload. Treat the risk as package-identity impersonation plus install-time execution under an unverified fork identity; users should install the canonical @whiskeysockets/baileys instead.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@silent404/baileys",
+        "purl": "pkg:npm/%40silent404/baileys"
+      },
+      "versions": [
+        "7.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@silent404/baileys/v/7.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14439"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-23T00:51:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "mmg[.]whatsapp[.]net",
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "08da3a087c27878f84ca826efaa4d6c59b8bcb83498d649029fe7f21bb6efb11"
+        ]
+      }
+    }
+  }
+}
