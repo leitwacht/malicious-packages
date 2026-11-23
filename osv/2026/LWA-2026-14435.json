@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14435",
+  "modified": "2026-11-23T00:10:56Z",
+  "published": "2026-11-23T00:06:51Z",
+  "summary": "Malicious code in @callmewanz/bails (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library that silently subscribes the installing user's WhatsApp account to the author's own channel. lib/Socket/newsletter.js hardcodes a single channel identifier, 120363380357951328@newsletter, and when the newsletter socket module is loaded a 150000 ms (2.5 minute) setTimeout unconditionally sends the WhatsApp newsletter FOLLOW mutation (QueryIds.FOLLOW, query id 7871414976211147, xmlns w:mex) for that channel — no user request, no configuration flag, no opt-out. The same channel identifier is reused as the forwardedNewsletterMessageInfo name/JID in lib/Socket/luxu.js, so forwarded messages and poll results are attributed to the author's channel. The delay is what keeps the follow from happening at load time, and the hook is embedded inside an otherwise ordinary Baileys-derived socket library. The package's remaining network traffic goes only to WhatsApp endpoints (web[.]whatsapp[.]com, call[.]whatsapp[.]com, graph[.]whatsapp[.]com, acs[.]whatsapp[.]com) and its preinstall hook, engine-requirements.js, only checks for Node.js \u003e= 20. Every installation enrols the user's WhatsApp account into the author's channel without consent. Channel JID: 120363380357951328@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@callmewanz/bails",
+        "purl": "pkg:npm/%40callmewanz/bails"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@callmewanz/bails/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14435"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-23T00:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "acs[.]whatsapp[.]com",
+          "call[.]whatsapp[.]com",
+          "graph[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "3e4a224bd8ed3c0ede6532b4858276e43febf40d8cee9b959ed17fe1f55b397c"
+        ]
+      }
+    }
+  }
+}
