@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14440",
+  "modified": "2026-10-13T07:13:02Z",
+  "published": "2026-10-13T05:55:56Z",
+  "summary": "Malicious code in @tedbrain/vlink (npm)",
+  "details": "This package is an installer that downloads and runs a platform binary during installation. Its postinstall hook runs `node install.js`, which fetches a platform-specific executable over plain HTTP from a hardcoded raw IP address, hxxp://49[.]232[.]144[.]199/downloads (overridable via VLINK_DOWNLOAD_BASE), with a fallback to the Gitee API at hxxps://gitee[.]com/api/v5/repos/ted-team/tedbrain. The download is not protected by TLS and the host is a bare IP literal rather than a vendor domain. The fetched binary is then executed via child_process. The package also ships bin/vlink.js, which spawns the downloaded binary. Installing this package therefore executes an unauthenticated remote binary on the host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@tedbrain/vlink",
+        "purl": "pkg:npm/%40tedbrain/vlink"
+      },
+      "versions": [
+        "0.1.84"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@tedbrain/vlink/v/0.1.84"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14440"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-10-13T05:55:56Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "gitee[.]com"
+        ],
+        "ip_observed": [
+          "49[.]232[.]144[.]199"
+        ],
+        "sha256": [
+          "e1c7c2f8a7e14a79f7f91c6db29ea77912cc3cae1e4184f999440bc663ab4f7e"
+        ],
+        "url_observed": [
+          "hxxp://49[.]232[.]144[.]199/downloads",
+          "hxxps://gitee[.]com/api/v5/repos/ted-team/tedbrain"
+        ]
+      }
+    }
+  }
+}
