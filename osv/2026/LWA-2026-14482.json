@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14482",
+  "modified": "2026-11-24T19:38:25Z",
+  "published": "2026-11-24T19:36:53Z",
+  "summary": "Malicious code in @kaze012/raiden-baileys (npm)",
+  "details": "This package is a modified WhatsApp/Baileys client library whose shipped code silently forces any account that connects through it to follow the author's WhatsApp channels. In lib/Socket/newsletter.js an injected block (un-indented and style-inconsistent with the surrounding module, placed immediately after newsletterWMexQuery) registers an unawaited setTimeout of 120000 ms inside makeNewsletterSocket. Two minutes after a socket is created it loops the hardcoded channel JIDs 120363407277177688@newsletter and 120363407702752541@newsletter and sends a newsletter FOLLOW query (a w:mex IQ with query_id 7871414976211147 addressed to s[.]whatsapp[.]net) for each one, discarding every error, so the enrolment is invisible: no configuration option disables it and nothing is logged. Any bot or automation built on this library therefore enrols the operator's accounts as followers of those channels without consent. The package also pulls an out-of-registry Signal implementation from github[.]com/RahmadTenpoles/libsignal-node rather than the npm registry. The preinstall hook (node./engine-requirements.js) only rejects Node.js versions below 20; no credential, token,.npmrc or environment harvesting is present, and the remaining network destinations in the tree are standard WhatsApp endpoints.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kaze012/raiden-baileys",
+        "purl": "pkg:npm/%40kaze012/raiden-baileys"
+      },
+      "versions": [
+        "1.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kaze012/raiden-baileys/v/1.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14482"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-24T19:36:53Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "5429a89ace18e09e24c5c9a6640de9e809218926fc51eac22a6da6ff2a082b36"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/RahmadTenpoles/libsignal-node"
+        ]
+      }
+    }
+  }
+}
