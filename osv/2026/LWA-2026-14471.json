@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14471",
+  "modified": "2026-11-24T05:52:23Z",
+  "published": "2026-11-24T05:51:51Z",
+  "summary": "Malicious code in clampony (npm)",
+  "details": "clampony is a combosquat of the `clamp` package: its index.js, description and README are copied from the legitimate clamp module, while package.json adds a `preinstall` hook running `node setup.js`. That hook is a downloader that executes at install time regardless of what the clamping API does. It fetches a remote payload from hxxps://pastebin[.]com/raw/z6K1Rg8J and hxxps://calcal[.]ru/p/t5edjvR/raw, racing both URLs with Promise.any and aborting the slower request, then derives a destination filename in the OS temporary directory via join(tmpdir(), randomUUID()) and passes it to a run() function. Version 1.0.10 additionally imports `spawn` from node:child_process, the primitive needed to launch the downloaded file (in 1.0.9 that import is absent). Installing the package therefore performs a remote second-stage fetch inside the build/CI environment. IOCs: hxxps://pastebin[.]com/raw/z6K1Rg8J and hxxps://calcal[.]ru/p/t5edjvR/raw.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "clampony",
+        "purl": "pkg:npm/clampony"
+      },
+      "versions": [
+        "1.0.10"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/clampony/v/1.0.10"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14471"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-24T05:51:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "calcal[.]ru",
+          "pastebin[.]com"
+        ],
+        "sha256": [
+          "50429d6ff4af2715535f8bfa9a332a5df0c5491fb739c052f97505f883414389"
+        ],
+        "url_observed": [
+          "hxxps://calcal[.]ru/p/t5edjvR/raw",
+          "hxxps://pastebin[.]com/raw/z6K1Rg8J"
+        ]
+      }
+    }
+  }
+}
