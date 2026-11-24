@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-14462",
-  "modified": "2026-11-24T04:37:58Z",
+  "modified": "2026-11-24T05:39:05Z",
   "published": "2026-11-24T04:36:51Z",
   "summary": "Malicious code in @jexkcode/baileys (npm)",
-  "details": "This package is an unofficial fork of the WhatsApp Web API library \"baileys\" published under a different scope. On top of the upstream code it adds lib/Utils/auto-follow.js, imported unconditionally from lib/Socket/index.js, which silently enrols every connected WhatsApp account into a hardcoded newsletter/channel: as soon as the socket reports connection \"open\" it waits three seconds and calls sock.newsletterFollow('120363405612723183@newsletter'), ignoring errors and only skipping if the consumer sets its own __channelFollowed flag. No option is exposed to turn this behaviour off, so any application using the library subscribes its users' accounts to the operator's channel without their knowledge. The package also ships a preinstall hook (engine-requirements.js, a Node.js version check) and an OpenAI-compatible Whisper transcription helper that reads a caller-supplied key from process.env.OPENAI_API_KEY. No credential harvesting, obfuscation or exfiltration code was found; the unwanted behaviour is the forced channel subscription. IOC: WhatsApp newsletter JID 120363405612723183@newsletter.",
+  "details": "A combosquat clone of the WhatsApp Web API library @whiskeysockets/baileys, published as @jexkcode/baileys, that silently enrols the installing account into a fixed WhatsApp channel. lib/Utils/auto-follow.js hardcodes AUTO_FOLLOW_CHANNEL = '120363405612723183@newsletter' and exports setupAutoFollow(), which subscribes to the socket's connection.update event; once the connection opens it waits 3 seconds and calls sock.newsletterFollow('120363405612723183@newsletter'), marking sock.__channelFollowed = true. lib/Socket/index.js calls setupAutoFollow(sock, newConfig) unconditionally inside makeWASocket, before any app code runs, so every application built on the library follows the channel without its operator's knowledge or consent; the auto-follow code is not documented in the README, has no opt-in option despite its comment claiming config.autoFollowChannel, and errors are swallowed. The package also uses a preinstall hook (node./engine-requirements.js) and ships a clone of the upstream @whiskeysockets/baileys tree (WAProto, lib/Socket, lib/Utils) with upstream identifiers partially rebranded, which makes the added channel enrolment hard to spot in a diff. This package is an unofficial fork of the WhatsApp Web API library \"baileys\" published under a different scope. On top of the upstream code it adds lib/Utils/auto-follow.js, imported unconditionally from lib/Socket/index.js, which silently enrols every connected WhatsApp account into a hardcoded newsletter/channel: as soon as the socket reports connection \"open\" it waits three seconds and calls sock.newsletterFollow('120363405612723183@newsletter'), ignoring errors and only skipping if the consumer sets its own __channelFollowed flag. No option is exposed to turn this behaviour off, so any application using the library subscribes its users' accounts to the operator's channel without their knowledge. The package also ships a preinstall hook (engine-requirements.js, a Node.js version check) and an OpenAI-compatible Whisper transcription helper that reads a caller-supplied key from process.env.OPENAI_API_KEY. No credential harvesting, obfuscation or exfiltration code was found; the unwanted behaviour is the forced channel subscription. IOC: WhatsApp newsletter JID 120363405612723183@newsletter.",
   "affected": [
     {
       "package": {
@@ -49,6 +49,9 @@
       "category": "malware",
       "first_seen_at": "2026-11-24T04:36:51Z",
       "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
         "sha256": [
           "9654730ae6af4e1dadf422de07979ef6f4d74f22dc7c11d405dc37629d3e5603"
         ]
