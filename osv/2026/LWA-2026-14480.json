@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14480",
+  "modified": "2026-11-24T17:10:30Z",
+  "published": "2026-11-24T17:06:51Z",
+  "summary": "Malicious code in cop3-rc (npm)",
+  "details": "cop3-rc@5.0.1 ships three JavaScript bundles — the declared main c-rc-3-cop3.js, plus cop3-rc-3-1.js and cp-3-rc-2.js (about 468 KB) — that are entirely protected with javascript-obfuscator-style obfuscation. Identifiers and method names are written as hex \\xNN escapes (hundreds of escaped names per file), all string literals are moved into an encoded string array, and each file carries decoder helpers that evaluate runtime-constructed source: c-rc-3-cop3.js at byte 18004 and cop3-rc-3-1.js at byte 93470 both call Function() on a decoder result rather than a literal, so the executed logic is not present in readable form. Module names handed to require() — including dotenv, mysql2 and the package's own sibling bundles — are themselves assembled from decoder output, so the package's real dependency use and behaviour cannot be read from the published source. package.json declares no lifecycle hooks, so nothing executes at install; the concealed logic is only reachable through the exported library API, which the README documents as \"network\" functions that take a private key (createAccount returns { privateAddress, privateKey }; getBalance/transfer accept \"TU_PRIVATE_KEY\") and instructs the user to paste their own key material as GASFEE_WALLET / GASFEE_PRIVATEKEY. The README also directs users to an off-registry faucet endpoint, hxxp://faucet-cop3-rc[.]hstn[.]me/. No plaintext C2 host, credential path or exfiltration URL is recoverable from the shipped files because every string in the bundles is encoded.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cop3-rc",
+        "purl": "pkg:npm/cop3-rc"
+      },
+      "versions": [
+        "5.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cop3-rc/v/5.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14480"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-24T17:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "faucet-cop3-rc[.]hstn[.]me"
+        ],
+        "sha256": [
+          "0f8241b0bac13f5590c4b577c1b409756145f339c178e753d16ae821edef80a1"
+        ],
+        "url_observed": [
+          "hxxp://faucet-cop3-rc[.]hstn[.]me/"
+        ]
+      }
+    }
+  }
+}
