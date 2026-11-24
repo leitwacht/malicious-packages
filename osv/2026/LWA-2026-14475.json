@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14475",
+  "aliases": [
+    "MAL-2026-20433"
+  ],
+  "modified": "2026-11-24T07:37:25Z",
+  "published": "2026-11-24T07:36:52Z",
+  "summary": "Malicious code in clampony (npm)",
+  "details": "clampony@1.0.11 ships a preinstall dropper disguised as a numeric utility. The package describes itself as \"Safely clamp a value between two other values\" and its index.js contains only a clamp function, but package.json declares \"preinstall\": \"node setup.js\", and setup.js does nothing but reach out to the network. On install it fetches two remote payloads in parallel — hxxps://pastebin[.]com/raw/z6K1Rg8J and hxxps://calcal[.]ru/p/t5edjvR/raw — races them with Promise.any, aborts the slower request, and allocates a destination path in the OS temp directory as join(tmpdir(), randomUUID()). It then passes that randomly-named path to a run(filepath) payload executor; in this version the executor body is empty and any failure is swallowed with process.exit(1). The package has no dependencies, no bin entries, no README and no functional relationship between its advertised purpose and the install-time download of arbitrary content from a public paste host and a non-standard third-party domain. IOCs: hxxps://pastebin[.]com/raw/z6K1Rg8J, hxxps://calcal[.]ru/p/t5edjvR/raw; destination pattern $TMPDIR/\u003crandom UUID\u003e.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "clampony",
+        "purl": "pkg:npm/clampony"
+      },
+      "versions": [
+        "1.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/clampony/v/1.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14475"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-24T07:36:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "calcal[.]ru",
+          "pastebin[.]com"
+        ],
+        "sha256": [
+          "7d2e505b5fd0b8bcdaab31514a9c3e3d09f58f83451b02de01d42377503d2e06"
+        ],
+        "url_observed": [
+          "hxxps://calcal[.]ru/p/t5edjvR/raw",
+          "hxxps://pastebin[.]com/raw/z6K1Rg8J"
+        ]
+      }
+    }
+  }
+}
