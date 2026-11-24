@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14477",
+  "modified": "2026-11-24T11:38:13Z",
+  "published": "2026-11-24T11:36:51Z",
+  "summary": "Malicious code in nakano-baileys (npm)",
+  "details": "nakano-baileys@1.0.6 is a combosquat fork of the Baileys WhatsApp Web API library (the real name 'baileys' with an added prefix) that manipulates the linked user's WhatsApp account without asking the operator. lib/Socket/index.js calls autoFollowChannels(sock) from its connection.update handler as soon as the connection reaches the open state, and lib/custom.js ships autoFollow: true plus three hardcoded channel identifiers (120363413531701847@newsletter, 120363431680006732@newsletter, 120363412274875891@newsletter) which it feeds one by one to sock.newsletterFollow(id) with a 2-second pause between calls — every successful login silently subscribes the victim's account to channels controlled by the package author, and the only way to stop it is to know about and set customConfig.autoFollow = false. The same wrapper replaces sock.requestPairingCode() so that a fixed 8-character device-linking code is used whenever the caller does not pass its own, overriding the code the legitimate pairing flow would generate. Both behaviours are exported from the package's main entry point, so any application that imports makeWASocket from this fork inherits them. Aside from this the tree is conventional Baileys code: the install hook (engine-requirements.js) only checks the Node.js major version, and the single hardcoded outbound URL is an upstream version-file fetch from hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nakano-baileys",
+        "purl": "pkg:npm/nakano-baileys"
+      },
+      "versions": [
+        "1.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nakano-baileys/v/1.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14477"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-24T11:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com",
+          "raw[.]githubusercontent[.]com/WhiskeySockets/Baileys"
+        ],
+        "sha256": [
+          "e32898dca0bbf7b9e3f2c348124f9db5e5ddc480fb37e7d1559c3792866ae577"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/WhiskeySockets/Baileys/master/src/Defaults/index[.]ts"
+        ]
+      }
+    }
+  }
+}
