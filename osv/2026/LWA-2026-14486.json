@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14486",
+  "modified": "2026-11-24T20:08:22Z",
+  "published": "2026-11-24T20:06:51Z",
+  "summary": "Malicious code in cop3-rc (npm)",
+  "details": "This package ships its entire implementation as obfuscated JavaScript: the main entry c-rc-3-cop3.js, cop3-rc-3-1.js and cp-3-rc-2.js contain large hex/unicode-escaped string arrays, escaped property names and rotating decoder functions, and build source strings at runtime that are executed through the Function constructor (c-rc-3-cop3.js around byte 18004, cop3-rc-3-1.js around byte 93470). The readable surface presents a didactic Colombian \"crypto network\" module backed by mysql2 and dotenv (module.exports = require('cp-3-rc-2') exposing initDB/run/get/all/transaction/dbConfig/testConnection/ensureTables), so the obfuscation conceals the module's actual data access and any destinations it contacts. The package declares no install/preinstall/postinstall lifecycle hook and no bin entry, and no network endpoint, credential-path access or token-harvesting string is visible in the deobfuscated literals; the only hosts in the package are documentation links in the README. There is no confirmed C2 IOC to publish for this version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cop3-rc",
+        "purl": "pkg:npm/cop3-rc"
+      },
+      "versions": [
+        "5.0.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cop3-rc/v/5.0.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14486"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-24T20:06:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "a8fe6a1c4dd6341ab39274c44a6770ed3463c45081bd62741d9ea1c5bdddbced"
+        ]
+      }
+    }
+  }
+}
