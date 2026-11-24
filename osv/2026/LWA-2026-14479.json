@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14479",
+  "modified": "2026-11-24T12:08:48Z",
+  "published": "2026-11-24T12:06:51Z",
+  "summary": "Malicious code in ceaser-baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp library that silently subscribes the connecting user's own WhatsApp account to a hardcoded newsletter channel. lib/Socket/index.js is a 24-line replacement of the upstream socket factory: it calls makeCommunitiesSocket(), registers a 'connection.update' listener, and on the first event where connection === 'open' invokes sock.newsletterFollow() on the constant CHANNEL_JID, which is process.env.CHANNEL_JID or '120363428398769916@newsletter'. A 'followed' flag makes the enrolment happen once per process and any failure is reduced to a console.log('channel follow failed:...') so the caller never learns it happened. There is no opt-in, no configuration flag and no mention of the automatic follow in the package README; every application built on this library enrols its end users as followers of that channel as a side effect of connecting. Separately, package.json declares \"@cacheable/node-cache\": \"^3.1.1\", a caret range that resolves to @cacheable/node-cache@3.1.2, a version whose published tarball carries a malicious payload; the dependency is used only for ordinary caching in lib/Utils/auth-utils.js and lib/Utils/identity-change-handler.js, so the package pulls that payload on install without pinning it. Outside these two points the code is a coherent WhatsApp client: WAProto protobuf definitions, protobufjs runtime, websocket transport, and child_process used solely to spawn ffmpeg for media conversion in lib/Utils/messages-media.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ceaser-baileys",
+        "purl": "pkg:npm/ceaser-baileys"
+      },
+      "versions": [
+        "3.4.15"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ceaser-baileys/v/3.4.15"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14479"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-24T12:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363428398769916@newsletter"
+        ],
+        "sha256": [
+          "a730c68147e65ee2d30aa812f1f41ea0463110fb1358266a2974b1b854dd769e"
+        ]
+      }
+    }
+  }
+}
