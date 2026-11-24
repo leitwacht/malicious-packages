@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14458",
+  "modified": "2026-11-23T23:53:39Z",
+  "published": "2026-11-23T23:51:52Z",
+  "summary": "Malicious code in combined-baileys (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library with covert account-manipulation code injected into its socket layer. When a WhatsApp session connects, the library silently forces the linked account to follow a third-party channel and then mutes it, so the user neither sees nor notices the subscription. In lib/Socket/newsletter.js the channel JID 120363422352987107@newsletter is hardcoded and an autoJoinChannels() routine issues the follow and mute queries 15 seconds after connection.update reports \"open\". lib/Socket/messages-recv.js contains a second, deliberately hidden copy of the same operation: decimal char-code arrays are reassembled at runtime with String.fromCharCode into the channel JID and into the method names newsletterFollow and newsletterMute, then invoked 30 seconds after connect with 3- and 10-second sleeps between calls. The package README states that newsletterFollow() is only called explicitly by the application and that no automatic join happens when a socket is created, contradicting the shipped code. The same file also auto-reacts to messages arriving from that channel with a randomly picked emoji, acting as the user. No credential, token, environment or file exfiltration was found; the only external destination is WhatsApp's own service (the channel JID 120363422352987107@newsletter).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "combined-baileys",
+        "purl": "pkg:npm/combined-baileys"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/combined-baileys/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14458"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-23T23:51:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "a4ccfdaf5c46e01f34f9e943983c9421a6424f50f85f888cbdaa6fccb9c0c118"
+        ],
+        "url_observed": [
+          "hxxps://web[.]whatsapp[.]com"
+        ]
+      }
+    }
+  }
+}
