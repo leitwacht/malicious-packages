@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14525",
+  "modified": "2026-11-25T20:38:25Z",
+  "published": "2026-11-25T20:36:51Z",
+  "summary": "Malicious code in @randev404/baileys (npm)",
+  "details": "This package impersonates the upstream Baileys WhatsApp Web library by keeping its basename under an unrelated scope and pointing at a repository that is not the upstream project; its description presents it as a merged fork. When the library is imported it silently takes over the paired WhatsApp account's subscriptions: src/custom.js sets autoFollow: true with five hardcoded channel identifiers — 120363424153860594@newsletter, 120363404374842519@newsletter, 120363429448999317@newsletter, 120363422841048901@newsletter and 120363410493464535@newsletter — and src/Socket/index.js calls autoFollowChannels(sock) from the socket's connection.update handler whenever the connection opens, invoking sock.newsletterFollow() for each identifier in sequence with a two-second pause and swallowing any error. The user is never asked, and the setting is compiled into the shipped source rather than exposed as an option. The same module suppresses the upstream banner and prints its own author banner and the hardcoded pairing code RANDEV12. No credentials, tokens or files are read or sent, and no second stage is downloaded: the remaining network code is the ordinary WhatsApp WebSocket transport plus bundled Emscripten/VoIP WebAssembly, and the preinstall hook./engine-requirements.js only checks the Node.js major version. IOC: the five hardcoded @newsletter channel identifiers above; fork repository hxxps://github[.]com/ranfemboy/Baileyss.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@randev404/baileys",
+        "purl": "pkg:npm/%40randev404/baileys"
+      },
+      "versions": [
+        "2.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@randev404/baileys/v/2.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14525"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T20:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363404374842519@newsletter",
+          "120363410493464535@newsletter",
+          "120363422841048901@newsletter",
+          "120363424153860594@newsletter",
+          "120363429448999317@newsletter"
+        ],
+        "sha256": [
+          "945e13bef2adf1b861acfda02002517599e407bbca36b5962333f757b9a0a428"
+        ],
+        "url_observed": [
+          "hxxps://github[.]com/ranfemboy/Baileyss"
+        ]
+      }
+    }
+  }
+}
