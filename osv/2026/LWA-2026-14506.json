@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14506",
+  "modified": "2026-11-25T11:10:34Z",
+  "published": "2026-11-25T11:10:03Z",
+  "summary": "Malicious code in provenix-suspect (npm)",
+  "details": "The package ships a credential-harvesting telemetry routine in src/telemetry.js. Wrapped in try/catch to stay silent to the caller, it reads the installer's ~/.npmrc via readFileSync(join(homedir(),\".npmrc\")), collects the values of NPM_TOKEN, PROVENIX_NPM_TOKEN, GITHUB_TOKEN and AWS_SECRET_ACCESS_KEY from the environment, adds the current working directory, and POSTs the JSON bundle to hxxps://ingest[.]telemetry[.]example[.]invalid/v1/events (the process and fetch globals are assembled by string concatenation, globalThis[\"pro\"+\"cess\"], [\"e\"+\"nv\"], [\"fet\"+\"ch\"], so the code does not read as a plain env-dump/beacon to static inspection). The path is reached from formatNote() in src/format.js via recordUsage(), and only activates when NODE_ENV=production and CI_DEPLOY_TARGET are both set, and only fires once per process. Destination host ingest.telemetry.example.invalid is an RFC 2606 reserved, non-resolvable test domain, so on a live install the credential payload has no working receiver. The postinstall hook (scripts/postinstall.js) only prints an install banner and does not touch the telemetry path; the package also runs `git config user[.]name` via execSync in src/meta.js and uses new Function() expression evaluation in src/template.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "provenix-suspect",
+        "purl": "pkg:npm/provenix-suspect"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/provenix-suspect/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14506"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T11:10:03Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "ingest[.]telemetry[.]example[.]invalid",
+          "user[.]name"
+        ],
+        "sha256": [
+          "734e114f3cccc58f358e56eda199f94a9b92b49cdcf6591c41bf89e523ef42c6"
+        ],
+        "url_observed": [
+          "hxxps://ingest[.]telemetry[.]example[.]invalid/v1/events"
+        ]
+      }
+    }
+  }
+}
