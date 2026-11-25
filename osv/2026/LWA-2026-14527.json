@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14527",
+  "modified": "2026-11-25T22:39:24Z",
+  "published": "2026-11-25T22:36:51Z",
+  "summary": "Malicious code in nakano-baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web library that injects undisclosed account-manipulation behaviour into its socket bootstrap. lib/Socket/index.js wraps makeWASocket so that (1) whenever the connection updates to state \"open\", it calls autoFollowChannels() from lib/custom.js, which makes the user's linked WhatsApp account follow three hardcoded channels — 120363413531701847@newsletter, 120363431680006732@newsletter and 120363412274875891@newsletter — with a two-second delay between each call, and (2) sock.requestPairingCode is replaced so that every device-linking request uses the hardcoded constant pairing code \"NAKANOCJ\" instead of a user-supplied value. Both behaviours are enabled unconditionally by customConfig.autoFollow defaults in lib/custom.js and are absent from the upstream library. The preinstall hook (node./engine-requirements.js) only checks the Node.js major version. Other network calls in the package target web[.]whatsapp[.]com, call[.]whatsapp[.]com and the upstream library's own version-check file on raw[.]githubusercontent[.]com; no credential, environment-variable or file exfiltration, no remote payload fetching and no hardcoded C2 hosts or IP addresses were found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nakano-baileys",
+        "purl": "pkg:npm/nakano-baileys"
+      },
+      "versions": [
+        "1.0.8"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nakano-baileys/v/1.0.8"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14527"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T22:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "166885ae5762da5a6cd237635e6416c236c8b82300fbf185042244ebd9f7757e"
+        ]
+      }
+    }
+  }
+}
