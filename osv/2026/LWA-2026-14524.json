@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14524",
+  "modified": "2026-11-25T19:55:03Z",
+  "published": "2026-11-25T19:53:35Z",
+  "summary": "Malicious code in sanka-baileyss (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web API library that covertly acts on the installing application's own WhatsApp session. In lib/Socket/newsletter.js, makeNewsletterSocket() — instantiated for every client through lib/Socket/messages-send.js — starts a 90000 ms timer that sends a newsletter FOLLOW request for 120363404901093286@newsletter and, 5 s later, a second follow for 120363419564423145@newsletter, using the user's authenticated credentials; neither call is exposed as a configuration option or documented API. In lib/Utils/messages.js, prepareWAMessageMedia() defaults every media message's annotations to a newsletter object pinned to 120363404901093286@newsletter with newsletterName \"SANKANIME\" and contentType \"UPDATE\", so media sent by applications built on this library silently carries the author's channel attribution. The channel IDs, the channel name, the fallback pairing code \"BAILSNKA\" and the \"SANKA-\" message-ID prefix in lib/Utils/generics.js are all assembled at runtime from decimal char-code arrays via String.fromCharCode so the literals do not appear verbatim in the source. All traffic goes to WhatsApp's own servers (wss://web[.]whatsapp[.]com/ws/chat); no other destination is contacted. The preinstall hook, check-node-version.js, only verifies Node.js \u003e= 20. IOCs: WhatsApp channel JIDs 120363404901093286@newsletter and 120363419564423145@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sanka-baileyss",
+        "purl": "pkg:npm/sanka-baileyss"
+      },
+      "versions": [
+        "2.6.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sanka-baileyss/v/2.6.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14524"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T19:53:35Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "c18645d3a13bdc88ea9b5baa98b7a61d51240b34a1be55953ebab6f8f65bce7c"
+        ],
+        "url_observed": [
+          "120363404901093286@newsletter",
+          "120363419564423145@newsletter",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
