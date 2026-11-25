@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14509",
+  "modified": "2026-11-25T15:08:46Z",
+  "published": "2026-11-25T15:06:51Z",
+  "summary": "Malicious code in aemeat-baileys (npm)",
+  "details": "This package is a trojanized fork of the Baileys WhatsApp library that silently enrols every end user's WhatsApp account into hardcoded WhatsApp channels. Two hidden components implement it: - lib/Socket/messages-recv.js contains string constants assembled at runtime from decimal char-code arrays through a helper (`qvnr`/String.fromCharCode) so they never appear as literals: the channel JID 120363428355171197@newsletter, plus the method names 'newsletterFollow' and 'newsletterMute'. Inside the socket's `ev.on('connection.update')` handler, when the connection reaches state 'open', a 30-second timer calls sock.newsletterFollow(\"120363428355171197@newsletter\") and then sock.newsletterMute(...) against the connected WhatsApp account, with no configuration or consent. Failures are swallowed in a try/catch.\n- lib/private-system.js base64-encodes three more channel URLs under obfuscator-style names _0xa/_0xb/_0xd — hxxps://whatsapp[.]com/channel/0029Vb8SmWWLI8YZlLpTU30d, hxxps://whatsapp[.]com/channel/0029Vb8cU4pD38Cb8udPRz1Q, hxxps://whatsapp[.]com/channel/0029VbD7AEv9xVJXSCws9a14 — derives the JID suffix from each and calls sock.newsletterFollow on all three. It is loaded from lib/index.js (`require(\"./private-system\")`, exported as `runPrivateSync`) so it ships and runs with the package. The package metadata is fabricated: repository, bugs and homepage fields point to non-existent GitHub locations, the author field differs from the publishing account, and the library prints a fake \"© 2026 ItssOffc / Aemath-baileys BAILEYS - CORP\" startup banner while spawning a spinner subprocess. The preinstall hook (engine-requirements.js) is an ordinary Node version check. The impact observed in the code is unaudited, non-consensual manipulation of installers' WhatsApp accounts: forced subscription to and muting of operator-controlled channels on every connection. The 5.3MB generated WAProto/index.js was not reviewed in full.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "aemeat-baileys",
+        "purl": "pkg:npm/aemeat-baileys"
+      },
+      "versions": [
+        "1.5.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/aemeat-baileys/v/1.5.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14509"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T15:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "c17af827c97842728f3fdc525f89f6559187d1c4940978687a580b9e13ddb754"
+        ],
+        "url_observed": [
+          "120363428355171197@newsletter",
+          "hxxps://whatsapp[.]com/channel/0029Vb8SmWWLI8YZlLpTU30d",
+          "hxxps://whatsapp[.]com/channel/0029Vb8cU4pD38Cb8udPRz1Q",
+          "hxxps://whatsapp[.]com/channel/0029VbD7AEv9xVJXSCws9a14"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14510",
+  "modified": "2026-11-25T15:10:07Z",
+  "published": "2026-11-25T15:07:55Z",
+  "summary": "Malicious code in homebridge-synsono (npm)",
+  "details": "This package is a Sonos/HomeKit bridge that ships a hardcoded SSH key and root-level appliance tooling which installs it as root's login credential and disables password authentication on the machine it is applied to. - infra/support-ssh-key.pub ships a fixed ed25519 public key (comment \"synsono-support\") inside the tarball.\n- src/management/release-manager/prepare-image.js — also compiled into the bundle scripts/synsono-release-manager.js — writes that key as the entire contents of /root/.ssh/authorized_keys with mode 0600, then creates /etc/ssh/sshd_config.d/00-synsono.conf with \"PasswordAuthentication no\", \"KbdInteractiveAuthentication no\" and \"PermitRootLogin prohibit-password\", and locks the password of root and of every login user via /usr/bin/passwd -l. It also deletes /etc/machine-id, SSH host keys, the management-agent token, the Homebridge UI secrets (.uix-secrets, auth.json), shell history and system logs in the same routine (\"synsono-prepare-image\").\n- infra/apply-9.sh re-adds the same key to /root/.ssh/authorized_keys whenever it is absent, appending with \"printf '%s\\n' \"$key\" \u003e\u003e \"$ROOT/root/.ssh/authorized_keys\"\", behind a check that the SSH drop-in file exists.\n- infra/apply-7.sh writes /etc/systemd/system/synsono-first-boot.service, a root oneshot unit that runs \"release-manager.js first-boot\" before ssh.service, rewriting SSH host keys, machine-id, the management-agent token and the HomeKit identity. Both code paths are gated on /etc/synsono/appliance.json declaring type \"synsono-box\", and the image-preparation path additionally requires the operator to type the confirmation word PREPARE; the package installs no lifecycle hooks, so the behaviour is reached only when the bundled appliance bootstrap or image-preparation command is run. The effect is that whoever holds the private half of the shipped key keeps root SSH access to the box, with password logins disabled system-wide and the box's unique identifiers erased. No C2, obfuscated payload or harvesting of installer credentials is present; update and licence traffic goes only to the vendor's own updates host (updates[.]synsono[.]eu).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "homebridge-synsono",
+        "purl": "pkg:npm/homebridge-synsono"
+      },
+      "versions": [
+        "15.37.42"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/homebridge-synsono/v/15.37.42"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14510"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T15:07:55Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "updates[.]synsono[.]eu"
+        ],
+        "sha256": [
+          "6043e229a12086ff9b50387a69d649b8e6c706ff0a42b3bce67a621e8ab9c420"
+        ],
+        "url_observed": [
+          "hxxps://updates[.]synsono[.]eu/stable/manifest[.]json"
+        ]
+      }
+    }
+  }
+}
