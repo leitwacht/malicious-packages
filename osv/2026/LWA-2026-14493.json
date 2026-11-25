@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14493",
+  "aliases": [
+    "MAL-2026-20551"
+  ],
+  "modified": "2026-11-25T07:37:18Z",
+  "published": "2026-11-25T07:36:57Z",
+  "summary": "Malicious code in jikaya-parser (npm)",
+  "details": "The package contains no functional code — index.js is a single console.log('parser for jikaya format') and its postinstall script only echoes 'installed!' — but its sole dependency is declared as a raw HTTP tarball, hxxp://web[.]vitemaweed[.]fr:4873/marker-script-suffix-mapper/-/marker-script-suffix-mapper-1[.]0[.]18[.]tgz, rather than a public-registry version range. npm fetches such a spec directly from that host, outside the public registry and its audit trail, and then installs it as a normal dependency, which runs that package's own lifecycle hooks on the installing machine. Installing jikaya-parser therefore executes unaudited third-party code from web[.]vitemaweed[.]fr:4873 with the privileges of the installer's build environment, while the package's own inert body gives no hint that the dependency is the payload carrier. Related packages in the same campaign declare dependencies of the same shape.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "jikaya-parser",
+        "purl": "pkg:npm/jikaya-parser"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/jikaya-parser/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14493"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T07:36:57Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]vitemaweed[.]fr",
+          "web[.]vitemaweed[.]fr:4873"
+        ],
+        "sha256": [
+          "7974ef656371b51f763d291528e581fc0b7b3924036a5f8fae4c26d463ff1bba"
+        ],
+        "url_observed": [
+          "hxxp://web[.]vitemaweed[.]fr",
+          "hxxp://web[.]vitemaweed[.]fr:4873/marker-script-suffix-mapper/-/marker-script-suffix-mapper-1[.]0[.]18[.]tgz"
+        ]
+      }
+    }
+  }
+}
