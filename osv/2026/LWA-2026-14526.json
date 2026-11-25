@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14526",
+  "modified": "2026-11-25T22:08:10Z",
+  "published": "2026-11-25T22:06:51Z",
+  "summary": "Malicious code in cop3-rc (npm)",
+  "details": "Cop3-rc ships a \"COP3\" blockchain/wallet library whose entire runtime — three JavaScript bundles, cp-3-rc-2.js (343 KB), cop3-rc-3-1.js (95 KB) and c-rc-3-cop3.js (30 KB, the package entry point) — is wrapped in a javascript-obfuscator build: a rotating string array encrypted with RC4, every method name written as hex escapes (486 escape-encoded runs in c-rc-3-cop3.js), a per-file numeric shuffle guard, and program code assembled at runtime with Function(decoder_output)(). Because all literals are encrypted in the string array, no URL, host, IP or command string is visible in the readable bytes. The package requires only 5 files (package.json, README plus the three bundles) with no lifecycle hooks, declares dotenv and mysql2 dependencies, and points users at hstn[.]me-hosted service endpoints for a \"faucet\", \"blockchain\" and \"custodial wallet\". The documented API is a private-key handling surface: createAccount() returns {privateAddress, privateKey}, and generateTemporaryPublicAddress(privateAddress, privateKey), deactivateTemporaryPublicAddress(privateAddress, privateKey,...) and getBalance(privateAddress, privateKey, symbol, chainId) all take an installer-supplied wallet private key, which is then passed into the obfuscated, unreviewable bundle. No network IOC could be extracted from the shipped code; the C2 / exfiltration destination is derived at runtime by the encrypted string decoder and is not present as plaintext.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cop3-rc",
+        "purl": "pkg:npm/cop3-rc"
+      },
+      "versions": [
+        "5.0.5"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cop3-rc/v/5.0.5"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14526"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T22:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "hstn[.]me"
+        ],
+        "sha256": [
+          "cc8de937892fe5f428a43e9a181d91b6a61ab3562c8ae988450b857028fceed6"
+        ],
+        "url_observed": [
+          "hxxps://cop3-rc-blockchain[.]hstn[.]me",
+          "hxxps://faucet-cop3-rc[.]hstn[.]me",
+          "hxxps://wallet-cop3-rc[.]hstn[.]me"
+        ]
+      }
+    }
+  }
+}
