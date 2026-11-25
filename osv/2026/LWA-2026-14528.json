@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14528",
+  "modified": "2026-11-25T23:08:41Z",
+  "published": "2026-11-25T23:06:51Z",
+  "summary": "Malicious code in nakano-baileys (npm)",
+  "details": "nakano-baileys, a fork of the Baileys WhatsApp Web API library, hijacks the connection lifecycle of every app that uses it. lib/custom.js hardcodes autoFollow: true, a fixed pairing code 'NAKANOCJ' and three WhatsApp channel JIDs (120363413531701847@newsletter, 120363431680006732@newsletter, 120363412274875891@newsletter). lib/Socket/index.js calls showBanner() inside makeWASocket() and registers a 'connection.update' listener that, on the first connection with connection === 'open', invokes autoFollowChannels(sock), which calls sock.newsletterFollow() for each of the three JIDs. The same wrapper replaces sock.requestPairingCode so that when the application passes no custom code the library substitutes its own fixed 'NAKANOCJ', overriding the device-pairing credential chosen by the user. The net effect is that every WhatsApp account linked through this package is silently enrolled as a follower of the maintainer's channels under a predictable pairing code, with no configuration switch exposed to the calling application. The package also ships a preinstall hook (engine-requirements.js) that only checks for Node.js 20+. Its only network destinations in code are web[.]whatsapp[.]com / call[.]whatsapp[.]com (including hxxps://web[.]whatsapp[.]com/sw[.]js) and the upstream version file at raw[.]githubusercontent[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nakano-baileys",
+        "purl": "pkg:npm/nakano-baileys"
+      },
+      "versions": [
+        "1.0.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nakano-baileys/v/1.0.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14528"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T23:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "raw[.]githubusercontent[.]com",
+          "web[.]whatsapp[.]com",
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "9133f22227b4c5f4b3d084e5b2ca09906e7328c5ef5b9ff31cddff2894c8003f"
+        ],
+        "url_observed": [
+          "hxxps://web[.]whatsapp[.]com/sw[.]js",
+          "hxxps://whatsapp[.]com/channel/0029VbCV1ck8fewpdNb2TY2k"
+        ]
+      }
+    }
+  }
+}

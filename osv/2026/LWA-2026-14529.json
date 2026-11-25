@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14529",
+  "modified": "2026-11-25T23:09:35Z",
+  "published": "2026-11-25T23:07:32Z",
+  "summary": "Malicious code in nakano-baileys (npm)",
+  "details": "Nakano-baileys 1.1.0, a WhatsApp Web API library, silently subscribes the accounts of applications that embed it to operator-controlled channels. lib/custom.js hardcodes autoFollow: true together with three WhatsApp channel JIDs (120363413531701847@newsletter, 120363431680006732@newsletter, 120363412274875891@newsletter), and exposes autoFollowChannels(sock), which calls sock.newsletterFollow() for each ID two seconds apart. lib/Socket/index.js invokes that function from makeWASocket on every \"connection.update\" event with connection === \"open\", so a connected session follows all three channels once; no option, flag or log line lets the embedding application or end user decline. The same module rebinds sock.requestPairingCode so that when the caller supplies no code the hardcoded default \"NAKANOCJ\" is used for device linking instead, making the pairing value a static, publicly known constant. The preinstall hook runs./engine-requirements.js, which only checks the Node.js major version. No credential, token, environment or file exfiltration is present in the shipped code: the unwanted behaviour is the unconsented channel subscription and the fixed pairing code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nakano-baileys",
+        "purl": "pkg:npm/nakano-baileys"
+      },
+      "versions": [
+        "1.1.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nakano-baileys/v/1.1.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14529"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T23:07:32Z",
+      "indicators_observed": {
+        "sha256": [
+          "022ff1512b710603bc4c6258c253c861f98d56f16b75ac0863325dea8555e0cc"
+        ]
+      }
+    }
+  }
+}
