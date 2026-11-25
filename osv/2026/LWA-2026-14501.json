@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14501",
+  "modified": "2026-11-25T10:07:23Z",
+  "published": "2026-11-25T10:06:52Z",
+  "summary": "Malicious code in use-sync-external-store-shim (npm)",
+  "details": "The package ships an 846-byte `index.js` that runs automatically at install time via `postinstall: node index.js`, and provides no other functionality despite its name mirroring the widely used `use-sync-external-store` package. The hook prints the host name and working directory to stdout, generates a random UUID, and sends an HTTP POST to hxxps://webhook[.]site/b4ea4473-01d9-4763-9e39-3b02063219d5 with the JSON body {\"event\":\"authorized-poc-test\",\"testId\":\"\u003crandom-uuid\u003e\",\"status\":\"executed\"}, then logs the HTTP status. The callback body carries only a random identifier and a status string; the package does not read environment variables, credential files, npm configuration, wallet data, or file contents. The publisher-declared description is \"security testiong only\" and the log lines are prefixed \"[POC]\", consistent with an install-time beacon probe published under a combosquat name to confirm that install hooks execute in target pipelines before a payload is staged.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "use-sync-external-store-shim",
+        "purl": "pkg:npm/use-sync-external-store-shim"
+      },
+      "versions": [
+        "2.2.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/use-sync-external-store-shim/v/2.2.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14501"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T10:06:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "2e1664a511c5807522a44e3403ddc20f12b963c3482dfdf6d4bc0331a51943cd"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/b4ea4473-01d9-4763-9e39-3b02063219d5"
+        ]
+      }
+    }
+  }
+}
