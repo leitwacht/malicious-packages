@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14530",
+  "modified": "2026-11-25T23:38:25Z",
+  "published": "2026-11-25T23:36:54Z",
+  "summary": "Malicious code in cop3-rc (npm)",
+  "details": "This package (cop3-rc@5.0.6, main entry c-rc-3-cop3.js) ships three heavily obfuscated CommonJS bundles — c-rc-3-cop3.js (30 KB), cop3-rc-3-1.js (95 KB) and cp-3-rc-2.js (343 KB) — despite being described as a simple didactic testnet blockchain helper. Every shipped module is javascript-obfuscator output: all identifiers and method names are written as \\x-hex escapes (e.g. d['\\x77\\x70\\x54'+'\\x46\\x78']), string literals are held in a base64-alphabet array decoded by an embedded RC4-style routine plus decodeURIComponent string-table unpacking, and control flow is flattened through rotating arrays inside a top-level while(!![]){...} dispatch loop. All three files assemble and execute code at runtime with Function(...)() built from decoded string-array fragments (at cop3-rc-3-1.js byte 93470, c-rc-3-cop3.js byte 18004 and inside cp-3-rc-2.js), so no library API is implemented in readable form. The package declares no install or lifecycle hooks, so nothing executes merely from installing it; the obfuscated payload runs when the module is required. Every string in the JavaScript is encoded, and no plaintext C2 host, IP, URL or path could be read out of the bundles; the only literal hosts anywhere in the tarball are four free-hosting subdomains in README.md — faucet-cop3-rc[.]hstn[.]me, cop3-rc-blockchain[.]hstn[.]me, wallet-cop3-rc[.]hstn[.]me and simulador-pagos-cop3-rc[.]hstn[.]me — presented as COP3 testnet faucet, chain, wallet and payment-simulator endpoints. Treat any host contacted by this module as untrusted.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "cop3-rc",
+        "purl": "pkg:npm/cop3-rc"
+      },
+      "versions": [
+        "5.0.6"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/cop3-rc/v/5.0.6"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14530"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-25T23:36:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cop3-rc-blockchain[.]hstn[.]me",
+          "faucet-cop3-rc[.]hstn[.]me",
+          "simulador-pagos-cop3-rc[.]hstn[.]me",
+          "wallet-cop3-rc[.]hstn[.]me"
+        ],
+        "sha256": [
+          "8c2649839685a2d76cb4b49b1282af6c65a5455750b8d4a4043d1d489b472f0b"
+        ]
+      }
+    }
+  }
+}
