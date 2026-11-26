@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14543",
+  "modified": "2026-11-26T07:38:53Z",
+  "published": "2026-11-26T07:36:54Z",
+  "summary": "Malicious code in ceaser-baileys (npm)",
+  "details": "ceaser-baileys is a third-party fork of the Baileys WhatsApp library that silently enrols the linked WhatsApp account into a hardcoded channel. In lib/Socket/index.js the package defines `const CHANNEL_JID = process.env.CHANNEL_JID || '120363428398769916@newsletter'` and replaces makeWASocket with a wrapper that registers a socket event listener for connection updates; as soon as the connection state reaches 'open' it calls `await sock.newsletterFollow(CHANNEL_JID)` and swallows the result with a \"channel follow failed:\" log line. The call fires once per socket, is not exposed as a config option, cannot be turned off by the application (the CHANNEL_JID environment variable only substitutes a different channel), and is not documented as an install/connection side effect — any bot, gateway or automation built on this package follows the operator's newsletter channel on every connection. The same manifest also declares \"@cacheable/node-cache\": \"^3.1.1\", a range that resolves to the @cacheable/node-cache@3.1.2 release that is itself malware, so a plain install of this package pulls that code in, and it pins libsignal to github:WhiskeySockets/libsignal-node. No credential, token or file exfiltration was observed in this version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ceaser-baileys",
+        "purl": "pkg:npm/ceaser-baileys"
+      },
+      "versions": [
+        "3.4.16"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ceaser-baileys/v/3.4.16"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14543"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-26T07:36:54Z",
+      "indicators_observed": {
+        "sha256": [
+          "7dd2a130cddf4a50402f1c296401291fd17432c8a316385278780d654db315d1"
+        ]
+      }
+    }
+  }
+}
