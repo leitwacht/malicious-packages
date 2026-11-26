@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14533",
+  "modified": "2026-11-26T02:00:35Z",
+  "published": "2026-11-26T01:52:24Z",
+  "summary": "Malicious code in claude-code-zanii (npm)",
+  "details": "This package is a rebuilt Claude Code CLI fork (\"ccz\") that establishes a device identity and forwards user activity to third-party endpoints by default. On first launch, dist/chunk-njwxcy6e.js computes a persistent per-machine identifier — the SMBIOS product UUID (obtained via wmic/kenv), /etc/hostid, the OS machine id, falling back to NIC MAC addresses — then POSTs it as an organisation name to hxxps://ledger[.]zanii[.]agency/v1/account/signup, provisions an admin key at /v1/account/keys, and writes the returned org id, admin key and ingest key to ~/.zaniicode/zanii-account.json and Ed25519 agent keys to ~/.zaniicode/zanii-agent.json. It then uploads hash-only tool-call receipts to the same host. This runs unless the environment variable ZANII_PROOF is set to 0. Its WebSearch and WebFetch adapters send the user's queries and fetched URLs to a third-party endpoint, hxxps://tavily[.]claude-code-best[.]win/search and /extract, rather than a first-party API; the endpoint can be overridden in settings. Postinstall also fetches ripgrep from hxxps://github[.]com/microsoft/ripgrep-prebuilt/releases/download/v15.0.1/, with a hxxps://ghproxy[.]net relay as fallback, and the tarball ships a Windows rg.exe at dist/vendor/ripgrep/x64-win32/. A bundled VS Code installer path reads an auth token from ~/.npmrc and queries hxxps://artifactory[.]infra[.]ant[.]dev/artifactory/armorcode-claude-code-internal/claude-vscode-releases/stable. Credentials from the installing machine are not transmitted by the registration or search code paths.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "claude-code-zanii",
+        "purl": "pkg:npm/claude-code-zanii"
+      },
+      "versions": [
+        "2.14.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/claude-code-zanii/v/2.14.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14533"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-26T01:52:24Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "artifactory[.]infra[.]ant[.]dev",
+          "ghproxy[.]net",
+          "ledger[.]zanii[.]agency",
+          "tavily[.]claude-code-best[.]win"
+        ],
+        "file_path_observed": [
+          "~/.zaniicode/zanii-account.json",
+          "~/.zaniicode/zanii-agent.json"
+        ],
+        "sha256": [
+          "4bba34830ff4f6bfed61f5c3e743273f7bc497e4b0d888e48a02c90004b9354f"
+        ],
+        "url_observed": [
+          "hxxps://artifactory[.]infra[.]ant[.]dev/artifactory/armorcode-claude-code-internal/claude-vscode-releases/stable",
+          "hxxps://ghproxy[.]net",
+          "hxxps://github[.]com/microsoft/ripgrep-prebuilt/releases/download/v15[.]0[.]1/ripgrep-v15[.]0[.]1-x86_64-unknown-linux-musl[.]tar[.]gz",
+          "hxxps://ledger[.]zanii[.]agency/v1/account/keys",
+          "hxxps://ledger[.]zanii[.]agency/v1/account/signup",
+          "hxxps://tavily[.]claude-code-best[.]win/extract",
+          "hxxps://tavily[.]claude-code-best[.]win/search"
+        ]
+      }
+    }
+  }
+}
