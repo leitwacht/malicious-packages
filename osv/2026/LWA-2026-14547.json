@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14547",
+  "modified": "2026-11-26T11:26:24Z",
+  "published": "2026-11-26T11:21:51Z",
+  "summary": "Malicious code in @taodigital/agent-cli (npm)",
+  "details": "This package (@taodigital/agent-cli) ships a CLI exposed as the bins `zeta` and `zeta-agent` (dist/index.js) that doubles as an operator-controlled remote execution agent. scripts/postinstall.js is inert by default and only acts when ZETA_POSTINSTALL=1 is set, in which case it invokes `node dist/index.js setup --path-only` and downloads Playwright Chromium. When invoked with a project id and a `zeta_…` token, dist/index.js opens a WebSocket to wss://zeta[.]taodigitalsolutions[.]com/agent-channel (overridable through the ZETA_API_URL and ZETA_WS_PATH environment variables) and executes commands sent by that remote server: run_tests (launching project test runners such as playwright, newman, k6 and other executables through child_process), setup/doctor environment operations, run_postman collections, local_crawl / local_capture_steps browser jobs, proxy_connect (TCP tunnels opened to a host:port supplied by the server, gated by ZETA_PROXY_ALLOW / ZETA_PROXY_ALLOW_ANY), and update_now, which installs a new version of the package from npm and restarts the process. On connect it reports the machine's hostname, username, OS platform, Node version and agent version to that server. It also bundles Playwright/stagehand browser automation, including login flows that fill stored credentials and CAPTCHA solving that submits site keys and page URLs to hxxp://2captcha[.]com/in[.]php and hxxps://api[.]capsolver[.]com/createTask. Network endpoints: zeta[.]taodigitalsolutions[.]com (API hxxps://zeta[.]taodigitalsolutions[.]com/api, WebSocket wss://zeta[.]taodigitalsolutions[.]com/agent-channel), dev[.]zeta[.]taodigitalsolutions[.]com, pre[.]zeta[.]taodigitalsolutions[.]com, 2captcha[.]com, api[.]capsolver[.]com.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@taodigital/agent-cli",
+        "purl": "pkg:npm/%40taodigital/agent-cli"
+      },
+      "versions": [
+        "1.3.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@taodigital/agent-cli/v/1.3.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14547"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-26T11:21:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "2captcha[.]com",
+          "api[.]capsolver[.]com",
+          "dev[.]zeta[.]taodigitalsolutions[.]com",
+          "pre[.]zeta[.]taodigitalsolutions[.]com",
+          "zeta[.]taodigitalsolutions[.]com"
+        ],
+        "sha256": [
+          "99c6121404c6a896147236d573ad2478b770193eba7015a608d8523825d41034"
+        ],
+        "url_observed": [
+          "hxxp://2captcha[.]com/in[.]php",
+          "hxxps://api[.]capsolver[.]com/createTask",
+          "hxxps://zeta[.]taodigitalsolutions[.]com/api",
+          "wss://zeta[.]taodigitalsolutions[.]com/agent-channel"
+        ]
+      }
+    }
+  }
+}
