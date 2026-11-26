@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14549",
+  "modified": "2026-11-26T16:07:26Z",
+  "published": "2026-11-26T16:06:51Z",
+  "summary": "Malicious code in modelbufs (npm)",
+  "details": "Package modelbufs@1.0.1 runs a postinstall hook (package.json: \"postinstall\": \"node canary.cjs\") that fingerprints the installing host and posts the result over HTTPS to a webhook[.]site receiver (hxxps://webhook[.]site/65716794-d7d2-401f-9f6e-2e65ec5a777c/modelbufs-install/c1a1eb3d99b473003d8c9f8f54adcfdc). Before sending, canary.cjs walks up to 16 ancestor directories looking for a package.json whose name is @abstraction/app, private is true, repository.url is git+hxxps://github[.]com/abstraction-dev/src[.]git, repository.directory is app, and dependencies.modelbufs is \"*\"; if no such manifest is found it exits silently, so the payload only fires inside the targeted private project. The report includes the matched manifest path/name/version, the target's git HEAD commit (obtained by spawning git rev-parse), hostname, username, uid/gid/euid/egid, platform/arch/OS type and release, all non-internal network interface addresses, Node version/process.versions/execPath, pid/ppid, npm command, npm_config_workspace, INIT_CWD, current working directory, the values of a fixed allowlist of CI variables (CI, GITHUB_REPOSITORY/RUN_ID/RUN_ATTEMPT/WORKFLOW/JOB/SHA/REF/WORKSPACE, RUNNER_NAME/OS/ARCH/ENVIRONMENT, GITLAB_CI, CI_PROJECT_PATH/PIPELINE_ID/JOB_ID/COMMIT_SHA/RUNNER_ID, BUILD_ID/NUMBER/TAG, K_SERVICE/K_REVISION/K_CONFIGURATION, GOOGLE_CLOUD_PROJECT/GCLOUD_PROJECT/PROJECT_ID/CLOUD_BUILD_BUILD_ID, COMMIT_SHA/REVISION_ID/BRANCH_NAME/REPO_NAME/SHORT_SHA), and whether specific credential-bearing variables are set (NODE_AUTH_TOKEN, NPM_TOKEN, GITHUB_TOKEN, GH_TOKEN, GOOGLE_APPLICATION_CREDENTIALS, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, ACTIONS_ID_TOKEN_REQUEST_TOKEN) - only their presence is reported; the hook does not read their values or read any credential file. The JSON body is AES-256-GCM encrypted with a random per-run key wrapped via RSA-OAEP (sha256) to the bundled receiver-public.pem, and the run is gated by an embedded expiry of 2026-12-03T09:49:00Z. The package also ships a DISCLOSURE file describing it as an authorized dependency-confusion canary for Abstraction, but the network callback, ancestor-manifest targeting, git commit, host inventory and CI/credential-variable enumeration all execute on install in the targeted project.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "modelbufs",
+        "purl": "pkg:npm/modelbufs"
+      },
+      "versions": [
+        "1.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-829",
+            "name": "Inclusion of Functionality from Untrusted Control Sphere"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/modelbufs/v/1.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14549"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "dependency_confusion",
+      "first_seen_at": "2026-11-26T16:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "webhook[.]site"
+        ],
+        "sha256": [
+          "6716caa0b9a77faa92fe9c93a1efd5ac4800a13be8032209172858e0737b19d4"
+        ],
+        "url_observed": [
+          "hxxps://webhook[.]site/65716794-d7d2-401f-9f6e-2e65ec5a777c/modelbufs-install/c1a1eb3d99b473003d8c9f8f54adcfdc"
+        ]
+      }
+    }
+  }
+}
