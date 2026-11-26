@@ -1,10 +1,10 @@
 {
   "schema_version": "1.6.0",
   "id": "LWA-2026-14526",
-  "modified": "2026-11-25T22:08:10Z",
+  "modified": "2026-11-26T20:38:16Z",
   "published": "2026-11-25T22:06:51Z",
   "summary": "Malicious code in cop3-rc (npm)",
-  "details": "Cop3-rc ships a \"COP3\" blockchain/wallet library whose entire runtime — three JavaScript bundles, cp-3-rc-2.js (343 KB), cop3-rc-3-1.js (95 KB) and c-rc-3-cop3.js (30 KB, the package entry point) — is wrapped in a javascript-obfuscator build: a rotating string array encrypted with RC4, every method name written as hex escapes (486 escape-encoded runs in c-rc-3-cop3.js), a per-file numeric shuffle guard, and program code assembled at runtime with Function(decoder_output)(). Because all literals are encrypted in the string array, no URL, host, IP or command string is visible in the readable bytes. The package requires only 5 files (package.json, README plus the three bundles) with no lifecycle hooks, declares dotenv and mysql2 dependencies, and points users at hstn[.]me-hosted service endpoints for a \"faucet\", \"blockchain\" and \"custodial wallet\". The documented API is a private-key handling surface: createAccount() returns {privateAddress, privateKey}, and generateTemporaryPublicAddress(privateAddress, privateKey), deactivateTemporaryPublicAddress(privateAddress, privateKey,...) and getBalance(privateAddress, privateKey, symbol, chainId) all take an installer-supplied wallet private key, which is then passed into the obfuscated, unreviewable bundle. No network IOC could be extracted from the shipped code; the C2 / exfiltration destination is derived at runtime by the encrypted string decoder and is not present as plaintext.",
+  "details": "Cop3-rc ships a \"COP3\" blockchain/wallet library whose entire runtime — three JavaScript bundles, cp-3-rc-2.js (343 KB), cop3-rc-3-1.js (95 KB) and c-rc-3-cop3.js (30 KB, the package entry point) — is wrapped in a javascript-obfuscator build: a rotating string array encrypted with RC4, every method name written as hex escapes (486 escape-encoded runs in c-rc-3-cop3.js), a per-file numeric shuffle guard, and program code assembled at runtime with Function(decoder_output)(). Because all literals are encrypted in the string array, no URL, host, IP or command string is visible in the readable bytes. The package requires only 5 files (package.json, README plus the three bundles) with no lifecycle hooks, declares dotenv and mysql2 dependencies, and points users at hstn[.]me-hosted service endpoints for a \"faucet\", \"blockchain\" and \"custodial wallet\". The documented API is a private-key handling surface: createAccount() returns {privateAddress, privateKey}, and generateTemporaryPublicAddress(privateAddress, privateKey), deactivateTemporaryPublicAddress(privateAddress, privateKey,...) and getBalance(privateAddress, privateKey, symbol, chainId) all take an installer-supplied wallet private key, which is then passed into the obfuscated, unreviewable bundle. No network IOC could be extracted from the shipped code; the C2 / exfiltration destination is derived at runtime by the encrypted string decoder and is not present as plaintext. cop3-rc ships its entire runtime as javascript-obfuscator output. The package main (c-rc-3-cop3.js, 30KB on a single line) plus two companion bundles (cop3-rc-3-1.js, 96KB, and cp-3-rc-2.js, 343KB) contain a rotated string array with a shift loop, identifiers and method names double-escaped as \\xNN literals, and dynamic code construction — Function() is called on decoded string-array entries at byte offsets ~18004 (c-rc-3-cop3.js) and ~93470 (cop3-rc-3-1.js). Because these files are the package's declared main entry points, all of this executes the moment the module is required; there is no install hook involved. The published API is built to be handed a caller's wallet private key: createAccount() returns { privateAddress, privateKey }, and generateTemporaryPublicAddress(), deactivateTemporaryPublicAddress(), getBalance() and transfer() each take privateAddress and privateKey arguments, which the obfuscated runtime then handles. It ships dotenv (loads a project's.env into process.env) and mysql2 as runtime dependencies. The README directs users to hosted companion services at cop3-rc-blockchain[.]hstn[.]me, wallet-cop3-rc[.]hstn[.]me, faucet-cop3-rc[.]hstn[.]me and simulador-pagos-cop3-rc[.]hstn[.]me. The obfuscation is not documented or opt-in anywhere, and the declared purpose (\"a didactic cryptographic coin\") does not explain why the coin logic is hidden behind a decoder and Function() construction.",
   "affected": [
     {
       "package": {
@@ -50,7 +50,11 @@
       "first_seen_at": "2026-11-25T22:06:51Z",
       "indicators_observed": {
         "domain_observed": [
-          "hstn[.]me"
+          "cop3-rc-blockchain[.]hstn[.]me",
+          "faucet-cop3-rc[.]hstn[.]me",
+          "hstn[.]me",
+          "simulador-pagos-cop3-rc[.]hstn[.]me",
+          "wallet-cop3-rc[.]hstn[.]me"
         ],
         "sha256": [
           "cc8de937892fe5f428a43e9a181d91b6a61ab3562c8ae988450b857028fceed6"
@@ -58,6 +62,7 @@
         "url_observed": [
           "hxxps://cop3-rc-blockchain[.]hstn[.]me",
           "hxxps://faucet-cop3-rc[.]hstn[.]me",
+          "hxxps://simulador-pagos-cop3-rc[.]hstn[.]me",
           "hxxps://wallet-cop3-rc[.]hstn[.]me"
         ]
       }
