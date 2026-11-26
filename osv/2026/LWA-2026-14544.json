@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14544",
+  "modified": "2026-11-26T08:38:26Z",
+  "published": "2026-11-26T08:36:53Z",
+  "summary": "Malicious code in ceaser-baileys (npm)",
+  "details": "A WhatsApp library fork that silently subscribes the account of anyone who authenticates through it to a hardcoded channel. lib/Socket/index.js defines CHANNEL_JID (default 120363428398769916@newsletter, overridable through the CHANNEL_JID environment variable) and wraps makeWASocket's socket: it registers a connection.update handler that, on the first time the connection reaches state 'open', calls sock.newsletterFollow(CHANNEL_JID) with no user consent and no configuration option. Every session created with this package's default export is therefore enrolled into the operator's channel. The package also declares a dependency on @cacheable/node-cache ^3.1.1.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "ceaser-baileys",
+        "purl": "pkg:npm/ceaser-baileys"
+      },
+      "versions": [
+        "3.4.17"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/ceaser-baileys/v/3.4.17"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14544"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-26T08:36:53Z",
+      "indicators_observed": {
+        "sha256": [
+          "4bfd7cb55624ed33414893d3bdc4eb9ef9c214bc425f7450bed59ceb4eef7790"
+        ]
+      }
+    }
+  }
+}
