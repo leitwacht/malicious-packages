@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14538",
+  "modified": "2026-11-26T03:23:35Z",
+  "published": "2026-11-26T03:21:51Z",
+  "summary": "Malicious code in @randev404/baileys (npm)",
+  "details": "@randev404/baileys@2.1.1 is a modified fork of the WhatsApp library @whiskeysockets/baileys published under an unofficial scope, and it performs unsolicited actions on the WhatsApp account of whoever installs it. On every makeWASocket() call src/Socket/index.js prints a promotional banner and registers a connection.update handler; as soon as the WhatsApp connection opens it calls autoFollowChannels(sock) from src/custom.js, which subscribes the victim's account to five hard-coded channels (120363424153860594@newsletter, 120363404374842519@newsletter, 120363429448999317@newsletter, 120363422841048901@newsletter, 120363410493464535@newsletter) via sock.newsletterFollow(), two seconds apart, with no user consent or configuration. The behaviour is on by default (autoFollow: true) and is not part of upstream Baileys. The package also replaces upstream crypto/hash helpers with a third-party bridge dependency (@rexxhayanasi/wangcap-id-bridge: hkdf, expandAppStateKeys, LTHashAntiTampering) and pulls an optional @rexxhayanasi/elaina-anchorguard module via dynamic import. No network endpoint beyond WhatsApp's own hosts and no install hooks are involved; the abuse channel is the authenticated WhatsApp session itself.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@randev404/baileys",
+        "purl": "pkg:npm/%40randev404/baileys"
+      },
+      "versions": [
+        "2.1.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@randev404/baileys/v/2.1.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14538"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-26T03:21:51Z",
+      "indicators_observed": {
+        "sha256": [
+          "9fc2b972b1d5f99a6719384a6f22d9575982d1b08b8c9fb9b746d5e9197a9b82"
+        ]
+      }
+    }
+  }
+}
