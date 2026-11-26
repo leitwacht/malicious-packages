@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14545",
+  "modified": "2026-11-26T09:25:52Z",
+  "published": "2026-11-26T09:21:51Z",
+  "summary": "Malicious code in sanka-baileyss (npm)",
+  "details": "Sanka-baileyss is a modified Baileys WhatsApp Web API library that manipulates the account and outbound traffic of whoever uses it, with no configuration option to disable the behaviour. In lib/Socket/newsletter.js (around line 150) socket construction schedules a 90-second timer that issues a WhatsApp 'w:mex' iq query calling newsletterWMexQuery(\"120363404901093286@newsletter\", QueryIds.FOLLOW), followed by a nested 5-second timer doing the same for \"120363419564423145@newsletter\". Both channel JIDs, plus the strings SANKANIME and BAILSNKA, are assembled at runtime with String.fromCharCode so they are absent from the plain-text source; the same BAILSNKA value is set as the default device pairing code in lib/Socket/socket.js. In lib/Socket/sanka.js the library stamps a hardcoded forwardedNewsletterMessageInfo block (newsletterName \"SANKANIME\", newsletterJid 120363404901093286@newsletter) into messages it sends, so every user's outgoing traffic carries the author's channel reference. Installable hooks are limited to check-node-version.js, which only compares process.versions.node against Node \u003e= 20 and exits otherwise. sanka-baileyss is a modified fork of the Baileys WhatsApp Web API library that silently enrols any account using it into two fixed WhatsApp channels and injects the operator's channel into the account's outgoing messages. lib/Socket/newsletter.js, evaluated as soon as the socket module is loaded, schedules a 90-second timer that sends a newsletter FOLLOW query (w:mex query channel, QueryIds.FOLLOW) for 120363404901093286@newsletter and then a nested 5-second timer that sends the same FOLLOW for 120363419564423145@newsletter; both calls are wrapped in empty try/catch blocks so the account owner sees nothing. The identifiers are assembled at runtime from decimal char-code arrays rather than written as literals: lib/Utils/messages.js decodes 120363404901093286, @newsletter and SANKANIME and installs them as defaultAnnotation.newsletter (contentType UPDATE) on media the account uploads, lib/Utils/generics.js builds a hardcoded \"SANKA-\" message-ID prefix, and lib/Socket/socket.js builds a hardcoded fallback pairing code from a char-code array. lib/Socket/sanka.js and lib/Socket/newsletter.js set forwardedNewsletterMessageInfo (newsletterJid 120363404901093286@newsletter, newsletterName SANKANIME) on status and broadcast messages. The only network destination in the package is the WhatsApp endpoint wss://web[.]whatsapp[.]com/ws/chat and the preinstall hook is a Node.js version check. Behaviour: unauthorised channel subscription and outgoing-message metadata modification, hidden behind char-code obfuscation and delayed timers.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "sanka-baileyss",
+        "purl": "pkg:npm/sanka-baileyss"
+      },
+      "versions": [
+        "2.5.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/sanka-baileyss/v/2.5.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14545"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-26T09:21:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363404901093286@newsletter",
+          "120363419564423145@newsletter",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "ca3fdef74f08c336f9880b4616b1c9c902ecc1a9a708bcd3ed5b451faf9e0230"
+        ],
+        "url_observed": [
+          "hxxps://whatsapp[.]com/channel/0029VbBv5edGk1Fo8WbsAK1V"
+        ]
+      }
+    }
+  }
+}
