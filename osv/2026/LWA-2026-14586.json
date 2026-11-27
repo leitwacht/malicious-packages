@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14586",
+  "modified": "2026-11-27T19:08:57Z",
+  "published": "2026-11-27T19:06:51Z",
+  "summary": "Malicious code in @pasqua-dev/baileys (npm)",
+  "details": "@pasqua-dev/baileys is a combosquat that reuses the canonical basename of the WhatsApp Web library @whiskeysockets/baileys under an unrelated scope, shipping a lightly modified copy of the upstream source tree rebranded as a \"PASQUA edition\" (its own README still instructs users to install @pasqua-baileys/baileys). The package declares a runtime dependency on cache-manager with the range ^7.2.8, which resolves to a release that is itself part of a malicious-package chain, so installing this package pulls a compromised dependency into the installer's dependency tree. It also carries a preinstall lifecycle script in package.json (\"preinstall\": \"node./engine-requirements.js\"); in this version that script only checks the Node.js major version and exits, and the bundled lib/ JavaScript contains no obfuscated payload, no credential or ~/.npmrc harvesting, and no hardcoded command-and-control endpoint — the network calls present (fetch() against link-preview URLs, media URLs, web[.]whatsapp[.]com, WhatsApp GraphQL endpoints, and an optional user-configured webhook) are ordinary WhatsApp-client behaviour. Packages: @pasqua-dev/baileys@2.0.0; transitive risk: cache-manager ^7.2.8.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pasqua-dev/baileys",
+        "purl": "pkg:npm/%40pasqua-dev/baileys"
+      },
+      "versions": [
+        "2.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pasqua-dev/baileys/v/2.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14586"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T19:06:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "d1549e7321d8f43305a8d6d11732a0262e8d182d2adac73816f5b98d7d5fef7e"
+        ]
+      }
+    }
+  }
+}

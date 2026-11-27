@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14587",
+  "modified": "2026-11-27T19:13:22Z",
+  "published": "2026-11-27T19:07:46Z",
+  "summary": "Malicious code in @pasqua-dev/baileys (npm)",
+  "details": "This WhatsApp Web automation library is a heavily modified fork of the @whiskeysockets/baileys API that installs unwanted behaviour and offensive tooling alongside its advertised features. On the first authenticated WhatsApp connection, lib/Socket/socket.js silently subscribes the user's account to two hardcoded channels ('0029Vb8YB2T90x2zvQLnEb2k@newsletter' and '0029Vb7zXQZD8SDri2PXZu06@newsletter') and stores a PASQUA_FOLLOW_DONE flag in the saved credentials so the subscription is never repeated and never surfaced to the user. It bundles lib/Utils/bug-payloads.js, a generator of deliberately malformed message stanzas built to crash or freeze a recipient's WhatsApp client — deep-nesting, null-byte and zero-width/RTL layout poison, a 16 MB overflow body, phantom device lists, a \"groupcrash\" payload that poisons group metadata, and a \"timebomb\" payload that fires when the victim reopens the chat — exposed as sock.sendBugPayload() in lib/Socket/chats.js. It also bundles lib/Utils/identity-chameleon.js, which copies a target contact's profile name, status text and avatar onto the operator's own account to impersonate them. The package additionally declares a dependency range on cache-manager (^7.2.8) that resolves to a release carrying injected malicious code. The preinstall hook (engine-requirements.js) performs only a Node.js version check and reads no credentials or files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@pasqua-dev/baileys",
+        "purl": "pkg:npm/%40pasqua-dev/baileys"
+      },
+      "versions": [
+        "2.8.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@pasqua-dev/baileys/v/2.8.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14587"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T19:07:46Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "0029Vb7zXQZD8SDri2PXZu06@newsletter",
+          "0029Vb8YB2T90x2zvQLnEb2k@newsletter"
+        ],
+        "sha256": [
+          "e2b4aa5716b17d1fd9dcea9e51d6b406ca85f170a5c4d0f949bf3692d9038fd3"
+        ]
+      }
+    }
+  }
+}
