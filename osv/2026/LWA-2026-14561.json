@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14561",
+  "aliases": [
+    "MAL-2026-20674"
+  ],
+  "modified": "2026-11-27T01:54:08Z",
+  "published": "2026-11-27T01:51:50Z",
+  "summary": "Malicious code in supunmd-baileys (npm)",
+  "details": "Supunmd-baileys@0.0.1 is a fork of the Baileys WhatsApp Web library that injects the author's WhatsApp channel identities into every message the host application sends. In lib/Socket/luxu.js two channel IDs are hardcoded — 120363421563597486@newsletter (labelled \"Edgar\") and 120363399602691477@newsletter — and attached as forwardedNewsletterMessageInfo, together with forged metadata: forwardingScore 1 and 99999, isForwarded true, a full set of fabricated disappearingMode initiators, and a supportPayload marking the message as an AI message. Album, event and poll-result messages that an application using this library sends therefore display as forwarded from those channels rather than as the application's own content. The manifest additionally declares a dependency on cache-manager ^7.2.8, which resolves to 7.2.10 — a release of that library with a known-malicious version — so installing this package pulls that code into the installer's dependency tree. The package also exposes sock.checkBanStatus (lib/Socket/ban-checker.js), which queries hxxps://api[.]whatsapp[.]com/send?phone=… and WhatsApp's USync device protocol to determine registration and ban status for arbitrary phone numbers. Its preinstall hook (node./engine-requirements.js) only checks the Node.js major version and makes no network calls.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "supunmd-baileys",
+        "purl": "pkg:npm/supunmd-baileys"
+      },
+      "versions": [
+        "0.0.1"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/supunmd-baileys/v/0.0.1"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14561"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T01:51:50Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "ebe373ab0022afaac32cf562f08da783216aa19beaa1f445ab9a0664a5419eb1"
+        ],
+        "url_observed": [
+          "120363399602691477@newsletter",
+          "120363421563597486@newsletter",
+          "hxxps://api[.]whatsapp[.]com/send",
+          "hxxps://api[.]whatsapp[.]com/send?phone=",
+          "hxxps://whatsapp[.]com/channel/0029Vb55cv41nozBTTIw1y07"
+        ]
+      }
+    }
+  }
+}
