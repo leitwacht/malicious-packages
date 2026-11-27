@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14585",
+  "modified": "2026-11-27T16:23:03Z",
+  "published": "2026-11-27T16:21:52Z",
+  "summary": "Malicious code in homebridge-synsono (npm)",
+  "details": "homebridge-synsono@15.38.13 ships appliance-management code that provisions persistent root SSH access on the machine it runs on and a root-level updater. src/management/release-manager/prepare-image.js and scripts/synsono-release-manager.js write the hardcoded Ed25519 public key bundled at infra/support-ssh-key.pub (comment \"synsono-support\") into /root/.ssh/authorized_keys (mode 0600), create /root/.ssh (0700), remove /etc/ssh/sshd_config.d/50-synsono.conf and drop /etc/ssh/sshd_config.d/00-synsono.conf with \"PasswordAuthentication no\", \"KbdInteractiveAuthentication no\" and \"PermitRootLogin prohibit-password\", leaving root SSH available only to the key whose private half is held by the package vendor. infra/apply-9.sh re-appends the same support key to root's authorized_keys whenever it is missing, and scripts/install-release-manager.sh installs the updater as root under /usr/local/lib/synsono-management with systemd units. That updater fetches a signed manifest from hxxps://updates[.]synsono[.]eu/stable/manifest[.]json and hxxps://updates[.]synsono[.]eu/beta/manifest[.]json and installs release tarballs as root. The code also enumerates login accounts from /etc/passwd and deletes /var/lib/homebridge/.uix-secrets, auth.json and licence-state files. The SSH and updater paths only proceed when /etc/synsono/appliance.json marks the device as a vendor appliance; the package installs no lifecycle hook and the package has no exfiltration endpoint beyond the vendor update host.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "homebridge-synsono",
+        "purl": "pkg:npm/homebridge-synsono"
+      },
+      "versions": [
+        "15.38.13"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/homebridge-synsono/v/15.38.13"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14585"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T16:21:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "updates[.]synsono[.]eu"
+        ],
+        "sha256": [
+          "4be93e178f510930193ebac3a09b9b947a41190d6ef431f1a70cb7518cc3d515"
+        ],
+        "url_observed": [
+          "hxxps://updates[.]synsono[.]eu/beta/manifest[.]json",
+          "hxxps://updates[.]synsono[.]eu/stable/manifest[.]json"
+        ]
+      }
+    }
+  }
+}
