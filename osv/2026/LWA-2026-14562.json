@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14562",
+  "aliases": [
+    "MAL-2026-20680"
+  ],
+  "modified": "2026-11-27T02:23:46Z",
+  "published": "2026-11-27T02:21:52Z",
+  "summary": "Malicious code in @leonoremods/baileys (npm)",
+  "details": "This package is an unofficial fork of the Baileys WhatsApp multi-device library that silently subscribes the connecting account to publisher-chosen WhatsApp channels, and it pulls in separately-compromised packages as runtime dependencies. On socket creation, src/WAUSync/Protocols/USyncNewsletterProtocol.js issues WhatsApp \"mex\" FOLLOW queries (iq xmlns w:mex, target s[.]whatsapp[.]net) to a hardcoded list of newsletter IDs on 50 s, 90 s and up to 140 s timers (newsletterSlotDelays); src/Socket/newsletter.js carries the same follows with base64-encoded IDs 120363400362472743@newsletter, 120363426470081124@newsletter, 120363408893555851@newsletter and 120363395678317603@newsletter. The behaviour is on by default — it is skipped only if the integrator passes newsletterAutoFollow: false or supplies their own newsletterAutoFollowIds — so accounts using the library are enrolled into third-party channels without consent. The manifest additionally declares runtime dependencies on cache-manager (^7.2.8) and @cacheable/node-cache (^3.0.1), versions that are themselves compromised; installing this package therefore places attacker-controlled code in the dependency tree of every consumer. No other network destinations, no obfuscation and no credential reads were found in the shipped code.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@leonoremods/baileys",
+        "purl": "pkg:npm/%40leonoremods/baileys"
+      },
+      "versions": [
+        "1.2.9"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@leonoremods/baileys/v/1.2.9"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14562"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T02:21:52Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "s[.]whatsapp[.]net"
+        ],
+        "sha256": [
+          "0bf3a7b5da252c9c65d7e39eeb9be6ac3b9fe2b63cefa7241738be35728b344d"
+        ]
+      }
+    }
+  }
+}
