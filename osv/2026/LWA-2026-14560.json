@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14560",
+  "modified": "2026-07-06T10:44:25Z",
+  "published": "2026-07-06T06:09:38Z",
+  "summary": "Malicious code in realagent (npm)",
+  "details": "The postinstall hook (install.js) downloads a prebuilt Go binary from hxxp://60[.]247[.]61[.]162:8083/api/version/latest over plain HTTP, extracts it to ~/.realagent/bin/realagent-mcp-server, and makes it executable. The download URL and checksums are served from the same IP (60[.]247[.]61[.]162:8083). The CLI wrapper (cli.js) spawns the downloaded binary with full stdio forwarding. The package also declares a self-dependency (realagent@^1.1.1) and a prior version was confirmed malicious, indicating a republished trojanized package.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "realagent",
+        "purl": "pkg:npm/realagent"
+      },
+      "versions": [
+        "1.1.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/realagent/v/1.1.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14560"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-07-06T06:09:38Z",
+      "indicators_observed": {
+        "ip_observed": [
+          "60[.]247[.]61[.]162:8083"
+        ],
+        "sha256": [
+          "755afac0b004d4d9f8d14219643b75abd2e4741dbaf4470a1c61c7e1a2497984"
+        ],
+        "url_observed": [
+          "hxxp://60[.]247[.]61[.]162",
+          "hxxp://60[.]247[.]61[.]162:8083/api/version/latest",
+          "hxxp://60[.]247[.]61[.]162:8083/install[.]sh"
+        ]
+      }
+    }
+  }
+}
