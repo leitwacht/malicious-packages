@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14563",
+  "modified": "2026-11-27T05:37:35Z",
+  "published": "2026-11-27T05:36:51Z",
+  "summary": "Malicious code in @kingorwot/my-baileys (npm)",
+  "details": "This package is a modified fork of the Baileys WhatsApp Web socket library that carries a covert injected block in lib/Socket/newsletter.js. When makeNewsletterSocket() is constructed, the injected code waits 120 seconds, then fetches hxxps://raw[.]githubusercontent[.]com/dgxeonking/strings/refs/heads/main/strings[.]json from an external GitHub repository and treats the returned JSON as a list of WhatsApp channel IDs. It then issues newsletter FOLLOW requests (QueryIds.FOLLOW, XWAPaths.xwa2_newsletter_join_v2) through the victim's authenticated WhatsApp session for every ID in that remote list, one every 11 seconds, swallowing all errors so nothing is logged or surfaced to the operator. The list is attacker-controlled and can be changed at any time without republishing the package, and the 120-second delay is chosen to outlast short-lived monitoring of the install/first-run window. The remainder of the package is an ordinary Baileys fork; its preinstall hook (node./engine-requirements.js) is only a Node.js \u003e=20 version check. The injected block contains no credential, token or.env file harvesting and no code obfuscation — its observable effect is silent manipulation of the installer's WhatsApp account (forced channel follows/subscriptions) driven by a remote, mutable configuration file at raw[.]githubusercontent[.]com/dgxeonking/strings.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@kingorwot/my-baileys",
+        "purl": "pkg:npm/%40kingorwot/my-baileys"
+      },
+      "versions": [
+        "4.0.0"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@kingorwot/my-baileys/v/4.0.0"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14563"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T05:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "raw[.]githubusercontent[.]com"
+        ],
+        "sha256": [
+          "2eda8bc3b649162165dee4db35cca8d3ffb42a35dc7495af40d5accc7feb62e2"
+        ],
+        "url_observed": [
+          "hxxps://raw[.]githubusercontent[.]com/dgxeonking/strings/refs/heads/main/strings[.]json"
+        ]
+      }
+    }
+  }
+}
