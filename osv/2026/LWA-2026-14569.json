@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14569",
+  "modified": "2026-11-27T10:10:12Z",
+  "published": "2026-11-27T10:09:21Z",
+  "summary": "Security-research / proof-of-concept package: @ngp-ui/auth-client (npm)",
+  "details": "This package is a dependency-confusion proof of concept. It is published as a scoped name at a sentinel version (99.0.0) with a near-empty tarball, and its package.json runs a preinstall hook (`node preinstall.js`) that folds the installer's hostname into a DNS label and resolves it against an attacker-controlled callback domain — a DNS-only beacon that needs no HTTP egress. preinstall.js reads os.hostname(), replaces non-alphanumeric characters with hyphens, truncates to 60 characters, and calls dns.resolve() on the result suffixed with.ngp-ui[.]auth-client[.]oob[.]jr0ch17[.]com (e.g. \u003chostname\u003e.ngp-ui[.]auth-client[.]oob[.]jr0ch17[.]com, resolved as an A record). The remainder of the package is inert: index.js contains only a comment identifying it as authorized security-testing artifact and exports an empty object. Only the host name is transmitted; the hook does not read credentials, tokens, environment variable values, or any files, and performs no further network activity. Callback domain: hxxp://ngp-ui.auth-client.oob.jr0ch17[.]com (DNS, port 53).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ngp-ui/auth-client",
+        "purl": "pkg:npm/%40ngp-ui/auth-client"
+      },
+      "versions": [
+        "99.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ngp-ui/auth-client/v/99.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-27T10:09:21Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "build-ec1d49d28b08[.]ngp-ui[.]auth-client[.]oob[.]jr0ch17[.]com",
+          "ngp-ui[.]auth-client[.]oob[.]jr0ch17[.]com"
+        ],
+        "sha256": [
+          "4db757ab9c23b185703557a2ab049404bd75d6209e59687757d13f305ddaa322"
+        ],
+        "url_observed": [
+          "hxxp://ngp-ui[.]auth-client[.]oob[.]jr0ch17[.]com"
+        ]
+      }
+    }
+  }
+}

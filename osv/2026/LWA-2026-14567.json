@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14567",
+  "modified": "2026-11-27T10:10:38Z",
+  "published": "2026-11-27T10:08:40Z",
+  "summary": "Malicious code in @blckrose/baileys (npm)",
+  "details": "This package is a fork of the widely used baileys WhatsApp Web library republished under a different npm scope (@blckrose/baileys instead of the upstream package), and it silently enrols every account that uses it into a channel chosen by the fork's author. In lib/Defaults/index.js a default configuration value autoFollowChannel is set to the hardcoded WhatsApp channel identifier 120363433405105703@newsletter, and lib/Socket/index.js falls back to that same identifier whenever the caller does not supply one. On every connection event reported by WhatsApp, when the connection state becomes \"open\", the code calls the library's newsletterFollow() on that identifier after a short timer, with no prompt, no confirmation and no opt-out other than overriding a non-standard config key. Any application that swaps the upstream library for this fork will therefore make each linked WhatsApp account follow the operator's channel on first connect. The fork also enables a non-upstream \"stealth\" socket wrapper by default and ships additional transport-level guards, and its README documents an HTTP client pointed at hxxps://api.apocalypse[.]web[.]id that is not actually present in the shipped JavaScript. The only install-time hook, preinstall running engine-requirements.js, merely checks that Node.js is version 20 or newer. No credential, token or file exfiltration was found in the code. Indicator: hardcoded channel 120363433405105703@newsletter.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@blckrose/baileys",
+        "purl": "pkg:npm/%40blckrose/baileys"
+      },
+      "versions": [
+        "2.0.11"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@blckrose/baileys/v/2.0.11"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14567"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T10:08:40Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "api[.]apocalypse[.]web[.]id"
+        ],
+        "sha256": [
+          "8f7bee0e9f5b9e6465bd23a2f38c1a8679f28c91a14266790f02c257417e0c4d"
+        ],
+        "url_observed": [
+          "hxxps://api[.]apocalypse[.]web[.]id"
+        ]
+      }
+    }
+  }
+}

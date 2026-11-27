@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14566",
+  "modified": "2026-11-27T10:09:45Z",
+  "published": "2026-11-27T10:07:41Z",
+  "summary": "Potentially-unwanted package (riskware): @blckrose/baileys (npm)",
+  "details": "This package is a republished fork of the Baileys WhatsApp Web library, shipping the canonical basename under a different scope, that silently enrols the user's WhatsApp account into a publisher-controlled channel. lib/Defaults/index.js sets autoFollowChannel: '120363433405105703@newsletter' as a default configuration value, and lib/Socket/index.js, on connection open, waits 2 seconds and calls sock.newsletterFollow() against that hardcoded JID. Any application that connects an account through this library therefore automatically follows the channel 120363433405105703@newsletter without the end user choosing to, unless the integrator explicitly sets autoFollowChannel: false. The fork also adds a preinstall hook (node./engine-requirements.js) that only checks for Node.js 20 or newer and exits with an error otherwise. No credential, session-key or file exfiltration and no command-and-control endpoint were found: network calls are limited to web[.]whatsapp[.]com and call[.]whatsapp[.]com, subprocess use is limited to ffmpeg for media processing, and the environment variables read (SESSION_MASTER_KEY, CALL_WASM_AB_PROPS_JSON, CALL_DISABLE_IPV6, CALL_RELAY_PORT_MODE, CALL_DUMP_RELAY_PACKETS_PATH) only configure local session storage and the VoIP WebAssembly engine. The dependency set also pins rosedb and fflate to \"latest\". Unwanted default account manipulation, not a credential stealer.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@blckrose/baileys",
+        "purl": "pkg:npm/%40blckrose/baileys"
+      },
+      "versions": [
+        "2.0.10"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@blckrose/baileys/v/2.0.10"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "pua",
+      "first_seen_at": "2026-11-27T10:07:41Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "call[.]whatsapp[.]com",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "90e58ae1f4db6e9cf78a1a687baed67c2d6d2149c07826cdecb5455469f9b879"
+        ]
+      }
+    }
+  }
+}

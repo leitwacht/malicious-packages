@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14568",
+  "modified": "2026-11-27T10:10:07Z",
+  "published": "2026-11-27T10:09:09Z",
+  "summary": "Security-research / proof-of-concept package: @ngp-ui/api-client (npm)",
+  "details": "This package is a dependency-confusion proof of concept. It ships under a scoped name at sentinel version 99.0.0 with a package.json \"preinstall\" hook that runs preinstall.js. That script takes os.hostname(), strips it to [a-zA-Z0-9-], truncates it to 60 characters and prepends it as a DNS label to the callback domain, performing a dns.resolve() lookup of \u003chostname\u003e.ngp-ui.api-client.oob.jr0ch17[.]com at install time. Only the machine hostname is transmitted; the package contains no credential, token, environment-variable or file reads, no HTTP client, no child-process execution and no second-stage payload — the remainder of the package is an index.js that exports an empty object. The package describes itself as \"Security research - dependency confusion proof of concept\" in its metadata.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@ngp-ui/api-client",
+        "purl": "pkg:npm/%40ngp-ui/api-client"
+      },
+      "versions": [
+        "99.0.0"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@ngp-ui/api-client/v/99.0.0"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "research_poc",
+      "first_seen_at": "2026-11-27T10:09:09Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "jr0ch17[.]com",
+          "ngp-ui[.]api-client[.]oob[.]jr0ch17[.]com"
+        ],
+        "sha256": [
+          "e457884408d88f75c4b48b773c938e2bd1c634b7f8fa3931a5cbe2cb5960f8f7"
+        ]
+      }
+    }
+  }
+}
