@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14564",
+  "modified": "2026-11-27T09:38:02Z",
+  "published": "2026-11-27T09:36:51Z",
+  "summary": "Malicious code in homebridge-synsono (npm)",
+  "details": "Homebridge-synsono@15.38.7 provisions persistent root SSH access and a self-updating root install channel on the host it is deployed to. src/management/release-manager/prepare-image.js and scripts/synsono-release-manager.js create /root/.ssh (mode 0700) and write /root/.ssh/authorized_keys (mode 0600) containing the fixed Ed25519 key shipped inside the package as infra/support-ssh-key.pub (comment \"synsono-support\"), so any host that receives this key accepts SSH logins as root from whoever holds the matching private key; the same code writes /etc/ssh/sshd_config.d/00-synsono.conf with PasswordAuthentication no and PermitRootLogin prohibit-password, and infra/apply-9.sh re-installs the same key on later \"apply\" revisions. The package then polls hxxps://updates[.]synsono[.]eu/{stable,beta}/manifest[.]json once an hour (src/bootstrap/homebridge-platform.js) and installs the packages that manifest names as root; the manifest signature is verified (src/management/manifest-signature.js) only against an Ed25519 key that ships in the same tarball (config/synsono-update-public.pem, config/synsono-update-keys.json), so the signature check is not an independent trust boundary. No lifecycle hook is defined, so none of this runs during npm install — it executes through the package's appliance bootstrap scripts (scripts/install-release-manager.sh, infra/apply-*.sh, npm run appliance:bootstrap) and the Homebridge plugin bootstrap. No credential or.npmrc harvesting and no attacker-controlled C2 endpoint was found in the package; the only outbound destinations are synsono[.]com, updates[.]synsono[.]eu, registry[.]npmjs[.]org, translate[.]google[.]com, open[.]spotify[.]com and a clock-sync set (cloudflare[.]com, google[.]com, apple[.]com).",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "homebridge-synsono",
+        "purl": "pkg:npm/homebridge-synsono"
+      },
+      "versions": [
+        "15.38.7"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/homebridge-synsono/v/15.38.7"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14564"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T09:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "cloudflare[.]com",
+          "open[.]spotify[.]com",
+          "synsono[.]com",
+          "updates[.]synsono[.]eu"
+        ],
+        "sha256": [
+          "5cd9b2fea90d127162a0e2527293cc3983b26d3afffac83e0d92473d3226a38a"
+        ],
+        "url_observed": [
+          "hxxps://updates[.]synsono[.]eu/",
+          "hxxps://updates[.]synsono[.]eu/beta/manifest[.]json",
+          "hxxps://updates[.]synsono[.]eu/stable/manifest[.]json"
+        ]
+      }
+    }
+  }
+}
