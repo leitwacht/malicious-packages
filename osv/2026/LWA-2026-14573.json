@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14573",
+  "modified": "2026-11-27T12:38:23Z",
+  "published": "2026-11-27T12:36:51Z",
+  "summary": "Malicious code in @dekzypedia/baileys (npm)",
+  "details": "This package is an unofficial repackaging of the Baileys WhatsApp Web library, published under a scope unrelated to the upstream project and presented as a drop-in replacement (same API, same README, same protocol tree). Its added behaviour silently enrols the installing user's WhatsApp account into a fixed newsletter channel. In lib/Socket/newsletter.js the package hardcodes DEFAULT_AUTO_FOLLOW_CHANNELS = ['120363432937179808@newsletter'] and registers a handler on the socket's connection.update event. The first time the connection reaches state \"open\" it calls executeWMexQuery({ newsletter_id: jid }, QueryIds.FOLLOW, XWAPaths.xwa2_newsletter_join_v2) for each entry in that list (up to two attempts with 1.5 s backoff), then never runs again on that socket. The effect: merely connecting an account through this library subscribes that account to the publisher's channel. The list can only be changed by passing an autoFollowChannels option, and the default is enabled. No separate C2 or exfiltration endpoint is present in the shipped code: the only outbound destinations are WhatsApp's own service hosts, and auth-state files are read and written only inside the folder supplied by the caller. The single lifecycle hook, engine-requirements.js, only checks the Node.js major version and exits on Node \u003c 20. IOC: WhatsApp newsletter channel JID 120363432937179808@newsletter, enrolled via the newsletter join query in lib/Socket/newsletter.js.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@dekzypedia/baileys",
+        "purl": "pkg:npm/%40dekzypedia/baileys"
+      },
+      "versions": [
+        "7.0.0-dekzy.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@dekzypedia/baileys/v/7.0.0-dekzy.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14573"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T12:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363432937179808@newsletter"
+        ],
+        "sha256": [
+          "2023ac297770beca8d2bce430aaa14da03c57e6c1e0fbde8e89ebe679bbf43bf"
+        ]
+      }
+    }
+  }
+}

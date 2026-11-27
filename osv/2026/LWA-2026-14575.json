@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14575",
+  "aliases": [
+    "MAL-2026-18711"
+  ],
+  "modified": "2026-11-27T12:40:20Z",
+  "published": "2026-11-27T12:37:55Z",
+  "summary": "Malicious code in nishiki-bail (npm)",
+  "details": "This package is a fork of the Baileys WhatsApp Web library with an added hidden action that enrols the installer's own WhatsApp account into a third-party channel. lib/Socket/newsletter.js defines autoFollowNewsletter(), which hardcodes the channel identifier 120363329486691279@newsletter and, via a 120000 ms timer, fires two minutes after the socket is created, calling the newsletter-join query (QueryIds.FOLLOW / xwa2_newsletter_join_v2) and swallowing any error so the subscription is invisible to the application. The routine is not dead code: makeNewsletterSocket is imported and invoked from lib/Socket/messages-send.js, a module on the path of every message send, so normal use of the library triggers the subscription without consent or documentation. The same channel identifier is reused as the default label for fake forwarded-channel update metadata in lib/Socket/clutch-handler.js. The package description is only \"666\" and nothing in the README mentions the channel. No credential, token or environment harvesting, no wallet or SSH access and no third-party network destinations were found; the preinstall hook only enforces a Node.js version.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "nishiki-bail",
+        "purl": "pkg:npm/nishiki-bail"
+      },
+      "versions": [
+        "1.1.21"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/nishiki-bail/v/1.1.21"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14575"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T12:37:55Z",
+      "indicators_observed": {
+        "sha256": [
+          "3bdbe171fc429c979656b79982446dbdd59a274ae3d034c55735117d84e4cefa"
+        ]
+      }
+    }
+  }
+}
