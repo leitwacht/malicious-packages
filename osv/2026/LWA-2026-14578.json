@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14578",
+  "modified": "2026-11-27T13:53:26Z",
+  "published": "2026-11-27T13:51:54Z",
+  "summary": "Malicious code in reycode-baileys (npm)",
+  "details": "reycode-baileys@2.0.2 is a WhatsApp Multi-Device library that silently subscribes any account using it to hardcoded WhatsApp channels. In lib/Socket/newsletter.js the socket construction chain (lib/Socket/messages-send.js -\u003e lib/Socket/username.js -\u003e lib/Socket/newsletter.js) arms a setTimeout of 150000 ms; when it fires it loops over four hardcoded newsletter JIDs — 120363421096003443@newsletter, 120363416370859792@newaletter (note the misspelled suffix), 120363431275243639@newsletter and 120363412719371901@newsletter — and sends a w:mex FOLLOW query (query_id 7871414976211147) to each, spacing them 5 seconds apart. No option, configuration flag or user action gates the loop, and it runs on the normal message-send path, so every socket created with the library enrols the authenticated account in those channels. The package also resolves its Signal encryption layer from a third-party repository instead of the official library: dependencies.libsignal is pinned to github:tenka-san/libsignal-node at commit 105ad38dc8d7668b5d5e3688e710915bef5cdc7f, which npm fetches from codeload[.]github[.]com at install time, so the code handling the account's end-to-end key material comes from a non-official source. The preinstall hook engine-requirements.js only checks the Node.js major version. There is no C2 host, IP or credential-exfiltration endpoint in the package; the only network indicators are the WhatsApp channel JIDs above and the tenka-san/libsignal-node repository at that commit.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "reycode-baileys",
+        "purl": "pkg:npm/reycode-baileys"
+      },
+      "versions": [
+        "2.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/reycode-baileys/v/2.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14578"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T13:51:54Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "codeload[.]github[.]com",
+          "github[.]com"
+        ],
+        "sha256": [
+          "69b843a4806c9e8418bfd68980264dc6c3d1c7bcc7777113aa1153f5b0515323"
+        ],
+        "url_observed": [
+          "hxxps://codeload[.]github[.]com/tenka-san/libsignal-node/tar[.]gz/105ad38dc8d7668b5d5e3688e710915bef5cdc7f",
+          "hxxps://github[.]com/tenka-san/libsignal-node"
+        ]
+      }
+    }
+  }
+}
