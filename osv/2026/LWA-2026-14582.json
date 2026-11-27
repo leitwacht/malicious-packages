@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14582",
+  "modified": "2026-11-27T15:37:58Z",
+  "published": "2026-11-27T15:36:51Z",
+  "summary": "Malicious code in homebridge-synsono (npm)",
+  "details": "Installing this Homebridge Sonos plugin also ships a root-level appliance management path. On a host marked as a SynSono appliance (/etc/synsono/appliance.json containing type \"synsono-box\"), its release-manager code (src/management/release-manager/prepare-image.js and scripts/synsono-release-manager.js) overwrites /root/.ssh/authorized_keys with the package's bundled Ed25519 key from infra/support-ssh-key.pub (comment synsono-support) and installs the sshd drop-in /etc/ssh/sshd_config.d/00-synsono.conf setting PasswordAuthentication no and PermitRootLogin prohibit-password, after deleting the previous 50-synsono.conf. The image-prepare routine runs systemctl, factory-reset and power-off steps through spawned processes and requires the literal confirmation string \"PREPARE\"; it is invoked from scripts/install-release-manager.sh and the synsono-release-manager entry points that run as root. On hosts without the appliance marker these code paths return early and change nothing. The plugin's remaining outbound endpoints are hxxps://updates[.]synsono[.]eu/stable/manifest[.]json and hxxps://updates[.]synsono[.]eu/beta/manifest[.]json (signature-verified update manifests), hxxps://registry[.]npmjs[.]org/\u003cname\u003e/latest for version lookups, hxxps://translate[.]google[.]com/translate_tts for announcements and hxxps://open[.]spotify[.]com/oembed for playlist titles, plus LAN Sonos and loopback management services (127[.]0[.]0[.]1:8788). The package contains no install-time hooks, no obfuscated or encoded payload, and does not read npm, GitHub or cloud credential files.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "homebridge-synsono",
+        "purl": "pkg:npm/homebridge-synsono"
+      },
+      "versions": [
+        "15.38.12"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/homebridge-synsono/v/15.38.12"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14582"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T15:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "open[.]spotify[.]com",
+          "synsono[.]com",
+          "synsono[.]eu",
+          "updates[.]synsono[.]eu"
+        ],
+        "sha256": [
+          "4fade74fcbcd5332f659c65643fc982f73b907aca51d31946127d8957d3e3490"
+        ],
+        "url_observed": [
+          "hxxps://open[.]spotify[.]com/oembed",
+          "hxxps://translate[.]google[.]com/translate_tts",
+          "hxxps://updates[.]synsono[.]eu/beta/manifest[.]json",
+          "hxxps://updates[.]synsono[.]eu/stable/manifest[.]json"
+        ]
+      }
+    }
+  }
+}
