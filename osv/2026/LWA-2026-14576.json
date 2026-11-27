@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14576",
+  "modified": "2026-11-27T12:53:53Z",
+  "published": "2026-11-27T12:51:51Z",
+  "summary": "Malicious code in @hanzofc/baileys (npm)",
+  "details": "This package is an unofficial-scope re-publish of the @whiskeysockets/baileys WhatsApp automation library. On the first successful WhatsApp connection it silently subscribes the operator's account to a third-party channel: lib/Socket/index.js defines AUTO_FOLLOW_NEWSLETTER_JIDS = ['120363185570235320@newsletter'] and, inside the socket's 'connection.update' handler, calls sock.newsletterFollow(jid) for that JID as soon as connection === 'open', ignoring errors and with no configuration flag to turn it off (the bundled README tells readers the only way to disable it is to empty the array and rebuild). Every bot built on this package therefore makes its own authenticated WhatsApp session a follower of the attacker-chosen channel, inflating its audience and giving the operator of that channel a messaging foothold over accounts that never opted in. The package also bundles lib/Utils/capture.js, a traffic tap wired into the socket that records every inbound and outbound WhatsApp frame, every app-state mutation and every sock API call (message bodies included) to plaintext JSONL files under storage/capture, rotated at 5 MB with up to 10 files kept, redacting only fields whose key matches a private/secret/token/password regex. No C2 host, no remote endpoint and no harvesting of npm/GitHub/cloud credentials, ~/.npmrc, ~/.ssh or ~/.aws was found in the shipped code: the only hostnames present are whatsapp[.]com, the WebRTC/IETF spec URLs inside the prebuilt wasm bundle and the project's own GitHub.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@hanzofc/baileys",
+        "purl": "pkg:npm/%40hanzofc/baileys"
+      },
+      "versions": [
+        "7.2.4"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@hanzofc/baileys/v/7.2.4"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14576"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-27T12:51:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "whatsapp[.]com"
+        ],
+        "sha256": [
+          "1475f953c53b853807047631ad68a65ab779d5dc8da7e868280ab703924675bd"
+        ]
+      }
+    }
+  }
+}
