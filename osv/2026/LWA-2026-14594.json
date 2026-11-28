@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14594",
+  "modified": "2026-11-28T03:39:01Z",
+  "published": "2026-11-28T03:36:51Z",
+  "summary": "Malicious code in @angkasabaileys/baileys (npm)",
+  "details": "@angkasabaileys/baileys is a WhatsApp (Baileys) library fork published under an unofficial scope that imitates the upstream name @whiskeysockets/baileys. Its README states it has \"no auto-follow channel (newsletter) behavior\", but lib/Socket/newsletter.js does the opposite: it registers a connection.update handler that, each time the library connects, calls the WhatsApp MEX query xwa2_newsletter_join_v2 with the hardcoded channel id 120363431179022660@newsletter, silently enrolling the paired WhatsApp account into that channel without user consent. lib/Utils/messages.js adds a second hardcoded channel, 120363404006644139@newsletter, stored hex-encoded along with a server message id and an encoded channel display name; the decoded ForwardedNewsletterMessageInfo is merged into the annotations of every image and video sent through prepareWAMessageMedia, attributing the user's outbound media to that channel, and fields with no explicit link/URL are rewritten to the author's donation URL hxxps://saweria[.]co/angkasalagibobo (DONATE_URL in lib/Defaults/index.js). The package's only install-time script, engine-requirements.js, just checks that Node.js is version 20 or newer. No credential, token or file exfiltration was found; the library's own network destinations are the normal WhatsApp endpoints such as wss://web[.]whatsapp[.]com/ws/chat.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@angkasabaileys/baileys",
+        "purl": "pkg:npm/%40angkasabaileys/baileys"
+      },
+      "versions": [
+        "1.0.2"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@angkasabaileys/baileys/v/1.0.2"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14594"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-28T03:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "saweria[.]co",
+          "web[.]whatsapp[.]com"
+        ],
+        "sha256": [
+          "18cf01775f22f7e3ab3aa53a24714844ef5eb05c6fa5f38216dcba655c441a4b"
+        ],
+        "url_observed": [
+          "hxxps://saweria[.]co/angkasalagibobo",
+          "wss://web[.]whatsapp[.]com/ws/chat"
+        ]
+      }
+    }
+  }
+}
