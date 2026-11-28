@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.6.0",
+  "id": "LWA-2026-14595",
+  "modified": "2026-11-28T04:38:10Z",
+  "published": "2026-11-28T04:36:51Z",
+  "summary": "Malicious code in @angkasabaileys/baileys (npm)",
+  "details": "This is an unofficial-scope fork of Baileys (WhatsApp Web API library) published as @angkasabaileys/baileys. It carries an unauthorised side effect in lib/Socket/newsletter.js: a connection.update handler fires as soon as the socket reaches connection === 'open' and issues a newsletter-follow request (xwa2_newsletter_join_v2) for a hardcoded channel JID, 120363431179022660@newsletter, using the account that just connected. The call is unconditional, wrapped only in an empty try/catch, and exposes no configuration switch or notification to the host application, so any bot or automation built on this package silently subscribes the end user's own WhatsApp account to that channel on first connection. Aside from this hook the tarball is a standard Baileys fork (the preinstall script only verifies Node.js \u003e= 20) and no credential, token or wallet access was found in the shipped code. IOC: hardcoded WhatsApp channel JID 120363431179022660@newsletter enrolled automatically at connection open.",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "@angkasabaileys/baileys",
+        "purl": "pkg:npm/%40angkasabaileys/baileys"
+      },
+      "versions": [
+        "1.0.3"
+      ],
+      "database_specific": {
+        "cwes": [
+          {
+            "cweId": "CWE-506",
+            "name": "Embedded Malicious Code"
+          }
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "PACKAGE",
+      "url": "https://www.npmjs.com/package/@angkasabaileys/baileys/v/1.0.3"
+    },
+    {
+      "type": "REPORT",
+      "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14595"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Leitwacht",
+      "type": "FINDER",
+      "contact": [
+        "https://threatintel.leitwacht.eu"
+      ]
+    }
+  ],
+  "database_specific": {
+    "leitwacht": {
+      "category": "malware",
+      "first_seen_at": "2026-11-28T04:36:51Z",
+      "indicators_observed": {
+        "domain_observed": [
+          "120363431179022660@newsletter"
+        ],
+        "sha256": [
+          "a24f3692e0d73484e23e66e8312d529d8bd595f3708a542006af785762548444"
+        ]
+      }
+    }
+  }
+}
